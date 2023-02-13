@@ -1,0 +1,209 @@
+{% extends "layout.html" %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{%- from "govuk/components/tag/macro.njk" import govukTag -%}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% block pageTitle %}
+  Your reports of wreck material - {{ serviceName }} – GOV.UK
+{% endblock %}
+
+{% block beforeContent %}
+  <div class="account-link">
+    <a class="govuk-back-link" href="/logout">Logout</a>
+  </div>
+{% endblock %}
+
+{% block content %}
+
+{{value}}
+{% set statusGuide %}
+  <p class="">
+    {{govukTag({
+    text: "Received",
+    classes: "govuk-tag--purple govuk-!-margin-bottom-2"
+    })}}
+    <br/>Your report has been received and is awaiting review by the Receiver of Wreck. This is usually undertaken within two working days.
+  </p>
+  <p>
+    {{govukTag({
+      text: "Awaiting your response",
+      classes: "govuk-tag--orange govuk-!-margin-bottom-2"
+    })}}
+    <br/>Your report has been reviewed by the Receiver of Wreck and is awaiting your response.
+  </p>
+  <p>
+    {{govukTag({
+      text: "Investigation Ongoing",
+      classes: "govuk-tag--blue govuk-!-margin-bottom-2"
+    })}}
+    <br/>The Receiver of Wreck has all information currently required and is undertaking enquiries to determine the outcome of this report. 
+  </p>
+  <p>
+    {{govukTag({
+      text: "Closed",
+      classes: "govuk-tag--grey govuk-!-margin-bottom-2 portal-filter-item--closed"
+    })}}
+    <br/>The Receiver of Wreck has completed their enquiries and has determined the outcome of the report.
+  </p>
+{% endset -%}
+  <div class="govuk-grid-row" data-js="portal-filter">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-4">Your reports of wreck material</h1>
+      <div class="report-filters govuk-!-padding-5 govuk-!-margin-bottom-7">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Filter reports by status:</h2>
+        <div class="">
+          {{ govukDetails({
+            summaryText: "What do the report statuses mean?",
+            html: statusGuide
+          }) }}
+        </div>
+        <div class="govuk-!-margin-top-5">
+          <span class="portal-filter-item-wrapper">
+            <a class="portal-filter-item portal-filter-item--active govuk-!-margin-right-4" href="#" data-js="portal-filter-item" data-status="all">
+              {{govukTag({
+                text: "All",
+                classes: "govuk-tag--turquoise govuk-!-margin-bottom-2"
+              })}}
+            </a>
+          </span>
+          <span class="portal-filter-item-wrapper">
+            <a class="portal-filter-item govuk-!-margin-right-4" href="#" data-js="portal-filter-item" data-status="received">
+              {{govukTag({
+                text: "Received",
+                classes: "govuk-tag--purple govuk-!-margin-bottom-2"
+              })}}
+              <span class="portal-filter-item__close">&#10005;</span>
+            </a>
+          </span>
+          <span class="portal-filter-item-wrapper">
+            <a class="portal-filter-item govuk-!-margin-right-4" href="#" data-js="portal-filter-item" data-status="awaiting">
+              {{govukTag({
+                text: "Awaiting your response",
+                classes: "govuk-tag--orange govuk-!-margin-bottom-2"
+              })}}
+              <span class="portal-filter-item__close">&#10005;</span>
+            </a>
+          </span>
+          <span class="portal-filter-item-wrapper">
+            <a class="portal-filter-item govuk-!-margin-right-4" href="#" data-js="portal-filter-item" data-status="ongoing">
+              {{govukTag({
+                text: "Investigation Ongoing",
+                classes: "govuk-tag--blue govuk-!-margin-bottom-2"
+              })}}   
+              <span class="portal-filter-item__close">&#10005;</span>       
+            </a>
+          </span>
+          <span class="portal-filter-item-wrapper">
+            <a class="portal-filter-item portal-filter-item--closed govuk-!-margin-right-4" href="#" data-js="portal-filter-item" data-status="closed">
+              {{govukTag({
+                text: "Closed",
+                classes: "govuk-tag--grey govuk-!-margin-bottom-2"
+              })}}
+              <span class="portal-filter-item__close">&#10005;</span>       
+            </a>
+          </span>
+        </div>
+      </div>
+      
+      {% set reportedSelected = false %}
+      {% set foundSelected = false %}
+      {% set lastUpdated = false %}
+      {% if sort === 'crf99_datereported' %}
+        {% set reportedSelected = true %}
+      {% endif %}
+      {% if sort === 'crf99_datefound' %}
+        {% set foundSelected = true %}
+      {% endif %}
+      {% if sort === 'modifiedon' %}
+        {% set lastUpdatedSelected = true %}
+      {% endif %}
+      
+      <form class="form" action='/portal/dashboard' method="post" data-js="portal-sort">
+        {{ govukSelect({
+          id: "report-sort-by",
+          name: "report-sort-by",
+          label: {
+            text: "Sort by"
+          },
+          items: [
+            {
+              value: "crf99_datereported",
+              text: "Reported",
+              selected: reportedSelected
+            },
+            {
+              value: "crf99_datefound",
+              text: "Found",
+              selected: foundSelected
+            },
+            {
+              value: "modifiedon",
+              text: "Last Updated",
+              selected: lastUpdatedSelected
+            }
+          ]
+        }) }}
+      </form>
+
+      <table class="govuk-table report-responsive-table" data-js="report-listings-table">
+        <thead class="govuk-table__head report-responsive-table__head">
+          <tr class="govuk-table__row report-responsive-table__row">
+            <th scope="col" class="govuk-table__header">Reference</th>
+            <th scope="col" class="govuk-table__header">Date reported</th>
+            <th scope="col" class="govuk-table__header">Details</th>
+            <th scope="col" class="govuk-table__header">Current status</th>
+            <th scope="col" class="govuk-table__header">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body report-responsive-table__body" data-js="portal-dashboard">
+        {% for item in userReports %}
+          {% set convertedRef = item["report-ref"] | replace(r/\//ig,'-') %}
+          {% if item['wreck-materials'] | length === 1 %}
+            {% set itemSummaryText = "item" %}
+          {% else %}
+             {% set itemSummaryText = "items" %}
+          {% endif %}
+          
+          <tr class="govuk-table__row report-responsive-table__row report-responsive-table__row--portal-dashboard" data-status="{{item['status-attr']}}" data-js="report-listings-row">
+            <td class="govuk-table__cell report-responsive-table__cell">
+            <span class="report-responsive-table__mobile-label">Reference:</span>
+            {{ item["report-ref"] }}</td>
+            <td class="govuk-table__cell report-responsive-table__cell">
+            <span class="report-responsive-table__mobile-label">Date reported:</span>
+            {{ item["date-reported"] }}</td>
+            <td class="govuk-table__cell report-responsive-table__cell">
+            <span class="report-responsive-table__mobile-label">Details:</span>
+              {% if item['vessel-name'] %}
+              {{ item['vessel-name'] }}<br/>
+              {% endif %}
+              <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                  <span class="govuk-details__summary-text">
+                    {{ item['wreck-materials'] | length }} {{ itemSummaryText }} of wreck material
+                  </span>
+                </summary>
+                <div class="govuk-details__text">
+                  <ul class="govuk-list govuk-list--bullet">
+                  {% for property in item['wreck-materials'] %}
+                    <li>{{ property }}</li>
+                  {% endfor %}
+                  </ul>
+                </div>
+              </details>
+            </td>
+            <td class="govuk-table__cell report-responsive-table__cell report-responsive-table__cell--no-label">
+              {{govukTag({
+                text: item['status'],
+                classes: "govuk-tag--" + item['status-colour'] + " govuk-!-margin-bottom-2"
+              })}}<br/>
+              <strong>Last&nbsp;update: </strong>{{ item["last-updated"] }}
+            </td>
+            <td class="govuk-table__cell report-responsive-table__cell report-responsive-table__cell--no-label">
+              <a href="/portal/report/{{convertedRef}}">View report</a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

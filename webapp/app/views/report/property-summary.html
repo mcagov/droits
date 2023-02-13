@@ -1,0 +1,205 @@
+{% extends "layout.html" %}
+
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% set propertyDeclarationHtml %}
+  <p class="govuk-!-margin-top-0">I confirm that I hold in my possession the items detailed in this form and under the Merchant Shipping Act 1995 I confirm I agree to:</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>Take all reasonable care of the recovered wreck material and understand that the Maritime and Coastguard Agency and the Receiver of Wreck may recover any costs associated with loss or damage of the items whilst in my possession.</li>
+    <li>Allow the Receiver of Wreck, or any other person appointed by the Receiver, access to the wreck material at all reasonable times and will inform the Receiver if the wreck material changes location.</li>
+    <li>Not remove the wreck material from the United Kingdom.</li>
+    <li>Surrender the wreck material to the Receiver of Wreck at any time I am requested to.</li>
+    <li>Not hold the Maritime and Coastguard Agency and the Receiver of Wreck responsible for any costs involved in the storage or care of the recovered wreck material.</li>
+  </ul>
+
+  <p>You may not assume title or ownership of any of the declared wreck material until advised by the Receiver of Wreck.</p>
+
+  <p>This undertaking has no influence on any decision the Receiver of Wreck may take in respect of claims to ownership of the wreck material recovered.</p>
+{% endset %}
+
+{% block pageTitle %}
+  {{ errorPrefix(errorSummary) }}
+  Details of wreck material recovered - {{ serviceName }} – GOV.UK
+{% endblock %}
+
+{% block beforeContent %}
+  {% include "includes/phase-banner.html" %}
+
+  {% if data['wreck-description'] %}
+    {% set backLink = "/report/vessel-description" %}
+  {% elif data['vessel-depth'] %}
+    {% set backLink = "/report/depth" %}
+  {% else %} 
+    {% set backLink = "/report/location" %}
+  {% endif %}
+
+  <a class="govuk-back-link" href="{{backLink}}">Back</a>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+    
+      {% if errorSummary.length > 0 %}
+        {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: errorSummary
+        }) }}
+      {% endif %}
+
+      <h1 class="govuk-heading-xl">Details of wreck material recovered</h1>
+
+      {% if addedFlash %}
+        {% set bodyText = "The wreck material was successfully added to the report." %}
+        {% include "includes/action-confirmation.njk" %}
+      {% elseif removedFlash %}
+        {% set bodyText = "The wreck material was successfully removed from the report." %}
+        {% include "includes/action-confirmation.njk" %}
+      {% endif %}
+
+      {% set itemsAdded = data["property"] | length %}
+
+      {% if itemsAdded < 1 %}
+
+        <p class="govuk-body">Please add recovered wreck material to this report.</p>
+        {{ govukButton({
+          text: "Add your first item",
+          classes: "govuk-button--secondary",
+          href: "/report/property-form/new"
+        }) }}
+
+        <span class="govuk-body row-prototype-bulk-link">or add <a href="/report/property-bulk">wreck material in bulk</a>.</span>
+
+
+      {% else %}
+        <table class="govuk-table report-responsive-table">
+          <caption class="govuk-table__caption">Items of wreck material reported at this location</caption>
+          <thead class="govuk-table__head report-responsive-table__head">
+          <tr class="govuk-table__row report-responsive-table__row">
+            <th scope="col" class="govuk-table__header govuk-!-width-one-third">Description</th>
+            <th scope="col" class="govuk-table__header govuk-table__header--numeric">Quantity</th>
+            <th scope="col" class="govuk-table__header govuk-table__header--numeric">Total value</th>
+            <th scope="col" class="govuk-table__header">Image</th>
+            <th scope="col" class="govuk-table__header">Storage postcode</th>
+            <th scope="col" class="govuk-table__header">Actions</th>
+          </tr>
+          </thead>
+
+          <tbody class="govuk-table__body">
+          {% for id, property in data["property"] %}
+            {% set imagePath = "" %}
+          {% if data["property"][id]['image'] %}
+            {% set imagePath = "/uploads/" +  data["property"][id]['image'] %}
+          {% endif %}
+            <tr class="govuk-table__row report-responsive-table__row">
+              <td class="govuk-table__cell report-responsive-table__cell">
+                <span class="report-responsive-table__mobile-label">Description:</span>
+                {{ property["description"] }}
+              </td>
+              <td class="govuk-table__cell govuk-table__cell--numeric report-responsive-table__cell">
+                <span class="report-responsive-table__mobile-label">Quantity:</span>
+                {{ property["quantity"] }}
+              </td>
+              {% if property['value'] === "" %}
+                <td class="govuk-table__cell govuk-table__cell--numeric report-responsive-table__cell">
+                  <span class="report-responsive-table__mobile-label">Value:</span>
+                  Unknown
+                </td>
+              {% else %}
+                <td class="govuk-table__cell govuk-table__cell--numeric report-responsive-table__cell">
+                  <span class="report-responsive-table__mobile-label">Value:</span>
+                  £{{ property["value"] }}
+                </td>
+              {% endif %}
+              {% if not property['image'] %}
+                <td class="govuk-table__cell report-responsive-table__cell">
+                  <span class="report-responsive-table__mobile-label">Image:</span>
+                  <strong class="govuk-tag govuk-tag--blue">Not provided</strong>
+                </td>
+              {% else %}
+                <td class="govuk-table__cell report-responsive-table__cell">
+                  <span class="report-responsive-table__mobile-label">Image:</span>
+                  <img src="{{imagePath}}" width="100" loading="lazy" alt="uploaded image {{ property['originalFilename'] }}" />
+                </td>
+              {% endif %}
+              {% if property['storage-address'] == "personal" %}
+                <td class="govuk-table__cell report-responsive-table__cell">
+                  <span class="report-responsive-table__mobile-label">Storage Postcode:</span>
+                  {{ data["personal"]["address-postcode"] }}
+                </td>
+              {% elseif property['storage-address'] == "custom" %}
+                <td class="govuk-table__cell report-responsive-table__cell">
+                  <span class="report-responsive-table__mobile-label">Storage Postcode:</span>
+                  {{ data["property"][id]["address-details"]["address-postcode"] }}
+                </td>
+              {% else %}
+                <td class="govuk-table__cell report-responsive-table__cell">
+                </td>
+              {% endif %}
+              <td class="govuk-table__cell report-responsive-table__cell" data-label="Actions">
+                <ul class="govuk-summary-list__actions-list report-responsive-table__actions-list">
+                  <li class="govuk-summary-list__actions-list-item">
+                    <a class="govuk-link" href="/report/property-form/{{ id }}">
+                      <span aria-hidden="true">Change</span>
+                      <span class="govuk-visually-hidden">Change details for item described as {{ property["description"] }}</span></a>
+                  </li>
+                  <li class="govuk-summary-list__actions-list-item">
+                    <a class="govuk-link" href="/report/property-delete/{{ id }}">
+                      <span aria-hidden="true">Remove</span>
+                      <span class="govuk-visually-hidden">Remove item described as {{ property["description"] }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+
+        {{ govukButton({
+          text: "Add another item",
+          classes: "govuk-button--secondary",
+          href: "/report/property-form/new"
+        }) }}
+
+        <span class="govuk-body row-prototype-bulk-link">or add <a href="/report/property-bulk">wreck material in bulk</a>.</span>
+
+      {% endif %}
+
+
+      {% if itemsAdded > 0 %}
+      <h3 class="govuk-heading-m" id="declarationHeading">Declaration</h3>
+      <form class="form" action="/report/property-summary-confirmation" method="post" novalidate>
+        <div class="declaration-wrapper govuk-!-padding-5 govuk-!-margin-bottom-6">
+          {{ govukCheckboxes({
+            idPrefix: "property-declaration",
+            name: "property-declaration",
+            items: [
+              {
+                value: "true",
+                id: "propertyDeclaration",
+                html: propertyDeclarationHtml
+              }
+            ],
+            errorMessage: errors["property-declaration"]
+          }) }}
+
+        </div>
+
+        {{ govukButton({
+          text: "Accept and continue",
+          classes: "govuk-!-margin-right-1"
+        }) }}
+
+      </form>
+      {% endif %}
+
+    </div>
+  </div>
+
+{% endblock %}

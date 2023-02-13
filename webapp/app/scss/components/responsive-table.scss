@@ -1,0 +1,107 @@
+.report-responsive-table {
+  border: 0;
+  width: 100%;
+  padding: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+@media screen and (max-width: 600px) {
+  .report-responsive-table {
+    border: 1px solid transparent;
+    box-shadow: none;
+    margin-top: 25px;
+
+    &__caption {
+      display: block;
+      padding-bottom: 10px;
+    }
+
+    &__change-link {
+      display: block;
+      float: left;
+      padding-top: 10px;
+      margin-bottom: 15px;
+      width: 100%;
+    }
+
+    &__head {
+      display: none;
+    }
+
+    &__row {
+      display: block;
+      border-top: 1px solid #b1b4b6;
+      border-bottom: 5px double #b1b4b6;
+      margin-bottom: 40px;
+
+      &:last-child {
+        margin-bottom: 0px;
+      }
+    }
+
+    &__cell {
+      display: block;
+      text-align: right;
+      padding-right: 0 !important;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      img {
+        max-width: 100%;
+      }
+
+      &--no-label {
+        text-align: left;
+
+        &:before {
+          content: none;
+        }
+      }
+
+      &--text-left {
+        text-align: left !important;
+      }
+
+      &--no-border {
+        border-bottom: none !important;
+      }
+
+      .photo-upload__container--uploaded {
+        max-width: 100%;
+      }
+    }
+
+    &__mobile-label {
+      display: block;
+      float: left;
+      font-weight: bold;
+    }
+
+    &__actions-list {
+      text-align: left;
+    }
+
+    // Added for GovUK component to ensure 'govuk-details' list
+    // text remains left aligned within a mobile table layout
+    .govuk-details__text {
+      text-align: left;
+    }
+  }
+}
+@media screen and (min-width: 601px) {
+  .report-responsive-table {
+    &__mobile-label {
+      display: none;
+    }
+    &__change-link {
+      float: right;
+    }
+
+    &__mobile-heading {
+      display: none;
+    }
+  }
+}

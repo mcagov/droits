@@ -1,0 +1,26 @@
+// global styles for <a> and <p> tags
+$govuk-global-styles: true;
+
+@import '~govuk-frontend/govuk/all';
+@import 'accessible-autocomplete';
+
+//Utilities
+@import './utilities/display';
+@import './utilities/borders';
+
+// Components
+@import './components/location';
+@import './components/map';
+@import './components/check-answers';
+@import './components/confirmation';
+@import './components/image-upload';
+@import './components/responsive-table';
+@import './components/action-confirmation';
+@import './components/filters';
+@import './components/dashboard';
+@import './components/portal-authentication';
+@import './components/bulk-upload';
+@import './components/report-overview';
+@import './components/back-to-top';
+@import './components/additional-information-block';
+@import './components/form-declaration';

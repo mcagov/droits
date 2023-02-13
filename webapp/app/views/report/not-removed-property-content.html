@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  {{ errorPrefix(errorSummary) }}
+  You do not need to report this wreck material - {{ serviceName }} – GOV.UK
+{% endblock %}
+
+{% block beforeContent %}
+  {% include "includes/phase-banner.html" %}
+  <a class="govuk-back-link" href="/report/removed-property-check">Back</a>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      
+
+      <h1 class="govuk-heading-xl">
+        You do not need to report this wreck material
+      </h1>
+
+      <p>This service is to report wreck material that has been salvaged or removed from its original location.</p>
+      <p>If you want to report the location of new wreck that has been found, but not removed from its location, please email the Receiver of Wreck at <a href="mailto:row@mcga.gov.uk">row@mcga.gov.uk</a>.</p>
+
+    </div>
+  </div>
+
+{% endblock %}

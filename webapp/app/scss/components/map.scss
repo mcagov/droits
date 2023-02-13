@@ -1,0 +1,48 @@
+.map-display,
+.row-prototype-map-select {
+  height: 400px;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out,
+.leaflet-draw-draw-circle,
+.leaflet-draw-edit-edit,
+.leaflet-draw-edit-remove  {
+  &:focus {
+    box-shadow: inset 0px 0px 0px 3px #e0be00;
+  }
+}
+
+.leaflet-bar a {
+  &:focus {
+    border-bottom: 3px solid #000 !important;
+  }
+}
+
+.leaflet-legend {
+  padding: 0;
+  list-style: none;
+
+  @include govuk-media-query($from: desktop) {
+    display: flex;
+    align-items: center;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+
+    @include govuk-media-query($from: desktop) {
+      flex: 1;
+    }
+  }
+
+  &__icon {
+    border: 2px solid govuk-colour("mid-grey");
+    border-radius: 3px;
+  }
+
+  &__description {
+    flex: 1;
+  }
+}

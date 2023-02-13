@@ -1,0 +1,15 @@
+.row-prototype-coordinate-input {
+  .govuk-form-group {
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+}
+
+.autocomplete__option {
+  &:hover,
+  &--focused {
+    span {
+      color: white;
+    }
+  }
+}

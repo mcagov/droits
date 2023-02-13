@@ -1,0 +1,23 @@
+@import '../tools/animations';
+
+.block {
+  display: block !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.visually-hidden {
+  visibility: hidden;
+}
+
+.fade-out {
+  animation-duration: 1s;
+  animation-name: fadeOut;
+  animation-fill-mode: forwards;
+}

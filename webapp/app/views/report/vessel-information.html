@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+
+
+{% block pageTitle %}
+  Vessel information - {{ serviceName }} – GOV.UK
+{% endblock %}
+
+{% block beforeContent %}
+  {% include "includes/phase-banner.html" %}
+  <a class="govuk-back-link" href="/report/known-wreck">Back</a>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-xl">Vessel information</h1>
+
+      <form class="form" action="/report/vessel-information-answer" method="post">
+
+        {{ govukInput({
+          label: {
+            text: "What is the name of the vessel? (optional)"
+          },
+          hint: {
+            text: "If the name of the vessel is not known, please provide the name you know the wreck by."
+          },
+          id: "vessel-name",
+          name: "vessel-name",
+          classes: "govuk-input--width-20",
+          value: data["vessel-information"]["vessel-name"]
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "If known, what year was the vessel constructed? (optional)"
+          },
+          hint: {
+            text: "For example, 1889"
+          },
+          id: "vessel-construction-year",
+          name: "vessel-construction-year",
+          classes: "govuk-input--width-4",
+          value: data["vessel-information"]["vessel-construction-year"]
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "If known, what year did the vessel sink? (optional)"
+          },
+          hint: {
+            text: "For example, 1902"
+          },
+          id: "vessel-sunk-year",
+          name: "vessel-sunk-year",
+          classes: "govuk-input--width-4",
+          value: data["vessel-information"]["vessel-sunk-year"]
+        }) }}
+
+        <button class="govuk-button" data-module="govuk-button">Continue</button>
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}
