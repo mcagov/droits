@@ -1,3 +1,5 @@
+
+##Webapp
 webapp/node_modules
 webapp/dist/**/*
 webapp/package-lock.json
@@ -6,3 +8,12 @@ webapp/config/keys_dev.js
 webapp/uploads/**/*
 webapp/.vscode/launch.json
 webapp/.env
+
+##Backoffice
+backoffice/src/bin
+backoffice/src/obj
+
+backoffice/tests/bin
+backoffice/tests/obj
+
+
