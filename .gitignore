@@ -10,10 +10,10 @@ webapp/.vscode/launch.json
 webapp/.env
 
 ##Backoffice
-backoffice/src/bin
-backoffice/src/obj
+backoffice/src/bin/
+backoffice/src/obj/
 
-backoffice/tests/bin
-backoffice/tests/obj
+backoffice/tests/bin/
+backoffice/tests/obj/
 
 
