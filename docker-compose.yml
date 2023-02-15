@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  backoffice:
+    build:
+      context: ./backoffice
+    image: droits-backoffice
+    ports:
+      - "5000:5000"
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:5000"
