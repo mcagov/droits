@@ -1,20 +1,11 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["backoffice.csproj", "."]
-RUN dotnet restore "backoffice.csproj"
-COPY . .
-WORKDIR "/src/."
-RUN dotnet build "backoffice.csproj" -c Release -o /app/build
+COPY . ./
+RUN dotnet restore
+RUN dotnet publish -c Release -o /publish
 
-FROM build AS publish
-RUN dotnet publish "backoffice.csproj" -c Release -o /app/publish
-
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS release
 WORKDIR /app
-COPY --from=publish app/publish .
-ENTRYPOINT dotnet backoffice.dll
+COPY --from=build /publish .
+EXPOSE 5000
+ENTRYPOINT ["dotnet", "Droits.dll"]
