@@ -16,4 +16,7 @@ backoffice/src/obj/
 backoffice/tests/bin/
 backoffice/tests/obj/
 
+.vscode
+.DS_Store
+
 
