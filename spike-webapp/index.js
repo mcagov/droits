@@ -1,8 +1,10 @@
 var express = require('express');
 const axios = require('axios');
 var app = express();
+
 const PORT = 3000;
-const backofficeHealthUrl = "http://www.google.com"
+const backofficeLoadBalancerUrl = "droits-api-backoffice-external-931641116.eu-west-2.elb.amazonaws.com";
+const backofficeHealthUrl = "/home/droits";
 
 app.get('/', function(req, res){
     res.send("DROITS Webapp");
