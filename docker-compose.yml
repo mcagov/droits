@@ -11,7 +11,7 @@ services:
 
   webapp:
     build:
-      context: ./webapp
+      context: ./spike-webapp
     image: droits-webapp
     ports:
       - "3000:3000"

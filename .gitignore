@@ -1,13 +1,13 @@
 
 ##Webapp
-webapp/node_modules
-webapp/dist/**/*
-webapp/package-lock.json
-webapp/.DS_Store
-webapp/config/keys_dev.js
-webapp/uploads/**/*
-webapp/.vscode/launch.json
-webapp/.env
+*webapp/node_modules
+*webapp/dist/**/*
+*webapp/package-lock.json
+*webapp/.DS_Store
+*webapp/config/keys_dev.js
+*webapp/uploads/**/*
+*webapp/.vscode/launch.json
+*webapp/.env
 
 ##Backoffice
 backoffice/src/bin/
