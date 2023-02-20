@@ -211,12 +211,6 @@ variable "alert_email_address" {
   type        = string
   description = "Email Address subscribed to alerts"
 }
-variable "aws_account_number" {
-  sensitive   = true
-  type        = string
-  description = "AWS Account Number"
-  default     = ""
-}
 variable "enable_alerts" {
   type        = bool
   description = "When enabled CloudWatch alarm events are sent to the Alerts SNS Topic"
@@ -294,4 +288,28 @@ variable "backoffice_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the Backoffice app"
   default     = 512
+}
+variable "aws_account_number" {
+  sensitive   = true
+  type        = string
+  description = "The MCA's AWS account number"
+  default     = ""
+}
+variable "aws_access_key_id" {
+  sensitive   = true
+  type        = string
+  description = "The id of the access key for AWS authentication"
+  default     = ""  
+}
+variable "aws_secret_access_key" {
+  sensitive   = true
+  type        = string
+  description = "The secret value of the access key for AWS authentication"
+  default     = ""  
+}
+variable "aws_session_token" {
+  sensitive   = true
+  type        = string
+  description = "The session token used for AWS authentication"
+  default     = ""  
 }

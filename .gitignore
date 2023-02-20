@@ -16,6 +16,9 @@ backoffice/src/obj/
 backoffice/tests/bin/
 backoffice/tests/obj/
 
+#terraform
+test.tfvars
+
 .vscode
 .DS_Store
 
