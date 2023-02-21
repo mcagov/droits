@@ -98,6 +98,53 @@ variable "apply_immediately" {
   description = "Apply changes to infrastrucure immediatly"
   default     = true
 }
+variable "alert_email_address" {
+  sensitive   = true
+  type        = string
+  description = "Email Address subscribed to alerts"
+}
+variable "aws_account_number" {
+  sensitive   = true
+  type        = string
+  description = "AWS Account Number"
+  default     = ""
+}
+variable "enable_alerts" {
+  type        = bool
+  description = "When enabled CloudWatch alarm events are sent to the Alerts SNS Topic"
+  default     = false
+}
+variable "low_disk_burst_balance_threshold" {
+  type        = number
+  description = "Alarm threshold for low RDS disk burst balance"
+  default     = 100
+}
+variable "api_service_minimum_task_count" {
+  type        = number
+  description = "Minimum number of expected tasks to be running for the API Service"
+  default     = 1
+}
+variable "webapp_minimum_task_count" {
+  type        = number
+  description = "Minimum number of expected tasks to be running for the Webapp"
+  default     = 1
+}
+variable "trello_token" {
+  type        = string
+  description = "Token for Trello API"
+}
+variable "trello_api_key" {
+  type        = string
+  description = "Key for Trello API"
+}
+variable "trello_board_email_address" {
+  type        = string
+  description = "Email address for the DROITS Support user in Trello"
+}
+variable "trello_list_id" {
+  type        = string
+  description = "Unique identifier for list in Trello"
+}
 variable "ssl_certificate_arn" {
   type        = string
   description = "ARN of ssl certificate generated in the AWS dashboard"
