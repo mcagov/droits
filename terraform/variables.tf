@@ -80,6 +80,10 @@ variable "webapp_azure_b2c_signup_flow" {
   type        = string
   description = "The Sign Up User Flow defined in Azure B2C"
 }
+variable "webapp_ecr_repository_name" {
+  type = string
+  description = "The name of the Elastic Container Repository for our webapp container images"
+}
 variable "service_count" {
   type        = number
   description = "Number of docker containers to run for the DROITS Service"
@@ -131,6 +135,10 @@ variable "api_backoffice_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the Backoffice app"
   default     = 512
+}
+variable "api_backoffice_ecr_repository_name" {
+  type = string
+  description = "The name of the Elastic Container Repository for our api-backoffice container images"
 }
 variable "aws_account_number" {
   sensitive   = true
