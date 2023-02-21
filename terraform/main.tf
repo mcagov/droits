@@ -60,3 +60,7 @@ resource "aws_ecr_repository" "droits-api-backoffice-repository" {
   name         = var.api_backoffice_ecr_repository_name
   force_delete = true
 }
+
+resource "aws_ecs_cluster" "droits-ecs-cluster" {
+  name = var.ecs_cluster_name
+}

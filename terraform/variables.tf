@@ -16,6 +16,10 @@ variable "ecs_fargate_version" {
   type        = string
   description = "The version of fargate to run the ECS tasks on"
 }
+variable "ecs_cluster_name" {
+  type        = string
+  description = "The name of the ECS Fargate cluster"
+}
 variable "webapp_image" {
   type        = string
   description = "Docker image to run in the ECS cluster for the DROITS Webapp"
@@ -163,4 +167,9 @@ variable "aws_session_token" {
   type        = string
   description = "The session token used for AWS authentication"
   default     = ""  
+}
+variable "vpc_resource_id" {
+  type        = string
+  description = "The id of the Virtual Private Cloud resource in this environment"
+  default     = ""
 }
