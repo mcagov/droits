@@ -17,7 +17,6 @@ backoffice/tests/bin/
 backoffice/tests/obj/
 
 #terraform
-terraform/**
 .terraform
 terraform.tfstate
 test.tfvars
