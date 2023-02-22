@@ -193,3 +193,15 @@ variable "vpc_resource_id" {
   description = "The id of the Virtual Private Cloud resource in this environment"
   default     = ""
 }
+variable "db_username" {
+  sensitive = true
+  type        = string
+  description = "The username to authenticate with the DB"
+  default     = ""
+}
+variable "db_password" {
+  sensitive = true
+  type        = string
+  description = "The password to authenticate with the DB"
+  default     = ""
+}
