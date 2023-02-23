@@ -66,8 +66,9 @@ resource "aws_ecs_cluster" "droits-ecs-cluster" {
 }
 
 resource "aws_db_instance" "droits_db" {
-  allocated_storage    = 10
+  allocated_storage    = var.db_allocated_storage
   db_name              = var.db_name
+  identifier           = "${terraform.workspace}-droits-database"
   engine               = "pstgres"
   engine_version       = "14"
   instance_class       = "db.t3.micro"
