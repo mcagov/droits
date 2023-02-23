@@ -2,6 +2,10 @@ variable "public_fqdn" {
   type        = string
   description = "The fully qualified domain name of the publicly accessible parts of the application"
 }
+variable "gov_notify_feedback_email_address" {
+  type        = string
+  description = "Email address for Gov Notify feedback"
+}
 variable "aws_region" {
   type        = string
   description = "The AWS region resources are created in"
@@ -204,4 +208,47 @@ variable "db_password" {
   type        = string
   description = "The password to authenticate with the DB"
   default     = ""
+}
+variable "db_delete_protection" {
+  type        = bool
+  description = "Database protection setting"
+}
+variable "backup_window" {
+  type        = string
+  description = "Timeframe e.g 23:00 - 23:01"
+}
+variable "db_instance_class" {
+  type        = string
+  description = "The database instance class"
+}
+variable "backoffice_azure_ad_client_id" {
+  type        = string
+  description = "The client identifier for the backoffice api, provided in Azure AD"
+}
+variable "nat_gateway_count" {
+  type        = number
+  description = "Number of NAT gateways"
+  default     = 2
+}
+variable "performance_insights_enabled" {
+  type        = bool
+  description = "Enable performance insights"
+  default     = false
+}
+variable "db_max_storage" {
+  type        = number
+  description = "The upper limit, in GB, to which *database-type* can automatically scale the storage of the DB"
+}
+variable "db_storage" {
+  type        = number
+  description = "Allocated storage, in GB, for the *database-type* instance"
+}
+variable "backup_retention_period" {
+  type        = number
+  description = "Days to retain backups"
+  default     = 0
+}
+variable "db_storage_encrypted" {
+  type        = bool
+  description = "Specifies whether the database instances data is encrypted"
 }
