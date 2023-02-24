@@ -17,7 +17,8 @@ azure_ad_tenant_id                      = "513fb495-9a90-425b-a49a-bc6ebe2a429e"
 service_count                           = 1
 
 api_backoffice_azure_ad_client_id           = ""
-db_storage                              = 50
+db_name                                 = "dev-db"
+db_allocated_storage                              = 50
 db_max_storage                          = 50
 db_delete_protection                    = false
 db_instance_class                       = "db.t3.micro"
@@ -40,8 +41,3 @@ aws_account_number                      = null
 aws_access_key_id                       = null
 aws_secret_access_key                   = null
 aws_session_token                       = null
-
-db_allocated_storage = 50
-db_max_storage = 50
-db_storage_encrypted = true
-db_name = "dev-db"
