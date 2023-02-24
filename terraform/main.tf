@@ -71,7 +71,7 @@ resource "aws_ecs_cluster" "droits-ecs-cluster" {
 
 resource "aws_alb" "api-backoffice-alb" {
   name         = "api-backoffice-alb"
-  subnets      = [module.network.private-subnet-1,module.network.private-subnet-2]
+  subnets      = [module.network.public-subnet-1,module.network.public-subnet-2]
 }
 
 resource "aws_alb_listener" "api-backoffice-listener" {
