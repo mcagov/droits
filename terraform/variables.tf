@@ -233,11 +233,11 @@ variable "performance_insights_enabled" {
 }
 variable "db_max_storage" {
   type        = number
-  description = "The upper limit, in GB, to which *database-type* can automatically scale the storage of the DB"
+  description = "The upper limit, in GB, to which the storage of the DB can be autoscaled"
 }
-variable "db_storage" {
+variable "db_allocated_storage" {
   type        = number
-  description = "Allocated storage, in GB, for the *database-type* instance"
+  description = "Allocated storage, in GB, for the DB instance"
 }
 variable "backup_retention_period" {
   type        = number
@@ -247,4 +247,8 @@ variable "backup_retention_period" {
 variable "db_storage_encrypted" {
   type        = bool
   description = "Specifies whether the database instances data is encrypted"
+}
+variable "db_name" {
+  type = string
+  description = "The name of the DB"
 }

@@ -40,3 +40,8 @@ aws_account_number                      = null
 aws_access_key_id                       = null
 aws_secret_access_key                   = null
 aws_session_token                       = null
+
+db_allocated_storage = 50
+db_max_storage = 50
+db_storage_encrypted = true
+db_name = "dev-db"
