@@ -221,10 +221,6 @@ variable "db_instance_class" {
   type        = string
   description = "The database instance class"
 }
-variable "backoffice_azure_ad_client_id" {
-  type        = string
-  description = "The client identifier for the backoffice api, provided in Azure AD"
-}
 variable "nat_gateway_count" {
   type        = number
   description = "Number of NAT gateways"

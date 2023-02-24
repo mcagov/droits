@@ -11,7 +11,7 @@ terraform {
     key = "global/s3/terraform.tfstate"
     encrypt = true
     region = "eu-west-2"
-    # Variables are not allowed here otherwise I'd have specified the access key here
+    profile = "default"
   }
 }
 
@@ -20,6 +20,10 @@ provider "aws" {
   region = var.aws_region
   access_key = var.aws_access_key_id
   secret_key = var.aws_secret_access_key
+}
+
+module "iam" {
+  source = "./modules/iam"
 }
 
 resource "aws_s3_bucket" "droits-wreck-images"{

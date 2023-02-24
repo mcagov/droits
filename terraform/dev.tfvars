@@ -34,11 +34,6 @@ low_disk_burst_balance_threshold        = 75
 ssl_certificate_arn                     = "arn:aws:acm:eu-west-2:232705206979:certificate/cca7f7e5-8b98-443d-a6c6-245e7b653200"
 api_backoffice_ecr_repository_name      = "droits_api_backoffice_repository"
 api_backoffice_image_tag                = "latest"
-api_backoffice_azure_ad_client_id       = ""
-webapp_ecr_repository_name              = "droits-webapp-repository"
-webapp_azure_b2c_client_secret          = ""
-webapp_image_tag                        = ""
-ecs_cluster_name                        = "droits-ecs-cluster"
 
 aws_region                              = "eu-west-2"
 aws_account_number                      = null

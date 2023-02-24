@@ -23,5 +23,6 @@ test.tfvars
 
 .vscode
 .DS_Store
+.idea
 
 
