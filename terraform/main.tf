@@ -76,6 +76,7 @@ resource "aws_ecs_cluster" "droits-ecs-cluster" {
 resource "aws_alb" "api-backoffice-alb" {
   name         = "api-backoffice-alb"
   subnets      = [module.network.public-subnet-1,module.network.public-subnet-2]
+  internal     = true
 }
 
 resource "aws_alb_listener" "api-backoffice-listener" {
@@ -102,4 +103,20 @@ resource "aws_security_group_rule" "load-balancer-to-api-backoffice" {
   to_port           = 80
   type              = "ingress"
   cidr_blocks       = ["10.0.0.0/16"]
+}
+
+resource "aws_ecs_task_definition" "backoffice" {
+  family                = "backoffice"
+  container_definitions = ""
+}
+
+resource "aws_ecs_service" "backoffice" {
+  name = "api-backoffice-container"
+  cluster = aws_ecs_cluster.droits-ecs-cluster.id
+  
+  load_balancer {
+    target_group_arn = aws_alb_target_group.api-backoffice-target-group.arn
+    container_name = "backoffice"
+    container_port = var.api_backoffice_port
+  }
 }
