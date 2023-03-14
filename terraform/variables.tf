@@ -197,6 +197,18 @@ variable "vpc_resource_id" {
   description = "The id of the Virtual Private Cloud resource in this environment"
   default     = ""
 }
+variable "db_username" {
+  sensitive = true
+  type        = string
+  description = "The username to authenticate with the DB"
+  default     = ""
+}
+variable "db_password" {
+  sensitive = true
+  type        = string
+  description = "The password to authenticate with the DB"
+  default     = ""
+}
 variable "db_delete_protection" {
   type        = bool
   description = "Database protection setting"
@@ -208,10 +220,6 @@ variable "backup_window" {
 variable "db_instance_class" {
   type        = string
   description = "The database instance class"
-}
-variable "backoffice_azure_ad_client_id" {
-  type        = string
-  description = "The client identifier for the backoffice api, provided in Azure AD"
 }
 variable "nat_gateway_count" {
   type        = number
@@ -225,11 +233,11 @@ variable "performance_insights_enabled" {
 }
 variable "db_max_storage" {
   type        = number
-  description = "The upper limit, in GB, to which *database-type* can automatically scale the storage of the DB"
+  description = "The upper limit, in GB, to which the storage of the DB can be autoscaled"
 }
-variable "db_storage" {
+variable "db_allocated_storage" {
   type        = number
-  description = "Allocated storage, in GB, for the *database-type* instance"
+  description = "Allocated storage, in GB, for the DB instance"
 }
 variable "backup_retention_period" {
   type        = number
@@ -239,4 +247,8 @@ variable "backup_retention_period" {
 variable "db_storage_encrypted" {
   type        = bool
   description = "Specifies whether the database instances data is encrypted"
+}
+variable "db_name" {
+  type = string
+  description = "The name of the DB"
 }
