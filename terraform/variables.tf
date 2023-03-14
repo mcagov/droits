@@ -147,7 +147,7 @@ variable "api_backoffice_count" {
 variable "api_backoffice_port" {
   type        = number
   description = "Port exposed by the docker image to redirect traffic to for the DROITS Service"
-  default     = 80
+  default     = 5000
 }
 variable "api_backoffice_health_check_path" {
   type        = string

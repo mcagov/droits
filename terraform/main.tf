@@ -22,6 +22,10 @@ provider "aws" {
   secret_key = var.aws_secret_access_key
 }
 
+module "network" {
+  source = "./modules/network"
+}
+
 module "iam" {
   source = "./modules/iam"
 }
@@ -66,5 +70,36 @@ resource "aws_ecr_repository" "droits-api-backoffice-repository" {
 }
 
 resource "aws_ecs_cluster" "droits-ecs-cluster" {
-  name = var.ecs_cluster_name
+  name         = var.ecs_cluster_name
+}
+
+resource "aws_alb" "api-backoffice-alb" {
+  name         = "api-backoffice-alb"
+  subnets      = [module.network.public-subnet-1,module.network.public-subnet-2]
+}
+
+resource "aws_alb_listener" "api-backoffice-listener" {
+  load_balancer_arn = aws_alb.api-backoffice-alb.arn
+  default_action {
+    type = "forward"
+    target_group_arn = aws_alb_target_group.api-backoffice-target-group.arn
+  }
+  port              = 80
+}
+
+resource "aws_alb_target_group" "api-backoffice-target-group" {
+  name        = "api-backoffice-target-group"
+  port        = var.api_backoffice_port
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = module.network.vpc-id
+}
+
+resource "aws_security_group_rule" "load-balancer-to-api-backoffice" {
+  from_port         = 80
+  protocol          = "tcp"
+  security_group_id = module.network.api-backoffice-id
+  to_port           = 80
+  type              = "ingress"
+  cidr_blocks       = ["10.0.0.0/16"]
 }
