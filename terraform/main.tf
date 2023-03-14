@@ -107,16 +107,46 @@ resource "aws_security_group_rule" "load-balancer-to-api-backoffice" {
 
 resource "aws_ecs_task_definition" "backoffice" {
   family                = "backoffice"
-  container_definitions = ""
+  execution_role_arn = module.iam.aws_iam_role.ecs_task_execution.arn
+  container_definitions = jsonencode([{
+    name : "api-backoffice",
+    image : "${data.aws_ecr_repository.droits-api-backoffice-repository.repository_url}:${var.api_backoffice_image_tag}",
+    portMappings : [
+      {
+        containerPort : var.api_backoffice_port
+        hostPort : var.api_backoffice_port
+      }
+    ],
+    logConfiguration : {
+      "logDriver" : "awslogs",
+      "options" : {
+        "awslogs-group" : aws_cloudwatch_log_group.log_group.name,
+        "awslogs-region" : var.aws_region,
+        "awslogs-stream-prefix" : "api-backoffice"
+      }
+    },
+    healthCheck : {
+      retries : 6,
+      command : [
+        "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:5000/health &>/dev/null || exit 1"
+      ],
+    }
+  }])
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture = "ARM64"
+  }
 }
 
 resource "aws_ecs_service" "backoffice" {
   name = "api-backoffice-container"
   cluster = aws_ecs_cluster.droits-ecs-cluster.id
+  task_definition = aws_ecs_task_definition.backoffice
+  launch_type = "FARGATE"
   
   load_balancer {
     target_group_arn = aws_alb_target_group.api-backoffice-target-group.arn
-    container_name = "backoffice"
+    container_name = "api-backoffice"
     container_port = var.api_backoffice_port
   }
 }
