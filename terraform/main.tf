@@ -30,6 +30,10 @@ module "iam" {
   source = "./modules/iam"
 }
 
+module "rds" {
+  source = "./modules/rds"
+}
+
 resource "aws_s3_bucket" "droits-wreck-images"{
     bucket = "droits-wreck-images"
     # Stops terraform from destroying the object if it exists

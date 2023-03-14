@@ -20,6 +20,7 @@ backoffice/tests/obj/
 .terraform
 terraform.tfstate
 test.tfvars
+/terraform/.env
 
 .vscode
 .DS_Store

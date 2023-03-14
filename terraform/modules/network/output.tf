@@ -2,6 +2,10 @@ output "api-backoffice-id" {
   value = aws_security_group.api-backoffice.id
 }
 
+output "db-security-group-id" {
+  value = aws_security_group.droits-db.id
+}
+
 output "vpc-id" {
   value = var.aws_vpc_id
 }
