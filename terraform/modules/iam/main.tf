@@ -12,12 +12,13 @@ data "aws_iam_policy_document" "ecs_task_execution_agent" {
   }
 }
 
+// to-do: change back to ecs-${terraform.workspace}-execution-role when we get permission to delete a role
 resource "aws_iam_role" "ecs_task_execution" {
-  name               = "ecs-${terraform.workspace}-execution-role"
+  name               = "ecs-staging-execution-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_execution_agent.json
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_task_execution_rules" {
+resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
   role       = aws_iam_role.ecs_task_execution.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }

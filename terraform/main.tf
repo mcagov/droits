@@ -105,26 +105,18 @@ resource "aws_security_group_rule" "load-balancer-to-api-backoffice" {
   cidr_blocks       = ["10.0.0.0/16"]
 }
 
-resource "aws_ecs_task_definition" "backoffice" {
+resource "aws_ecs_task_definition" "backoffice-task-definition" {
   family                = "backoffice"
-  execution_role_arn = module.iam.aws_iam_role.ecs_task_execution.arn
+  execution_role_arn = module.iam.iam-role-arn
   container_definitions = jsonencode([{
     name : "api-backoffice",
-    image : "${data.aws_ecr_repository.droits-api-backoffice-repository.repository_url}:${var.api_backoffice_image_tag}",
+    image : "${aws_ecr_repository.droits-api-backoffice-repository.repository_url}:${var.api_backoffice_image_tag}",
     portMappings : [
       {
         containerPort : var.api_backoffice_port
         hostPort : var.api_backoffice_port
       }
     ],
-    logConfiguration : {
-      "logDriver" : "awslogs",
-      "options" : {
-        "awslogs-group" : aws_cloudwatch_log_group.log_group.name,
-        "awslogs-region" : var.aws_region,
-        "awslogs-stream-prefix" : "api-backoffice"
-      }
-    },
     healthCheck : {
       retries : 6,
       command : [
@@ -138,10 +130,10 @@ resource "aws_ecs_task_definition" "backoffice" {
   }
 }
 
-resource "aws_ecs_service" "backoffice" {
+resource "aws_ecs_service" "backoffice-service" {
   name = "api-backoffice-container"
   cluster = aws_ecs_cluster.droits-ecs-cluster.id
-  task_definition = aws_ecs_task_definition.backoffice
+  task_definition = "backoffice-task-definition"
   launch_type = "FARGATE"
   
   load_balancer {
