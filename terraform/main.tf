@@ -15,7 +15,6 @@ terraform {
   }
 }
 
-# Configure the AWS Provider
 provider "aws" {
   region = var.aws_region
   access_key = var.aws_access_key_id
@@ -91,7 +90,7 @@ resource "aws_alb_target_group" "api-backoffice-target-group" {
 resource "aws_alb" "api-backoffice-alb" {
   name         = "api-backoffice-alb"
   subnets      = [module.network.public-subnet-1,module.network.public-subnet-2]
-  internal     = true
+  internal     = false
 }
 
 resource "aws_alb_listener" "api-backoffice-listener" {
@@ -114,7 +113,7 @@ resource "aws_alb_target_group" "webapp-target-group" {
 resource "aws_alb" "webapp-alb" {
   name         = "webapp-alb"
   subnets      = [module.network.public-subnet-1,module.network.public-subnet-2]
-  internal     = true
+  internal     = false
 }
 
 resource "aws_alb_listener" "webapp-listener" {
