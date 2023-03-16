@@ -37,7 +37,3 @@ api_backoffice_ecr_repository_name      = "droits_api_backoffice_repository"
 api_backoffice_image_tag                = "latest"
 
 aws_region                              = "eu-west-2"
-aws_account_number                      = null
-aws_access_key_id                       = null
-aws_secret_access_key                   = null
-aws_session_token                       = null
