@@ -31,6 +31,8 @@ module "iam" {
 }
 
 module "rds" {
+  public_subnet_1 = module.network.public-subnet-1
+  db_security_group_id = module.network.db-security-group-id
   source = "./modules/rds"
 }
 
@@ -110,9 +112,13 @@ resource "aws_security_group_rule" "load-balancer-to-api-backoffice" {
 }
 
 resource "aws_ecs_task_definition" "backoffice-task-definition" {
-  family                = "backoffice"
-  execution_role_arn = module.iam.iam-role-arn
-  container_definitions = jsonencode([{
+  family                    = "backoffice"
+  execution_role_arn        = module.iam.iam-role-arn
+  requires_compatibilities  = ["FARGATE"]
+  network_mode              = "awsvpc"
+  cpu                       = var.api_backoffice_fargate_cpu
+  memory                    = var.api_backoffice_fargate_memory
+  container_definitions     = jsonencode([{
     name : "api-backoffice",
     image : "${aws_ecr_repository.droits-api-backoffice-repository.repository_url}:${var.api_backoffice_image_tag}",
     portMappings : [
@@ -135,14 +141,19 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
 }
 
 resource "aws_ecs_service" "backoffice-service" {
-  name = "api-backoffice-container"
-  cluster = aws_ecs_cluster.droits-ecs-cluster.id
-  task_definition = "backoffice-task-definition"
-  launch_type = "FARGATE"
+  name            = "api-backoffice-container"
+  cluster         = aws_ecs_cluster.droits-ecs-cluster.id
+  task_definition = aws_ecs_task_definition.backoffice-task-definition.arn
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    security_groups = [module.network.api-backoffice-id]
+    subnets         = [module.network.public-subnet-1]
+  }
   
   load_balancer {
-    target_group_arn = aws_alb_target_group.api-backoffice-target-group.arn
-    container_name = "api-backoffice"
-    container_port = var.api_backoffice_port
+    target_group_arn  = aws_alb_target_group.api-backoffice-target-group.arn
+    container_name    = "api-backoffice"
+    container_port    = var.api_backoffice_port
   }
 }

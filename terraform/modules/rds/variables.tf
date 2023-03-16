@@ -16,6 +16,17 @@ variable "db_allocated_storage" {
     default = 50
 }
 
+variable "public_subnet_1" {
+    type = string
+    description = "The name of the first public subnet in our availability zone"
+}
+
+
+variable "db_security_group_id" {
+    type = string
+    description = "The ID of the security group in which the DB resides"
+}
+
 locals {
   envs = { for tuple in regexall("(.*)=(.*)", file(".env")) : tuple[0] => sensitive(tuple[1]) }
 }
