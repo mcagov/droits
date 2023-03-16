@@ -6,6 +6,10 @@ output "db-security-group-id" {
   value = aws_security_group.droits-db.id
 }
 
+output "webapp-security-group-id" {
+  value = aws_security_group.webapp.id
+}
+
 output "vpc-id" {
   value = var.aws_vpc_id
 }
