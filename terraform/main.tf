@@ -32,6 +32,7 @@ module "iam" {
 
 module "rds" {
   public_subnet_1 = module.network.public-subnet-1
+  public_subnet_2 = module.network.public-subnet-2
   db_security_group_id = module.network.db-security-group-id
   source = "./modules/rds"
 }

@@ -1,7 +1,7 @@
 variable "db_name" {
     type = string
     description = "Name of the DB"
-    default = "droits-db"
+    default = "droits"
 }
 
 variable "db_delete_protection" {
@@ -18,7 +18,12 @@ variable "db_allocated_storage" {
 
 variable "public_subnet_1" {
     type = string
-    description = "The name of the first public subnet in our availability zone"
+    description = "The ID of the public subnet in one availability zone"
+}
+
+variable "public_subnet_2" {
+    type = string
+    description = "The ID of the the public subnet in another availability zone"
 }
 
 
