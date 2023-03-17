@@ -165,6 +165,7 @@ resource "aws_ecs_service" "backoffice-service" {
   cluster         = aws_ecs_cluster.droits-ecs-cluster.id
   task_definition = aws_ecs_task_definition.backoffice-task-definition.arn
   launch_type     = "FARGATE"
+  desired_count   = 1 
 
   network_configuration {
     security_groups = [module.network.api-backoffice-id]
@@ -207,6 +208,7 @@ resource "aws_ecs_service" "webapp" {
   cluster = aws_ecs_cluster.droits-ecs-cluster.id
   task_definition = aws_ecs_task_definition.webapp-task-definition.arn
   launch_type = "FARGATE"
+  desired_count = 1
   
   network_configuration {
     security_groups = [module.network.webapp-security-group-id]
