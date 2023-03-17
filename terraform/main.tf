@@ -170,6 +170,7 @@ resource "aws_ecs_service" "backoffice-service" {
   network_configuration {
     security_groups = [module.network.api-backoffice-id]
     subnets         = [module.network.public-subnet-1]
+    assign_public_ip = true
   }
   
   load_balancer {
@@ -213,6 +214,7 @@ resource "aws_ecs_service" "webapp" {
   network_configuration {
     security_groups = [module.network.webapp-security-group-id]
     subnets         = [module.network.public-subnet-1]
+    assign_public_ip = true
   }
   
   load_balancer {
