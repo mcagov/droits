@@ -7,7 +7,6 @@ variable "db_name" {
 variable "db_delete_protection" {
     type = bool
     description = "Should we protect the DB from being deleted?"
-    default = true
 }
 
 variable "db_allocated_storage" {

@@ -37,3 +37,8 @@ api_backoffice_ecr_repository_name      = "droits_api_backoffice_repository"
 api_backoffice_image_tag                = "latest"
 
 aws_region                              = "eu-west-2"
+aws_vpc_id                              = "052a083e9af2d7145"
+private_subnet_1                        = "subnet-07142266aa23c47b8"
+private_subnet_2                        = "subnet-06fa9c8603b7dc463"
+public_subnet_1                         = "subnet-0acd501299e0d6d8a"
+public_subnet_2                         = "subnet-014306c736144d6f9"

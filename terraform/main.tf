@@ -22,6 +22,11 @@ provider "aws" {
 }
 
 module "network" {
+  aws_vpc_id = var.aws_vpc_id
+  private_subnet_1 = var.private_subnet_1
+  private_subnet_2 = var.private_subnet_2
+  public_subnet_1 = var.public_subnet_1
+  public_subnet_2 = var.public_subnet_2
   source = "./modules/network"
 }
 
@@ -33,6 +38,7 @@ module "rds" {
   public_subnet_1 = module.network.public-subnet-1
   public_subnet_2 = module.network.public-subnet-2
   db_security_group_id = module.network.db-security-group-id
+  db_delete_protection = var.db_delete_protection
   source = "./modules/rds"
 }
 
