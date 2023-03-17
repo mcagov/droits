@@ -128,7 +128,7 @@ resource "aws_alb_listener" "webapp-listener" {
     type = "forward"
     target_group_arn = aws_alb_target_group.webapp-target-group.arn
   }
-  port              = 81
+  port              = 80
 }
 
 resource "aws_security_group_rule" "load-balancer-to-api-backoffice" {
