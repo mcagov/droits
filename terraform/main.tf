@@ -131,15 +131,6 @@ resource "aws_alb_listener" "webapp-listener" {
   port              = 80
 }
 
-resource "aws_security_group_rule" "load-balancer-to-api-backoffice" {
-  from_port         = 80
-  protocol          = "tcp"
-  security_group_id = module.network.api-backoffice-id
-  to_port           = 80
-  type              = "ingress"
-  cidr_blocks       = ["10.0.0.0/16"]
-}
-
 resource "aws_ecs_task_definition" "backoffice-task-definition" {
   family                    = "backoffice"
   execution_role_arn        = module.iam.iam-role-arn
