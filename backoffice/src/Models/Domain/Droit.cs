@@ -1,4 +1,4 @@
-namespace src.Models.Domain
+namespace Droits.Models
 {
     public class Droit
     {

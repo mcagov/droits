@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using src.Models.Domain;
+using Droits.Models;
 
 namespace Droits.Models
 {
