@@ -166,14 +166,17 @@ resource "aws_ecs_service" "backoffice-service" {
   task_definition = aws_ecs_task_definition.backoffice-task-definition.arn
   launch_type     = "FARGATE"
   desired_count   = 1
+  health_check_grace_period_seconds = 600
+  wait_for_steady_state = true
   depends_on = [
-    aws_ecs_task_definition.backoffice-task-definition
+    aws_alb_listener.api-backoffice-listener, 
+    module.iam.aws_iam_role_policy_attachment
   ]
 
   network_configuration {
-    security_groups = [module.network.api-backoffice-id]
-    subnets         = [module.network.public-subnet-1]
-    assign_public_ip = true
+    security_groups   = [module.network.api-backoffice-id]
+    subnets           = [module.network.public-subnet-1]
+    assign_public_ip  = true
   }
   
   load_balancer {
@@ -214,7 +217,8 @@ resource "aws_ecs_service" "webapp" {
   launch_type = "FARGATE"
   desired_count = 1
   depends_on = [
-    aws_ecs_task_definition.webapp-task-definition
+    aws_alb_listener.webapp-listener, 
+    module.iam.aws_iam_role_policy_attachment
   ]
   
   network_configuration {
