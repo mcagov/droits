@@ -27,7 +27,9 @@ export default function (app) {
     async function (req, res) {
       const errors = formatValidationErrors(validationResult(req));
       const sd = cloneDeep(req.session.data);
-      let reference;
+
+      //TODO - Get reference from API once saved.
+      let reference = "DEMO_REF_"+crypto.randomUUID();;
 
       // Errors
       if (errors) {
@@ -38,25 +40,28 @@ export default function (app) {
         });
       } else {
         // Generate a report reference
-        try {
-          const response = await axios.get(
-            process.env.REFERENCE_GENERATOR_URL,
-            {
-              headers: {
-                'x-functions-key': process.env.REFERENCE_GENERATOR_KEY,
-              },
-            }
-          );
-          reference = response.data;
-        } catch (err) {
-          console.error(err);
-        }
+
+        //TODO - remove this, and use function in the new api.
+        // try {
+        //   const response = await axios.get(
+        //     process.env.REFERENCE_GENERATOR_URL,
+        //     {
+        //       headers: {
+        //         'x-functions-key': process.env.REFERENCE_GENERATOR_KEY,
+        //       },
+        //     }
+        //   );
+        //   reference = response.data;
+        // } catch (err) {
+        //   console.error(err);
+        // }
+
 
         // Check if values exist in session
         let textLocation = sd['location']['text-location'].trimEnd();
         let locationDescription = sd['location']['location-description'];
         let formattedTextLocation;
-        // If user has chosen to provide the location in text form rather than coordinates, 
+        // If user has chosen to provide the location in text form rather than coordinates,
         // format the text so it can be concatenated with any (optional) additional details/description text
         if (textLocation.length) {
           formattedTextLocation = textLocation.endsWith(".") ? textLocation : textLocation + ".";
@@ -109,31 +114,34 @@ export default function (app) {
 
         // console.log('[final data]:', JSON.stringify(data, null, 2));
 
-        // Post data to db
+        // Post data to new api
         try {
           const response = await axios.post(
-            process.env.DB_POST_URL,
+            process.env.API_POST_ENDPOINT,
             JSON.stringify(data),
             {
               headers: { 'content-type': 'application/json' },
             }
           );
-          if (response.statusText === 'Accepted') {
-            // Push image(s) to Azure
-            Object.values(req.session.data.property).forEach((item) => {
-              const imageData = fs.createReadStream(
-                `${path.resolve(__dirname + '../../../../uploads/')}/${item.image
-                }`
-              );
 
-              azureUpload(imageData, item.image);
-            });
+          //TODO - send images to api, then upload from the API.
+          // if (response.statusText === 'Accepted') {
+          //   // Push image(s) to Azure
+          //   Object.values(req.session.data.property).forEach((item) => {
+          //     const imageData = fs.createReadStream(
+          //       `${path.resolve(__dirname + '../../../../uploads/')}/${item.image
+          //       }`
+          //     );
 
-            // Clear session data
-            req.session.data = {};
+          //     azureUpload(imageData, item.image);
+          //   });
 
-            return res.render('report/confirmation', { reference });
-          }
+          //   // Clear session data
+          //   req.session.data = {};
+
+          //   return res.render('report/confirmation', { reference });
+          // }
+
         } catch (err) {
           console.error(err);
         }

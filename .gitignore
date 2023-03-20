@@ -7,7 +7,7 @@
 *webapp/config/keys_dev.js
 *webapp/uploads/**/*
 *webapp/.vscode/launch.json
-*webapp/.env
+*webapp/.env*
 
 ##Backoffice
 backoffice/src/bin/
