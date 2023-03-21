@@ -220,6 +220,8 @@ resource "aws_ecs_service" "webapp" {
   task_definition = aws_ecs_task_definition.webapp-task-definition.arn
   launch_type = "FARGATE"
   desired_count = 1
+  health_check_grace_period_seconds = 600
+  wait_for_steady_state = true
   depends_on = [
     aws_alb_listener.webapp-listener,
   ]
