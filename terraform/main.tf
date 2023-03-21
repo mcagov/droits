@@ -169,8 +169,7 @@ resource "aws_ecs_service" "backoffice-service" {
   health_check_grace_period_seconds = 600
   wait_for_steady_state = true
   depends_on = [
-    aws_alb_listener.api-backoffice-listener, 
-    module.iam.aws_iam_role_policy_attachment
+    aws_alb_listener.api-backoffice-listener,
   ]
 
   network_configuration {
@@ -202,7 +201,12 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
         hostPort : var.webapp_port
       }
     ],
-    //health check goes here
+    healthCheck : {
+      retries : 6,
+      command : [
+        "CMD-SHELL", "curl -f http://localhost:3000 || exit 1"
+      ],
+    }
   }])
   runtime_platform {
     operating_system_family = "LINUX"
@@ -217,8 +221,7 @@ resource "aws_ecs_service" "webapp" {
   launch_type = "FARGATE"
   desired_count = 1
   depends_on = [
-    aws_alb_listener.webapp-listener, 
-    module.iam.aws_iam_role_policy_attachment
+    aws_alb_listener.webapp-listener,
   ]
   
   network_configuration {
