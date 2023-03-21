@@ -44,4 +44,17 @@ resource "aws_security_group" "droits-db" {
 resource "aws_security_group" "webapp" {
   name = "webapp"
   vpc_id = var.aws_vpc_id
+
+  ingress {
+    from_port         = 0
+    protocol          = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    to_port           = 0
+  }
+  egress {
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
