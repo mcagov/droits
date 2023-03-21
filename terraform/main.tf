@@ -21,13 +21,13 @@ provider "aws" {
   secret_key = var.aws_secret_access_key
 }
 
-module "network" {
+module "security-groups" {
   aws_vpc_id = var.aws_vpc_id
   private_subnet_1 = var.private_subnet_1
   private_subnet_2 = var.private_subnet_2
   public_subnet_1 = var.public_subnet_1
   public_subnet_2 = var.public_subnet_2
-  source = "./modules/network"
+  source = "./modules/security-groups"
 }
 
 module "iam" {
@@ -35,9 +35,9 @@ module "iam" {
 }
 
 module "rds" {
-  public_subnet_1 = module.network.public-subnet-1
-  public_subnet_2 = module.network.public-subnet-2
-  db_security_group_id = module.network.db-security-group-id
+  public_subnet_1 = module.security-groups.public-subnet-1
+  public_subnet_2 = module.security-groups.public-subnet-2
+  db_security_group_id = module.security-groups.db-security-group-id
   db_delete_protection = var.db_delete_protection
   source = "./modules/rds"
 }
@@ -90,13 +90,14 @@ resource "aws_alb_target_group" "api-backoffice-target-group" {
   port        = var.api_backoffice_port
   protocol    = "HTTP"
   target_type = "ip"
-  vpc_id      = module.network.vpc-id
+  vpc_id      = module.security-groups.vpc-id
 }
 
 resource "aws_alb" "api-backoffice-alb" {
   name         = "api-backoffice-alb"
-  subnets      = [module.network.public-subnet-1,module.network.public-subnet-2]
+  subnets      = [module.security-groups.public-subnet-1,module.security-groups.public-subnet-2]
   internal     = false
+  security_groups = [ module.security-groups.api-backoffice-lb-security-group-id ]
 }
 
 resource "aws_alb_listener" "api-backoffice-listener" {
@@ -113,13 +114,14 @@ resource "aws_alb_target_group" "webapp-target-group" {
   port        = var.webapp_port
   protocol    = "HTTP"
   target_type = "ip"
-  vpc_id      = module.network.vpc-id
+  vpc_id      = module.security-groups.vpc-id
 }
 
 resource "aws_alb" "webapp-alb" {
   name         = "webapp-alb"
-  subnets      = [module.network.public-subnet-1,module.network.public-subnet-2]
+  subnets      = [module.security-groups.public-subnet-1,module.security-groups.public-subnet-2]
   internal     = false
+  security_groups = [ module.security-groups.webapp-lb-security-group-id ]
 }
 
 resource "aws_alb_listener" "webapp-listener" {
@@ -173,8 +175,8 @@ resource "aws_ecs_service" "backoffice-service" {
   ]
 
   network_configuration {
-    security_groups   = [module.network.api-backoffice-id]
-    subnets           = [module.network.public-subnet-1]
+    security_groups   = [module.security-groups.api-backoffice-id]
+    subnets           = [module.security-groups.public-subnet-1]
     assign_public_ip  = true
   }
   
@@ -227,8 +229,8 @@ resource "aws_ecs_service" "webapp" {
   ]
   
   network_configuration {
-    security_groups = [module.network.webapp-security-group-id]
-    subnets         = [module.network.public-subnet-1]
+    security_groups = [module.security-groups.webapp-security-group-id]
+    subnets         = [module.security-groups.public-subnet-1]
     assign_public_ip = true
   }
   

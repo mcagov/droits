@@ -1,6 +1,9 @@
 output "api-backoffice-id" {
   value = aws_security_group.api-backoffice.id
 }
+output "api-backoffice-lb-security-group-id" {
+  value = aws_security_group.api-backoffice-lb.id
+}
 
 output "db-security-group-id" {
   value = aws_security_group.droits-db.id
@@ -8,6 +11,10 @@ output "db-security-group-id" {
 
 output "webapp-security-group-id" {
   value = aws_security_group.webapp.id
+}
+
+output "webapp-lb-security-group-id" {
+  value = aws_security_group.webapp-lb.id
 }
 
 output "vpc-id" {
