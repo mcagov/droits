@@ -45,9 +45,9 @@ module "rds" {
 resource "aws_s3_bucket" "droits-wreck-images"{
     bucket = "droits-wreck-images"
     # Stops terraform from destroying the object if it exists
-    lifecycle {
-      prevent_destroy = true
-    }
+#    lifecycle {
+#      prevent_destroy = true
+#    }
 }
 
 resource "aws_s3_bucket_acl" "droits-wreck-images-acl" {
@@ -163,7 +163,7 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
 }
 
 resource "aws_ecs_service" "backoffice-service" {
-  name            = "api-backoffice-container"
+  name            = "backoffice"
   cluster         = aws_ecs_cluster.droits-ecs-cluster.id
   task_definition = aws_ecs_task_definition.backoffice-task-definition.arn
   launch_type     = "FARGATE"
@@ -206,7 +206,7 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
     healthCheck : {
       retries : 6,
       command : [
-        "CMD-SHELL", "curl -f http://localhost:3000 || exit 1"
+        "CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"
       ],
     }
   }])
@@ -217,7 +217,7 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
 }
 
 resource "aws_ecs_service" "webapp" {
-  name = "webapp-container"
+  name = "webapp"
   cluster = aws_ecs_cluster.droits-ecs-cluster.id
   task_definition = aws_ecs_task_definition.webapp-task-definition.arn
   launch_type = "FARGATE"
