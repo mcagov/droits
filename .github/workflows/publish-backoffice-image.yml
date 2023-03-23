@@ -1,0 +1,53 @@
+name: Publish Backoffice image
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: The tag to add to the published Docker image, e.g. "v1.0.1"
+        required: true
+        type: string
+      registry_url:
+        description: The URL of the registry where the image should be published
+        required: true
+        type: string
+      repository_name:
+        description: The name of the image to be published
+        required: false
+        default: droits_api_backoffice_repository
+        type: string
+    secrets:
+      aws_access_key_id:
+        required: true
+      aws_secret_access_key:
+        required: true
+      feedback_email_addresses:
+        description: The email address(es) to which feedback should be sent.  E.g. "a@b.com" or "a@b.com,c@d.com".
+        required: true
+
+defaults:
+  run:
+    working-directory: backoffice
+
+jobs:
+  publish:
+    name: Publish image
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1.6.0
+      - name: Login to ECR
+        uses: docker/login-action@v1.14.1
+        with:
+          registry: ${{ inputs.registry_url }}
+          username: ${{ secrets.aws_access_key_id }}
+          password: ${{ secrets.aws_secret_access_key }}
+      - name: Build and push
+        uses: docker/build-push-action@v2.10.0
+        with:
+          context: backoffice
+          push: true
+          tags: ${{ inputs.registry_url }}/${{ inputs.repository_name }}:${{ inputs.tag }}
+          build-args: feedback_email_addresses=${{ secrets.feedback_email_addresses }}
