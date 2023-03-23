@@ -20,6 +20,7 @@ jobs:
 
   test_backoffice:
     name: Test Backoffice
+    needs: [terraform_lint]
     uses: ./.github/workflows/test-backoffice.yml
     with:
       dotnet-version: "7.0.x"
