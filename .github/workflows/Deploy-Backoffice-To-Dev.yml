@@ -30,9 +30,9 @@ jobs:
     uses: ./.github/workflows/publish-backoffice-image.yml
     with:
       tag: ${{ github.sha }}
+    secrets:
       registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
       repository_name: ${{ secrets.ECR_REPOSITORY_NAME }}
-    secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       feedback_email_addresses: ${{ secrets.BACKOFFICE_FEEDBACK_EMAIL_ADDRESSES }}

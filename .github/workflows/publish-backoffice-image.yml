@@ -7,7 +7,8 @@ on:
         description: The tag to add to the published Docker image, e.g. "v1.0.1"
         required: true
         type: string
-      registry_url:
+    secrets:
+        registry_url:
         description: The URL of the registry where the image should be published
         required: true
         type: string
@@ -16,7 +17,6 @@ on:
         required: false
         default: droits_api_backoffice_repository
         type: string
-    secrets:
       aws_access_key_id:
         required: true
       aws_secret_access_key:
