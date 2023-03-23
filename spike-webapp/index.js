@@ -1,15 +1,20 @@
 var express = require('express');
 const axios = require('axios');
 var app = express();
+
 const PORT = 3000;
-const backofficeHealthUrl = "http://www.google.com"
+const backofficeLoadBalancerUrl = "http://api-backoffice-alb-714436011.eu-west-2.elb.amazonaws.com";
 
 app.get('/', function(req, res){
     res.send("DROITS Webapp");
 });
 
+app.get('/health', function(req, res){
+    res.send("OK");
+});
+
 app.get('/backoffice', function(req, res){
-    axios.get(backofficeHealthUrl)
+    axios.get(`${backofficeLoadBalancerUrl}`)
     .then((response) => {
         console.log(response);
         res.send("Success - Check logs for response.");
