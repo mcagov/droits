@@ -9,7 +9,7 @@ variable "gov_notify_feedback_email_address" {
 variable "aws_region" {
   type        = string
   description = "The AWS region resources are created in"
-  default = "eu-west-2"
+  default     = "eu-west-2"
 }
 variable "az_count" {
   type        = number
@@ -56,7 +56,7 @@ variable "webapp_fargate_cpu" {
 variable "webapp_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the DROITS Webapp"
-  default = 2048
+  default     = 2048
 }
 variable "azure_ad_tenant_id" {
   sensitive   = true
@@ -89,7 +89,7 @@ variable "webapp_azure_b2c_signup_flow" {
   description = "The Sign Up User Flow defined in Azure B2C"
 }
 variable "webapp_ecr_repository_name" {
-  type = string
+  type        = string
   description = "The name of the Elastic Container Repository for our webapp container images"
 }
 variable "service_count" {
@@ -165,7 +165,7 @@ variable "api_backoffice_fargate_memory" {
   default     = 512
 }
 variable "api_backoffice_ecr_repository_name" {
-  type = string
+  type        = string
   description = "The name of the Elastic Container Repository for our api-backoffice container images"
 }
 variable "aws_account_number" {
@@ -178,19 +178,19 @@ variable "aws_access_key_id" {
   sensitive   = true
   type        = string
   description = "The id of the access key for AWS authentication"
-  default     = ""  
+  default     = ""
 }
 variable "aws_secret_access_key" {
   sensitive   = true
   type        = string
   description = "The secret value of the access key for AWS authentication"
-  default     = ""  
+  default     = ""
 }
 variable "aws_session_token" {
   sensitive   = true
   type        = string
   description = "The session token used for AWS authentication"
-  default     = ""  
+  default     = ""
 }
 variable "vpc_resource_id" {
   type        = string
@@ -198,13 +198,13 @@ variable "vpc_resource_id" {
   default     = ""
 }
 variable "db_username" {
-  sensitive = true
+  sensitive   = true
   type        = string
   description = "The username to authenticate with the DB"
   default     = ""
 }
 variable "db_password" {
-  sensitive = true
+  sensitive   = true
   type        = string
   description = "The password to authenticate with the DB"
   default     = ""
@@ -249,7 +249,7 @@ variable "db_storage_encrypted" {
   description = "Specifies whether the database instances data is encrypted"
 }
 variable "db_name" {
-  type = string
+  type        = string
   description = "The name of the DB"
 }
 
