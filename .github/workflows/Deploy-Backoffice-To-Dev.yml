@@ -7,6 +7,7 @@ jobs:
   display-variables:
     name: Display vars
     runs-on: ubuntu-latest
+    environment: development
     steps:
     - name: Use variables
       run: |
