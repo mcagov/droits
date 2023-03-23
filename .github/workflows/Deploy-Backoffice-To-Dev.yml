@@ -1,12 +1,9 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Deploy Backoffice to Dev Environment
-
-on: [push]
-
+on:
+  push:
+    branches:
+      - main
 jobs:
-
   terraform_lint:
     name: Terraform lint
     runs-on: ubuntu-latest
@@ -21,18 +18,15 @@ jobs:
       - name: Terraform Lint
         run: terraform fmt --recursive --check
 
- test_backoffice:
+  test_backoffice:
     name: Test Backoffice
     uses: ./.github/workflows/test-backoffice.yml
     with:
-      dotnet-version: '7.0.x'
+      dotnet-version: "7.0.x"
 
-   publish_backoffice_image:
+  publish_backoffice_image:
     name: Publish Backoffice
-    needs:
-      [
-        test_backoffice
-      ]
+    needs: [test_backoffice]
     uses: ./.github/workflows/publish-backoffice-image.yml
     with:
       tag: ${{ github.sha }}
@@ -45,10 +39,7 @@ jobs:
 
   deploy_dev:
     name: Development
-    needs:
-      [
-        publish_backoffice_image
-      ]
+    needs: [publish_backoffice_image]
     uses: ./.github/workflows/deploy.yml
     with:
       environment: development
