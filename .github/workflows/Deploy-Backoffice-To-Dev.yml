@@ -53,3 +53,5 @@ jobs:
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
       aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
+      db_username: ${{ secrets.DB_USERNAME }}
+      db_password: ${{ secrets.DB_PASSWORD }}

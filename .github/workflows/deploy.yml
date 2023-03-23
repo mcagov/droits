@@ -28,6 +28,12 @@ on:
       aws_account_number:
         description: The account number in which infrastructure should be deployed
         required: true
+      db_username:
+        description: The username for the master db
+        required: true
+      db_password:
+        description: The password for the master db
+        required: true
 
 defaults:
   run:
@@ -59,4 +65,6 @@ jobs:
         env:
           TF_VAR_backoffice_image_tag: ${{ inputs.version }}
           TF_VAR_aws_account_number: ${{ secrets.aws_account_number }}
+          TF_VAR_db_username: ${{ secrets.db_username }}
+          TF_VAR_db_password: ${{ secrets.db_password }}
         run: terraform apply -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars

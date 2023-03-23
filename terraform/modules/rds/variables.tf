@@ -4,6 +4,18 @@ variable "db_name" {
   default     = "droits"
 }
 
+variable "db_username" {
+  type        = string
+  description = "The username for the master database user"
+  default     = "droits"
+  sensitive   = true
+}
+variable "db_password" {
+  type        = string
+  description = "The password used for the master database user"
+  sensitive   = true
+}
+
 variable "db_delete_protection" {
   type        = bool
   description = "Should we protect the DB from being deleted?"
