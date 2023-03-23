@@ -42,16 +42,16 @@ module "rds" {
   source = "./modules/rds"
 }
 
-module "ecs" {
+# module "ecs" {
   
-}
+# }
 
 resource "aws_s3_bucket" "droits-wreck-images"{
     bucket = "droits-wreck-images"
     # Stops terraform from destroying the object if it exists
-#    lifecycle {
-#      prevent_destroy = true
-#    }
+   lifecycle {
+     prevent_destroy = true
+    }
 }
 
 resource "aws_s3_bucket_acl" "droits-wreck-images-acl" {
@@ -173,7 +173,7 @@ resource "aws_ecs_service" "backoffice-service" {
   launch_type     = "FARGATE"
   desired_count   = 1
   health_check_grace_period_seconds = 600
-  wait_for_steady_state = true
+  # wait_for_steady_state = true
   depends_on = [
     aws_alb_listener.api-backoffice-listener,
   ]
@@ -227,7 +227,7 @@ resource "aws_ecs_service" "webapp" {
   launch_type = "FARGATE"
   desired_count = 1
   health_check_grace_period_seconds = 600
-  wait_for_steady_state = true
+  # wait_for_steady_state = true
   depends_on = [
     aws_alb_listener.webapp-listener,
   ]

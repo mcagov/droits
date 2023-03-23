@@ -3,16 +3,17 @@ resource "aws_security_group" "api-backoffice" {
   vpc_id = var.aws_vpc_id
   ingress {
     from_port         = 0
-    protocol          = "-1"
-#    security_groups   = [aws_security_group.api-backoffice-lb.id]
-    cidr_blocks = ["0.0.0.0/0"]
-    to_port           = 0
+    to_port           = 65535
+    protocol          = "tcp"
+    security_groups   = [aws_security_group.api-backoffice-lb.id]
+    description = "Allow inbound access from the backoffice LB only"
   }
   egress {
     protocol    = "-1"
     from_port   = 0
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow outbound access to anywhere"
   }
 }
 resource "aws_security_group" "api-backoffice-lb" {
@@ -23,18 +24,21 @@ resource "aws_security_group" "api-backoffice-lb" {
     protocol          = "tcp"
     to_port           = 80
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow inbound HTTP access from anywhere"
   }
   ingress {
     from_port         = 443
     protocol          = "tcp"
     to_port           = 443
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow inbound HTTPS access from anywhere"
   }
   egress {
     protocol    = "-1"
     from_port   = 0
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow outbound access to anywhere"
   }
 }
 resource "aws_security_group" "droits-db" {
@@ -47,15 +51,17 @@ resource "aws_security_group" "webapp" {
 
   ingress {
     from_port         = 0
-    protocol          = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-    to_port           = 0
+    to_port           = 65535
+    protocol          = "tcp"
+    security_groups = [ aws_security_group.webapp-lb.id ]
+    description = "Allow inbound access from the webapp LB only"
   }
   egress {
     protocol    = "-1"
     from_port   = 0
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow outbound access to anywhere"
   }
 }
 
@@ -67,17 +73,20 @@ resource "aws_security_group" "webapp-lb" {
     protocol          = "tcp"
     to_port           = 80
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow inbound HTTP access from anywhere"
   }
   ingress {
     from_port         = 443
     protocol          = "tcp"
     to_port           = 443
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow inbound HTTPS access from anywhere"
   }
   egress {
     protocol    = "-1"
     from_port   = 0
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow outbound access to anywhere"
   }
 }
