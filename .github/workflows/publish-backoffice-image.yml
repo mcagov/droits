@@ -1,5 +1,4 @@
 name: Publish Backoffice image
-
 on:
   workflow_call:
     inputs:
@@ -8,7 +7,7 @@ on:
         required: true
         type: string
     secrets:
-        registry_url:
+      registry_url:
         description: The URL of the registry where the image should be published
         required: true
         type: string
@@ -24,10 +23,9 @@ on:
       feedback_email_addresses:
         description: The email address(es) to which feedback should be sent.  E.g. "a@b.com" or "a@b.com,c@d.com".
         required: true
-
-defaults:
-  run:
-    working-directory: backoffice
+  defaults:
+    run:
+      working-directory: backoffice
 
 jobs:
   publish:
