@@ -18,8 +18,8 @@ resource "aws_db_instance" "droits" {
   engine                 = "postgres"
   engine_version         = "14"
   instance_class         = "db.t3.micro"
-  username               = var.db_username
-  password               = var.db_password
+  db_username            = var.db_username
+  db_password            = var.db_password
   db_subnet_group_name   = aws_db_subnet_group.droits_db.name
   vpc_security_group_ids = [var.db_security_group_id]
   deletion_protection    = var.db_delete_protection
