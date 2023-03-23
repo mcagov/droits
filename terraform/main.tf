@@ -11,7 +11,7 @@ terraform {
     key = "global/s3/terraform.tfstate"
     encrypt = true
     region = "eu-west-2"
-    profile = "default"
+    profile = "droits_dev"
   }
 }
 
@@ -43,7 +43,7 @@ module "rds" {
 }
 
 # module "ecs" {
-  
+
 # }
 
 resource "aws_s3_bucket" "droits-wreck-images"{
@@ -183,7 +183,7 @@ resource "aws_ecs_service" "backoffice-service" {
     subnets           = [module.security-groups.public-subnet-1]
     assign_public_ip  = true
   }
-  
+
   load_balancer {
     target_group_arn  = aws_alb_target_group.api-backoffice-target-group.arn
     container_name    = "api-backoffice"
@@ -231,13 +231,13 @@ resource "aws_ecs_service" "webapp" {
   depends_on = [
     aws_alb_listener.webapp-listener,
   ]
-  
+
   network_configuration {
     security_groups = [module.security-groups.webapp-security-group-id]
     subnets         = [module.security-groups.public-subnet-1]
     assign_public_ip = true
   }
-  
+
   load_balancer {
     target_group_arn = aws_alb_target_group.webapp-target-group.arn
     container_name = "webapp"

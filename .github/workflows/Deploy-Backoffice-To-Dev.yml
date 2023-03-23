@@ -46,7 +46,7 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     with:
       environment: development
-      terraform_workspace: development
+      terraform_workspace: dev
       version: ${{ github.sha }}
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
