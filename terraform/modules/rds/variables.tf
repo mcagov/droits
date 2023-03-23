@@ -30,7 +30,3 @@ variable "db_security_group_id" {
   type        = string
   description = "The ID of the security group in which the DB resides"
 }
-
-locals {
-  envs = { for tuple in regexall("(.*)=(.*)", file(".env")) : tuple[0] => sensitive(tuple[1]) }
-}

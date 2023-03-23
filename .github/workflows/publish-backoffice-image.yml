@@ -9,7 +9,7 @@ on:
         required: true
       environment:
         description: >
-          The environment to which the application should be deployed.  Must be one of development/staging/production
+          The environment to which the application should be deployed.  Must be one of dev/staging/production
           and must match the terraform_workspace input.
         type: string
         required: true
