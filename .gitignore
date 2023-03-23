@@ -16,14 +16,15 @@ backoffice/src/obj/
 backoffice/tests/bin/
 backoffice/tests/obj/
 
-#terraform
+##terraform
 .terraform
 terraform.tfstate
 test.tfvars
 /terraform/.env
 
+##Github
+.github/.vscode/
+
 .vscode
 .DS_Store
 .idea
-
-
