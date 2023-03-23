@@ -5,13 +5,13 @@ namespace Droits.Models
 
 public class WreckReport
     {
-        public string Reference { get; set; }
+        public string Reference { get; set; } = string.Empty;
 
         [JsonProperty("report-date")]
-        public string ReportDate { get; set; }
+        public string ReportDate { get; set; } = string.Empty;
 
         [JsonProperty("wreck-find-date")]
-        public string WreckFindDate { get; set; }
+        public string WreckFindDate { get; set; } = string.Empty;
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
@@ -19,31 +19,31 @@ public class WreckReport
         public int LocationRadius { get; set; }
 
         [JsonProperty("location-description")]
-        public string LocationDescription { get; set; }
+        public string LocationDescription { get; set; } = string.Empty;
 
         [JsonProperty("vessel-name")]
-        public string VesselName { get; set; }
+        public string VesselName { get; set; } = string.Empty;
 
         [JsonProperty("vessel-construction-year")]
-        public string VesselConstructionYear { get; set; }
+        public string VesselConstructionYear { get; set; } = string.Empty;
 
         [JsonProperty("vessel-sunk-year")]
-        public string VesselSunkYear { get; set; }
+        public string VesselSunkYear { get; set; } = string.Empty;
 
         [JsonProperty("vessel-depth")]
-        public string VesselDepth { get; set; }
+        public string VesselDepth { get; set; } = string.Empty;
 
         [JsonProperty("removed-from")]
-        public string RemovedFrom { get; set; }
+        public string RemovedFrom { get; set; } = string.Empty;
 
         [JsonProperty("wreck-description")]
-        public string WreckDescription { get; set; }
+        public string WreckDescription { get; set; } = string.Empty;
 
         [JsonProperty("claim-salvage")]
-        public string ClaimSalvage { get; set; }
+        public string ClaimSalvage { get; set; } = string.Empty;
 
         [JsonProperty("salvage-services")]
-        public string SalvageServices { get; set; }
+        public string SalvageServices { get; set; } = string.Empty;
         public Salvor Personal { get; set; }
 
         [JsonProperty("wreck-materials")]
@@ -52,64 +52,64 @@ public class WreckReport
 
     public class WreckMaterial
     {
-        public string Description { get; set; }
-        public string Quantity { get; set; }
-        public string Value { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public string Quantity { get; set; } = string.Empty;
+        public string Value { get; set; } = string.Empty;
 
         [JsonProperty("value-known")]
-        public string ValueKnown { get; set; }
-        public string Image { get; set; }
-        public string OriginalFilename { get; set; }
+        public string ValueKnown { get; set; } = string.Empty;
+        public string Image { get; set; } = string.Empty;
+        public string OriginalFilename { get; set; } = string.Empty;
 
         [JsonProperty("address-details")]
         public AddressDetails AddressDetails { get; set; }
 
         [JsonProperty("storage-address")]
-        public string StorageAddress { get; set; }
+        public string StorageAddress { get; set; } = string.Empty;
     }
 
 
      public class AddressDetails
     {
         [JsonProperty("address-line-1")]
-        public string Line1 { get; set; }
+        public string Line1 { get; set; } = string.Empty;
 
         [JsonProperty("address-line-2")]
-        public string Line2 { get; set; }
+        public string Line2 { get; set; } = string.Empty;
 
         [JsonProperty("address-town")]
-        public string Town { get; set; }
+        public string Town { get; set; } = string.Empty;
 
         [JsonProperty("address-county")]
-        public string County { get; set; }
+        public string County { get; set; } = string.Empty;
 
         [JsonProperty("address-postcode")]
-        public string Postcode { get; set; }
+        public string Postcode { get; set; } = string.Empty;
     }
 
     public class Salvor
     {
         [JsonProperty("full-name")]
-        public string FullName { get; set; }
-        public string Email { get; set; }
+        public string FullName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
 
         [JsonProperty("telephone-number")]
-        public string TelephoneNumber { get; set; }
+        public string TelephoneNumber { get; set; } = string.Empty;
 
         [JsonProperty("address-line-1")]
-        public string Line1 { get; set; }
+        public string Line1 { get; set; } = string.Empty;
 
         [JsonProperty("address-line-2")]
-        public string Line2 { get; set; }
+        public string Line2 { get; set; } = string.Empty;
 
         [JsonProperty("address-town")]
-        public string Town { get; set; }
+        public string Town { get; set; } = string.Empty;
 
         [JsonProperty("address-county")]
-        public string County { get; set; }
+        public string County { get; set; } = string.Empty;
 
         [JsonProperty("address-postcode")]
-        public string Postcode { get; set; }
+        public string Postcode { get; set; } = string.Empty;
     }
 
 }

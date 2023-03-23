@@ -1,0 +1,31 @@
+name: Test Backoffice
+
+on:
+  workflow_call:
+    inputs:
+      dotnet-version:
+        description: The dotnet version to use, e.g. '7.0.x'
+        required: true
+        type: string
+
+defaults:
+  run:
+    working-directory: backoffice
+
+jobs:
+  unit_tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ inputs.dotnet-version }}
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build
+    - name: Run tests
+      run: dotnet test
