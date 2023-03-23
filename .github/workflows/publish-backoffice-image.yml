@@ -11,12 +11,9 @@ on:
       registry_url:
         description: The URL of the registry where the image should be published
         required: true
-        type: string
       repository_name:
         description: The name of the image to be published
-        required: false
-        default: droits_api_backoffice_repository
-        type: string
+        required: true
       aws_access_key_id:
         required: true
       aws_secret_access_key:
