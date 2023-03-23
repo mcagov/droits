@@ -5,8 +5,14 @@ on:
     inputs:
       tag:
         description: The tag to add to the published Docker image, e.g. "v1.0.1"
-        required: true
         type: string
+        required: true
+      environment:
+        description: >
+          The environment to which the application should be deployed.  Must be one of development/staging/production
+          and must match the terraform_workspace input.
+        type: string
+        required: true
     secrets:
       registry_url:
         description: The URL of the registry where the image should be published
@@ -29,6 +35,7 @@ jobs:
   deploy:
     name: Publish image
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
 
     steps:
     - name: Checkout
@@ -49,8 +56,8 @@ jobs:
     - name: Build, tag, and push the image to Amazon ECR
       id: build-image
       env:
-        ECR_REGISTRY: ${{ inputs.registry_url }}
-        ECR_REPOSITORY: ${{ inputs.repository_name }}
+        ECR_REGISTRY: ${{ secrets.registry_url }}
+        ECR_REPOSITORY: ${{ secrets.repository_name }}
         IMAGE_TAG: latest
       run: |
         # Build a docker container and push it to ECR

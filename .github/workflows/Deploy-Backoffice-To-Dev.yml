@@ -4,16 +4,6 @@ on:
     branches:
       - main
 jobs:
-  display-variables:
-    name: Display vars
-    runs-on: ubuntu-latest
-    environment: development
-    steps:
-    - name: Use variables
-      run: |
-        echo "env variable : ${{ vars.ENVIRONMENT }}"
-        echo "secret variable : ${{ secrets.ECR_REPOSITORY_URL }}"
-
   terraform_lint:
     name: Terraform lint
     runs-on: ubuntu-latest
@@ -42,6 +32,7 @@ jobs:
     uses: ./.github/workflows/publish-backoffice-image.yml
     with:
       tag: ${{ github.sha }}
+      environment: development
     secrets:
       registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
       repository_name: ${{ secrets.ECR_REPOSITORY_NAME }}
