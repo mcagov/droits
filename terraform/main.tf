@@ -42,6 +42,10 @@ module "rds" {
   source = "./modules/rds"
 }
 
+module "ecs" {
+  
+}
+
 resource "aws_s3_bucket" "droits-wreck-images"{
     bucket = "droits-wreck-images"
     # Stops terraform from destroying the object if it exists
