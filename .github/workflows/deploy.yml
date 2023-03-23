@@ -23,6 +23,8 @@ on:
         required: true
       aws_secret_access_key:
         required: true
+      aws_session_token:
+        required: true
       aws_account_number:
         description: The account number in which infrastructure should be deployed
         required: true
@@ -39,6 +41,7 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+      AWS_SESSION_TOKEN: ${{ secrets.aws_session_token }}
       TF_WORKSPACE: ${{ inputs.terraform_workspace }}
     steps:
       - uses: actions/checkout@v3
