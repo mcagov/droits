@@ -135,7 +135,7 @@ resource "aws_alb_listener" "webapp-listener" {
 }
 
 resource "aws_cloudwatch_log_group" "droits-backoffice-ecs-lg" {
-  name = "Droits Backoffice Logs"
+  name = "droits-backoffice-ecs-lg"
 
   tags = {
     Environment = "development"
