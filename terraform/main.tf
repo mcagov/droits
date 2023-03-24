@@ -82,11 +82,6 @@ resource "aws_ecr_repository" "droits-webapp-repository" {
   force_delete = true
 }
 
-resource "aws_ecr_repository" "droits-api-backoffice-repository" {
-  name         = var.api_backoffice_ecr_repository_name
-  force_delete = true
-}
-
 resource "aws_ecs_cluster" "droits-ecs-cluster" {
   name = var.ecs_cluster_name
 }
@@ -148,7 +143,7 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
   memory                   = var.api_backoffice_fargate_memory
   container_definitions = jsonencode([{
     name : "api-backoffice",
-    image : "${aws_ecr_repository.droits-api-backoffice-repository.repository_url}:${var.api_backoffice_image_tag}",
+    image : "${var.api_backoffice_ecr_repository_url}:${var.api_backoffice_image_tag}",
     portMappings : [
       {
         containerPort : var.api_backoffice_port

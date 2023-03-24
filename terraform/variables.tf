@@ -168,6 +168,10 @@ variable "api_backoffice_ecr_repository_name" {
   type        = string
   description = "The name of the Elastic Container Repository for our api-backoffice container images"
 }
+variable "api_backoffice_ecr_repository_url" {
+  type        = string
+  description = "The url of the Elastic Container Repository for our api-backoffice container images"
+}
 variable "aws_account_number" {
   sensitive   = true
   type        = string
