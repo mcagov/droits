@@ -40,6 +40,8 @@ module "rds" {
   db_security_group_id = module.security-groups.db-security-group-id
   db_delete_protection = var.db_delete_protection
   source               = "./modules/rds"
+  db_password          = var.db_password
+  db_username          = var.db_username
 }
 
 # module "ecs" {
