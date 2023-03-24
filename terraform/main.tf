@@ -134,6 +134,15 @@ resource "aws_alb_listener" "webapp-listener" {
   port = 80
 }
 
+resource "aws_cloudwatch_log_group" "droits-backoffice-ecs-lg" {
+  name = "Droits Backoffice Logs"
+
+  tags = {
+    Environment = "development"
+    Application = "droits-backoffice"
+  }
+}
+
 resource "aws_ecs_task_definition" "backoffice-task-definition" {
   family                   = "backoffice"
   execution_role_arn       = module.iam.iam-role-arn
