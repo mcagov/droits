@@ -152,7 +152,7 @@ variable "api_backoffice_port" {
 variable "api_backoffice_health_check_path" {
   type        = string
   description = "Health check path used by the Application Load Balancer for the Backoffice app"
-  default     = "/health"
+  default     = "/healthz"
 }
 variable "api_backoffice_fargate_cpu" {
   type        = number
