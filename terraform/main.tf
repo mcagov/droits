@@ -10,7 +10,7 @@ terraform {
     bucket  = "droits-statefile"
     key     = "global/s3/terraform.tfstate"
     encrypt = true
-    region  = "eu-west-2"
+    region  = var.aws_region
     profile = "droits_dev"
   }
 }
@@ -155,8 +155,17 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
       command : [
         "CMD-SHELL", "curl -f http://localhost:5000/healthz || exit 1"
       ],
+    },
+    logConfiguration : {
+      logDriver : awslogs,
+      options : {
+        awslogs-region : var.aws_region,
+        awslogs-group : droits-backoffice-ecs-lg,
+        awslogs-stream-prefix : backoffice
+      }
     }
   }])
+
   runtime_platform {
     operating_system_family = "LINUX"
     cpu_architecture        = "ARM64"
