@@ -157,11 +157,11 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
       ],
     },
     logConfiguration : {
-      logDriver : awslogs,
+      logDriver : "awslogs",
       options : {
         awslogs-region : var.aws_region,
-        awslogs-group : droits-backoffice-ecs-lg,
-        awslogs-stream-prefix : backoffice
+        awslogs-group : "droits-backoffice-ecs-lg",
+        awslogs-stream-prefix : "backoffice"
       }
     }
   }])
