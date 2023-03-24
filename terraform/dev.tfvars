@@ -33,7 +33,6 @@ webapp_minimum_task_count          = 1
 gov_notify_feedback_email_address  = "beacons_test_feedback@mailsac.com"
 low_disk_burst_balance_threshold   = 75
 ssl_certificate_arn                = "arn:aws:acm:eu-west-2:232705206979:certificate/cca7f7e5-8b98-443d-a6c6-245e7b653200"
-api_backoffice_ecr_repository_name = "droits_api_backoffice_repository"
 api_backoffice_image_tag           = "latest"
 
 aws_region       = "eu-west-2"
