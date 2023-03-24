@@ -202,6 +202,19 @@ variable "db_delete_protection" {
   type        = bool
   description = "Database protection setting"
 }
+
+variable "db_username" {
+  type        = string
+  description = "The username for the master database user"
+  default     = "droits"
+  sensitive   = true
+}
+variable "db_password" {
+  type        = string
+  description = "The password used for the master database user"
+  sensitive   = true
+}
+
 variable "backup_window" {
   type        = string
   description = "Timeframe e.g 23:00 - 23:01"
