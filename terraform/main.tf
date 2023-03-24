@@ -10,7 +10,7 @@ terraform {
     bucket  = "droits-statefile"
     key     = "global/s3/terraform.tfstate"
     encrypt = true
-    region  = var.aws_region
+    region  = "eu-west-2"
     profile = "droits_dev"
   }
 }
