@@ -24,11 +24,7 @@ variable "ecs_cluster_name" {
   type        = string
   description = "The name of the ECS Fargate cluster"
 }
-variable "webapp_image" {
-  type        = string
-  description = "Docker image to run in the ECS cluster for the DROITS Webapp"
-  default     = "DROITS-webapp"
-}
+
 variable "webapp_image_tag" {
   type        = string
   description = "Hash of the relevant commit to the mca-droits repo"
@@ -168,9 +164,14 @@ variable "api_backoffice_ecr_repository_name" {
   type        = string
   description = "The name of the Elastic Container Repository for our api-backoffice container images"
 }
-variable "api_backoffice_ecr_repository_url" {
+
+variable "webapp_ecr_repository_name" {
   type        = string
-  description = "The url of the Elastic Container Repository for our api-backoffice container images"
+  description = "The name of the Elastic Container Repository for our webapp container images"
+}
+variable "ecr_repository_url" {
+  type        = string
+  description = "The url of the Elastic Container Repository for our container images"
 }
 variable "aws_account_number" {
   sensitive   = true

@@ -1,0 +1,104 @@
+name: Pipeline for environment
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: >
+          The environment to which the application should be deployed.  Must be one of development/staging/production
+          and must match the terraform_workspace input.
+        type: string
+        required: true
+      terraform_workspace:
+        description: >
+          The Terraform workspace to which infrastructure should be deployed.  Must be one of dev/staging/production and
+          must match the environment input.
+        type: string
+        required: true
+      version:
+        description: The version of the artifacts/infrastructure to deploy.
+        required: true
+        type: string
+    secrets:
+      aws_access_key_id:
+        required: true
+      aws_secret_access_key:
+        required: true
+      aws_session_token:
+        required: true
+      aws_account_number:
+        description: The account number in which infrastructure should be deployed
+        required: true
+      db_username:
+        description: The username for the master db
+        required: true
+      db_password:
+        description: The password for the master db
+        required: true
+      registry_url:
+        description: The URL of the registry where the image should be published
+        required: true
+      backoffice_repository_name:
+        description: The name of the image to be published
+        required: true
+      webapp_repository_name:
+        description: The name of the image to be published
+        required: true
+jobs:
+  terraform_lint:
+    name: Terraform lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.2
+      - name: Terraform Lint
+        run: terraform fmt --recursive --check
+
+  backoffice_pipeline:
+    name: Run backoffice pipeline
+    uses: ./.github/workflows/backoffice-pipeline.yml
+    needs: [terraform_lint]
+    with:
+      environment: ${{ inputs.environment }}
+    secrets:
+      registry_url: ${{ secrets.registry_url }}
+      repository_name: ${{ secrets.backoffice_repository_name }}
+      aws_access_key_id: ${{ secrets.aws_access_key_id }}
+      aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
+      aws_session_token: ${{ secrets.aws_session_token }}
+
+  webapp_pipeline:
+    name: Run webapp pipeline
+    uses: ./.github/workflows/webapp-pipeline.yml
+    needs: [terraform_lint]
+    with:
+      environment: ${{ inputs.environment }}
+    secrets:
+      registry_url: ${{ secrets.registry_url }}
+      repository_name: ${{ secrets.webapp_repository_name }}
+      aws_access_key_id: ${{ secrets.aws_access_key_id }}
+      aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
+      aws_session_token: ${{ secrets.aws_session_token }}
+
+  deploy:
+    name: Deploy changes
+    needs: [backoffice_pipeline,webapp_pipeline]
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: ${{ inputs.environment }}
+      terraform_workspace: ${{ inputs.terraform_workspace }}
+      version: ${{ github.sha }}
+    secrets:
+      registry_url: ${{ secrets.registry_url }}
+      backoffice_repository_name: ${{ secrets.backoffice_repository_name }}
+      webapp_repository_name: ${{ secrets.webapp_repository_name }}
+      aws_access_key_id: ${{ secrets.aws_access_key_id }}
+      aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
+      aws_session_token: ${{ secrets.aws_session_token }}
+      aws_account_number: ${{ secrets.aws_account_number }}
+      db_username: ${{ secrets.db_username }}
+      db_password: ${{ secrets.db_password }}

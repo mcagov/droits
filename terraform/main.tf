@@ -77,11 +77,6 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "droits-wreck-imag
   }
 }
 
-resource "aws_ecr_repository" "droits-webapp-repository" {
-  name         = var.webapp_ecr_repository_name
-  force_delete = true
-}
-
 resource "aws_ecs_cluster" "droits-ecs-cluster" {
   name = var.ecs_cluster_name
 }
@@ -152,7 +147,7 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
   memory                   = var.api_backoffice_fargate_memory
   container_definitions = jsonencode([{
     name : "api-backoffice",
-    image : "${var.api_backoffice_ecr_repository_url}/${var.api_backoffice_ecr_repository_name}:${var.api_backoffice_image_tag}",
+    image : "${var.ecr_repository_url}/${var.api_backoffice_ecr_repository_name}:${var.api_backoffice_image_tag}",
     portMappings : [
       {
         containerPort : var.api_backoffice_port
@@ -210,7 +205,7 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
   memory                   = var.webapp_fargate_memory
   container_definitions = jsonencode([{
     name : "webapp",
-    image : "${aws_ecr_repository.droits-webapp-repository.repository_url}:${var.webapp_image_tag}",
+    image : "${var.ecr_repository_url}/${var.webapp_ecr_repository_name}:${var.webapp_image_tag}",
     portMappings : [
       {
         containerPort : var.webapp_port
@@ -224,10 +219,6 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
       ],
     }
   }])
-  runtime_platform {
-    operating_system_family = "LINUX"
-    cpu_architecture        = "ARM64"
-  }
 }
 
 resource "aws_ecs_service" "webapp" {

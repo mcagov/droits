@@ -1,4 +1,4 @@
-name: Backoffice pipeline
+name: Webapp pipeline
 on:
   workflow_call:
     inputs:
@@ -24,19 +24,17 @@ on:
 
 jobs:
   test:
-    name: Test backoffice
-    uses: ./.github/workflows/backoffice-test.yml
-    with:
-      dotnet-version: "7.0.x"
+    name: Test webapp
+    uses: ./.github/workflows/webapp-test.yml
 
   publish:
-    name: Publish backoffice
+    name: Publish webapp
     needs: [test]
     uses: ./.github/workflows/publish.yml
     with:
       tag: latest
       environment: ${{ inputs.environment }}
-      working-directory: backoffice
+      working-directory: spike-webapp
     secrets:
       registry_url: ${{ secrets.registry_url }}
       repository_name: ${{ secrets.repository_name }}
