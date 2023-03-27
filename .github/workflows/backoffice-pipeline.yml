@@ -73,20 +73,21 @@ jobs:
       aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
       aws_session_token: ${{ secrets.aws_session_token }}
 
-  deploy:
-    name: ${{ inputs.environment }}
-    needs: [publish]
-    uses: ./.github/workflows/backoffice-deploy.yml
-    with:
-      environment: ${{ inputs.environment }}
-      terraform_workspace: ${{ inputs.terraform_workspace }}
-      version: ${{ github.sha }}
-    secrets:
-      registry_url: ${{ secrets.registry_url }}
-      repository_name: ${{ secrets.repository_name }}
-      aws_access_key_id: ${{ secrets.aws_access_key_id }}
-      aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
-      aws_session_token: ${{ secrets.aws_session_token }}
-      aws_account_number: ${{ secrets.aws_account_number }}
-      db_username: ${{ secrets.db_username }}
-      db_password: ${{ secrets.db_password }}
+  ## Do not deploy currently - Evie WIP
+  # deploy:
+  #   name: ${{ inputs.environment }}
+  #   needs: [publish]
+  #   uses: ./.github/workflows/backoffice-deploy.yml
+  #   with:
+  #     environment: ${{ inputs.environment }}
+  #     terraform_workspace: ${{ inputs.terraform_workspace }}
+  #     version: ${{ github.sha }}
+  #   secrets:
+  #     registry_url: ${{ secrets.registry_url }}
+  #     repository_name: ${{ secrets.repository_name }}
+  #     aws_access_key_id: ${{ secrets.aws_access_key_id }}
+  #     aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
+  #     aws_session_token: ${{ secrets.aws_session_token }}
+  #     aws_account_number: ${{ secrets.aws_account_number }}
+  #     db_username: ${{ secrets.db_username }}
+  #     db_password: ${{ secrets.db_password }}
