@@ -3,10 +3,10 @@ const axios = require('axios');
 var app = express();
 
 const PORT = 3000;
-const backofficeLoadBalancerUrl = "http://api-backoffice-alb-714436011.eu-west-2.elb.amazonaws.com";
+const backofficeLoadBalancerUrl = "http://api-backoffice-alb-1563299445.eu-west-2.elb.amazonaws.com";
 
 app.get('/', function(req, res){
-    res.send("DROITS Webapp");
+    res.send("DROITS Webapp - Redeployed");
 });
 
 app.get('/health', function(req, res){
