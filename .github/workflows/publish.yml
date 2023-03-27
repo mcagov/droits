@@ -31,10 +31,6 @@ on:
       aws_session_token:
         required: true
 
-defaults:
-  run:
-    working-directory: ${{ inputs.working-directory }}
-
 jobs:
   deploy:
     name: Publish image
@@ -63,7 +59,9 @@ jobs:
         ECR_REGISTRY: ${{ secrets.registry_url }}
         ECR_REPOSITORY: ${{ secrets.repository_name }}
         IMAGE_TAG: ${{ inputs.tag }}
+        DIRECTORY: ${{ inputs.working-directory }}
       run: |
+        cd $DIRECTORY
         # Build a docker container and push it to ECR
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         echo "Pushing image to ECR..."
