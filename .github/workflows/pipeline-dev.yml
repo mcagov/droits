@@ -7,7 +7,7 @@ on:
 
 jobs:
   run_pipeline:
-    name: Run development pipeline
+    name: Deploying to Development
     uses: ./.github/workflows/pipeline.yml
     with:
       environment: development

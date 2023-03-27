@@ -5,11 +5,11 @@ on:
 
 defaults:
   run:
-    working-directory: spike-webapp
+    working-directory: ./spike-webapp
 
 jobs:
   unit_tests:
-    name: Running unit tests
+    name: Webapp unit tests
     runs-on: ubuntu-latest
 
     steps:
