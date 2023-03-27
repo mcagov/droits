@@ -12,7 +12,6 @@ webapp_azure_b2c_client_secret = ""
 webapp_azure_b2c_tenant_name   = "B2CMCGA"
 webapp_azure_b2c_login_flow    = ""
 webapp_azure_b2c_signup_flow   = ""
-webapp_ecr_repository_name     = "droits-webapp-repository"
 azure_ad_tenant_id             = "513fb495-9a90-425b-a49a-bc6ebe2a429e"
 service_count                  = 1
 
