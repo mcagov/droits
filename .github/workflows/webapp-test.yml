@@ -1,4 +1,7 @@
-name: Testing backoffice
+name: Testing webapp
+
+on:
+  workflow_call:
 
 defaults:
   run:

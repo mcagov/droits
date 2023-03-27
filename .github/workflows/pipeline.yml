@@ -1,8 +1,5 @@
 name: Pipeline for environment
 on:
-  push:
-    branches:
-      - main
   workflow_call:
     inputs:
       environment:
@@ -63,7 +60,7 @@ jobs:
 
   backoffice_pipeline:
     name: Run backoffice pipeline
-    uses: ./.github/workflows/backoffice/backoffice-pipeline.yml
+    uses: ./.github/workflows/backoffice-pipeline.yml
     needs: [terraform_lint]
     with:
       environment: ${{ inputs.environment }}
@@ -76,7 +73,7 @@ jobs:
 
   webapp_pipeline:
     name: Run webapp pipeline
-    uses: ./.github/workflows/webapp/webapp-pipeline.yml
+    uses: ./.github/workflows/webapp-pipeline.yml
     needs: [terraform_lint]
     with:
       environment: ${{ inputs.environment }}

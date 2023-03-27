@@ -25,7 +25,7 @@ on:
 jobs:
   test:
     name: Test webapp
-    uses: ./.github/workflows/webapp/webapp-test.yml
+    uses: ./.github/workflows/webapp-test.yml
 
   publish:
     name: Publish webapp
