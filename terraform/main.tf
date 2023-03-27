@@ -174,11 +174,6 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
       }
     }
   }])
-
-  runtime_platform {
-    operating_system_family = "LINUX"
-    cpu_architecture        = "AMD64"
-  }
 }
 
 resource "aws_ecs_service" "backoffice-service" {
