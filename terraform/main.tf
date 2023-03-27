@@ -47,6 +47,7 @@ module "rds" {
 module "cloudwatch" {
   source = "./modules/cloudwatch"
   ecs_cluster_name = aws_ecs_cluster.droits-ecs-cluster.name
+  ecs_backoffice_service_name = aws_ecs_service.backoffice-service.name
 }
 
 resource "aws_s3_bucket" "droits-wreck-images" {

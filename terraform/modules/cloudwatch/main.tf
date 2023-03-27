@@ -19,40 +19,23 @@ resource "aws_cloudwatch_log_stream" "webapp" {
   log_group_name = aws_cloudwatch_log_group.webapp_ecs.name
 }
 
-# to-do: fill this in using best practices. Assume we'll want both containers and the DB
-resource "aws_cloudwatch_dashboard" "droits" {
+# only health metrics e.g cpu utilisation and requests made
+# want both containers and the DB
+resource "aws_cloudwatch_dashboard" "droits_application" {
   dashboard_name = "droits-${terraform.workspace}"
 
   dashboard_body = jsonencode({
-    # search backoffice logs for droits that failed to be reported
     widgets = [
         {
-          "height": 6,
-          "width": 24,
-          "y": 2,
-          "x": 0,
-          "type": "log",
-          "properties": {
-              "query": "SOURCE '/${aws_cloudwatch_log_group.backoffice_ecs.name}' | fields @timestamp, @message\n| sort @timestamp desc\n| filter @message like /Failed to report/",
-              "region": "eu-west-2",
-              "stacked": false,
-              "view": "table"
-          }
-      },
-    # search backoffice logs for all attempts to report a droit
-      {
-          "type": "log",
-          "x": 0,
-          "y": 8,
-          "width": 24,
-          "height": 6,
-          "properties": {
-              "query": "SOURCE '/${aws_cloudwatch_log_group.backoffice_ecs.name}' | fields @timestamp, @message\n| fields strcontains(@message, \"DROIT reported\") as report_succeeded\n| fields strcontains(@message, \"Failed to report\") as report_failed\n| stats sum(report_succeeded) as reports_succeeded, sum(report_failed) as reports_failed by bin(1d) as day\n| sort day asc",
-              "region": "eu-west-2",
-              "stacked": false,
-              "title": "Attempted wreck reports per day",
-              "view": "bar"
-          }
+        type   = "text"
+        x      = 0
+        y      = 7
+        width  = 3
+        height = 3
+
+        properties = {
+          markdown = "Welcome to the DROITS dashboard! Here you can view metrics on low level information like CPU utilisation and the number of successful API requests made."
+        }
       },
       {
         type   = "metric"
@@ -77,16 +60,28 @@ resource "aws_cloudwatch_dashboard" "droits" {
         }
       },
       {
-        type   = "text"
+        type   = "metric"
         x      = 0
-        y      = 7
-        width  = 3
-        height = 3
+        y      = 0
+        width  = 12
+        height = 6
 
         properties = {
-          markdown = "Welcome to the DROITS dashboard!"
+          metrics = [
+            [
+              "AWS/ECS",
+              "HTTPCode_Target_2XX_Count",
+              "ServiceName",
+              "${var.ecs_backoffice_service_name}"
+            ]
+          ]
+          period = 300
+          stat   = "Average"
+          region = "eu-west-2"
+          title  = "${var.ecs_backoffice_service_name} ECS service successful API requests"
         }
-      }
+      },
     ]
   })
 }
+
