@@ -1,0 +1,82 @@
+name: Deploy terraform
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: >
+          The environment to which the application should be deployed.  Must be one of development/staging/production
+          and must match the terraform_workspace input.
+        type: string
+        required: true
+      terraform_workspace:
+        description: >
+          The Terraform workspace to which infrastructure should be deployed.  Must be one of dev/staging/production and
+          must match the environment input.
+        type: string
+        required: true
+      version:
+        description: The version of the artifacts/infrastructure to deploy.
+        required: true
+        type: string
+    secrets:
+      aws_access_key_id:
+        required: true
+      aws_secret_access_key:
+        required: true
+      aws_session_token:
+        required: true
+      aws_account_number:
+        description: The account number in which infrastructure should be deployed
+        required: true
+      db_username:
+        description: The username for the master db
+        required: true
+      db_password:
+        description: The password for the master db
+        required: true
+      registry_url:
+        description: The URL of the registry where the image should be published
+        required: true
+      webapp_repository_name:
+        description: The name of the webapp image to be published
+        required: true
+      backoffice_repository_name:
+        description: The name of the backoffice image to be published
+        required: true
+
+  defaults:
+    run:
+      working-directory: terraform
+
+  jobs:
+    deploy:
+      name: Deploy
+      runs-on: ubuntu-latest
+      environment: ${{ inputs.environment }}
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+        AWS_SESSION_TOKEN: ${{ secrets.aws_session_token }}
+        TF_WORKSPACE: ${{ inputs.terraform_workspace }}
+      steps:
+        - uses: actions/checkout@v3
+          with:
+            ref: ${{ inputs.version }}
+        - uses: hashicorp/setup-terraform@v2
+          with:
+            terraform_version: 1.4.2
+        - name: Terraform init
+          run: terraform init
+        - name: Terraform validate
+          run: terraform validate
+        - name: Terraform deploy
+          if: always() # Prevent terraform deploy from being interrupted and causing state lock issues
+          env:
+            TF_VAR_ecr_repository_url: ${{ secrets.registry_url }}
+            TF_VAR_api_backoffice_ecr_repository_name: ${{ secrets.backoffice_repository_name }}
+            TF_VAR_webapp_ecr_repository_name: ${{ secrets.webapp_repository_name }}
+            TF_VAR_backoffice_image_tag: ${{ inputs.version }}
+            TF_VAR_aws_account_number: ${{ secrets.aws_account_number }}
+            TF_VAR_db_username: ${{ secrets.db_username }}
+            TF_VAR_db_password: ${{ secrets.db_password }}
+          run: terraform apply -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars

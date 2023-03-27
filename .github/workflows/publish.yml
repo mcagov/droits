@@ -1,10 +1,14 @@
-name: Publishing backoffice
+name: Publishing application
 
 on:
   workflow_call:
     inputs:
       tag:
         description: The tag to add to the published Docker image, e.g. "v1.0.1"
+        type: string
+        required: true
+      working-directory:
+        description: The directory to publish
         type: string
         required: true
       environment:
@@ -29,7 +33,7 @@ on:
 
 defaults:
   run:
-    working-directory: backoffice
+    working-directory: ${{ inputs.working-directory }}
 
 jobs:
   deploy:

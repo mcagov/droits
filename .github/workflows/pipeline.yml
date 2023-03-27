@@ -1,5 +1,8 @@
-name: Backoffice pipeline
+name: Pipeline for environment
 on:
+  push:
+    branches:
+      - main
   workflow_call:
     inputs:
       environment:
@@ -14,6 +17,10 @@ on:
           must match the environment input.
         type: string
         required: true
+      version:
+        description: The version of the artifacts/infrastructure to deploy.
+        required: true
+        type: string
     secrets:
       aws_access_key_id:
         required: true
@@ -33,14 +40,16 @@ on:
       registry_url:
         description: The URL of the registry where the image should be published
         required: true
-      repository_name:
+      backoffice_repository_name:
+        description: The name of the image to be published
+        required: true
+      webapp_repository_name:
         description: The name of the image to be published
         required: true
 jobs:
   terraform_lint:
     name: Terraform lint
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
     defaults:
       run:
         working-directory: terraform
@@ -52,42 +61,47 @@ jobs:
       - name: Terraform Lint
         run: terraform fmt --recursive --check
 
-  test:
-    name: Test backoffice
+  backoffice_pipeline:
+    name: Run backoffice pipeline
+    uses: ./.github/workflows/backoffice/backoffice-pipeline.yml
     needs: [terraform_lint]
-    uses: ./.github/workflows/backoffice-test.yml
     with:
-      dotnet-version: "7.0.x"
-
-  publish:
-    name: Publish backoffice
-    needs: [test]
-    uses: ./.github/workflows/backoffice-publish.yml
-    with:
-      tag: latest
       environment: ${{ inputs.environment }}
     secrets:
       registry_url: ${{ secrets.registry_url }}
-      repository_name: ${{ secrets.repository_name }}
+      repository_name: ${{ secrets.backoffice_repository_name }}
       aws_access_key_id: ${{ secrets.aws_access_key_id }}
       aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
       aws_session_token: ${{ secrets.aws_session_token }}
 
-  ## Do not deploy currently - Evie WIP
-  # deploy:
-  #   name: ${{ inputs.environment }}
-  #   needs: [publish]
-  #   uses: ./.github/workflows/backoffice-deploy.yml
-  #   with:
-  #     environment: ${{ inputs.environment }}
-  #     terraform_workspace: ${{ inputs.terraform_workspace }}
-  #     version: ${{ github.sha }}
-  #   secrets:
-  #     registry_url: ${{ secrets.registry_url }}
-  #     repository_name: ${{ secrets.repository_name }}
-  #     aws_access_key_id: ${{ secrets.aws_access_key_id }}
-  #     aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
-  #     aws_session_token: ${{ secrets.aws_session_token }}
-  #     aws_account_number: ${{ secrets.aws_account_number }}
-  #     db_username: ${{ secrets.db_username }}
-  #     db_password: ${{ secrets.db_password }}
+  webapp_pipeline:
+    name: Run webapp pipeline
+    uses: ./.github/workflows/webapp/webapp-pipeline.yml
+    needs: [terraform_lint]
+    with:
+      environment: ${{ inputs.environment }}
+    secrets:
+      registry_url: ${{ secrets.registry_url }}
+      repository_name: ${{ secrets.webapp_repository_name }}
+      aws_access_key_id: ${{ secrets.aws_access_key_id }}
+      aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
+      aws_session_token: ${{ secrets.aws_session_token }}
+
+  deploy:
+    name: Deploy changes
+    needs: [backoffice_pipeline,webapp_pipeline]
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: ${{ inputs.environment }}
+      terraform_workspace: ${{ inputs.terraform_workspace }}
+      version: ${{ github.sha }}
+    secrets:
+      registry_url: ${{ secrets.registry_url }}
+      backoffice_repository_name: ${{ secrets.backoffice_repository_name }}
+      webapp_repository_name: ${{ secrets.webapp_repository_name }}
+      aws_access_key_id: ${{ secrets.aws_access_key_id }}
+      aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
+      aws_session_token: ${{ secrets.aws_session_token }}
+      aws_account_number: ${{ secrets.aws_account_number }}
+      db_username: ${{ secrets.db_username }}
+      db_password: ${{ secrets.db_password }}

@@ -1,0 +1,45 @@
+name: Webapp pipeline
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: >
+          The environment to which the application should be deployed.  Must be one of development/staging/production
+          and must match the terraform_workspace input.
+        type: string
+        required: true
+    secrets:
+      registry_url:
+        description: The URL of the registry where the image should be published
+        required: true
+      repository_name:
+        description: The name of the image to be published
+        required: true
+      aws_access_key_id:
+        required: true
+      aws_secret_access_key:
+        required: true
+      aws_session_token:
+        required: true
+
+jobs:
+  test:
+    name: Test webapp
+    uses: ./.github/workflows/webapp/webapp-test.yml
+
+  publish:
+    name: Publish webapp
+    needs: [test]
+    uses: ./.github/workflows/publish.yml
+    with:
+      tag: latest
+      environment: ${{ inputs.environment }}
+      working-directory: spike-webapp
+    secrets:
+      registry_url: ${{ secrets.registry_url }}
+      repository_name: ${{ secrets.repository_name }}
+      aws_access_key_id: ${{ secrets.aws_access_key_id }}
+      aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
+      aws_session_token: ${{ secrets.aws_session_token }}
+
+
