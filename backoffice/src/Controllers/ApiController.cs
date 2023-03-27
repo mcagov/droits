@@ -24,7 +24,7 @@ public class ApiController : Controller
         using (var reader = new StreamReader(Request.Body))
         {
             var body = await reader.ReadToEndAsync();
-            WreckReport report = JsonConvert.DeserializeObject<WreckReport>(body);
+            WreckReport? report = JsonConvert.DeserializeObject<WreckReport>(body);
 
             Console.WriteLine(JValue.Parse(body).ToString(Formatting.Indented));
 
