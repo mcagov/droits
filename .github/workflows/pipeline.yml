@@ -91,7 +91,7 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       terraform_workspace: ${{ inputs.terraform_workspace }}
-      version: ${{ github.sha }}
+      version: ${{ inputs.version }}
     secrets:
       registry_url: ${{ secrets.registry_url }}
       backoffice_repository_name: ${{ secrets.backoffice_repository_name }}
