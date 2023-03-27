@@ -64,7 +64,7 @@ jobs:
     needs: [test]
     uses: ./.github/workflows/backoffice-publish.yml
     with:
-      tag: latest
+      tag: "latest"
       environment: ${{ inputs.environment }}
     secrets:
       registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
