@@ -14,6 +14,28 @@ on:
           must match the environment input.
         type: string
         required: true
+    secrets:
+      aws_access_key_id:
+        required: true
+      aws_secret_access_key:
+        required: true
+      aws_session_token:
+        required: true
+      aws_account_number:
+        description: The account number in which infrastructure should be deployed
+        required: true
+      db_username:
+        description: The username for the master db
+        required: true
+      db_password:
+        description: The password for the master db
+        required: true
+      registry_url:
+        description: The URL of the registry where the image should be published
+        required: true
+      repository_name:
+        description: The name of the image to be published
+        required: true
 jobs:
   terraform_lint:
     name: Terraform lint
