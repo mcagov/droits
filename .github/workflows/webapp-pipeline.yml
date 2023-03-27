@@ -26,6 +26,8 @@ jobs:
   test:
     name: Test webapp
     uses: ./.github/workflows/webapp-test.yml
+    with:
+      working-directory: spike-webapp
 
   publish:
     name: Publish webapp

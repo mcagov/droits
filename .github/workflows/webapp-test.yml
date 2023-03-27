@@ -2,10 +2,11 @@ name: Testing webapp
 
 on:
   workflow_call:
-
-defaults:
-  run:
-    working-directory: ./spike-webapp
+    inputs:
+      working-directory:
+        description: The directory to publish
+        type: string
+        required: true
 
 jobs:
   unit_tests:

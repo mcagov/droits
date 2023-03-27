@@ -33,7 +33,7 @@ on:
 
 jobs:
   deploy:
-    name: Publish image
+    name: Publish ${{ inputs.working-directory }} image
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
 
