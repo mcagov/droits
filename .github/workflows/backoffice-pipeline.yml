@@ -64,14 +64,14 @@ jobs:
     needs: [test]
     uses: ./.github/workflows/backoffice-publish.yml
     with:
-      tag: "latest"
+      tag: latest
       environment: ${{ inputs.environment }}
     secrets:
-      registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
-      repository_name: ${{ secrets.ECR_REPOSITORY_NAME }}
-      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
+      registry_url: ${{ secrets.registry_url }}
+      repository_name: ${{ secrets.repository_name }}
+      aws_access_key_id: ${{ secrets.aws_access_key_id }}
+      aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
+      aws_session_token: ${{ secrets.aws_session_token }}
 
   deploy:
     name: ${{ inputs.environment }}
@@ -82,11 +82,11 @@ jobs:
       terraform_workspace: ${{ inputs.terraform_workspace }}
       version: ${{ github.sha }}
     secrets:
-      registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
-      repository_name: ${{ secrets.ECR_REPOSITORY_NAME }}
-      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
-      aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
-      db_username: ${{ secrets.DB_USERNAME }}
-      db_password: ${{ secrets.DB_PASSWORD }}
+      registry_url: ${{ secrets.registry_url }}
+      repository_name: ${{ secrets.repository_name }}
+      aws_access_key_id: ${{ secrets.aws_access_key_id }}
+      aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
+      aws_session_token: ${{ secrets.aws_session_token }}
+      aws_account_number: ${{ secrets.aws_account_number }}
+      db_username: ${{ secrets.db_username }}
+      db_password: ${{ secrets.db_password }}
