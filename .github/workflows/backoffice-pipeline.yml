@@ -39,10 +39,10 @@ jobs:
 
   publish:
     name: Publish backoffice
-    needs: [test_backoffice]
+    needs: [test]
     uses: ./.github/workflows/backoffice-publish.yml
     with:
-      tag: ${{ github.sha }}
+      tag: latest
       environment: ${{ inputs.environment }}
     secrets:
       registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
@@ -53,7 +53,7 @@ jobs:
 
   deploy:
     name: ${{ inputs.environment }}
-    needs: [publish_backoffice_image]
+    needs: [publish]
     uses: ./.github/workflows/backoffice-deploy.yml
     with:
       environment: ${{ inputs.environment }}
