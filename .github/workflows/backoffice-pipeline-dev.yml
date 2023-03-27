@@ -8,6 +8,5 @@ jobs:
     name: Deploy to Dev Environment
     uses: ./.github/workflows/backoffice-pipeline.yml
     with:
-      tag: ${{ github.sha }}
       environment: development
       terraform_workspace: dev
