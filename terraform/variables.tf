@@ -217,6 +217,7 @@ variable "db_password" {
   type        = string
   description = "The password used for the master database user"
   sensitive   = true
+  default = ""
 }
 
 variable "backup_window" {

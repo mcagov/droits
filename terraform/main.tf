@@ -44,9 +44,9 @@ module "rds" {
   db_username          = var.db_username
 }
 
-# module "ecs" {
-
-# }
+module "cloudwatch" {
+  source = "./modules/cloudwatch"
+}
 
 resource "aws_s3_bucket" "droits-wreck-images" {
   bucket = "droits-wreck-images"
@@ -183,7 +183,6 @@ resource "aws_ecs_service" "backoffice-service" {
   launch_type                       = "FARGATE"
   desired_count                     = 1
   health_check_grace_period_seconds = 600
-  # wait_for_steady_state = true
   depends_on = [
     aws_alb_listener.api-backoffice-listener,
   ]
@@ -222,6 +221,14 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
       command : [
         "CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"
       ],
+    },
+    logConfiguration : {
+      logDriver : "awslogs",
+      options : {
+        awslogs-region : var.aws_region,
+        awslogs-group : "droits-webapp-ecs-lg",
+        awslogs-stream-prefix : "webapp"
+      }
     }
   }])
   runtime_platform {
@@ -237,7 +244,6 @@ resource "aws_ecs_service" "webapp" {
   launch_type                       = "FARGATE"
   desired_count                     = 1
   health_check_grace_period_seconds = 600
-  # wait_for_steady_state = true
   depends_on = [
     aws_alb_listener.webapp-listener,
   ]
