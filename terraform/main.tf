@@ -129,12 +129,21 @@ resource "aws_alb_listener" "webapp-listener" {
   port = 80
 }
 
-resource "aws_cloudwatch_log_group" "droits-backoffice-ecs-lg" {
-  name = "droits-backoffice-ecs-lg"
+resource "aws_cloudwatch_log_group" "droits-backoffice-ecs-logs" {
+  name = "droits-backoffice-ecs-logs"
 
   tags = {
-    Environment = "development"
+    Environment = terraform.workspace
     Application = "droits-backoffice"
+  }
+}
+
+resource "aws_cloudwatch_log_group" "droits-webapp-ecs-logs" {
+  name = "droits-webapp-ecs-logs"
+
+  tags = {
+    Environment = terraform.workspace
+    Application = "droits-webapp"
   }
 }
 
@@ -164,8 +173,7 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
       logDriver : "awslogs",
       options : {
         awslogs-region : var.aws_region,
-        awslogs-group : "droits-backoffice-ecs-lg",
-        awslogs-stream-prefix : "backoffice"
+        awslogs-group : "droits-backoffice-ecs-logs",
       }
     }
   }])
@@ -217,6 +225,13 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
       command : [
         "CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"
       ],
+    },
+    logConfiguration : {
+      logDriver : "awslogs",
+      options : {
+        awslogs-region : var.aws_region,
+        awslogs-group : "droits-webapp-ecs-logs",
+      }
     }
   }])
 }
