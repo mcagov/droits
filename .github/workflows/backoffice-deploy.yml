@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploying backoffice
 on:
   workflow_call:
     inputs:

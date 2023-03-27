@@ -1,4 +1,4 @@
-name: AWS ECR push Backoffice
+name: Publishing backoffice
 
 on:
   workflow_call:
