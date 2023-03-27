@@ -1,13 +1,24 @@
-name: Deploy Backoffice to Dev Environment
+name: Backoffice pipeline
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      environment:
+        description: >
+          The environment to which the application should be deployed.  Must be one of development/staging/production
+          and must match the terraform_workspace input.
+        type: string
+        required: true
+      terraform_workspace:
+        description: >
+          The Terraform workspace to which infrastructure should be deployed.  Must be one of dev/staging/production and
+          must match the environment input.
+        type: string
+        required: true
 jobs:
   terraform_lint:
     name: Terraform lint
     runs-on: ubuntu-latest
-    environment: development
+    environment: ${{ inputs.environment }}
     defaults:
       run:
         working-directory: terraform
@@ -19,20 +30,20 @@ jobs:
       - name: Terraform Lint
         run: terraform fmt --recursive --check
 
-  test_backoffice:
-    name: Test Backoffice
+  test:
+    name: Test backoffice
     needs: [terraform_lint]
-    uses: ./.github/workflows/test-backoffice.yml
+    uses: ./.github/workflows/backoffice-test.yml
     with:
       dotnet-version: "7.0.x"
 
-  publish_backoffice_image:
-    name: Publish Backoffice
+  publish:
+    name: Publish backoffice
     needs: [test_backoffice]
-    uses: ./.github/workflows/publish-backoffice-image.yml
+    uses: ./.github/workflows/backoffice-publish.yml
     with:
       tag: ${{ github.sha }}
-      environment: development
+      environment: ${{ inputs.environment }}
     secrets:
       registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
       repository_name: ${{ secrets.ECR_REPOSITORY_NAME }}
@@ -40,13 +51,13 @@ jobs:
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
 
-  deploy_dev:
-    name: Development
+  deploy:
+    name: ${{ inputs.environment }}
     needs: [publish_backoffice_image]
-    uses: ./.github/workflows/deploy.yml
+    uses: ./.github/workflows/backoffice-deploy.yml
     with:
-      environment: development
-      terraform_workspace: dev
+      environment: ${{ inputs.environment }}
+      terraform_workspace: ${{ inputs.terraform_workspace }}
       version: ${{ github.sha }}
     secrets:
       registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
