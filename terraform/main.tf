@@ -45,6 +45,19 @@ module "rds" {
   db_instance_class    = var.db_instance_class
 }
 
+module "cloudwatch" {
+  source                      = "./modules/cloudwatch"
+  ecs_cluster_name            = aws_ecs_cluster.droits-ecs-cluster.name
+  ecs_backoffice_service_name = aws_ecs_service.backoffice-service.name
+  rds_instance_identifier     = module.rds.instance_identifier
+  aws_region                  = var.aws_region
+}
+
+module "s3" {
+  source              = "./modules/s3"
+  regional_account_id = var.regional_account_id
+}
+
 resource "aws_s3_bucket" "droits-wreck-images" {
   bucket = "droits-wreck-images"
   # Stops terraform from destroying the object if it exists
@@ -73,4 +86,3 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "droits-wreck-imag
     }
   }
 }
-

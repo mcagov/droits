@@ -2,24 +2,6 @@ resource "aws_ecs_cluster" "droits-ecs-cluster" {
   name = var.ecs_cluster_name
 }
 
-resource "aws_cloudwatch_log_group" "droits-backoffice-container-logs" {
-  name = "droits-backoffice-container-logs"
-
-  tags = {
-    Environment = terraform.workspace
-    Application = "droits-backoffice"
-  }
-}
-
-resource "aws_cloudwatch_log_group" "droits-webapp-container-logs" {
-  name = "droits-webapp-container-logs"
-
-  tags = {
-    Environment = terraform.workspace
-    Application = "droits-webapp"
-  }
-}
-
 resource "aws_ecs_task_definition" "backoffice-task-definition" {
   family                   = "backoffice"
   execution_role_arn       = module.iam.iam-role-arn
@@ -60,7 +42,6 @@ resource "aws_ecs_service" "backoffice-service" {
   launch_type                       = "FARGATE"
   desired_count                     = 1
   health_check_grace_period_seconds = 600
-  # wait_for_steady_state = true
   depends_on = [
     aws_alb_listener.api-backoffice-listener,
     aws_alb_listener.api-backoffice-listener-https
@@ -119,7 +100,6 @@ resource "aws_ecs_service" "webapp" {
   launch_type                       = "FARGATE"
   desired_count                     = 1
   health_check_grace_period_seconds = 600
-  # wait_for_steady_state = true
   depends_on = [
     aws_alb_listener.webapp-listener,
     aws_alb_listener.webapp-listener-https
