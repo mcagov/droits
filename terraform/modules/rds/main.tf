@@ -17,7 +17,7 @@ resource "aws_db_instance" "droits" {
   identifier             = "${terraform.workspace}-droits-db"
   engine                 = "postgres"
   engine_version         = "14"
-  instance_class         = "db.t3.micro"
+  instance_class         = var.db_instance_class
   username               = var.db_username
   password               = var.db_password
   db_subnet_group_name   = aws_db_subnet_group.droits_db.name

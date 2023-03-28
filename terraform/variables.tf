@@ -1,25 +1,10 @@
-variable "public_fqdn" {
-  type        = string
-  description = "The fully qualified domain name of the publicly accessible parts of the application"
-}
-variable "gov_notify_feedback_email_address" {
-  type        = string
-  description = "Email address for Gov Notify feedback"
-}
+
 variable "aws_region" {
   type        = string
   description = "The AWS region resources are created in"
   default     = "eu-west-2"
 }
-variable "az_count" {
-  type        = number
-  description = "Number of AZs to cover in a given region"
-}
-# See docs: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/platform_versions.html
-variable "ecs_fargate_version" {
-  type        = string
-  description = "The version of fargate to run the ECS tasks on"
-}
+
 variable "ecs_cluster_name" {
   type        = string
   description = "The name of the ECS Fargate cluster"
@@ -33,10 +18,6 @@ variable "webapp_port" {
   type        = number
   description = "Port exposed by the docker image to redirect traffic to for the DROITS Webapp"
   default     = 3000
-}
-variable "webapp_count" {
-  type        = number
-  description = "Number of docker containers to run for the DROITS Webapp"
 }
 variable "webapp_health_check_path" {
   type        = string
@@ -54,74 +35,28 @@ variable "webapp_fargate_memory" {
   description = "Fargate instance memory to provision (in MiB) for the DROITS Webapp"
   default     = 2048
 }
-variable "azure_ad_tenant_id" {
-  sensitive   = true
-  type        = string
-  description = "The UUID for the Azure AD tenant, provided in Azure AD"
-}
-variable "webapp_azure_b2c_client_id" {
-  type        = string
-  description = "The Azure B2C Client ID for the B2C App Registration"
-}
-variable "webapp_azure_b2c_client_secret" {
-  type        = string
-  sensitive   = true
-  description = "The client secret for the B2C App Registration"
-}
-variable "webapp_azure_b2c_tenant_name" {
-  type        = string
-  description = "The name of the Azure B2C tenant"
-}
-variable "webapp_azure_b2c_tenant_id" {
-  type        = string
-  description = "The UUID for the Azure B2C tenant"
-}
-variable "webapp_azure_b2c_login_flow" {
-  type        = string
-  description = "The Sign In User Flow defined in Azure B2C"
-}
-variable "webapp_azure_b2c_signup_flow" {
-  type        = string
-  description = "The Sign Up User Flow defined in Azure B2C"
-}
-variable "service_count" {
-  type        = number
-  description = "Number of docker containers to run for the DROITS Service"
-}
-// See docs for ecs task definition: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html
-variable "apply_immediately" {
-  type        = bool
-  description = "Apply changes to infrastrucure immediatly"
-  default     = true
-}
+
 variable "enable_alerts" {
   type        = bool
   description = "When enabled CloudWatch alarm events are sent to the Alerts SNS Topic"
   default     = false
 }
-variable "low_disk_burst_balance_threshold" {
-  type        = number
-  description = "Alarm threshold for low RDS disk burst balance"
-  default     = 100
+
+
+variable "root_domain_name" {
+  type        = string
+  description = "The root domain name for DROITS"
 }
-variable "api_service_minimum_task_count" {
-  type        = number
-  description = "Minimum number of expected tasks to be running for the API Service"
-  default     = 1
-}
-variable "webapp_minimum_task_count" {
-  type        = number
-  description = "Minimum number of expected tasks to be running for the Webapp"
-  default     = 1
+
+variable "lb_ssl_policy" {
+  type        = string
+  description = "Security policy for the SSL certificate"
 }
 variable "ssl_certificate_arn" {
   type        = string
-  description = "ARN of ssl certificate generated in the AWS dashboard"
+  description = "ARN of ssl certificate"
 }
-variable "api_backoffice_azure_ad_client_id" {
-  type        = string
-  description = "The Client ID of the app registration in Azure AD for the Backoffice MVC app"
-}
+
 variable "api_backoffice_image" {
   type        = string
   description = "The name of the image for the Backoffice application"
@@ -216,37 +151,16 @@ variable "db_password" {
   sensitive   = true
 }
 
-variable "backup_window" {
-  type        = string
-  description = "Timeframe e.g 23:00 - 23:01"
-}
 variable "db_instance_class" {
   type        = string
   description = "The database instance class"
 }
-variable "nat_gateway_count" {
-  type        = number
-  description = "Number of NAT gateways"
-  default     = 2
-}
-variable "performance_insights_enabled" {
-  type        = bool
-  description = "Enable performance insights"
-  default     = false
-}
-variable "db_max_storage" {
-  type        = number
-  description = "The upper limit, in GB, to which the storage of the DB can be autoscaled"
-}
+
 variable "db_allocated_storage" {
   type        = number
   description = "Allocated storage, in GB, for the DB instance"
 }
-variable "backup_retention_period" {
-  type        = number
-  description = "Days to retain backups"
-  default     = 0
-}
+
 variable "db_storage_encrypted" {
   type        = bool
   description = "Specifies whether the database instances data is encrypted"
