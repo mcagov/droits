@@ -165,9 +165,9 @@ variable "webapp_ecr_repository_name" {
   type        = string
   description = "The name of the Elastic Container Repository for our webapp container images"
 }
-variable "api_backoffice_ecr_repository_url" {
+variable "ecr_repository_url" {
   type        = string
-  description = "The url of the Elastic Container Repository for our api-backoffice container images"
+  description = "The url of the Elastic Container Repository for our container images"
 }
 variable "aws_account_number" {
   sensitive   = true

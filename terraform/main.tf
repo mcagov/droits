@@ -11,7 +11,7 @@ terraform {
     key     = "global/s3/terraform.tfstate"
     encrypt = true
     region  = "eu-west-2"
-    profile = "droits_staging"
+    profile = "droits_dev"
   }
 }
 
@@ -48,6 +48,7 @@ module "cloudwatch" {
   source = "./modules/cloudwatch"
   ecs_cluster_name = aws_ecs_cluster.droits-ecs-cluster.name
   ecs_backoffice_service_name = aws_ecs_service.backoffice-service.name
+  rds_instance_identifier = module.rds.instance_identifier
 }
 
 resource "aws_s3_bucket" "droits-wreck-images" {

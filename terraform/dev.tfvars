@@ -14,7 +14,7 @@ webapp_azure_b2c_login_flow    = ""
 webapp_azure_b2c_signup_flow   = ""
 webapp_ecr_repository_name     = "droits-webapp-repository"
 api_backoffice_ecr_repository_name     = "droits-backoffice"
-api_backoffice_ecr_repository_url     = "842544458664.dkr.ecr.eu-west-2.amazonaws.com/droits-backoffice"
+ecr_repository_url     = "842544458664.dkr.ecr.eu-west-2.amazonaws.com"
 
 azure_ad_tenant_id             = "513fb495-9a90-425b-a49a-bc6ebe2a429e"
 service_count                  = 1
