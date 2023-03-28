@@ -7,3 +7,6 @@ variable "ecs_backoffice_service_name" {
 variable "rds_instance_identifier" {
   type = string
 }
+variable "aws_region" {
+  type = string
+}

@@ -16,6 +16,11 @@ variable "db_password" {
   sensitive   = true
 }
 
+variable "db_instance_class" {
+  type        = string
+  description = "The database instance class"
+}
+
 variable "db_delete_protection" {
   type        = bool
   description = "Should we protect the DB from being deleted?"

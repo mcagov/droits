@@ -62,7 +62,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
           ]
           period = 300
           stat   = "Average"
-          region = "eu-west-2"
+          region = var.aws_region
           title  = "${var.ecs_cluster_name} ECS cluster average CPU utilistation"
         }
       },
@@ -84,7 +84,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
           ]
           period = 300
           stat   = "Sum"
-          region = "eu-west-2"
+          region = var.aws_region
           title  = "${var.ecs_backoffice_service_name} ECS service total successful API requests"
         }
       },
@@ -106,7 +106,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
           ]
           period = 300
           stat   = "Sum"
-          region = "eu-west-2"
+          region = var.aws_region
           title  = "${var.ecs_backoffice_service_name} ECS service total client error API requests"
         }
       },
@@ -128,7 +128,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
           ]
           period = 300
           stat   = "Sum"
-          region = "eu-west-2"
+          region = var.aws_region
           title  = "${var.ecs_backoffice_service_name} ECS service total server error API requests"
         }
       },
@@ -150,7 +150,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
           ]
           period = 300
           stat   = "Average"
-          region = "eu-west-2"
+          region = var.aws_region
           title  = "${var.rds_instance_identifier} average CPU utilistation"
         }
       },
@@ -172,7 +172,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
           ]
           period = 300
           stat   = "Sum"
-          region = "eu-west-2"
+          region = var.aws_region
           title  = "${var.rds_instance_identifier} total number of connection attempts"
         }
       },
@@ -194,7 +194,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
           ]
           period = 300
           stat   = "Average"
-          region = "eu-west-2"
+          region = var.aws_region
           title  = "${var.rds_instance_identifier} average CPU credit usage"
         }
       }
