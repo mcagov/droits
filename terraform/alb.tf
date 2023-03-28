@@ -37,8 +37,9 @@ resource "aws_alb_listener" "api-backoffice-listener-https" {
   port              = 443
   protocol          = "HTTPS"
 
-  ssl_policy      = var.lb_ssl_policy
-  certificate_arn = var.ssl_certificate_arn
+  ##Awaiting verification
+  #ssl_policy      = var.lb_ssl_policy
+  #certificate_arn = var.ssl_certificate_arn
 
   default_action {
     target_group_arn = aws_alb_target_group.api-backoffice-target-group.arn
@@ -84,8 +85,9 @@ resource "aws_alb_listener" "webapp-listener-https" {
   port              = 443
   protocol          = "HTTPS"
 
-  ssl_policy      = var.lb_ssl_policy
-  certificate_arn = var.ssl_certificate_arn
+  ##Awaiting verification
+  #ssl_policy      = var.lb_ssl_policy
+  #certificate_arn = var.ssl_certificate_arn
 
   default_action {
     target_group_arn = aws_alb_target_group.webapp-target-group.arn

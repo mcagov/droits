@@ -2,8 +2,8 @@ resource "aws_ecs_cluster" "droits-ecs-cluster" {
   name = var.ecs_cluster_name
 }
 
-resource "aws_cloudwatch_log_group" "droits-backoffice-ecs-logs" {
-  name = "droits-backoffice-ecs-logs"
+resource "aws_cloudwatch_log_group" "droits-backoffice-container-logs" {
+  name = "droits-backoffice-container-logs"
 
   tags = {
     Environment = terraform.workspace
@@ -11,8 +11,8 @@ resource "aws_cloudwatch_log_group" "droits-backoffice-ecs-logs" {
   }
 }
 
-resource "aws_cloudwatch_log_group" "droits-webapp-ecs-logs" {
-  name = "droits-webapp-ecs-logs"
+resource "aws_cloudwatch_log_group" "droits-webapp-container-logs" {
+  name = "droits-webapp-container-logs"
 
   tags = {
     Environment = terraform.workspace
@@ -46,7 +46,7 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
       logDriver : "awslogs",
       options : {
         awslogs-region : var.aws_region,
-        awslogs-group : "droits-backoffice-ecs-logs",
+        awslogs-group : "droits-backoffice-container-logs",
         awslogs-stream-prefix : "backoffice"
       }
     }
@@ -105,7 +105,7 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
       logDriver : "awslogs",
       options : {
         awslogs-region : var.aws_region,
-        awslogs-group : "droits-webapp-ecs-logs",
+        awslogs-group : "droits-webapp-container-logs",
         awslogs-stream-prefix : "webapp"
       }
     }
