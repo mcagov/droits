@@ -51,6 +51,10 @@ module "cloudwatch" {
   rds_instance_identifier = module.rds.instance_identifier
 }
 
+module "s3" {
+  source = "./modules/s3"
+}
+
 resource "aws_s3_bucket" "droits-wreck-images" {
   bucket = "droits-wreck-images"
   # Stops terraform from destroying the object if it exists
@@ -97,6 +101,11 @@ resource "aws_alb" "api-backoffice-alb" {
   subnets         = [module.security-groups.public-subnet-1, module.security-groups.public-subnet-2]
   internal        = false
   security_groups = [module.security-groups.api-backoffice-lb-security-group-id]
+  access_logs {
+    bucket  = module.s3.backoffice-lb-log-bucket
+    prefix  = "backoffice-alb"
+    enabled = true
+  }
 }
 
 resource "aws_alb_listener" "api-backoffice-listener" {
