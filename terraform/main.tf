@@ -55,6 +55,7 @@ module "cloudwatch" {
 
 module "s3" {
   source = "./modules/s3"
+  regional_account_id = var.regional_account_id
 }
 
 resource "aws_s3_bucket" "droits-wreck-images" {

@@ -191,3 +191,7 @@ variable "public_subnet_2" {
   type        = string
   description = "ID of second public subnet"
 }
+variable "regional_account_id" {
+  type = string
+  description = "The id of the region we are currently deploying to"
+}

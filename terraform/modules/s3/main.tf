@@ -38,7 +38,7 @@ resource "aws_s3_bucket_policy" "droits-backoffice-alb-logs" {
       "Sid": "AllowELBRootAccount",
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::${local.regional_account_id_for_eu_west_2}:root"
+        "AWS": "arn:aws:iam::${var.regional_account_id}:root"
       },
       "Action": "s3:PutObject",
       "Resource": "arn:aws:s3:::${aws_s3_bucket.droits-backoffice-alb-logs.bucket}/*"
@@ -68,8 +68,4 @@ resource "aws_s3_bucket_policy" "droits-backoffice-alb-logs" {
     }
   ]
 })
-}
-
-locals {
-  regional_account_id_for_eu_west_2 = "652711504416"
 }

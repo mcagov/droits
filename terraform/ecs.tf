@@ -28,7 +28,7 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
       logDriver : "awslogs",
       options : {
         awslogs-region : var.aws_region,
-        awslogs-group : "droits-backoffice-ecs-logs",
+        awslogs-group : "droits-backoffice-container-logs",
         awslogs-stream-prefix : "backoffice"
       }
     }
@@ -43,7 +43,7 @@ resource "aws_ecs_service" "backoffice-service" {
   desired_count                     = 1
   health_check_grace_period_seconds = 600
   depends_on = [
-    aws_alb_listener.api-backoffice-listener-http,
+    aws_alb_listener.api-backoffice-listener,
     aws_alb_listener.api-backoffice-listener-https
   ]
 
@@ -86,7 +86,7 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
       logDriver : "awslogs",
       options : {
         awslogs-region : var.aws_region,
-        awslogs-group : "droits-webapp-ecs-logs",
+        awslogs-group : "droits-webapp-container-logs",
         awslogs-stream-prefix : "webapp"
       }
     }
@@ -101,7 +101,7 @@ resource "aws_ecs_service" "webapp" {
   desired_count                     = 1
   health_check_grace_period_seconds = 600
   depends_on = [
-    aws_alb_listener.webapp-listener-http,
+    aws_alb_listener.webapp-listener,
     aws_alb_listener.webapp-listener-https
   ]
 
