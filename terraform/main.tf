@@ -46,15 +46,15 @@ module "rds" {
 }
 
 module "cloudwatch" {
-  source = "./modules/cloudwatch"
-  ecs_cluster_name = aws_ecs_cluster.droits-ecs-cluster.name
+  source                      = "./modules/cloudwatch"
+  ecs_cluster_name            = aws_ecs_cluster.droits-ecs-cluster.name
   ecs_backoffice_service_name = aws_ecs_service.backoffice-service.name
-  rds_instance_identifier = module.rds.instance_identifier
-  aws_region = var.aws_region
+  rds_instance_identifier     = module.rds.instance_identifier
+  aws_region                  = var.aws_region
 }
 
 module "s3" {
-  source = "./modules/s3"
+  source              = "./modules/s3"
   regional_account_id = var.regional_account_id
 }
 

@@ -149,7 +149,7 @@ variable "db_password" {
   type        = string
   description = "The password used for the master database user"
   sensitive   = true
-  default = ""
+  default     = ""
 }
 
 variable "db_instance_class" {
@@ -192,6 +192,6 @@ variable "public_subnet_2" {
   description = "ID of second public subnet"
 }
 variable "regional_account_id" {
-  type = string
+  type        = string
   description = "The id of the region we are currently deploying to"
 }

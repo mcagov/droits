@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_log_group" "droits-backoffice-ecs-logs" {
-  name = "droits-backoffice-ecs-logs"
+  name              = "droits-backoffice-ecs-logs"
   retention_in_days = 30
-  
+
   tags = {
     Environment = terraform.workspace
     Application = "droits-backoffice"
@@ -15,7 +15,7 @@ resource "aws_cloudwatch_log_stream" "backoffice" {
 
 
 resource "aws_cloudwatch_log_group" "droits-webapp-ecs-logs" {
-  name = "droits-webapp-ecs-logs"
+  name              = "droits-webapp-ecs-logs"
   retention_in_days = 30
   tags = {
     Environment = terraform.workspace
@@ -33,7 +33,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
 
   dashboard_body = jsonencode({
     widgets = [
-        {
+      {
         type   = "text"
         x      = 0
         y      = 0

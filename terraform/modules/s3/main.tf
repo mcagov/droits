@@ -31,41 +31,41 @@ resource "aws_s3_bucket_policy" "droits-backoffice-alb-logs" {
   bucket = "droits-backoffice-alb-logs"
 
   policy = jsonencode(
-{
-  "Version": "2012-10-17",
-  "Statement": [
     {
-      "Sid": "AllowELBRootAccount",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::${var.regional_account_id}:root"
-      },
-      "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::${aws_s3_bucket.droits-backoffice-alb-logs.bucket}/*"
-    },
-    {
-      "Sid": "AWSLogDeliveryWrite",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "delivery.logs.amazonaws.com"
-      },
-      "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::${aws_s3_bucket.droits-backoffice-alb-logs.bucket}/*",
-      "Condition": {
-        "StringEquals": {
-          "s3:x-amz-acl": "bucket-owner-full-control"
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Sid" : "AllowELBRootAccount",
+          "Effect" : "Allow",
+          "Principal" : {
+            "AWS" : "arn:aws:iam::${var.regional_account_id}:root"
+          },
+          "Action" : "s3:PutObject",
+          "Resource" : "arn:aws:s3:::${aws_s3_bucket.droits-backoffice-alb-logs.bucket}/*"
+        },
+        {
+          "Sid" : "AWSLogDeliveryWrite",
+          "Effect" : "Allow",
+          "Principal" : {
+            "Service" : "delivery.logs.amazonaws.com"
+          },
+          "Action" : "s3:PutObject",
+          "Resource" : "arn:aws:s3:::${aws_s3_bucket.droits-backoffice-alb-logs.bucket}/*",
+          "Condition" : {
+            "StringEquals" : {
+              "s3:x-amz-acl" : "bucket-owner-full-control"
+            }
+          }
+        },
+        {
+          "Sid" : "AWSLogDeliveryAclCheck",
+          "Effect" : "Allow",
+          "Principal" : {
+            "Service" : "delivery.logs.amazonaws.com"
+          },
+          "Action" : "s3:GetBucketAcl",
+          "Resource" : "arn:aws:s3:::${aws_s3_bucket.droits-backoffice-alb-logs.bucket}"
         }
-      }
-    },
-    {
-      "Sid": "AWSLogDeliveryAclCheck",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "delivery.logs.amazonaws.com"
-      },
-      "Action": "s3:GetBucketAcl",
-      "Resource": "arn:aws:s3:::${aws_s3_bucket.droits-backoffice-alb-logs.bucket}"
-    }
-  ]
-})
+      ]
+  })
 }
