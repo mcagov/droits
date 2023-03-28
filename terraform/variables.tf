@@ -24,11 +24,7 @@ variable "ecs_cluster_name" {
   type        = string
   description = "The name of the ECS Fargate cluster"
 }
-variable "webapp_image" {
-  type        = string
-  description = "Docker image to run in the ECS cluster for the DROITS Webapp"
-  default     = "DROITS-webapp"
-}
+
 variable "webapp_image_tag" {
   type        = string
   description = "Hash of the relevant commit to the mca-droits repo"
@@ -87,10 +83,6 @@ variable "webapp_azure_b2c_login_flow" {
 variable "webapp_azure_b2c_signup_flow" {
   type        = string
   description = "The Sign Up User Flow defined in Azure B2C"
-}
-variable "webapp_ecr_repository_name" {
-  type        = string
-  description = "The name of the Elastic Container Repository for our webapp container images"
 }
 variable "service_count" {
   type        = number
@@ -167,6 +159,11 @@ variable "api_backoffice_fargate_memory" {
 variable "api_backoffice_ecr_repository_name" {
   type        = string
   description = "The name of the Elastic Container Repository for our api-backoffice container images"
+}
+
+variable "webapp_ecr_repository_name" {
+  type        = string
+  description = "The name of the Elastic Container Repository for our webapp container images"
 }
 variable "api_backoffice_ecr_repository_url" {
   type        = string

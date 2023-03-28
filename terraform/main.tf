@@ -79,11 +79,6 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "droits-wreck-imag
   }
 }
 
-resource "aws_ecr_repository" "droits-webapp-repository" {
-  name         = var.webapp_ecr_repository_name
-  force_delete = true
-}
-
 resource "aws_ecs_cluster" "droits-ecs-cluster" {
   name = var.ecs_cluster_name
 }
@@ -136,12 +131,21 @@ resource "aws_alb_listener" "webapp-listener" {
   port = 80
 }
 
-resource "aws_cloudwatch_log_group" "droits-backoffice-ecs-lg" {
-  name = "droits-backoffice-ecs-lg"
+resource "aws_cloudwatch_log_group" "droits-backoffice-ecs-logs" {
+  name = "droits-backoffice-ecs-logs"
 
   tags = {
-    Environment = "development"
+    Environment = terraform.workspace
     Application = "droits-backoffice"
+  }
+}
+
+resource "aws_cloudwatch_log_group" "droits-webapp-ecs-logs" {
+  name = "droits-webapp-ecs-logs"
+
+  tags = {
+    Environment = terraform.workspace
+    Application = "droits-webapp"
   }
 }
 
@@ -154,7 +158,7 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
   memory                   = var.api_backoffice_fargate_memory
   container_definitions = jsonencode([{
     name : "api-backoffice",
-    image : "${var.api_backoffice_ecr_repository_url}/${var.api_backoffice_ecr_repository_name}:${var.api_backoffice_image_tag}",
+    image : "${var.ecr_repository_url}/${var.api_backoffice_ecr_repository_name}:${var.api_backoffice_image_tag}",
     portMappings : [
       {
         containerPort : var.api_backoffice_port
@@ -171,7 +175,7 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
       logDriver : "awslogs",
       options : {
         awslogs-region : var.aws_region,
-        awslogs-group : "droits-backoffice-ecs-lg",
+        awslogs-group : "droits-backoffice-ecs-logs",
         awslogs-stream-prefix : "backoffice"
       }
     }
@@ -211,7 +215,7 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
   memory                   = var.webapp_fargate_memory
   container_definitions = jsonencode([{
     name : "webapp",
-    image : "${aws_ecr_repository.droits-webapp-repository.repository_url}:${var.webapp_image_tag}",
+    image : "${var.ecr_repository_url}/${var.webapp_ecr_repository_name}:${var.webapp_image_tag}",
     portMappings : [
       {
         containerPort : var.webapp_port
@@ -228,15 +232,11 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
       logDriver : "awslogs",
       options : {
         awslogs-region : var.aws_region,
-        awslogs-group : "droits-webapp-ecs-lg",
+        awslogs-group : "droits-webapp-ecs-logs",
         awslogs-stream-prefix : "webapp"
       }
     }
   }])
-  runtime_platform {
-    operating_system_family = "LINUX"
-    cpu_architecture        = "ARM64"
-  }
 }
 
 resource "aws_ecs_service" "webapp" {

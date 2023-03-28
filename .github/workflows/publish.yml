@@ -1,10 +1,14 @@
-name: AWS ECR push Backoffice
+name: Publishing application
 
 on:
   workflow_call:
     inputs:
       tag:
         description: The tag to add to the published Docker image, e.g. "v1.0.1"
+        type: string
+        required: true
+      working-directory:
+        description: The directory to publish
         type: string
         required: true
       environment:
@@ -27,13 +31,9 @@ on:
       aws_session_token:
         required: true
 
-defaults:
-  run:
-    working-directory: backoffice
-
 jobs:
   deploy:
-    name: Publish image
+    name: Publish ${{ inputs.working-directory }} image
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
 
@@ -58,8 +58,10 @@ jobs:
       env:
         ECR_REGISTRY: ${{ secrets.registry_url }}
         ECR_REPOSITORY: ${{ secrets.repository_name }}
-        IMAGE_TAG: latest
+        IMAGE_TAG: ${{ inputs.tag }}
+        DIRECTORY: ${{ inputs.working-directory }}
       run: |
+        cd $DIRECTORY
         # Build a docker container and push it to ECR
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         echo "Pushing image to ECR..."
