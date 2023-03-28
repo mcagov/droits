@@ -16,7 +16,7 @@ resource "aws_alb" "api-backoffice-alb" {
 }
 
 
-resource "aws_alb_listener" "api-backoffice-listener-http" {
+resource "aws_alb_listener" "api-backoffice-listener" {
   load_balancer_arn = aws_alb.api-backoffice-alb.arn
   port              = 80
   protocol          = "HTTP"
@@ -63,7 +63,7 @@ resource "aws_alb" "webapp-alb" {
   security_groups = [module.security-groups.webapp-lb-security-group-id]
 }
 
-resource "aws_alb_listener" "webapp-listener-http" {
+resource "aws_alb_listener" "webapp-listener" {
   load_balancer_arn = aws_alb.webapp-alb.arn
   port              = 80
   protocol          = "HTTP"
