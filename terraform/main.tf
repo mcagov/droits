@@ -132,24 +132,6 @@ resource "aws_alb_listener" "webapp-listener" {
   port = 80
 }
 
-resource "aws_cloudwatch_log_group" "droits-backoffice-ecs-logs" {
-  name = "droits-backoffice-ecs-logs"
-
-  tags = {
-    Environment = terraform.workspace
-    Application = "droits-backoffice"
-  }
-}
-
-resource "aws_cloudwatch_log_group" "droits-webapp-ecs-logs" {
-  name = "droits-webapp-ecs-logs"
-
-  tags = {
-    Environment = terraform.workspace
-    Application = "droits-webapp"
-  }
-}
-
 resource "aws_ecs_task_definition" "backoffice-task-definition" {
   family                   = "backoffice"
   execution_role_arn       = module.iam.iam-role-arn
