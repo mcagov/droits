@@ -28,7 +28,7 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
       logDriver : "awslogs",
       options : {
         awslogs-region : var.aws_region,
-        awslogs-group : "droits-backoffice-container-logs",
+        awslogs-group : "droits-backoffice-ecs-logs",
         awslogs-stream-prefix : "backoffice"
       }
     }
@@ -86,7 +86,7 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
       logDriver : "awslogs",
       options : {
         awslogs-region : var.aws_region,
-        awslogs-group : "droits-webapp-container-logs",
+        awslogs-group : "droits-webapp-ecs-logs",
         awslogs-stream-prefix : "webapp"
       }
     }
