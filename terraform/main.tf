@@ -49,6 +49,7 @@ module "cloudwatch" {
   source                      = "./modules/cloudwatch"
   ecs_cluster_name            = aws_ecs_cluster.droits-ecs-cluster.name
   ecs_backoffice_service_name = aws_ecs_service.backoffice-service.name
+  ecs_webapp_service_name     = aws_ecs_service.webapp.name
   rds_instance_identifier     = module.rds.instance_identifier
   aws_region                  = var.aws_region
   backoffice_load_balancer    = aws_alb.api-backoffice-alb.name
