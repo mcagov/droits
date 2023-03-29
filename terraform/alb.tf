@@ -82,7 +82,7 @@ resource "aws_alb_listener" "webapp-listener" {
   #    }
   #  }
   default_action {
-    target_group_arn = aws_alb_target_group.api-backoffice-target-group.arn
+    target_group_arn = aws_alb_target_group.webapp-target-group.arn
     type             = "forward"
   }
 }
