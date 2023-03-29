@@ -1,5 +1,11 @@
 # DROITS CI/CD Workflows
 
+- Explain that each  env is in different AWS account so there's not promotion of dcker images e.g from staging to prd
+- Each pipeline generates fresh docker images and pushes them to env/account specific ECR repository
+- Reuse of pipeline.yml
+- Explain inputs 
+- Explain secrets
+
 Step 1 : Terraform lint (checks terraform before starting)
 Stage 2: Trigger webapp & backoffice pipelines concurrently :
 Webapp pipeline:
