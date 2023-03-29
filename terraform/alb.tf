@@ -21,14 +21,18 @@ resource "aws_alb_listener" "api-backoffice-listener" {
   port              = 80
   protocol          = "HTTP"
 
+  #  default_action {
+  #    type = "redirect"
+  #
+  #    redirect {
+  #      port        = 443
+  #      protocol    = "HTTPS"
+  #      status_code = "HTTP_301"
+  #    }
+  #  }
   default_action {
-    type = "redirect"
-
-    redirect {
-      port        = 443
-      protocol    = "HTTPS"
-      status_code = "HTTP_301"
-    }
+    target_group_arn = aws_alb_target_group.api-backoffice-target-group.arn
+    type             = "forward"
   }
 }
 
@@ -68,14 +72,18 @@ resource "aws_alb_listener" "webapp-listener" {
   port              = 80
   protocol          = "HTTP"
 
+  #  default_action {
+  #    type = "redirect"
+  #
+  #    redirect {
+  #      port        = 443
+  #      protocol    = "HTTPS"
+  #      status_code = "HTTP_301"
+  #    }
+  #  }
   default_action {
-    type = "redirect"
-
-    redirect {
-      port        = 443
-      protocol    = "HTTPS"
-      status_code = "HTTP_301"
-    }
+    target_group_arn = aws_alb_target_group.api-backoffice-target-group.arn
+    type             = "forward"
   }
 }
 
