@@ -51,6 +51,8 @@ module "cloudwatch" {
   ecs_backoffice_service_name = aws_ecs_service.backoffice-service.name
   rds_instance_identifier     = module.rds.instance_identifier
   aws_region                  = var.aws_region
+  backoffice_load_balancer    = aws_alb.api-backoffice-alb.name
+  webapp_load_balancer        = aws_alb.webapp-alb.name
 }
 
 module "s3" {

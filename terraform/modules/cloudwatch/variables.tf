@@ -10,3 +10,9 @@ variable "rds_instance_identifier" {
 variable "aws_region" {
   type = string
 }
+variable "backoffice_load_balancer" {
+  type = string
+}
+variable "webapp_load_balancer" {
+  type = string
+}

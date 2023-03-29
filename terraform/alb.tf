@@ -13,6 +13,11 @@ resource "aws_alb" "api-backoffice-alb" {
   subnets         = [module.security-groups.public-subnet-1, module.security-groups.public-subnet-2]
   internal        = false
   security_groups = [module.security-groups.api-backoffice-lb-security-group-id]
+  access_logs {
+    bucket  = module.s3.backoffice-lb-log-bucket
+    prefix  = "backoffice_alb"
+    enabled = true
+  }
 }
 
 
@@ -65,6 +70,11 @@ resource "aws_alb" "webapp-alb" {
   subnets         = [module.security-groups.public-subnet-1, module.security-groups.public-subnet-2]
   internal        = false
   security_groups = [module.security-groups.webapp-lb-security-group-id]
+  access_logs {
+    bucket  = module.s3.webapp-lb-log-bucket
+    prefix  = "webapp_alb"
+    enabled = true
+  }
 }
 
 resource "aws_alb_listener" "webapp-listener" {

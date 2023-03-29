@@ -1,5 +1,5 @@
-resource "aws_cloudwatch_log_group" "droits-backoffice-ecs-logs" {
-  name              = "droits-backoffice-ecs-logs"
+resource "aws_cloudwatch_log_group" "droits-backoffice-container-logs" {
+  name              = "droits-backoffice-container-logs"
   retention_in_days = 30
 
   tags = {
@@ -10,12 +10,12 @@ resource "aws_cloudwatch_log_group" "droits-backoffice-ecs-logs" {
 
 resource "aws_cloudwatch_log_stream" "backoffice" {
   name           = "droits-backoffice-ecs-stream"
-  log_group_name = aws_cloudwatch_log_group.droits-backoffice-ecs-logs.name
+  log_group_name = aws_cloudwatch_log_group.droits-backoffice-container-logs.name
 }
 
 
-resource "aws_cloudwatch_log_group" "droits-webapp-ecs-logs" {
-  name              = "droits-webapp-ecs-logs"
+resource "aws_cloudwatch_log_group" "droits-webapp-container-logs" {
+  name              = "droits-webapp-container-logs"
   retention_in_days = 30
   tags = {
     Environment = terraform.workspace
@@ -25,7 +25,7 @@ resource "aws_cloudwatch_log_group" "droits-webapp-ecs-logs" {
 
 resource "aws_cloudwatch_log_stream" "webapp" {
   name           = "droits-webapp-ecs-stream"
-  log_group_name = aws_cloudwatch_log_group.droits-webapp-ecs-logs.name
+  log_group_name = aws_cloudwatch_log_group.droits-webapp-container-logs.name
 }
 
 resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
@@ -186,8 +186,8 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
         properties = {
           metrics = [
             [
-              "AWS/RDS",
-              "CPUCreditUsage",
+              "AWS/ApplicationELB",
+              "ActiveConnectionCount",
               "DBInstanceIdentifier",
               "${var.rds_instance_identifier}"
             ]
@@ -196,6 +196,138 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
           stat   = "Average"
           region = var.aws_region
           title  = "${var.rds_instance_identifier} average CPU credit usage"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 0
+        y      = 0
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            [
+              "AWS/ApplicationELB",
+              "ActiveConnectionCount",
+              "LoadBalancer",
+              "${var.backoffice_load_balancer}"
+            ]
+          ]
+          period = 300
+          stat   = "Sum"
+          region = var.aws_region
+          title  = "${var.backoffice_load_balancer} load balancer total active connections"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 0
+        y      = 0
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            [
+              "AWS/ApplicationELB",
+              "HTTPCode_ELB_4XX_Count",
+              "LoadBalancer",
+              "${var.backoffice_load_balancer}"
+            ]
+          ]
+          period = 300
+          stat   = "Sum"
+          region = var.aws_region
+          title  = "${var.backoffice_load_balancer} total client error API requests originating from the load balancer"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 0
+        y      = 0
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            [
+              "AWS/ApplicationELB",
+              "HTTPCode_ELB_5XX_Count",
+              "LoadBalancer",
+              "${var.backoffice_load_balancer}"
+            ]
+          ]
+          period = 300
+          stat   = "Sum"
+          region = var.aws_region
+          title  = "${var.backoffice_load_balancer} total server error API requests originating from the load balancer"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 0
+        y      = 0
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            [
+              "AWS/ApplicationELB",
+              "HealthyHostCount",
+              "LoadBalancer",
+              "${var.backoffice_load_balancer}"
+            ]
+          ]
+          period = 300
+          stat   = "Sum"
+          region = var.aws_region
+          title  = "${var.backoffice_load_balancer} total number of healthy targets"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 0
+        y      = 0
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            [
+              "AWS/ApplicationELB",
+              "TargetConnectionErrorCount",
+              "LoadBalancer",
+              "${var.backoffice_load_balancer}"
+            ]
+          ]
+          period = 300
+          stat   = "Sum"
+          region = var.aws_region
+          title  = "${var.backoffice_load_balancer} total number of unsuccessful connections to targets"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 0
+        y      = 0
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            [
+              "AWS/ApplicationELB",
+              "TargetConnectionErrorCount",
+              "TargetResponseTime",
+              "${var.backoffice_load_balancer}"
+            ]
+          ]
+          period = 300
+          stat   = "Average"
+          region = var.aws_region
+          title  = "${var.backoffice_load_balancer} average target response time"
         }
       }
     ]
