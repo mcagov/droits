@@ -208,7 +208,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
         properties = {
           metrics = [
             [
-              "AWS/RDS",
+              "AWS/ApplicationELB",
               "ActiveConnectionCount",
               "LoadBalancer",
               "${var.backoffice_load_balancer}"
@@ -218,6 +218,116 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
           stat   = "Sum"
           region = var.aws_region
           title  = "${var.backoffice_load_balancer} load balancer total active connections"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 0
+        y      = 0
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            [
+              "AWS/ApplicationELB",
+              "HTTPCode_ELB_4XX_Count",
+              "LoadBalancer",
+              "${var.backoffice_load_balancer}"
+            ]
+          ]
+          period = 300
+          stat   = "Sum"
+          region = var.aws_region
+          title  = "${var.backoffice_load_balancer} total client error API requests originating from the load balancer"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 0
+        y      = 0
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            [
+              "AWS/ApplicationELB",
+              "HTTPCode_ELB_5XX_Count",
+              "LoadBalancer",
+              "${var.backoffice_load_balancer}"
+            ]
+          ]
+          period = 300
+          stat   = "Sum"
+          region = var.aws_region
+          title  = "${var.backoffice_load_balancer} total server error API requests originating from the load balancer"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 0
+        y      = 0
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            [
+              "AWS/ApplicationELB",
+              "HealthyHostCount",
+              "LoadBalancer",
+              "${var.backoffice_load_balancer}"
+            ]
+          ]
+          period = 300
+          stat   = "Sum"
+          region = var.aws_region
+          title  = "${var.backoffice_load_balancer} total number of healthy targets"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 0
+        y      = 0
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            [
+              "AWS/ApplicationELB",
+              "TargetConnectionErrorCount",
+              "LoadBalancer",
+              "${var.backoffice_load_balancer}"
+            ]
+          ]
+          period = 300
+          stat   = "Sum"
+          region = var.aws_region
+          title  = "${var.backoffice_load_balancer} total number of unsuccessful connections to targets"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 0
+        y      = 0
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            [
+              "AWS/ApplicationELB",
+              "TargetConnectionErrorCount",
+              "TargetResponseTime",
+              "${var.backoffice_load_balancer}"
+            ]
+          ]
+          period = 300
+          stat   = "Average"
+          region = var.aws_region
+          title  = "${var.backoffice_load_balancer} average target response time"
         }
       }
     ]
