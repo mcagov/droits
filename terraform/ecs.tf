@@ -44,7 +44,7 @@ resource "aws_ecs_service" "backoffice-service" {
   health_check_grace_period_seconds = 600
   depends_on = [
     aws_alb_listener.api-backoffice-listener,
-#    aws_alb_listener.api-backoffice-listener-https
+    #    aws_alb_listener.api-backoffice-listener-https
   ]
 
   network_configuration {
@@ -102,7 +102,7 @@ resource "aws_ecs_service" "webapp" {
   health_check_grace_period_seconds = 600
   depends_on = [
     aws_alb_listener.webapp-listener,
-#    aws_alb_listener.webapp-listener-https
+    #    aws_alb_listener.webapp-listener-https
   ]
 
   network_configuration {
