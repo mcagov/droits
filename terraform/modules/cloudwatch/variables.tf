@@ -16,6 +16,24 @@ variable "aws_region" {
 variable "backoffice_load_balancer" {
   type = string
 }
+variable "backoffice_alb_id" {
+  type = string
+}
+variable "backoffice_alb_target_group_id" {
+  type = string
+}
 variable "webapp_load_balancer" {
+  type = string
+}
+variable "webapp_alb_id" {
+  type = string
+}
+variable "webapp_alb_target_group_id" {
+  type = string
+}
+variable "db_instance_id" {
+  type = string
+}
+variable "db_instance_class" {
   type = string
 }

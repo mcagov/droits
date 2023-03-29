@@ -46,14 +46,20 @@ module "rds" {
 }
 
 module "cloudwatch" {
-  source                      = "./modules/cloudwatch"
-  ecs_cluster_name            = aws_ecs_cluster.droits-ecs-cluster.name
-  ecs_backoffice_service_name = aws_ecs_service.backoffice-service.name
-  ecs_webapp_service_name     = aws_ecs_service.webapp.name
-  rds_instance_identifier     = module.rds.instance_identifier
-  aws_region                  = var.aws_region
-  backoffice_load_balancer    = aws_alb.api-backoffice-alb.name
-  webapp_load_balancer        = aws_alb.webapp-alb.name
+  source                         = "./modules/cloudwatch"
+  ecs_cluster_name               = aws_ecs_cluster.droits-ecs-cluster.name
+  ecs_backoffice_service_name    = aws_ecs_service.backoffice-service.name
+  ecs_webapp_service_name        = aws_ecs_service.webapp.name
+  rds_instance_identifier        = module.rds.instance_identifier
+  aws_region                     = var.aws_region
+  backoffice_load_balancer       = aws_alb.api-backoffice-alb.name
+  backoffice_alb_id              = aws_alb.api-backoffice-alb.id
+  backoffice_alb_target_group_id = aws_alb_target_group.api-backoffice-target-group.id
+  webapp_load_balancer           = aws_alb.webapp-alb.name
+  webapp_alb_id                  = aws_alb.webapp-alb.id
+  webapp_alb_target_group_id     = aws_alb_target_group.webapp-target-group.id
+  db_instance_id                 = module.rds.instance_identifier
+  db_instance_class              = var.db_instance_class 
 }
 
 module "s3" {
