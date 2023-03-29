@@ -32,19 +32,19 @@ resource "aws_alb_listener" "api-backoffice-listener" {
   }
 }
 
-resource "aws_alb_listener" "api-backoffice-listener-https" {
-  load_balancer_arn = aws_alb.api-backoffice-alb.arn
-  port              = 443
-  protocol          = "HTTPS"
-
-  ssl_policy      = var.lb_ssl_policy
-  certificate_arn = var.ssl_certificate_arn
-
-  default_action {
-    target_group_arn = aws_alb_target_group.api-backoffice-target-group.arn
-    type             = "forward"
-  }
-}
+#resource "aws_alb_listener" "api-backoffice-listener-https" {
+#  load_balancer_arn = aws_alb.api-backoffice-alb.arn
+#  port              = 443
+#  protocol          = "HTTPS"
+#
+#  ssl_policy      = var.lb_ssl_policy
+#  certificate_arn = var.ssl_certificate_arn
+#
+#  default_action {
+#    target_group_arn = aws_alb_target_group.api-backoffice-target-group.arn
+#    type             = "forward"
+#  }
+#}
 
 ###Webapp
 
@@ -79,17 +79,17 @@ resource "aws_alb_listener" "webapp-listener" {
   }
 }
 
-resource "aws_alb_listener" "webapp-listener-https" {
-  load_balancer_arn = aws_alb.webapp-alb.arn
-  port              = 443
-  protocol          = "HTTPS"
-
-  ssl_policy      = var.lb_ssl_policy
-  certificate_arn = var.ssl_certificate_arn
-
-  default_action {
-    target_group_arn = aws_alb_target_group.webapp-target-group.arn
-    type             = "forward"
-  }
-}
+#resource "aws_alb_listener" "webapp-listener-https" {
+#  load_balancer_arn = aws_alb.webapp-alb.arn
+#  port              = 443
+#  protocol          = "HTTPS"
+#
+#  ssl_policy      = var.lb_ssl_policy
+#  certificate_arn = var.ssl_certificate_arn
+#
+#  default_action {
+#    target_group_arn = aws_alb_target_group.webapp-target-group.arn
+#    type             = "forward"
+#  }
+#}
 
