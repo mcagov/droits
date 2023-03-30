@@ -19,10 +19,10 @@ variable "ecs_webapp_service_minimum_task_count" {
   type        = number
   description = "Minimum number of expected tasks to be running for the webapp ECS service"
 }
-# variable "ecs_webapp_alerts_topic_arn" {
-#   type = string
-#   description = "The ARN of the webapp_alerts SNS topic"
-# }
+variable "ecs_webapp_alerts_topic_arn" {
+  type = string
+  description = "The ARN of the webapp_alerts SNS topic"
+}
 variable "rds_instance_identifier" {
   type = string
 }

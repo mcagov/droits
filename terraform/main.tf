@@ -63,9 +63,10 @@ module "cloudwatch" {
   db_low_disk_burst_balance_threshold      = var.db_low_disk_burst_balance_threshold
   enable_alerts                            = var.enable_alerts
   ecs_backofice_service_minimum_task_count = var.api_backofice_service_minimum_task_count
-  ecs_backoffice_alerts_topic_arn          = module.sns.backoffice_alerts_topic_arn
   ecs_webapp_service_minimum_task_count    = var.webapp_service_minimum_task_count
+  ecs_backoffice_alerts_topic_arn          = module.sns.backoffice_alerts_topic_arn
   rds_db_alerts_topic_arn                  = module.sns.db_alerts_topic_arn
+  ecs_webapp_alerts_topic_arn              = module.sns.webapp_alerts_topic_arn
 }
 
 module "sns" {
