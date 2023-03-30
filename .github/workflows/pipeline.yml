@@ -64,6 +64,7 @@ jobs:
     needs: [terraform_lint]
     with:
       environment: ${{ inputs.environment }}
+      image_tag: ${{ inputs.image_tag }}
     secrets:
       registry_url: ${{ secrets.registry_url }}
       repository_name: ${{ secrets.backoffice_repository_name }}
@@ -77,6 +78,7 @@ jobs:
     needs: [terraform_lint]
     with:
       environment: ${{ inputs.environment }}
+      image_tag: ${{ inputs.image_tag }}
     secrets:
       registry_url: ${{ secrets.registry_url }}
       repository_name: ${{ secrets.webapp_repository_name }}

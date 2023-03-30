@@ -8,6 +8,10 @@ on:
           and must match the terraform_workspace input.
         type: string
         required: true
+      image_tag:
+        description: The tag to add to the published Docker image, e.g. "v1.0.1"
+        type: string
+        required: true
     secrets:
       registry_url:
         description: The URL of the registry where the image should be published
@@ -34,7 +38,7 @@ jobs:
     needs: [test]
     uses: ./.github/workflows/publish.yml
     with:
-      image_tag: ${{ github.sha }}
+      image_tag: ${{ inputs.image_tag }}
       environment: ${{ inputs.environment }}
       working-directory: backoffice
     secrets:
