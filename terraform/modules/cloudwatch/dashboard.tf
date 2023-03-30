@@ -11,7 +11,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
         height = 3
 
         properties = {
-          markdown = "_Welcome to the DROITS dashboard for ${var.ecs_backoffice_service_name}, ${var.ecs_webapp_service_name}, ${var.rds_instance_identifier}, ${var.backoffice_load_balancer} and ${var.webapp_load_balancer}!_ Here you can view metrics on low level information like CPU utilisation and the number of successful API requests made."
+          markdown = "Welcome to the DROITS dashboard for *${var.ecs_backoffice_service_name}*, *${var.ecs_webapp_service_name}*, *${var.rds_instance_identifier}*, *${var.backoffice_load_balancer}* and *${var.webapp_load_balancer}*! Here you can view metrics on low level information like CPU utilisation and the number of successful API requests made."
         }
       },
       {

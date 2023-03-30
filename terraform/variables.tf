@@ -9,7 +9,10 @@ variable "ecs_cluster_name" {
   type        = string
   description = "The name of the ECS Fargate cluster"
 }
-
+variable "webapp_ecr_repository_name" {
+  type        = string
+  description = "The name of the Elastic Container Repository for our webapp container images"
+}
 variable "webapp_image_tag" {
   type        = string
   description = "Hash of the relevant commit to the mca-droits repo"
@@ -35,13 +38,17 @@ variable "webapp_fargate_memory" {
   description = "Fargate instance memory to provision (in MiB) for the DROITS Webapp"
   default     = 2048
 }
+variable "webapp_service_minimum_task_count" {
+  type        = number
+  description = "Minimum number of expected tasks to be running for the webapp ECS service"
+  default     = 1
+}
 
 variable "enable_alerts" {
   type        = bool
   description = "When enabled CloudWatch alarm events are sent to the Alerts SNS Topic"
   default     = false
 }
-
 
 variable "root_domain_name" {
   type        = string
@@ -95,11 +102,12 @@ variable "api_backoffice_ecr_repository_name" {
   type        = string
   description = "The name of the Elastic Container Repository for our api-backoffice container images"
 }
-
-variable "webapp_ecr_repository_name" {
-  type        = string
-  description = "The name of the Elastic Container Repository for our webapp container images"
+variable "api_backofice_service_minimum_task_count" {
+  type        = number
+  description = "Minimum number of expected tasks to be running for the backoffice ECS service"
+  default     = 1
 }
+
 variable "ecr_repository_url" {
   type        = string
   description = "The url of the Elastic Container Repository for our container images"
@@ -194,4 +202,9 @@ variable "public_subnet_2" {
 variable "regional_account_id" {
   type        = string
   description = "The id of the region we are currently deploying to"
+}
+variable "db_low_disk_burst_balance_threshold" {
+  type        = number
+  default     = 100
+  description = "Alarm threshold for low RDS disk burst balance"
 }
