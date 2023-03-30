@@ -208,3 +208,8 @@ variable "db_low_disk_burst_balance_threshold" {
   default     = 100
   description = "Alarm threshold for low RDS disk burst balance"
 }
+variable "alert_email_address" {
+  sensitive   = true
+  type        = string
+  description = "Email Address subscribed to alerts"
+}
