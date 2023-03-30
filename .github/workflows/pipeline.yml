@@ -14,7 +14,7 @@ on:
           must match the environment input.
         type: string
         required: true
-      version:
+      image_tag:
         description: The version of the artifacts/infrastructure to deploy.
         required: true
         type: string
@@ -64,6 +64,7 @@ jobs:
     needs: [terraform_lint]
     with:
       environment: ${{ inputs.environment }}
+      image_tag: ${{ inputs.image_tag }}
     secrets:
       registry_url: ${{ secrets.registry_url }}
       repository_name: ${{ secrets.backoffice_repository_name }}
@@ -77,6 +78,7 @@ jobs:
     needs: [terraform_lint]
     with:
       environment: ${{ inputs.environment }}
+      image_tag: ${{ inputs.image_tag }}
     secrets:
       registry_url: ${{ secrets.registry_url }}
       repository_name: ${{ secrets.webapp_repository_name }}
@@ -91,7 +93,7 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       terraform_workspace: ${{ inputs.terraform_workspace }}
-      version: ${{ inputs.version }}
+      image_tag: ${{ inputs.image_tag }}
     secrets:
       registry_url: ${{ secrets.registry_url }}
       backoffice_repository_name: ${{ secrets.backoffice_repository_name }}

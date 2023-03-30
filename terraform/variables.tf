@@ -9,7 +9,13 @@ variable "ecs_cluster_name" {
   type        = string
   description = "The name of the ECS Fargate cluster"
 }
+
+variable "image_tag" {
+  type        = string
+  description = "The name of the Elastic Container Repository for our webapp container images"
+}
 variable "webapp_ecr_repository_name" {
+  sensitive = true
   type        = string
   description = "The name of the Elastic Container Repository for our webapp container images"
 }
@@ -65,10 +71,6 @@ variable "api_backoffice_image" {
   description = "The name of the image for the Backoffice application"
   default     = "DROITS-api-backoffice"
 }
-variable "image_tag" {
-  type        = string
-  description = "The image tag of either application to be deployed"
-}
 variable "api_backoffice_count" {
   type        = number
   description = "Number of docker containers to run for the Backoffice application"
@@ -95,6 +97,7 @@ variable "api_backoffice_fargate_memory" {
   default     = 512
 }
 variable "api_backoffice_ecr_repository_name" {
+  sensitive = true
   type        = string
   description = "The name of the Elastic Container Repository for our api-backoffice container images"
 }
