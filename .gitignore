@@ -21,6 +21,8 @@ backoffice/tests/obj/
 terraform.tfstate
 test.tfvars
 /terraform/.env
+/terraform/refresh-diagram.sh
+/terraform/terraform_diagram.html
 
 ##Github
 .github/.vscode/
