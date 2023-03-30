@@ -13,10 +13,6 @@ variable "webapp_ecr_repository_name" {
   type        = string
   description = "The name of the Elastic Container Repository for our webapp container images"
 }
-variable "webapp_image_tag" {
-  type        = string
-  description = "Hash of the relevant commit to the mca-droits repo"
-}
 variable "webapp_port" {
   type        = number
   description = "Port exposed by the docker image to redirect traffic to for the DROITS Webapp"
@@ -69,9 +65,9 @@ variable "api_backoffice_image" {
   description = "The name of the image for the Backoffice application"
   default     = "DROITS-api-backoffice"
 }
-variable "api_backoffice_image_tag" {
+variable "image_tag" {
   type        = string
-  description = "The image tag of the Backoffice application to be deployed"
+  description = "The image tag of either application to be deployed"
 }
 variable "api_backoffice_count" {
   type        = number

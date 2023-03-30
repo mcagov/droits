@@ -65,6 +65,7 @@ module "cloudwatch" {
   ecs_backofice_service_minimum_task_count = var.api_backofice_service_minimum_task_count
   ecs_backoffice_alerts_topic_arn          = module.sns.backoffice_alerts_topic_arn
   ecs_webapp_service_minimum_task_count    = var.webapp_service_minimum_task_count
+  rds_db_alerts_topic_arn                  = module.sns.db_alerts_topic_arn
 }
 
 module "sns" {

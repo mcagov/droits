@@ -4,8 +4,8 @@ module "aws-rds-alarms" {
   db_instance_id                       = var.db_instance_id
   db_instance_class                    = var.db_instance_class
   disk_burst_balance_too_low_threshold = var.db_low_disk_burst_balance_threshold
-  # actions_alarm                        = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
-  # actions_ok                           = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
+  actions_alarm                        = var.enable_alerts == true ? [var.rds_db_alerts_topic_arn] : []
+  actions_ok                           = var.enable_alerts == true ? [var.rds_db_alerts_topic_arn] : []
 }
 
 module "backoffice-aws-alb-alarms" {

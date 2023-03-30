@@ -69,7 +69,7 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
   memory                   = var.webapp_fargate_memory
   container_definitions = jsonencode([{
     name : "webapp",
-    image : "${var.ecr_repository_url}/${var.webapp_ecr_repository_name}:${var.webapp_image_tag}",
+    image : "${var.ecr_repository_url}/${var.webapp_ecr_repository_name}:${var.image_tag}",
     portMappings : [
       {
         containerPort : var.webapp_port

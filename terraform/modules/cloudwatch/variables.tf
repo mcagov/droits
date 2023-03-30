@@ -26,6 +26,10 @@ variable "ecs_webapp_service_minimum_task_count" {
 variable "rds_instance_identifier" {
   type = string
 }
+variable "rds_db_alerts_topic_arn" {
+  type = string
+  description = "The ARN of the db_alerts SNS topic"
+}
 variable "aws_region" {
   type = string
 }
