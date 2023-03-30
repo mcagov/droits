@@ -10,7 +10,7 @@ variable "ecs_cluster_name" {
   description = "The name of the ECS Fargate cluster"
 }
 
-variable "webapp_image_tag" {
+variable "image_tag" {
   type        = string
   description = "Hash of the relevant commit to the mca-droits repo"
 }
@@ -61,10 +61,6 @@ variable "api_backoffice_image" {
   type        = string
   description = "The name of the image for the Backoffice application"
   default     = "DROITS-api-backoffice"
-}
-variable "api_backoffice_image_tag" {
-  type        = string
-  description = "The image tag of the Backoffice application to be deployed"
 }
 variable "api_backoffice_count" {
   type        = number

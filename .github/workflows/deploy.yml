@@ -14,7 +14,7 @@ on:
           must match the environment input.
         type: string
         required: true
-      version:
+      image_tag:
         description: The version of the artifacts/infrastructure to deploy.
         required: true
         type: string
@@ -61,7 +61,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ inputs.version }}
+          ref: ${{ inputs.image_tag }}
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.4.2
@@ -75,7 +75,7 @@ jobs:
           TF_VAR_ecr_repository_url: ${{ secrets.registry_url }}
           TF_VAR_api_backoffice_ecr_repository_name: ${{ secrets.backoffice_repository_name }}
           TF_VAR_webapp_ecr_repository_name: ${{ secrets.webapp_repository_name }}
-          TF_VAR_backoffice_image_tag: ${{ inputs.version }}
+          TF_VAR_image_tag: ${{ inputs.image_tag }}
           TF_VAR_aws_account_number: ${{ secrets.aws_account_number }}
           TF_VAR_db_username: ${{ secrets.db_username }}
           TF_VAR_db_password: ${{ secrets.db_password }}

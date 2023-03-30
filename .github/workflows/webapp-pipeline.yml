@@ -34,7 +34,7 @@ jobs:
     needs: [test]
     uses: ./.github/workflows/publish.yml
     with:
-      tag: latest
+      image_tag: $ {{ github.sha }}
       environment: ${{ inputs.environment }}
       working-directory: spike-webapp
     secrets:

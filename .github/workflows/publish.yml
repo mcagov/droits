@@ -3,7 +3,7 @@ name: Publishing application
 on:
   workflow_call:
     inputs:
-      tag:
+      image_tag:
         description: The tag to add to the published Docker image, e.g. "v1.0.1"
         type: string
         required: true
@@ -58,7 +58,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ secrets.registry_url }}
         ECR_REPOSITORY: ${{ secrets.repository_name }}
-        IMAGE_TAG: ${{ inputs.tag }}
+        IMAGE_TAG: ${{ inputs.image_tag }}
         DIRECTORY: ${{ inputs.working-directory }}
       run: |
         cd $DIRECTORY

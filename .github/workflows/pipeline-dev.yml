@@ -12,7 +12,7 @@ jobs:
     with:
       environment: development
       terraform_workspace: dev
-      version: ${{ github.sha }}
+      image_tag: ${{ github.sha }}
     secrets:
       registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
       backoffice_repository_name: ${{ secrets.BACKOFFICE_ECR_REPOSITORY_NAME }}
