@@ -37,10 +37,10 @@ module "backoffice_ecs_service_alarms" {
   name         = "droits-${var.ecs_backoffice_service_name}"
   cluster_name = var.ecs_cluster_name
   service_name = var.ecs_backoffice_service_name
-  # cpu_utilization_high_alarm_actions    = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
-  # cpu_utilization_high_ok_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
-  # memory_utilization_high_alarm_actions = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
-  # memory_utilization_high_ok_actions    = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
+  cpu_utilization_high_alarm_actions    = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+  cpu_utilization_high_ok_actions       = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+  memory_utilization_high_alarm_actions = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+  memory_utilization_high_ok_actions    = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
 }
 
 resource "aws_cloudwatch_metric_alarm" "backoffice_ecs_service_task_count_too_low" {

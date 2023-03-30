@@ -63,7 +63,14 @@ module "cloudwatch" {
   db_low_disk_burst_balance_threshold      = var.db_low_disk_burst_balance_threshold
   enable_alerts                            = var.enable_alerts
   ecs_backofice_service_minimum_task_count = var.api_backofice_service_minimum_task_count
+  ecs_backoffice_alerts_topic_arn          = module.sns.backoffice_alerts_topic_arn
   ecs_webapp_service_minimum_task_count    = var.webapp_service_minimum_task_count
+}
+
+module "sns" {
+  source              = "./modules/sns"
+  alert_email_address = var.alert_email_address
+  aws_account_number  = var.aws_account_number
 }
 
 module "s3" {
