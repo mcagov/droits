@@ -8,14 +8,16 @@ namespace Droits.Controllers;
 public class ApiController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-
+    private Random _random;
     public ApiController(ILogger<HomeController> logger)
     {
         _logger = logger;
+        _random = new Random();
     }
 
-    public IActionResult Index(){
-     return Json(new {status = "Got here..."});
+    public IActionResult Index()
+    {
+        return Json(new { status = "Got here..." });
     }
 
     [HttpPost]
@@ -26,9 +28,23 @@ public class ApiController : Controller
             var body = await reader.ReadToEndAsync();
             WreckReport? report = JsonConvert.DeserializeObject<WreckReport>(body);
 
-            Console.WriteLine(JValue.Parse(body).ToString(Formatting.Indented));
+            if (report == null)
+            {
+                return NotFound();
+            }
 
-            return Json(report);
+            // Generate reference for report:
+            report.Reference = $"{_random.NextInt64(1, 100)}/{DateTime.UtcNow.ToString("yy")}";
+
+            return Json
+            (
+                new
+                {
+                    reference = report.Reference,
+                    report = report,
+                    status = "Accepted"
+                }
+            );
         }
 
     }

@@ -25,13 +25,16 @@ on:
         required: true
       aws_session_token:
         required: true
+      env_file:
+        description: The contents of the environment file
+        required: true
 
 jobs:
   test:
     name: Test webapp
     uses: ./.github/workflows/webapp-test.yml
     with:
-      working-directory: spike-webapp
+      working-directory: webapp
 
   publish:
     name: Publish webapp
@@ -40,12 +43,14 @@ jobs:
     with:
       image_tag: ${{ inputs.image_tag }}
       environment: ${{ inputs.environment }}
-      working-directory: spike-webapp
+      working-directory: webapp
     secrets:
       registry_url: ${{ secrets.registry_url }}
       repository_name: ${{ secrets.repository_name }}
       aws_access_key_id: ${{ secrets.aws_access_key_id }}
       aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
       aws_session_token: ${{ secrets.aws_session_token }}
+      env_file: ${{secrets.env_file}}
+
 
 
