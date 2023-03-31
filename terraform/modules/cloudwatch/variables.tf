@@ -39,6 +39,10 @@ variable "backoffice_load_balancer" {
 variable "backoffice_alb_id" {
   type = string
 }
+variable "backoffice_alb_arn_suffix" {
+  type = string
+  description = "The final portion of the backoffice load balancer's ARN"
+}
 variable "backoffice_alb_target_group_id" {
   type = string
 }
@@ -51,6 +55,10 @@ variable "webapp_load_balancer" {
 }
 variable "webapp_alb_id" {
   type = string
+}
+variable "webapp_alb_arn_suffix" {
+  type = string
+  description = "The final portion of the webapp load balancer's ARN"
 }
 variable "webapp_alb_target_group_id" {
   type = string

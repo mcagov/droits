@@ -23,17 +23,15 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
 
         properties = {
           metrics = [
-            [
-              "AWS/ECS",
-              "CPUUtilization",
-              "ServiceName",
-              "${var.ecs_backoffice_service_name}"
-            ]
-          ]
-          period = 300
-          stat   = "Average"
-          region = var.aws_region
-          title  = "${var.ecs_backoffice_service_name} container service average CPU utilisation"
+              [ "AWS/ECS", "CPUUtilization", "ServiceName", "${var.ecs_backoffice_service_name}", "ClusterName", "${var.ecs_cluster_name}", { "stat": "Minimum" } ],
+              [ "...", { "stat": "Maximum" } ],
+              [ "...", { "stat": "Average" } ]
+          ],
+          period = 300,
+          region = var.aws_region,
+          stacked = false,
+          title = "${var.ecs_backoffice_service_name} CPU utilization",
+          view = "timeSeries"
         }
       },
       {
@@ -43,19 +41,17 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
         width  = 12
         height = 6
 
-        properties = {
+       properties = {
           metrics = [
-            [
-              "AWS/ECS",
-              "CPUUtilization",
-              "ServiceName",
-              "${var.ecs_webapp_service_name}"
-            ]
-          ]
-          period = 300
-          stat   = "Average"
-          region = var.aws_region
-          title  = "${var.ecs_webapp_service_name} container service average CPU utilistation"
+              [ "AWS/ECS", "CPUUtilization", "ServiceName", "${var.ecs_webapp_service_name}", "ClusterName", "${var.ecs_cluster_name}", { "stat": "Minimum" } ],
+              [ "...", { "stat": "Maximum" } ],
+              [ "...", { "stat": "Average" } ]
+          ],
+          period = 300,
+          region = var.aws_region,
+          stacked = false,
+          title = "${var.ecs_webapp_service_name} CPU utilization",
+          view = "timeSeries"
         }
       },
       {
@@ -67,17 +63,13 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
 
         properties = {
           metrics = [
-            [
-              "AWS/ECS",
-              "HTTPCode_Target_2XX_Count",
-              "ServiceName",
-              "${var.ecs_backoffice_service_name}"
-            ]
-          ]
-          period = 300
-          stat   = "Sum"
-          region = var.aws_region
-          title  = "${var.ecs_backoffice_service_name} container service total successful API requests"
+              [ "AWS/ECS", "HTTPCode_Target_2XX_Count", "ServiceName", "${var.ecs_backoffice_service_name}", "ClusterName", "${var.ecs_cluster_name}", { "stat": "Sum" } ]
+          ],
+          period = 300,
+          region = var.aws_region,
+          stacked = false,
+          title = "${var.ecs_backoffice_service_name} container service total successful API requests",
+          view = "timeSeries"
         }
       },
       {
@@ -89,17 +81,13 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
 
         properties = {
           metrics = [
-            [
-              "AWS/ECS",
-              "HTTPCode_Target_4XX_Count",
-              "ServiceName",
-              "${var.ecs_backoffice_service_name}"
-            ]
-          ]
-          period = 300
-          stat   = "Sum"
-          region = var.aws_region
-          title  = "${var.ecs_backoffice_service_name} container service total client error API requests"
+              [ "AWS/ECS", "HTTPCode_Target_4XX_Count", "ServiceName", "${var.ecs_backoffice_service_name}", "ClusterName", "${var.ecs_cluster_name}", { "stat": "Sum" } ]
+          ],
+          period = 300,
+          region = var.aws_region,
+          stacked = false,
+          title = "${var.ecs_backoffice_service_name} container service total client error API requests",
+          view = "timeSeries"
         }
       },
       {
@@ -109,19 +97,16 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
         width  = 12
         height = 6
 
+
         properties = {
           metrics = [
-            [
-              "AWS/ECS",
-              "HTTPCode_Target_5XX_Count",
-              "ServiceName",
-              "${var.ecs_backoffice_service_name}"
-            ]
-          ]
-          period = 300
-          stat   = "Sum"
-          region = var.aws_region
-          title  = "${var.ecs_backoffice_service_name} container service total server error API requests"
+              [ "AWS/ECS", "HTTPCode_Target_5XX_Count", "ServiceName", "${var.ecs_backoffice_service_name}", "ClusterName", "${var.ecs_cluster_name}", { "stat": "Sum" } ]
+          ],
+          period = 300,
+          region = var.aws_region,
+          stacked = false,
+          title = "${var.ecs_backoffice_service_name} container service total server error API requests",
+          view = "timeSeries"
         }
       },
       {
@@ -198,18 +183,15 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
         height = 6
 
         properties = {
-          metrics = [
-            [
-              "AWS/ApplicationELB",
-              "ActiveConnectionCount",
-              "LoadBalancer",
-              "${var.backoffice_load_balancer}"
-            ]
-          ]
-          period = 300
-          stat   = "Sum"
-          region = var.aws_region
-          title  = "${var.backoffice_load_balancer} load balancer total active connections"
+            metrics = [
+                [ "AWS/ApplicationELB", "ActiveConnectionCount", "LoadBalancer", "${var.backoffice_alb_arn_suffix}", { "label": "${var.backoffice_load_balancer}" } ]
+            ],
+            period = 60,
+            region = var.aws_region,
+            stat = "Sum",
+            title = "${var.backoffice_load_balancer} total load balancer total active connections",
+            view = "timeSeries",
+            stacked = false
         }
       },
       {
@@ -220,18 +202,15 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
         height = 6
 
         properties = {
-          metrics = [
-            [
-              "AWS/ApplicationELB",
-              "HTTPCode_ELB_4XX_Count",
-              "LoadBalancer",
-              "${var.backoffice_load_balancer}"
-            ]
-          ]
-          period = 300
-          stat   = "Sum"
-          region = var.aws_region
-          title  = "${var.backoffice_load_balancer} total client error API requests originating from the load balancer"
+            metrics = [
+                [ "AWS/ApplicationELB", "HTTPCode_ELB_4XX_Count", "LoadBalancer", "${var.backoffice_alb_arn_suffix}", { "label": "${var.backoffice_load_balancer}" } ]
+            ],
+            period = 300,
+            region = var.aws_region,
+            stat = "Sum",
+            title = "${var.backoffice_load_balancer} total client error API requests originating from the load balancer",
+            view = "timeSeries",
+            stacked = false
         }
       },
       {
@@ -242,18 +221,15 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
         height = 6
 
         properties = {
-          metrics = [
-            [
-              "AWS/ApplicationELB",
-              "HTTPCode_ELB_5XX_Count",
-              "LoadBalancer",
-              "${var.backoffice_load_balancer}"
-            ]
-          ]
-          period = 300
-          stat   = "Sum"
-          region = var.aws_region
-          title  = "${var.backoffice_load_balancer} total server error API requests originating from the load balancer"
+            metrics = [
+                [ "AWS/ApplicationELB", "HTTPCode_ELB_5XX_Count", "LoadBalancer", "${var.backoffice_alb_arn_suffix}", { "label": "${var.backoffice_load_balancer}" } ]
+            ],
+            period = 300,
+            region = var.aws_region,
+            stat = "Sum",
+            title = "${var.backoffice_load_balancer} total server error API requests originating from the load balancer",
+            view = "timeSeries",
+            stacked = false
         }
       },
       {
@@ -264,18 +240,15 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
         height = 6
 
         properties = {
-          metrics = [
-            [
-              "AWS/ApplicationELB",
-              "HealthyHostCount",
-              "LoadBalancer",
-              "${var.backoffice_load_balancer}"
-            ]
-          ]
-          period = 300
-          stat   = "Sum"
-          region = var.aws_region
-          title  = "${var.backoffice_load_balancer} total number of healthy targets"
+            metrics = [
+                [ "AWS/ApplicationELB", "HealthyHostCount", "LoadBalancer", "${var.backoffice_alb_arn_suffix}", { "label": "${var.backoffice_load_balancer}" } ]
+            ],
+            period = 300,
+            region = var.aws_region,
+            stat = "Sum",
+            title = "${var.backoffice_load_balancer} total number of healthy targets",
+            view = "timeSeries",
+            stacked = false
         }
       },
       {
@@ -286,18 +259,15 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
         height = 6
 
         properties = {
-          metrics = [
-            [
-              "AWS/ApplicationELB",
-              "TargetConnectionErrorCount",
-              "LoadBalancer",
-              "${var.backoffice_load_balancer}"
-            ]
-          ]
-          period = 300
-          stat   = "Sum"
-          region = var.aws_region
-          title  = "${var.backoffice_load_balancer} total number of unsuccessful connections to targets"
+            metrics = [
+                [ "AWS/ApplicationELB", "TargetConnectionErrorCount", "LoadBalancer", "${var.backoffice_alb_arn_suffix}", { "label": "${var.backoffice_load_balancer}" } ]
+            ],
+            period = 300,
+            region = var.aws_region,
+            stat = "Sum",
+            title = "${var.backoffice_load_balancer} total number of unsuccessful connections to targets",
+            view = "timeSeries",
+            stacked = false
         }
       },
       {
@@ -308,18 +278,15 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
         height = 6
 
         properties = {
-          metrics = [
-            [
-              "AWS/ApplicationELB",
-              "TargetConnectionErrorCount",
-              "LoadBalancer",
-              "${var.backoffice_load_balancer}"
-            ]
-          ]
-          period = 300
-          stat   = "Average"
-          region = var.aws_region
-          title  = "${var.backoffice_load_balancer} average target response time"
+            metrics = [
+                [ "AWS/ApplicationELB", "TargetResponseTime", "LoadBalancer", "${var.backoffice_alb_arn_suffix}", { "label": "${var.backoffice_load_balancer}" } ]
+            ],
+            period = 300,
+            region = var.aws_region,
+            stat = "Average",
+            title = "${var.backoffice_load_balancer} average target response time",
+            view = "timeSeries",
+            stacked = false
         }
       },
       {
@@ -335,7 +302,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
               "AWS/ApplicationELB",
               "RequestCount",
               "LoadBalancer",
-              "${var.backoffice_load_balancer}"
+              "${var.backoffice_alb_arn_suffix}"
             ]
           ]
           period = 300
@@ -345,7 +312,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
         }
       },
       {
-        type   = "log"
+        type   = "metric"
         x      = 14
         y      = 66
         width  = 12
@@ -353,16 +320,17 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
 
         properties = {
           metrics = [
-              [ { "expression": "SEARCH('{AWS/ApplicationELB,LoadBalancer} MetricName=\"RequestCount\" ', 'Sum', 300)", "region": "eu-west-2" } ]
-          ],
-          legend = {
-              position = "bottom"
-          },
-          title  = "${var.backoffice_load_balancer} and ${var.webapp_load_balancer} load balancer total requests",
-          region = "eu-west-2",
-          liveData = false,
-          view = "timeSeries",
-          stacked = false
+            [
+              "AWS/ApplicationELB",
+              "RequestCount",
+              "LoadBalancer",
+              "${var.webapp_alb_arn_suffix}"
+            ]
+          ]
+          period = 300
+          stat   = "Sum"
+          region = var.aws_region
+          title  = "${var.webapp_load_balancer} load balancer total requests"
         }
       },
       {
@@ -378,7 +346,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
               "AWS/ApplicationELB",
               "ActiveConnectionCount",
               "LoadBalancer",
-              "${var.webapp_load_balancer}"
+              "${var.webapp_alb_arn_suffix}"
             ]
           ]
           period = 300
@@ -400,7 +368,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
               "AWS/ApplicationELB",
               "HTTPCode_ELB_4XX_Count",
               "LoadBalancer",
-              "${var.webapp_load_balancer}"
+              "${var.webapp_alb_arn_suffix}"
             ]
           ]
           period = 300
@@ -422,7 +390,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
               "AWS/ApplicationELB",
               "HTTPCode_ELB_5XX_Count",
               "LoadBalancer",
-              "${var.webapp_load_balancer}"
+              "${var.webapp_alb_arn_suffix}"
             ]
           ]
           period = 300
@@ -444,7 +412,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
               "AWS/ApplicationELB",
               "HealthyHostCount",
               "LoadBalancer",
-              "${var.webapp_load_balancer}"
+              "${var.webapp_alb_arn_suffix}"
             ]
           ]
           period = 300
@@ -466,7 +434,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
               "AWS/ApplicationELB",
               "TargetConnectionErrorCount",
               "LoadBalancer",
-              "${var.webapp_load_balancer}"
+              "${var.webapp_alb_arn_suffix}"
             ]
           ]
           period = 300
@@ -477,7 +445,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
       },
       {
         type   = "metric"
-        x      = 14
+        x      = 0
         y      = 84
         width  = 12
         height = 6
@@ -486,9 +454,9 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
           metrics = [
             [
               "AWS/ApplicationELB",
-              "TargetConnectionErrorCount",
               "TargetResponseTime",
-              "${var.webapp_load_balancer}"
+              "LoadBalancer",
+              "${var.webapp_alb_arn_suffix}"
             ]
           ]
           period = 300

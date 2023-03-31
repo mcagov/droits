@@ -54,9 +54,11 @@ module "cloudwatch" {
   aws_region                               = var.aws_region
   backoffice_load_balancer                 = aws_alb.api-backoffice-alb.name
   backoffice_alb_id                        = aws_alb.api-backoffice-alb.id
+  backoffice_alb_arn_suffix                = aws_alb.api-backoffice-alb.arn_suffix
   backoffice_alb_target_group_id           = aws_alb_target_group.api-backoffice-target-group.id
   webapp_load_balancer                     = aws_alb.webapp-alb.name
   webapp_alb_id                            = aws_alb.webapp-alb.id
+  webapp_alb_arn_suffix                    = aws_alb.webapp-alb.arn_suffix
   webapp_alb_target_group_id               = aws_alb_target_group.webapp-target-group.id
   db_instance_id                           = module.rds.instance-identifier
   db_instance_class                        = var.db_instance_class
