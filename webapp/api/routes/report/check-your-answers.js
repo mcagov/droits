@@ -28,9 +28,6 @@ export default function (app) {
       const errors = formatValidationErrors(validationResult(req));
       const sd = cloneDeep(req.session.data);
 
-      //TODO - Get reference from API once saved.
-      let reference = "DEMO_REF_"+crypto.randomUUID();;
-
       // Errors
       if (errors) {
         return res.render('report/check-your-answers', {
@@ -39,24 +36,6 @@ export default function (app) {
           values: req.body,
         });
       } else {
-        // Generate a report reference
-
-        //TODO - remove this, and use function in the new api.
-        // try {
-        //   const response = await axios.get(
-        //     process.env.REFERENCE_GENERATOR_URL,
-        //     {
-        //       headers: {
-        //         'x-functions-key': process.env.REFERENCE_GENERATOR_KEY,
-        //       },
-        //     }
-        //   );
-        //   reference = response.data;
-        // } catch (err) {
-        //   console.error(err);
-        // }
-
-
         // Check if values exist in session
         let textLocation = sd['location']['text-location'].trimEnd();
         let locationDescription = sd['location']['location-description'];
@@ -71,7 +50,6 @@ export default function (app) {
 
         // Data obj to send to db
         const data = {
-          reference,
           'report-date': `${sd['report-date']['year']}-${sd['report-date']['month']}-${sd['report-date']['day']}`,
           'wreck-find-date': `${sd['wreck-find-date']['year']}-${sd['wreck-find-date']['month']}-${sd['wreck-find-date']['day']}`,
           latitude: sd['location']['location-standard']['latitude'],
@@ -112,9 +90,6 @@ export default function (app) {
           }
         }
 
-        // console.log('[final data]:', JSON.stringify(data, null, 2));
-
-        // Post data to new api
         try {
           const response = await axios.post(
             process.env.API_POST_ENDPOINT,
@@ -124,23 +99,25 @@ export default function (app) {
             }
           );
 
-          //TODO - send images to api, then upload from the API.
-          // if (response.statusText === 'Accepted') {
-          //   // Push image(s) to Azure
-          //   Object.values(req.session.data.property).forEach((item) => {
-          //     const imageData = fs.createReadStream(
-          //       `${path.resolve(__dirname + '../../../../uploads/')}/${item.image
-          //       }`
-          //     );
+          if (response.status === 200) {
 
-          //     azureUpload(imageData, item.image);
-          //   });
+            let reference = response.data.reference;
 
-          //   // Clear session data
-          //   req.session.data = {};
+            // Push image(s) to Azure
+            Object.values(req.session.data.property).forEach((item) => {
+              const imageData = fs.createReadStream(
+                `${path.resolve(__dirname + '../../../../uploads/')}/${item.image
+                }`
+              );
 
-          //   return res.render('report/confirmation', { reference });
-          // }
+              azureUpload(imageData, item.image);
+            });
+
+            // Clear session data
+            req.session.data = {};
+
+            return res.render('report/confirmation', { reference });
+          }
 
         } catch (err) {
           console.error(err);
