@@ -4,6 +4,7 @@ module "aws-rds-alarms" {
   db_instance_id                       = var.db_instance_id
   db_instance_class                    = var.db_instance_class
   disk_burst_balance_too_low_threshold = var.db_low_disk_burst_balance_threshold
+    # to-do: implement the other configurables https://github.com/lorenzoaiello/terraform-aws-alb-alarms
   actions_alarm                        = var.enable_alerts == true ? [var.rds_db_alerts_topic_arn] : []
   actions_ok                           = var.enable_alerts == true ? [var.rds_db_alerts_topic_arn] : []
 }
@@ -14,6 +15,8 @@ module "backoffice-aws-alb-alarms" {
   load_balancer_id = var.backoffice_alb_id
   prefix           = "elb-${var.backoffice_load_balancer}"
   target_group_id  = var.backoffice_alb_target_group_id
+  # response_time_threshold
+  # to-do: implement the other configurables https://github.com/lorenzoaiello/terraform-aws-alb-alarms
   actions_alarm    = var.enable_alerts == true ? [var.backoffice_lb_alerts_topic_arn] : []
   actions_ok       = var.enable_alerts == true ? [var.backoffice_lb_alerts_topic_arn] : []
 }
@@ -24,6 +27,8 @@ module "webapp-aws-alb-alarms" {
   load_balancer_id = var.webapp_alb_id
   prefix           = "elb-${var.webapp_load_balancer}"
   target_group_id  = var.backoffice_alb_target_group_id
+    # response_time_threshold
+  # to-do: implement the other configurables https://github.com/lorenzoaiello/terraform-aws-alb-alarms
   actions_alarm    = var.enable_alerts == true ? [var.webapp_lb_alerts_topic_arn] : []
   actions_ok       = var.enable_alerts == true ? [var.webapp_lb_alerts_topic_arn] : []
 }
@@ -37,8 +42,12 @@ module "backoffice_ecs_service_alarms" {
   name                                  = "droits-${var.ecs_backoffice_service_name}"
   cluster_name                          = var.ecs_cluster_name
   service_name                          = var.ecs_backoffice_service_name
+  cpu_utilization_high_threshold        = var.percentage_cpu_utilization_high_threshold
   cpu_utilization_high_alarm_actions    = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
   cpu_utilization_high_ok_actions       = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+  memory_utilization_high_threshold     = var.percentage_memory_utilization_high_threshold
+  memory_utilization_high_evaluation_periods = var.memory_utilization_high_evaluation_periods
+  memory_utilization_high_period        = var.memory_utilisation_duration_in_seconds_to_evaluate
   memory_utilization_high_alarm_actions = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
   memory_utilization_high_ok_actions    = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
 }
@@ -46,10 +55,10 @@ module "backoffice_ecs_service_alarms" {
 resource "aws_cloudwatch_metric_alarm" "backoffice_ecs_service_task_count_too_low" {
   alarm_name          = "ecs-${terraform.workspace}-droits-${var.ecs_backoffice_service_name}-low-task-count"
   comparison_operator = "LessThanThreshold"
-  evaluation_periods  = 1
+  evaluation_periods  = var.cpu_utilization_high_evaluation_periods
   metric_name         = "CPUUtilization"
   namespace           = "AWS/ECS"
-  period              = 60
+  period              = var.cpu_utilisation_duration_in_seconds_to_evaluate
   statistic           = "SampleCount"
   threshold           = var.ecs_backofice_service_minimum_task_count
   treat_missing_data  = "breaching"
@@ -71,19 +80,23 @@ module "webapp_ecs_service_alarms" {
   name                                  = "droits-${var.ecs_webapp_service_name}"
   cluster_name                          = var.ecs_cluster_name
   service_name                          = var.ecs_webapp_service_name
-  cpu_utilization_high_alarm_actions    = var.enable_alerts == true ? [var.ecs_webapp_alerts_topic_arn] : []
-  cpu_utilization_high_ok_actions       = var.enable_alerts == true ? [var.ecs_webapp_alerts_topic_arn] : []
-  memory_utilization_high_alarm_actions = var.enable_alerts == true ? [var.ecs_webapp_alerts_topic_arn] : []
-  memory_utilization_high_ok_actions    = var.enable_alerts == true ? [var.ecs_webapp_alerts_topic_arn] : []
+  cpu_utilization_high_threshold        = var.percentage_cpu_utilization_high_threshold
+  cpu_utilization_high_alarm_actions    = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+  cpu_utilization_high_ok_actions       = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+  memory_utilization_high_threshold     = var.percentage_memory_utilization_high_threshold
+  memory_utilization_high_evaluation_periods = var.memory_utilization_high_evaluation_periods
+  memory_utilization_high_period        = var.memory_utilisation_duration_in_seconds_to_evaluate
+  memory_utilization_high_alarm_actions = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+  memory_utilization_high_ok_actions    = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
 }
 
 resource "aws_cloudwatch_metric_alarm" "webapp_ecs_service_task_count_too_low" {
   alarm_name          = "ecs-${terraform.workspace}-droits-${var.ecs_webapp_service_name}-low-task-count"
   comparison_operator = "LessThanThreshold"
-  evaluation_periods  = 1
+  evaluation_periods  = var.cpu_utilization_high_evaluation_periods
   metric_name         = "CPUUtilization"
   namespace           = "AWS/ECS"
-  period              = 60
+  period              = var.cpu_utilisation_duration_in_seconds_to_evaluate
   statistic           = "SampleCount"
   threshold           = var.ecs_webapp_service_minimum_task_count
   treat_missing_data  = "breaching"

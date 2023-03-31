@@ -21,3 +21,9 @@ ssl_certificate_arn = "arn:aws:acm:eu-west-2:842544458664:certificate/3d9820a3-3
 regional_account_id = "652711504416"
 
 enable_alerts = true
+percentage_cpu_utilization_high_threshold = 90
+percentage_memory_utilization_high_threshold = 90
+cpu_utilisation_duration_in_seconds_to_evaluate = 300
+cpu_utilization_high_evaluation_periods = 1
+memory_utilisation_duration_in_seconds_to_evaluate = 300
+memory_utilization_high_evaluation_periods = 1

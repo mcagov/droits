@@ -20,3 +20,9 @@ lb_ssl_policy       = ""
 ssl_certificate_arn = ""
 
 enable_alerts = false
+percentage_cpu_utilization_high_threshold = 90
+percentage_memory_utilization_high_threshold = 90
+cpu_utilisation_duration_in_seconds_to_evaluate = 300
+cpu_utilization_high_evaluation_periods = 1
+memory_utilisation_duration_in_seconds_to_evaluate = 300
+memory_utilization_high_evaluation_periods = 1

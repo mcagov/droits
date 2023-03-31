@@ -71,6 +71,8 @@ module "cloudwatch" {
   rds_db_alerts_topic_arn                  = module.sns.db-alerts-topic-arn
   backoffice_lb_alerts_topic_arn           = module.sns.backoffice-lb-alerts-topic-arn
   webapp_lb_alerts_topic_arn               = module.sns.webapp-lb-alerts-topic-arn
+  cpu_utilization_high_threshold           = var.cpu_utilization_high_threshold
+  memory_utilization_high_threshold        = var.memory_utilization_high_threshold
 }
 
 module "sns" {

@@ -212,3 +212,27 @@ variable "alert_email_address" {
   type        = string
   description = "Email Address subscribed to alerts"
 }
+variable "percentage_cpu_utilization_high_threshold" {
+  type = number
+  description = "The % CPU utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
+}
+variable "percentage_memory_utilization_high_threshold" {
+  type = number
+  description = "The % memory utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
+}
+variable "cpu_utilization_high_evaluation_periods" {
+  type = number
+  description = "Number of periods to evaluate for the alarm"
+}
+variable "memory_utilization_high_evaluation_periods" {
+  type = number
+  description = "Number of periods to evaluate for the alarm"
+}
+variable "memory_utilisation_duration_in_seconds_to_evaluate" {
+  type = number
+  description = "Duration in seconds to evaluate for the alarm"
+}
+variable "cpu_utilisation_duration_in_seconds_to_evaluate" {
+  type = number
+  description = "Duration in seconds to evaluate for the alarm"
+}

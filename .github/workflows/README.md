@@ -13,7 +13,7 @@ Test - Currently only does a print out,
 Publish -
 Authenticates with AWS
 Builds Docker image
-Push Docker image to ECR (with tag:latest)
+Push Docker image to ECR (with tag:[unique hash of the most recent git commit])
 Backoffice pipeline:
 Test - Builds application and runs unit tests
 Publish -
