@@ -15,7 +15,7 @@ variable "image_tag" {
   description = "The name of the Elastic Container Repository for our webapp container images"
 }
 variable "webapp_ecr_repository_name" {
-  sensitive = true
+  sensitive   = true
   type        = string
   description = "The name of the Elastic Container Repository for our webapp container images"
 }
@@ -97,7 +97,7 @@ variable "api_backoffice_fargate_memory" {
   default     = 512
 }
 variable "api_backoffice_ecr_repository_name" {
-  sensitive = true
+  sensitive   = true
   type        = string
   description = "The name of the Elastic Container Repository for our api-backoffice container images"
 }

@@ -50,7 +50,7 @@ module "cloudwatch" {
   ecs_cluster_name                         = aws_ecs_cluster.droits-ecs-cluster.name
   ecs_backoffice_service_name              = aws_ecs_service.backoffice-service.name
   ecs_webapp_service_name                  = aws_ecs_service.webapp.name
-  rds_instance_identifier                  = module.rds.instance_identifier
+  rds_instance_identifier                  = module.rds.instance-identifier
   aws_region                               = var.aws_region
   backoffice_load_balancer                 = aws_alb.api-backoffice-alb.name
   backoffice_alb_id                        = aws_alb.api-backoffice-alb.id
@@ -58,15 +58,17 @@ module "cloudwatch" {
   webapp_load_balancer                     = aws_alb.webapp-alb.name
   webapp_alb_id                            = aws_alb.webapp-alb.id
   webapp_alb_target_group_id               = aws_alb_target_group.webapp-target-group.id
-  db_instance_id                           = module.rds.instance_identifier
+  db_instance_id                           = module.rds.instance-identifier
   db_instance_class                        = var.db_instance_class
   db_low_disk_burst_balance_threshold      = var.db_low_disk_burst_balance_threshold
   enable_alerts                            = var.enable_alerts
   ecs_backofice_service_minimum_task_count = var.api_backofice_service_minimum_task_count
   ecs_webapp_service_minimum_task_count    = var.webapp_service_minimum_task_count
-  ecs_backoffice_alerts_topic_arn          = module.sns.backoffice_alerts_topic_arn
-  rds_db_alerts_topic_arn                  = module.sns.db_alerts_topic_arn
-  ecs_webapp_alerts_topic_arn              = module.sns.webapp_alerts_topic_arn
+  ecs_backoffice_alerts_topic_arn          = module.sns.backoffice-alerts-topic-arn
+  ecs_webapp_alerts_topic_arn              = module.sns.webapp-alerts-topic-arn
+  rds_db_alerts_topic_arn                  = module.sns.db-alerts-topic-arn
+  backoffice_lb_alerts_topic_arn           = module.sns.backoffice-lb-alerts-topic-arn
+  webapp_lb_alerts_topic_arn               = module.sns.webapp-lb-alerts-topic-arn
 }
 
 module "sns" {

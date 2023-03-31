@@ -14,8 +14,8 @@ module "backoffice-aws-alb-alarms" {
   load_balancer_id = var.backoffice_alb_id
   prefix           = "elb-${var.backoffice_load_balancer}"
   target_group_id  = var.backoffice_alb_target_group_id
-  # actions_alarm    = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
-  # actions_ok       = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
+  actions_alarm    = var.enable_alerts == true ? [var.backoffice_lb_alerts_topic_arn] : []
+  actions_ok       = var.enable_alerts == true ? [var.backoffice_lb_alerts_topic_arn] : []
 }
 
 module "webapp-aws-alb-alarms" {
@@ -24,19 +24,19 @@ module "webapp-aws-alb-alarms" {
   load_balancer_id = var.webapp_alb_id
   prefix           = "elb-${var.webapp_load_balancer}"
   target_group_id  = var.backoffice_alb_target_group_id
-  # actions_alarm    = var.enable_alerts == true ? [var.webapp_lb_alerts_topic_arn] : []
-  # actions_ok       = var.enable_alerts == true ? [var.webapp_lb_alerts_topic_arn] : []
+  actions_alarm    = var.enable_alerts == true ? [var.webapp_lb_alerts_topic_arn] : []
+  actions_ok       = var.enable_alerts == true ? [var.webapp_lb_alerts_topic_arn] : []
 }
 
 module "backoffice_ecs_service_alarms" {
   source = "cloudposse/ecs-cloudwatch-sns-alarms/aws"
   # Cloud Posse recommends pinning every module to a specific version
-  version      = "0.12.3"
-  namespace    = "ecs"
-  stage        = terraform.workspace
-  name         = "droits-${var.ecs_backoffice_service_name}"
-  cluster_name = var.ecs_cluster_name
-  service_name = var.ecs_backoffice_service_name
+  version                               = "0.12.3"
+  namespace                             = "ecs"
+  stage                                 = terraform.workspace
+  name                                  = "droits-${var.ecs_backoffice_service_name}"
+  cluster_name                          = var.ecs_cluster_name
+  service_name                          = var.ecs_backoffice_service_name
   cpu_utilization_high_alarm_actions    = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
   cpu_utilization_high_ok_actions       = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
   memory_utilization_high_alarm_actions = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
@@ -64,13 +64,13 @@ resource "aws_cloudwatch_metric_alarm" "backoffice_ecs_service_task_count_too_lo
 }
 
 module "webapp_ecs_service_alarms" {
-  source = "cloudposse/ecs-cloudwatch-sns-alarms/aws"
-  version      = "0.12.3"
-  namespace    = "ecs"
-  stage        = terraform.workspace
-  name         = "droits-${var.ecs_webapp_service_name}"
-  cluster_name = var.ecs_cluster_name
-  service_name = var.ecs_webapp_service_name
+  source                                = "cloudposse/ecs-cloudwatch-sns-alarms/aws"
+  version                               = "0.12.3"
+  namespace                             = "ecs"
+  stage                                 = terraform.workspace
+  name                                  = "droits-${var.ecs_webapp_service_name}"
+  cluster_name                          = var.ecs_cluster_name
+  service_name                          = var.ecs_webapp_service_name
   cpu_utilization_high_alarm_actions    = var.enable_alerts == true ? [var.ecs_webapp_alerts_topic_arn] : []
   cpu_utilization_high_ok_actions       = var.enable_alerts == true ? [var.ecs_webapp_alerts_topic_arn] : []
   memory_utilization_high_alarm_actions = var.enable_alerts == true ? [var.ecs_webapp_alerts_topic_arn] : []

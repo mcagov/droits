@@ -312,7 +312,7 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
             [
               "AWS/ApplicationELB",
               "TargetConnectionErrorCount",
-              "TargetResponseTime",
+              "LoadBalancer",
               "${var.backoffice_load_balancer}"
             ]
           ]
@@ -320,6 +320,49 @@ resource "aws_cloudwatch_dashboard" "droits_utilisation_and_health" {
           stat   = "Average"
           region = var.aws_region
           title  = "${var.backoffice_load_balancer} average target response time"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 14
+        y      = 66
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+            [
+              "AWS/ApplicationELB",
+              "RequestCount",
+              "LoadBalancer",
+              "${var.backoffice_load_balancer}"
+            ]
+          ]
+          period = 300
+          stat   = "Sum"
+          region = var.aws_region
+          title  = "${var.backoffice_load_balancer} load balancer total requests"
+        }
+      },
+      {
+        type   = "log"
+        x      = 14
+        y      = 66
+        width  = 12
+        height = 6
+
+        properties = {
+          metrics = [
+              [ { "expression": "SEARCH('{AWS/ApplicationELB,LoadBalancer} MetricName=\"RequestCount\" ', 'Sum', 300)", "region": "eu-west-2" } ]
+          ],
+          legend = {
+              position = "bottom"
+          },
+          title  = "${var.backoffice_load_balancer} and ${var.webapp_load_balancer} load balancer total requests",
+          region = "eu-west-2",
+          liveData = false,
+          view = "timeSeries",
+          stacked = false
         }
       },
       {

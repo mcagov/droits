@@ -19,4 +19,4 @@ root_domain_name    = "droits.uk"
 lb_ssl_policy       = ""
 ssl_certificate_arn = ""
 
-enable_alerts       = false
+enable_alerts = false

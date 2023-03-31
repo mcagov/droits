@@ -9,7 +9,7 @@ variable "ecs_backofice_service_minimum_task_count" {
   description = "Minimum number of expected tasks to be running for the backoffice ECS service"
 }
 variable "ecs_backoffice_alerts_topic_arn" {
-  type = string
+  type        = string
   description = "The ARN of the backoffice_alerts SNS topic"
 }
 variable "ecs_webapp_service_name" {
@@ -20,14 +20,14 @@ variable "ecs_webapp_service_minimum_task_count" {
   description = "Minimum number of expected tasks to be running for the webapp ECS service"
 }
 variable "ecs_webapp_alerts_topic_arn" {
-  type = string
+  type        = string
   description = "The ARN of the webapp_alerts SNS topic"
 }
 variable "rds_instance_identifier" {
   type = string
 }
 variable "rds_db_alerts_topic_arn" {
-  type = string
+  type        = string
   description = "The ARN of the db_alerts SNS topic"
 }
 variable "aws_region" {
@@ -42,6 +42,10 @@ variable "backoffice_alb_id" {
 variable "backoffice_alb_target_group_id" {
   type = string
 }
+variable "backoffice_lb_alerts_topic_arn" {
+  type        = string
+  description = "The ARN of the backoffice_lb_alerts SNS topic"
+}
 variable "webapp_load_balancer" {
   type = string
 }
@@ -50,6 +54,10 @@ variable "webapp_alb_id" {
 }
 variable "webapp_alb_target_group_id" {
   type = string
+}
+variable "webapp_lb_alerts_topic_arn" {
+  type        = string
+  description = "The ARN of the webapp_lb_alerts SNS topic"
 }
 variable "db_instance_id" {
   type = string
