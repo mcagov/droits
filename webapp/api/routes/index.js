@@ -27,6 +27,7 @@ import error from './portal/error';
 import accountError from './portal/error';
 
 import sendSample from './report/send-sample';
+import health from './health';
 
 export default () => {
   const app = Router();
@@ -59,5 +60,6 @@ export default () => {
   accountError(app);
 
   sendSample(app);
+  health(app);
   return app;
 };
