@@ -1,7 +1,7 @@
-ecs_cluster_name      = "droits-cluster"
-webapp_fargate_cpu    = 256
-webapp_fargate_memory = 1024
-api_backoffice_fargate_cpu = 256
+ecs_cluster_name              = "droits-cluster"
+webapp_fargate_cpu            = 256
+webapp_fargate_memory         = 1024
+api_backoffice_fargate_cpu    = 256
 api_backoffice_fargate_memory = 512
 
 db_name              = "dev-db"
