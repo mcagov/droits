@@ -43,6 +43,12 @@ on:
       webapp_repository_name:
         description: The name of the image to be published
         required: true
+      webapp_env_file:
+        description: The contents of the environment file
+        required: true
+      backoffice_env_file:
+        description: The contents of the environment file
+        required: true
 jobs:
   terraform_lint:
     name: Terraform lint
@@ -71,6 +77,7 @@ jobs:
       aws_access_key_id: ${{ secrets.aws_access_key_id }}
       aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
       aws_session_token: ${{ secrets.aws_session_token }}
+      env_file: ${{ secrets.backoffice_env_file }}
 
   webapp_pipeline:
     name: Run webapp pipeline
@@ -85,6 +92,7 @@ jobs:
       aws_access_key_id: ${{ secrets.aws_access_key_id }}
       aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
       aws_session_token: ${{ secrets.aws_session_token }}
+      env_file: ${{ secrets.webapp_env_file }}
 
   deploy:
     name: Deploy changes
