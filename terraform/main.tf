@@ -45,40 +45,76 @@ module "rds" {
   db_instance_class    = var.db_instance_class
 }
 
-module "cloudwatch" {
-  source                                   = "./modules/cloudwatch"
-  ecs_cluster_name                         = aws_ecs_cluster.droits-ecs-cluster.name
-  ecs_backoffice_service_name              = aws_ecs_service.backoffice-service.name
-  ecs_webapp_service_name                  = aws_ecs_service.webapp.name
-  rds_instance_identifier                  = module.rds.instance-identifier
-  aws_region                               = var.aws_region
-  backoffice_load_balancer                 = aws_alb.api-backoffice-alb.name
-  backoffice_alb_id                        = aws_alb.api-backoffice-alb.id
-  backoffice_alb_arn_suffix                = aws_alb.api-backoffice-alb.arn_suffix
-  backoffice_alb_target_group_id           = aws_alb_target_group.api-backoffice-target-group.id
-  webapp_load_balancer                     = aws_alb.webapp-alb.name
-  webapp_alb_id                            = aws_alb.webapp-alb.id
-  webapp_alb_arn_suffix                    = aws_alb.webapp-alb.arn_suffix
-  webapp_alb_target_group_id               = aws_alb_target_group.webapp-target-group.id
-  db_instance_id                           = module.rds.instance-identifier
-  db_instance_class                        = var.db_instance_class
-  db_low_disk_burst_balance_threshold      = var.db_low_disk_burst_balance_threshold
-  enable_alerts                            = var.enable_alerts
-  ecs_backofice_service_minimum_task_count = var.api_backofice_service_minimum_task_count
-  ecs_webapp_service_minimum_task_count    = var.webapp_service_minimum_task_count
-  ecs_backoffice_alerts_topic_arn          = module.sns.backoffice-alerts-topic-arn
-  ecs_webapp_alerts_topic_arn              = module.sns.webapp-alerts-topic-arn
-  rds_db_alerts_topic_arn                  = module.sns.db-alerts-topic-arn
-  backoffice_lb_alerts_topic_arn           = module.sns.backoffice-lb-alerts-topic-arn
-  webapp_lb_alerts_topic_arn               = module.sns.webapp-lb-alerts-topic-arn
-  cpu_utilization_high_threshold           = var.cpu_utilization_high_threshold
-  memory_utilization_high_threshold        = var.memory_utilization_high_threshold
-}
-
-module "sns" {
+module "backoffice-sns" {
   source              = "./modules/sns"
+  resource_name       = "backoffice"
   alert_email_address = var.alert_email_address
   aws_account_number  = var.aws_account_number
+}
+module "backoffice-lb-sns" {
+  source              = "./modules/sns"
+  resource_name       = "backoffice-lb"
+  alert_email_address = var.alert_email_address
+  aws_account_number  = var.aws_account_number
+}
+module "webapp-sns" {
+  source              = "./modules/sns"
+  resource_name       = "webapp"
+  alert_email_address = var.alert_email_address
+  aws_account_number  = var.aws_account_number
+}
+module "webapp-lb-sns" {
+  source              = "./modules/sns"
+  resource_name       = "webapp-lb"
+  alert_email_address = var.alert_email_address
+  aws_account_number  = var.aws_account_number
+}
+module "db-sns" {
+  source              = "./modules/sns"
+  resource_name       = "db"
+  alert_email_address = var.alert_email_address
+  aws_account_number  = var.aws_account_number
+}
+
+module "cloudwatch" {
+  source                                             = "./modules/cloudwatch"
+  ecs_cluster_name                                   = aws_ecs_cluster.droits-ecs-cluster.name
+  ecs_backoffice_service_name                        = aws_ecs_service.backoffice-service.name
+  ecs_webapp_service_name                            = aws_ecs_service.webapp.name
+  rds_instance_identifier                            = module.rds.instance-identifier
+  aws_region                                         = var.aws_region
+  backoffice_load_balancer                           = aws_alb.api-backoffice-alb.name
+  backoffice_alb_id                                  = aws_alb.api-backoffice-alb.id
+  backoffice_alb_arn_suffix                          = aws_alb.api-backoffice-alb.arn_suffix
+  backoffice_alb_target_group_id                     = aws_alb_target_group.api-backoffice-target-group.id
+  webapp_load_balancer                               = aws_alb.webapp-alb.name
+  webapp_alb_id                                      = aws_alb.webapp-alb.id
+  webapp_alb_arn_suffix                              = aws_alb.webapp-alb.arn_suffix
+  webapp_alb_target_group_id                         = aws_alb_target_group.webapp-target-group.id
+  db_instance_id                                     = module.rds.instance-identifier
+  db_instance_class                                  = var.db_instance_class
+  db_low_disk_burst_balance_threshold                = var.db_low_disk_burst_balance_threshold
+  enable_alerts                                      = var.enable_alerts
+  ecs_backofice_service_minimum_task_count           = var.api_backofice_service_minimum_task_count
+  ecs_webapp_service_minimum_task_count              = var.webapp_service_minimum_task_count
+  ecs_backoffice_alerts_topic_arn                    = module.backoffice-sns.alerts-topic-arn
+  ecs_webapp_alerts_topic_arn                        = module.webapp-sns.alerts-topic-arn
+  rds_db_alerts_topic_arn                            = module.db-sns.alerts-topic-arn
+  backoffice_lb_alerts_topic_arn                     = module.backoffice-lb-sns.alerts-topic-arn
+  webapp_lb_alerts_topic_arn                         = module.webapp-lb-sns.alerts-topic-arn
+  percentage_cpu_utilization_high_threshold          = var.percentage_cpu_utilization_high_threshold
+  percentage_memory_utilization_high_threshold       = var.percentage_memory_utilization_high_threshold
+  cpu_utilisation_duration_in_seconds_to_evaluate    = var.cpu_utilisation_duration_in_seconds_to_evaluate
+  db_cpu_credit_balance_too_low_threshold            = var.db_cpu_credit_balance_too_low_threshold
+  memory_utilization_high_evaluation_periods         = var.memory_utilization_high_evaluation_periods
+  lb_response_time_threshold                         = var.lb_response_time_threshold
+  cpu_utilization_high_evaluation_periods            = var.cpu_utilization_high_evaluation_periods
+  db_memory_swap_usage_too_high_threshold            = var.db_memory_swap_usage_too_high_threshold
+  db_maximum_used_transaction_ids_too_high_threshold = var.db_maximum_used_transaction_ids_too_high_threshold
+  lb_evaluation_periods                              = var.lb_evaluation_periods
+  memory_utilisation_duration_in_seconds_to_evaluate = var.memory_utilisation_duration_in_seconds_to_evaluate
+  db_memory_freeable_too_low_threshold               = var.db_memory_freeable_too_low_threshold
+  db_evaluation_periods                              = var.db_evaluation_periods
 }
 
 module "s3" {

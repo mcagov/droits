@@ -213,26 +213,54 @@ variable "alert_email_address" {
   description = "Email Address subscribed to alerts"
 }
 variable "percentage_cpu_utilization_high_threshold" {
-  type = number
+  type        = number
   description = "The % CPU utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
 }
 variable "percentage_memory_utilization_high_threshold" {
-  type = number
+  type        = number
   description = "The % memory utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
 }
 variable "cpu_utilization_high_evaluation_periods" {
-  type = number
+  type        = number
   description = "Number of periods to evaluate for the alarm"
 }
 variable "memory_utilization_high_evaluation_periods" {
-  type = number
+  type        = number
   description = "Number of periods to evaluate for the alarm"
 }
 variable "memory_utilisation_duration_in_seconds_to_evaluate" {
-  type = number
+  type        = number
   description = "Duration in seconds to evaluate for the alarm"
 }
 variable "cpu_utilisation_duration_in_seconds_to_evaluate" {
-  type = number
+  type        = number
   description = "Duration in seconds to evaluate for the alarm"
+}
+variable "db_evaluation_periods" {
+  type        = string
+  description = "The number of periods to evaluate for the alarm"
+}
+variable "db_cpu_credit_balance_too_low_threshold" {
+  type        = string
+  description = "Threshold for the DB credit balance too low alarm"
+}
+variable "db_memory_freeable_too_low_threshold" {
+  type        = string
+  description = "Threshold for the DB freeable memory too low alarm"
+}
+variable "db_memory_swap_usage_too_high_threshold" {
+  type        = string
+  description = "Threshold for the DB memory swap usage too high alarm"
+}
+variable "db_maximum_used_transaction_ids_too_high_threshold" {
+  type        = string
+  description = "Threshold for the maximum used transaction IDs DB alarm"
+}
+variable "lb_response_time_threshold" {
+  type        = string
+  description = "The average number of milliseconds that requests should complete within"
+}
+variable "lb_evaluation_periods" {
+  type        = string
+  description = "The number of periods to evaluate for the alarm"
 }

@@ -1,23 +1,23 @@
-resource "aws_sns_topic_subscription" "webapp_alerts" {
-  topic_arn = aws_sns_topic.webapp_alerts.arn
+resource "aws_sns_topic_subscription" "alerts" {
+  topic_arn = aws_sns_topic.alerts.arn
   protocol  = "email"
   endpoint  = var.alert_email_address
 }
 
-resource "aws_sns_topic" "webapp_alerts" {
-  name = "${terraform.workspace}-webapp-alerts"
+resource "aws_sns_topic" "alerts" {
+  name = "${terraform.workspace}-${var.resource_name}-alerts"
   tags = {
     Environment = terraform.workspace
-    Application = "droits-webapp"
+    Application = "droits-${var.resource_name}"
   }
 }
 
-resource "aws_sns_topic_policy" "webapp_alerts" {
-  arn    = aws_sns_topic.webapp_alerts.arn
-  policy = data.aws_iam_policy_document.webapp_alerts.json
+resource "aws_sns_topic_policy" "alerts" {
+  arn    = aws_sns_topic.alerts.arn
+  policy = data.aws_iam_policy_document.alerts.json
 }
 
-data "aws_iam_policy_document" "webapp_alerts" {
+data "aws_iam_policy_document" "alerts" {
   policy_id = "__default_policy_ID"
 
   statement {
@@ -50,7 +50,7 @@ data "aws_iam_policy_document" "webapp_alerts" {
     }
 
     resources = [
-      aws_sns_topic.webapp_alerts.arn
+      aws_sns_topic.alerts.arn
     ]
 
     sid = "__default_statement_ID"
