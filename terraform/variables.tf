@@ -12,7 +12,12 @@ variable "ecs_cluster_name" {
 
 variable "image_tag" {
   type        = string
-  description = "Hash of the relevant commit to the mca-droits repo"
+  description = "The name of the Elastic Container Repository for our webapp container images"
+}
+variable "webapp_ecr_repository_name" {
+  sensitive   = true
+  type        = string
+  description = "The name of the Elastic Container Repository for our webapp container images"
 }
 variable "webapp_port" {
   type        = number
@@ -35,13 +40,17 @@ variable "webapp_fargate_memory" {
   description = "Fargate instance memory to provision (in MiB) for the DROITS Webapp"
   default     = 2048
 }
+variable "webapp_service_minimum_task_count" {
+  type        = number
+  description = "Minimum number of expected tasks to be running for the webapp ECS service"
+  default     = 1
+}
 
 variable "enable_alerts" {
   type        = bool
   description = "When enabled CloudWatch alarm events are sent to the Alerts SNS Topic"
   default     = false
 }
-
 
 variable "root_domain_name" {
   type        = string
@@ -88,14 +97,16 @@ variable "api_backoffice_fargate_memory" {
   default     = 512
 }
 variable "api_backoffice_ecr_repository_name" {
+  sensitive   = true
   type        = string
   description = "The name of the Elastic Container Repository for our api-backoffice container images"
 }
-
-variable "webapp_ecr_repository_name" {
-  type        = string
-  description = "The name of the Elastic Container Repository for our webapp container images"
+variable "api_backofice_service_minimum_task_count" {
+  type        = number
+  description = "Minimum number of expected tasks to be running for the backoffice ECS service"
+  default     = 1
 }
+
 variable "ecr_repository_url" {
   type        = string
   description = "The url of the Elastic Container Repository for our container images"
@@ -190,4 +201,66 @@ variable "public_subnet_2" {
 variable "regional_account_id" {
   type        = string
   description = "The id of the region we are currently deploying to"
+}
+variable "db_low_disk_burst_balance_threshold" {
+  type        = number
+  default     = 100
+  description = "Alarm threshold for low RDS disk burst balance"
+}
+variable "alert_email_address" {
+  sensitive   = true
+  type        = string
+  description = "Email Address subscribed to alerts"
+}
+variable "percentage_cpu_utilization_high_threshold" {
+  type        = number
+  description = "The % CPU utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
+}
+variable "percentage_memory_utilization_high_threshold" {
+  type        = number
+  description = "The % memory utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
+}
+variable "cpu_utilization_high_evaluation_periods" {
+  type        = number
+  description = "Number of periods to evaluate for the alarm"
+}
+variable "memory_utilization_high_evaluation_periods" {
+  type        = number
+  description = "Number of periods to evaluate for the alarm"
+}
+variable "memory_utilisation_duration_in_seconds_to_evaluate" {
+  type        = number
+  description = "Duration in seconds to evaluate for the alarm"
+}
+variable "cpu_utilisation_duration_in_seconds_to_evaluate" {
+  type        = number
+  description = "Duration in seconds to evaluate for the alarm"
+}
+variable "db_evaluation_periods" {
+  type        = string
+  description = "The number of periods to evaluate for the alarm"
+}
+variable "db_cpu_credit_balance_too_low_threshold" {
+  type        = string
+  description = "Threshold for the DB credit balance too low alarm"
+}
+variable "db_memory_freeable_too_low_threshold" {
+  type        = string
+  description = "Threshold for the DB freeable memory too low alarm"
+}
+variable "db_memory_swap_usage_too_high_threshold" {
+  type        = string
+  description = "Threshold for the DB memory swap usage too high alarm"
+}
+variable "db_maximum_used_transaction_ids_too_high_threshold" {
+  type        = string
+  description = "Threshold for the maximum used transaction IDs DB alarm"
+}
+variable "lb_response_time_threshold" {
+  type        = string
+  description = "The average number of milliseconds that requests should complete within"
+}
+variable "lb_evaluation_periods" {
+  type        = string
+  description = "The number of periods to evaluate for the alarm"
 }

@@ -1,3 +1,3 @@
-output "instance_identifier" {
+output "instance-identifier" {
   value = aws_db_instance.droits.identifier
 }
