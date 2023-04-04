@@ -69,7 +69,6 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
   network_mode             = "awsvpc"
   cpu                      = var.webapp_fargate_cpu
   memory                   = var.webapp_fargate_memory
-  force_new_deployment     = true
 
   container_definitions = jsonencode([{
     name : "webapp",
@@ -104,6 +103,8 @@ resource "aws_ecs_service" "webapp" {
   launch_type                       = "FARGATE"
   desired_count                     = 1
   health_check_grace_period_seconds = 600
+  force_new_deployment              = true
+
   depends_on = [
     aws_alb_listener.webapp-listener,
     aws_alb_listener.webapp-listener-https
