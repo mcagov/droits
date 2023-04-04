@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 COPY . .
-RUN npm cache clean --force && rm -rf node_modules && npm install
+RUN rm -rf node_modules && npm install --cache /tmp/empty-cache
 
 EXPOSE 3000
 CMD [ "npm", "run", "prod" ]
