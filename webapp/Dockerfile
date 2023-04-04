@@ -2,14 +2,13 @@ FROM node:14 AS build
 
 WORKDIR /srv
 
-ADD package.json .
-RUN rm -rf node_modules && npm install --cache /tmp/empty-cache
+ADD . .
 
+RUN rm -rf node_modules && npm install --cache /tmp/empty-cache && npm run build
 
 FROM node:14-slim
 
 COPY --from=build /srv .
-ADD . .
 
 EXPOSE 3000
 
