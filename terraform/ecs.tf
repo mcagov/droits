@@ -42,7 +42,6 @@ resource "aws_ecs_service" "backoffice-service" {
   launch_type                       = "FARGATE"
   desired_count                     = 1
   health_check_grace_period_seconds = 600
-  force_new_deployment              = true
 
   depends_on = [
     aws_alb_listener.api-backoffice-listener,
@@ -103,7 +102,6 @@ resource "aws_ecs_service" "webapp" {
   launch_type                       = "FARGATE"
   desired_count                     = 1
   health_check_grace_period_seconds = 600
-  force_new_deployment              = true
 
   depends_on = [
     aws_alb_listener.webapp-listener,
