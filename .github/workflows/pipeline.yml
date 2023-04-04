@@ -49,6 +49,9 @@ on:
       backoffice_env_file:
         description: The contents of the environment file
         required: true
+      alerts_email:
+        description: Email that will receive alarm alerts 
+        required: true
 jobs:
   terraform_lint:
     name: Terraform lint
@@ -112,3 +115,4 @@ jobs:
       aws_account_number: ${{ secrets.aws_account_number }}
       db_username: ${{ secrets.db_username }}
       db_password: ${{ secrets.db_password }}
+      alert_email_address: ${{ secrets.alerts_email }}
