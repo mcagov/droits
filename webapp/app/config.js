@@ -7,7 +7,7 @@ module.exports = {
   SERVICE_NAME: 'Report Wreck Material',
 
   // Default port that app runs on
-  PORT: '5000',
+  PORT: '3000',
 
   // Force HTTP to redirect to HTTPS on production
   USE_HTTPS: 'false',

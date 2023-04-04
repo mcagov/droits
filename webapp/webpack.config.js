@@ -67,8 +67,8 @@ module.exports = (env) => {
       }),
       new BrowserSyncPlugin({
         host: 'localhost',
-        port: 5000,
-        proxy: 'http://localhost:5000/',
+        port: 3000,
+        proxy: 'http://localhost:3000/',
         files: ['dist/css/*.css', 'dist/js/*.js', 'app/views/**/*.html'],
       }),
       new CopyWebpackPlugin({
