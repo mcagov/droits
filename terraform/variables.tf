@@ -22,7 +22,7 @@ variable "webapp_ecr_repository_name" {
 variable "webapp_port" {
   type        = number
   description = "Port exposed by the docker image to redirect traffic to for the DROITS Webapp"
-  default     = 3000
+  default     = 5000
 }
 variable "webapp_health_check_path" {
   type        = string

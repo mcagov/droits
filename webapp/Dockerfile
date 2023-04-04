@@ -7,5 +7,5 @@ COPY package*.json ./
 COPY . .
 RUN npm cache clean --force && rm -rf node_modules && npm install
 
-EXPOSE 3000
-CMD [ "npm", "run", "dev" ]
+EXPOSE 5000
+CMD [ "npm", "run", "prod" ]
