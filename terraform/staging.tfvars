@@ -33,5 +33,5 @@ db_maximum_used_transaction_ids_too_high_threshold = "1000000000"
 db_memory_freeable_too_low_threshold               = "256000000"
 db_memory_swap_usage_too_high_threshold            = "256000000"
 
-lb_response_time_threshold = "600"
-lb_evaluation_periods      = "1"
+lb_average_response_time_threshold = "600"
+lb_evaluation_periods              = "1"

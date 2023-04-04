@@ -124,9 +124,9 @@ variable "db_maximum_used_transaction_ids_too_high_threshold" {
   type        = string
   description = "Threshold for the maximum used transaction IDs DB alarm"
 }
-variable "lb_response_time_threshold" {
+variable "lb_average_response_time_threshold" {
   type        = string
-  description = "Maximum length of time for a host to respond before triggering the alarm"
+  description = "Average length of time for a host to respond before triggering the alarm"
 }
 variable "lb_evaluation_periods" {
   type        = string
