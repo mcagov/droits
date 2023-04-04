@@ -1,11 +1,16 @@
-FROM node:14
+FROM node:14 AS build
 
-WORKDIR /usr/src/app
+WORKDIR /srv
 
-COPY package*.json ./
-
-COPY . .
+ADD package.json .
 RUN rm -rf node_modules && npm install --cache /tmp/empty-cache
 
+
+FROM node:14-slim
+
+COPY --from=build /srv .
+ADD . .
+
 EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+
+CMD [ "node", "-r", "esm", "server.js"]
