@@ -8,4 +8,4 @@ COPY . .
 RUN rm package-lock.json && npm cache clean --force && rm -rf node_modules && npm install
 
 EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "run", "prod" ]
