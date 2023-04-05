@@ -29,36 +29,36 @@ app.locals.serviceName = config.SERVICE_NAME;
 const env = process.env.NODE_ENV;
 
 if (env === 'production') {
-  app.use(helmet());
-  app.use(
-    helmet.contentSecurityPolicy({
-      directives: {
-        defaultSrc: ["'self'", 'unpkg.com', 'cdnjs.cloudflare.com'],
-        scriptSrc: [
-          "'self'",
-          "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
-          'unpkg.com',
-          'cdnjs.cloudflare.com',
-        ],
-        styleSrc: [
-          "'self'",
-          'cdn.jsdelivr.net',
-          'cdnjs.cloudflare.com',
-          'unpkg.com',
-        ],
-        imgSrc: [
-          "'self'",
-          'data:',
-          '*.tile.openstreetmap.org',
-          'cdnjs.cloudflare.com',
-          'unpkg.com',
-          process.env.AZURE_BLOB_IMAGE_URL,
-        ],
-        objectSrc: ["'none'"],
-        upgradeInsecureRequests: [],
-      },
-    })
-  );
+  // app.use(helmet());
+  // app.use(
+  //   helmet.contentSecurityPolicy({
+  //     directives: {
+  //       defaultSrc: ["'self'", 'unpkg.com', 'cdnjs.cloudflare.com'],
+  //       scriptSrc: [
+  //         "'self'",
+  //         "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
+  //         'unpkg.com',
+  //         'cdnjs.cloudflare.com',
+  //       ],
+  //       styleSrc: [
+  //         "'self'",
+  //         'cdn.jsdelivr.net',
+  //         'cdnjs.cloudflare.com',
+  //         'unpkg.com',
+  //       ],
+  //       imgSrc: [
+  //         "'self'",
+  //         'data:',
+  //         '*.tile.openstreetmap.org',
+  //         'cdnjs.cloudflare.com',
+  //         'unpkg.com',
+  //         process.env.AZURE_BLOB_IMAGE_URL,
+  //       ],
+  //       objectSrc: ["'none'"],
+  //       upgradeInsecureRequests: [],
+  //     },
+  //   })
+  // );
 }
 
 let useHttps = process.env.USE_HTTPS || config.USE_HTTPS;
