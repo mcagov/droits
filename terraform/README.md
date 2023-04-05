@@ -78,7 +78,7 @@ export AWS_SESSION_TOKEN=[value]
   - AWS CLI: run a command such as ``aws s3 ls`` which should list all the S3 buckets in the dev environment
 - Set up the sensitive environment variables locally
 
-  - You will need to set the sensitive variables as TF_VARs. To do this, make a new .sh file and write the following to it:export TF_VAR_ecr_repository_url=[value]
+  - You will need to set the sensitive variables as TF_VARs. To do this, make a new .sh file and write the following to it:
 
 ```
 export TF_VAR_ecr_repository_url=[value]
