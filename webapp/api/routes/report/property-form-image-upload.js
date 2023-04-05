@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import multer from 'multer';
-// import { azureUpload } from '../../services';
+import { azureUpload } from '../../services';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -98,7 +98,7 @@ export default function (app) {
       '/report/property-bulk-image-upload/:prop_id',
       function (req, res) {
         upload(req, res, function (multerError) {
-          // Total number of wreck items 
+          // Total number of wreck items
           const itemQuantity = req.body.itemQuantity;
           // Create error summary list item, linking to the related wreck item input
           const err = {
@@ -127,7 +127,7 @@ export default function (app) {
                 originalFilename: req.file.originalname
               }
             );
-            // Images will upload at different speeds, so here we make sure the image 
+            // Images will upload at different speeds, so here we make sure the image
             // key in the wreck item object is stored correctly in session data
             for (const obj of imageUploads) {
               req.session.data.property[obj.id].image = obj.image;

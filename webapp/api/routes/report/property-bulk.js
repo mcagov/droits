@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import multer from 'multer';
-// import { azureUpload } from '../../../services';
+import { azureUpload } from '../../../services';
 import { formatValidationErrors } from '../../../utilities';
 const csv = require('fast-csv');
 
