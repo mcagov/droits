@@ -13,13 +13,27 @@ Terraform is one such programming language used for this purpose, but there are 
     - 2 private subnets: one in each of two availability zones
     - These were provisioned manually
 - S3 bucket to hold the Terraform statefile (this is how Terraform keeps track of what infrastructure it has and hasn't created in the given environment). This was provisioned manually and then linked with Terraform in the root main.tf.
+- Other S3 buckets for wreck images and load balancer logs in ./s3
 - Postgres DB provisioned in ./rds/
+- ECS cluster, container services, and task definitions in ./ecs
+    - Each container service is configured to operate behind a load balancer
 - IAM role to execute ECS tasks in ./iam/
-- 
+- Load balancers for each ECS service in ./alb/
+- Security groups which set out rules for what kind of network traffic is allowed to and from the ECS services, DB, and load balancers in ./security-groups
+- CloudWatch alarms, log groups, and dashboard for us to monitor our applications in ./cloudwatch/
+- SNS subscriptions and topics to notify a sepcific email address when a CloudWatch alarm triggers in ./sns/
 - [DROITS architecture Miro board](https://miro.com/app/board/uXjVPXCgex4=/)
 
 ## File Structure
-- Explanation of structure e.g modules and workspaces
+- We've structured the code in a way that leverages reuseable modules of Terraform code. E.g:
+    - The SNS topics and subscriptions must be provisioned for the backoffice ECS service, webapp ECS service, DB, backoffice load balancer and webapp load balancer.
+    - We are reusing a single SNS module multiple times, passing in different input variables to configure the same infrastructure for each of the different resources.
+    - Modules can be found in their named directories: e.g the SNS module code lives in ./sns/
+- We have one root main.tf file that sets up the connection to the given AWS environment and invokes each module
+- We are using the workspaces feature of Terraform which allows us to name the specific environment we are deploying to
+- We are using .tfvars files at the root level to pass in environment-specific variables. E.g: dev.tfvars contains dev-specific values for all the input variables going into the root main.tf file.
+- We are using TF_VAR environment variables for secret/sensitive variables. These are marked sensitive=true in the root variables.tf file and are configured in GitHub Secrets.
+- In each pipeline, we export these in Bash using the syntax `export TF_VAR_alert_email_address=[value]`
 
 ## How to Locally Develop DROITS Infrastructure
  - Terraform  lint
