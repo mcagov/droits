@@ -8,4 +8,4 @@ FROM node:14-slim
 
 COPY --from=build /srv .
 EXPOSE 3000
-CMD [ "node", "-r", "esm", "server.js"]
+CMD [ "npm", "run", "prod"]
