@@ -64,21 +64,37 @@ export AWS_SESSION_TOKEN=[value]
 - Use either the VS Code extension or the AWS CLI to check you are properly authenticated:
     - VS Code: in the left hand pane, you should see the resources currently provisioned in the dev environment. E.g there should be an S3 bucket called droits-wreck-images
     - AWS CLI: run a command such as ``` aws s3 ls ``` which should list all the S3 buckets in the dev environment
+- Set up the sensitive environment variables locally
+    - You will need to set the sensitive variables as TF_VARs. To do this, make a new .sh file and write the following to it:
+    ```
+    export TF_VAR_ecr_repository_url=[value]
+export TF_VAR_api_backoffice_ecr_repository_name=[value]
+export TF_VAR_webapp_ecr_repository_name=[value]
+export TF_VAR_backoffice_image_tag=[value]
+export TF_VAR_aws_account_number=[value]
+export TF_VAR_db_username=[value]
+export TF_VAR_db_password=*[value]
+export TF_VAR_alert_email_address=[value]
+export TF_VAR_image_tag=[value]
+    ```
+    - The actual sensitive values you will use in place of [value] can be found in the 'Dev env Terraform variables script' entry in the mca-droits 1Password vault
 - Run ``` terraform init ```
 - List the current workspaces available
     ``` terraform workspace list ```
 - Select the dev workspace
     ``` terraform workspace select dev ```
+- Add your Terraform code!
 - Run ``` terraform validate ```
+- Run ``` terraform plan -input=false -var-file=dev.tfvars ``` to see a plan of the new resources your code will create, telling Terraform to look at the dev.tfvars file for all the values it needs for the root main.tf file's input variables
+- If it all looks sensible, run ``` terraform apply -input=false -var-file=dev.tfvars```
+- Before committing your changes to git, run ``` terraform fmt --recursive ```
     
 
 ## Open Source Modules Used
-- Mention and links to Lorenzo's libraries
-- Cloudposse
-- Note on version numbers inline
-
-## Sensitive Environment Variables
-
+- In addition to our own Terraform code, we've used some popular open source modules recorded in the Terraform Registry to speed up our development of the CloudWatch alarms.
+- (Cloudposse container service alarms)[https://registry.terraform.io/modules/cloudposse/ecs-cloudwatch-sns-alarms/aws/latest]
+- (lorenzoaiello load balancer alarms)[https://registry.terraform.io/modules/lorenzoaiello/alb-alarms/aws/latest]
+- (lorenzoaiello database alarms)[https://registry.terraform.io/modules/lorenzoaiello/rds-alarms/aws/latest]
 
 
 
