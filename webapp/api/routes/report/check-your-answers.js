@@ -3,7 +3,7 @@ const { body, validationResult } = require('express-validator');
 import fs from 'fs';
 import path from 'path';
 var cloneDeep = require('lodash.clonedeep');
-import { azureUpload } from '../../../services';
+// import { azureUpload } from '../../../services';
 import { formatValidationErrors } from '../../../utilities';
 
 export default function (app) {
@@ -103,15 +103,15 @@ export default function (app) {
 
             let reference = response.data.reference;
 
-            // Push image(s) to Azure
-            Object.values(req.session.data.property).forEach((item) => {
-              const imageData = fs.createReadStream(
-                `${path.resolve(__dirname + '../../../../uploads/')}/${item.image
-                }`
-              );
+            // // Push image(s) to Azure
+            // Object.values(req.session.data.property).forEach((item) => {
+            //   const imageData = fs.createReadStream(
+            //     `${path.resolve(__dirname + '../../../../uploads/')}/${item.image
+            //     }`
+            //   );
 
-              azureUpload(imageData, item.image);
-            });
+            //   azureUpload(imageData, item.image);
+            // });
 
             // Clear session data
             req.session.data = {};

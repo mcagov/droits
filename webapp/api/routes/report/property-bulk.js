@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import multer from 'multer';
-import { azureUpload } from '../../../services';
+// import { azureUpload } from '../../../services';
 import { formatValidationErrors } from '../../../utilities';
 const csv = require('fast-csv');
 
@@ -74,7 +74,7 @@ export default function (app) {
                   return res.json({ error: err });
                 }
                 // 'fileRows' is an array of objects. Each object represents a row in the csv file, with each obj element a column
-                // Process "fileRows" and respond  
+                // Process "fileRows" and respond
                 let fileUpload = fileRows;
 
                 req.session.data['bulk-upload'] = {};
