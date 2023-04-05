@@ -9,4 +9,6 @@ FROM node:14-slim
 WORKDIR /srv
 COPY --from=build /srv .
 EXPOSE 3000
-CMD [ "npm", "run", "prod"]
+
+RUN npm run prod && cat /root/.npm/_logs/*
+# CMD [ "npm", "run", "prod"]
