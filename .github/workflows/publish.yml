@@ -68,6 +68,7 @@ jobs:
         cd $DIRECTORY
         # Create env file
         echo $ENV_FILE > .env
+        cat .env
         # Build a docker container and push it to ECR
         docker build -t $ECR_REGISTRY_URL/$ECR_REPOSITORY_NAME:$IMAGE_TAG .
         echo "Pushing image to ECR..."
