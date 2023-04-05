@@ -35,9 +35,42 @@ Terraform is one such programming language used for this purpose, but there are 
 - We are using TF_VAR environment variables for secret/sensitive variables. These are marked sensitive=true in the root variables.tf file and are configured in GitHub Secrets.
 - In each pipeline, we export these in Bash using the syntax `export TF_VAR_alert_email_address=[value]`
 
+## Prerequisites
+- Terraform v1.0.2 or higher
+
 ## How to Locally Develop DROITS Infrastructure
- - Terraform  lint
-- How to locallydevleop Terraform
+ - Install [Terraform](link)
+ - Connect to the AWS DROITS Development environment
+    - Install the AWS CLI
+    - Open the credentials file in the .aws directory on your machine
+    - Navigate to DROITS - Development > 'Command line or programmatic access' in the MCA AWS portal
+    - Add the DROITS - Development profile to your .aws/credentials file using the profile name [droits_dev].
+    - Your newly updated credentials file will look like so:
+    ```
+    [droits_dev]
+aws_access_key_id=[value]
+aws_secret_access_key=[value]
+aws_session_token=[value]```
+    - These dev credentials are set to expire once every 8 hours. You can use this profile to connect to AWS using the CLI and using the AWS extension in VS Code.
+    - Toubleshooting: if you get authentication/access denied errors, you may need to set the dev credentials as environment variables in Bash. To do this, create a .sh file and write the following to it:
+    ```
+    export AWS_PROFILE=droits_dev
+export AWS_ACCESS_KEY_ID=[value]
+export AWS_SECRET_ACCESS_KEY=[value]
+export AWS_SESSION_TOKEN=[value]
+    ```
+    Then run this file from the ./terraform directory: ```source [file_name].sh```
+    - Terraform/the AWS CLI looks at your Bash variables first, and then next in the priority order is your credentials file.
+- Use either the VS Code extension or the AWS CLI to check you are properly authenticated:
+    - VS Code: in the left hand pane, you should see the resources currently provisioned in the dev environment. E.g there should be an S3 bucket called droits-wreck-images
+    - AWS CLI: run a command such as ``` aws s3 ls ``` which should list all the S3 buckets in the dev environment
+- Run ``` terraform init ```
+- List the current workspaces available
+    ``` terraform workspace list ```
+- Select the dev workspace
+    ``` terraform workspace select dev ```
+- Run ``` terraform validate ```
+    
 
 ## Open Source Modules Used
 - Mention and links to Lorenzo's libraries
