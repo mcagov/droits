@@ -7,14 +7,14 @@ resource "aws_alb_target_group" "api-backoffice-target-group" {
   port        = var.api_backoffice_port
   protocol    = "HTTP"
   target_type = "ip"
-  vpc_id      = module.security-groups.vpc-id
+  vpc_id      = var.vpc_id
 }
 
 resource "aws_alb" "api-backoffice-alb" {
   name         = "api-backoffice-alb"
-  subnets      = [module.security-groups.public-subnet-1,module.security-groups.public-subnet-2]
+  subnets      = [var.public_subnet_1,var.public_subnet_2]
   internal     = false
-  security_groups = [ module.security-groups.api-backoffice-lb-security-group-id ]
+  security_groups = [ var.api_backoffice_lb_security_group_id ]
 }
 
 resource "aws_alb_listener" "api-backoffice-listener" {
@@ -31,14 +31,14 @@ resource "aws_alb_target_group" "webapp-target-group" {
   port        = var.webapp_port
   protocol    = "HTTP"
   target_type = "ip"
-  vpc_id      = module.security-groups.vpc-id
+  vpc_id      = var.vpc_id
 }
 
 resource "aws_alb" "webapp-alb" {
   name         = "webapp-alb"
-  subnets      = [module.security-groups.public-subnet-1,module.security-groups.public-subnet-2]
+  subnets      = [var.public_subnet_1,var.public_subnet_2]
   internal     = false
-  security_groups = [ module.security-groups.webapp-lb-security-group-id ]
+  security_groups = [ var.webapp_lb_security_group_id ]
 }
 
 resource "aws_alb_listener" "webapp-listener" {
@@ -52,14 +52,14 @@ resource "aws_alb_listener" "webapp-listener" {
 
 resource "aws_ecs_task_definition" "backoffice-task-definition" {
   family                    = "backoffice"
-  execution_role_arn        = module.iam.iam-role-arn
+  execution_role_arn        = var.execution_role_arn
   requires_compatibilities  = ["FARGATE"]
   network_mode              = "awsvpc"
-  cpu                       = var.api_backoffice_fargate_cpu
-  memory                    = var.api_backoffice_fargate_memory
+  cpu                       = var.backoffice_fargate_cpu
+  memory                    = var.backoffice_fargate_memory
   container_definitions     = jsonencode([{
     name : "api-backoffice",
-    image : "${aws_ecr_repository.droits-api-backoffice-repository.repository_url}:${var.api_backoffice_image_tag}",
+    image : var.backoffice_image_url,
     portMappings : [
       {
         containerPort : var.api_backoffice_port
@@ -92,8 +92,8 @@ resource "aws_ecs_service" "backoffice-service" {
   ]
 
   network_configuration {
-    security_groups   = [module.security-groups.api-backoffice-id]
-    subnets           = [module.security-groups.public-subnet-1]
+    security_groups   = [var.backoffice_security_group]
+    subnets           = [var.public_subnet_1]
     assign_public_ip  = true
   }
   
@@ -106,14 +106,14 @@ resource "aws_ecs_service" "backoffice-service" {
 
 resource "aws_ecs_task_definition" "webapp-task-definition" {
   family                = "webapp"
-  execution_role_arn = module.iam.iam-role-arn
+  execution_role_arn = var.execution_role_arn
   requires_compatibilities  = ["FARGATE"]
   network_mode              = "awsvpc"
   cpu                       = var.webapp_fargate_cpu
   memory                    = var.webapp_fargate_memory
   container_definitions = jsonencode([{
     name : "webapp",
-    image : "${aws_ecr_repository.droits-webapp-repository.repository_url}:${var.webapp_image_tag}",
+    image : var.webapp_image_url,
     portMappings : [
       {
         containerPort : var.webapp_port
@@ -146,8 +146,8 @@ resource "aws_ecs_service" "webapp" {
   ]
   
   network_configuration {
-    security_groups = [module.security-groups.webapp-security-group-id]
-    subnets         = [module.security-groups.public-subnet-1]
+    security_groups = [var.webapp_security_group]
+    subnets         = [var.public_subnet_1]
     assign_public_ip = true
   }
   
