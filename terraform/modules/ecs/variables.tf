@@ -77,6 +77,16 @@ variable "backoffice_fargate_memory" {
 
 variable "backoffice_image_url" {
   type = string
-  description = "string of backoffice image in ecr repository"
+  description = "String of backoffice image in ecr repository"
+}
+
+variable "webapp_target_group_arn" {
+  type = string
+  description = "ARN of webapp lb target group"
+}
+
+variable "api_backoffice_target_group_arn" {
+  type = string
+  description = "ARN of backoffice lb target group"
 }
 
