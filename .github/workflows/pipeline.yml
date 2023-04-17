@@ -19,7 +19,7 @@ on:
         required: true
         type: string
     secrets:
-      aws_role:
+      aws_role_arn:
         required: true
       aws_account_number:
         description: The account number in which infrastructure should be deployed
