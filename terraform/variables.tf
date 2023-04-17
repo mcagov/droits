@@ -117,12 +117,6 @@ variable "aws_account_number" {
   description = "The MCA's AWS account number"
   default     = ""
 }
-variable "aws_role_arn" {
-  sensitive   = true
-  type        = string
-  description = "The arn of the role for AWS authentication"
-  default     = ""
-}
 
 variable "vpc_resource_id" {
   type        = string
