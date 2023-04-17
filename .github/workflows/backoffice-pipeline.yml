@@ -19,11 +19,7 @@ on:
       repository_name:
         description: The name of the image to be published
         required: true
-      aws_access_key_id:
-        required: true
-      aws_secret_access_key:
-        required: true
-      aws_session_token:
+      aws_role_arn:
         required: true
       env_file:
         description: The contents of the environment file
@@ -47,9 +43,7 @@ jobs:
     secrets:
       registry_url: ${{ secrets.registry_url }}
       repository_name: ${{ secrets.repository_name }}
-      aws_access_key_id: ${{ secrets.aws_access_key_id }}
-      aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
-      aws_session_token: ${{ secrets.aws_session_token }}
+      aws_role_arn: ${{ secrets.aws_role_arn }}
       env_file: ${{secrets.env_file}}
 
 

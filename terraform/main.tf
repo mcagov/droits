@@ -16,9 +16,10 @@ terraform {
 }
 
 provider "aws" {
-  region     = var.aws_region
-  access_key = var.aws_access_key_id
-  secret_key = var.aws_secret_access_key
+  assume_role {
+    role_arn = var.aws_role_arn
+    region   = var.aws_region
+  }
 }
 
 module "security-groups" {

@@ -20,11 +20,7 @@ on:
         required: true
         type: string
     secrets:
-      aws_access_key_id:
-        required: true
-      aws_secret_access_key:
-        required: true
-      aws_session_token:
+      aws_role_arn:
         required: true
       aws_account_number:
         description: The account number in which infrastructure should be deployed
@@ -58,9 +54,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
-      AWS_SESSION_TOKEN: ${{ secrets.aws_session_token }}
       TF_WORKSPACE: ${{ inputs.terraform_workspace }}
     steps:
       - uses: actions/checkout@v3
@@ -81,6 +74,7 @@ jobs:
           TF_VAR_webapp_ecr_repository_name: ${{ secrets.webapp_repository_name }}
           TF_VAR_image_tag: ${{ inputs.image_tag }}
           TF_VAR_aws_account_number: ${{ secrets.aws_account_number }}
+          TF_VAR_aws_role_arn: ${{ secrets.aws_role_arn }}
           TF_VAR_db_username: ${{ secrets.db_username }}
           TF_VAR_db_password: ${{ secrets.db_password }}
           TF_VAR_alert_email_address: ${{secrets.alert_email_address}}

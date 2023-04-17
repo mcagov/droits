@@ -19,11 +19,7 @@ on:
         required: true
         type: string
     secrets:
-      aws_access_key_id:
-        required: true
-      aws_secret_access_key:
-        required: true
-      aws_session_token:
+      aws_role_arn:
         required: true
       aws_account_number:
         description: The account number in which infrastructure should be deployed
@@ -50,7 +46,7 @@ on:
         description: The contents of the environment file
         required: true
       alerts_email:
-        description: Email that will receive alarm alerts 
+        description: Email that will receive alarm alerts
         required: true
 jobs:
   terraform_lint:
@@ -77,9 +73,7 @@ jobs:
     secrets:
       registry_url: ${{ secrets.registry_url }}
       repository_name: ${{ secrets.backoffice_repository_name }}
-      aws_access_key_id: ${{ secrets.aws_access_key_id }}
-      aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
-      aws_session_token: ${{ secrets.aws_session_token }}
+      aws_role_arn: ${{ secrets.aws_role_arn }}
       env_file: ${{ secrets.backoffice_env_file }}
 
   webapp_pipeline:
@@ -92,9 +86,7 @@ jobs:
     secrets:
       registry_url: ${{ secrets.registry_url }}
       repository_name: ${{ secrets.webapp_repository_name }}
-      aws_access_key_id: ${{ secrets.aws_access_key_id }}
-      aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
-      aws_session_token: ${{ secrets.aws_session_token }}
+      aws_role_arn: ${{ secrets.aws_role_arn }}
       env_file: ${{ secrets.webapp_env_file }}
 
   deploy:
@@ -109,9 +101,7 @@ jobs:
       registry_url: ${{ secrets.registry_url }}
       backoffice_repository_name: ${{ secrets.backoffice_repository_name }}
       webapp_repository_name: ${{ secrets.webapp_repository_name }}
-      aws_access_key_id: ${{ secrets.aws_access_key_id }}
-      aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
-      aws_session_token: ${{ secrets.aws_session_token }}
+      aws_role_arn: ${{ secrets.aws_role_arn }}
       aws_account_number: ${{ secrets.aws_account_number }}
       db_username: ${{ secrets.db_username }}
       db_password: ${{ secrets.db_password }}
