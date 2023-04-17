@@ -47,10 +47,36 @@ module "ecs" {
   api_backoffice_port = var.api_backoffice_port
   public_subnet_1 = var.public_subnet_1
   public_subnet_2 = var.public_subnet_2
-  api_backoffice_lb_security_group_id = var.api_backoffice_lb_security_group_id
+  api_backoffice_lb_security_group_id = module.security-groups.api-backoffice-lb-security-group-id
   webapp_port = var.webapp_port
-  webapp_lb_security_group_id = var.webapp_lb_security_group_id
+  webapp_lb_security_group_id = module.security-groups.webapp-lb-security-group-id
+  vpc_id = module.security-groups.vpc-id
+  backoffice_security_group = module.security-groups.api-backoffice-id
+  webapp_security_group = module.security-groups.webapp-security-group-id
+  execution_role_arn = module.iam.iam-role-arn
+  webapp_fargate_cpu = var.webapp_fargate_cpu
+  webapp_fargate_memory = var.webapp_fargate_memory
+  webapp_image_url = "${aws_ecr_repository.droits-webapp-repository.repository_url}:${var.webapp_image_tag}"
+  backoffice_fargate_cpu = var.api_backoffice_fargate_cpu
+  backoffice_fargate_memory = var.api_backoffice_fargate_memory
+  backoffice_image_url = "${aws_ecr_repository.droits-api-backoffice-repository.repository_url}:${var.api_backoffice_image_tag}"
+  webapp_target_group_arn = module.alb.webapp-target-group-arn
+  api_backoffice_target_group_arn = module.alb.api-backoffice-target-group-arn
   source = "./modules/ecs"
+  depends_on = [module.alb]
+}
+
+module "alb" {
+  source = "./modules/alb"
+  api_backoffice_port = var.api_backoffice_port
+  public_subnet_1 = var.public_subnet_1
+  public_subnet_2 = var.public_subnet_2
+  api_backoffice_lb_security_group_id = module.security-groups.api-backoffice-lb-security-group-id
+  webapp_port = var.webapp_port
+  webapp_lb_security_group_id = module.security-groups.webapp-lb-security-group-id
+  vpc_id = module.security-groups.vpc-id
+  backoffice_security_group = module.security-groups.api-backoffice-id
+  webapp_security_group = module.security-groups.webapp-security-group-id
 }
 
 resource "aws_s3_bucket" "droits-wreck-images"{
