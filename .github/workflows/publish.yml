@@ -29,6 +29,9 @@ on:
       env_file:
         description: The contents of the environment file
         required: true
+permissions:
+  id-token: write
+  contents: read
 jobs:
   deploy:
     name: Publish ${{ inputs.working-directory }} image
