@@ -3,7 +3,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const sampleReport = {
-    "reference": "TEST_DROIT_011/23",
     "report-date": "2023-03-20",
     "wreck-find-date": "2022-01-01",
     "latitude": 51.45399,

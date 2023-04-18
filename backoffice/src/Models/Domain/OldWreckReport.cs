@@ -44,10 +44,10 @@ public class WreckReport
 
         [JsonProperty("salvage-services")]
         public string SalvageServices { get; set; } = string.Empty;
-        public Salvor Personal { get; set; }
+        public Salvor Personal { get; set; } = new Salvor();
 
         [JsonProperty("wreck-materials")]
-        public List<WreckMaterial> WreckMaterials { get; set; }
+        public List<WreckMaterial> WreckMaterials { get; set; } = new List<WreckMaterial>();
     }
 
     public class WreckMaterial
@@ -62,7 +62,7 @@ public class WreckReport
         public string OriginalFilename { get; set; } = string.Empty;
 
         [JsonProperty("address-details")]
-        public AddressDetails AddressDetails { get; set; }
+        public AddressDetails AddressDetails { get; set; } = new AddressDetails();
 
         [JsonProperty("storage-address")]
         public string StorageAddress { get; set; } = string.Empty;

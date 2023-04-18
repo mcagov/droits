@@ -1,0 +1,27 @@
+name: Development pipeline
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  run_pipeline:
+    name: Deploying to Development
+    uses: ./.github/workflows/pipeline.yml
+    with:
+      environment: development
+      terraform_workspace: dev
+      image_tag: ${{ github.sha }}
+    secrets:
+      registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
+      backoffice_repository_name: ${{ secrets.BACKOFFICE_ECR_REPOSITORY_NAME }}
+      webapp_repository_name: ${{ secrets.WEBAPP_ECR_REPOSITORY_NAME }}
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
+      aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
+      db_username: ${{ secrets.DB_USERNAME }}
+      db_password: ${{ secrets.DB_PASSWORD }}
+      webapp_env_file: ${{ secrets.WEBAPP_ENV_FILE }}
+      backoffice_env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}

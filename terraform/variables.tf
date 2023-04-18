@@ -1,46 +1,28 @@
-variable "public_fqdn" {
-  type        = string
-  description = "The fully qualified domain name of the publicly accessible parts of the application"
-}
-variable "gov_notify_feedback_email_address" {
-  type        = string
-  description = "Email address for Gov Notify feedback"
-}
+
 variable "aws_region" {
   type        = string
   description = "The AWS region resources are created in"
-  default = "eu-west-2"
+  default     = "eu-west-2"
 }
-variable "az_count" {
-  type        = number
-  description = "Number of AZs to cover in a given region"
-}
-# See docs: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/platform_versions.html
-variable "ecs_fargate_version" {
-  type        = string
-  description = "The version of fargate to run the ECS tasks on"
-}
+
 variable "ecs_cluster_name" {
   type        = string
   description = "The name of the ECS Fargate cluster"
 }
-variable "webapp_image" {
+
+variable "image_tag" {
   type        = string
-  description = "Docker image to run in the ECS cluster for the DROITS Webapp"
-  default     = "DROITS-webapp"
+  description = "The name of the Elastic Container Repository for our webapp container images"
 }
-variable "webapp_image_tag" {
+variable "webapp_ecr_repository_name" {
+  sensitive   = true
   type        = string
-  description = "Hash of the relevant commit to the mca-droits repo"
+  description = "The name of the Elastic Container Repository for our webapp container images"
 }
 variable "webapp_port" {
   type        = number
   description = "Port exposed by the docker image to redirect traffic to for the DROITS Webapp"
   default     = 3000
-}
-variable "webapp_count" {
-  type        = number
-  description = "Number of docker containers to run for the DROITS Webapp"
 }
 variable "webapp_health_check_path" {
   type        = string
@@ -56,88 +38,38 @@ variable "webapp_fargate_cpu" {
 variable "webapp_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the DROITS Webapp"
-  default = 2048
+  default     = 2048
 }
-variable "azure_ad_tenant_id" {
-  sensitive   = true
-  type        = string
-  description = "The UUID for the Azure AD tenant, provided in Azure AD"
-}
-variable "webapp_azure_b2c_client_id" {
-  type        = string
-  description = "The Azure B2C Client ID for the B2C App Registration"
-}
-variable "webapp_azure_b2c_client_secret" {
-  type        = string
-  sensitive   = true
-  description = "The client secret for the B2C App Registration"
-}
-variable "webapp_azure_b2c_tenant_name" {
-  type        = string
-  description = "The name of the Azure B2C tenant"
-}
-variable "webapp_azure_b2c_tenant_id" {
-  type        = string
-  description = "The UUID for the Azure B2C tenant"
-}
-variable "webapp_azure_b2c_login_flow" {
-  type        = string
-  description = "The Sign In User Flow defined in Azure B2C"
-}
-variable "webapp_azure_b2c_signup_flow" {
-  type        = string
-  description = "The Sign Up User Flow defined in Azure B2C"
-}
-variable "webapp_ecr_repository_name" {
-  type = string
-  description = "The name of the Elastic Container Repository for our webapp container images"
-}
-variable "service_count" {
+variable "webapp_service_minimum_task_count" {
   type        = number
-  description = "Number of docker containers to run for the DROITS Service"
+  description = "Minimum number of expected tasks to be running for the webapp ECS service"
+  default     = 1
 }
-// See docs for ecs task definition: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html
-variable "apply_immediately" {
-  type        = bool
-  description = "Apply changes to infrastrucure immediatly"
-  default     = true
-}
+
 variable "enable_alerts" {
   type        = bool
   description = "When enabled CloudWatch alarm events are sent to the Alerts SNS Topic"
   default     = false
 }
-variable "low_disk_burst_balance_threshold" {
-  type        = number
-  description = "Alarm threshold for low RDS disk burst balance"
-  default     = 100
+
+variable "root_domain_name" {
+  type        = string
+  description = "The root domain name for DROITS"
 }
-variable "api_service_minimum_task_count" {
-  type        = number
-  description = "Minimum number of expected tasks to be running for the API Service"
-  default     = 1
-}
-variable "webapp_minimum_task_count" {
-  type        = number
-  description = "Minimum number of expected tasks to be running for the Webapp"
-  default     = 1
+
+variable "lb_ssl_policy" {
+  type        = string
+  description = "Security policy for the SSL certificate"
 }
 variable "ssl_certificate_arn" {
   type        = string
-  description = "ARN of ssl certificate generated in the AWS dashboard"
+  description = "ARN of ssl certificate"
 }
-variable "api_backoffice_azure_ad_client_id" {
-  type        = string
-  description = "The Client ID of the app registration in Azure AD for the Backoffice MVC app"
-}
+
 variable "api_backoffice_image" {
   type        = string
   description = "The name of the image for the Backoffice application"
   default     = "DROITS-api-backoffice"
-}
-variable "api_backoffice_image_tag" {
-  type        = string
-  description = "The image tag of the Backoffice application to be deployed"
 }
 variable "api_backoffice_count" {
   type        = number
@@ -152,7 +84,7 @@ variable "api_backoffice_port" {
 variable "api_backoffice_health_check_path" {
   type        = string
   description = "Health check path used by the Application Load Balancer for the Backoffice app"
-  default     = "/health"
+  default     = "/healthz"
 }
 variable "api_backoffice_fargate_cpu" {
   type        = number
@@ -165,8 +97,19 @@ variable "api_backoffice_fargate_memory" {
   default     = 512
 }
 variable "api_backoffice_ecr_repository_name" {
-  type = string
+  sensitive   = true
+  type        = string
   description = "The name of the Elastic Container Repository for our api-backoffice container images"
+}
+variable "api_backofice_service_minimum_task_count" {
+  type        = number
+  description = "Minimum number of expected tasks to be running for the backoffice ECS service"
+  default     = 1
+}
+
+variable "ecr_repository_url" {
+  type        = string
+  description = "The url of the Elastic Container Repository for our container images"
 }
 variable "aws_account_number" {
   sensitive   = true
@@ -178,78 +121,60 @@ variable "aws_access_key_id" {
   sensitive   = true
   type        = string
   description = "The id of the access key for AWS authentication"
-  default     = ""  
+  default     = ""
 }
 variable "aws_secret_access_key" {
   sensitive   = true
   type        = string
   description = "The secret value of the access key for AWS authentication"
-  default     = ""  
+  default     = ""
 }
 variable "aws_session_token" {
   sensitive   = true
   type        = string
   description = "The session token used for AWS authentication"
-  default     = ""  
+  default     = ""
 }
 variable "vpc_resource_id" {
   type        = string
   description = "The id of the Virtual Private Cloud resource in this environment"
   default     = ""
 }
-variable "db_username" {
-  sensitive = true
-  type        = string
-  description = "The username to authenticate with the DB"
-  default     = ""
-}
-variable "db_password" {
-  sensitive = true
-  type        = string
-  description = "The password to authenticate with the DB"
-  default     = ""
-}
+
 variable "db_delete_protection" {
   type        = bool
   description = "Database protection setting"
 }
-variable "backup_window" {
+
+variable "db_username" {
   type        = string
-  description = "Timeframe e.g 23:00 - 23:01"
+  description = "The username for the master database user"
+  default     = "droits"
+  sensitive   = true
 }
+variable "db_password" {
+  type        = string
+  description = "The password used for the master database user"
+  sensitive   = true
+  default     = ""
+}
+
 variable "db_instance_class" {
   type        = string
   description = "The database instance class"
 }
-variable "nat_gateway_count" {
-  type        = number
-  description = "Number of NAT gateways"
-  default     = 2
-}
-variable "performance_insights_enabled" {
-  type        = bool
-  description = "Enable performance insights"
-  default     = false
-}
-variable "db_max_storage" {
-  type        = number
-  description = "The upper limit, in GB, to which the storage of the DB can be autoscaled"
-}
+
 variable "db_allocated_storage" {
   type        = number
   description = "Allocated storage, in GB, for the DB instance"
 }
-variable "backup_retention_period" {
-  type        = number
-  description = "Days to retain backups"
-  default     = 0
-}
+
 variable "db_storage_encrypted" {
   type        = bool
   description = "Specifies whether the database instances data is encrypted"
 }
 variable "db_name" {
-  type = string
+  type        = string
   description = "The name of the DB"
 }
 
@@ -272,4 +197,70 @@ variable "public_subnet_1" {
 variable "public_subnet_2" {
   type        = string
   description = "ID of second public subnet"
+}
+variable "regional_account_id" {
+  type        = string
+  description = "The id of the region we are currently deploying to"
+}
+variable "db_low_disk_burst_balance_threshold" {
+  type        = number
+  default     = 100
+  description = "Alarm threshold for low RDS disk burst balance"
+}
+variable "alert_email_address" {
+  sensitive   = true
+  type        = string
+  description = "Email Address subscribed to alerts"
+}
+variable "percentage_cpu_utilization_high_threshold" {
+  type        = number
+  description = "The % CPU utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
+}
+variable "percentage_memory_utilization_high_threshold" {
+  type        = number
+  description = "The % memory utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
+}
+variable "cpu_utilization_high_evaluation_periods" {
+  type        = number
+  description = "Number of periods to evaluate for the alarm"
+}
+variable "memory_utilization_high_evaluation_periods" {
+  type        = number
+  description = "Number of periods to evaluate for the alarm"
+}
+variable "memory_utilisation_duration_in_seconds_to_evaluate" {
+  type        = number
+  description = "Duration in seconds to evaluate for the alarm"
+}
+variable "cpu_utilisation_duration_in_seconds_to_evaluate" {
+  type        = number
+  description = "Duration in seconds to evaluate for the alarm"
+}
+variable "db_evaluation_periods" {
+  type        = string
+  description = "The number of periods to evaluate for the alarm"
+}
+variable "db_cpu_credit_balance_too_low_threshold" {
+  type        = string
+  description = "Threshold for the DB credit balance too low alarm"
+}
+variable "db_memory_freeable_too_low_threshold" {
+  type        = string
+  description = "Threshold for the DB freeable memory too low alarm"
+}
+variable "db_memory_swap_usage_too_high_threshold" {
+  type        = string
+  description = "Threshold for the DB memory swap usage too high alarm"
+}
+variable "db_maximum_used_transaction_ids_too_high_threshold" {
+  type        = string
+  description = "Threshold for the maximum used transaction IDs DB alarm"
+}
+variable "lb_average_response_time_threshold" {
+  type        = string
+  description = "The average number of milliseconds that requests should complete within"
+}
+variable "lb_evaluation_periods" {
+  type        = string
+  description = "The number of periods to evaluate for the alarm"
 }

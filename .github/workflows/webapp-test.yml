@@ -1,0 +1,19 @@
+name: Testing webapp
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        description: The directory to publish
+        type: string
+        required: true
+
+jobs:
+  unit_tests:
+    name: Webapp unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run tests
+      run: |
+        echo "To-do - Add tests"
