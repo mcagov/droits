@@ -1,3 +1,14 @@
+# remove this
+# refactoring
+
+# - move other buckets into S3 module
+# - configure any more configurables
+# - Terratest
+# - Logic?
+# - Opportunities for reuseable module?
+#   - ECS
+#   - ALB
+
 terraform {
   required_providers {
     aws = {
@@ -120,33 +131,4 @@ module "cloudwatch" {
 module "s3" {
   source              = "./modules/s3"
   regional_account_id = var.regional_account_id
-}
-
-resource "aws_s3_bucket" "droits-wreck-images" {
-  bucket = "droits-wreck-images"
-  # Stops terraform from destroying the object if it exists
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "aws_s3_bucket_acl" "droits-wreck-images-acl" {
-  bucket = "droits-wreck-images"
-  acl    = "private"
-}
-
-resource "aws_s3_bucket_versioning" "droits-wreck-images-versioning" {
-  bucket = "droits-wreck-images"
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
-
-resource "aws_s3_bucket_server_side_encryption_configuration" "droits-wreck-images-encryption-config" {
-  bucket = "droits-wreck-images"
-  rule {
-    apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
-    }
-  }
 }
