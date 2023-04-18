@@ -1,3 +1,14 @@
+# remove this
+# refactoring
+
+# - move other buckets into S3 module
+# - configure any more configurables
+# - Terratest
+# - Logic?
+# - Opportunities for reuseable module?
+#   - ECS
+#   - ALB
+
 terraform {
   required_providers {
     aws = {
