@@ -148,12 +148,13 @@ app.use(sessionData);
 // Logs req.session data
 if (env === 'development') edt(app, { panels: ['session'] });
 
-// Load API routes
-app.use('/', routes());
 
 app.get('/', function(req, res){
-  res.redirect(process.env.ROOT_URL);
+  res.render('index');
 })
+
+// Load API routes
+app.use('/', routes());
 
 // Disables caching when user clicks back button on confirmation page
 app.use('/report/check-your-answers', function (req, res, next) {
