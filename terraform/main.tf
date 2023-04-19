@@ -3,7 +3,7 @@
 
 # - configure any more configurables
 # - Opportunities for reuseable module?
-#   - ALB
+#   - ECR
 
 terraform {
   required_providers {
@@ -66,10 +66,10 @@ module "ecs" {
   execution_role_arn = module.iam.iam-role-arn
   webapp_fargate_cpu = var.webapp_fargate_cpu
   webapp_fargate_memory = var.webapp_fargate_memory
-  webapp_image_url = "${aws_ecr_repository.droits-webapp-repository.repository_url}:${var.webapp_image_tag}"
+  webapp_image_url = "${aws_ecr_repository.droits-webapp-repository.repository_url}:${var.image_tag}"
   backoffice_fargate_cpu = var.api_backoffice_fargate_cpu
   backoffice_fargate_memory = var.api_backoffice_fargate_memory
-  backoffice_image_url = "${aws_ecr_repository.droits-api-backoffice-repository.repository_url}:${var.api_backoffice_image_tag}"
+  backoffice_image_url = "${aws_ecr_repository.droits-api-backoffice-repository.repository_url}:${var.image_tag}"
   webapp_target_group_arn = module.alb.webapp-target-group-arn
   api_backoffice_target_group_arn = module.alb.api-backoffice-target-group-arn
   source = "./modules/ecs"
@@ -120,19 +120,19 @@ module "db-sns" {
 
 module "cloudwatch" {
   source                                             = "./modules/cloudwatch"
-  ecs_cluster_name                                   = aws_ecs_cluster.droits-ecs-cluster.name
-  ecs_backoffice_service_name                        = aws_ecs_service.backoffice-service.name
-  ecs_webapp_service_name                            = aws_ecs_service.webapp.name
+  ecs_cluster_name                                   = module.ecs.cluster-name
+  ecs_backoffice_service_name                        = module.ecs.backoffice-service-name
+  ecs_webapp_service_name                            = module.ecs.webapp-service-name
   rds_instance_identifier                            = module.rds.instance-identifier
   aws_region                                         = var.aws_region
-  backoffice_load_balancer                           = aws_alb.api-backoffice-alb.name
-  backoffice_alb_id                                  = aws_alb.api-backoffice-alb.id
-  backoffice_alb_arn_suffix                          = aws_alb.api-backoffice-alb.arn_suffix
-  backoffice_alb_target_group_id                     = aws_alb_target_group.api-backoffice-target-group.id
-  webapp_load_balancer                               = aws_alb.webapp-alb.name
-  webapp_alb_id                                      = aws_alb.webapp-alb.id
-  webapp_alb_arn_suffix                              = aws_alb.webapp-alb.arn_suffix
-  webapp_alb_target_group_id                         = aws_alb_target_group.webapp-target-group.id
+  backoffice_load_balancer                           = module.alb.backoffice-alb-name
+  backoffice_alb_id                                  = module.alb.backoffice-alb-id
+  backoffice_alb_arn_suffix                          = module.alb.backoffice-alb-arn-suffix
+  backoffice_alb_target_group_id                     = module.alb.backoffice-target-group-id
+  webapp_load_balancer                               = module.alb.webapp-alb-name
+  webapp_alb_id                                      = module.alb.webapp-alb-id
+  webapp_alb_arn_suffix                              = module.alb.webapp-alb-arn-suffix
+  webapp_alb_target_group_id                         = module.alb.webapp-target-group-id
   db_instance_id                                     = module.rds.instance-identifier
   db_instance_class                                  = var.db_instance_class
   db_low_disk_burst_balance_threshold                = var.db_low_disk_burst_balance_threshold
@@ -149,7 +149,7 @@ module "cloudwatch" {
   cpu_utilisation_duration_in_seconds_to_evaluate    = var.cpu_utilisation_duration_in_seconds_to_evaluate
   db_cpu_credit_balance_too_low_threshold            = var.db_cpu_credit_balance_too_low_threshold
   memory_utilization_high_evaluation_periods         = var.memory_utilization_high_evaluation_periods
-  lb_average_response_time_threshold                        = var.lb_response_time_threshold
+  lb_average_response_time_threshold                 = var.lb_average_response_time_threshold
   cpu_utilization_high_evaluation_periods            = var.cpu_utilization_high_evaluation_periods
   db_memory_swap_usage_too_high_threshold            = var.db_memory_swap_usage_too_high_threshold
   db_maximum_used_transaction_ids_too_high_threshold = var.db_maximum_used_transaction_ids_too_high_threshold
@@ -172,7 +172,4 @@ resource "aws_ecr_repository" "droits-webapp-repository" {
 resource "aws_ecr_repository" "droits-api-backoffice-repository" {
   name         = var.api_backoffice_ecr_repository_name
   force_delete = true
-    apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
-    }
-  }
+}

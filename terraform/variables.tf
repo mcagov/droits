@@ -12,7 +12,7 @@ variable "ecs_cluster_name" {
 
 variable "image_tag" {
   type        = string
-  description = "The name of the Elastic Container Repository for our webapp container images"
+  description = "The name of the tag for our webapp container images"
 }
 variable "webapp_ecr_repository_name" {
   sensitive   = true
