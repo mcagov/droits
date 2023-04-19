@@ -12,6 +12,11 @@ module.exports = (env) => {
 
   return {
     mode: devMode ? 'development' : 'production',
+    performance: {
+        hints: false,
+        maxEntrypointSize: 512000,
+        maxAssetSize: 512000
+    },
     entry: {
       main: ['@babel/polyfill', './app/js/index.js'],
     },
@@ -63,7 +68,7 @@ module.exports = (env) => {
       new BrowserSyncPlugin({
         host: 'localhost',
         port: 3000,
-        proxy: 'http://localhost:5000/',
+        proxy: 'http://localhost:3000/',
         files: ['dist/css/*.css', 'dist/js/*.js', 'app/views/**/*.html'],
       }),
       new CopyWebpackPlugin({

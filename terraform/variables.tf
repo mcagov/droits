@@ -117,24 +117,7 @@ variable "aws_account_number" {
   description = "The MCA's AWS account number"
   default     = ""
 }
-variable "aws_access_key_id" {
-  sensitive   = true
-  type        = string
-  description = "The id of the access key for AWS authentication"
-  default     = ""
-}
-variable "aws_secret_access_key" {
-  sensitive   = true
-  type        = string
-  description = "The secret value of the access key for AWS authentication"
-  default     = ""
-}
-variable "aws_session_token" {
-  sensitive   = true
-  type        = string
-  description = "The session token used for AWS authentication"
-  default     = ""
-}
+
 variable "vpc_resource_id" {
   type        = string
   description = "The id of the Virtual Private Cloud resource in this environment"
