@@ -67,7 +67,7 @@ useHttps = useHttps.toLowerCase();
 
 // Production session data
 const session = require('express-session');
-const AzureTablesStoreFactory = require('connect-azuretables')(session);
+// const AzureTablesStoreFactory = require('connect-azuretables')(session);
 
 const isSecure = env === 'production' && useHttps === 'true';
 if (isSecure) {
@@ -120,7 +120,7 @@ const sessionOptions = {
     secure: isSecure
   },
 };
-if (env === 'development') {
+// if (env === 'development') {
   app.use(
     sessionInMemory(
       Object.assign(sessionOptions, {
@@ -130,17 +130,17 @@ if (env === 'development') {
       })
     )
   );
-} else {
-  app.use(
-    session(
-      Object.assign(sessionOptions, {
-        store: AzureTablesStoreFactory.create(),
-        resave: false,
-        saveUninitialized: false,
-      })
-    )
-  );
-}
+// } else {
+//   app.use(
+//     session(
+//       Object.assign(sessionOptions, {
+//         store: AzureTablesStoreFactory.create(),
+//         resave: false,
+//         saveUninitialized: false,
+//       })
+//     )
+//   );
+// }
 
 // Manage session data. Assigns default values to data
 app.use(sessionData);
