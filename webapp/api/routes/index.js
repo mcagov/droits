@@ -50,6 +50,8 @@ export default () => {
   propertyFormAddress(app);
   salvageAward(app);
   checkYourAnswers(app);
+
+  //Need to add portal endpoints back in, issues with login connecting to azure.
   // portalStart(app);
   // portalLogin(app);
   // portalLogout(app);

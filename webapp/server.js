@@ -120,6 +120,9 @@ const sessionOptions = {
     secure: isSecure
   },
 };
+
+
+//Need to add remote session storage back in, issues with azure-tables connecting. - Maybe we should switch to elasticache.
 // if (env === 'development') {
   app.use(
     sessionInMemory(
