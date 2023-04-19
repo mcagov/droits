@@ -21,10 +21,10 @@ resource "aws_s3_bucket_versioning" "droits-wreck-images-versioning" {
 resource "aws_s3_bucket_server_side_encryption_configuration" "droits-wreck-images-encryption-config" {
   bucket = "droits-wreck-images"
   rule {
-        apply_server_side_encryption_by_default {
-            sse_algorithm = "AES256"
-        }
-      }
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
 }
 
 resource "aws_s3_bucket" "droits-backoffice-alb-logs" {

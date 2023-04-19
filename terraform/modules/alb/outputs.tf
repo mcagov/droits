@@ -1,8 +1,8 @@
 output "webapp-target-group-arn" {
-  value = aws_alb_target_group.webapp-target-group
+  value = aws_alb_target_group.webapp-target-group.arn
 }
 output "api-backoffice-target-group-arn" {
-  value = aws_alb_target_group.api-backoffice-target-group
+  value = aws_alb_target_group.api-backoffice-target-group.arn
 }
 output "backoffice-alb-name" {
   value = aws_alb.api-backoffice-alb.name

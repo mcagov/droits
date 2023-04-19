@@ -8,11 +8,11 @@ variable "api_backoffice_port" {
   description = "The port that the backoffice application runs on"
 }
 
-variable "public-subnet-1" {
+variable "public_subnet_1" {
   type        = string
   description = "The name of the first public subnet"
 }
-variable "public-subnet-2" {
+variable "public_subnet_2" {
   type        = string
   description = "The name of the second public subnet"
 }
@@ -33,23 +33,23 @@ variable "webapp-lb-security-group-id" {
 }
 
 variable "vpc_id" {
-    type = string
-    description = "The ID of the main vpc"
+  type        = string
+  description = "The ID of the main vpc"
 }
 
 variable "backoffice_security_group" {
-    type = string
-    description = "The ID of the backoffice security group"
+  type        = string
+  description = "The ID of the backoffice security group"
 }
 
 variable "webapp_security_group" {
-    type = string
-    description = "The ID of the webapp security group"
+  type        = string
+  description = "The ID of the webapp security group"
 }
 
 variable "execution_role_arn" {
-    type = string
-    description = "IAM ID for execution role"
+  type        = string
+  description = "IAM ID for execution role"
 }
 
 variable "webapp_fargate_cpu" {
@@ -62,7 +62,7 @@ variable "webapp_fargate_memory" {
 }
 
 variable "webapp_image_url" {
-  type = string
+  type        = string
   description = "string of webapp image in ecr repository"
 }
 
@@ -76,17 +76,17 @@ variable "backoffice_fargate_memory" {
 }
 
 variable "backoffice_image_url" {
-  type = string
+  type        = string
   description = "String of backoffice image in ecr repository"
 }
 
 variable "webapp_target_group_arn" {
-  type = string
+  type        = string
   description = "ARN of webapp lb target group"
 }
 
 variable "api_backoffice_target_group_arn" {
-  type = string
+  type        = string
   description = "ARN of backoffice lb target group"
 }
 
