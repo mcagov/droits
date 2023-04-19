@@ -1,10 +1,3 @@
-# remove this
-# refactoring
-
-# - configure any more configurables
-# - Opportunities for reuseable module?
-#   - ECR
-
 terraform {
   required_providers {
     aws = {
