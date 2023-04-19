@@ -1,3 +1,6 @@
+# finish off
+# is there anything more we'd want ot weak for different envs?
+
 resource "aws_ecs_cluster" "droits-ecs-cluster" {
   name         = var.ecs_cluster_name
 }

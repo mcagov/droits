@@ -1,12 +1,8 @@
 # remove this
 # refactoring
 
-# - move other buckets into S3 module
 # - configure any more configurables
-# - Terratest
-# - Logic?
 # - Opportunities for reuseable module?
-#   - ECS
 #   - ALB
 
 terraform {
@@ -59,11 +55,11 @@ module "rds" {
 module "ecs" {
   ecs_cluster_name = var.ecs_cluster_name
   api_backoffice_port = var.api_backoffice_port
-  public_subnet_1 = var.public_subnet_1
-  public_subnet_2 = var.public_subnet_2
-  api_backoffice_lb_security_group_id = module.security-groups.api-backoffice-lb-security-group-id
+  public-subnet-1 = var.public_subnet_1
+  public-subnet-2 = var.public_subnet_2
+  api-backoffice-lb-security-group-id = module.security-groups.api-backoffice-lb-security-group-id
   webapp_port = var.webapp_port
-  webapp_lb_security_group_id = module.security-groups.webapp-lb-security-group-id
+  webapp-lb-security-group-id = module.security-groups.webapp-lb-security-group-id
   vpc_id = module.security-groups.vpc-id
   backoffice_security_group = module.security-groups.api-backoffice-id
   webapp_security_group = module.security-groups.webapp-security-group-id
@@ -89,8 +85,6 @@ module "alb" {
   webapp_port = var.webapp_port
   webapp_lb_security_group_id = module.security-groups.webapp-lb-security-group-id
   vpc_id = module.security-groups.vpc-id
-  backoffice_security_group = module.security-groups.api-backoffice-id
-  webapp_security_group = module.security-groups.webapp-security-group-id
 }
 
 module "backoffice-sns" {
