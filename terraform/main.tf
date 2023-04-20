@@ -45,6 +45,7 @@ module "rds" {
 
 module "ecs" {
   source                              = "./modules/ecs"
+  aws_region                          = var.aws_region
   ecs_cluster_name                    = var.ecs_cluster_name
   api_backoffice_port                 = var.api_backoffice_port
   public_subnet_1                     = var.public_subnet_1

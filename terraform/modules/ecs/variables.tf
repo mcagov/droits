@@ -1,3 +1,8 @@
+variable "aws_region" {
+  type        = string
+  description = "The name of the AWS region"
+}
+
 variable "ecs_cluster_name" {
   type        = string
   description = "The name of the ECS cluster that houses all our services"

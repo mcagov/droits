@@ -1,6 +1,3 @@
-# finish off
-# is there anything more we'd want ot weak for different envs?
-
 resource "aws_ecs_cluster" "droits-ecs-cluster" {
   name = var.ecs_cluster_name
 }
@@ -14,7 +11,9 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
   memory                   = var.backoffice_fargate_memory
   container_definitions = jsonencode([{
     name : "api-backoffice",
-    image : var.backoffice_image_url,
+    cpu : var.backoffice_container_cpu,
+    memory : var.backoffice_container_memory,
+    essential : true,
     portMappings : [
       {
         containerPort : var.api_backoffice_port
@@ -24,17 +23,18 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
     healthCheck : {
       retries : 6,
       command : [
-        "CMD-SHELL", "curl -f http://localhost:5000/health || exit 1"
+        "CMD-SHELL", "curl -f http://localhost:5000/healthz || exit 1"
       ],
     },
-    cpu : var.backoffice_container_cpu,
-    memory : var.backoffice_container_memory,
-    essential : true
+    logConfiguration : {
+      logDriver : "awslogs",
+      options : {
+        awslogs-region : var.aws_region,
+        awslogs-group : "droits-backoffice-container-logs",
+        awslogs-stream-prefix : "backoffice"
+      }
+    }
   }])
-  runtime_platform {
-    operating_system_family = "LINUX"
-    cpu_architecture        = "ARM64"
-  }
 }
 
 resource "aws_ecs_service" "backoffice-service" {
@@ -44,6 +44,11 @@ resource "aws_ecs_service" "backoffice-service" {
   launch_type                       = "FARGATE"
   desired_count                     = 1
   health_check_grace_period_seconds = 600
+
+  depends_on = [
+    aws_alb_listener.api-backoffice-listener,
+    aws_alb_listener.api-backoffice-listener-https
+  ]
 
   network_configuration {
     security_groups  = [var.backoffice_security_group]
@@ -65,9 +70,13 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
   network_mode             = "awsvpc"
   cpu                      = var.webapp_fargate_cpu
   memory                   = var.webapp_fargate_memory
+
   container_definitions = jsonencode([{
     name : "webapp",
     image : var.webapp_image_url,
+    cpu : var.webapp_container_cpu,
+    memory : var.webapp_container_memory,
+    essential : true,
     portMappings : [
       {
         containerPort : var.webapp_port
@@ -80,14 +89,15 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
         "CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"
       ],
     },
-    cpu : var.webapp_container_cpu,
-    memory : var.webapp_container_memory,
-    essential : true
+    logConfiguration : {
+      logDriver : "awslogs",
+      options : {
+        awslogs-region : var.aws_region,
+        awslogs-group : "droits-webapp-container-logs",
+        awslogs-stream-prefix : "webapp"
+      }
+    }
   }])
-  runtime_platform {
-    operating_system_family = "LINUX"
-    cpu_architecture        = "ARM64"
-  }
 }
 
 resource "aws_ecs_service" "webapp" {
@@ -97,7 +107,11 @@ resource "aws_ecs_service" "webapp" {
   launch_type                       = "FARGATE"
   desired_count                     = 1
   health_check_grace_period_seconds = 600
-  # wait_for_steady_state = true
+
+  depends_on = [
+    aws_alb_listener.webapp-listener,
+    aws_alb_listener.webapp-listener-https
+  ]
 
   network_configuration {
     security_groups  = [var.webapp_security_group]
