@@ -57,10 +57,10 @@ module "ecs" {
   execution_role_arn                  = module.iam.iam-role-arn
   webapp_fargate_cpu                  = var.webapp_fargate_cpu
   webapp_fargate_memory               = var.webapp_fargate_memory
-  webapp_image_url                    = "${aws_ecr_repository.droits-webapp-repository.repository_url}:${var.image_tag}"
+  webapp_image_url                    = "${var.ecr_repository_url}/${var.webapp_ecr_repository_name}:${var.image_tag}"
   backoffice_fargate_cpu              = var.api_backoffice_fargate_cpu
   backoffice_fargate_memory           = var.api_backoffice_fargate_memory
-  backoffice_image_url                = "${aws_ecr_repository.droits-api-backoffice-repository.repository_url}:${var.image_tag}"
+  backoffice_image_url                = "${var.ecr_repository_url}/${api_backoffice_ecr_repository_name}:${var.image_tag}"
   webapp_target_group_arn             = module.alb.webapp-target-group-arn
   api_backoffice_target_group_arn     = module.alb.api-backoffice-target-group-arn
   source                              = "./modules/ecs"
@@ -153,14 +153,4 @@ module "cloudwatch" {
 module "s3" {
   source              = "./modules/s3"
   regional_account_id = var.regional_account_id
-}
-
-resource "aws_ecr_repository" "droits-webapp-repository" {
-  name         = var.webapp_ecr_repository_name
-  force_delete = true
-}
-
-resource "aws_ecr_repository" "droits-api-backoffice-repository" {
-  name         = var.api_backoffice_ecr_repository_name
-  force_delete = true
 }
