@@ -2,10 +2,10 @@ resource "aws_security_group" "api-backoffice" {
   name   = "api-backoffice"
   vpc_id = var.aws_vpc_id
   ingress {
-    protocol  = "-1"
+    protocol  = "tcp"
     from_port = 0
-    to_port   = 0
-    #    security_groups = [aws_security_group.api-backoffice-lb.id]
+    to_port   = 65535
+    security_groups = [aws_security_group.api-backoffice-lb.id]
     cidr_blocks = ["0.0.0.0/0"]
     description = "Allow inbound access from the backoffice LB only"
   }
