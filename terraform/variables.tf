@@ -19,6 +19,7 @@ variable "webapp_ecr_repository_name" {
   type        = string
   description = "The name of the Elastic Container Repository for our webapp container images"
 }
+
 variable "webapp_port" {
   type        = number
   description = "Port exposed by the docker image to redirect traffic to for the DROITS Webapp"
@@ -44,6 +45,18 @@ variable "webapp_service_minimum_task_count" {
   type        = number
   description = "Minimum number of expected tasks to be running for the webapp ECS service"
   default     = 1
+}
+
+variable "api_backoffice_environment_file" {
+  sensitive   = true
+  type        = string
+  description = "The environment file for the backoffice ECS container"
+}
+
+variable "webapp_environment_file" {
+  sensitive   = true
+  type        = string
+  description = "The environment file for the backoffice ECS container"
 }
 
 variable "enable_alerts" {

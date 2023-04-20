@@ -106,3 +106,5 @@ jobs:
       db_username: ${{ secrets.db_username }}
       db_password: ${{ secrets.db_password }}
       alert_email_address: ${{ secrets.alerts_email }}
+      webapp_env_file: ${{ secrets.webapp_env_file }}
+      backoffice_env_file: ${{ secrets.backoffice_env_file }}

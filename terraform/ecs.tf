@@ -14,6 +14,7 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
     image : "${var.ecr_repository_url}/${var.api_backoffice_ecr_repository_name}:${var.image_tag}",
     cpu : var.api_backoffice_fargate_cpu,
     memory : var.api_backoffice_fargate_memory,
+    envionment : ${jsonencode(var.api_backoffice_environment_file)}
     portMappings : [
       {
         containerPort : var.api_backoffice_port
@@ -76,6 +77,7 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
     image : "${var.ecr_repository_url}/${var.webapp_ecr_repository_name}:${var.image_tag}",
     cpu : var.webapp_fargate_cpu,
     memory : var.webapp_fargate_memory,
+    envionment : ${jsonencode(var.webapp_environment_file)}
     portMappings : [
       {
         containerPort : var.webapp_port
