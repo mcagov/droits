@@ -67,7 +67,7 @@ useHttps = useHttps.toLowerCase();
 
 // Production session data
 const session = require('express-session');
-const AzureTablesStoreFactory = require('connect-azuretables')(session);
+// const AzureTablesStoreFactory = require('connect-azuretables')(session);
 
 const isSecure = env === 'production' && useHttps === 'true';
 if (isSecure) {
@@ -120,7 +120,10 @@ const sessionOptions = {
     secure: isSecure
   },
 };
-if (env === 'development') {
+
+
+//Need to add remote session storage back in, issues with azure-tables connecting. - Maybe we should switch to elasticache.
+// if (env === 'development') {
   app.use(
     sessionInMemory(
       Object.assign(sessionOptions, {
@@ -130,17 +133,17 @@ if (env === 'development') {
       })
     )
   );
-} else {
-  app.use(
-    session(
-      Object.assign(sessionOptions, {
-        store: AzureTablesStoreFactory.create(),
-        resave: false,
-        saveUninitialized: false,
-      })
-    )
-  );
-}
+// } else {
+//   app.use(
+//     session(
+//       Object.assign(sessionOptions, {
+//         store: AzureTablesStoreFactory.create(),
+//         resave: false,
+//         saveUninitialized: false,
+//       })
+//     )
+//   );
+// }
 
 // Manage session data. Assigns default values to data
 app.use(sessionData);
@@ -148,12 +151,13 @@ app.use(sessionData);
 // Logs req.session data
 if (env === 'development') edt(app, { panels: ['session'] });
 
-// Load API routes
-app.use('/', routes());
 
 app.get('/', function(req, res){
-  res.redirect(process.env.ROOT_URL);
+  res.render('index');
 })
+
+// Load API routes
+app.use('/', routes());
 
 // Disables caching when user clicks back button on confirmation page
 app.use('/report/check-your-answers', function (req, res, next) {
