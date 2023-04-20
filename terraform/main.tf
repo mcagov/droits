@@ -44,6 +44,7 @@ module "rds" {
 }
 
 module "ecs" {
+  source                              = "./modules/ecs"
   ecs_cluster_name                    = var.ecs_cluster_name
   api_backoffice_port                 = var.api_backoffice_port
   public_subnet_1                     = var.public_subnet_1
@@ -60,10 +61,13 @@ module "ecs" {
   webapp_image_url                    = "${var.ecr_repository_url}/${var.webapp_ecr_repository_name}:${var.image_tag}"
   backoffice_fargate_cpu              = var.api_backoffice_fargate_cpu
   backoffice_fargate_memory           = var.api_backoffice_fargate_memory
-  backoffice_image_url                = "${var.ecr_repository_url}/${api_backoffice_ecr_repository_name}:${var.image_tag}"
+  backoffice_image_url                = "${var.ecr_repository_url}/${var.api_backoffice_ecr_repository_name}:${var.image_tag}"
   webapp_target_group_arn             = module.alb.webapp-target-group-arn
   api_backoffice_target_group_arn     = module.alb.api-backoffice-target-group-arn
-  source                              = "./modules/ecs"
+  webapp_container_cpu                = var.webapp_fargate_cpu
+  webapp_container_memory             = var.webapp_fargate_memory
+  backoffice_container_cpu            = var.api_backoffice_fargate_cpu
+  backoffice_container_memory         = var.api_backoffice_fargate_memory
   depends_on                          = [module.alb]
 }
 

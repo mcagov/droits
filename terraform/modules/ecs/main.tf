@@ -26,7 +26,10 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
       command : [
         "CMD-SHELL", "curl -f http://localhost:5000/health || exit 1"
       ],
-    }
+    },
+    cpu : var.backoffice_container_cpu,
+    memory : var.backoffice_container_memory,
+    essential : true
   }])
   runtime_platform {
     operating_system_family = "LINUX"
@@ -41,7 +44,6 @@ resource "aws_ecs_service" "backoffice-service" {
   launch_type                       = "FARGATE"
   desired_count                     = 1
   health_check_grace_period_seconds = 600
-  # wait_for_steady_state = true
 
   network_configuration {
     security_groups  = [var.backoffice_security_group]
@@ -77,7 +79,10 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
       command : [
         "CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"
       ],
-    }
+    },
+    cpu : var.webapp_container_cpu,
+    memory : var.webapp_container_memory,
+    essential : true
   }])
   runtime_platform {
     operating_system_family = "LINUX"

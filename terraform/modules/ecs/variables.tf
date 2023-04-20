@@ -60,6 +60,14 @@ variable "webapp_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the DROITS Webapp"
 }
+variable "webapp_container_cpu" {
+  type        = number
+  description = "Container instance CPU units to provision (1 vCPU = 1024 CPU units) for the DROITS Webapp"
+}
+variable "webapp_container_memory" {
+  type        = number
+  description = "Container instance memory to provision (in MiB) for the DROITS Webapp"
+}
 
 variable "webapp_image_url" {
   type        = string
@@ -73,6 +81,14 @@ variable "backoffice_fargate_cpu" {
 variable "backoffice_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the DROITS backoffice service"
+}
+variable "backoffice_container_cpu" {
+  type        = number
+  description = "Container instance CPU units to provision (1 vCPU = 1024 CPU units) for the DROITS Webapp"
+}
+variable "backoffice_container_memory" {
+  type        = number
+  description = "Container instance memory to provision (in MiB) for the DROITS Webapp"
 }
 
 variable "backoffice_image_url" {
