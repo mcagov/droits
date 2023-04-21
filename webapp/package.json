@@ -2,7 +2,7 @@
   "name": "@mca/droits",
   "version": "1.0.0",
   "engines": {
-    "node": "12.13.0"
+    "node": "14"
   },
   "description": "Maritime and Coastguard Agency - Receiver of Wreck web application for reporting wreck material recovered from the sea and shores of the UK",
   "scripts": {
@@ -46,7 +46,7 @@
     "copy-webpack-plugin": "^6.1.0",
     "css-loader": "^4.3.0",
     "dayjs": "^1.10.4",
-    "dotenv": "^8.2.0",
+    "dotenv-json": "^1.0.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "express-debug": "^1.1.1",

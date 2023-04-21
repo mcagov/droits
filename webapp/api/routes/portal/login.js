@@ -1,5 +1,4 @@
-const dotenv = require('dotenv');
-dotenv.config();
+require("dotenv-json")();
 
 const passport = require('passport');
 var OIDCStrategy = require('passport-azure-ad').OIDCStrategy;

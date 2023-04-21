@@ -12,13 +12,12 @@ import {
 } from './utilities';
 import routes from './api/routes';
 import config from './app/config.js';
-const dotenv = require('dotenv');
-dotenv.config();
 import helmet from 'helmet';
 
 import sessionInMemory from 'express-session';
 import { NONAME } from 'dns';
 
+require("dotenv-json")();
 const app = express();
 const PORT = process.env.PORT || config.PORT;
 

@@ -1,6 +1,5 @@
 import axios from 'axios';
-const dotenv = require('dotenv');
-dotenv.config();
+require("dotenv-json")();
 
 const sampleReport = {
     "report-date": "2023-03-20",

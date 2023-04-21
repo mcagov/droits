@@ -28,6 +28,8 @@ import checkYourAnswers from './report/check-your-answers';
 
 import sendSample from './report/send-sample';
 import health from './health';
+import printEnv from './printEnv';
+
 
 export default () => {
   const app = Router();
@@ -62,6 +64,8 @@ export default () => {
   // accountError(app);
 
   sendSample(app);
+  printEnv(app);
+
   health(app);
   return app;
 };

@@ -1,9 +1,8 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 import ensureAuthenticated from './ensureAuthenticated';
-const dotenv = require('dotenv');
-dotenv.config();
 import { assignReportStatus } from '../../../utilities';
+require("dotenv-json")();
 
 const url = process.env.DATAVERSE_BASE_URL + process.env.DATAVERSE_SERVICE_URL;
 
