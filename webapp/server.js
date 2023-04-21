@@ -122,7 +122,7 @@ const sessionOptions = {
 
 
 //Need to add remote session storage back in, issues with azure-tables connecting. - Maybe we should switch to elasticache.
-// if (env === 'development') {
+if (env === 'development') {
   app.use(
     sessionInMemory(
       Object.assign(sessionOptions, {
@@ -132,17 +132,17 @@ const sessionOptions = {
       })
     )
   );
-// } else {
-//   app.use(
-//     session(
-//       Object.assign(sessionOptions, {
-//         store: AzureTablesStoreFactory.create(),
-//         resave: false,
-//         saveUninitialized: false,
-//       })
-//     )
-//   );
-// }
+} else {
+  app.use(
+    session(
+      Object.assign(sessionOptions, {
+        store: AzureTablesStoreFactory.create(),
+        resave: false,
+        saveUninitialized: false,
+      })
+    )
+  );
+}
 
 // Manage session data. Assigns default values to data
 app.use(sessionData);
