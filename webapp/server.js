@@ -66,7 +66,7 @@ useHttps = useHttps.toLowerCase();
 
 // Production session data
 const session = require('express-session');
-// const AzureTablesStoreFactory = require('connect-azuretables')(session);
+const AzureTablesStoreFactory = require('connect-azuretables')(session);
 
 const isSecure = env === 'production' && useHttps === 'true';
 if (isSecure) {
