@@ -31,19 +31,3 @@ variable "db_allocated_storage" {
   description = "How much storage is available to the DB in GB"
   default     = 50
 }
-
-variable "public_subnet_1" {
-  type        = string
-  description = "The ID of the public subnet in one availability zone"
-}
-
-variable "public_subnet_2" {
-  type        = string
-  description = "The ID of the the public subnet in another availability zone"
-}
-
-
-variable "db_security_group_id" {
-  type        = string
-  description = "The ID of the security group in which the DB resides"
-}

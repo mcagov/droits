@@ -53,7 +53,7 @@ resource "aws_ecs_service" "backoffice-service" {
 
   network_configuration {
     security_groups  = [module.security-groups.api-backoffice-id]
-    subnets          = [module.security-groups.public-subnet-1]
+    subnets          = module.vpc.public_subnets
     assign_public_ip = true
   }
 
@@ -116,7 +116,7 @@ resource "aws_ecs_service" "webapp" {
 
   network_configuration {
     security_groups  = [module.security-groups.webapp-security-group-id]
-    subnets          = [module.security-groups.public-subnet-1]
+    subnets          = module.vpc.public_subnets
     assign_public_ip = true
   }
 

@@ -18,17 +18,11 @@ provider "aws" {
 }
 
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "4.0.1"
+  source = "./modules/vpc"
 }
 
 module "security-groups" {
-  source           = "./modules/security-groups"
-  aws_vpc_id       = var.aws_vpc_id
-  private_subnet_1 = var.private_subnet_1
-  private_subnet_2 = var.private_subnet_2
-  public_subnet_1  = var.public_subnet_1
-  public_subnet_2  = var.public_subnet_2
+  source = "./modules/security-groups"
 }
 
 module "iam" {
@@ -37,9 +31,6 @@ module "iam" {
 
 module "rds" {
   source               = "./modules/rds"
-  public_subnet_1      = module.security-groups.public-subnet-1
-  public_subnet_2      = module.security-groups.public-subnet-2
-  db_security_group_id = module.security-groups.db-security-group-id
   db_delete_protection = var.db_delete_protection
   db_password          = var.db_password
   db_username          = var.db_username

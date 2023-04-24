@@ -1,6 +1,6 @@
 resource "aws_security_group" "api-backoffice" {
   name   = "api-backoffice"
-  vpc_id = var.aws_vpc_id
+  vpc_id = module.vpc.vpc_id
   ingress {
     protocol  = "-1"
     from_port = 0
@@ -19,7 +19,7 @@ resource "aws_security_group" "api-backoffice" {
 }
 resource "aws_security_group" "api-backoffice-lb" {
   name   = "api-backoffice-lb"
-  vpc_id = var.aws_vpc_id
+  vpc_id = module.vpc.vpc_id
   ingress {
     from_port   = 80
     protocol    = "tcp"
@@ -44,7 +44,7 @@ resource "aws_security_group" "api-backoffice-lb" {
 }
 resource "aws_security_group" "droits-db" {
   name   = "droits-db"
-  vpc_id = var.aws_vpc_id
+  vpc_id = module.vpc.vpc_id
 
   ingress {
     protocol        = "tcp"
@@ -63,7 +63,7 @@ resource "aws_security_group" "droits-db" {
 }
 resource "aws_security_group" "webapp" {
   name   = "webapp"
-  vpc_id = var.aws_vpc_id
+  vpc_id = module.vpc.vpc_id
 
   ingress {
     from_port       = 0
@@ -83,7 +83,7 @@ resource "aws_security_group" "webapp" {
 
 resource "aws_security_group" "webapp-lb" {
   name   = "webapp-lb"
-  vpc_id = var.aws_vpc_id
+  vpc_id = module.vpc.vpc_id
   ingress {
     from_port   = 80
     protocol    = "tcp"

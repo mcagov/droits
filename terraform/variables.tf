@@ -174,45 +174,6 @@ variable "db_name" {
   description = "The name of the DB"
 }
 
-variable "aws_vpc_id" {
-  type        = string
-  description = "ID of main droits vpc"
-}
-variable "private_subnet_1" {
-  type        = string
-  description = "ID of first private subnet"
-}
-variable "private_subnet_2" {
-  type        = string
-  description = "ID of second private subnet"
-}
-variable "public_subnet_1" {
-  type        = string
-  description = "ID of first public subnet"
-}
-variable "public_subnet_2" {
-  type        = string
-  description = "ID of second public subnet"
-}
-
-variable "public_subnet_cidrs" {
- type        = list(string)
- description = "Public Subnet CIDR values"
- default     = ["10.0.1.0/24", "10.0.2.0/24"]
-}
-
-variable "private_subnet_cidrs" {
- type        = list(string)
- description = "Private Subnet CIDR values"
- default     = ["10.0.4.0/24", "10.0.5.0/24"]
-}
-
-variable "azs" {
- type        = list(string)
- description = "Availability Zones"
- default     = ["eu-west-2a", "eu-west-2b"]
-}
-
 variable "regional_account_id" {
   type        = string
   description = "The id of the region we are currently deploying to"
