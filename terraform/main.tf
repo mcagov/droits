@@ -60,16 +60,11 @@ module "ecs" {
 }
 
 module "alb" {
-  source                          = "./modules/alb"
-  backoffice_port                 = var.backoffice_port
-  public_subnet_1                 = var.public_subnet_1
-  public_subnet_2                 = var.public_subnet_2
-  backoffice_lb_security_group_id = module.security-groups.api-backoffice-lb-security-group-id
-  webapp_port                     = var.webapp_port
-  webapp_lb_security_group_id     = module.security-groups.webapp-lb-security-group-id
-  vpc_id                          = module.security-groups.vpc-id
-  backoffice_security_group       = module.security-groups.api-backoffice-id
-  webapp_security_group           = module.security-groups.webapp-security-group-id
+  source          = "./modules/alb"
+  backoffice_port = var.backoffice_port
+  webapp_port     = var.webapp_port
+  public_subnet_1 = var.public_subnet_1
+  public_subnet_2 = var.public_subnet_2
 }
 
 module "backoffice-sns" {
