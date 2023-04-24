@@ -1,8 +1,8 @@
 import { BlobServiceClient } from '@azure/storage-blob';
 import fs from 'fs';
 const mime = require('mime-types');
-require("dotenv-json")();
-
+const dotenv = require('dotenv');
+dotenv.config();
 export const azureUpload = async (image, imageName) => {
   // Create the BlobServiceClient object which will be used to create a container client
   const blobServiceClient = BlobServiceClient.fromConnectionString(
