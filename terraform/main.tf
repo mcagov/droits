@@ -7,11 +7,11 @@ terraform {
   }
 
   backend "s3" {
-    bucket  = "droits-statefile"
+    bucket  = "droits-statefile-${terraform.workspace}"
     key     = "global/s3/terraform.tfstate"
     encrypt = true
     region  = "eu-west-2"
-    profile = "droits_dev"
+    profile = "droits_${terraform.workspace}"
   }
 }
 
