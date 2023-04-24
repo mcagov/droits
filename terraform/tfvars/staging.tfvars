@@ -9,11 +9,11 @@ db_instance_class    = "db.t3.micro"
 db_storage_encrypted = false
 
 aws_region       = "eu-west-2"
-aws_vpc_id       = ""
-private_subnet_1 = ""
-private_subnet_2 = ""
-public_subnet_1  = ""
-public_subnet_2  = ""
+aws_vpc_id       = "vpc-098229da848dcdbb1"
+private_subnet_1 = "subnet-0c3e36c34dd274194"
+private_subnet_2 = "subnet-073565f84c47bbd6b"
+public_subnet_1  = "subnet-08d45160f619b6052"
+public_subnet_2  = "subnet-033c708267c904683"
 
 root_domain_name    = "droits.uk"
 lb_ssl_policy       = "ELBSecurityPolicy-FS-1-2-2019-08"
