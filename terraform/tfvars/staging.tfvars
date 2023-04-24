@@ -16,8 +16,8 @@ public_subnet_1  = ""
 public_subnet_2  = ""
 
 root_domain_name    = "droits.uk"
-lb_ssl_policy       = ""
-ssl_certificate_arn = ""
+lb_ssl_policy       = "ELBSecurityPolicy-FS-1-2-2019-08"
+ssl_certificate_arn = "arn:aws:acm:eu-west-2:703203758589:certificate/c5ffdfbb-8e53-4501-abd9-1005426cd3ad"
 
 enable_alerts                                      = false
 percentage_cpu_utilization_high_threshold          = 90
