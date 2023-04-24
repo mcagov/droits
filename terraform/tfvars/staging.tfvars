@@ -8,7 +8,7 @@ db_delete_protection = false
 db_instance_class    = "db.t3.micro"
 db_storage_encrypted = false
 
-aws_region = "eu-west-2"
+aws_region       = "eu-west-2"
 
 root_domain_name    = "droits.uk"
 lb_ssl_policy       = "ELBSecurityPolicy-FS-1-2-2019-08"
