@@ -17,6 +17,11 @@ provider "aws" {
   region = var.aws_region
 }
 
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "4.0.1"
+}
+
 module "security-groups" {
   source           = "./modules/security-groups"
   aws_vpc_id       = var.aws_vpc_id
