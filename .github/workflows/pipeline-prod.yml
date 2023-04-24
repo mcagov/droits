@@ -10,7 +10,7 @@ jobs:
     uses: ./.github/workflows/pipeline.yml
     with:
       environment: staging
-      terraform_workspace: prod
+      terraform_workspace: production
       image_tag: ${{ github.sha }}
     secrets:
       registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
