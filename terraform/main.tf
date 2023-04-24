@@ -46,11 +46,30 @@ module "alb" {
 }
 
 module "ecs" {
-  ecs_cluster_name = var.ecs_cluster_name
-  backoffice_port  = var.backoffice_port
-  public_subnets   = [var.public_subnet_1, var.public_subnet_2]
-  webapp_port      = var.webapp_port
-  source           = "./modules/ecs"
+  source                    = "./modules/ecs"
+  ecs_cluster_name          = var.ecs_cluster_name
+  webapp_port               = var.webapp_port
+  backoffice_port           = var.backoffice_port
+  webapp_fargate_cpu        = var.webapp_fargate_cpu
+  webapp_fargate_memory     = var.webapp_fargate_memory
+  webapp_image_url          = "${var.ecr_repository_url}/${var.webapp_ecr_repository_name}:${var.image_tag}"
+  backoffice_fargate_cpu    = var.backoffice_fargate_cpu
+  backoffice_fargate_memory = var.backoffice_fargate_memory
+  backoffice_image_url      = "${var.ecr_repository_url}/${var.backoffice_ecr_repository_name}:${var.image_tag}"
+  depends_on                = [module.alb]
+}
+
+module "alb" {
+  source                          = "./modules/alb"
+  backoffice_port                 = var.backoffice_port
+  public_subnet_1                 = var.public_subnet_1
+  public_subnet_2                 = var.public_subnet_2
+  backoffice_lb_security_group_id = module.security-groups.api-backoffice-lb-security-group-id
+  webapp_port                     = var.webapp_port
+  webapp_lb_security_group_id     = module.security-groups.webapp-lb-security-group-id
+  vpc_id                          = module.security-groups.vpc-id
+  backoffice_security_group       = module.security-groups.api-backoffice-id
+  webapp_security_group           = module.security-groups.webapp-security-group-id
 }
 
 module "backoffice-sns" {
