@@ -53,6 +53,37 @@ module "ecs" {
   source           = "./modules/ecs"
 }
 
+module "backoffice-sns" {
+  source              = "./modules/sns"
+  resource_name       = "backoffice"
+  alert_email_address = var.alert_email_address
+  aws_account_number  = var.aws_account_number
+}
+module "backoffice-lb-sns" {
+  source              = "./modules/sns"
+  resource_name       = "backoffice-lb"
+  alert_email_address = var.alert_email_address
+  aws_account_number  = var.aws_account_number
+}
+module "webapp-sns" {
+  source              = "./modules/sns"
+  resource_name       = "webapp"
+  alert_email_address = var.alert_email_address
+  aws_account_number  = var.aws_account_number
+}
+module "webapp-lb-sns" {
+  source              = "./modules/sns"
+  resource_name       = "webapp-lb"
+  alert_email_address = var.alert_email_address
+  aws_account_number  = var.aws_account_number
+}
+module "db-sns" {
+  source              = "./modules/sns"
+  resource_name       = "db"
+  alert_email_address = var.alert_email_address
+  aws_account_number  = var.aws_account_number
+}
+
 module "cloudwatch" {
   source                                             = "./modules/cloudwatch"
   ecs_cluster_name                                   = aws_ecs_cluster.droits-ecs-cluster.name
