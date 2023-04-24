@@ -197,6 +197,7 @@ variable "public_subnet_2" {
 variable "regional_account_id" {
   type        = string
   description = "The id of the region we are currently deploying to"
+  default     = "652711504416"
 }
 variable "db_low_disk_burst_balance_threshold" {
   type        = number

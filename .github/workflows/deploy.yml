@@ -76,7 +76,7 @@ jobs:
         with:
           terraform_version: 1.4.2
       - name: Terraform init
-        run: terraform init
+        run: terraform init -backend-config=tfvars/${{ inputs.terraform_workspace }}-backend.tfvars
       - name: Terraform validate
         run: terraform validate
       - name: Terraform deploy
@@ -92,4 +92,4 @@ jobs:
           TF_VAR_alert_email_address: ${{secrets.alert_email_address}}
           TF_VAR_api_backoffice_environment_file: ${{ secrets.backoffice_env_file }}
           TF_VAR_webapp_environment_file: ${{ secrets.webapp_env_file }}
-        run: terraform apply -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars
+        run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ inputs.terraform_workspace }}.tfvars
