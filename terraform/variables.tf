@@ -82,14 +82,14 @@ variable "ssl_certificate_arn" {
 variable "api_backoffice_image" {
   type        = string
   description = "The name of the image for the Backoffice application"
-  default     = "DROITS-api-backoffice"
+  default     = "DROITS-backoffice"
 }
 variable "api_backoffice_count" {
   type        = number
   description = "Number of docker containers to run for the Backoffice application"
   default     = 1
 }
-variable "api_backoffice_port" {
+variable "backoffice_port" {
   type        = number
   description = "Port exposed by the docker image to redirect traffic to for the DROITS Service"
   default     = 5000
@@ -112,7 +112,7 @@ variable "api_backoffice_fargate_memory" {
 variable "api_backoffice_ecr_repository_name" {
   sensitive   = true
   type        = string
-  description = "The name of the Elastic Container Repository for our api-backoffice container images"
+  description = "The name of the Elastic Container Repository for our backoffice container images"
 }
 variable "api_backofice_service_minimum_task_count" {
   type        = number

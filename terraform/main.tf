@@ -41,35 +41,16 @@ module "rds" {
   db_instance_class    = var.db_instance_class
 }
 
-module "backoffice-sns" {
-  source              = "./modules/sns"
-  resource_name       = "backoffice"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
+module "alb" {
+  source = "./modules/alb"
 }
-module "backoffice-lb-sns" {
-  source              = "./modules/sns"
-  resource_name       = "backoffice-lb"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
-}
-module "webapp-sns" {
-  source              = "./modules/sns"
-  resource_name       = "webapp"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
-}
-module "webapp-lb-sns" {
-  source              = "./modules/sns"
-  resource_name       = "webapp-lb"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
-}
-module "db-sns" {
-  source              = "./modules/sns"
-  resource_name       = "db"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
+
+module "ecs" {
+  ecs_cluster_name = var.ecs_cluster_name
+  backoffice_port  = var.backoffice_port
+  public_subnets   = [var.public_subnet_1, var.public_subnet_2]
+  webapp_port      = var.webapp_port
+  source           = "./modules/ecs"
 }
 
 module "cloudwatch" {
@@ -79,10 +60,10 @@ module "cloudwatch" {
   ecs_webapp_service_name                            = aws_ecs_service.webapp.name
   rds_instance_identifier                            = module.rds.instance-identifier
   aws_region                                         = var.aws_region
-  backoffice_load_balancer                           = aws_alb.api-backoffice-alb.name
-  backoffice_alb_id                                  = aws_alb.api-backoffice-alb.id
-  backoffice_alb_arn_suffix                          = aws_alb.api-backoffice-alb.arn_suffix
-  backoffice_alb_target_group_id                     = aws_alb_target_group.api-backoffice-target-group.id
+  backoffice_load_balancer                           = aws_alb.backoffice-alb.name
+  backoffice_alb_id                                  = aws_alb.backoffice-alb.id
+  backoffice_alb_arn_suffix                          = aws_alb.backoffice-alb.arn_suffix
+  backoffice_alb_target_group_id                     = aws_alb_target_group.backoffice-target-group.id
   webapp_load_balancer                               = aws_alb.webapp-alb.name
   webapp_alb_id                                      = aws_alb.webapp-alb.id
   webapp_alb_arn_suffix                              = aws_alb.webapp-alb.arn_suffix

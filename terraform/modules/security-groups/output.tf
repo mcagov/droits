@@ -1,8 +1,8 @@
-output "api-backoffice-id" {
-  value = aws_security_group.api-backoffice.id
+output "backoffice-id" {
+  value = aws_security_group.backoffice.id
 }
-output "api-backoffice-lb-security-group-id" {
-  value = aws_security_group.api-backoffice-lb.id
+output "backoffice-lb-security-group-id" {
+  value = aws_security_group.backoffice-lb.id
 }
 
 output "db-security-group-id" {

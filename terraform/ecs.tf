@@ -10,15 +10,15 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
   cpu                      = var.api_backoffice_fargate_cpu
   memory                   = var.api_backoffice_fargate_memory
   container_definitions = jsonencode([{
-    name : "api-backoffice",
+    name : "backoffice",
     image : "${var.ecr_repository_url}/${var.api_backoffice_ecr_repository_name}:${var.image_tag}",
     cpu : var.api_backoffice_fargate_cpu,
     memory : var.api_backoffice_fargate_memory,
     envionment : [{ "name" : "ENV_FILE", "value" : "${var.api_backoffice_environment_file}" }]
     portMappings : [
       {
-        containerPort : var.api_backoffice_port
-        hostPort : var.api_backoffice_port
+        containerPort : var.backoffice_port
+        hostPort : var.backoffice_port
       }
     ],
     healthCheck : {
@@ -47,20 +47,20 @@ resource "aws_ecs_service" "backoffice-service" {
   health_check_grace_period_seconds = 600
 
   depends_on = [
-    aws_alb_listener.api-backoffice-listener,
-    aws_alb_listener.api-backoffice-listener-https
+    aws_alb_listener.backoffice-listener,
+    aws_alb_listener.backoffice-listener-https
   ]
 
   network_configuration {
-    security_groups  = [module.security-groups.api-backoffice-id]
+    security_groups  = [module.security-groups.backoffice-id]
     subnets          = [module.security-groups.public-subnet-1]
     assign_public_ip = true
   }
 
   load_balancer {
-    target_group_arn = aws_alb_target_group.api-backoffice-target-group.arn
-    container_name   = "api-backoffice"
-    container_port   = var.api_backoffice_port
+    target_group_arn = aws_alb_target_group.backoffice-target-group.arn
+    container_name   = "backoffice"
+    container_port   = var.backoffice_port
   }
 }
 

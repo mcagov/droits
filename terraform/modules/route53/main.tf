@@ -1,6 +1,6 @@
 
 data "aws_route53_zone" "droits" {
-    name = "droits-route53-zone"
+  name = "droits-route53-zone"
 }
 
 resource "aws_route53_health_check" "droits-dns-health" {
@@ -13,12 +13,12 @@ resource "aws_route53_health_check" "droits-dns-health" {
 }
 
 resource "aws_route53_record" "backoffice" {
-  zone_id = data.aws_route53_zone.droits.zone_id
-  name    = "${terraform.workspace}.droits.co.uk"
-  type    = "A"
-  ttl     = "60"
+  zone_id         = data.aws_route53_zone.droits.zone_id
+  name            = "${terraform.workspace}.droits.co.uk"
+  type            = "A"
+  ttl             = "60"
   health_check_id = data.aws_route53_health_check.droits-dns-health.id
-  set_identifier = "ecs"
+  set_identifier  = "ecs"
 
   failover_routing_policy {
     type = "PRIMARY"

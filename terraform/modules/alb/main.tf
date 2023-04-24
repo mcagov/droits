@@ -1,18 +1,18 @@
 ##Backoffice
 
-resource "aws_alb_target_group" "api-backoffice-target-group" {
-  name        = "api-backoffice-target-group"
-  port        = var.api_backoffice_port
+resource "aws_alb_target_group" "backoffice-target-group" {
+  name        = "backoffice-target-group"
+  port        = var.backoffice_port
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = module.security-groups.vpc-id
 }
 
-resource "aws_alb" "api-backoffice-alb" {
-  name            = "api-backoffice-alb"
+resource "aws_alb" "backoffice-alb" {
+  name            = "backoffice-alb"
   subnets         = [module.security-groups.public-subnet-1, module.security-groups.public-subnet-2]
   internal        = false
-  security_groups = [module.security-groups.api-backoffice-lb-security-group-id]
+  security_groups = [module.security-groups.backoffice-lb-security-group-id]
   access_logs {
     bucket  = module.s3.backoffice-lb-log-bucket
     prefix  = "backoffice_alb"
@@ -21,8 +21,8 @@ resource "aws_alb" "api-backoffice-alb" {
 }
 
 
-resource "aws_alb_listener" "api-backoffice-listener" {
-  load_balancer_arn = aws_alb.api-backoffice-alb.arn
+resource "aws_alb_listener" "backoffice-listener" {
+  load_balancer_arn = aws_alb.backoffice-alb.arn
   port              = 80
   protocol          = "HTTP"
 
@@ -37,8 +37,8 @@ resource "aws_alb_listener" "api-backoffice-listener" {
   }
 }
 
-resource "aws_alb_listener" "api-backoffice-listener-https" {
-  load_balancer_arn = aws_alb.api-backoffice-alb.arn
+resource "aws_alb_listener" "backoffice-listener-https" {
+  load_balancer_arn = aws_alb.backoffice-alb.arn
   port              = 443
   protocol          = "HTTPS"
 
@@ -46,7 +46,7 @@ resource "aws_alb_listener" "api-backoffice-listener-https" {
   certificate_arn = var.ssl_certificate_arn
 
   default_action {
-    target_group_arn = aws_alb_target_group.api-backoffice-target-group.arn
+    target_group_arn = aws_alb_target_group.backoffice-target-group.arn
     type             = "forward"
   }
 }
