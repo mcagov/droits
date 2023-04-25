@@ -59,6 +59,8 @@ module "alb" {
   backoffice_lb_log_bucket   = module.s3.backoffice-lb-log-bucket
   webapp_security_groups     = [module.security-groups.webapp-lb-security-group-id]
   webapp_lb_log_bucket       = module.s3.webapp-lb-log-bucket
+  lb_ssl_policy              = var.lb_ssl_policy
+  ssl_certificate_arn        = var.ssl_certificate_arn
 
   depends_on = [module.vpc, module.security-groups, module.s3]
 }
