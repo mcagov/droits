@@ -23,4 +23,8 @@ resource "aws_db_instance" "droits" {
   parameter_group_name   = "default.postgres14"
   skip_final_snapshot    = true
   storage_encrypted      = true
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
