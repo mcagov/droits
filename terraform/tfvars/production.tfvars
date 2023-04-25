@@ -2,7 +2,7 @@ ecs_cluster_name      = "droits-cluster"
 webapp_fargate_cpu    = 256
 webapp_fargate_memory = 512
 
-db_name              = "production-db"
+db_name              = "droits-db"
 db_allocated_storage = 50
 db_delete_protection = false
 db_instance_class    = "db.t3.micro"

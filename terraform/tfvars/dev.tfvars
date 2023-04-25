@@ -4,7 +4,7 @@ webapp_fargate_memory     = 1024
 backoffice_fargate_cpu    = 256
 backoffice_fargate_memory = 512
 
-db_name              = "dev-db"
+db_name              = "droits-db"
 db_allocated_storage = 50
 db_delete_protection = false
 db_instance_class    = "db.t3.micro"

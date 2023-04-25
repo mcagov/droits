@@ -113,8 +113,9 @@ resource "aws_s3_bucket" "droits-webapp-alb-logs" {
 }
 
 resource "aws_s3_bucket_acl" "droits-webapp-alb-logs" {
-  bucket     = "droits-webapp-alb-logs-${terraform.workspace}"
-  acl        = "log-delivery-write"
+  bucket = "droits-webapp-alb-logs-${terraform.workspace}"
+  acl    = "log-delivery-write"
+
   depends_on = [aws_s3_bucket.droits-webapp-alb-logs, aws_s3_bucket_policy.droits-webapp-alb-logs]
 }
 
@@ -178,4 +179,22 @@ resource "aws_s3_bucket_policy" "droits-webapp-alb-logs" {
       ]
   })
   depends_on = [aws_s3_bucket.droits-webapp-alb-logs]
+}
+
+resource "aws_s3_bucket_ownership_controls" "droits-webapp-alb-logs" {
+  bucket = "droits-webapp-alb-logs-${terraform.workspace}"
+  rule {
+    object_ownership = "BucketOwnerEnforced"
+  }
+  depends_on = [aws_s3_bucket_acl.droits-webapp-alb-logs]
+}
+
+
+resource "aws_s3_bucket_ownership_controls" "droits-backoffice-alb-logs" {
+  bucket = "droits-backoffice-alb-logs-${terraform.workspace}"
+  rule {
+    object_ownership = "BucketOwnerEnforced"
+  }
+
+  depends_on = [aws_s3_bucket_acl.droits-backoffice-alb-logs]
 }
