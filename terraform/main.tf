@@ -75,7 +75,7 @@ module "ecs" {
   backoffice_security_groups  = [module.security-groups.backoffice-id]
   backoffice_tg_arn           = module.alb.backoffice-target-group-arn
   webapp_security_groups      = [module.security-groups.webapp-security-group-id]
-  webapp_tg_arn               = module.alb.backoffice-target-group-arn
+  webapp_tg_arn               = module.alb.webapp-target-group-arn
   ecs_cluster_name            = var.ecs_cluster_name
   backoffice_port             = var.backoffice_port
   webapp_port                 = var.webapp_port
