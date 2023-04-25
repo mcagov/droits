@@ -9,7 +9,7 @@ jobs:
     name: Deploying to Production
     uses: ./.github/workflows/pipeline.yml
     with:
-      environment: staging
+      environment: production
       terraform_workspace: production
       image_tag: ${{ github.sha }}
     secrets:

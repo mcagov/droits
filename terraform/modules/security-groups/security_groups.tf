@@ -1,11 +1,11 @@
-resource "aws_security_group" "api-backoffice" {
-  name   = "api-backoffice"
+resource "aws_security_group" "backoffice" {
+  name   = "backoffice"
   vpc_id = module.vpc.vpc_id
   ingress {
     protocol  = "-1"
     from_port = 0
     to_port   = 0
-    #    security_groups = [aws_security_group.api-backoffice-lb.id]
+    #    security_groups = [aws_security_group.backoffice-lb.id]
     cidr_blocks = ["0.0.0.0/0"]
     description = "Allow inbound access from the backoffice LB only"
   }
@@ -17,9 +17,11 @@ resource "aws_security_group" "api-backoffice" {
     description = "Allow outbound access to anywhere"
   }
 }
-resource "aws_security_group" "api-backoffice-lb" {
-  name   = "api-backoffice-lb"
+
+resource "aws_security_group" "backoffice-lb" {
+  name   = "backoffice-lb"
   vpc_id = module.vpc.vpc_id
+
   ingress {
     from_port   = 80
     protocol    = "tcp"
@@ -50,8 +52,8 @@ resource "aws_security_group" "droits-db" {
     protocol        = "tcp"
     from_port       = 5432
     to_port         = 5432
-    security_groups = [aws_security_group.api-backoffice.id]
-    description     = "Allow inbound access from the api-backoffice ECS service only"
+    security_groups = [aws_security_group.backoffice.id]
+    description     = "Allow inbound access from the backoffice ECS service only"
   }
   egress {
     protocol    = "-1"
