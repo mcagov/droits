@@ -36,3 +36,14 @@ variable "webapp_port" {
   type        = string
   description = "The port that the webapp runs on"
 }
+
+
+variable "lb_ssl_policy" {
+  type        = string
+  description = "Load Balancer ssl policy"
+}
+
+variable "ssl_certificate_arn" {
+  type        = string
+  description = "Load Balancer ssl certificate arn"
+}

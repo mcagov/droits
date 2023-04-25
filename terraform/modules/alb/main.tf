@@ -7,6 +7,7 @@ resource "aws_alb_target_group" "backoffice-target-group" {
   target_type = "ip"
   vpc_id      = var.vpc_id
 }
+
 resource "aws_alb" "backoffice-alb" {
   name            = "backoffice-alb"
   subnets         = var.public_subnets
