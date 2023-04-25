@@ -15,7 +15,7 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
     image : var.backoffice_image_url,
     cpu : var.backoffice_fargate_cpu,
     memory : var.backoffice_fargate_memory,
-    envionment : [{ "name" : "ENV_FILE", "value" : "${var.backoffice_environment_file}" }]
+    environment : [{ "name" : "ENV_FILE", "value" : "${var.backoffice_environment_file}" }],
     portMappings : [
       {
         containerPort : var.backoffice_port
@@ -76,7 +76,7 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
     image : var.webapp_image_url,
     cpu : var.webapp_fargate_cpu,
     memory : var.webapp_fargate_memory,
-    envionment : [{ "name" : "ENV_FILE", "value" : "${var.webapp_environment_file}" }]
+    environment : [{ "name" : "ENV_FILE", "value" : "${var.webapp_environment_file}" }],
     portMappings : [
       {
         containerPort : var.webapp_port
