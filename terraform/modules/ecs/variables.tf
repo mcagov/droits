@@ -82,3 +82,15 @@ variable "webapp_security_groups" {
   type        = list(any)
   description = "Security groups for Webapp ECS"
 }
+
+variable "backoffice_environment_file" {
+  sensitive   = true
+  type        = string
+  description = "The environment file for the backoffice ECS container"
+}
+
+variable "webapp_environment_file" {
+  sensitive   = true
+  type        = string
+  description = "The environment file for the backoffice ECS container"
+}

@@ -66,25 +66,27 @@ module "alb" {
 }
 
 module "ecs" {
-  source                     = "./modules/ecs"
-  aws_region                 = var.aws_region
-  vpc_id                     = module.vpc.vpc_id
-  public_subnets             = module.vpc.public_subnets
-  private_subnets            = module.vpc.private_subnets
-  iam_role_arn               = module.iam.iam-role-arn
-  backoffice_security_groups = [module.security-groups.backoffice-id]
-  backoffice_tg_arn          = module.alb.backoffice-target-group-arn
-  webapp_security_groups     = [module.security-groups.webapp-security-group-id]
-  webapp_tg_arn              = module.alb.backoffice-target-group-arn
-  ecs_cluster_name           = var.ecs_cluster_name
-  backoffice_port            = var.backoffice_port
-  webapp_port                = var.webapp_port
-  webapp_fargate_cpu         = var.webapp_fargate_cpu
-  webapp_fargate_memory      = var.webapp_fargate_memory
-  webapp_image_url           = "${var.ecr_repository_url}/${var.webapp_ecr_repository_name}:${var.image_tag}"
-  backoffice_fargate_cpu     = var.backoffice_fargate_cpu
-  backoffice_fargate_memory  = var.backoffice_fargate_memory
-  backoffice_image_url       = "${var.ecr_repository_url}/${var.backoffice_ecr_repository_name}:${var.image_tag}"
+  source                      = "./modules/ecs"
+  aws_region                  = var.aws_region
+  vpc_id                      = module.vpc.vpc_id
+  public_subnets              = module.vpc.public_subnets
+  private_subnets             = module.vpc.private_subnets
+  iam_role_arn                = module.iam.iam-role-arn
+  backoffice_security_groups  = [module.security-groups.backoffice-id]
+  backoffice_tg_arn           = module.alb.backoffice-target-group-arn
+  webapp_security_groups      = [module.security-groups.webapp-security-group-id]
+  webapp_tg_arn               = module.alb.backoffice-target-group-arn
+  ecs_cluster_name            = var.ecs_cluster_name
+  backoffice_port             = var.backoffice_port
+  webapp_port                 = var.webapp_port
+  webapp_fargate_cpu          = var.webapp_fargate_cpu
+  webapp_fargate_memory       = var.webapp_fargate_memory
+  webapp_image_url            = "${var.ecr_repository_url}/${var.webapp_ecr_repository_name}:${var.image_tag}"
+  backoffice_fargate_cpu      = var.backoffice_fargate_cpu
+  backoffice_fargate_memory   = var.backoffice_fargate_memory
+  backoffice_image_url        = "${var.ecr_repository_url}/${var.backoffice_ecr_repository_name}:${var.image_tag}"
+  backoffice_environment_file = var.backoffice_environment_file
+  webapp_environment_file     = var.webapp_environment_file
 
   depends_on = [module.vpc, module.iam, module.alb]
 }
