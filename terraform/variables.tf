@@ -47,7 +47,7 @@ variable "webapp_service_minimum_task_count" {
   default     = 1
 }
 
-variable "api_backoffice_environment_file" {
+variable "backoffice_environment_file" {
   sensitive   = true
   type        = string
   description = "The environment file for the backoffice ECS container"
@@ -79,12 +79,12 @@ variable "ssl_certificate_arn" {
   description = "ARN of ssl certificate"
 }
 
-variable "api_backoffice_image" {
+variable "backoffice_image" {
   type        = string
   description = "The name of the image for the Backoffice application"
   default     = "DROITS-backoffice"
 }
-variable "api_backoffice_count" {
+variable "backoffice_count" {
   type        = number
   description = "Number of docker containers to run for the Backoffice application"
   default     = 1
@@ -94,22 +94,22 @@ variable "backoffice_port" {
   description = "Port exposed by the docker image to redirect traffic to for the DROITS Service"
   default     = 5000
 }
-variable "api_backoffice_health_check_path" {
+variable "backoffice_health_check_path" {
   type        = string
   description = "Health check path used by the Application Load Balancer for the Backoffice app"
   default     = "/healthz"
 }
-variable "api_backoffice_fargate_cpu" {
+variable "backoffice_fargate_cpu" {
   type        = number
   description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) for the Backoffice app"
   default     = 256
 }
-variable "api_backoffice_fargate_memory" {
+variable "backoffice_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the Backoffice app"
   default     = 512
 }
-variable "api_backoffice_ecr_repository_name" {
+variable "backoffice_ecr_repository_name" {
   sensitive   = true
   type        = string
   description = "The name of the Elastic Container Repository for our backoffice container images"

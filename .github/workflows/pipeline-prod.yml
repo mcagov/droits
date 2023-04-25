@@ -2,7 +2,7 @@ name: Production pipeline
 on:
   release:
     types:
-      - release
+      - released
 
 jobs:
   run_pipeline:

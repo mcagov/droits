@@ -92,31 +92,36 @@ module "db-sns" {
 }
 
 module "cloudwatch" {
-  source                                             = "./modules/cloudwatch"
-  ecs_cluster_name                                   = module.ecs.cluster-name
-  ecs_backoffice_service_name                        = module.ecs.backoffice-service-name
-  ecs_webapp_service_name                            = module.ecs.webapp-service-name
-  rds_instance_identifier                            = module.rds.instance-identifier
-  aws_region                                         = var.aws_region
-  backoffice_load_balancer                           = module.alb.backoffice-alb-name
-  backoffice_alb_id                                  = module.alb.backoffice-alb-id
-  backoffice_alb_arn_suffix                          = module.alb.backoffice-alb-arn-suffix
-  backoffice_alb_target_group_id                     = module.alb.backoffice-target-group-id
-  webapp_load_balancer                               = module.alb.webapp-alb-name
-  webapp_alb_id                                      = module.alb.webapp-alb-id
-  webapp_alb_arn_suffix                              = module.alb.webapp-alb-arn-suffix
-  webapp_alb_target_group_id                         = module.alb.webapp-target-group-id
-  db_instance_id                                     = module.rds.instance-identifier
+  source     = "./modules/cloudwatch"
+  aws_region = var.aws_region
+
+  backoffice_load_balancer       = module.alb.backoffice-alb-name
+  backoffice_alb_id              = module.alb.backoffice-alb-id
+  backoffice_alb_arn_suffix      = module.alb.backoffice-alb-arn-suffix
+  backoffice_alb_target_group_id = module.alb.backoffice-target-group-id
+  webapp_load_balancer           = module.alb.webapp-alb-name
+  webapp_alb_id                  = module.alb.webapp-alb-id
+  webapp_alb_arn_suffix          = module.alb.webapp-alb-arn-suffix
+  webapp_alb_target_group_id     = module.alb.webapp-target-group-id
+
+  ecs_cluster_name            = var.ecs_cluster_name
+  ecs_backoffice_service_name = "backoffice"
+  ecs_webapp_service_name     = "webapp"
+
+  rds_instance_identifier = module.rds.instance-identifier
+  db_instance_id          = module.rds.instance-identifier
+
+  ecs_backoffice_alerts_topic_arn = module.backoffice-sns.alerts-topic-arn
+  ecs_webapp_alerts_topic_arn     = module.webapp-sns.alerts-topic-arn
+  rds_db_alerts_topic_arn         = module.db-sns.alerts-topic-arn
+  backoffice_lb_alerts_topic_arn  = module.backoffice-lb-sns.alerts-topic-arn
+  webapp_lb_alerts_topic_arn      = module.webapp-lb-sns.alerts-topic-arn
+
   db_instance_class                                  = var.db_instance_class
   db_low_disk_burst_balance_threshold                = var.db_low_disk_burst_balance_threshold
   enable_alerts                                      = var.enable_alerts
   ecs_backofice_service_minimum_task_count           = var.api_backofice_service_minimum_task_count
   ecs_webapp_service_minimum_task_count              = var.webapp_service_minimum_task_count
-  ecs_backoffice_alerts_topic_arn                    = module.backoffice-sns.alerts-topic-arn
-  ecs_webapp_alerts_topic_arn                        = module.webapp-sns.alerts-topic-arn
-  rds_db_alerts_topic_arn                            = module.db-sns.alerts-topic-arn
-  backoffice_lb_alerts_topic_arn                     = module.backoffice-lb-sns.alerts-topic-arn
-  webapp_lb_alerts_topic_arn                         = module.webapp-lb-sns.alerts-topic-arn
   percentage_cpu_utilization_high_threshold          = var.percentage_cpu_utilization_high_threshold
   percentage_memory_utilization_high_threshold       = var.percentage_memory_utilization_high_threshold
   cpu_utilisation_duration_in_seconds_to_evaluate    = var.cpu_utilisation_duration_in_seconds_to_evaluate

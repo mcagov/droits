@@ -7,14 +7,14 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
   execution_role_arn       = module.iam.iam-role-arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = var.api_backoffice_fargate_cpu
-  memory                   = var.api_backoffice_fargate_memory
+  cpu                      = var.backoffice_fargate_cpu
+  memory                   = var.backoffice_fargate_memory
   container_definitions = jsonencode([{
     name : "backoffice",
-    image : "${var.ecr_repository_url}/${var.api_backoffice_ecr_repository_name}:${var.image_tag}",
-    cpu : var.api_backoffice_fargate_cpu,
-    memory : var.api_backoffice_fargate_memory,
-    envionment : [{ "name" : "ENV_FILE", "value" : "${var.api_backoffice_environment_file}" }]
+    image : "${var.ecr_repository_url}/${var.backoffice_ecr_repository_name}:${var.image_tag}",
+    cpu : var.backoffice_fargate_cpu,
+    memory : var.backoffice_fargate_memory,
+    envionment : [{ "name" : "ENV_FILE", "value" : "${var.backoffice_environment_file}" }]
     portMappings : [
       {
         containerPort : var.backoffice_port
@@ -54,7 +54,7 @@ resource "aws_ecs_service" "backoffice-service" {
   }
 
   load_balancer {
-    target_group_arn = module.alb.backoffice_target_group_arn
+    target_group_arn = module.alb.backoffice-target-group-arn
     container_name   = "backoffice"
     container_port   = var.backoffice_port
   }
@@ -113,7 +113,7 @@ resource "aws_ecs_service" "webapp" {
   }
 
   load_balancer {
-    target_group_arn = module.alb.webapp_target_group_arn
+    target_group_arn = module.alb.webapp-target-group-arn
     container_name   = "webapp"
     container_port   = var.webapp_port
   }
