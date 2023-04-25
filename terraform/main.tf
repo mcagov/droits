@@ -17,10 +17,18 @@ provider "aws" {
   region = var.aws_region
 }
 
+
+module "vpc" {
+  source = "./modules/vpc"
+}
+
 module "security-groups" {
   source = "./modules/security-groups"
   vpc_id = module.vpc.vpc_id
+
+  depends_on = [module.vpc]
 }
+
 
 module "iam" {
   source = "./modules/iam"
@@ -37,6 +45,7 @@ module "rds" {
   db_instance_class    = var.db_instance_class
   db_security_groups   = [module.security-groups.db-security-group-id]
 
+  depends_on = [module.vpc, module.security-groups]
 }
 
 module "alb" {
@@ -50,6 +59,8 @@ module "alb" {
   backoffice_lb_log_bucket   = module.s3.backoffice-lb-log-bucket
   webapp_security_groups     = [module.security-groups.webapp-lb-security-group-id]
   webapp_lb_log_bucket       = module.s3.webapp-lb-log-bucket
+
+  depends_on = [module.vpc, module.security-groups, module.s3]
 }
 
 module "ecs" {
@@ -73,7 +84,7 @@ module "ecs" {
   backoffice_fargate_memory  = var.backoffice_fargate_memory
   backoffice_image_url       = "${var.ecr_repository_url}/${var.backoffice_ecr_repository_name}:${var.image_tag}"
 
-  depends_on = [module.alb]
+  depends_on = [module.vpc, module.iam, module.alb]
 }
 
 
@@ -152,6 +163,7 @@ module "cloudwatch" {
   memory_utilisation_duration_in_seconds_to_evaluate = var.memory_utilisation_duration_in_seconds_to_evaluate
   db_memory_freeable_too_low_threshold               = var.db_memory_freeable_too_low_threshold
   db_evaluation_periods                              = var.db_evaluation_periods
+
 }
 
 module "s3" {
