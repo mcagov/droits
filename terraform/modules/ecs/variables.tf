@@ -21,12 +21,12 @@ variable "ecs_cluster_name" {
 }
 
 variable "backoffice_port" {
-  type        = string
+  type        = number
   description = "The port that the backoffice application runs on"
 }
 
 variable "webapp_port" {
-  type        = string
+  type        = number
   description = "The port that the webapp runs on"
 }
 
