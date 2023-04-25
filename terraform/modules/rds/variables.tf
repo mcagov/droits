@@ -32,7 +32,18 @@ variable "db_allocated_storage" {
   default     = 50
 }
 
+variable "vpc_id" {
+  type = string
+}
 
-vpc_id                 = modules.vpc.vpc_id
-vpc_security_group_ids = var.db_security_groups
-subnet_ids             = var.public_subnets
+variable "private_subnets" {
+  type = list(any)
+}
+
+variable "public_subnets" {
+  type = list(any)
+}
+
+variable "db_security_groups" {
+  type = list(any)
+}

@@ -37,7 +37,6 @@ module "rds" {
   db_instance_class    = var.db_instance_class
   db_security_groups   = [module.security-groups.db-security-group-id]
 
-
 }
 
 module "alb" {
