@@ -2,7 +2,7 @@ resource "aws_s3_bucket" "droits-wreck-images" {
   bucket = "droits-wreck-images"
   # Stops terraform from destroying the object if it exists
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = terraform.workspace == "production"
   }
 }
 
@@ -31,7 +31,7 @@ resource "aws_s3_bucket" "droits-backoffice-alb-logs" {
   bucket = "droits-backoffice-alb-logs-${terraform.workspace}"
   # Stops terraform from destroying the object if it exists
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = terraform.workspace == "production"
   }
 }
 
@@ -103,7 +103,7 @@ resource "aws_s3_bucket" "droits-webapp-alb-logs" {
   bucket = "droits-webapp-alb-logs-${terraform.workspace}"
   # Stops terraform from destroying the object if it exists
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = terraform.workspace == "production"
   }
 }
 
