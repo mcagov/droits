@@ -8,12 +8,7 @@ db_delete_protection = false
 db_instance_class    = "db.t3.micro"
 db_storage_encrypted = false
 
-aws_region       = "eu-west-2"
-aws_vpc_id       = "vpc-0bd4b6e2795acc5c3"
-private_subnet_1 = "subnet-097aeba4ed6243952"
-private_subnet_2 = "subnet-0215265a0e11ca9d0"
-public_subnet_1  = "subnet-08a50f654480c3a95"
-public_subnet_2  = "subnet-07d91f41b17a3aac5"
+aws_region = "eu-west-2"
 
 root_domain_name    = "droits.uk"
 lb_ssl_policy       = "ELBSecurityPolicy-FS-1-2-2019-08"

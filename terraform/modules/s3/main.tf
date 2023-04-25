@@ -1,5 +1,34 @@
+resource "aws_s3_bucket" "droits-wreck-images" {
+  bucket = "droits-wreck-images"
+  # Stops terraform from destroying the object if it exists
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "aws_s3_bucket_acl" "droits-wreck-images-acl" {
+  bucket = "droits-wreck-images-${terraform.workspace}"
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_versioning" "droits-wreck-images-versioning" {
+  bucket = "droits-wreck-images-${terraform.workspace}"
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "droits-wreck-images-encryption-config" {
+  bucket = "droits-wreck-images-${terraform.workspace}"
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
 resource "aws_s3_bucket" "droits-backoffice-alb-logs" {
-  bucket = "droits-backoffice-alb-logs"
+  bucket = "droits-backoffice-alb-logs-${terraform.workspace}"
   # Stops terraform from destroying the object if it exists
   lifecycle {
     prevent_destroy = true
@@ -7,19 +36,19 @@ resource "aws_s3_bucket" "droits-backoffice-alb-logs" {
 }
 
 resource "aws_s3_bucket_acl" "droits-backoffice-alb-logs" {
-  bucket = "droits-backoffice-alb-logs"
+  bucket = "droits-backoffice-alb-logs-${terraform.workspace}"
   acl    = "log-delivery-write"
 }
 
 resource "aws_s3_bucket_versioning" "droits-backoffice-alb-logs" {
-  bucket = "droits-backoffice-alb-logs"
+  bucket = "droits-backoffice-alb-logs-${terraform.workspace}"
   versioning_configuration {
     status = "Enabled"
   }
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "droits-backoffice-alb-logs" {
-  bucket = "droits-backoffice-alb-logs"
+  bucket = "droits-backoffice-alb-logs-${terraform.workspace}"
   rule {
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
@@ -28,7 +57,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "droits-backoffice
 }
 
 resource "aws_s3_bucket_policy" "droits-backoffice-alb-logs" {
-  bucket = "droits-backoffice-alb-logs"
+  bucket = "droits-backoffice-alb-logs-${terraform.workspace}"
 
   policy = jsonencode(
     {
@@ -71,7 +100,7 @@ resource "aws_s3_bucket_policy" "droits-backoffice-alb-logs" {
 }
 
 resource "aws_s3_bucket" "droits-webapp-alb-logs" {
-  bucket = "droits-webapp-alb-logs"
+  bucket = "droits-webapp-alb-logs-${terraform.workspace}"
   # Stops terraform from destroying the object if it exists
   lifecycle {
     prevent_destroy = true
@@ -79,19 +108,19 @@ resource "aws_s3_bucket" "droits-webapp-alb-logs" {
 }
 
 resource "aws_s3_bucket_acl" "droits-webapp-alb-logs" {
-  bucket = "droits-webapp-alb-logs"
+  bucket = "droits-webapp-alb-logs-${terraform.workspace}"
   acl    = "log-delivery-write"
 }
 
 resource "aws_s3_bucket_versioning" "droits-webapp-alb-logs" {
-  bucket = "droits-webapp-alb-logs"
+  bucket = "droits-webapp-alb-logs-${terraform.workspace}"
   versioning_configuration {
     status = "Enabled"
   }
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "droits-webapp-alb-logs" {
-  bucket = "droits-webapp-alb-logs"
+  bucket = "droits-webapp-alb-logs-${terraform.workspace}"
   rule {
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
@@ -100,7 +129,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "droits-webapp-alb
 }
 
 resource "aws_s3_bucket_policy" "droits-webapp-alb-logs" {
-  bucket = "droits-webapp-alb-logs"
+  bucket = "droits-webapp-alb-logs-${terraform.workspace}"
 
   policy = jsonencode(
     {
