@@ -3,6 +3,18 @@ variable "aws_region" {
   description = "The name of the AWS region"
 }
 
+variable "vpc_id" {
+  type = string
+}
+
+variable "private_subnets" {
+  type = list(any)
+}
+
+variable "public_subnets" {
+  type = list(any)
+}
+
 variable "ecs_cluster_name" {
   type        = string
   description = "The name of the ECS cluster that houses all our services"

@@ -19,7 +19,7 @@ provider "aws" {
 
 module "security-groups" {
   source = "./modules/security-groups"
-  vpc_id = modules.vpc.vpc_id
+  vpc_id = module.vpc.vpc_id
 }
 
 module "iam" {
@@ -28,7 +28,7 @@ module "iam" {
 
 module "rds" {
   source               = "./modules/rds"
-  vpc_id               = modules.vpc.vpc_id
+  vpc_id               = module.vpc.vpc_id
   public_subnets       = module.vpc.public_subnets
   private_subnets      = module.vpc.private_subnets
   db_delete_protection = var.db_delete_protection
@@ -43,9 +43,9 @@ module "alb" {
   source                     = "./modules/alb"
   backoffice_port            = var.backoffice_port
   webapp_port                = var.webapp_port
-  vpc_id                     = modules.vpc.vpc_id
-  public_subnets             = modules.vpc.public_subnets
-  private_subnets            = modules.vpc.private_subnets
+  vpc_id                     = module.vpc.vpc_id
+  public_subnets             = module.vpc.public_subnets
+  private_subnets            = module.vpc.private_subnets
   backoffice_security_groups = [module.security-groups.backoffice-lb-security-group-id]
   backoffice_lb_log_bucket   = module.s3.backoffice-lb-log-bucket
   webapp_security_groups     = [module.security-groups.webapp-lb-security-group-id]
@@ -55,9 +55,9 @@ module "alb" {
 module "ecs" {
   source                     = "./modules/ecs"
   aws_region                 = var.aws_region
-  vpc_id                     = modules.vpc.vpc_id
-  public_subnets             = modules.vpc.public_subnets
-  private_subnets            = modules.vpc.private_subnets
+  vpc_id                     = module.vpc.vpc_id
+  public_subnets             = module.vpc.public_subnets
+  private_subnets            = module.vpc.private_subnets
   iam_role_arn               = module.iam.iam-role-arn
   backoffice_security_groups = [module.security-groups.backoffice-id]
   backoffice_tg_arn          = module.alb.backoffice-target-group-arn
