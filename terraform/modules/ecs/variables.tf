@@ -45,3 +45,28 @@ variable "backoffice_image_url" {
   type        = string
   description = "String of backoffice image in ecr repository"
 }
+
+variable "iam_role_arn" {
+  type        = string
+  description = "IAM Role Arn"
+}
+
+variable "backoffice_tg_arn" {
+  type        = string
+  description = "Backoffice target group Arn"
+}
+
+variable "webapp_tg_arn" {
+  type        = string
+  description = "Webapp target group Arn"
+}
+
+variable "backoffice_security_groups" {
+  type        = list(any)
+  description = "Security groups for Backoffice ECS"
+}
+
+variable "webapp_security_groups" {
+  type        = list(any)
+  description = "Security groups for Webapp ECS"
+}

@@ -31,3 +31,8 @@ variable "db_allocated_storage" {
   description = "How much storage is available to the DB in GB"
   default     = 50
 }
+
+
+vpc_id                 = modules.vpc.vpc_id
+vpc_security_group_ids = var.db_security_groups
+subnet_ids             = var.public_subnets

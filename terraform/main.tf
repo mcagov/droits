@@ -19,6 +19,7 @@ provider "aws" {
 
 module "security-groups" {
   source = "./modules/security-groups"
+  vpc_id = modules.vpc.vpc_id
 }
 
 module "iam" {
@@ -27,30 +28,51 @@ module "iam" {
 
 module "rds" {
   source               = "./modules/rds"
+  vpc_id               = modules.vpc.vpc_id
+  public_subnets       = module.vpc.public_subnets
+  private_subnets      = module.vpc.private_subnets
   db_delete_protection = var.db_delete_protection
   db_password          = var.db_password
   db_username          = var.db_username
   db_instance_class    = var.db_instance_class
+  db_security_groups   = [module.security-groups.db-security-group-id]
+
+
 }
 
 module "alb" {
-  source          = "./modules/alb"
-  backoffice_port = var.backoffice_port
-  webapp_port     = var.webapp_port
+  source                     = "./modules/alb"
+  backoffice_port            = var.backoffice_port
+  webapp_port                = var.webapp_port
+  vpc_id                     = modules.vpc.vpc_id
+  public_subnets             = modules.vpc.public_subnets
+  private_subnets            = modules.vpc.private_subnets
+  backoffice_security_groups = [module.security-groups.backoffice-lb-security-group-id]
+  backoffice_lb_log_bucket   = module.s3.backoffice-lb-log-bucket
+  webapp_security_groups     = [module.security-groups.webapp-lb-security-group-id]
+  webapp_lb_log_bucket       = module.s3.webapp-lb-log-bucket
 }
 
 module "ecs" {
-  source                    = "./modules/ecs"
-  aws_region                = var.aws_region
-  ecs_cluster_name          = var.ecs_cluster_name
-  backoffice_port           = var.backoffice_port
-  webapp_port               = var.webapp_port
-  webapp_fargate_cpu        = var.webapp_fargate_cpu
-  webapp_fargate_memory     = var.webapp_fargate_memory
-  webapp_image_url          = "${var.ecr_repository_url}/${var.webapp_ecr_repository_name}:${var.image_tag}"
-  backoffice_fargate_cpu    = var.backoffice_fargate_cpu
-  backoffice_fargate_memory = var.backoffice_fargate_memory
-  backoffice_image_url      = "${var.ecr_repository_url}/${var.backoffice_ecr_repository_name}:${var.image_tag}"
+  source                     = "./modules/ecs"
+  aws_region                 = var.aws_region
+  vpc_id                     = modules.vpc.vpc_id
+  public_subnets             = modules.vpc.public_subnets
+  private_subnets            = modules.vpc.private_subnets
+  iam_role_arn               = module.iam.iam-role-arn
+  backoffice_security_groups = [module.security-groups.backoffice-id]
+  backoffice_tg_arn          = module.alb.backoffice-target-group-arn
+  webapp_security_groups     = [module.security-groups.webapp-security-group-id]
+  webapp_tg_arn              = module.alb.backoffice-target-group-arn
+  ecs_cluster_name           = var.ecs_cluster_name
+  backoffice_port            = var.backoffice_port
+  webapp_port                = var.webapp_port
+  webapp_fargate_cpu         = var.webapp_fargate_cpu
+  webapp_fargate_memory      = var.webapp_fargate_memory
+  webapp_image_url           = "${var.ecr_repository_url}/${var.webapp_ecr_repository_name}:${var.image_tag}"
+  backoffice_fargate_cpu     = var.backoffice_fargate_cpu
+  backoffice_fargate_memory  = var.backoffice_fargate_memory
+  backoffice_image_url       = "${var.ecr_repository_url}/${var.backoffice_ecr_repository_name}:${var.image_tag}"
 
   depends_on = [module.alb]
 }

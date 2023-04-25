@@ -5,16 +5,15 @@ resource "aws_alb_target_group" "backoffice-target-group" {
   port        = var.backoffice_port
   protocol    = "HTTP"
   target_type = "ip"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = var.vpc_id
 }
-
 resource "aws_alb" "backoffice-alb" {
   name            = "backoffice-alb"
-  subnets         = module.vpc.public_subnets
+  subnets         = var.public_subnets
   internal        = false
-  security_groups = [module.security-groups.backoffice-lb-security-group-id]
+  security_groups = var.backoffice_security_groups
   access_logs {
-    bucket  = module.s3.backoffice-lb-log-bucket
+    bucket  = var.backoffice_lb_log_bucket
     prefix  = "backoffice_alb"
     enabled = true
   }
@@ -58,16 +57,16 @@ resource "aws_alb_target_group" "webapp-target-group" {
   port        = var.webapp_port
   protocol    = "HTTP"
   target_type = "ip"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = var.vpc_id
 }
 
 resource "aws_alb" "webapp-alb" {
   name            = "webapp-alb"
-  subnets         = module.vpc.public_subnets
+  subnets         = var.public_subnets
   internal        = false
-  security_groups = [module.security-groups.webapp-lb-security-group-id]
+  security_groups = var.webapp_security_groups
   access_logs {
-    bucket  = module.s3.webapp-lb-log-bucket
+    bucket  = var.webapp_lb_log_bucket
     prefix  = "webapp_alb"
     enabled = true
   }

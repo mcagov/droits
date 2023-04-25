@@ -2,9 +2,10 @@ resource "aws_ecs_cluster" "droits-ecs-cluster" {
   name = var.ecs_cluster_name
 }
 
+
 resource "aws_ecs_task_definition" "backoffice-task-definition" {
   family                   = "backoffice"
-  execution_role_arn       = module.iam.iam-role-arn
+  execution_role_arn       = var.iam_role_arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = var.backoffice_fargate_cpu
@@ -47,22 +48,25 @@ resource "aws_ecs_service" "backoffice-service" {
   health_check_grace_period_seconds = 600
   # wait_for_steady_state = true
 
+
   network_configuration {
-    security_groups  = [module.security-groups.backoffice-id]
-    subnets          = module.vpc.public_subnets
+    security_groups  = var.backoffice_security_groups
+    subnets          = var.public_subnets
     assign_public_ip = true
   }
 
   load_balancer {
-    target_group_arn = module.alb.backoffice-target-group-arn
+    target_group_arn = var.backoffice_tg_arn
     container_name   = "backoffice"
     container_port   = var.backoffice_port
   }
 }
 
+
+
 resource "aws_ecs_task_definition" "webapp-task-definition" {
   family                   = "webapp"
-  execution_role_arn       = module.iam.iam-role-arn
+  execution_role_arn       = var.iam_role_arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = var.webapp_fargate_cpu
@@ -105,15 +109,14 @@ resource "aws_ecs_service" "webapp" {
   health_check_grace_period_seconds = 600
   # wait_for_steady_state = true
 
-
   network_configuration {
-    security_groups  = [module.security-groups.webapp-security-group-id]
-    subnets          = module.vpc.public_subnets
+    security_groups  = var.webapp_security_groups
+    subnets          = var.public_subnets
     assign_public_ip = true
   }
 
   load_balancer {
-    target_group_arn = module.alb.webapp-target-group-arn
+    target_group_arn = var.webapp_tg_arn
     container_name   = "webapp"
     container_port   = var.webapp_port
   }
