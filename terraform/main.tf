@@ -40,21 +40,17 @@ module "alb" {
 }
 
 module "ecs" {
-  source                      = "./modules/ecs"
-  aws_region                  = var.aws_region
-  ecs_cluster_name            = var.ecs_cluster_name
-  backoffice_port             = var.backoffice_port
-  webapp_port                 = var.webapp_port
-  webapp_fargate_cpu          = var.webapp_fargate_cpu
-  webapp_fargate_memory       = var.webapp_fargate_memory
-  webapp_image_url            = "${var.ecr_repository_url}/${var.webapp_ecr_repository_name}:${var.image_tag}"
-  backoffice_fargate_cpu      = var.backoffice_fargate_cpu
-  backoffice_fargate_memory   = var.backoffice_fargate_memory
-  backoffice_image_url        = "${var.ecr_repository_url}/${var.backoffice_ecr_repository_name}:${var.image_tag}"
-  webapp_container_cpu        = var.webapp_fargate_cpu
-  webapp_container_memory     = var.webapp_fargate_memory
-  backoffice_container_cpu    = var.backoffice_fargate_cpu
-  backoffice_container_memory = var.backoffice_fargate_memory
+  source                    = "./modules/ecs"
+  aws_region                = var.aws_region
+  ecs_cluster_name          = var.ecs_cluster_name
+  backoffice_port           = var.backoffice_port
+  webapp_port               = var.webapp_port
+  webapp_fargate_cpu        = var.webapp_fargate_cpu
+  webapp_fargate_memory     = var.webapp_fargate_memory
+  webapp_image_url          = "${var.ecr_repository_url}/${var.webapp_ecr_repository_name}:${var.image_tag}"
+  backoffice_fargate_cpu    = var.backoffice_fargate_cpu
+  backoffice_fargate_memory = var.backoffice_fargate_memory
+  backoffice_image_url      = "${var.ecr_repository_url}/${var.backoffice_ecr_repository_name}:${var.image_tag}"
 
   depends_on = [module.alb]
 }

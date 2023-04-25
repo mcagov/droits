@@ -233,7 +233,7 @@ variable "db_maximum_used_transaction_ids_too_high_threshold" {
   type        = string
   description = "Threshold for the maximum used transaction IDs DB alarm"
 }
-variable "lb_response_time_threshold" {
+variable "lb_average_response_time_threshold" {
   type        = string
   description = "The average number of milliseconds that requests should complete within"
 }
