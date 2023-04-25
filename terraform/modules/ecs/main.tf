@@ -11,15 +11,15 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
   cpu                      = var.backoffice_fargate_cpu
   memory                   = var.backoffice_fargate_memory
   container_definitions = jsonencode([{
-    name = "backoffice",
-    image = var.backoffice_image_url,
-    cpu = var.backoffice_fargate_cpu,
-    memory = var.backoffice_fargate_memory,
+    name        = "backoffice",
+    image       = var.backoffice_image_url,
+    cpu         = var.backoffice_fargate_cpu,
+    memory      = var.backoffice_fargate_memory,
     environment = [{ "name" = "ENV_FILE", "value" = "${var.backoffice_environment_file}" }],
     portMappings = [
       {
         containerPort = var.backoffice_port
-        hostPort = var.backoffice_port
+        hostPort      = var.backoffice_port
       }
     ],
     healthCheck = {
@@ -31,8 +31,8 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
     logConfiguration = {
       logDriver = "awslogs",
       options = {
-        awslogs-region = var.aws_region,
-        awslogs-group = "droits-backoffice-container-logs",
+        awslogs-region        = var.aws_region,
+        awslogs-group         = "droits-backoffice-container-logs",
         awslogs-stream-prefix = "backoffice"
       }
     }
@@ -72,15 +72,15 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
   cpu                      = var.webapp_fargate_cpu
   memory                   = var.webapp_fargate_memory
   container_definitions = jsonencode([{
-    name = "webapp",
-    image = var.webapp_image_url,
-    cpu = var.webapp_fargate_cpu,
-    memory = var.webapp_fargate_memory,
+    name        = "webapp",
+    image       = var.webapp_image_url,
+    cpu         = var.webapp_fargate_cpu,
+    memory      = var.webapp_fargate_memory,
     environment = [{ "name" = "ENV_FILE", "value" = "${var.webapp_environment_file}" }],
     portMappings = [
       {
         containerPort = var.webapp_port
-        hostPort = var.webapp_port
+        hostPort      = var.webapp_port
       }
     ],
     healthCheck = {
@@ -92,8 +92,8 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
     logConfiguration = {
       logDriver = "awslogs",
       options = {
-        awslogs-region = var.aws_region,
-        awslogs-group = "droits-webapp-container-logs",
+        awslogs-region        = var.aws_region,
+        awslogs-group         = "droits-webapp-container-logs",
         awslogs-stream-prefix = "webapp"
       }
     }
