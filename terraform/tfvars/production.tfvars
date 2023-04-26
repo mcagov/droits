@@ -12,7 +12,7 @@ aws_region = "eu-west-2"
 
 root_domain_name    = "droits.uk"
 lb_ssl_policy       = "ELBSecurityPolicy-FS-1-2-2019-08"
-ssl_certificate_arn = "arn:aws:acm:eu-west-2:257298404318:certificate/a2be611b-9220-41e1-8761-5b5f5a7b3d5b"
+ssl_certificate_arn = "arn:aws:acm:eu-west-2:257298404318:certificate/2b6b805d-32c7-4597-b0c9-93bad76f4f0c"
 
 enable_alerts                                      = false
 percentage_cpu_utilization_high_threshold          = 90
