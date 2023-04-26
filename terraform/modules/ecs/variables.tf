@@ -15,45 +15,21 @@ variable "public_subnets" {
   type = list(any)
 }
 
-variable "ecs_cluster_name" {
-  type        = string
-  description = "The name of the ECS cluster that houses all our services"
+variable "port" {
+  type        = number
+  description = "The port that the application runs on"
 }
 
-variable "backoffice_port" {
+variable "fargate_cpu" {
   type        = number
-  description = "The port that the backoffice application runs on"
+  description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) for the service"
+}
+variable "fargate_memory" {
+  type        = number
+  description = "Fargate instance memory to provision (in MiB) for the service"
 }
 
-variable "webapp_port" {
-  type        = number
-  description = "The port that the webapp runs on"
-}
-
-variable "webapp_fargate_cpu" {
-  type        = number
-  description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) for the DROITS Webapp"
-}
-variable "webapp_fargate_memory" {
-  type        = number
-  description = "Fargate instance memory to provision (in MiB) for the DROITS Webapp"
-}
-
-variable "webapp_image_url" {
-  type        = string
-  description = "string of webapp image in ecr repository"
-}
-
-variable "backoffice_fargate_cpu" {
-  type        = number
-  description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) for the DROITS backoffice service"
-}
-variable "backoffice_fargate_memory" {
-  type        = number
-  description = "Fargate instance memory to provision (in MiB) for the DROITS backoffice service"
-}
-
-variable "backoffice_image_url" {
+variable "image_url" {
   type        = string
   description = "String of backoffice image in ecr repository"
 }
@@ -63,34 +39,45 @@ variable "iam_role_arn" {
   description = "IAM Role Arn"
 }
 
-variable "backoffice_tg_arn" {
+variable "tg_arn" {
   type        = string
-  description = "Backoffice target group Arn"
+  description = "Target group Arn"
 }
 
-variable "webapp_tg_arn" {
-  type        = string
-  description = "Webapp target group Arn"
-}
-
-variable "backoffice_security_groups" {
+variable "security_groups" {
   type        = list(any)
-  description = "Security groups for Backoffice ECS"
+  description = "Security groups for ECS"
 }
 
-variable "webapp_security_groups" {
-  type        = list(any)
-  description = "Security groups for Webapp ECS"
-}
-
-variable "backoffice_environment_file" {
+variable "environment_file" {
   sensitive   = true
   type        = string
-  description = "The environment file for the backoffice ECS container"
+  description = "The environment file for the ECS container"
 }
 
-variable "webapp_environment_file" {
-  sensitive   = true
+variable "droits_ecs_cluster" {
   type        = string
-  description = "The environment file for the backoffice ECS container"
+  description = "The id of the ecs cluster"
+}
+
+variable "service_name" {
+  type        = string
+  description = "Name of the ecs service"
+}
+
+variable "health_check_url" {
+  type        = string
+  description = "Url of health check target"
+}
+
+variable "desired_count" {
+  type        = number
+  description = "Number of ecs services to provision"
+  default     = 1
+}
+
+variable "health_check_grace_period" {
+  type        = number
+  description = "Time in seconds between health checks"
+  default     = 600
 }
