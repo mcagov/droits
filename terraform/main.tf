@@ -48,19 +48,38 @@ module "rds" {
   depends_on = [module.vpc, module.security-groups]
 }
 
-module "alb" {
+module "backoffice-alb" {
   source                     = "./modules/alb"
-  backoffice_port            = var.backoffice_port
-  webapp_port                = var.webapp_port
+
   vpc_id                     = module.vpc.vpc_id
   public_subnets             = module.vpc.public_subnets
   private_subnets            = module.vpc.private_subnets
-  backoffice_security_groups = [module.security-groups.backoffice-lb-security-group-id]
-  backoffice_lb_log_bucket   = module.s3.backoffice-lb-log-bucket
-  webapp_security_groups     = [module.security-groups.webapp-lb-security-group-id]
-  webapp_lb_log_bucket       = module.s3.webapp-lb-log-bucket
+
   lb_ssl_policy              = var.lb_ssl_policy
   ssl_certificate_arn        = var.ssl_certificate_arn
+
+  port                       = var.backoffice_port
+  security_groups            = [module.security-groups.backoffice-lb-security-group-id]
+  lb_log_bucket              = module.s3.backoffice-lb-log-bucket
+  application_name           = "backoffice"
+
+  depends_on = [module.vpc, module.security-groups, module.s3]
+}
+
+module "webapp-alb" {
+  source                     = "./modules/alb"
+
+  vpc_id                     = module.vpc.vpc_id
+  public_subnets             = module.vpc.public_subnets
+  private_subnets            = module.vpc.private_subnets
+
+  lb_ssl_policy              = var.lb_ssl_policy
+  ssl_certificate_arn        = var.ssl_certificate_arn
+
+  port                = var.webapp_port
+  security_groups     = [module.security-groups.webapp-lb-security-group-id]
+  lb_log_bucket       = module.s3.webapp-lb-log-bucket
+  application_name    = "webapp"
 
   depends_on = [module.vpc, module.security-groups, module.s3]
 }
@@ -73,9 +92,9 @@ module "ecs" {
   private_subnets             = module.vpc.private_subnets
   iam_role_arn                = module.iam.iam-role-arn
   backoffice_security_groups  = [module.security-groups.backoffice-id]
-  backoffice_tg_arn           = module.alb.backoffice-target-group-arn
+  backoffice_tg_arn           = module.backoffice-alb.target-group-arn
   webapp_security_groups      = [module.security-groups.webapp-security-group-id]
-  webapp_tg_arn               = module.alb.webapp-target-group-arn
+  webapp_tg_arn               = module.webapp-alb.target-group-arn
   ecs_cluster_name            = var.ecs_cluster_name
   backoffice_port             = var.backoffice_port
   webapp_port                 = var.webapp_port
@@ -88,9 +107,8 @@ module "ecs" {
   backoffice_environment_file = var.backoffice_environment_file
   webapp_environment_file     = var.webapp_environment_file
 
-  depends_on = [module.vpc, module.iam, module.alb]
+  depends_on = [module.vpc, module.iam, module.webapp-alb, module.backoffice-alb]
 }
-
 
 module "backoffice-sns" {
   source              = "./modules/sns"
@@ -127,14 +145,14 @@ module "cloudwatch" {
   source     = "./modules/cloudwatch"
   aws_region = var.aws_region
 
-  backoffice_load_balancer       = module.alb.backoffice-alb-name
-  backoffice_alb_id              = module.alb.backoffice-alb-id
-  backoffice_alb_arn_suffix      = module.alb.backoffice-alb-arn-suffix
-  backoffice_alb_target_group_id = module.alb.backoffice-target-group-id
-  webapp_load_balancer           = module.alb.webapp-alb-name
-  webapp_alb_id                  = module.alb.webapp-alb-id
-  webapp_alb_arn_suffix          = module.alb.webapp-alb-arn-suffix
-  webapp_alb_target_group_id     = module.alb.webapp-target-group-id
+  backoffice_load_balancer       = module.backoffice-alb.alb-name
+  backoffice_alb_id              = module.backoffice-alb.alb-id
+  backoffice_alb_arn_suffix      = module.backoffice-alb.alb-arn-suffix
+  backoffice_alb_target_group_id = module.backoffice-alb.target-group-id
+  webapp_load_balancer           = module.webapp-alb.alb-name
+  webapp_alb_id                  = module.webapp-alb.alb-id
+  webapp_alb_arn_suffix          = module.webapp-alb.alb-arn-suffix
+  webapp_alb_target_group_id     = module.webapp-alb.target-group-id
 
   ecs_cluster_name            = var.ecs_cluster_name
   ecs_backoffice_service_name = "backoffice"
