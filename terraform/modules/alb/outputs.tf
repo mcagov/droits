@@ -1,9 +1,6 @@
 output "target-group-arn" {
   value = aws_alb_target_group.target-group.arn
 }
-output "target-group-arn" {
-  value = aws_alb_target_group.target-group.arn
-}
 output "alb-name" {
   value = aws_alb.alb.name
 }
