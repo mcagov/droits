@@ -69,3 +69,15 @@ variable "health_check_url" {
   type        = string
   description = "Url of health check target"
 }
+
+variable "desired_count" {
+  type        = number
+  description = "Number of ecs services to provision"
+  default     = 1
+}
+
+variable "health_check_grace_period" {
+  type        = number
+  description = "Time in seconds between health checks"
+  default     = 600
+}

@@ -39,8 +39,8 @@ resource "aws_ecs_service" "service" {
   cluster                           = var.droits_ecs_cluster
   task_definition                   = aws_ecs_task_definition.task-definition.arn
   launch_type                       = "FARGATE"
-  desired_count                     = 1
-  health_check_grace_period_seconds = 600
+  desired_count                     = var.desired_count
+  health_check_grace_period_seconds = var.health_check_grace_period
   # wait_for_steady_state = true
 
 
