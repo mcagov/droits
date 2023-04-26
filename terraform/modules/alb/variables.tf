@@ -10,33 +10,22 @@ variable "public_subnets" {
   type = list(any)
 }
 
-
-variable "backoffice_lb_log_bucket" {
+variable "application_name" {
   type = string
 }
 
-variable "backoffice_security_groups" {
-  type = list(any)
-}
-
-variable "webapp_lb_log_bucket" {
+variable "lb_log_bucket" {
   type = string
 }
 
-variable "webapp_security_groups" {
+variable "security_groups" {
   type = list(any)
 }
 
-variable "backoffice_port" {
+variable "port" {
   type        = string
   description = "The port that the backoffice application runs on"
 }
-
-variable "webapp_port" {
-  type        = string
-  description = "The port that the webapp runs on"
-}
-
 
 variable "lb_ssl_policy" {
   type        = string
