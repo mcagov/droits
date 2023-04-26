@@ -19,4 +19,4 @@ jobs:
       db_password: ${{ secrets.DB_PASSWORD }}
       webapp_env_file: ${{ secrets.WEBAPP_ENV_FILE }}
       backoffice_env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
-      alerts_email: ${{ secrets.ALERTS_EMAIL }}
+      alert_email_address: ${{ secrets.ALERTS_EMAIL }}
