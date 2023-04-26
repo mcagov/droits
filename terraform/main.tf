@@ -60,7 +60,7 @@ module "backoffice-alb" {
 
   port             = var.backoffice_port
   security_groups  = [module.security-groups.backoffice-lb-security-group-id]
-  lb_log_bucket    = module.s3.backoffice-lb-log-bucket
+  lb_log_bucket    = module.backoffice-logs-s3.alb-log-bucket
   application_name = "backoffice"
 
   depends_on = [module.vpc, module.security-groups, module.s3]
@@ -78,7 +78,7 @@ module "webapp-alb" {
 
   port             = var.webapp_port
   security_groups  = [module.security-groups.webapp-lb-security-group-id]
-  lb_log_bucket    = module.s3.webapp-lb-log-bucket
+  lb_log_bucket    = module.webapp-logs-s3.alb-log-bucket
   application_name = "webapp"
 
   depends_on = [module.vpc, module.security-groups, module.s3]
@@ -188,9 +188,20 @@ module "cloudwatch" {
 
 }
 
-module "s3" {
-  source              = "./modules/s3"
+module "s3-images" {
+  source = "./modules/s3-images"
+}
+
+module "backoffice-logs-s3" {
+  source              = "./modules/s3-logs"
   regional_account_id = var.regional_account_id
+  application_name    = "backoffice"
+}
+
+module "webapp-logs-s3" {
+  source              = "./modules/s3-logs"
+  regional_account_id = var.regional_account_id
+  application_name    = "webapp"
 }
 
 
