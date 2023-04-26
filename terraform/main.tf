@@ -63,7 +63,7 @@ module "backoffice-alb" {
   lb_log_bucket    = module.backoffice-logs-s3.alb-log-bucket
   application_name = "backoffice"
 
-  depends_on = [module.vpc, module.security-groups, module.s3]
+  depends_on = [module.vpc, module.security-groups, module.backoffice-logs-s3]
 }
 
 module "webapp-alb" {
@@ -81,7 +81,7 @@ module "webapp-alb" {
   lb_log_bucket    = module.webapp-logs-s3.alb-log-bucket
   application_name = "webapp"
 
-  depends_on = [module.vpc, module.security-groups, module.s3]
+  depends_on = [module.vpc, module.security-groups, module.webapp-logs-s3]
 }
 
 module "droits-ecs-cluster" {
