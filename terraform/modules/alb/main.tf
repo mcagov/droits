@@ -33,6 +33,8 @@ resource "aws_alb_listener" "listener" {
       status_code = "HTTP_301"
     }
   }
+
+  depends_on = [aws_alb.alb]
 }
 
 resource "aws_alb_listener" "listener-https" {
@@ -47,4 +49,6 @@ resource "aws_alb_listener" "listener-https" {
     target_group_arn = aws_alb_target_group.target-group.arn
     type             = "forward"
   }
+
+  depends_on = [aws_alb.alb, aws_alb_target_group.target-group]
 }
