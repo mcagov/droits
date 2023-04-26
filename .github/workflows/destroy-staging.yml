@@ -1,6 +1,6 @@
-name: Destroy staging infrastructure 
+name: Destroy staging infrastructure
 on:
-  workflow_call:
+  workflow_dispatch:
 
 jobs:
   run_pipeline:
