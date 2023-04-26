@@ -17,16 +17,16 @@ variable "public_subnets" {
 
 variable "port" {
   type        = number
-  description = "The port that the backoffice application runs on"
+  description = "The port that the application runs on"
 }
 
 variable "fargate_cpu" {
   type        = number
-  description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) for the DROITS backoffice service"
+  description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units) for the service"
 }
 variable "fargate_memory" {
   type        = number
-  description = "Fargate instance memory to provision (in MiB) for the DROITS backoffice service"
+  description = "Fargate instance memory to provision (in MiB) for the service"
 }
 
 variable "image_url" {
@@ -41,18 +41,18 @@ variable "iam_role_arn" {
 
 variable "tg_arn" {
   type        = string
-  description = "Backoffice target group Arn"
+  description = "Target group Arn"
 }
 
 variable "security_groups" {
   type        = list(any)
-  description = "Security groups for Backoffice ECS"
+  description = "Security groups for ECS"
 }
 
 variable "environment_file" {
   sensitive   = true
   type        = string
-  description = "The environment file for the backoffice ECS container"
+  description = "The environment file for the ECS container"
 }
 
 variable "droits_ecs_cluster" {
