@@ -1,9 +1,3 @@
-resource "aws_sns_topic_subscription" "alerts" {
-  topic_arn = aws_sns_topic.alerts.arn
-  protocol  = "email"
-  endpoint  = var.alert_email_address
-}
-
 resource "aws_sns_topic" "alerts" {
   name = "${terraform.workspace}-${var.resource_name}-alerts"
   tags = {
@@ -12,9 +6,19 @@ resource "aws_sns_topic" "alerts" {
   }
 }
 
+resource "aws_sns_topic_subscription" "alerts" {
+  topic_arn = aws_sns_topic.alerts.arn
+  protocol  = "email"
+  endpoint  = var.alert_email_address
+
+  depends_on = [aws_sns_topic.alerts]
+}
+
 resource "aws_sns_topic_policy" "alerts" {
   arn    = aws_sns_topic.alerts.arn
   policy = data.aws_iam_policy_document.alerts.json
+
+  depends_on = [aws_sns_topic.alerts]
 }
 
 data "aws_iam_policy_document" "alerts" {
@@ -55,4 +59,6 @@ data "aws_iam_policy_document" "alerts" {
 
     sid = "__default_statement_ID"
   }
+
+  depends_on = [aws_sns_topic.alerts]
 }
