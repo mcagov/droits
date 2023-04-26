@@ -15,11 +15,6 @@ variable "public_subnets" {
   type = list(any)
 }
 
-variable "ecs_cluster_name" {
-  type        = string
-  description = "The name of the ECS cluster that houses all our services"
-}
-
 variable "backoffice_port" {
   type        = number
   description = "The port that the backoffice application runs on"
@@ -93,4 +88,9 @@ variable "webapp_environment_file" {
   sensitive   = true
   type        = string
   description = "The environment file for the backoffice ECS container"
+}
+
+variable "droits_ecs_cluster" {
+  type = string
+  description = "The id of the ecs cluster"
 }

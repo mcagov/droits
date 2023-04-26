@@ -1,8 +1,3 @@
-resource "aws_ecs_cluster" "droits-ecs-cluster" {
-  name = var.ecs_cluster_name
-}
-
-
 resource "aws_ecs_task_definition" "backoffice-task-definition" {
   family                   = "backoffice"
   execution_role_arn       = var.iam_role_arn
@@ -41,7 +36,7 @@ resource "aws_ecs_task_definition" "backoffice-task-definition" {
 
 resource "aws_ecs_service" "backoffice-service" {
   name                              = "backoffice"
-  cluster                           = aws_ecs_cluster.droits-ecs-cluster.id
+  cluster                           = var.droits_ecs_cluster
   task_definition                   = aws_ecs_task_definition.backoffice-task-definition.arn
   launch_type                       = "FARGATE"
   desired_count                     = 1
@@ -102,7 +97,7 @@ resource "aws_ecs_task_definition" "webapp-task-definition" {
 
 resource "aws_ecs_service" "webapp" {
   name                              = "webapp"
-  cluster                           = aws_ecs_cluster.droits-ecs-cluster.id
+  cluster                           = var.droits_ecs_cluster
   task_definition                   = aws_ecs_task_definition.webapp-task-definition.arn
   launch_type                       = "FARGATE"
   desired_count                     = 1
