@@ -1,5 +1,7 @@
 resource "aws_s3_bucket" "droits-wreck-images" {
   bucket = "droits-wreck-images-${terraform.workspace}"
+  #Allows non-empty buckets to be destroyed. Remove once in production.
+  force_destroy = true
   # Stops terraform from destroying the object if it exists
   lifecycle {
     prevent_destroy = false
