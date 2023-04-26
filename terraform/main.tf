@@ -49,37 +49,37 @@ module "rds" {
 }
 
 module "backoffice-alb" {
-  source                     = "./modules/alb"
+  source = "./modules/alb"
 
-  vpc_id                     = module.vpc.vpc_id
-  public_subnets             = module.vpc.public_subnets
-  private_subnets            = module.vpc.private_subnets
+  vpc_id          = module.vpc.vpc_id
+  public_subnets  = module.vpc.public_subnets
+  private_subnets = module.vpc.private_subnets
 
-  lb_ssl_policy              = var.lb_ssl_policy
-  ssl_certificate_arn        = var.ssl_certificate_arn
+  lb_ssl_policy       = var.lb_ssl_policy
+  ssl_certificate_arn = var.ssl_certificate_arn
 
-  port                       = var.backoffice_port
-  security_groups            = [module.security-groups.backoffice-lb-security-group-id]
-  lb_log_bucket              = module.s3.backoffice-lb-log-bucket
-  application_name           = "backoffice"
+  port             = var.backoffice_port
+  security_groups  = [module.security-groups.backoffice-lb-security-group-id]
+  lb_log_bucket    = module.s3.backoffice-lb-log-bucket
+  application_name = "backoffice"
 
   depends_on = [module.vpc, module.security-groups, module.s3]
 }
 
 module "webapp-alb" {
-  source                     = "./modules/alb"
+  source = "./modules/alb"
 
-  vpc_id                     = module.vpc.vpc_id
-  public_subnets             = module.vpc.public_subnets
-  private_subnets            = module.vpc.private_subnets
+  vpc_id          = module.vpc.vpc_id
+  public_subnets  = module.vpc.public_subnets
+  private_subnets = module.vpc.private_subnets
 
-  lb_ssl_policy              = var.lb_ssl_policy
-  ssl_certificate_arn        = var.ssl_certificate_arn
+  lb_ssl_policy       = var.lb_ssl_policy
+  ssl_certificate_arn = var.ssl_certificate_arn
 
-  port                = var.webapp_port
-  security_groups     = [module.security-groups.webapp-lb-security-group-id]
-  lb_log_bucket       = module.s3.webapp-lb-log-bucket
-  application_name    = "webapp"
+  port             = var.webapp_port
+  security_groups  = [module.security-groups.webapp-lb-security-group-id]
+  lb_log_bucket    = module.s3.webapp-lb-log-bucket
+  application_name = "webapp"
 
   depends_on = [module.vpc, module.security-groups, module.s3]
 }
