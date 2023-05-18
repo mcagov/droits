@@ -10,6 +10,11 @@ export default function (app) {
   app.use(passport.initialize());
   app.use(passport.session());
 
+  const redirectUri = process.env.ENV_BASE_URL + process.env.B2C_REDIRECT_URL;
+  const identityMetadata = process.env.B2C_IDENTITY_METADATA;
+
+  log.info("identity metadata:" + identityMetadata);
+
   passport.serializeUser(function (user, done) {
     done(null, user.oid);
   });
@@ -20,15 +25,14 @@ export default function (app) {
     });
   });
 
-  // array to hold logged in users
-  var users = [];
+  let loggedInUsers = [];
 
   var findByOid = function (oid, fn) {
-    for (var i = 0, len = users.length; i < len; i++) {
-      var user = users[i];
-      log.info('we are using user: ', user);
+    for (var i = 0, len = loggedInUsers.length; i < len; i++) {
+      const loggedInUser = loggedInUsers[i];
+      log.info('we are using user: ', loggedInUser);
       if (user.oid === oid) {
-        return fn(null, user);
+        return fn(null, loggedInUser);
       }
     }
     return fn(null, null);
@@ -37,12 +41,12 @@ export default function (app) {
   passport.use(
     new OIDCStrategy(
       {
-        identityMetadata: process.env.B2C_BASE_URL + process.env.B2C_IDENTITY_METADATA,
+        identityMetadata: identityMetadata,
         clientID: process.env.B2C_CLIENT_ID,
         responseType: 'code id_token',
         responseMode: 'form_post',
-        redirectUrl: process.env.B2C_BASE_URL + process.env.B2C_REDIRECT_URL,
-        allowHttpForRedirectUrl: false,
+        allowHttpForRedirectUrl: true,
+        redirectUrl: redirectUri,
         clientSecret: process.env.B2C_CLIENT_SECRET,
         validateIssuer: false,
         isB2C: true,
@@ -66,7 +70,7 @@ export default function (app) {
             }
             if (!user) {
               // "Auto-registration"
-              users.push(profile);
+              loggedInUsers.push(profile);
 
               return done(null, profile);
             }
