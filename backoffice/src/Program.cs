@@ -1,4 +1,6 @@
 using Droits.Models;
+using Droits.Repositories;
+using Droits.Services;
 using GovUk.Frontend.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +11,9 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<DroitsContext>(opt => opt.UseInMemoryDatabase("droits"));
 builder.Services.AddGovUkFrontend();
 builder.Services.AddHealthChecks();
+
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IGovNotifyRepository, GovNotifyRepository>();
 
 var app = builder.Build();
 
