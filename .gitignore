@@ -12,9 +12,12 @@
 ##Backoffice
 backoffice/src/bin/
 backoffice/src/obj/
+backoffice/src/appsettings.*
 
 backoffice/tests/bin/
 backoffice/tests/obj/
+
+
 
 ##terraform
 .terraform

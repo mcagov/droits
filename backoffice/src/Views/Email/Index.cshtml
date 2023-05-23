@@ -12,19 +12,19 @@
 
         <div class="govuk-form-group">
             @Html.LabelFor(m => m.EmailAddress, new {@class="govuk-label"})
-            @Html.EditorFor(m => m.EmailAddress, new {@class="govuk-input govuk-!-width-full"})
+            @Html.EditorFor(m => m.EmailAddress,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
         </div>
 
 
 
         <div class="govuk-form-group">
             @Html.LabelFor(m => m.Subject, new {@class="govuk-label"})
-            @Html.EditorFor(m => m.Subject, new {@class="govuk-input govuk-!-width-full"})
+            @Html.EditorFor(m => m.Subject,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
         </div>
 
         <div class="govuk-form-group">
             @Html.LabelFor(m => m.Body, new {@class="govuk-label"})
-            @Html.EditorFor(m => m.Body, new {@class="govuk-input govuk-!-width-full"})
+            @Html.EditorFor(m => m.Body,  new { htmlAttributes = new {@rows = 50 ,@class="govuk-input govuk-!-width-full email-body"}})
         </div>
 
 

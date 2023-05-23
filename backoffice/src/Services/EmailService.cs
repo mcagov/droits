@@ -1,7 +1,7 @@
 namespace Droits.Services
 {
+    using Droits.Clients;
     using Droits.Models;
-    using Droits.Repositories;
     using Notify.Models.Responses;
 
     public interface IEmailService
@@ -11,15 +11,15 @@ namespace Droits.Services
 
     public class EmailService : IEmailService
     {
-        private readonly IGovNotifyRepository _repository;
+        private readonly IGovNotifyClient _client;
         private readonly ILogger<EmailService> _logger;
 
-        public EmailService(ILogger<EmailService> logger,IGovNotifyRepository repo){
+        public EmailService(ILogger<EmailService> logger, IGovNotifyClient client){
             _logger = logger;
-            _repository = repo;
+            _client = client;
         }
 
-        public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _repository.SendEmailAsync(form);
+        public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _client.SendEmailAsync(form);
     }
 
 }

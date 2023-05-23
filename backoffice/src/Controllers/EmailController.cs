@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Droits.Models;
 using Droits.Services;
+using System.Text;
 
 namespace Droits.Controllers;
 
@@ -16,7 +17,19 @@ public class EmailController : Controller
 
     public IActionResult Index()
     {
-        return View(new EmailForm());
+
+        var template = "";
+        using (StreamReader streamReader = new StreamReader("Views/Email/templates/acknowledged.txt", Encoding.UTF8))
+        {
+            template = streamReader.ReadToEnd();
+        }
+
+
+        var model = new EmailForm(){
+            Body = template
+        };
+
+        return View(model);
     }
 
     [HttpPost]
