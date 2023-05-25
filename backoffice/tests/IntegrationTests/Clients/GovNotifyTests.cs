@@ -8,14 +8,21 @@ namespace Droits.Tests;
 public class GovNotifyTests
 {
     private readonly IGovNotifyClient _client;
+    private readonly IConfiguration _configuration;
 
     public GovNotifyTests(){
 
         var logger = new Mock<ILogger<GovNotifyClient>>();
         var config = new Mock<IConfiguration>();
 
-        var apiKey = ""; //TODO - pull from config.
-        var templateId = ""; //TODO - pull from config.
+        _configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile(@"IntegrationTests/Clients/GovNotifyTestData.json", false, false)
+            .AddEnvironmentVariables()
+            .Build();
+
+        var apiKey = _configuration.GetSection("GovNotify:ApiKey").Value;
+        var templateId = _configuration.GetSection("GovNotify:TemplateId").Value;
 
         config.SetupGet(x => x.GetSection("GovNotify:ApiKey").Value).Returns(apiKey);
         config.SetupGet(x => x.GetSection("GovNotify:TemplateId").Value).Returns(templateId);
