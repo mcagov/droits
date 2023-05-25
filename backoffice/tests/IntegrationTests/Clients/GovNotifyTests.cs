@@ -13,7 +13,6 @@ public class GovNotifyTests
     public GovNotifyTests(){
 
         var logger = new Mock<ILogger<GovNotifyClient>>();
-        var config = new Mock<IConfiguration>();
 
         _configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -21,13 +20,7 @@ public class GovNotifyTests
             .AddEnvironmentVariables()
             .Build();
 
-        var apiKey = _configuration.GetSection("GovNotify:ApiKey").Value;
-        var templateId = _configuration.GetSection("GovNotify:TemplateId").Value;
-
-        config.SetupGet(x => x.GetSection("GovNotify:ApiKey").Value).Returns(apiKey);
-        config.SetupGet(x => x.GetSection("GovNotify:TemplateId").Value).Returns(templateId);
-
-        _client = new GovNotifyClient(logger.Object, config.Object);
+        _client = new GovNotifyClient(logger.Object, _configuration);
     }
 
     [Fact]
