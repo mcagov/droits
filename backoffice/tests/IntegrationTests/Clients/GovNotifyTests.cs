@@ -37,4 +37,32 @@ public class GovNotifyTests
 
         Assert.NotNull(response);
     }
+    [Fact]
+    public async void TestSendEmail2()
+    {
+        var form = new EmailForm()
+        {
+            EmailAddress = "sam.kendell+testing@madetech.com",
+            Subject = "Test",
+            Body = "This is a test"
+        };
+
+        var response = await _client.SendEmailAsync(form);
+
+        Assert.Equal("This is a test",response.content.body);
+    }
+    [Fact]
+    public async void TestSendEmail3()
+    {
+        var form = new EmailForm()
+        {
+            EmailAddress = "sam.kendell+testing@madetech.com",
+            Subject = "Test",
+            Body = "This is a test"
+        };
+
+        var response = await _client.SendEmailAsync(form);
+
+        Assert.Equal("Test",response.content.subject);
+    }
 }
