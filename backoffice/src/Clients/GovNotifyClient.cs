@@ -25,34 +25,14 @@ namespace Droits.Clients
         }
 
         public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form)
-        {
-            Dictionary<string,dynamic> personalisation = new Dictionary<string,dynamic>{
-                { "body", form.Body},
-                { "subject", form.Subject},
-            };
+            => await _client.SendEmailAsync(
+                    emailAddress: form.EmailAddress,
+                    templateId: getTemplateId(),
+                    personalisation: form.getPersonalisation()
+                );
 
-            return await _client.SendEmailAsync(
-                emailAddress: form.EmailAddress,
-                templateId: getTemplateId(),
-                personalisation: personalisation
-
-            );
-        }
-
-        public string? getTemplateId(){
-            var value =  _configuration.GetSection("GovNotify:TemplateId").Value;
-
-            Console.WriteLine(value);
-            return value;
-        }
-
-        public string? getApiKey(){
-            var value =  _configuration.GetSection("GovNotify:ApiKey").Value;
-
-            Console.WriteLine(value);
-
-            return value;
-        }
+        public string getTemplateId() => _configuration.GetSection("GovNotify:TemplateId").Value ?? "";
+        public string getApiKey() => _configuration.GetSection("GovNotify:ApiKey").Value ?? "";
     }
 
 }

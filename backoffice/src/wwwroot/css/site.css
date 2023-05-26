@@ -60,3 +60,28 @@ body {
 textarea.email-body {
   height:fit-content;
 }
+
+
+body {
+  background: #333;
+  flex: 1;
+}
+
+.container-wrapper{
+  display: flex;
+  flex-direction: column;
+  min-height: 85vh;
+}
+
+.govuk-footer{
+  padding:0 !important;
+  min-height: 15vh;
+}
+
+.govuk-footer__meta{
+  padding: 20px 0;
+}
+
+main#main-content{
+  min-width: 900px;
+}
