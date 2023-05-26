@@ -16,6 +16,7 @@ backoffice/src/appsettings.*
 
 backoffice/tests/bin/
 backoffice/tests/obj/
+backoffice/tests/IntegrationTests/Clients/GovNotifyTestData.json
 
 
 

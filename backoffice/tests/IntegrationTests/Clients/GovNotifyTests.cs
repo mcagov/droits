@@ -8,19 +8,19 @@ namespace Droits.Tests;
 public class GovNotifyTests
 {
     private readonly IGovNotifyClient _client;
+    private readonly IConfiguration _configuration;
 
     public GovNotifyTests(){
 
         var logger = new Mock<ILogger<GovNotifyClient>>();
-        var config = new Mock<IConfiguration>();
 
-        var apiKey = ""; //TODO - pull from config.
-        var templateId = ""; //TODO - pull from config.
+        _configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile(@"IntegrationTests/Clients/GovNotifyTestData.json", false, false)
+            .AddEnvironmentVariables()
+            .Build();
 
-        config.SetupGet(x => x.GetSection("GovNotify:ApiKey").Value).Returns(apiKey);
-        config.SetupGet(x => x.GetSection("GovNotify:TemplateId").Value).Returns(templateId);
-
-        _client = new GovNotifyClient(logger.Object, config.Object);
+        _client = new GovNotifyClient(logger.Object, _configuration);
     }
 
     [Fact]
@@ -36,5 +36,33 @@ public class GovNotifyTests
         var response = await _client.SendEmailAsync(form);
 
         Assert.NotNull(response);
+    }
+    [Fact]
+    public async void TestSendEmail2()
+    {
+        var form = new EmailForm()
+        {
+            EmailAddress = "sam.kendell+testing@madetech.com",
+            Subject = "Test",
+            Body = "This is a test"
+        };
+
+        var response = await _client.SendEmailAsync(form);
+
+        Assert.Equal("This is a test",response.content.body);
+    }
+    [Fact]
+    public async void TestSendEmail3()
+    {
+        var form = new EmailForm()
+        {
+            EmailAddress = "sam.kendell+testing@madetech.com",
+            Subject = "Test",
+            Body = "This is a test"
+        };
+
+        var response = await _client.SendEmailAsync(form);
+
+        Assert.Equal("Test",response.content.subject);
     }
 }
