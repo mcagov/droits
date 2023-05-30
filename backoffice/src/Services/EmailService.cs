@@ -19,7 +19,13 @@ namespace Droits.Services
             _client = client;
         }
 
+        public void getApiKey()
+        {
+            _client.getApiKey();
+        }
+
         public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _client.SendEmailAsync(form);
+
     }
 
 }
