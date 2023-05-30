@@ -24,7 +24,7 @@ public class GovNotifyTests
     }
 
     [Fact]
-    public async void TestSendEmail()
+    public async void SendEmailAsync_ShouldReturnAValidResponse()
     {
         var form = new EmailForm()
         {
@@ -38,7 +38,7 @@ public class GovNotifyTests
         Assert.NotNull(response);
     }
     [Fact]
-    public async void TestSendEmail2()
+    public async void SendEmailAsync_ShouldReturnSubmittedTextInTheBody()
     {
         var form = new EmailForm()
         {
@@ -52,7 +52,7 @@ public class GovNotifyTests
         Assert.Equal("This is a test",response.content.body);
     }
     [Fact]
-    public async void TestSendEmail3()
+    public async void SendEmailAsync_ShouldReturnSubmittedSubjectInTheSubject()
     {
         var form = new EmailForm()
         {
