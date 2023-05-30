@@ -16,7 +16,7 @@ public class GovNotifyTests
 
         _configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(@"IntegrationTests/Clients/GovNotifyTestData.json", false, false)
+            .AddJsonFile(@"appsettings.json", false, false)
             .AddEnvironmentVariables()
             .Build();
 

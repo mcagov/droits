@@ -26,11 +26,5 @@
     <ProjectReference Include="..\src\Droits.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="IntegrationTests\Clients\GovNotifyTestData.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
 
 </Project>
