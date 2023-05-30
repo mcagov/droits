@@ -40,5 +40,13 @@ public class EmailController : Controller
         return View(nameof(EmailController.SendEmail), form);
     }
 
+    [HttpPost]
+    public IActionResult GetPreview(EmailForm form)
+    {
+        var preview = _service.GetPreview(form);
+
+        return View(nameof(EmailController.GetPreview), preview);
+    }
+
 
 }

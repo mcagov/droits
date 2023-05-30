@@ -7,6 +7,7 @@ namespace Droits.Services
     public interface IEmailService
 {
     Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
+    TemplatePreviewResponse GetPreview(EmailForm form);
 }
 
     public class EmailService : IEmailService
@@ -25,6 +26,19 @@ namespace Droits.Services
         }
 
         public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _client.SendEmailAsync(form);
+
+        public TemplatePreviewResponse GetPreview(EmailForm form)
+        {
+            try
+            {
+                return _client.GetPreview(form);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                throw;
+            }
+        }
 
     }
 
