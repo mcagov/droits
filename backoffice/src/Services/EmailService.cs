@@ -1,4 +1,6 @@
 
+using System.Text;
+
 namespace Droits.Services
 {
     using Droits.Clients;
@@ -7,6 +9,7 @@ namespace Droits.Services
 
     public interface IEmailService
     {
+        EmailForm GetEmailForm(string fileLocation, EmailTemplateType templateType);
         string GetTemplateFilename(string fileLocation, EmailTemplateType templateType);
         Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
         TemplatePreviewResponse GetPreview(EmailForm form);
@@ -25,6 +28,20 @@ namespace Droits.Services
         public void getApiKey()
         {
             _client.getApiKey();
+        }
+
+        public EmailForm GetEmailForm(string fileLocation, EmailTemplateType templateType)
+        {
+            string template;
+            string filename = GetTemplateFilename(fileLocation, templateType);
+            using (StreamReader streamReader = new StreamReader(filename, Encoding.UTF8))
+            {
+                template = streamReader.ReadToEnd();
+            }
+
+            return new EmailForm(){
+                Body = template
+            };
         }
 
         public string GetTemplateFilename(string fileLocation, EmailTemplateType templateType)

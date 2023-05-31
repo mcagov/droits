@@ -19,7 +19,14 @@ public class EmailServiceUnitTests
     }
     
     [Fact]
-    public async void GetTemplateFilename_WhenTheEmailTemplateTypeIsReportAcknowledged_ShouldReturnReportAcknowledged()
+    public void GetTemplateFilename_WhenTheEmailTemplateTypeIsReportAcknowledged_ShouldReturnReportAcknowledged()
+    {
+        string templateFilename = _service.GetTemplateFilename("~/Documents",EmailTemplateType.ReportAcknowledged);
+        Assert.Equal("~/Documents/ReportAcknowledged.txt", templateFilename);
+    }
+    
+    [Fact]
+    public void PopulatePersonalisedValues_ShouldReplaceAllParamsWithThePersonalisedValues()
     {
         string templateFilename = _service.GetTemplateFilename("~/Documents",EmailTemplateType.ReportAcknowledged);
         Assert.Equal("~/Documents/ReportAcknowledged.txt", templateFilename);

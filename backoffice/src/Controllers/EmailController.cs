@@ -2,6 +2,7 @@
 using Droits.Models;
 using Droits.Services;
 using System.Text;
+using Notify.Models.Responses;
 
 namespace Droits.Controllers;
 
@@ -17,18 +18,8 @@ public class EmailController : Controller
 
     public IActionResult Index()
     {
-
-        var template = "";
-        using (StreamReader streamReader = new StreamReader("Views/Email/templates/acknowledged.txt", Encoding.UTF8))
-        {
-            template = streamReader.ReadToEnd();
-        }
-
-
-        var model = new EmailForm(){
-            Body = template
-        };
-
+        EmailForm model = _service.GetEmailForm("Views/Email/templates", EmailTemplateType.ReportAcknowledged);
+        
         return View(model);
     }
 
@@ -43,10 +34,8 @@ public class EmailController : Controller
     [HttpPost]
     public IActionResult GetPreview(EmailForm form)
     {
-        var preview = _service.GetPreview(form);
+        TemplatePreviewResponse preview = _service.GetPreview(form);
 
         return View(nameof(EmailController.GetPreview), preview);
     }
-
-
 }
