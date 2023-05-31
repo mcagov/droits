@@ -13,6 +13,7 @@ namespace Droits.Services
         string GetTemplateFilename(string fileLocation, EmailTemplateType templateType);
         Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
         TemplatePreviewResponse GetPreview(EmailForm form);
+        string PopulatePersonalisedValues(string previewResponseBody);
     }
 
     public class EmailService : IEmailService
@@ -32,9 +33,10 @@ namespace Droits.Services
 
         public EmailForm GetEmailForm(string fileLocation, EmailTemplateType templateType)
         {
+            // abstract out
             string template;
             string filename = GetTemplateFilename(fileLocation, templateType);
-            using (StreamReader streamReader = new StreamReader(filename, Encoding.UTF8))
+            using (StreamReader streamReader = new(filename, Encoding.UTF8))
             {
                 template = streamReader.ReadToEnd();
             }
@@ -55,13 +57,21 @@ namespace Droits.Services
         {
             try
             {
-                return _client.GetPreview(form);
+                TemplatePreviewResponse preview = _client.GetPreview(form);
+                preview.subject = "<h1>Hello</h1>";
+                return preview;
+
             }
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
                 throw;
             }
+        }
+
+        public string PopulatePersonalisedValues(string previewResponseBody)
+        {
+            return "hi";
         }
 
     }
