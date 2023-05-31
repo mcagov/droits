@@ -5,13 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace Droits.Tests;
+namespace Droits.Tests.IntegrationTests.Services;
 
-public class EmailServicesTests
+public class EmailServiceTests
 {
     private readonly IEmailService _service;
 
-    public EmailServicesTests()
+    public EmailServiceTests()
     {
         var logger = new Mock<ILogger<EmailService>>();
         

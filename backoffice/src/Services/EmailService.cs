@@ -1,3 +1,4 @@
+
 namespace Droits.Services
 {
     using Droits.Clients;
@@ -5,10 +6,11 @@ namespace Droits.Services
     using Notify.Models.Responses;
 
     public interface IEmailService
-{
-    Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
-    TemplatePreviewResponse GetPreview(EmailForm form);
-}
+    {
+        string GetTemplateFilename(string fileLocation, EmailTemplateType templateType);
+        Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
+        TemplatePreviewResponse GetPreview(EmailForm form);
+    }
 
     public class EmailService : IEmailService
     {
@@ -23,6 +25,11 @@ namespace Droits.Services
         public void getApiKey()
         {
             _client.getApiKey();
+        }
+
+        public string GetTemplateFilename(string fileLocation, EmailTemplateType templateType)
+        {
+            return $"{fileLocation}/{templateType.ToString()}.txt";
         }
 
         public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _client.SendEmailAsync(form);

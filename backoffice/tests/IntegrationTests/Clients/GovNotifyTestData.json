@@ -1,0 +1,13 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "GovNotify":{
+    "ApiKey": "droits_v2__test-f4609301-fec2-440a-8231-3cba63ff3b43-8d13cde1-7563-429f-9e4e-8a0ed24f91dc",
+    "TemplateId": "700fcdad-ce9e-4b6c-b653-17d0eca88fce"
+  },
+  "AllowedHosts": "*"
+}
