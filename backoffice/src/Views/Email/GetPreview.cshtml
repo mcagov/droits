@@ -1,6 +1,12 @@
 @model Notify.Models.Responses.TemplatePreviewResponse
 
-<h1>Email Preview</h1>
+@{
+    ViewData["Title"] = "Preview Email";
+}
+
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h4 class="govuk-heading-m">@ViewData["Title"]</h4>
+    </legend>
 
 @{
     List<string> bodyLines = Model.body.Split("\r").ToList();
@@ -12,17 +18,23 @@
         if (line.Contains("#"))
         {
             formattedLine = line.Replace("#", "");
-            <h1>@formattedLine</h1>
+            <h1 class="govuk-heading-m">@formattedLine</h1>
         }
         else if (line.Contains("*"))
         {
             formattedLine = line.Replace("*", "");
-            <ul>@formattedLine</ul>
+            <li>@formattedLine</li>
         }
         else if (line.Contains("---"))
         {
             formattedLine = line.Replace("---", "");
             <hr/>
+        }
+        // inset    
+        // remove items from the list that are just \n \r or empty string
+        else
+        {
+            <p>@line</p>
         }
     }
 }
