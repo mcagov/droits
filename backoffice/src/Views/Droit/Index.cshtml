@@ -1,0 +1,28 @@
+﻿@model List<DroitView>
+@{
+    ViewData["Title"] = "Droits List";
+}
+
+<h4 class="display-8">@ViewData["Title"]</h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Reference</th>
+      <th scope="col">Status</th>
+      <th scope="col">Created</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach(var droit in @Model){
+      <tr>
+        <th scope="row"><a asp-action="View" asp-route-id="@droit.Id">@droit.Reference</a></th>
+        <td>@droit.Status</td>
+        <td>@droit.Created.ToString("dd/MM/yyyy")</td>
+      </tr>
+      }
+  </tbody>
+</table>
+
+
+
+<a class="btn btn-success" asp-action="Add">Add Droit</a>

@@ -1,0 +1,204 @@
+﻿@model DroitForm
+@{
+    ViewData["Title"] = "New Droit";
+}
+
+<fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h4 class="govuk-heading-m">@ViewData["Title"]</h4>
+    </legend>
+    <form asp-action="Create" method="POST">
+        <div class="form-sections">
+        <fieldset class="govuk-fieldset form-section">
+            <label class="govuk-label--m">Droit Report</label>
+
+            @* <div class="govuk-form-group">
+                @Html.LabelFor(m => m.Id, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.Id,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div> *@
+
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.Reference, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.Reference,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.Status, new {@class="govuk-label"})
+                @Html.DropDownListFor(m => m.Status, new List<SelectListItem>(){
+                    new SelectListItem() { Text = "Received", Value = "Received" },
+                    new SelectListItem() { Text = "In Progress", Value = "InProgress"},
+                    new SelectListItem() { Text = "Closed", Value = "Closed" },
+                    new SelectListItem() { Text = "Unassigned", Value = "Unassigned"},
+                    new SelectListItem() { Text = "Awaiting Response", Value = "AwaitingResponse"}
+                    }, "Select.....",  new { @class="govuk-select govuk-!-width-full"})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.ReportedDate, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.ReportedDate,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+
+
+            @* <div class="govuk-form-group">
+                @Html.LabelFor(m => m.Created, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.Created,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"
+                , @Value = Model.Created != null ? Model.Created.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd") }})
+            </div> *@
+            @* <div class="govuk-form-group">
+                @Html.LabelFor(m => m.Modified, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.Modified,  new { @Value = Model.Modified.ToString("yyyy-MM-dd"),htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div> *@
+
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.IsHazardousFind, new {@class="govuk-label"})
+                @Html.DropDownListFor(m => m.IsHazardousFind, new List<SelectListItem>()
+                {
+                new SelectListItem() { Text = "Yes", Value = "True" },
+                new SelectListItem() { Text = "No", Value = "False"}
+                }, "Select.....",  new { @class="govuk-select govuk-!-width-full"})
+            </div>
+    </fieldset>
+
+    <fieldset class="govuk-fieldset form-section">
+
+        <label class="govuk-label--m">Wreck</label>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.WreckVesselName, new {@class="govuk-label"})
+            @Html.EditorFor(m => m.WreckVesselName,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+        </div>
+
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.WreckConstructionDetails, "Wreck Construction Details", new {@class="govuk-label"})
+            @Html.EditorFor(m => m.WreckConstructionDetails,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.WreckVesselYearConstructed, new {@class="govuk-label"})
+            @Html.EditorFor(m => m.WreckVesselYearConstructed,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.WreckVesselYearSunk, new {@class="govuk-label"})
+            @Html.EditorFor(m => m.WreckVesselYearSunk,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+        </div>
+
+    </fieldset>
+
+
+    <fieldset class="govuk-fieldset form-section">
+            <label class="govuk-label--m">Location</label>
+
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.Latitude, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.Latitude,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.Longitude, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.Longitude,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.InUkWaters, new {@class="govuk-label"})
+                @Html.DropDownListFor(m => m.InUkWaters, new List<SelectListItem>()
+                {
+                new SelectListItem() { Text = "Yes", Value = "True" },
+                new SelectListItem() { Text = "No", Value = "False"}
+                }, "Select.....",  new { @class="govuk-select govuk-!-width-full"})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.LocationRadius, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.LocationRadius,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.Depth, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.Depth,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.LocationDescription, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.LocationDescription,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+        </fieldset>
+
+
+    <fieldset class="govuk-fieldset form-section">
+
+            <label class="govuk-label--m">Salvage</label>
+
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.SalvageAwardClaimed, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.SalvageAwardClaimed,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.ServicesDescription, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.ServicesDescription,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.ServicesDuration, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.ServicesDuration,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.ServicesEstimatedCost, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.ServicesEstimatedCost,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.MMOLicenceRequired, new {@class="govuk-label"})
+                            @Html.DropDownListFor(m => m.MMOLicenceRequired, new List<SelectListItem>()
+    {
+    new SelectListItem() { Text = "Yes", Value = "True" },
+    new SelectListItem() { Text = "No", Value = "False"}
+    }, "Select.....",  new { @class="govuk-select govuk-!-width-full"})
+
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.MMOLicenceProvided, new {@class="govuk-label"})
+                @Html.DropDownListFor(m => m.MMOLicenceProvided, new List<SelectListItem>()
+    {
+    new SelectListItem() { Text = "Yes", Value = "True" },
+    new SelectListItem() { Text = "No", Value = "False"}
+    }, "Select.....",  new { @class="govuk-select govuk-!-width-full"})
+
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.SalvageClaimAwarded, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.SalvageClaimAwarded,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+
+        </fieldset>
+    <fieldset class="govuk-fieldset form-section">
+
+            <label class="govuk-label--m">Legacy</label>
+
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.District, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.District,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.LegacyFileReference, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.LegacyFileReference,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.GoodsDischargedBy, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.GoodsDischargedBy,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.DateDelivered, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.DateDelivered,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.Agent, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.Agent,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.RecoveredFrom, new {@class="govuk-label"})
+                @Html.EditorFor(m => m.RecoveredFrom,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+            </div>
+            <div class="govuk-form-group">
+                @Html.LabelFor(m => m.ImportedFromLegacy, new {@class="govuk-label"})
+                @Html.DropDownListFor(m => m.ImportedFromLegacy, new List<SelectListItem>()
+                {
+                new SelectListItem() { Text = "Yes", Value = "True" },
+                new SelectListItem() { Text = "No", Value = "False"}
+                }, "Select.....",  new { @class="govuk-select govuk-!-width-full"})
+            </div>
+
+        </fieldset>
+        </div>
+        <button type="submit">Save</button>
+    </form>
+</fieldset>
