@@ -1,20 +1,29 @@
 @model Notify.Models.Responses.TemplatePreviewResponse
 
-<div>@Model.name</div>
+<h1>Email Preview</h1>
 
 @{
     List<string> bodyLines = Model.body.Split("\r").ToList();
-    List<string> formattedBodyLines = new();
     
     foreach (var line in bodyLines)
     {
-        if (line.StartsWith("#"))
+        string formattedLine;
+        
+        if (line.Contains("#"))
         {
-            string formattedLine = line.Replace("#", "<h1>");
-            formattedBodyLines.Add($"{formattedLine}</h1>");
+            formattedLine = line.Replace("#", "");
+            <h1>@formattedLine</h1>
+        }
+        else if (line.Contains("*"))
+        {
+            formattedLine = line.Replace("*", "");
+            <ul>@formattedLine</ul>
+        }
+        else if (line.Contains("---"))
+        {
+            formattedLine = line.Replace("---", "");
+            <hr/>
         }
     }
-    
-    <div>@formattedBodyLines.First()</div>
 }
 
