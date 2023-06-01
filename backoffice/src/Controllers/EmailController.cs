@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Droits.Models;
+﻿using Droits.Models;
 using Droits.Services;
-using System.Text;
-using Notify.Models.Responses;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Controllers;
 
@@ -10,6 +8,7 @@ public class EmailController : Controller
 {
     private readonly ILogger<EmailController> _logger;
     private readonly IEmailService _service;
+
     public EmailController(ILogger<EmailController> logger, IEmailService service)
     {
         _logger = logger;
@@ -18,8 +17,8 @@ public class EmailController : Controller
 
     public IActionResult Index()
     {
-        EmailForm model = _service.GetEmailForm("Views/Email/templates", EmailTemplateType.ReportAcknowledged);
-        
+        var model = _service.GetEmailForm("Views/Email/templates", EmailTemplateType.ReportAcknowledged);
+
         return View(model);
     }
 
@@ -28,14 +27,14 @@ public class EmailController : Controller
     {
         var result = await _service.SendEmailAsync(form);
 
-        return View(nameof(EmailController.SendEmail), form);
+        return View(nameof(SendEmail), form);
     }
 
     [HttpPost]
     public IActionResult GetPreview(EmailForm form)
     {
-        TemplatePreviewResponse preview = _service.GetPreview(form);
+        var preview = _service.GetPreview(form);
 
-        return View(nameof(EmailController.GetPreview), preview);
+        return View(nameof(GetPreview), preview);
     }
 }

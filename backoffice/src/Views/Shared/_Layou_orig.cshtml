@@ -2,15 +2,15 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Droits</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
 </head>
 
 <body class="govuk-template__body">
-    <div class="container-wrapper">
+<div class="container-wrapper">
     <header class="govuk-header " role="banner" data-module="govuk-header">
         <div class="govuk-header__container govuk-width-container">
             <div class="govuk-header__logo">
@@ -26,7 +26,9 @@
                 </a>
                 <nav aria-label="Menu" class="govuk-header__navigation ">
                     <button type="button" class="govuk-header__menu-button govuk-js-header-toggle"
-                        aria-controls="navigation" aria-label="Show or hide menu" hidden>Menu</button>
+                            aria-controls="navigation" aria-label="Show or hide menu" hidden>
+                        Menu
+                    </button>
 
                     <ul id="navigation" class="govuk-header__navigation-list">
                         <li class="govuk-header__navigation-item govuk-header__navigation-item">
@@ -53,10 +55,10 @@
         </div>
     </div>
 
-        <main role="main" id="main-content">
-                    @RenderBody()
-        </main>
-        </div>
+    <main role="main" id="main-content">
+        @RenderBody()
+    </main>
+</div>
 @*
     <footer class="govuk-footer" role="contentinfo">
         <div class="govuk-width-container ">
@@ -104,10 +106,10 @@
         </div>
 
     </footer> *@
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", false)
 </body>
 
 </html>

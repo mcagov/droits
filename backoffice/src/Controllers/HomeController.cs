@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Droits.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Controllers;
 

@@ -4,19 +4,19 @@
     ViewData["Title"] = "Preview Email";
 }
 
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-        <h4 class="govuk-heading-m">@ViewData["Title"]</h4>
-        <h3 class="govuk-heading-m">@Model.subject</h3>
-    </legend>
+<legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+    <h4 class="govuk-heading-m">@ViewData["Title"]</h4>
+    <h3 class="govuk-heading-m">@Model.subject</h3>
+</legend>
 
 @{
-    List<string> bodyLines = Model.body.Split("\r").ToList();
-    bodyLines.RemoveAll(l => String.IsNullOrWhiteSpace(l) || l.Equals("\n") || l.Equals("\r"));
+    var bodyLines = Model.body.Split("\r").ToList();
+    bodyLines.RemoveAll(l => string.IsNullOrWhiteSpace(l) || l.Equals("\n") || l.Equals("\r"));
 
     foreach (var line in bodyLines)
     {
         string formattedLine;
-        
+
         if (line.Contains("#"))
         {
             formattedLine = line.Replace("#", "");
@@ -46,4 +46,3 @@
         }
     }
 }
-

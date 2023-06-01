@@ -10,20 +10,19 @@
     </legend>
     <form>
         <div class="govuk-form-group">
-            @Html.LabelFor(m => m.EmailAddress, new {@class="govuk-label"})
-            @Html.EditorFor(m => m.EmailAddress, new {@class="govuk-input govuk-!-width-full", @readonly="true"})
+            @Html.LabelFor(m => m.EmailAddress, new { @class = "govuk-label" })
+            @Html.EditorFor(m => m.EmailAddress, new { @class = "govuk-input govuk-!-width-full", @readonly = "true" })
         </div>
 
 
-
         <div class="govuk-form-group">
-            @Html.LabelFor(m => m.Subject, new {@class="govuk-label"})
-            @Html.EditorFor(m => m.Subject, new {@class="govuk-input govuk-!-width-full", @readonly="true"})
+            @Html.LabelFor(m => m.Subject, new { @class = "govuk-label" })
+            @Html.EditorFor(m => m.Subject, new { @class = "govuk-input govuk-!-width-full", @readonly = "true" })
         </div>
 
         <div class="govuk-form-group">
-            @Html.LabelFor(m => m.Body, new {@class="govuk-label"})
-            @Html.EditorFor(m => m.Body, new {@class="govuk-input govuk-!-width-full", @readonly="true"})
+            @Html.LabelFor(m => m.Body, new { @class = "govuk-label" })
+            @Html.EditorFor(m => m.Body, new { @class = "govuk-input govuk-!-width-full", @readonly = "true" })
         </div>
 
     </form>
