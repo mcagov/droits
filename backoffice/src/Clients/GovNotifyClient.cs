@@ -1,6 +1,8 @@
+using Droits.Models;
+
 namespace Droits.Clients
 {
-    using Droits.Models;
+    using Droits.Models.Email;
     using Notify.Client;
     using Notify.Models.Responses;
 

@@ -1,10 +1,11 @@
 
 using System.Text;
+using Droits.Models;
 
 namespace Droits.Services
 {
     using Droits.Clients;
-    using Droits.Models;
+    using Droits.Models.Email;
     using Notify.Models.Responses;
 
     public interface IEmailService
@@ -12,7 +13,7 @@ namespace Droits.Services
         EmailForm GetEmailForm(string fileLocation, EmailTemplateType templateType);
         string GetTemplateFilename(string fileLocation, EmailTemplateType templateType);
         Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
-        TemplatePreviewResponse GetPreview(EmailForm form);
+        TemplatePreviewResponse GetTemplatePreview(EmailForm form);
     }
 
     public class EmailService : IEmailService
@@ -32,7 +33,6 @@ namespace Droits.Services
 
         public EmailForm GetEmailForm(string fileLocation, EmailTemplateType templateType)
         {
-            // abstract out
             string template;
             string filename = GetTemplateFilename(fileLocation, templateType);
             using (StreamReader streamReader = new(filename, Encoding.UTF8))
@@ -52,11 +52,12 @@ namespace Droits.Services
 
         public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _client.SendEmailAsync(form);
 
-        public TemplatePreviewResponse GetPreview(EmailForm form)
+        public TemplatePreviewResponse GetTemplatePreview(EmailForm form)
         {
             try
             {
                 TemplatePreviewResponse preview = _client.GetPreview(form);
+                
                 return preview;
 
             }

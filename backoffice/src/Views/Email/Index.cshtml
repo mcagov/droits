@@ -1,4 +1,6 @@
-@model EmailForm
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using GovUk.Frontend.AspNetCore.TagHelpers
+@model Droits.Models.Email.EmailForm
 @{
     ViewData["Title"] = "Send Email";
 }
@@ -7,29 +9,27 @@
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
         <h4 class="govuk-heading-m">@ViewData["Title"]</h4>
     </legend>
-    <form asp-action="GetPreview" method="POST">
+  <form method="POST">
 
 
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.EmailAddress, new {@class="govuk-label"})
-            @Html.EditorFor(m => m.EmailAddress,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
-        </div>
+    <div class="govuk-form-group">
+      @Html.LabelFor(m => m.EmailAddress, new {@class="govuk-label"})
+      @Html.EditorFor(m => m.EmailAddress,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+    </div>
 
+    <div class="govuk-form-group">
+      @Html.LabelFor(m => m.Subject, new {@class="govuk-label"})
+      @Html.EditorFor(m => m.Subject,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
+    </div>
 
+    <div class="govuk-form-group">
+      @Html.LabelFor(m => m.Body, new {@class="govuk-label"})
+      @Html.EditorFor(m => m.Body,  new { htmlAttributes = new {@rows = 50 ,@class="govuk-input govuk-!-width-full email-body"}})
+    </div>
 
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.Subject, new {@class="govuk-label"})
-            @Html.EditorFor(m => m.Subject,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
-        </div>
-
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.Body, new {@class="govuk-label"})
-            @Html.EditorFor(m => m.Body,  new { htmlAttributes = new {@rows = 50 ,@class="govuk-input govuk-!-width-full email-body"}})
-        </div>
-
-
-        <govuk-button type="submit">Send</govuk-button>
-    </form>
+    <govuk-button type="submit" asp-action="GetPreview">Preview</govuk-button>
+    <govuk-button type="submit" asp-action="SendEmail">Send</govuk-button>
+  </form>
 </fieldset>
 
 <div class="govuk-fieldset">

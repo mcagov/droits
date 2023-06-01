@@ -9,5 +9,6 @@ public enum EmailTemplateType
     ClosureOwnerNotFound,
     ClosureOwnerWaivesRights,
     ClosureCustom,
-    CustomEmail
+    CustomEmail,
+    TestingDroitsv2
 }
