@@ -15,10 +15,9 @@ public class EmailServiceTests
     {
         var logger = new Mock<ILogger<EmailService>>();
         
-        
         var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(@"appsettings.json", false, false)
+            .AddJsonFile(@"appsettings.Development.json", false, false)
             .AddEnvironmentVariables()
             .Build();
         
@@ -64,6 +63,8 @@ public class EmailServiceTests
             Subject = "Test",
             Body = "This is a test"
         };
+        
+        
 
         var response = await _service.SendEmailAsync(form);
 

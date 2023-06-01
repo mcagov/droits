@@ -13,7 +13,6 @@ namespace Droits.Services
         string GetTemplateFilename(string fileLocation, EmailTemplateType templateType);
         Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
         TemplatePreviewResponse GetPreview(EmailForm form);
-        string PopulatePersonalisedValues(string templateBodyWithParams);
     }
 
     public class EmailService : IEmailService
@@ -26,7 +25,7 @@ namespace Droits.Services
             _client = client;
         }
 
-        public void getApiKey()
+        public void GetApiKey()
         {
             _client.getApiKey();
         }
@@ -68,12 +67,6 @@ namespace Droits.Services
                 throw;
             }
         }
-
-        public string PopulatePersonalisedValues(string templateBodyWithParams)
-        {
-            return "hi";
-        }
-
     }
 
 }

@@ -24,12 +24,4 @@ public class EmailServiceUnitTests
         string templateFilename = _service.GetTemplateFilename("~/Documents",EmailTemplateType.ReportAcknowledged);
         Assert.Equal("~/Documents/ReportAcknowledged.txt", templateFilename);
     }
-    
-    [Fact]
-    public void PopulatePersonalisedValues_ShouldReplaceAllParamsWithThePersonalisedValues()
-    {
-        string templateBodyWithParams = "This DROIT's reference number is ((reference))";
-        string templateFilename = _service.PopulatePersonalisedValues(templateBodyWithParams);
-        Assert.Equal("This DROIT's reference number is 123", templateFilename);
-    }
 }
