@@ -29,13 +29,13 @@ namespace Droits.Clients
             => await _client.SendEmailAsync(
                     emailAddress: form.EmailAddress,
                     templateId: getTemplateId(),
-                    personalisation: form.getPersonalisation()
+                    personalisation: form.GetPersonalisation()
                 );
 
         public TemplatePreviewResponse GetPreview(EmailForm form)
             =>  _client.GenerateTemplatePreview(
                 templateId: getTemplateId(), 
-                personalisation: form.getPersonalisation()
+                personalisation: form.GetPersonalisation()
             );
         
 

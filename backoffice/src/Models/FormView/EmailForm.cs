@@ -11,8 +11,8 @@ namespace Droits.Models
         [DataType(DataType.MultilineText)]
         public string Body{get;set;} = string.Empty;
 
-        public Dictionary<string,dynamic> getPersonalisation()
-            => new Dictionary<string,dynamic>(){
+        public Dictionary<string,dynamic> GetPersonalisation()
+            => new (){
                     { "body", Body},
                     { "subject", Subject},
                 };
