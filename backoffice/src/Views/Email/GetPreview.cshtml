@@ -6,11 +6,13 @@
 
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
         <h4 class="govuk-heading-m">@ViewData["Title"]</h4>
+        <h3 class="govuk-heading-m">@Model.subject</h3>
     </legend>
 
 @{
     List<string> bodyLines = Model.body.Split("\r").ToList();
-    
+    bodyLines.RemoveAll(l => String.IsNullOrWhiteSpace(l) || l.Equals("\n") || l.Equals("\r"));
+
     foreach (var line in bodyLines)
     {
         string formattedLine;
@@ -23,15 +25,21 @@
         else if (line.Contains("*"))
         {
             formattedLine = line.Replace("*", "");
-            <li>@formattedLine</li>
+            <ul>
+                <li>@formattedLine</li>
+            </ul>
         }
         else if (line.Contains("---"))
         {
             formattedLine = line.Replace("---", "");
             <hr/>
+            <p>@formattedLine</p>
         }
-        // inset    
-        // remove items from the list that are just \n \r or empty string
+        else if (line.Contains("^"))
+        {
+            formattedLine = line.Replace("^", "");
+            <govuk-inset-text>@formattedLine</govuk-inset-text>
+        }
         else
         {
             <p>@line</p>
