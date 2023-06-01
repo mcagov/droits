@@ -1,4 +1,20 @@
 @model Notify.Models.Responses.TemplatePreviewResponse
 
-<div>@Html.Raw(@Model.subject)</div>
-<div>@Model.body</div>
+<div>@Model.name</div>
+
+@{
+    List<string> bodyLines = Model.body.Split("\r").ToList();
+    List<string> formattedBodyLines = new();
+    
+    foreach (var line in bodyLines)
+    {
+        if (line.StartsWith("#"))
+        {
+            string formattedLine = line.Replace("#", "<h1>");
+            formattedBodyLines.Add($"{formattedLine}</h1>");
+        }
+    }
+    
+    <div>@formattedBodyLines.First()</div>
+}
+

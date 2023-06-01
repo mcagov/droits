@@ -57,7 +57,6 @@ namespace Droits.Services
             try
             {
                 TemplatePreviewResponse preview = _client.GetPreview(form);
-                preview.subject = "<h1>Hello</h1>";
                 return preview;
 
             }
