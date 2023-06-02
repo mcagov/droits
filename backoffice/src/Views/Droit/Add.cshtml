@@ -10,12 +10,6 @@
         <div class="card">
             <h5 class="card-header">Droit Report</h5>
             <div class="card-body">
-
-                @* <div class="form-group">
-                    @Html.LabelFor(m => m.Id, new {@class="col-form-label"})
-                    @Html.EditorFor(m => m.Id,  new { htmlAttributes = new {@class="form-control"}})
-                </div> *@
-
                 <div class="form-group">
                     @Html.LabelFor(m => m.Reference, new { @class = "col-form-label" })
                     @Html.EditorFor(m => m.Reference, new { htmlAttributes = new { @class = "form-control" } })
@@ -36,17 +30,6 @@
                     @Html.LabelFor(m => m.ReportedDate, new { @class = "col-form-label" })
                     @Html.EditorFor(m => m.ReportedDate, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
-
-
-                @* <div class="form-group">
-                    @Html.LabelFor(m => m.Created, new {@class="col-form-label"})
-                    @Html.EditorFor(m => m.Created,  new { htmlAttributes = new {@class="form-control"
-                    , @Value = Model.Created != null ? Model.Created.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd") }})
-                </div> *@
-                @* <div class="form-group">
-                    @Html.LabelFor(m => m.Modified, new {@class="col-form-label"})
-                    @Html.EditorFor(m => m.Modified,  new { @Value = Model.Modified.ToString("yyyy-MM-dd"),htmlAttributes = new {@class="form-control"}})
-                </div> *@
 
                 <div class="form-group">
                     @Html.LabelFor(m => m.IsHazardousFind, new { @class = "col-form-label" })
