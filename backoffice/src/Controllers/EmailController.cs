@@ -1,6 +1,8 @@
-﻿using Droits.Models;
-using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
+using Droits.Models.Email;
+using Droits.Services;
+using Notify.Models.Responses;
+
 
 namespace Droits.Controllers;
 
@@ -17,7 +19,7 @@ public class EmailController : Controller
 
     public IActionResult Index()
     {
-        var model = _service.GetEmailForm("Views/Email/templates", EmailTemplateType.ReportAcknowledged);
+        EmailForm model = _service.GetEmailForm("Views/Email/templates", EmailTemplateType.TestingDroitsv2);
 
         return View(model);
     }

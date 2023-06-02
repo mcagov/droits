@@ -1,6 +1,6 @@
 using Droits.Clients;
 using Droits.Services;
-using Droits.Models;
+using Droits.Models.Email;
 using Microsoft.Extensions.Logging;
 using Moq;
 

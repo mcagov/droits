@@ -1,4 +1,6 @@
-@model EmailForm
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using GovUk.Frontend.AspNetCore.TagHelpers
+@model Droits.Models.Email.EmailForm
 @{
     ViewData["Title"] = "Send Email";
 }
@@ -6,6 +8,7 @@
 
 <div class="row align-items-start">
     <div class="col-lg-8">
+
 
         <h4 class="display-8">@ViewData["Title"]</h4>
 
@@ -15,6 +18,10 @@
                 @Html.EditorFor(m => m.EmailAddress, new { htmlAttributes = new { @class = "form-control" } })
             </div>
 
+    <div class="govuk-form-group">
+      @Html.LabelFor(m => m.Body, new {@class="govuk-label"})
+      @Html.EditorFor(m => m.Body,  new { htmlAttributes = new {@rows = 50 ,@class="govuk-input govuk-!-width-full email-body"}})
+    </div>
 
             <div class="mb-3">
                 @Html.LabelFor(m => m.Subject, new { @class = "form-label" })

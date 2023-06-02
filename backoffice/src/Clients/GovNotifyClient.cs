@@ -4,6 +4,7 @@ using Notify.Models.Responses;
 
 namespace Droits.Clients;
 
+
 public interface IGovNotifyClient
 {
     Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);

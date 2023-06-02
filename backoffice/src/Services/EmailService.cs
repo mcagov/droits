@@ -1,4 +1,5 @@
 using System.Text;
+
 using Droits.Clients;
 using Droits.Models;
 using Notify.Models.Responses;
@@ -12,6 +13,7 @@ public interface IEmailService
     Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
     TemplatePreviewResponse GetPreview(EmailForm form);
 }
+
 
 public class EmailService : IEmailService
 {
@@ -57,10 +59,23 @@ public class EmailService : IEmailService
             var preview = _client.GetPreview(form);
             return preview;
         }
-        catch (Exception e)
+
+        public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _client.SendEmailAsync(form);
+
+        public TemplatePreviewResponse GetTemplatePreview(EmailForm form)
         {
-            _logger.LogError(e.Message);
-            throw;
+            try
+            {
+                TemplatePreviewResponse preview = _client.GetPreview(form);
+                
+                return preview;
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                throw;
+            }
         }
     }
 
