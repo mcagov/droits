@@ -1,5 +1,5 @@
 using Droits.Clients;
-using Droits.Models.Email;
+using Droits.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;

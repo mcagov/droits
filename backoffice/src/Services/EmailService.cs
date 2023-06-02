@@ -2,6 +2,7 @@ using System.Text;
 
 using Droits.Clients;
 using Droits.Models;
+using Emails.Repositories;
 using Notify.Models.Responses;
 
 namespace Droits.Services;
@@ -19,16 +20,19 @@ public class EmailService : IEmailService
 {
     private readonly IGovNotifyClient _client;
     private readonly ILogger<EmailService> _logger;
+    private readonly IEmailRepository _emailRepository;
 
-    public EmailService(ILogger<EmailService> logger, IGovNotifyClient client)
+    public EmailService(ILogger<EmailService> logger, 
+        IGovNotifyClient client,
+        IEmailRepository emailRepository)
     {
         _logger = logger;
         _client = client;
+        _emailRepository = emailRepository;
     }
 
     public EmailForm GetEmailForm(string fileLocation, EmailTemplateType templateType)
     {
-        // abstract out
         string template;
         var filename = GetTemplateFilename(fileLocation, templateType);
         using (StreamReader streamReader = new(filename, Encoding.UTF8))
@@ -59,23 +63,10 @@ public class EmailService : IEmailService
             var preview = _client.GetPreview(form);
             return preview;
         }
-
-        public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _client.SendEmailAsync(form);
-
-        public TemplatePreviewResponse GetTemplatePreview(EmailForm form)
+        catch (Exception e)
         {
-            try
-            {
-                TemplatePreviewResponse preview = _client.GetPreview(form);
-                
-                return preview;
-
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
-                throw;
-            }
+            _logger.LogError(e.Message);
+            throw;
         }
     }
 

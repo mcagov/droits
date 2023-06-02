@@ -2,6 +2,7 @@ using Droits.Clients;
 using Droits.Models;
 using Droits.Repositories;
 using Droits.Services;
+using Emails.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,9 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<DroitsContext>(opt => opt.UseInMemoryDatabase("droits"));
 builder.Services.AddHealthChecks();
 
+builder.Services.AddScoped<IEmailRepository, EmailRepository>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+
 builder.Services.AddScoped<IGovNotifyClient, GovNotifyClient>();
 
 builder.Services.AddScoped<IDroitRepository, DroitRepository>();
