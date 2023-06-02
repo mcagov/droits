@@ -1,12 +1,11 @@
 using Droits.Models;
+using Notify.Client;
+using Notify.Models.Responses;
 
-namespace Droits.Clients
-{
-    using Droits.Models.Email;
-    using Notify.Client;
-    using Notify.Models.Responses;
+namespace Droits.Clients;
 
-    public interface IGovNotifyClient
+
+public interface IGovNotifyClient
 {
     Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
     TemplatePreviewResponse GetPreview(EmailForm form);
@@ -14,35 +13,45 @@ namespace Droits.Clients
     string? getApiKey();
 }
 
-    public class GovNotifyClient : IGovNotifyClient
+public class GovNotifyClient : IGovNotifyClient
+{
+    private readonly NotificationClient _client;
+    private readonly IConfiguration _configuration;
+    private readonly ILogger<GovNotifyClient> _logger;
+
+
+    public GovNotifyClient(ILogger<GovNotifyClient> logger, IConfiguration configuration)
     {
-        private readonly NotificationClient _client;
-        private readonly IConfiguration _configuration;
-        private readonly ILogger<GovNotifyClient> _logger;
-
-
-        public GovNotifyClient(ILogger<GovNotifyClient> logger,IConfiguration configuration){
-            _logger = logger;
-            _configuration = configuration;
-            _client = new NotificationClient(getApiKey());
-        }
-
-        public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form)
-            => await _client.SendEmailAsync(
-                    emailAddress: form.EmailAddress,
-                    templateId: getTemplateId(),
-                    personalisation: form.GetPersonalisation()
-                );
-
-        public TemplatePreviewResponse GetPreview(EmailForm form)
-            =>  _client.GenerateTemplatePreview(
-                templateId: getTemplateId(), 
-                personalisation: form.GetPersonalisation()
-            );
-        
-
-        public string getTemplateId() => _configuration.GetSection("GovNotify:TemplateId").Value ?? "";
-        public string getApiKey() => _configuration.GetSection("GovNotify:ApiKey").Value ?? "";
+        _logger = logger;
+        _configuration = configuration;
+        _client = new NotificationClient(getApiKey());
     }
 
+    public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form)
+    {
+        return await _client.SendEmailAsync(
+            form.EmailAddress,
+            getTemplateId(),
+            form.GetPersonalisation()
+        );
+    }
+
+    public TemplatePreviewResponse GetPreview(EmailForm form)
+    {
+        return _client.GenerateTemplatePreview(
+            getTemplateId(),
+            form.GetPersonalisation()
+        );
+    }
+
+
+    public string getTemplateId()
+    {
+        return _configuration.GetSection("GovNotify:TemplateId").Value ?? "";
+    }
+
+    public string getApiKey()
+    {
+        return _configuration.GetSection("GovNotify:ApiKey").Value ?? "";
+    }
 }

@@ -5,157 +5,67 @@
     ViewData["Title"] = "Send Email";
 }
 
-<fieldset class="govuk-fieldset">
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-        <h4 class="govuk-heading-m">@ViewData["Title"]</h4>
-    </legend>
-  <form method="POST">
+
+<div class="row align-items-start">
+    <div class="col-lg-8">
 
 
-    <div class="govuk-form-group">
-      @Html.LabelFor(m => m.EmailAddress, new {@class="govuk-label"})
-      @Html.EditorFor(m => m.EmailAddress,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
-    </div>
+        <h4 class="display-8">@ViewData["Title"]</h4>
 
-    <div class="govuk-form-group">
-      @Html.LabelFor(m => m.Subject, new {@class="govuk-label"})
-      @Html.EditorFor(m => m.Subject,  new { htmlAttributes = new {@class="govuk-input govuk-!-width-full"}})
-    </div>
+        <form asp-action="GetPreview" method="POST">
+            <div class="mb-3">
+                @Html.LabelFor(m => m.EmailAddress, new { @class = "form-label" })
+                @Html.EditorFor(m => m.EmailAddress, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
 
     <div class="govuk-form-group">
       @Html.LabelFor(m => m.Body, new {@class="govuk-label"})
       @Html.EditorFor(m => m.Body,  new { htmlAttributes = new {@rows = 50 ,@class="govuk-input govuk-!-width-full email-body"}})
     </div>
 
-    <govuk-button type="submit" asp-action="GetPreview">Preview</govuk-button>
-    <govuk-button type="submit" asp-action="SendEmail">Send</govuk-button>
-  </form>
-</fieldset>
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Subject, new { @class = "form-label" })
+                @Html.EditorFor(m => m.Subject, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
 
-<div class="govuk-fieldset">
-
-
-  <h2 class="heading-medium">Formatting</h2>
-<p class="bottom-gutter-1-3">
-  To put a title in your template, use a hash:
-</p>
-<div class="govuk-!-margin-bottom-6">
-  
-  <div class="govuk-inset-text govuk-!-margin-top-0">
-  # This is a title
-</div>
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Body, new { @class = "form-label" })
+                @Html.EditorFor(m => m.Body, new { htmlAttributes = new { rows = 50, @class = "form-control email-body" } })
+            </div>
 
 
-</div>
-<p class="bottom-gutter-1-3">
-  To make bullet points, use asterisks:
-</p>
-<div class="govuk-!-margin-bottom-6">
-  
-  <div class="govuk-inset-text govuk-!-margin-top-0">
-  * point 1<br>
-             * point 2<br>
-             * point 3<br>
-</div>
+            <button class="btn btn-success" type="submit">Send</button>
+        </form>
+    </div>
 
+    <div class="col-lg-4">
 
-</div>
-<p class="bottom-gutter-1-3">
-  To add inset text, use a caret:
-</p>
-<div class="govuk-!-margin-bottom-6">
-  
-  <div class="govuk-inset-text govuk-!-margin-top-0">
-  ^ You must tell us if your circumstances change
-</div>
+        <h4 class="display-8">Formatting</h4>
 
+        <p>To put a title in your template, use a hash:</p>
 
-</div>
-<p class="bottom-gutter-1-3">
-  To add a horizontal line, use three dashes:
-</p>
+        <span class=""> # This is a title </span>
 
-  <div class="govuk-inset-text govuk-!-margin-top-0">
-  <p class="govuk-body">First paragraph</p>
-            <p class="govuk-body" style="letter-spacing: 1px;">---</p>
-            <p class="govuk-body">Second paragraph</p>
-</div>
+        <p>To make bullet points, use asterisks:</p>
 
+        <p> * point 1 </p>
+        <p> * point 2 </p>
+        <p> * point 3 </p>
 
-          
+        <p> To add inset text, use a caret:</p>
+        <p> ^ You must tell us if your circumstances change</p>
 
-<h2 class="heading-medium">
-  Personalisation
-</h2>
-<p class="bottom-gutter-1-3">
-  Use double brackets to personalise your message:
-</p>
+        <p>To add a horizontal line, use three dashes: </p>
 
-  <div class="govuk-inset-text govuk-!-margin-top-0">
-  Hello ((first name)), your reference is ((ref number))
-</div>
+        <p>First paragraph</p>
+        <p>---</p>
+        <p>Second paragraph</p>
 
+        <h4 class="display-8">Personalisation</h4>
+        <p>Use double brackets to personalise your message:</p>
 
-          
+        <p>Hello ((first name)), your reference is ((ref number))</p>
 
-<h2 class="heading-medium">
-  Optional content
-</h2>
-<p class="govuk-body">
-  Use double brackets and ‘??’ to define optional content.
-</p>
-<p class="bottom-gutter-1-3">
-  For example if you only want to show something to people who are under
-  18:
-</p>
-
-  <div class="govuk-inset-text govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  ((under18??Please get your application signed by a parent or
-  guardian.))
-</div>
-
-
-<p class="govuk-body">
-  For each person you send this message to, specify ‘yes’ or ‘no’ to
-  show or hide this content.
-</p>
-          
-
-<h2 class="heading-medium">Links and URLs</h2>
-<p class="bottom-gutter-1-3">
-  If the recipient is not expecting to receive an email from you, write the URL in full, starting with https://
-</p>
-
-  <div class="govuk-inset-text govuk-!-margin-top-0">
-  Apply now at https://www.gov.uk/example
-</div>
-
-
-<p class="bottom-gutter-1-3">
-  To convert text into a link, use square brackets [] around the link text and round brackets () around the full URL. Make sure there are no spaces between the brackets or the link will not work. For example:
-</p>
-
-  <div class="govuk-inset-text govuk-!-margin-top-0">
-  [Apply now](https://www.gov.uk/example)
-</div>
-
-
-
-          
-
-<h2 class="heading-medium">
-  Send a document by email
-</h2>
-<p class="govuk-body">
-  Use double brackets to add a placeholder field to your template. This will contain a secure link to download the document.
-</p>
-
-  <div class="govuk-inset-text govuk-!-margin-top-0 govuk-!-margin-bottom-3">
-  Download your document at: ((link_to_file))
-</div>
-
-
-
-Next, use the API to upload your document. Follow the instructions to send a document by email in the <a class="govuk-link govuk-link--no-visited-state" href="/using-notify/api-documentation">API documentation</a>.
+    </div>
 
 </div>

@@ -1,0 +1,166 @@
+﻿@model DroitView
+@{
+    ViewData["Title"] = "View Droit";
+}
+
+<fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h4 class="govuk-heading-m">@ViewData["Title"]</h4>
+    </legend>
+
+
+    <fieldset class="govuk-fieldset form-section">
+
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.Id, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.Id, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.Reference, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.Reference, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.Status, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.Status, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.ReportedDate, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.ReportedDate, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.Created, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.Created, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.Modified, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.Modified, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.IsHazardousFind, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.IsHazardousFind, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+    </fieldset>
+
+    <fieldset class="govuk-fieldset form-section">
+
+        <label class="govuk-label--m">Wreck</label>
+
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.WreckVesselName, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.WreckVesselName, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.WreckConstructionDetails, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.WreckConstructionDetails, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.WreckVesselYearConstructed, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.WreckVesselYearConstructed, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.WreckVesselYearSunk, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.WreckVesselYearSunk, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+
+    </fieldset>
+    <fieldset class="govuk-fieldset form-section">
+        <label class="govuk-label--m">Location</label>
+
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.Latitude, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.Latitude, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.Longitude, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.Longitude, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.InUkWaters, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.InUkWaters, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.LocationRadius, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.LocationRadius, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.Depth, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.Depth, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.LocationDescription, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.LocationDescription, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+    </fieldset>
+    <fieldset class="govuk-fieldset form-section">
+
+        <label class="govuk-label--m">Salvage</label>
+
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.SalvageAwardClaimed, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.SalvageAwardClaimed, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.ServicesDescription, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.ServicesDescription, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.ServicesDuration, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.ServicesDuration, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.ServicesEstimatedCost, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.ServicesEstimatedCost, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.MMOLicenceRequired, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.MMOLicenceRequired, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.MMOLicenceProvided, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.MMOLicenceProvided, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.SalvageClaimAwarded, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.SalvageClaimAwarded, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+
+    </fieldset>
+    <fieldset class="govuk-fieldset form-section">
+
+        <label class="govuk-label--m">Legacy</label>
+
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.District, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.District, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.LegacyFileReference, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.LegacyFileReference, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.GoodsDischargedBy, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.GoodsDischargedBy, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.DateDelivered, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.DateDelivered, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.Agent, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.Agent, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.RecoveredFrom, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.RecoveredFrom, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.ImportedFromLegacy, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.ImportedFromLegacy, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+
+    </fieldset>
+    <button asp-action="Index">View All</button>
+
+</fieldset>

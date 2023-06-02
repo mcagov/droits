@@ -1,53 +1,63 @@
-
 using System.Text;
+
+using Droits.Clients;
 using Droits.Models;
+using Notify.Models.Responses;
 
-namespace Droits.Services
+namespace Droits.Services;
+
+public interface IEmailService
 {
-    using Droits.Clients;
-    using Droits.Models.Email;
-    using Notify.Models.Responses;
+    EmailForm GetEmailForm(string fileLocation, EmailTemplateType templateType);
+    string GetTemplateFilename(string fileLocation, EmailTemplateType templateType);
+    Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
+    TemplatePreviewResponse GetPreview(EmailForm form);
+}
 
-    public interface IEmailService
+
+public class EmailService : IEmailService
+{
+    private readonly IGovNotifyClient _client;
+    private readonly ILogger<EmailService> _logger;
+
+    public EmailService(ILogger<EmailService> logger, IGovNotifyClient client)
     {
-        EmailForm GetEmailForm(string fileLocation, EmailTemplateType templateType);
-        string GetTemplateFilename(string fileLocation, EmailTemplateType templateType);
-        Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
-        TemplatePreviewResponse GetTemplatePreview(EmailForm form);
+        _logger = logger;
+        _client = client;
     }
 
-    public class EmailService : IEmailService
+    public EmailForm GetEmailForm(string fileLocation, EmailTemplateType templateType)
     {
-        private readonly IGovNotifyClient _client;
-        private readonly ILogger<EmailService> _logger;
-
-        public EmailService(ILogger<EmailService> logger, IGovNotifyClient client){
-            _logger = logger;
-            _client = client;
+        // abstract out
+        string template;
+        var filename = GetTemplateFilename(fileLocation, templateType);
+        using (StreamReader streamReader = new(filename, Encoding.UTF8))
+        {
+            template = streamReader.ReadToEnd();
         }
 
-        public void GetApiKey()
+        return new EmailForm
         {
-            _client.getApiKey();
-        }
+            Body = template
+        };
+    }
 
-        public EmailForm GetEmailForm(string fileLocation, EmailTemplateType templateType)
+    public string GetTemplateFilename(string fileLocation, EmailTemplateType templateType)
+    {
+        return $"{fileLocation}/{templateType.ToString()}.txt";
+    }
+
+    public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form)
+    {
+        return await _client.SendEmailAsync(form);
+    }
+
+    public TemplatePreviewResponse GetPreview(EmailForm form)
+    {
+        try
         {
-            string template;
-            string filename = GetTemplateFilename(fileLocation, templateType);
-            using (StreamReader streamReader = new(filename, Encoding.UTF8))
-            {
-                template = streamReader.ReadToEnd();
-            }
-
-            return new EmailForm(){
-                Body = template
-            };
-        }
-
-        public string GetTemplateFilename(string fileLocation, EmailTemplateType templateType)
-        {
-            return $"{fileLocation}/{templateType.ToString()}.txt";
+            var preview = _client.GetPreview(form);
+            return preview;
         }
 
         public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _client.SendEmailAsync(form);
@@ -69,4 +79,8 @@ namespace Droits.Services
         }
     }
 
+    public void GetApiKey()
+    {
+        _client.getApiKey();
+    }
 }
