@@ -1,5 +1,4 @@
 using System.Text;
-
 using Droits.Clients;
 using Droits.Models;
 using Notify.Models.Responses;
@@ -13,7 +12,6 @@ public interface IEmailService
     Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
     TemplatePreviewResponse GetPreview(EmailForm form);
 }
-
 
 public class EmailService : IEmailService
 {
@@ -47,10 +45,6 @@ public class EmailService : IEmailService
         return $"{fileLocation}/{templateType.ToString()}.txt";
     }
 
-    public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form)
-    {
-        return await _client.SendEmailAsync(form);
-    }
 
     public TemplatePreviewResponse GetPreview(EmailForm form)
     {
@@ -59,28 +53,27 @@ public class EmailService : IEmailService
             var preview = _client.GetPreview(form);
             return preview;
         }
-
-        public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _client.SendEmailAsync(form);
-
-        public TemplatePreviewResponse GetTemplatePreview(EmailForm form)
+        catch (Exception e)
         {
-            try
-            {
-                TemplatePreviewResponse preview = _client.GetPreview(form);
-                
-                return preview;
-
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
-                throw;
-            }
+            _logger.LogError(e.Message);
+            throw;
         }
     }
 
-    public void GetApiKey()
+    public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _client.SendEmailAsync(form);
+
+    public TemplatePreviewResponse GetTemplatePreview(EmailForm form)
     {
-        _client.getApiKey();
+        try
+        {
+            TemplatePreviewResponse preview = _client.GetPreview(form);
+
+            return preview;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            throw;
+        }
     }
 }

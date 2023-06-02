@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Droits.Models.Email;
+using Droits.Models;
 using Droits.Services;
-using Notify.Models.Responses;
 
 
 namespace Droits.Controllers;
