@@ -25,7 +25,7 @@ public class EmailController : Controller
     {
         var model = new EmailForm()
         {
-            Body = await _service.GetTemplateAsync(EmailTemplate.TestingDroitsv2)
+            Body = await _service.GetTemplateAsync(EmailType.TestingDroitsv2)
         };
         
         return View(model);

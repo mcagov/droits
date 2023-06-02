@@ -1,6 +1,6 @@
 namespace Droits.Models;
 
-public enum EmailTemplate
+public enum EmailType
 {
     ReportAcknowledged,
     ReportCompleteInformation,

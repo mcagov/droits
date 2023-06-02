@@ -7,7 +7,7 @@ namespace Droits.Services;
 
 public interface IEmailService
 {
-    Task<string> GetTemplateAsync(EmailTemplate template);
+    Task<string> GetTemplateAsync(EmailType emailType);
     Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
 }
 
@@ -22,11 +22,11 @@ public class EmailService : IEmailService
         _client = client;
     }
 
-    public async Task<string> GetTemplateAsync(EmailTemplate templateType)
+    public async Task<string> GetTemplateAsync(EmailType emailType)
     {
         // abstract out
         string template;
-        var filename = $"{TemplateDirectory}/{templateType.ToString()}.txt";
+        var filename = $"{TemplateDirectory}/{emailType.ToString()}.txt";
         
         using (StreamReader streamReader = new(filename, Encoding.UTF8))
         {
