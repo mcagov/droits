@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Droits.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Controllers;
 
@@ -16,6 +16,7 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         return View();
+        // return RedirectToAction("Index","Droit",new {});
     }
 
     public IActionResult Privacy()

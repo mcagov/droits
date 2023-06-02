@@ -1,0 +1,29 @@
+@model EmailForm
+@{
+    ViewData["Title"] = "Email Successfully Sent";
+}
+
+
+<fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h4 class="govuk-heading-m">@ViewData["Title"]</h4>
+    </legend>
+    <form>
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.EmailAddress, new { @class = "govuk-label" })
+            @Html.EditorFor(m => m.EmailAddress, new { @class = "govuk-input govuk-!-width-full", @readonly = "true" })
+        </div>
+
+
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.Subject, new { @class = "govuk-label" })
+            @Html.EditorFor(m => m.Subject, new { @class = "govuk-input govuk-!-width-full", @readonly = "true" })
+        </div>
+
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.Body, new { @class = "govuk-label" })
+            @Html.EditorFor(m => m.Body, new { @class = "govuk-input govuk-!-width-full", @readonly = "true" })
+        </div>
+
+    </form>
+</fieldset>

@@ -1,0 +1,206 @@
+﻿@model DroitForm
+@{
+    ViewData["Title"] = "New Droit";
+}
+<h4 class="govuk-heading-m">@ViewData["Title"]</h4>
+<form class="form-horizontal mt-4"asp-action="Create" method="POST">
+    <div class="row row-cols-1 row-cols-md-2">
+    <div class="col mt-4">
+
+        <div class="card">
+            <h5 class="card-header">Droit Report</h5>
+            <div class="card-body">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Reference, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.Reference, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Status, new { @class = "col-form-label" })
+                    @Html.DropDownListFor(m => m.Status, new List<SelectListItem>
+                    {
+                        new() { Text = "Received", Value = "Received" },
+                        new() { Text = "In Progress", Value = "InProgress" },
+                        new() { Text = "Closed", Value = "Closed" },
+                        new() { Text = "Unassigned", Value = "Unassigned" },
+                        new() { Text = "Awaiting Response", Value = "AwaitingResponse" }
+                    }, "Select.....", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ReportedDate, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.ReportedDate, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.IsHazardousFind, new { @class = "col-form-label" })
+                    @Html.DropDownListFor(m => m.IsHazardousFind, new List<SelectListItem>
+                    {
+                        new() { Text = "Yes", Value = "True" },
+                        new() { Text = "No", Value = "False" }
+                    }, "Select.....", new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col mt-4">
+
+        <div class="card">
+            <h5 class="card-header">Wreck</h5>
+            <div class="card-body">
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.WreckVesselName, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.WreckVesselName, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.WreckConstructionDetails, "Wreck Construction Details", new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.WreckConstructionDetails, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.WreckVesselYearConstructed, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.WreckVesselYearConstructed, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.WreckVesselYearSunk, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.WreckVesselYearSunk, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col mt-4">
+
+        <div class="card">
+            <h5 class="card-header">Location</h5>
+            <div class="card-body">
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Latitude, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.Latitude, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Longitude, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.Longitude, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.InUkWaters, new { @class = "col-form-label" })
+                    @Html.DropDownListFor(m => m.InUkWaters, new List<SelectListItem>
+                    {
+                        new() { Text = "Yes", Value = "True" },
+                        new() { Text = "No", Value = "False" }
+                    }, "Select.....", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.LocationRadius, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.LocationRadius, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Depth, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.Depth, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.LocationDescription, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.LocationDescription, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col mt-4">
+
+        <div class="card">
+            <h5 class="card-header">Salvage</h5>
+            <div class="card-body">
+
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.SalvageAwardClaimed, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.SalvageAwardClaimed, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ServicesDescription, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.ServicesDescription, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ServicesDuration, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.ServicesDuration, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ServicesEstimatedCost, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.ServicesEstimatedCost, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.MMOLicenceRequired, new { @class = "col-form-label" })
+                    @Html.DropDownListFor(m => m.MMOLicenceRequired, new List<SelectListItem>
+                    {
+                        new() { Text = "Yes", Value = "True" },
+                        new() { Text = "No", Value = "False" }
+                    }, "Select.....", new { @class = "form-control" })
+
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.MMOLicenceProvided, new { @class = "col-form-label" })
+                    @Html.DropDownListFor(m => m.MMOLicenceProvided, new List<SelectListItem>
+                    {
+                        new() { Text = "Yes", Value = "True" },
+                        new() { Text = "No", Value = "False" }
+                    }, "Select.....", new { @class = "form-control" })
+
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.SalvageClaimAwarded, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.SalvageClaimAwarded, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col mt-4">
+
+        <div class="card">
+            <h5 class="card-header">Legacy</h5>
+            <div class="card-body">
+
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.District, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.District, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.LegacyFileReference, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.LegacyFileReference, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.GoodsDischargedBy, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.GoodsDischargedBy, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.DateDelivered, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.DateDelivered, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Agent, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.Agent, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.RecoveredFrom, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.RecoveredFrom, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ImportedFromLegacy, new { @class = "col-form-label" })
+                    @Html.DropDownListFor(m => m.ImportedFromLegacy, new List<SelectListItem>
+                    {
+                        new() { Text = "Yes", Value = "True" },
+                        new() { Text = "No", Value = "False" }
+                    }, "Select.....", new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col mt-4">
+        
+    </div>
+    
+    
+    </div>
+    <button class="btn btn-success m-2 float-end" type="submit">Save</button>
+</form>

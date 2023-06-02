@@ -1,0 +1,48 @@
+@model Notify.Models.Responses.TemplatePreviewResponse
+
+@{
+    ViewData["Title"] = "Preview Email";
+}
+
+<legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+    <h4 class="govuk-heading-m">@ViewData["Title"]</h4>
+    <h3 class="govuk-heading-m">@Model.subject</h3>
+</legend>
+
+@{
+    var bodyLines = Model.body.Split("\r").ToList();
+    bodyLines.RemoveAll(l => string.IsNullOrWhiteSpace(l) || l.Equals("\n") || l.Equals("\r"));
+
+    foreach (var line in bodyLines)
+    {
+        string formattedLine;
+
+        if (line.Contains("#"))
+        {
+            formattedLine = line.Replace("#", "");
+            <h1 class="govuk-heading-m">@formattedLine</h1>
+        }
+        else if (line.Contains("*"))
+        {
+            formattedLine = line.Replace("*", "");
+            <ul>
+                <li>@formattedLine</li>
+            </ul>
+        }
+        else if (line.Contains("---"))
+        {
+            formattedLine = line.Replace("---", "");
+            <hr/>
+            <p>@formattedLine</p>
+        }
+        else if (line.Contains("^"))
+        {
+            formattedLine = line.Replace("^", "");
+            <govuk-inset-text>@formattedLine</govuk-inset-text>
+        }
+        else
+        {
+            <p>@line</p>
+        }
+    }
+}
