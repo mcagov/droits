@@ -18,10 +18,4 @@ public class EmailServiceUnitTests
         _service = new EmailService(mockLogger.Object, mockClient.Object);
     }
     
-    [Fact]
-    public void GetTemplateFilename_WhenTheEmailTemplateTypeIsReportAcknowledged_ShouldReturnReportAcknowledged()
-    {
-        string templateFilename = _service.GetTemplateFilename("~/Documents",EmailTemplateType.ReportAcknowledged);
-        Assert.Equal("~/Documents/ReportAcknowledged.txt", templateFilename);
-    }
 }

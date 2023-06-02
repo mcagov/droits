@@ -12,7 +12,19 @@ public class EmailForm
 
     public Dictionary<string,dynamic> GetPersonalisation()
         => new (){
-            { "body", Body},
-            { "subject", Subject}
+            { "subject", Subject},
+            { "reference", "TestRef123"}
         };
+
+    public string GetEmailBody()
+    {
+        var output = Body;
+        foreach (var  param in GetPersonalisation())
+        {
+            output = output.Replace($"(({param.Key}))", param.Value);
+        }
+
+        return output;
+    }
+
 }

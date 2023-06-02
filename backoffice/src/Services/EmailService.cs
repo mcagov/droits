@@ -7,73 +7,36 @@ namespace Droits.Services;
 
 public interface IEmailService
 {
-    EmailForm GetEmailForm(string fileLocation, EmailTemplateType templateType);
-    string GetTemplateFilename(string fileLocation, EmailTemplateType templateType);
+    Task<string> GetTemplateAsync(EmailTemplateType templateType);
     Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
-    TemplatePreviewResponse GetPreview(EmailForm form);
 }
 
 public class EmailService : IEmailService
 {
     private readonly IGovNotifyClient _client;
     private readonly ILogger<EmailService> _logger;
-
+    private const string TemplateDirectory = "Views/Email/Templates" ;
     public EmailService(ILogger<EmailService> logger, IGovNotifyClient client)
     {
         _logger = logger;
         _client = client;
     }
 
-    public EmailForm GetEmailForm(string fileLocation, EmailTemplateType templateType)
+    public async Task<string> GetTemplateAsync(EmailTemplateType templateType)
     {
         // abstract out
         string template;
-        var filename = GetTemplateFilename(fileLocation, templateType);
+        var filename = $"{TemplateDirectory}/{templateType.ToString()}.txt";
+        
         using (StreamReader streamReader = new(filename, Encoding.UTF8))
         {
-            template = streamReader.ReadToEnd();
+            template = await streamReader.ReadToEndAsync();
         }
 
-        return new EmailForm
-        {
-            Body = template
-        };
+        return template;    
     }
 
-    public string GetTemplateFilename(string fileLocation, EmailTemplateType templateType)
-    {
-        return $"{fileLocation}/{templateType.ToString()}.txt";
-    }
-
-
-    public TemplatePreviewResponse GetPreview(EmailForm form)
-    {
-        try
-        {
-            var preview = _client.GetPreview(form);
-            return preview;
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e.Message);
-            throw;
-        }
-    }
 
     public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _client.SendEmailAsync(form);
-
-    public TemplatePreviewResponse GetTemplatePreview(EmailForm form)
-    {
-        try
-        {
-            TemplatePreviewResponse preview = _client.GetPreview(form);
-
-            return preview;
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e.Message);
-            throw;
-        }
-    }
 }
+

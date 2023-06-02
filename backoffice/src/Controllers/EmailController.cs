@@ -18,8 +18,16 @@ public class EmailController : Controller
 
     public IActionResult Index()
     {
-        EmailForm model = _service.GetEmailForm("Views/Email/templates", EmailTemplateType.TestingDroitsv2);
+        return View();
+    }
 
+    public async Task<IActionResult> Compose()
+    {
+        var model = new EmailForm()
+        {
+            Body = await _service.GetTemplateAsync(EmailTemplateType.TestingDroitsv2)
+        };
+        
         return View(model);
     }
 
@@ -27,15 +35,15 @@ public class EmailController : Controller
     public async Task<IActionResult> SendEmail(EmailForm form)
     {
         var result = await _service.SendEmailAsync(form);
-
+            
         return View(nameof(SendEmail), form);
     }
 
     [HttpPost]
-    public IActionResult GetPreview(EmailForm form)
+    public IActionResult Preview(EmailForm form)
     {
-        var preview = _service.GetPreview(form);
-
-        return View(nameof(GetPreview), preview);
+        form.Body = form.GetEmailBody();
+        
+        return View(nameof(Preview), form);
     }
 }
