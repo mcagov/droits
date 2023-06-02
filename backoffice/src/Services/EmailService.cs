@@ -7,7 +7,7 @@ namespace Droits.Services;
 
 public interface IEmailService
 {
-    Task<string> GetTemplateAsync(EmailTemplateType templateType);
+    Task<string> GetTemplateAsync(EmailTemplate template);
     Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
 }
 
@@ -22,7 +22,7 @@ public class EmailService : IEmailService
         _client = client;
     }
 
-    public async Task<string> GetTemplateAsync(EmailTemplateType templateType)
+    public async Task<string> GetTemplateAsync(EmailTemplate templateType)
     {
         // abstract out
         string template;
