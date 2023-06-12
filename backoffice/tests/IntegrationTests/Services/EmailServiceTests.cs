@@ -1,6 +1,7 @@
 using Droits.Clients;
 using Droits.Models;
 using Droits.Services;
+using Droits.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -14,7 +15,8 @@ public class EmailServiceTests
     public EmailServiceTests()
     {
         var logger = new Mock<ILogger<EmailService>>();
-        
+        Mock<IEmailRepository> mockEmailRepository = new Mock<IEmailRepository>();
+
         var config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile(@"appsettings.Development.json", false, false)
@@ -23,7 +25,7 @@ public class EmailServiceTests
         
         var client = new GovNotifyClient(new Mock<ILogger<GovNotifyClient>>().Object, config);
 
-        _service = new EmailService(logger.Object, client);
+        _service = new EmailService(logger.Object, client, mockEmailRepository.Object);
     }
     
     [Fact]

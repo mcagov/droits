@@ -14,6 +14,7 @@ public partial class DroitsContext : DbContext
     }
 
     public virtual DbSet<Droit> Droits { get; set; } = null!;
+    public virtual DbSet<Email> Emails { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -70,7 +71,20 @@ public partial class DroitsContext : DbContext
             entity.Property(e => e.RecoveredFrom);
             entity.Property(e => e.ImportedFromLegacy);
         });
+        
+        modelBuilder.Entity<Email>(entity =>
+        {
+            entity.ToTable("emails");
 
+            entity.Property(e => e.Id)
+                .HasColumnName("id");
+
+            entity.Property(e => e.Id);
+            entity.Property(e => e.Subject);
+            entity.Property(e => e.Body);
+            entity.Property(e => e.DateSent);
+            entity.Property(e => e.SenderEmailAddress);
+        });
         OnModelCreatingPartial(modelBuilder);
     }
 

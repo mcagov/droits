@@ -1,4 +1,4 @@
-namespace Droits.Models.Email;
+namespace Droits.Models;
 
 public class EmailPreview
 {

@@ -1,6 +1,8 @@
 using System.Text;
 using Droits.Clients;
+using Droits.Exceptions;
 using Droits.Models;
+using Droits.Repositories;
 using Notify.Models.Responses;
 
 namespace Droits.Services;
@@ -16,15 +18,19 @@ public class EmailService : IEmailService
     private readonly IGovNotifyClient _client;
     private readonly ILogger<EmailService> _logger;
     private const string TemplateDirectory = "Views/Email/Templates" ;
-    public EmailService(ILogger<EmailService> logger, IGovNotifyClient client)
+    private readonly IEmailRepository _emailRepository;
+
+    public EmailService(ILogger<EmailService> logger, 
+        IGovNotifyClient client,
+        IEmailRepository emailRepository)
     {
         _logger = logger;
         _client = client;
+        _emailRepository = emailRepository;
     }
 
     public async Task<string> GetTemplateAsync(EmailType emailType)
     {
-        // abstract out
         string template;
         var filename = $"{TemplateDirectory}/{emailType.ToString()}.txt";
         
@@ -39,4 +45,3 @@ public class EmailService : IEmailService
 
     public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _client.SendEmailAsync(form);
 }
-
