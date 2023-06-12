@@ -10,21 +10,21 @@ public class EmailForm
     [DataType(DataType.MultilineText)]
     public string Body { get; set; } = string.Empty;
 
-    public Dictionary<string, dynamic> GetPersonalisation()
-    {
-        return new Dictionary<string, dynamic>
-        {
-            { "reference", "123" },
-            { "custom message", Subject },
-            { "hazardous find", "yes" },
-            { "mmo", "yes" },
-            { "wreck add info", "yes" },
-            { "item add info", "yes" },
-            { "find add info", "yes" },
-            { "rip", "yes" },
-            { "rip no recover", "yes" },
-            { "archaeological protocol", "yes" },
-            { "more info", "yes" }
+    public Dictionary<string,dynamic> GetPersonalisation()
+        => new (){
+            { "subject", Subject},
+            { "reference", "TestRef123"}
         };
+
+    public string GetEmailBody()
+    {
+        var output = Body;
+        foreach (var  param in GetPersonalisation())
+        {
+            output = output.Replace($"(({param.Key}))", param.Value);
+        }
+
+        return output;
     }
+
 }

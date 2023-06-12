@@ -1,0 +1,35 @@
+@model EmailForm
+
+@{
+    ViewData["Title"] = "Preview Email";
+}
+<h4 class="display-8">@ViewData["Title"]</h4>
+
+<table class="table">
+    <tbody>
+    <tr>
+        <th scope="row">From</th>
+        <td>Report Wreck Material</td>
+    </tr>
+    <tr>
+        <th scope="row">Reply to</th>
+        <td>row@mcga.gov.uk</td>
+    </tr>
+    <tr>
+        <th scope="row">To</th>
+        <td>@Model.EmailAddress</td>
+    </tr>
+    <tr>
+        <th scope="row">Subject</th>
+        <td>@Model.Subject</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            @{
+                        Html.RenderPartial("_GovNotifyText", Model.GetEmailBody());
+                    }
+            
+        </td>
+    </tr>
+    </tbody>
+</table>

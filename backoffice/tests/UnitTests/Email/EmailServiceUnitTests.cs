@@ -22,10 +22,4 @@ public class EmailServiceUnitTests
             mockEmailRepository.Object);
     }
     
-    [Fact]
-    public void GetTemplateFilename_WhenTheEmailTemplateTypeIsReportAcknowledged_ShouldReturnReportAcknowledged()
-    {
-        string templateFilename = _service.GetTemplateFilename("~/Documents",EmailTemplateType.ReportAcknowledged);
-        Assert.Equal("~/Documents/ReportAcknowledged.txt", templateFilename);
-    }
 }

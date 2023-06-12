@@ -1,13 +1,11 @@
 Your report of wreck material with the reference ((reference)) has been reviewed by the Receiver of Wreck.
 
-((custom message))
 
-((hazardous find??
+
 # Potentially hazardous find
 Some of the material that you have reported is potentially hazardous and possession of it is likely to be an offence under the Firearms Act 1968. It is your responsibility to make sure that you are not committing an offence in relation to the possible hazardous nature of this item. In order to do this, you should contact your local police station
-who may be able to check the shell case and issue you with a Free From Explosives certificate or, alternatively, advise you as to whom you should contact for this. Even if you believe that this item is perfectly safe, you will still need to have this confirmed and a certificate issued where appropriate. Please provide us with a copy of the Free From Explosives certificate.))
+who may be able to check the shell case and issue you with a Free From Explosives certificate or, alternatively, advise you as to whom you should contact for this. Even if you believe that this item is perfectly safe, you will still need to have this confirmed and a certificate issued where appropriate. Please provide us with a copy of the Free From Explosives certificate.
 
-((mmo??
 # Licence required
 Removal of wreck material could require a licence to use a vehicle, vessel, aircraft, marine structure or floating container to remove any substance or object from the sea bed. This includes lifting bags.
 
@@ -15,35 +13,29 @@ It appears that you may have required a licence for this recovery. If you do hav
 * In England, please contact the Marine Management organisation licencing department regarding this by telephoning 0300 123 1032 or by emailing marine.consents@marinemanagement.org.uk.
 * In Wales, please contact Natural Resources Wales licencing department regarding this by emailing permitreceiptcentre@naturalresourceswales.gov.uk.
 * In Scotland, please contact Marine Scotland licencing department regarding this by telephoning 01224 295579 or emailing ms.marinelicensing@scotland.gsi.gov.uk.
-* In Northern Ireland, please contact the Department of Environment Northern Ireland regarding this by telephoning 0845 302 0008))
+* In Northern Ireland, please contact the Department of Environment Northern Ireland regarding this by telephoning 0845 302 0008
 
-((wreck add info??
+
 # Additional information required
-In order to help us progress this report, we required additional information  concerning the size of the wreck, material of construction, method of propulsion, the configuration of hatches, boilers or engines, or any obvious cargo that could help us to identify this wreck.))
+In order to help us progress this report, we required additional information  concerning the size of the wreck, material of construction, method of propulsion, the configuration of hatches, boilers or engines, or any obvious cargo that could help us to identify this wreck.
 
-((find add info??
+
 # Additional information required
-In order to help us progress this report, we require more detailed information about the area of the find. For example, was any other material noted in the area, or was this an isolated find?))
+In order to help us progress this report, we require more detailed information about the area of the find. For example, was any other material noted in the area, or was this an isolated find?
 
-((item add info??
 # Additional information required
 In order to help us progress this report, we require additional information about the wreck material.  Please could you confirm measurements of the material and whether there are any inscriptions, maker’s marks, serial numbers etc visible on the find.
-))
 
-((rip??
 # Last resting place
-It is important to remember that this ship sank with the loss of crew members. The owner has requested that this wreck is dived with respect and the consideration that it is a last resting place.))
+It is important to remember that this ship sank with the loss of crew members. The owner has requested that this wreck is dived with respect and the consideration that it is a last resting place.
 
-((rip no recover??
 # Last resting place
-It is important to remember that this ship sank with the loss of crew members. The owner has requested that this wreck is dived with respect and that no future recoveries are made, out of respect to those who lost their lives.))
+It is important to remember that this ship sank with the loss of crew members. The owner has requested that this wreck is dived with respect and that no future recoveries are made, out of respect to those who lost their lives.
 
-((archaeological protocol??
 # Archaeological investigation
-The material reported appears to have been recovered through archaeological investigation. Please provide the Receiver of Wreck with details of the proposed recipient museum or repository. This should be established during project planning in line with section 3.6.2 of the Chartered Institute for Archaeologists guidelines for Watching Briefs. Providing this information will better enable the Receiver of Wreck to ensure material relating to Britain’s maritime heritage is administered appropriately.))
+The material reported appears to have been recovered through archaeological investigation. Please provide the Receiver of Wreck with details of the proposed recipient museum or repository. This should be established during project planning in line with section 3.6.2 of the Chartered Institute for Archaeologists guidelines for Watching Briefs. Providing this information will better enable the Receiver of Wreck to ensure material relating to Britain’s maritime heritage is administered appropriately.
 
 # Next steps
-((more info??
 Please provide the additional information requested.
 
 This information can either be provided by email to row@mcga.gov.uk or through our online portal: https://report-wreck-material.service.gov.uk/portal/start

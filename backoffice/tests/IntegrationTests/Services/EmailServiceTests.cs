@@ -1,6 +1,6 @@
 using Droits.Clients;
-using Droits.Services;
 using Droits.Models;
+using Droits.Services;
 using Droits.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

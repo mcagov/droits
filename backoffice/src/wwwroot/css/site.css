@@ -1,5 +1,6 @@
 html {
     font-size: 14px;
+    font-family: "GDS Transport",arial,sans-serif !important;
 }
 
 @media (min-width: 768px) {
