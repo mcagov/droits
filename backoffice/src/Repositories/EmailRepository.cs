@@ -1,4 +1,5 @@
 using Droits.Models;
+using Droits.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Repositories;
@@ -6,8 +7,10 @@ namespace Droits.Repositories;
 public interface IEmailRepository
 {
     Task<List<Email>> GetEmailsAsync();
+    List<Email> GetEmails();
     Task<Email?> GetEmailAsync(Guid id);
     Task AddEmailAsync(Email email);
+    void UpdateEmailAsync(Email email);
 }
 
 public class EmailRepository : IEmailRepository
@@ -29,11 +32,24 @@ public class EmailRepository : IEmailRepository
         return await _context.Emails.FindAsync(id);
     }
     
+    public List<Email> GetEmails()
+    {
+        return _context.Emails.ToList();
+    }
+
     public async Task AddEmailAsync(Email email)
     {
-        email.DateSent = DateTime.UtcNow;
+        email.DateCreated = DateTime.UtcNow;
 
         _context.Emails.Add(email);
+        await _context.SaveChangesAsync();
+    }
+    
+    public async void UpdateEmailAsync(Email email)
+    {
+        email.DateLastModified = DateTime.UtcNow;
+
+        _context.Emails.Update(email);
         await _context.SaveChangesAsync();
     }
 }

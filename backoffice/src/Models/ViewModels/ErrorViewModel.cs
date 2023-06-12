@@ -1,4 +1,4 @@
-namespace Droits.Models;
+namespace Droits.Models.ViewModels;
 
 public class ErrorViewModel
 {

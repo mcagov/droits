@@ -43,7 +43,22 @@ public class EmailController : Controller
     public IActionResult Preview(EmailForm form)
     {
         form.Body = form.GetEmailBody();
+        _service.SaveEmailPreview(form);
         
         return View(nameof(Preview), form);
+    }
+    
+    [HttpGet]
+    public IActionResult GetLastModifiedPreview(string recipient)
+    {
+        // invoke service
+        _service.GetEmailsForRecipient(recipient);
+        
+        // get email at top of the list
+        
+        // change Email to EmailForm
+
+        // pass EmailForm to view
+        return View(nameof(SendEmail), form);
     }
 }

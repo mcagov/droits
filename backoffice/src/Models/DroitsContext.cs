@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Droits.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Models;
 
@@ -83,7 +84,9 @@ public partial class DroitsContext : DbContext
             entity.Property(e => e.Subject);
             entity.Property(e => e.Body);
             entity.Property(e => e.DateSent);
-            entity.Property(e => e.SenderEmailAddress);
+            entity.Property(e => e.Recipient);
+            entity.Property(e => e.DateCreated);
+            entity.Property(e => e.DateLastModified);
         });
         OnModelCreatingPartial(modelBuilder);
     }

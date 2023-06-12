@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Droits.Models;
+using Droits.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Controllers;
