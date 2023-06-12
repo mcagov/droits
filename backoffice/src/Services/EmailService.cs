@@ -13,7 +13,7 @@ public interface IEmailService
     Task<string> GetTemplateAsync(EmailType emailType);
     Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
     List<Email> GetEmailsForRecipient(string recipient);
-    void SaveEmailPreview(EmailForm emailForm);
+    Task<Email> SaveEmailPreview(EmailForm emailForm);
 }
 
 public class EmailService : IEmailService
@@ -66,11 +66,11 @@ public class EmailService : IEmailService
         return
             _emailRepository.GetEmails()
                 .Where(e => e.Recipient.Equals(recipient))
-                .OrderBy(e => e.DateLastModified)
+                .OrderByDescending(e => e.DateLastModified)
                 .ToList();
     }
 
-    public async void SaveEmailPreview(EmailForm emailForm)
+    public async Task<Email> SaveEmailPreview(EmailForm emailForm)
     {
         Email emailPreview = new();
         DateTime todaysDate = DateTime.UtcNow;
@@ -83,7 +83,7 @@ public class EmailService : IEmailService
 
         try
         {
-            await _emailRepository.AddEmailAsync(emailPreview);
+            return await _emailRepository.AddEmailAsync(emailPreview);
         }
         catch (Exception e)
         {

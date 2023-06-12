@@ -1,4 +1,5 @@
 using Droits.Models;
+using Droits.Models.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Droits.Services;
 
@@ -40,25 +41,14 @@ public class EmailController : Controller
     }
 
     [HttpPost]
-    public IActionResult Preview(EmailForm form)
+    public async Task<IActionResult> Preview(EmailForm form)
     {
         form.Body = form.GetEmailBody();
-        _service.SaveEmailPreview(form);
+        Email savedPreview = await _service.SaveEmailPreview(form);
+        
+        // get the freshly made preview here by id
+        // EmailForm previewForm = _service.GetEmailById(id);
         
         return View(nameof(Preview), form);
-    }
-    
-    [HttpGet]
-    public IActionResult GetLastModifiedPreview(string recipient)
-    {
-        // invoke service
-        _service.GetEmailsForRecipient(recipient);
-        
-        // get email at top of the list
-        
-        // change Email to EmailForm
-
-        // pass EmailForm to view
-        return View(nameof(SendEmail), form);
     }
 }
