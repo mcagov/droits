@@ -1,6 +1,7 @@
 using System.Text;
 
 using Droits.Clients;
+using Droits.Exceptions;
 using Droits.Models;
 using Droits.Repositories;
 using Notify.Models.Responses;
@@ -81,8 +82,9 @@ public class EmailService : IEmailService
         
         if (email == null)
         {
-            
+            throw new EmailNotFoundException();
         }
 
+        return email;
     }
 }
