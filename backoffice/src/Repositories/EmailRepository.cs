@@ -1,7 +1,7 @@
 using Droits.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Emails.Repositories;
+namespace Droits.Repositories;
 
 public interface IEmailRepository
 {

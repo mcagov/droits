@@ -2,7 +2,7 @@ using Droits.Clients;
 using Droits.Models;
 using Droits.Repositories;
 using Droits.Services;
-using Emails.Repositories;
+using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

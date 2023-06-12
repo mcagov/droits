@@ -2,7 +2,7 @@ using System.Text;
 
 using Droits.Clients;
 using Droits.Models;
-using Emails.Repositories;
+using Droits.Repositories;
 using Notify.Models.Responses;
 
 namespace Droits.Services;
@@ -73,5 +73,16 @@ public class EmailService : IEmailService
     public void GetApiKey()
     {
         _client.getApiKey();
+    }
+
+    public async Task<Email> GetEmailByIdAsync(Guid id)
+    {
+        Email? email = await _emailRepository.GetEmailAsync(id);
+        
+        if (email == null)
+        {
+            
+        }
+
     }
 }
