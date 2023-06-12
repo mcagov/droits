@@ -2,7 +2,7 @@ using Droits.Clients;
 using Droits.Models;
 using Droits.Repositories;
 using Droits.Services;
-using Droits.Repositories;
+using GovUk.Frontend.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +20,7 @@ builder.Services.AddScoped<IGovNotifyClient, GovNotifyClient>();
 builder.Services.AddScoped<IDroitRepository, DroitRepository>();
 builder.Services.AddScoped<IDroitService, DroitService>();
 
+builder.Services.AddGovUkFrontend();
 
 var app = builder.Build();
 
