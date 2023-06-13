@@ -5,6 +5,7 @@
 }
 <h4 class="display-8">@ViewData["Title"]</h4>
 
+<form method="Post" action="SendEmail">
 <table class="table">
     <tbody>
     <tr>
@@ -26,10 +27,15 @@
     <tr>
         <td colspan="2">
             @{
-                        Html.RenderPartial("_GovNotifyText", Model.GetEmailBody());
-                    }
+                Html.RenderPartial("_GovNotifyText", Model.GetEmailBody());
+            }
             
         </td>
     </tr>
     </tbody>
 </table>
+
+<a asp-action="Compose" class="btn btn-success">Edit</a>
+<button class="btn btn-success" type="submit">Send</button>
+</form>
+@* add Edit and send(pop up banner somewhere?) buttons *@
