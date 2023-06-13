@@ -13,7 +13,7 @@ public class EmailView
     {
         Id = email.Id;
         Recipient = email.Recipient;
-        TypeOfEmail = "Default";
+        EmailType = "Default";
         Date = email.DateLastModified;
         Subject = email.Subject;
         SentDate = email.DateSent;
@@ -21,7 +21,7 @@ public class EmailView
     
     public Guid Id { get; set; }
     public string? Recipient { get; set; }
-    public string? TypeOfEmail { get; set; }
+    public string? EmailType { get; set; }
     public DateTime Date { get; set; }
     public string? Subject { get; set; }
     public DateTime? SentDate { get; set; }
