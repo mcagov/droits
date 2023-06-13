@@ -46,7 +46,7 @@ public class EmailController : Controller
         form.Body = form.GetEmailBody();
         Email savedPreview = _service.SaveEmailPreview(form);
 
-        return RedirectToAction(nameof(GetPreview), savedPreview.Id);
+        return RedirectToAction(nameof(GetPreview), new { id = savedPreview.Id });
     }
     
     [HttpGet]
