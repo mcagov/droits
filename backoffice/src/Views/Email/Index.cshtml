@@ -1,4 +1,4 @@
-@model List<EmailView>
+@model EmailListView
 @{
     ViewData["Title"] = "Emails";
 }
@@ -17,7 +17,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var email in Model)
+    @foreach (var email in Model.EmailList)
     {
         <tr>
             <th scope="row">

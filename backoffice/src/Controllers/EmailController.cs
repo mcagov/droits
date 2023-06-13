@@ -21,8 +21,9 @@ public class EmailController : Controller
     {
         var emails = await _service.GetEmails();
 
-        var model = emails.Select(e => new EmailView(e)).ToList();
-        
+        var emailViews = emails.Select(e => new EmailView(e)).ToList();
+
+        var model = new EmailListView(emailViews);
         return View(model);
     }
 
