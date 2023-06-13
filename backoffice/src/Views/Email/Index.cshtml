@@ -1,7 +1,30 @@
+@model List<EmailView>
 @{
     ViewData["Title"] = "Emails";
 }
 
 <h4 class="display-8">@ViewData["Title"]</h4>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Recipient</th>
+        <th scope="col">Type</th>
+        <th scope="col">Last Modified</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var email in Model)
+    {
+        <tr>
+            <th scope="row">
+                <a asp-route-id="@email.Id">@email.Recipient</a>
+            </th>
+            <td>@email.TypeOfEmail.ToString()</td>
+            <td>@email.Date.ToString()</td>
+        </tr>
+    }
+    </tbody>
+</table>
 
 <a class="btn btn-success" asp-action="compose">Compose Email</a>

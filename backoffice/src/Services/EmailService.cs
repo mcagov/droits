@@ -15,6 +15,7 @@ public interface IEmailService
     List<Email> GetEmailsForRecipient(string recipient);
     Task<Email> GetEmailById(Guid id);
     Email SaveEmailPreview(EmailForm emailForm);
+    Task<List<Email>> GetEmails();
 }
 
 public class EmailService : IEmailService
@@ -61,6 +62,11 @@ public class EmailService : IEmailService
         }
         
         return email;
+    }
+
+    public async Task<List<Email>> GetEmails()
+    {
+        return await _emailRepository.GetEmailsAsync();
     }
     
     public List<Email> GetEmailsForRecipient(string recipient)
