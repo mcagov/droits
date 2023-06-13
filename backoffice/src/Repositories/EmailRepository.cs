@@ -9,7 +9,7 @@ public interface IEmailRepository
     Task<List<Email>> GetEmailsAsync();
     List<Email> GetEmails();
     Task<Email?> GetEmailAsync(Guid id);
-    Task<Email> AddEmailAsync(Email email);
+    Email AddEmail(Email email);
     void UpdateEmailAsync(Email email);
 }
 
@@ -37,12 +37,12 @@ public class EmailRepository : IEmailRepository
         return _context.Emails.ToList();
     }
 
-    public async Task<Email> AddEmailAsync(Email email)
+    public Email AddEmail(Email email)
     {
         email.DateCreated = DateTime.UtcNow;
 
-        Task<Email> savedEmail = await _context.Emails.AddAsync(email);
-        await _context.SaveChangesAsync();
+        Email savedEmail = _context.Add(email).Entity;
+        _context.SaveChanges();
 
         return savedEmail;
     }

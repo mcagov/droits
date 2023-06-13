@@ -41,14 +41,24 @@ public class EmailController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Preview(EmailForm form)
+    public IActionResult Preview(EmailForm form)
     {
         form.Body = form.GetEmailBody();
-        Email savedPreview = await _service.SaveEmailPreview(form);
+        Email savedPreview = _service.SaveEmailPreview(form);
+
+        return RedirectToAction(nameof(GetPreview), savedPreview.Id);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetPreview(Guid id)
+    {
+        Email email = await _service.GetEmailById(id);
         
-        // get the freshly made preview here by id
-        // EmailForm previewForm = _service.GetEmailById(id);
-        
+        EmailForm form = new();
+        form.Body = email.Body;
+        form.Subject = email.Subject;
+        form.EmailAddress = email.Recipient;
+
         return View(nameof(Preview), form);
     }
 }

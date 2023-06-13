@@ -13,7 +13,8 @@ public interface IEmailService
     Task<string> GetTemplateAsync(EmailType emailType);
     Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
     List<Email> GetEmailsForRecipient(string recipient);
-    Task<Email> SaveEmailPreview(EmailForm emailForm);
+    Task<Email> GetEmailById(Guid id);
+    Email SaveEmailPreview(EmailForm emailForm);
 }
 
 public class EmailService : IEmailService
@@ -53,6 +54,7 @@ public class EmailService : IEmailService
     public async Task<Email> GetEmailById(Guid id)
     {
         Email? email = await _emailRepository.GetEmailAsync(id);
+        // !if email.exists then return 404 from the controller
         if (email == null)
         {
             throw new EmailNotFoundException();
@@ -70,7 +72,7 @@ public class EmailService : IEmailService
                 .ToList();
     }
 
-    public async Task<Email> SaveEmailPreview(EmailForm emailForm)
+    public Email SaveEmailPreview(EmailForm emailForm)
     {
         Email emailPreview = new();
         DateTime todaysDate = DateTime.UtcNow;
@@ -83,7 +85,7 @@ public class EmailService : IEmailService
 
         try
         {
-            return await _emailRepository.AddEmailAsync(emailPreview);
+            return _emailRepository.AddEmail(emailPreview);
         }
         catch (Exception e)
         {
