@@ -22,7 +22,7 @@
                 <a asp-route-id="@email.Id">@email.Recipient</a>
             </th>
             <td>@email.TypeOfEmail.ToString()</td>
-            <td>@email.Date.ToString()</td>
+            <td>@email.Date.ToString(format:"MM/dd/yyyy")</td>
             <td>
                 <button class="btn btn-success">Edit</button>
                 <button class="btn btn-success">View</button>
