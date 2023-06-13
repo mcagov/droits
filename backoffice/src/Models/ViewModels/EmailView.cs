@@ -15,10 +15,12 @@ public class EmailView
         Recipient = email.Recipient;
         TypeOfEmail = email.GetType();
         Date = email.DateLastModified;
+        Subject = email.Subject;
     }
     
     public Guid Id { get; set; }
     public string? Recipient { get; set; }
     public Type TypeOfEmail { get; set; }
     public DateTime Date { get; set; }
+    public string? Subject { get; set; }
 }

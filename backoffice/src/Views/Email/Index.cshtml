@@ -9,6 +9,7 @@
     <thead>
     <tr>
         <th scope="col">Recipient</th>
+        <th scope="col">Subject</th>
         <th scope="col">Type</th>
         <th scope="col">Last Modified</th>
         <th scope="col">Actions</th>
@@ -21,6 +22,7 @@
             <th scope="row">
                 <a asp-route-id="@email.Id">@email.Recipient</a>
             </th>
+            <td>@email.Subject</td>
             <td>@email.TypeOfEmail.ToString()</td>
             <td>@email.Date.ToString(format:"MM/dd/yyyy")</td>
             <td>
