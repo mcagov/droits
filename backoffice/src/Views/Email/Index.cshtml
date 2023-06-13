@@ -27,8 +27,8 @@
             <td>@email.TypeOfEmail.ToString()</td>
             <td>@email.Date.ToString(format:"MM/dd/yyyy")</td>
             <td>
-                @( email.SentDate.ToString().Length == 0 ? 
-                             "N" : "Y")
+                @( email.IsSent ? 
+                             "Y" : "N")
             </td>
             <td>
                 <button class="btn btn-success">Edit</button>
