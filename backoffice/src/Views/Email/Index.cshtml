@@ -21,7 +21,7 @@
     {
         <tr>
             <th scope="row">
-                <a asp-route-id="@email.Id">@email.Recipient</a>
+                <a asp-action="GetPreview" asp-route-id="@email.Id">@email.Recipient</a>
             </th>
             <td>@email.Subject</td>
             <td>@email.TypeOfEmail.ToString()</td>
