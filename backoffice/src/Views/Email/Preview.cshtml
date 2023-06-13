@@ -2,10 +2,11 @@
 
 @{
     ViewData["Title"] = "Preview Email";
+    string Body = Model.GetEmailBody();
 }
 <h4 class="display-8">@ViewData["Title"]</h4>
 
-<form method="Post" action="SendEmail">
+<form asp-action="SendEmail" method="POST" >
 <table class="table">
     <tbody>
     <tr>
@@ -18,16 +19,27 @@
     </tr>
     <tr>
         <th scope="row">To</th>
-        <td>@Model.EmailAddress</td>
+        @* browser will only POST from elements that have a 'name' attribute *@
+        <td>
+            @Html.EditorFor(m => m.EmailAddress, 
+                new { htmlAttributes = new { @class = "readonly-input", @readonly = "readonly" } })
+        </td>
     </tr>
+    
     <tr>
         <th scope="row">Subject</th>
-        <td>@Model.Subject</td>
+        <td>
+            @Html.EditorFor(m => m.Subject, 
+                            new { htmlAttributes = new { @class = "readonly-input", @readonly = "readonly" } })
+            @Html.EditorFor(m => Body, 
+                                        new { htmlAttributes = new { @class = "hidden" } })
+
+        </td>
     </tr>
     <tr>
         <td colspan="2">
             @{
-                Html.RenderPartial("_GovNotifyText", Model.GetEmailBody());
+                Html.RenderPartial("_GovNotifyText", Body);
             }
             
         </td>
@@ -35,7 +47,6 @@
     </tbody>
 </table>
 
-<a asp-action="Compose" class="btn btn-success">Edit</a>
+<a asp-action="Edit" asp-route-id="@Model.EmailId" class="btn btn-success">Edit</a>
 <button class="btn btn-success" type="submit">Send</button>
 </form>
-@* add Edit and send(pop up banner somewhere?) buttons *@

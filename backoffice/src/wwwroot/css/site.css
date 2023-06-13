@@ -40,3 +40,17 @@ div.form-sections fieldset {
     margin: 15px 5px;
     border: 1px solid #b1b4b6;
 }
+
+.readonly-input {
+    background: #fff;
+    border: none;
+}
+
+.readonly-input:focus{
+    outline: none;
+    background: #fff;
+}
+
+.hidden {
+    display: none;
+}

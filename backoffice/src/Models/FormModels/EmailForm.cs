@@ -4,6 +4,7 @@ namespace Droits.Models;
 
 public class EmailForm
 {
+    public Guid EmailId { get; set; }
     public string EmailAddress { get; set; } = string.Empty;
     public string Subject { get; set; } = string.Empty;
 

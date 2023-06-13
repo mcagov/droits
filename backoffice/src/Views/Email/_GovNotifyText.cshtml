@@ -2,6 +2,7 @@
 @model string
 
 
+
 <div>
     @{
         using (StringReader sr = new StringReader(Model))
@@ -9,7 +10,7 @@
             while (await sr.ReadLineAsync() is { } line)
             {
 
-                 line = line.Trim();
+                line = line.Trim();
 
                 if (line.StartsWith("#"))
                 {

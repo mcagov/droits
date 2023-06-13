@@ -24,18 +24,33 @@ public class EmailController : Controller
 
     public async Task<IActionResult> Compose()
     {
-        var model = new EmailForm()
+        EmailForm form = new EmailForm()
         {
             Body = await _service.GetTemplateAsync(EmailType.TestingDroitsv2)
         };
         
-        return View(model);
+        return View(form);
+    }
+    
+    public async Task<IActionResult> Edit(Guid id)
+    {
+        Email email = await _service.GetEmailById(id);
+        EmailForm form = new()
+        {
+            EmailAddress = email.Recipient,
+            Subject = email.Subject,
+            Body = email.Body
+        };
+        
+        form.Body = await _service.GetTemplateAsync(EmailType.TestingDroitsv2);
+
+        return View(nameof(Compose), form);
     }
 
     [HttpPost]
     public async Task<IActionResult> SendEmail(EmailForm form)
     {
-        var result = await _service.SendEmailAsync(form);
+        await _service.SendEmailAsync(form);
             
         return View(nameof(SendEmail), form);
     }
@@ -54,10 +69,16 @@ public class EmailController : Controller
     {
         Email email = await _service.GetEmailById(id);
         
-        EmailForm form = new();
-        form.Body = email.Body;
-        form.Subject = email.Subject;
-        form.EmailAddress = email.Recipient;
+        // instead of EmailForm we should have a data structure view model
+        // the view can't deal with stuff like .GetBody()
+        // we need a Preview view model that has Id on it
+        EmailForm form = new()
+        {
+            EmailId = email.Id,
+            EmailAddress = email.Recipient,
+            Subject = email.Subject,
+            Body = email.Body
+        };
 
         return View(nameof(Preview), form);
     }
