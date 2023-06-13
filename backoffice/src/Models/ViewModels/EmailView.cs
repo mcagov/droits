@@ -16,6 +16,7 @@ public class EmailView
         TypeOfEmail = email.GetType();
         Date = email.DateLastModified;
         Subject = email.Subject;
+        SentDate = email.DateSent;
     }
     
     public Guid Id { get; set; }
@@ -23,4 +24,5 @@ public class EmailView
     public Type TypeOfEmail { get; set; }
     public DateTime Date { get; set; }
     public string? Subject { get; set; }
+    public DateTime SentDate { get; set; }
 }

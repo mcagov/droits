@@ -12,6 +12,7 @@
         <th scope="col">Subject</th>
         <th scope="col">Type</th>
         <th scope="col">Last Modified</th>
+        <th scope="col">Is Sent?</th>
         <th scope="col">Actions</th>
     </tr>
     </thead>
@@ -25,6 +26,10 @@
             <td>@email.Subject</td>
             <td>@email.TypeOfEmail.ToString()</td>
             <td>@email.Date.ToString(format:"MM/dd/yyyy")</td>
+            <td>
+                @( email.SentDate.ToString().Length == 0 ? 
+                             "N" : "Y")
+            </td>
             <td>
                 <button class="btn btn-success">Edit</button>
                 <button class="btn btn-success">View</button>
