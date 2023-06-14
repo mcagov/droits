@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Schema;
 using Droits.Models.Domain;
 
@@ -18,10 +19,13 @@ public class EmailView
         Subject = email.Subject;
         SentDate = email.DateSent;
     }
-    
+
     public Guid Id { get; set; }
     public string? Recipient { get; set; }
     public string? EmailType { get; set; }
+    [Display(Name = "Date")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
     public DateTime Date { get; set; }
     public string? Subject { get; set; }
     public DateTime? SentDate { get; set; }

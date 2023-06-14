@@ -24,7 +24,7 @@
                 <a asp-action="GetPreview" asp-route-id="@email.Id">@email.Recipient</a>
             </th>
             <td>@email.Subject</td>
-            <td>@email.TypeOfEmail.ToString()</td>
+            <td>@email.EmailType</td>
             <td>@email.Date.ToString(format:"MM/dd/yyyy")</td>
             <td>
                 @( email.IsSent ? 

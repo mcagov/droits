@@ -8,5 +8,5 @@ public class EmailListView
     {
         EmailList = emails;
     }
-    public List<EmailView> EmailList { get; set; }
+    public List<EmailView> EmailList { get; }
 }
