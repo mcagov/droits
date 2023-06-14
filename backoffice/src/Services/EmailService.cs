@@ -15,6 +15,7 @@ public interface IEmailService
     List<Email> GetEmailsForRecipient(string recipient);
     Task<Email> GetEmailById(Guid id);
     Email SaveEmailPreview(EmailForm emailForm);
+    Task UpdateEmailPreviewAsync(EmailForm emailForm);
     Task<List<Email>> GetEmails();
 }
 
@@ -25,7 +26,6 @@ public class EmailService : IEmailService
     private readonly IEmailRepository _emailRepository;
     
     private const string TemplateDirectory = "Views/Email/Templates" ;
-    private const string ReplyToEmailAddress = "row@mcga.gov.uk";
 
     public EmailService(ILogger<EmailService> logger, 
         IGovNotifyClient client,
@@ -50,12 +50,13 @@ public class EmailService : IEmailService
     }
 
 
+    // add date sent
+    // save in repo
     public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _client.SendEmailAsync(form);
 
     public async Task<Email> GetEmailById(Guid id)
     {
         Email? email = await _emailRepository.GetEmailAsync(id);
-        // !if email.exists then return 404 from the controller
         if (email == null)
         {
             throw new EmailNotFoundException();
@@ -97,6 +98,40 @@ public class EmailService : IEmailService
         {
             _logger.LogError($"Error saving email preview: {e}");
             throw;
+        }
+    }
+    
+    public async Task UpdateEmailPreviewAsync(EmailForm emailForm)
+    {
+        if (emailForm.EmailId.HasValue)
+        {
+            Email emailToUpdate = await _emailRepository.GetEmailAsync(emailForm.EmailId.Value);
+            if (emailToUpdate == null)
+            {
+                throw new EmailNotFoundException();
+            }
+        
+            DateTime todaysDate = DateTime.UtcNow;
+
+            emailToUpdate.Recipient = emailForm.EmailAddress;
+            emailToUpdate.Subject = emailForm.Subject;
+            emailToUpdate.Body = emailForm.Body;
+            emailToUpdate.DateLastModified = todaysDate;
+            
+            try
+            {
+                _emailRepository.UpdateEmailAsync(emailToUpdate);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error updating email preview: {e}");
+                throw;
+            }
+        }
+
+        else
+        {
+            _logger.LogError("Email ID provided was null");
         }
     }
 }

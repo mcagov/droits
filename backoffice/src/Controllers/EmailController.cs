@@ -27,29 +27,30 @@ public class EmailController : Controller
         return View(model);
     }
 
-    public async Task<IActionResult> Compose()
+    public async Task<IActionResult> Compose(Guid? id)
     {
-        EmailForm form = new EmailForm()
-        {
-            Body = await _service.GetTemplateAsync(EmailType.TestingDroitsv2)
-        };
+        EmailForm form;
         
-        return View(form);
-    }
-    
-    public async Task<IActionResult> Edit(Guid id)
-    {
-        Email email = await _service.GetEmailById(id);
-        EmailForm form = new()
+        if (id.HasValue)
         {
-            EmailAddress = email.Recipient,
-            Subject = email.Subject,
-            Body = email.Body
-        };
-        
-        form.Body = await _service.GetTemplateAsync(EmailType.TestingDroitsv2);
+            Email email = await _service.GetEmailById(id.Value);
+            form = new()
+            {
+                EmailId = email.Id,
+                EmailAddress = email.Recipient,
+                Subject = email.Subject,
+                Body = email.Body
+            };
+        }
+        else
+        {
+            form = new()
+            {
+                Body = await _service.GetTemplateAsync(EmailType.TestingDroitsv2)
+            };
+        }
 
-        return View(nameof(Compose), form);
+        return View(form);
     }
 
     [HttpPost]
@@ -61,12 +62,22 @@ public class EmailController : Controller
     }
 
     [HttpPost]
-    public IActionResult Preview(EmailForm form)
+    public async Task<IActionResult> Preview(EmailForm form)
     {
-        form.Body = form.GetEmailBody();
-        Email savedPreview = _service.SaveEmailPreview(form);
+        Guid emailId;
 
-        return RedirectToAction(nameof(GetPreview), new { id = savedPreview.Id });
+        if (form.EmailId.HasValue)
+        {
+            emailId = form.EmailId.Value;
+            await _service.UpdateEmailPreviewAsync(form);
+        }
+        else
+        {
+            form.Body = form.GetEmailBody();
+            emailId = _service.SaveEmailPreview(form).Id;
+        }
+
+        return RedirectToAction(nameof(GetPreview), new { id = emailId });
     }
     
     [HttpGet]
@@ -74,9 +85,6 @@ public class EmailController : Controller
     {
         Email email = await _service.GetEmailById(id);
         
-        // instead of EmailForm we should have a data structure view model
-        // the view can't deal with stuff like .GetBody()
-        // we need a Preview view model that has Id on it
         EmailForm form = new()
         {
             EmailId = email.Id,
@@ -86,5 +94,18 @@ public class EmailController : Controller
         };
 
         return View(nameof(Preview), form);
+    }
+    
+    public async Task<IActionResult> Edit(EmailForm form)
+    {
+        if (form.EmailId.HasValue)
+        {
+            await _service.UpdateEmailPreviewAsync(form);
+            return RedirectToAction(nameof(GetPreview), new { id = form.EmailId.Value });
+        }
+        else
+        {
+            return new NotFoundResult();
+        }
     }
 }
