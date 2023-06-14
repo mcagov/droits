@@ -21,7 +21,7 @@
     {
         <tr>
             <th scope="row">
-                <a asp-action="GetPreview" asp-route-id="@email.Id">@email.Recipient</a>
+                @email.Recipient
             </th>
             <td>@email.Subject</td>
             <td>@email.EmailType</td>
@@ -31,7 +31,7 @@
             </td>
             <td>
                 <button class="btn btn-success">Edit</button>
-                <button class="btn btn-success">View</button>
+                <a asp-action="GetPreview" asp-route-id="@email.Id" class="btn btn-success">View</a>
             </td>
         </tr>
     }
