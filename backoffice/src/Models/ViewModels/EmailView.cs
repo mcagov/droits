@@ -15,7 +15,7 @@ public class EmailView
         Id = email.Id;
         Recipient = email.Recipient;
         EmailType = "Default";
-        Date = email.DateLastModified;
+        DateLastModified = email.DateLastModified.ToString(format:"dd/MM/yyyy");
         Subject = email.Subject;
         SentDate = email.DateSent;
     }
@@ -23,10 +23,7 @@ public class EmailView
     public Guid Id { get; set; }
     public string? Recipient { get; set; }
     public string? EmailType { get; set; }
-    [Display(Name = "Date")]
-    [DataType(DataType.Date)]
-    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
-    public DateTime Date { get; set; }
+    public string? DateLastModified { get; set; }
     public string? Subject { get; set; }
     public DateTime? SentDate { get; set; }
     public bool IsSent => SentDate.HasValue;

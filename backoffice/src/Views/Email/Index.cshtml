@@ -25,10 +25,9 @@
             </th>
             <td>@email.Subject</td>
             <td>@email.EmailType</td>
-            <td>@email.Date.ToString(format:"MM/dd/yyyy")</td>
+            <td>@email.DateLastModified</td>
             <td>
-                @( email.IsSent ? 
-                             "Y" : "N")
+                @( email.IsSent ? "Y" : "N")
             </td>
             <td>
                 <button class="btn btn-success">Edit</button>
