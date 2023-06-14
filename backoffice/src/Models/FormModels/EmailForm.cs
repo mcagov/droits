@@ -4,13 +4,16 @@ namespace Droits.Models;
 
 public class EmailForm
 {
+    [Editable(false)]
     public Guid? EmailId { get; set; }
+    [Required]
     public string EmailAddress { get; set; } = string.Empty;
+    [Required]
     public string Subject { get; set; } = string.Empty;
-
+    [Required]
     [DataType(DataType.MultilineText)]
     public string Body { get; set; } = string.Empty;
-
+    
     public Dictionary<string,dynamic> GetPersonalisation()
         => new (){
             { "subject", Subject},
