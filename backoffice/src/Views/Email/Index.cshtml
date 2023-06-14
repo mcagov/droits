@@ -30,7 +30,7 @@
                 @( email.IsSent ? "Y" : "N")
             </td>
             <td>
-                <button class="btn btn-success">Edit</button>
+                <a asp-action="Compose" asp-route-id="@email.Id" class="btn btn-success">Edit</a>
                 <a asp-action="GetPreview" asp-route-id="@email.Id" class="btn btn-success">View</a>
             </td>
         </tr>
