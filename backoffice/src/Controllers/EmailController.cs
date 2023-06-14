@@ -17,9 +17,14 @@ public class EmailController : Controller
         _service = service;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var emails = await _service.GetEmails();
+
+        var emailViews = emails.Select(e => new EmailView(e)).ToList();
+
+        var model = new EmailListView(emailViews);
+        return View(model);
     }
 
     public async Task<IActionResult> Compose()

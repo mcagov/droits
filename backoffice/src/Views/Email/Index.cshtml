@@ -1,7 +1,41 @@
+@model EmailListView
 @{
     ViewData["Title"] = "Emails";
 }
 
 <h4 class="display-8">@ViewData["Title"]</h4>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Recipient</th>
+        <th scope="col">Subject</th>
+        <th scope="col">Type</th>
+        <th scope="col">Last Modified</th>
+        <th scope="col">Is Sent?</th>
+        <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var email in Model.EmailList)
+    {
+        <tr>
+            <th scope="row">
+                @email.Recipient
+            </th>
+            <td>@email.Subject</td>
+            <td>@email.EmailType</td>
+            <td>@email.DateLastModified</td>
+            <td>
+                @( email.IsSent ? "Y" : "N")
+            </td>
+            <td>
+                <button class="btn btn-success">Edit</button>
+                <a asp-action="GetPreview" asp-route-id="@email.Id" class="btn btn-success">View</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
 
 <a class="btn btn-success" asp-action="compose">Compose Email</a>
