@@ -28,7 +28,7 @@ public class GovNotifyTests
     {
         var form = new EmailForm()
         {
-            EmailAddress = "sam.kendell+testing@madetech.com",
+            Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
             Body = "This is a test"
         };
@@ -42,7 +42,7 @@ public class GovNotifyTests
     {
         var form = new EmailForm()
         {
-            EmailAddress = "sam.kendell+testing@madetech.com",
+            Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
             Body = "This is a test"
         };
@@ -56,7 +56,7 @@ public class GovNotifyTests
     {
         var form = new EmailForm()
         {
-            EmailAddress = "sam.kendell+testing@madetech.com",
+            Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
             Body = "This is a test"
         };

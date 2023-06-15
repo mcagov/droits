@@ -1,12 +1,9 @@
 using Droits.Clients;
-using Droits.Models;
 using Droits.Models.Domain;
 using Droits.Services;
 using Droits.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Moq;
-using Notify.Models.Responses;
 
 namespace Droits.Tests.IntegrationTests.Services;
 
@@ -38,30 +35,44 @@ public class EmailServiceTests
     [Fact]
     public async void SendEmailAsync_ShouldReturnAValidResponse()
     {
-        var form = new EmailForm()
+        SeedMockDatabase();
+        
+        Email testEmail = new()
         {
-            EmailId = _emailId,
-            EmailAddress = "sam.kendell+testing@madetech.com",
-            Subject = "Test",
-            Body = "This is a test"
+            Id = _emailId,
+            Recipient = "sam.kendell+testing@madetech.com",
+            Subject = "Wreckage Found!",
+            Body = "This is a test",
+            DateCreated = _todaysDate,
+            DateLastModified = _todaysDate
         };
+        
+        _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(Task.FromResult(testEmail));
+        _mockEmailRepository.Setup(m => m.UpdateEmailAsync(testEmail));
 
-        var response = await _service.SendEmailAsync(form);
+
+        var response = await _service.SendEmailAsync(_emailId);
 
         Assert.NotNull(response);
     }
     [Fact]
     public async void SendEmailAsync_ShouldReturnSubmittedTextInTheBody()
     {
-        var form = new EmailForm()
+        SeedMockDatabase();
+        Email testEmail = new()
         {
-            EmailId = _emailId,
-            EmailAddress = "sam.kendell+testing@madetech.com",
-            Subject = "Test",
-            Body = "This is a test"
+            Id = _emailId,
+            Recipient = "sam.kendell+testing@madetech.com",
+            Subject = "Wreckage Found!",
+            Body = "This is a test",
+            DateCreated = _todaysDate,
+            DateLastModified = _todaysDate
         };
+        
+        _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(Task.FromResult(testEmail));
+        _mockEmailRepository.Setup(m => m.UpdateEmailAsync(testEmail));
 
-        var response = await _service.SendEmailAsync(form);
+        var response = await _service.SendEmailAsync(_emailId);
 
         Assert.Equal("This is a test",response.content.body);
     }
@@ -70,20 +81,12 @@ public class EmailServiceTests
     {
         SeedMockDatabase();
         
-        EmailForm form = new()
-        {
-            EmailId = _emailId,
-            EmailAddress = "sam.kendell+testing@madetech.com",
-            Subject = "Wreckage Found!",
-            Body = "This is a test"
-        };
-
         Email testEmail = new()
         {
             Id = _emailId,
-            Recipient = form.EmailAddress,
-            Subject = form.Subject,
-            Body = form.Body,
+            Recipient = "sam.kendell+testing@madetech.com",
+            Subject = "Wreckage Found!",
+            Body = "This is a test",
             DateCreated = _todaysDate,
             DateLastModified = _todaysDate
         };
@@ -91,9 +94,9 @@ public class EmailServiceTests
         _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(Task.FromResult(testEmail));
         _mockEmailRepository.Setup(m => m.UpdateEmailAsync(testEmail));
         
-        var response = await _service.SendEmailAsync(form);
+        var response = await _service.SendEmailAsync(_emailId);
 
-        Assert.Equal("Test",response.content.subject);
+        Assert.Equal("Wreckage Found!",response.content.subject);
     }
     
     [Fact]
@@ -101,20 +104,12 @@ public class EmailServiceTests
     {
         SeedMockDatabase();
         
-        EmailForm form = new()
-        {
-            EmailId = _emailId,
-            EmailAddress = "sam.kendell+testing@madetech.com",
-            Subject = "Wreckage Found!",
-            Body = "This is a test"
-        };
-
         Email testEmail = new()
         {
             Id = _emailId,
-            Recipient = form.EmailAddress,
-            Subject = form.Subject,
-            Body = form.Body,
+            Recipient = "sam.kendell+testing@madetech.com",
+            Subject = "Wreckage Found!",
+            Body = "This is a test",
             DateCreated = _todaysDate,
             DateLastModified = _todaysDate
         };
@@ -122,7 +117,7 @@ public class EmailServiceTests
         _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(Task.FromResult(testEmail));
         _mockEmailRepository.Setup(m => m.UpdateEmailAsync(testEmail));
         
-        await _service.SendEmailAsync(form);
+        await _service.SendEmailAsync(_emailId);
         
         _mockEmailRepository.Verify(m => m.UpdateEmailAsync(testEmail), Times.Once);
     }
@@ -166,8 +161,8 @@ public class EmailServiceTests
             testEmail
         };
 
-        Task<Email> singleEmail = Task.FromResult(shipwreckEmail);
+        Task<List<Email>> emails = Task.FromResult(emailsInRepo);
 
-        _mockEmailRepository.Setup(m => m.GetEmails()).Returns(emailsInRepo);
+        _mockEmailRepository.Setup(m => m.GetEmailsAsync()).Returns(emails);
     }
 }

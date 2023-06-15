@@ -1,6 +1,6 @@
 @model EmailListView
 @{
-    ViewData["Title"] = "Emails";
+    ViewData["Title"] = $"Emails ({Model.EmailList.Count})";
 }
 
 <h4 class="display-8">@ViewData["Title"]</h4>
@@ -27,11 +27,11 @@
             <td>@email.EmailType</td>
             <td>@email.DateLastModified</td>
             <td>
-                @( email.IsSent ? "Y" : "N")
+                @(email.IsSent ? "Y" : "N")
             </td>
             <td>
                 <a asp-action="Compose" asp-route-id="@email.Id" class="btn btn-success">Edit</a>
-                <a asp-action="GetPreview" asp-route-id="@email.Id" class="btn btn-success">View</a>
+                <a asp-action="Preview" asp-route-id="@email.Id" class="btn btn-success">View</a>
             </td>
         </tr>
     }

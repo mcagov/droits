@@ -1,13 +1,24 @@
 using System.ComponentModel.DataAnnotations;
+using Droits.Models.Domain;
 
 namespace Droits.Models;
 
 public class EmailForm
 {
-    [Editable(false)]
+    public EmailForm()
+    {
+        
+    }
+    public EmailForm(Email email)
+    {
+        EmailId = email.Id;
+        Recipient = email.Recipient;
+        Subject = email.Subject;
+        Body = email.Body;
+    }
     public Guid EmailId { get; set; }
     [Required]
-    public string EmailAddress { get; set; } = string.Empty;
+    public string Recipient { get; set; } = string.Empty;
     [Required]
     public string Subject { get; set; } = string.Empty;
     [Required]
@@ -31,4 +42,12 @@ public class EmailForm
         return output;
     }
 
+    public Email ApplyChanges(Email email)
+    {
+        email.Recipient = Recipient;
+        email.Subject = Subject;
+        email.Body = GetEmailBody();
+
+        return email;
+    }
 }

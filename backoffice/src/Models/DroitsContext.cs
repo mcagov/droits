@@ -88,6 +88,7 @@ public partial class DroitsContext : DbContext
             entity.Property(e => e.DateCreated);
             entity.Property(e => e.DateLastModified);
         });
+        
         OnModelCreatingPartial(modelBuilder);
     }
 

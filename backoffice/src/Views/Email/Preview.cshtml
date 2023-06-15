@@ -1,12 +1,9 @@
-@model EmailForm
+@model EmailView
 
 @{
     ViewData["Title"] = "Preview Email";
-    string Body = Model.GetEmailBody();
 }
 <h4 class="display-8">@ViewData["Title"]</h4>
-
-<form asp-action="SendEmail" method="POST" asp-route-id="@Model.EmailId">
 <table class="table">
     <tbody>
     <tr>
@@ -20,7 +17,7 @@
     <tr>
         <th scope="row">To</th>
         <td>
-            @Html.EditorFor(m => m.EmailAddress, 
+            @Html.DisplayFor(m => m.Recipient, 
                 new { htmlAttributes = new { @class = "readonly-input", @readonly = "readonly" } })
         </td>
     </tr>
@@ -28,15 +25,14 @@
     <tr>
         <th scope="row">Subject</th>
         <td>
-            @Html.EditorFor(m => m.Subject, 
+            @Html.DisplayFor(m => m.Subject, 
                             new { htmlAttributes = new { @class = "readonly-input", @readonly = "readonly" } })
-            @Html.HiddenFor(m => Body)
         </td>
     </tr>
     <tr>
         <td colspan="2">
             @{
-                Html.RenderPartial("_GovNotifyText", Body);
+                await Html.RenderPartialAsync("_GovNotifyText", Model.Body);
             }
             
         </td>
@@ -44,6 +40,5 @@
     </tbody>
 </table>
 
-<a asp-action="Compose" asp-route-id="@Model.EmailId" class="btn btn-success">Edit</a>
-<button class="btn btn-success" type="submit">Send</button>
-</form>
+<a asp-action="Compose" asp-route-id="@Model.Id" class="btn btn-success">Edit</a>
+<a asp-action="SendEmail" asp-route-id="@Model.Id" class="btn btn-success">Send</a>
