@@ -5,7 +5,7 @@ namespace Droits.Models;
 public class EmailForm
 {
     [Editable(false)]
-    public Guid? EmailId { get; set; }
+    public Guid EmailId { get; set; }
     [Required]
     public string EmailAddress { get; set; } = string.Empty;
     [Required]

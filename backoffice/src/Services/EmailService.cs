@@ -12,10 +12,9 @@ public interface IEmailService
 {
     Task<string> GetTemplateAsync(EmailType emailType);
     Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
-    List<Email> GetEmailsForRecipient(string recipient);
     Task<Email> GetEmailById(Guid id);
-    Email SaveEmailPreview(EmailForm emailForm);
-    Task UpdateEmailPreviewAsync(EmailForm emailForm);
+    Email SaveEmail(EmailForm emailForm);
+    Task UpdateEmailAsync(EmailForm emailForm);
     Task<List<Email>> GetEmails();
 }
 
@@ -49,20 +48,30 @@ public class EmailService : IEmailService
         return template;    
     }
 
-
-    // add date sent
-    // save in repo
-    public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form) => await _client.SendEmailAsync(form);
-
-    public async Task<Email> GetEmailById(Guid id)
+    
+    public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form)
     {
-        Email? email = await _emailRepository.GetEmailAsync(id);
-        if (email == null)
+        try
         {
-            throw new EmailNotFoundException();
+            EmailNotificationResponse govNotifyResponse = await _client.SendEmailAsync(form);
+
+            await MarkAsSent(form.EmailId);
+
+            return govNotifyResponse;
         }
-        
-        return email;
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            throw;
+        }
+    }
+
+    private async Task MarkAsSent(Guid id)
+    {
+        Email sentEmail = await GetEmailById(id);
+            
+        sentEmail.DateSent = DateTime.UtcNow;
+        _emailRepository.UpdateEmailAsync(sentEmail);
     }
 
     public async Task<List<Email>> GetEmails()
@@ -79,37 +88,35 @@ public class EmailService : IEmailService
                 .ToList();
     }
 
-    public Email SaveEmailPreview(EmailForm emailForm)
+    public Email SaveEmail(EmailForm emailForm)
     {
-        Email emailPreview = new();
         DateTime todaysDate = DateTime.UtcNow;
-        
-        emailPreview.Subject = emailForm.Subject;
-        emailPreview.Body = emailForm.Body;
-        emailPreview.Recipient = emailForm.EmailAddress;
-        emailPreview.DateCreated = todaysDate;
-        emailPreview.DateLastModified = todaysDate;
+
+        Email email = new()
+        {
+            Subject = emailForm.Subject,
+            Body = emailForm.Body,
+            Recipient = emailForm.EmailAddress,
+            DateCreated = todaysDate,
+            DateLastModified = todaysDate
+        };
 
         try
         {
-            return _emailRepository.AddEmail(emailPreview);
+            return _emailRepository.AddEmail(email);
         }
         catch (Exception e)
         {
-            _logger.LogError($"Error saving email preview: {e}");
+            _logger.LogError($"Error saving email: {e}");
             throw;
         }
     }
     
-    public async Task UpdateEmailPreviewAsync(EmailForm emailForm)
+    public async Task UpdateEmailAsync(EmailForm emailForm)
     {
-        if (emailForm.EmailId.HasValue)
+        if (emailForm.EmailId != Guid.Empty)
         {
-            Email emailToUpdate = await _emailRepository.GetEmailAsync(emailForm.EmailId.Value);
-            if (emailToUpdate == null)
-            {
-                throw new EmailNotFoundException();
-            }
+            Email emailToUpdate = await GetEmailById(emailForm.EmailId);
         
             DateTime todaysDate = DateTime.UtcNow;
 
@@ -124,7 +131,7 @@ public class EmailService : IEmailService
             }
             catch (Exception e)
             {
-                _logger.LogError($"Error updating email preview: {e}");
+                _logger.LogError($"Error updating email: {e}");
                 throw;
             }
         }
@@ -133,5 +140,16 @@ public class EmailService : IEmailService
         {
             _logger.LogError("Email ID provided was null");
         }
+    }
+    
+    public async Task<Email> GetEmailById(Guid id)
+    {
+        Email? email = await _emailRepository.GetEmailAsync(id);
+        if (email == null)
+        {
+            throw new EmailNotFoundException();
+        }
+        
+        return email;
     }
 }

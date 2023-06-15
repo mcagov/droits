@@ -19,7 +19,6 @@
     </tr>
     <tr>
         <th scope="row">To</th>
-        @* browser will only POST from elements that have a 'name' attribute *@
         <td>
             @Html.EditorFor(m => m.EmailAddress, 
                 new { htmlAttributes = new { @class = "readonly-input", @readonly = "readonly" } })

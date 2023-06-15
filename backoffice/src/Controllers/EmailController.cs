@@ -27,13 +27,13 @@ public class EmailController : Controller
         return View(model);
     }
 
-    public async Task<IActionResult> Compose(Guid? id)
+    public async Task<IActionResult> Compose(Guid id)
     {
         EmailForm form;
         
-        if (id.HasValue)
+        if (id != Guid.Empty)
         {
-            Email email = await _service.GetEmailById(id.Value);
+            Email email = await _service.GetEmailById(id);
             form = new()
             {
                 EmailId = email.Id,
@@ -66,15 +66,15 @@ public class EmailController : Controller
     {
         Guid emailId;
 
-        if (form.EmailId.HasValue)
+        if (form.EmailId != Guid.Empty)
         {
-            emailId = form.EmailId.Value;
-            await _service.UpdateEmailPreviewAsync(form);
+            emailId = form.EmailId;
+            await _service.UpdateEmailAsync(form);
         }
         else
         {
             form.Body = form.GetEmailBody();
-            emailId = _service.SaveEmailPreview(form).Id;
+            emailId = _service.SaveEmail(form).Id;
         }
 
         return RedirectToAction(nameof(GetPreview), new { id = emailId });
@@ -98,10 +98,10 @@ public class EmailController : Controller
     
     public async Task<IActionResult> Edit(EmailForm form)
     {
-        if (form.EmailId.HasValue)
+        if (form.EmailId != Guid.Empty)
         {
-            await _service.UpdateEmailPreviewAsync(form);
-            return RedirectToAction(nameof(GetPreview), new { id = form.EmailId.Value });
+            await _service.UpdateEmailAsync(form);
+            return RedirectToAction(nameof(GetPreview), new { id = form.EmailId });
         }
         else
         {
