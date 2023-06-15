@@ -68,7 +68,8 @@ public class EmailController : Controller
     public async Task<IActionResult> Preview(EmailForm form)
     {
         Guid emailId;
-
+        
+        // form.EmailId is currently always empty :<
         if (form.EmailId != Guid.Empty)
         {
             emailId = form.EmailId;
