@@ -14,7 +14,10 @@ public class EmailServiceTests
 {
     private readonly IEmailService _service;
     private readonly Mock<IEmailRepository> _mockEmailRepository;
-    public Guid _emailId = Guid.NewGuid();
+    
+    private Guid _emailId = Guid.NewGuid();
+    private DateTime _todaysDate = DateTime.Now;
+
 
     public EmailServiceTests()
     {
@@ -65,13 +68,28 @@ public class EmailServiceTests
     [Fact]
     public async void SendEmailAsync_ShouldReturnSubmittedSubjectInTheSubject()
     {
-        var form = new EmailForm()
+        SeedMockDatabase();
+        
+        EmailForm form = new()
         {
             EmailId = _emailId,
             EmailAddress = "sam.kendell+testing@madetech.com",
-            Subject = "Test",
+            Subject = "Wreckage Found!",
             Body = "This is a test"
         };
+
+        Email testEmail = new()
+        {
+            Id = _emailId,
+            Recipient = form.EmailAddress,
+            Subject = form.Subject,
+            Body = form.Body,
+            DateCreated = _todaysDate,
+            DateLastModified = _todaysDate
+        };
+        
+        _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(Task.FromResult(testEmail));
+        _mockEmailRepository.Setup(m => m.UpdateEmailAsync(testEmail));
         
         var response = await _service.SendEmailAsync(form);
 
@@ -83,7 +101,6 @@ public class EmailServiceTests
     {
         SeedMockDatabase();
         
-        
         EmailForm form = new()
         {
             EmailId = _emailId,
@@ -92,32 +109,34 @@ public class EmailServiceTests
             Body = "This is a test"
         };
 
-        Email sentEmail = new()
+        Email testEmail = new()
         {
             Id = _emailId,
             Recipient = form.EmailAddress,
             Subject = form.Subject,
-            Body = form.Body
+            Body = form.Body,
+            DateCreated = _todaysDate,
+            DateLastModified = _todaysDate
         };
-
-        _mockEmailRepository.Setup(m => m.UpdateEmailAsync(sentEmail));
-        EmailNotificationResponse response = await _service.SendEmailAsync(form);
         
-        _mockEmailRepository.Verify(m => m.UpdateEmailAsync(sentEmail), Times.Once);
+        _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(Task.FromResult(testEmail));
+        _mockEmailRepository.Setup(m => m.UpdateEmailAsync(testEmail));
+        
+        await _service.SendEmailAsync(form);
+        
+        _mockEmailRepository.Verify(m => m.UpdateEmailAsync(testEmail), Times.Once);
     }
 
     private void SeedMockDatabase()
     {
-        DateTime todaysDate = DateTime.Now;
-        
         Email shipwreckEmail = new()
         {
-            Id = _emailId,
+            Id = Guid.NewGuid(),
             Recipient = "barry@gmail.com",
             Subject = "Shipwreck",
             Body = "I found an old ship on the beach",
-            DateCreated = todaysDate,
-            DateLastModified = todaysDate
+            DateCreated = _todaysDate,
+            DateLastModified = _todaysDate
         };
         
         Email paintingEmail = new()
@@ -126,19 +145,29 @@ public class EmailServiceTests
             Recipient = "denise@gmail.com",
             Subject = "Painting",
             Body = "I found a medieval painting washed up on the shore",
-            DateCreated = todaysDate,
-            DateLastModified = todaysDate
+            DateCreated = _todaysDate,
+            DateLastModified = _todaysDate
+        };
+        
+        Email testEmail = new()
+        {
+            Id = _emailId,
+            Recipient = "sam.kendell+testing@madetech.com",
+            Subject = "Wreckage Found!",
+            Body = "This is a test",
+            DateCreated = _todaysDate,
+            DateLastModified = _todaysDate
         };
 
         List<Email> emailsInRepo = new List<Email>()
         {
             shipwreckEmail,
-            paintingEmail
+            paintingEmail,
+            testEmail
         };
 
         Task<Email> singleEmail = Task.FromResult(shipwreckEmail);
 
         _mockEmailRepository.Setup(m => m.GetEmails()).Returns(emailsInRepo);
-        _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(singleEmail);
     }
 }
