@@ -17,6 +17,7 @@ public class EmailController : Controller
         _service = service;
     }
 
+    [HttpGet]
     public async Task<IActionResult> Index()
     {
         var emails = await _service.GetEmails();
@@ -27,6 +28,7 @@ public class EmailController : Controller
         return View(model);
     }
 
+    [HttpGet]
     public async Task<IActionResult> Compose(Guid id)
     {
         EmailForm form;
@@ -54,8 +56,9 @@ public class EmailController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> SendEmail(EmailForm form)
+    public async Task<IActionResult> SendEmail(Guid id, EmailForm form)
     {
+        form.EmailId = id;
         await _service.SendEmailAsync(form);
             
         return View(nameof(SendEmail), form);
@@ -96,6 +99,7 @@ public class EmailController : Controller
         return View(nameof(Preview), form);
     }
     
+    [HttpPut]
     public async Task<IActionResult> Edit(EmailForm form)
     {
         if (form.EmailId != Guid.Empty)
