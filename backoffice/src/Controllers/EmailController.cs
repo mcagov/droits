@@ -20,7 +20,7 @@ public class EmailController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var emails = await _service.GetEmails();
+        var emails = await _service.GetEmailsAsync();
 
         var emailViews = emails.Select(e => new EmailView(e)).ToList();
 
@@ -31,73 +31,56 @@ public class EmailController : Controller
     [HttpGet]
     public async Task<IActionResult> Compose(Guid id)
     {
-        EmailForm form;
+        //This should be done elsewhere. 
+        var emailType = EmailType.TestingDroitsv2;
         
-        if (id != Guid.Empty)
+        if (id == default(Guid))
         {
-            Email email = await _service.GetEmailById(id);
-            form = new()
+            return View(new EmailForm()
             {
-                EmailId = email.Id,
-                EmailAddress = email.Recipient,
-                Subject = email.Subject,
-                Body = email.Body
-            };
+                Body = await _service.GetTemplateAsync(emailType)
+            });
         }
-        else
-        {
-            form = new()
-            {
-                Body = await _service.GetTemplateAsync(EmailType.TestingDroitsv2)
-            };
-        }
+        
+        var email = await _service.GetEmailByIdAsync(id);
+        
+        return View(new EmailForm(email));
+    }
 
-        return View(form);
+    [HttpGet]
+    public async Task<IActionResult> SendEmail(Guid id)
+    {
+        await _service.SendEmailAsync(id);
+        
+        //Add feedback (banner or something) to show sent. 
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
-    public async Task<IActionResult> SendEmail(Guid id, EmailForm form)
+    public async Task<IActionResult> SaveEmail(EmailForm form)
     {
-        form.EmailId = id;
-        await _service.SendEmailAsync(form);
-            
-        return View(nameof(SendEmail), form);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Preview(EmailForm form)
-    {
-        Guid emailId;
+        Email email; 
         
-        // form.EmailId is currently always empty :<
-        if (form.EmailId != Guid.Empty)
+        if (form.EmailId == default(Guid))
         {
-            emailId = form.EmailId;
-            await _service.UpdateEmailAsync(form);
+            email = await _service.SaveEmailAsync(form);
         }
         else
         {
-            form.Body = form.GetEmailBody();
-            emailId = _service.SaveEmail(form).Id;
+            email = await _service.UpdateEmailAsync(form);
         }
-
-        return RedirectToAction(nameof(GetPreview), new { id = emailId });
+        
+        return RedirectToAction(nameof(Preview), new { id = email.Id });
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetPreview(Guid id)
+    public async Task<IActionResult> Preview(Guid id)
     {
-        Email email = await _service.GetEmailById(id);
-        
-        EmailForm form = new()
-        {
-            EmailId = email.Id,
-            EmailAddress = email.Recipient,
-            Subject = email.Subject,
-            Body = email.Body
-        };
+        var email = await _service.GetEmailByIdAsync(id);
 
-        return View(nameof(Preview), form);
+        var model = new EmailView(email);
+
+        return View(model);
     }
     
     [HttpPut]
@@ -106,7 +89,7 @@ public class EmailController : Controller
         if (form.EmailId != Guid.Empty)
         {
             await _service.UpdateEmailAsync(form);
-            return RedirectToAction(nameof(GetPreview), new { id = form.EmailId });
+            return RedirectToAction(nameof(Preview), new { id = form.EmailId });
         }
         else
         {

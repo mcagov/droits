@@ -11,11 +11,11 @@ namespace Droits.Services;
 public interface IEmailService
 {
     Task<string> GetTemplateAsync(EmailType emailType);
-    Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
-    Task<Email> GetEmailById(Guid id);
-    Email SaveEmail(EmailForm emailForm);
-    Task UpdateEmailAsync(EmailForm emailForm);
-    Task<List<Email>> GetEmails();
+    Task<EmailNotificationResponse> SendEmailAsync(Guid id);
+    Task<Email> GetEmailByIdAsync(Guid id);
+    Task<Email> SaveEmailAsync(EmailForm emailForm);
+    Task<Email> UpdateEmailAsync(EmailForm emailForm);
+    Task<List<Email>> GetEmailsAsync();
 }
 
 public class EmailService : IEmailService
@@ -37,25 +37,26 @@ public class EmailService : IEmailService
 
     public async Task<string> GetTemplateAsync(EmailType emailType)
     {
-        string template;
         var filename = $"{TemplateDirectory}/{emailType.ToString()}.txt";
-        
-        using (StreamReader streamReader = new(filename, Encoding.UTF8))
-        {
-            template = await streamReader.ReadToEndAsync();
-        }
 
+        using StreamReader streamReader = new(filename, Encoding.UTF8);
+        
+        var template = await streamReader.ReadToEndAsync();
+        
+        streamReader.Dispose();
+        
         return template;    
     }
 
     
-    public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form)
+    public async Task<EmailNotificationResponse> SendEmailAsync(Guid id)
     {
         try
         {
-            EmailNotificationResponse govNotifyResponse = await _client.SendEmailAsync(form);
+            var email = await GetEmailByIdAsync(id);
+            var govNotifyResponse = await _client.SendEmailAsync(new EmailForm(email));
 
-            await MarkAsSent(form.EmailId);
+            await MarkAsSentAsync(id);
 
             return govNotifyResponse;
         }
@@ -66,44 +67,41 @@ public class EmailService : IEmailService
         }
     }
 
-    private async Task MarkAsSent(Guid id)
+    private async Task MarkAsSentAsync(Guid id)
     {
-        Email sentEmail = await GetEmailById(id);
+        var sentEmail = await GetEmailByIdAsync(id);
             
         sentEmail.DateSent = DateTime.UtcNow;
-        _emailRepository.UpdateEmailAsync(sentEmail);
+        await _emailRepository.UpdateEmailAsync(sentEmail);
     }
 
-    public async Task<List<Email>> GetEmails()
+    public async Task<List<Email>> GetEmailsAsync()
     {
         return await _emailRepository.GetEmailsAsync();
     }
     
-    public List<Email> GetEmailsForRecipient(string recipient)
+    public async Task<List<Email>> GetEmailsForRecipientAsync(string recipient)
     {
-        return
-            _emailRepository.GetEmails()
+        var allEmails = await _emailRepository.GetEmailsAsync();
+        
+        return allEmails
                 .Where(e => e.Recipient.Equals(recipient))
                 .OrderByDescending(e => e.DateLastModified)
                 .ToList();
     }
 
-    public Email SaveEmail(EmailForm emailForm)
+    public async Task<Email> SaveEmailAsync(EmailForm emailForm)
     {
-        DateTime todaysDate = DateTime.UtcNow;
-
         Email email = new()
         {
             Subject = emailForm.Subject,
-            Body = emailForm.Body,
-            Recipient = emailForm.EmailAddress,
-            DateCreated = todaysDate,
-            DateLastModified = todaysDate
+            Body = emailForm.GetEmailBody(),
+            Recipient = emailForm.Recipient,
         };
 
         try
         {
-            return _emailRepository.AddEmail(email);
+            return await _emailRepository.AddEmailAsync(email);
         }
         catch (Exception e)
         {
@@ -112,44 +110,31 @@ public class EmailService : IEmailService
         }
     }
     
-    public async Task UpdateEmailAsync(EmailForm emailForm)
+    public async Task<Email> UpdateEmailAsync(EmailForm emailForm)
     {
-        if (emailForm.EmailId != Guid.Empty)
-        {
-            Email emailToUpdate = await GetEmailById(emailForm.EmailId);
-        
-            DateTime todaysDate = DateTime.UtcNow;
 
-            emailToUpdate.Recipient = emailForm.EmailAddress;
-            emailToUpdate.Subject = emailForm.Subject;
-            emailToUpdate.Body = emailForm.Body;
-            emailToUpdate.DateLastModified = todaysDate;
-            
-            try
-            {
-                _emailRepository.UpdateEmailAsync(emailToUpdate);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError($"Error updating email: {e}");
-                throw;
-            }
-        }
-
-        else
+        if (emailForm.EmailId == default(Guid))
         {
-            _logger.LogError("Email ID provided was null");
-        }
-    }
-    
-    public async Task<Email> GetEmailById(Guid id)
-    {
-        Email? email = await _emailRepository.GetEmailAsync(id);
-        if (email == null)
-        {
+            _logger.LogError("Email with that ID does not exist");
             throw new EmailNotFoundException();
         }
         
-        return email;
+        var emailToUpdate = await GetEmailByIdAsync(emailForm.EmailId);
+
+        emailToUpdate = emailForm.ApplyChanges(emailToUpdate);
+            
+        try
+        {
+            return await _emailRepository.UpdateEmailAsync(emailToUpdate);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError($"Error updating email: {e}");
+            throw;
+        }
     }
+
+    public async Task<Email> GetEmailByIdAsync(Guid id) =>
+        await _emailRepository.GetEmailAsync(id);
+
 }

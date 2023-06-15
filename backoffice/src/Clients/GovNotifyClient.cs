@@ -32,7 +32,7 @@ public class GovNotifyClient : IGovNotifyClient
         personalisation.Add("body",form.GetEmailBody());
         
         return await _client.SendEmailAsync(
-            form.EmailAddress,
+            form.Recipient,
             getTemplateId(),
             personalisation
         );

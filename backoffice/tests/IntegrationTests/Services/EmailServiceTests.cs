@@ -38,7 +38,7 @@ public class EmailServiceTests
         var form = new EmailForm()
         {
             EmailId = _emailId,
-            EmailAddress = "sam.kendell+testing@madetech.com",
+            Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
             Body = "This is a test"
         };
@@ -53,7 +53,7 @@ public class EmailServiceTests
         var form = new EmailForm()
         {
             EmailId = _emailId,
-            EmailAddress = "sam.kendell+testing@madetech.com",
+            Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
             Body = "This is a test"
         };
@@ -68,7 +68,7 @@ public class EmailServiceTests
         var form = new EmailForm()
         {
             EmailId = _emailId,
-            EmailAddress = "sam.kendell+testing@madetech.com",
+            Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
             Body = "This is a test"
         };
@@ -87,7 +87,7 @@ public class EmailServiceTests
         EmailForm form = new()
         {
             EmailId = _emailId,
-            EmailAddress = "sam.kendell+testing@madetech.com",
+            Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Wreckage Found!",
             Body = "This is a test"
         };
@@ -95,7 +95,7 @@ public class EmailServiceTests
         Email sentEmail = new()
         {
             Id = _emailId,
-            Recipient = form.EmailAddress,
+            Recipient = form.Recipient,
             Subject = form.Subject,
             Body = form.Body
         };

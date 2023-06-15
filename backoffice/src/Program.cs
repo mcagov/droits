@@ -22,6 +22,7 @@ builder.Services.AddScoped<IDroitService, DroitService>();
 
 builder.Services.AddGovUkFrontend();
 
+
 var app = builder.Build();
 
 app.MapHealthChecks("/healthz");

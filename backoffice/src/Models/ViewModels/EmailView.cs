@@ -17,14 +17,16 @@ public class EmailView
         EmailType = "Default";
         DateLastModified = email.DateLastModified.ToString(format:"dd/MM/yyyy");
         Subject = email.Subject;
+        Body = email.Body;
         SentDate = email.DateSent;
     }
 
-    public Guid Id { get; set; }
-    public string? Recipient { get; set; }
-    public string? EmailType { get; set; }
-    public string? DateLastModified { get; set; }
-    public string? Subject { get; set; }
-    public DateTime? SentDate { get; set; }
+    public Guid Id { get; }
+    public string? Recipient { get; }
+    public string? EmailType { get; }
+    public string? DateLastModified { get; }
+    public string? Subject { get; }
+    public string? Body { get; }
+    private DateTime? SentDate { get; }
     public bool IsSent => SentDate.HasValue;
 }
