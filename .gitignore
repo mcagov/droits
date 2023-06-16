@@ -18,6 +18,8 @@ backoffice/tests/bin/
 backoffice/tests/obj/
 backoffice/tests/appsettings.*
 
+backoffice/Droits.sln.DotSettings.user
+
 
 ##terraform
 .terraform
