@@ -82,18 +82,4 @@ public class EmailController : Controller
 
         return View(model);
     }
-    
-    [HttpPut]
-    public async Task<IActionResult> Edit(EmailForm form)
-    {
-        if (form.EmailId != Guid.Empty)
-        {
-            await _service.UpdateEmailAsync(form);
-            return RedirectToAction(nameof(Preview), new { id = form.EmailId });
-        }
-        else
-        {
-            return new NotFoundResult();
-        }
-    }
 }
