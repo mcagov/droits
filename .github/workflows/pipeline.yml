@@ -70,6 +70,7 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       image_tag: ${{ inputs.image_tag }}
+      env_filename: appsettings.${{ inputs.environment }}.json
     secrets:
       registry_url: ${{ secrets.registry_url }}
       repository_name: ${{ secrets.backoffice_repository_name }}

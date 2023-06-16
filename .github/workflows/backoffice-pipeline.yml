@@ -12,6 +12,9 @@ on:
         description: The tag to add to the published Docker image, e.g. "v1.0.1"
         type: string
         required: true
+      env_filename:
+        description: The name of the environment file
+        required: true
     secrets:
       registry_url:
         description: The URL of the registry where the image should be published
@@ -40,6 +43,7 @@ jobs:
       image_tag: ${{ inputs.image_tag }}
       environment: ${{ inputs.environment }}
       working-directory: backoffice
+      env_filename: ${{ inputs.env_filename }}
     secrets:
       registry_url: ${{ secrets.registry_url }}
       repository_name: ${{ secrets.repository_name }}
