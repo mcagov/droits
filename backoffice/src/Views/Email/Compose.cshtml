@@ -1,0 +1,64 @@
+@model EmailForm
+@{
+    ViewData["Title"] = "Compose Email";
+}
+
+
+<div class="row align-items-start">
+    <div class="col-lg-8">
+        
+        <h4 class="display-8">@ViewData["Title"]</h4>
+
+        <form asp-action="SaveEmail" method="POST">
+            @Html.HiddenFor(m => m.EmailId)
+            
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Recipient, new { @class = "form-label" })
+                @Html.EditorFor(m => m.Recipient, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Subject, new { @class = "form-label" })
+                @Html.EditorFor(m => m.Subject, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Body, new { @class = "form-label" })
+                @Html.EditorFor(m => m.Body, new { htmlAttributes = new { rows = 50, @class = "form-control email-body" } })
+            </div>
+
+            <button class="btn btn-success" type="submit">Save</button>
+        </form>
+    </div>
+
+    <div class="col-lg-4">
+
+        <h4 class="display-8">Formatting</h4>
+
+        <p>To put a title in your template, use a hash:</p>
+
+        <span class=""> # This is a title </span>
+
+        <p>To make bullet points, use asterisks:</p>
+
+        <p> * point 1 </p>
+        <p> * point 2 </p>
+        <p> * point 3 </p>
+
+        <p> To add inset text, use a caret:</p>
+        <p> ^ You must tell us if your circumstances change</p>
+
+        <p>To add a horizontal line, use three dashes: </p>
+
+        <p>First paragraph</p>
+        <p>---</p>
+        <p>Second paragraph</p>
+
+        <h4 class="display-8">Personalisation</h4>
+        <p>Use double brackets to personalise your message:</p>
+
+        <p>Hello ((first name)), your reference is ((ref number))</p>
+
+    </div>
+
+</div>

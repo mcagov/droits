@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using Droits.Models;
+using Droits.Models.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Droits.Services;
 
 
@@ -16,26 +17,69 @@ public class EmailController : Controller
         _service = service;
     }
 
-    public IActionResult Index()
+    [HttpGet]
+    public async Task<IActionResult> Index()
     {
-        EmailForm model = _service.GetEmailForm("Views/Email/templates", EmailTemplateType.TestingDroitsv2);
+        var emails = await _service.GetEmailsAsync();
 
+        var emailViews = emails.Select(e => new EmailView(e)).ToList();
+
+        var model = new EmailListView(emailViews);
         return View(model);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> SendEmail(EmailForm form)
+    [HttpGet]
+    public async Task<IActionResult> Compose(Guid id)
     {
-        var result = await _service.SendEmailAsync(form);
+        //This should be done elsewhere. 
+        var emailType = EmailType.TestingDroitsv2;
+        
+        if (id == default(Guid))
+        {
+            return View(new EmailForm()
+            {
+                Body = await _service.GetTemplateAsync(emailType)
+            });
+        }
+        
+        var email = await _service.GetEmailByIdAsync(id);
+        
+        return View(new EmailForm(email));
+    }
 
-        return View(nameof(SendEmail), form);
+    [HttpGet]
+    public async Task<IActionResult> SendEmail(Guid id)
+    {
+        await _service.SendEmailAsync(id);
+        
+        //Add feedback (banner or something) to show sent. 
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
-    public IActionResult GetPreview(EmailForm form)
+    public async Task<IActionResult> SaveEmail(EmailForm form)
     {
-        var preview = _service.GetPreview(form);
+        Email email; 
+        
+        if (form.EmailId == default(Guid))
+        {
+            email = await _service.SaveEmailAsync(form);
+        }
+        else
+        {
+            email = await _service.UpdateEmailAsync(form);
+        }
+        
+        return RedirectToAction(nameof(Preview), new { id = email.Id });
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> Preview(Guid id)
+    {
+        var email = await _service.GetEmailByIdAsync(id);
 
-        return View(nameof(GetPreview), preview);
+        var model = new EmailView(email);
+
+        return View(model);
     }
 }

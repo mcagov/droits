@@ -8,7 +8,6 @@ namespace Droits.Clients;
 public interface IGovNotifyClient
 {
     Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
-    TemplatePreviewResponse GetPreview(EmailForm form);
     string? getTemplateId();
     string? getApiKey();
 }
@@ -29,22 +28,16 @@ public class GovNotifyClient : IGovNotifyClient
 
     public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form)
     {
+        var personalisation = form.GetPersonalisation();
+        personalisation.Add("body",form.GetEmailBody());
+        
         return await _client.SendEmailAsync(
-            form.EmailAddress,
+            form.Recipient,
             getTemplateId(),
-            form.GetPersonalisation()
+            personalisation
         );
     }
-
-    public TemplatePreviewResponse GetPreview(EmailForm form)
-    {
-        return _client.GenerateTemplatePreview(
-            getTemplateId(),
-            form.GetPersonalisation()
-        );
-    }
-
-
+    
     public string getTemplateId()
     {
         return _configuration.GetSection("GovNotify:TemplateId").Value ?? "";

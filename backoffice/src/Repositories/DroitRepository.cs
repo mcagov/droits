@@ -14,9 +14,9 @@ public class DroitRepository : IDroitRepository
 {
     private readonly DroitsContext _context;
 
-    public DroitRepository(DroitsContext ctx)
+    public DroitRepository(DroitsContext dbContext)
     {
-        _context = ctx;
+        _context = dbContext;
     }
 
     public async Task<List<Droit>> GetDroitsAsync()

@@ -1,0 +1,44 @@
+@using System.IO;
+@model string
+
+
+
+<div>
+    @{
+        using (StringReader sr = new StringReader(Model))
+        {
+            while (await sr.ReadLineAsync() is { } line)
+            {
+
+                line = line.Trim();
+
+                if (line.StartsWith("#"))
+                {
+                    <h2 class="govuk-heading-m">@line.Replace("#", "")</h2>
+                }
+                else if (line.StartsWith("*"))
+                {
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li>@line.Replace("*", "")</li>
+                    </ul>
+
+                }
+                else if (line.Equals("---"))
+                {
+                    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+                }
+                else if (line.StartsWith("^"))
+                {
+                    <div class="govuk-inset-text">
+                        @line.Replace("^", "")
+                    </div>
+                }
+                else
+                {
+                    <p>@line</p>
+                }
+            }
+        }
+    }
+
+</div>

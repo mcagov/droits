@@ -1,5 +1,6 @@
 html {
     font-size: 14px;
+    font-family: "GDS Transport",arial,sans-serif !important;
 }
 
 @media (min-width: 768px) {
@@ -38,4 +39,14 @@ div.form-sections fieldset {
     padding: 20px 15px;
     margin: 15px 5px;
     border: 1px solid #b1b4b6;
+}
+
+.readonly-input {
+    background: #fff;
+    border: none;
+}
+
+.readonly-input:focus{
+    outline: none;
+    background: #fff;
 }
