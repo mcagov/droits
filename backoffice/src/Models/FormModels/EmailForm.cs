@@ -18,6 +18,7 @@ public class EmailForm
     }
     public Guid EmailId { get; set; }
     [Required]
+    [DataType(DataType.EmailAddress)]
     public string Recipient { get; set; } = string.Empty;
     [Required]
     public string Subject { get; set; } = string.Empty;

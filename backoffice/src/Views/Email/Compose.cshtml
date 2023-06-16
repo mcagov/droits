@@ -15,6 +15,8 @@
             <div class="mb-3">
                 @Html.LabelFor(m => m.Recipient, new { @class = "form-label" })
                 @Html.EditorFor(m => m.Recipient, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.Recipient,"Invalid Email try again",new { @class = "text-danger"} )
+
             </div>
 
             <div class="mb-3">
