@@ -1,4 +1,4 @@
-﻿using Droits.Models.Domain;
+﻿using Droits.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Models;

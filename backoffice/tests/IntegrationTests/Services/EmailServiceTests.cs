@@ -1,5 +1,5 @@
 using Droits.Clients;
-using Droits.Models.Domain;
+using Droits.Models.Entities;
 using Droits.Services;
 using Droits.Repositories;
 using Microsoft.Extensions.Configuration;

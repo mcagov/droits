@@ -1,5 +1,5 @@
 using Droits.Models;
-using Droits.Models.Domain;
+using Droits.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Droits.Services;
 

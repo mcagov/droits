@@ -2,7 +2,7 @@ using System.Text;
 using Droits.Clients;
 using Droits.Exceptions;
 using Droits.Models;
-using Droits.Models.Domain;
+using Droits.Models.Entities;
 using Droits.Repositories;
 using Notify.Models.Responses;
 

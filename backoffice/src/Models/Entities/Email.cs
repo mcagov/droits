@@ -1,4 +1,4 @@
-namespace Droits.Models.Domain;
+namespace Droits.Models.Entities;
 
 public class Email
 {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Schema;
-using Droits.Models.Domain;
+using Droits.Models.Entities;
 
 namespace Droits.Models;
 

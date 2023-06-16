@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Droits.Models.Domain;
+using Droits.Models.Entities;
 
 namespace Droits.Models;
 
