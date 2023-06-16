@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Schema;
-using Droits.Models.Domain;
+using Droits.Models.Entities;
 
 namespace Droits.Models;
 
@@ -14,19 +14,21 @@ public class EmailView
     {
         Id = email.Id;
         Recipient = email.Recipient;
-        EmailType = "Default";
-        DateLastModified = email.DateLastModified.ToString(format:"dd/MM/yyyy");
+        EmailType = email.Type;
+        DateLastModified = email.DateLastModified;
         Subject = email.Subject;
         Body = email.Body;
         SentDate = email.DateSent;
     }
 
     public Guid Id { get; }
-    public string? Recipient { get; }
-    public string? EmailType { get; }
-    public string? DateLastModified { get; }
-    public string? Subject { get; }
-    public string? Body { get; }
+    public string Recipient { get; }
+    public EmailType EmailType { get; }
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+    public DateTime DateLastModified { get; }
+    public string Subject { get; }
+    public string Body { get; }
     private DateTime? SentDate { get; }
     public bool IsSent => SentDate.HasValue;
 }

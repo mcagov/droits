@@ -1,5 +1,3 @@
-using Droits.Models.Domain;
-
 namespace Droits.Models;
 
 public class EmailListView

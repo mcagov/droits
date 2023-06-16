@@ -25,7 +25,7 @@
             </th>
             <td>@email.Subject</td>
             <td>@email.EmailType</td>
-            <td>@email.DateLastModified</td>
+            <td>@email.DateLastModified.ToString("dd/MM/yyyy")</td>
             <td>
                 @(email.IsSent ? "Y" : "N")
             </td>

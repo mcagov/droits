@@ -2,7 +2,7 @@ using System.Text;
 using Droits.Clients;
 using Droits.Exceptions;
 using Droits.Models;
-using Droits.Models.Domain;
+using Droits.Models.Entities;
 using Droits.Repositories;
 using Notify.Models.Responses;
 
@@ -82,9 +82,8 @@ public class EmailService : IEmailService
     
     public async Task<List<Email>> GetEmailsForRecipientAsync(string recipient)
     {
-        var allEmails = await _emailRepository.GetEmailsAsync();
-        
-        return allEmails
+        return _emailRepository.GetEmailsAsync()
+                .Result
                 .Where(e => e.Recipient.Equals(recipient))
                 .OrderByDescending(e => e.DateLastModified)
                 .ToList();

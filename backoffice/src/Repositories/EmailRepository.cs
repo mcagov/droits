@@ -1,6 +1,6 @@
 using Droits.Exceptions;
 using Droits.Models;
-using Droits.Models.Domain;
+using Droits.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Repositories;

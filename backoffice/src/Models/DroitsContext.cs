@@ -1,4 +1,4 @@
-﻿using Droits.Models.Domain;
+﻿using Droits.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Models;
@@ -87,6 +87,7 @@ public partial class DroitsContext : DbContext
             entity.Property(e => e.Recipient);
             entity.Property(e => e.DateCreated);
             entity.Property(e => e.DateLastModified);
+            entity.Property(e => e.Type);
         });
         
         OnModelCreatingPartial(modelBuilder);

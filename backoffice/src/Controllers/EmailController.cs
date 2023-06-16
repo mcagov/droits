@@ -1,5 +1,5 @@
 using Droits.Models;
-using Droits.Models.Domain;
+using Droits.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Droits.Services;
 
@@ -81,19 +81,5 @@ public class EmailController : Controller
         var model = new EmailView(email);
 
         return View(model);
-    }
-    
-    [HttpPut]
-    public async Task<IActionResult> Edit(EmailForm form)
-    {
-        if (form.EmailId != Guid.Empty)
-        {
-            await _service.UpdateEmailAsync(form);
-            return RedirectToAction(nameof(Preview), new { id = form.EmailId });
-        }
-        else
-        {
-            return new NotFoundResult();
-        }
     }
 }
