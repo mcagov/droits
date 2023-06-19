@@ -59,7 +59,13 @@ public class EmailController : Controller
     [HttpPost]
     public async Task<IActionResult> SaveEmail(EmailForm form)
     {
-        Email email; 
+        Email email;
+
+        if (!ModelState.IsValid)
+        {
+            TempData["Error"] = "TODO - Populate with actual error.";
+            return View(nameof(Compose), form);
+        }
         
         if (form.EmailId == default(Guid))
         {
