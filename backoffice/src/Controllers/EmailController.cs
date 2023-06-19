@@ -53,6 +53,7 @@ public class EmailController : Controller
         await _service.SendEmailAsync(id);
         
         //Add feedback (banner or something) to show sent. 
+        TempData["SentSuccess"] = "Email sent successfully";
         return RedirectToAction(nameof(Index));
     }
 
