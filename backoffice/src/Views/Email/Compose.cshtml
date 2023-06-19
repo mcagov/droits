@@ -7,10 +7,10 @@
 
 <div class="row align-items-start">
     
-    @if (TempData.TryGetValue("Error", out var value))
+    @if (TempData.TryGetValue("Error", out var errorMessage))
     {
         <div class="alert alert-danger" role="alert">
-            @value
+            @errorMessage
         </div>
     }
     <div class="col-lg-8">

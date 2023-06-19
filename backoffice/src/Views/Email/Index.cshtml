@@ -3,10 +3,10 @@
     ViewData["Title"] = $"Emails ({Model.EmailList.Count})";
 }
 
-@if (TempData.TryGetValue("SentSuccess", out var value))
+@if (TempData.TryGetValue("SuccessMessage", out var message))
 {
     <div class="alert alert-success" role="alert">
-        <h4 class="display-4">@value</h4>
+        <h4 class="display-4">@message</h4>
     </div>
 }
 
