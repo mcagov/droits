@@ -14,8 +14,9 @@ public partial class DroitsContext : DbContext
     {
     }
 
-    public virtual DbSet<Droit> Droits { get; set; } = null!;
-    public virtual DbSet<Email> Emails { get; set; } = null!;
+    public virtual DbSet<Droit> Droits { get; set; }
+    public virtual DbSet<Wreck> Wrecks { get; set; }
+    public virtual DbSet<Email> Emails { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -34,7 +35,7 @@ public partial class DroitsContext : DbContext
             entity.Property(e => e.Status);
             entity.Property(e => e.ReportedDate);
             entity.Property(e => e.Created);
-            entity.Property(e => e.Modified);
+            entity.Property(e => e.LastModified);
             entity.Property(e => e.Reference);
             entity.Property(e => e.IsHazardousFind);
 
@@ -72,7 +73,20 @@ public partial class DroitsContext : DbContext
             entity.Property(e => e.RecoveredFrom);
             entity.Property(e => e.ImportedFromLegacy);
         });
-        
+
+
+        modelBuilder.Entity<Wreck>(entity =>
+        {
+            entity.ToTable("wrecks");
+
+            entity.Property(e => e.Id)
+                .HasColumnName("id");
+
+            entity.Property(e => e.Id);
+            entity.Property(e => e.Status);
+
+        });
+
         modelBuilder.Entity<Email>(entity =>
         {
             entity.ToTable("emails");
@@ -85,11 +99,11 @@ public partial class DroitsContext : DbContext
             entity.Property(e => e.Body);
             entity.Property(e => e.DateSent);
             entity.Property(e => e.Recipient);
-            entity.Property(e => e.DateCreated);
-            entity.Property(e => e.DateLastModified);
+            entity.Property(e => e.Created);
+            entity.Property(e => e.LastModified);
             entity.Property(e => e.Type);
         });
-        
+
         OnModelCreatingPartial(modelBuilder);
     }
 

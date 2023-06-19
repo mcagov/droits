@@ -1,0 +1,76 @@
+﻿@model WreckForm
+@{
+
+    ViewData["Title"] = Model.Id==default(Guid)?"New Wreck":$"Wreck: {Model.Name}";
+}
+
+<h4 class="govuk-heading-m">@ViewData["Title"]</h4>
+<form class="form-horizontal mt-4"asp-action="Save" method="POST">
+    @Html.HiddenFor(m => m.Id)
+        <div class="col mt-4">
+
+            <div class="card">
+                <h5 class="card-header">Wreck</h5>
+                <div class="card-body">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Name, new { @class = "col-form-label" })
+                        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.Name,"", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Status, new { @class = "col-form-label" })
+                        @Html.DropDownListFor(m => m.Status,Html.GetEnumSelectList(typeof(WreckStatus)),  "Select...",new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Status,"", new { @class = "text-danger" })
+
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.DateOfLoss, new { @class = "col-form-label" })
+                        @Html.EditorFor(m => m.DateOfLoss, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.DateOfLoss,"", new { @class = "text-danger" })
+
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.IsWarWreck, new { @class = "col-form-label" })
+                        @Html.DropDownListFor(m => m.IsWarWreck, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.IsWarWreck,"", new { @class = "text-danger" })
+
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.IsAnAircraft, new { @class = "col-form-label" })
+                        @Html.DropDownListFor(m => m.IsAnAircraft,Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.IsAnAircraft,"", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Latitude, new { @class = "col-form-label" })
+                        @Html.EditorFor(m => m.Latitude, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.Latitude,"", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Longitude, new { @class = "col-form-label" })
+                        @Html.EditorFor(m => m.Longitude, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.Longitude,"", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.IsProtectedSite, new { @class = "col-form-label" })
+                        @Html.DropDownListFor(m => m.IsProtectedSite, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.IsProtectedSite,"", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ProtectionLegislation, new { @class = "col-form-label" })
+                        @Html.EditorFor(m => m.ProtectionLegislation, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.ProtectionLegislation,"", new { @class = "text-danger" })
+                    </div>
+
+                    <button class="btn btn-success m-2 float-end" type="submit">Save</button>
+                </div>
+            </div>
+        </div>
+
+</form>

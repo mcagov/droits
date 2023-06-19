@@ -1,6 +1,6 @@
 ﻿@model List<DroitView>
 @{
-    ViewData["Title"] = "Droits List";
+    ViewData["Title"] = "Droit Reports";
 }
 
 <h4 class="display-8">@ViewData["Title"]</h4>
@@ -10,6 +10,7 @@
         <th scope="col">Reference</th>
         <th scope="col">Status</th>
         <th scope="col">Created</th>
+        <th scope="col">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -21,10 +22,14 @@
             </th>
             <td>@droit.Status</td>
             <td>@droit.Created.ToString("dd/MM/yyyy")</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@droit.Id" class="btn btn-success">Edit</a>
+                <a asp-action="View" asp-route-id="@droit.Id" class="btn btn-success">View</a>
+            </td>
         </tr>
     }
     </tbody>
 </table>
 
 
-<a class="btn btn-success" asp-action="Add">Add Droit</a>
+<a class="btn btn-success float-end" asp-action="Add">Add Droit</a>
