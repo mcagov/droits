@@ -16,6 +16,10 @@ defaults:
   run:
     working-directory: backoffice
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
 
   unit_tests:
