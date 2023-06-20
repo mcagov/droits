@@ -47,11 +47,5 @@ jobs:
       run: |
           echo -e "${APPSETTINGS_JSON}" > src/appsettings.json
 
-    - name: Archive AppSettings
-      uses: actions/upload-artifact@v2
-      with:
-        name: appsettings
-        path: backoffice/src/appsettings.json
-
     - name: Run tests
       run: dotnet test
