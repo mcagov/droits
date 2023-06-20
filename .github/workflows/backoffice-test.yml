@@ -29,17 +29,19 @@ jobs:
       with:
         dotnet-version: ${{ inputs.dotnet-version }}
 
-    - name: Generate appsettings.json
-      env:
-        APPSETTINGS_JSON: ${{secrets.env_file}}
-      run: |
-        echo "$APPSETTINGS_JSON" > src/appsettings.json
-
     - name: Install dependencies
       run: dotnet restore
 
     - name: Build
       run: dotnet build
+
+    - name: Generate appsettings.json
+      env:
+        APPSETTINGS_JSON: ${{secrets.env_file}}
+      run: |
+          echo "$APPSETTINGS_JSON" > src/appsettings.json
+          echo "AppSettings content:"
+          cat src/appsettings.json | sed 's/^/  /'
 
     - name: Run tests
       run: dotnet test
