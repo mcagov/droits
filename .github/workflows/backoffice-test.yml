@@ -45,7 +45,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: appsettings
-        path: src
+        path: backoffice/src/appsettings.json
 
     - name: Run tests
       run: dotnet test
