@@ -2,7 +2,7 @@ name: Development pipeline
 on:
   push:
     branches:
-      - dynamic_appsettings
+      - main
   workflow_dispatch:
 
 jobs:
