@@ -24,3 +24,13 @@ jobs:
       webapp_env_file: ${{ secrets.WEBAPP_ENV_FILE }}
       backoffice_env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
       alerts_email: ${{ secrets.ALERTS_EMAIL }}
+
+  writing_file:
+    name: Generate File
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate appsettings.json
+        run: |
+            ls -al
+            echo -e "${{ secrets.BACKOFFICE_ENV_FILE }}" > test.json
+            ls -al
