@@ -40,7 +40,7 @@ jobs:
         APPSETTINGS_JSON: ${{secrets.env_file}}
       run: |
           ls -al src
-          echo $APPSETTINGS_JSON > src/appsettings.json
+          echo -e "$APPSETTINGS_JSON" > src/appsettings.json
           ls -al src
 
     - name: Archive AppSettings
