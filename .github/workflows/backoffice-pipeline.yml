@@ -31,6 +31,9 @@ jobs:
     uses: ./.github/workflows/backoffice-test.yml
     with:
       dotnet-version: "7.0.x"
+    secrets:
+      env_file: ${{secrets.env_file}}
+
 
   publish:
     name: Publish backoffice
@@ -40,6 +43,7 @@ jobs:
       image_tag: ${{ inputs.image_tag }}
       environment: ${{ inputs.environment }}
       working-directory: backoffice
+      env_filename: appsettings.json
     secrets:
       registry_url: ${{ secrets.registry_url }}
       repository_name: ${{ secrets.repository_name }}

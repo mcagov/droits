@@ -7,6 +7,10 @@ on:
         description: The dotnet version to use, e.g. '7.0.x'
         required: true
         type: string
+    secrets:
+      env_file:
+        description: The contents of the environment file
+        required: true
 
 defaults:
   run:
@@ -23,6 +27,7 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ inputs.dotnet-version }}
+        env-file: ${{ secrets.env_file }}
     - name: Install dependencies
       run: dotnet restore
     - name: Build
