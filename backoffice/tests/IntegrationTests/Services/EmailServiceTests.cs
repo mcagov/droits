@@ -4,10 +4,11 @@ using Droits.Services;
 using Droits.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using tests;
 
 namespace Droits.Tests.IntegrationTests.Services;
 
-public class EmailServiceTests
+public class EmailServiceTests : IClassFixture<TestFixture>
 {
     private readonly IEmailService _service;
     private readonly Mock<IEmailRepository> _mockEmailRepository;
@@ -16,18 +17,15 @@ public class EmailServiceTests
     private DateTime _todaysDate = DateTime.Now;
 
 
-    public EmailServiceTests()
+    public EmailServiceTests(TestFixture fixture)
     {
         var logger = new Mock<ILogger<EmailService>>();
         _mockEmailRepository = new Mock<IEmailRepository>();
 
-        var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(@"appsettings.Development.json", false, false)
-            .AddEnvironmentVariables()
-            .Build();
 
-        var client = new GovNotifyClient(new Mock<ILogger<GovNotifyClient>>().Object, config);
+        var configuration = fixture.Configuration;
+
+        var client = new GovNotifyClient(new Mock<ILogger<GovNotifyClient>>().Object, configuration);
 
         _service = new EmailService(logger.Object, client, _mockEmailRepository.Object);
     }

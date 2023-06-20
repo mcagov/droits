@@ -17,11 +17,11 @@ public class EmailServiceUnitTests
         Mock<IEmailRepository> mockEmailRepository = new Mock<IEmailRepository>();
 
         _service = new EmailService(
-            mockLogger.Object, 
+            mockLogger.Object,
             mockClient.Object,
             mockEmailRepository.Object);
     }
-    
-    
-    
+
+
+
 }

@@ -3,29 +3,49 @@ name: Testing backoffice
 on:
   workflow_call:
     inputs:
+      environment:
+          description: >
+            The environment to which the application should be deployed.  Must be one of development/staging/production
+            and must match the terraform_workspace input.
+          type: string
+          required: true
       dotnet-version:
         description: The dotnet version to use, e.g. '7.0.x'
         required: true
         type: string
+    secrets:
+      env_file:
+        description: The contents of the environment file
+        required: true
 
 defaults:
   run:
     working-directory: backoffice
 
 jobs:
+
   unit_tests:
     name: Backoffice unit tests
     runs-on: ubuntu-latest
-
+    environment: ${{ inputs.environment }}
     steps:
     - uses: actions/checkout@master
     - name: Setup dotnet
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ inputs.dotnet-version }}
+
     - name: Install dependencies
       run: dotnet restore
+
     - name: Build
       run: dotnet build
+
+    - name: Generate appsettings.json
+      env:
+        APPSETTINGS_JSON: ${{ secrets.env_file }}
+      run: |
+          echo -e "${APPSETTINGS_JSON}" > src/appsettings.json
+
     - name: Run tests
       run: dotnet test
