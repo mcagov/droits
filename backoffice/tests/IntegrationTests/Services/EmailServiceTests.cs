@@ -22,6 +22,7 @@ public class EmailServiceTests : IClassFixture<TestFixture>
         var logger = new Mock<ILogger<EmailService>>();
         _mockEmailRepository = new Mock<IEmailRepository>();
 
+
         var configuration = fixture.Configuration;
 
         var client = new GovNotifyClient(new Mock<ILogger<GovNotifyClient>>().Object, configuration);
@@ -40,8 +41,8 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Wreckage Found!",
             Body = "This is a test",
-            DateCreated = _todaysDate,
-            DateLastModified = _todaysDate
+            Created = _todaysDate,
+            LastModified = _todaysDate
         };
 
         _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(Task.FromResult(testEmail));
@@ -62,8 +63,8 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Wreckage Found!",
             Body = "This is a test",
-            DateCreated = _todaysDate,
-            DateLastModified = _todaysDate
+            Created = _todaysDate,
+            LastModified = _todaysDate
         };
 
         _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(Task.FromResult(testEmail));
@@ -84,8 +85,8 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Wreckage Found!",
             Body = "This is a test",
-            DateCreated = _todaysDate,
-            DateLastModified = _todaysDate
+            Created = _todaysDate,
+            LastModified = _todaysDate
         };
 
         _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(Task.FromResult(testEmail));
@@ -107,8 +108,8 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Wreckage Found!",
             Body = "This is a test",
-            DateCreated = _todaysDate,
-            DateLastModified = _todaysDate
+            Created = _todaysDate,
+            LastModified = _todaysDate
         };
 
         _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(Task.FromResult(testEmail));
@@ -127,8 +128,8 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             Recipient = "barry@gmail.com",
             Subject = "Shipwreck",
             Body = "I found an old ship on the beach",
-            DateCreated = _todaysDate,
-            DateLastModified = _todaysDate
+            Created = _todaysDate,
+            LastModified = _todaysDate
         };
 
         Email paintingEmail = new()
@@ -137,8 +138,8 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             Recipient = "denise@gmail.com",
             Subject = "Painting",
             Body = "I found a medieval painting washed up on the shore",
-            DateCreated = _todaysDate,
-            DateLastModified = _todaysDate
+            Created = _todaysDate,
+            LastModified = _todaysDate
         };
 
         Email testEmail = new()
@@ -147,8 +148,8 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Wreckage Found!",
             Body = "This is a test",
-            DateCreated = _todaysDate,
-            DateLastModified = _todaysDate
+            Created = _todaysDate,
+            LastModified = _todaysDate
         };
 
         List<Email> emailsInRepo = new List<Email>()

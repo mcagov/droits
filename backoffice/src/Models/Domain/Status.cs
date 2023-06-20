@@ -1,12 +1,14 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Droits.Models;
 
 public enum DroitStatus
 {
     Received,
-    InProgress,
+    [Display(Name = "In Progress")]InProgress,
     Closed,
     Unassigned,
-    AwaitingResponse
+    [Display(Name = "Awaiting Response")]AwaitingResponse
 }
 
 public enum WreckStatus

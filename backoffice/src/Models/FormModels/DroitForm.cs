@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Droits.Models;
 
-public class DroitForm
+public class DroitForm : FormModel
 {
     public DroitForm()
     {
@@ -15,7 +15,7 @@ public class DroitForm
         Status = droit.Status;
         ReportedDate = droit.ReportedDate;
         Created = droit.Created;
-        Modified = droit.Modified;
+        Modified = droit.LastModified;
         Reference = droit.Reference;
         IsHazardousFind = droit.IsHazardousFind;
 
@@ -167,7 +167,7 @@ public class DroitForm
         droit.Status = Status;
         droit.ReportedDate = ReportedDate;
         droit.Created = Created;
-        droit.Modified = Modified;
+        droit.LastModified = Modified;
         droit.Reference = Reference;
 
         droit.WreckConstructionDetails = WreckConstructionDetails;
