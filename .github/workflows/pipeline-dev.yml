@@ -31,9 +31,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Generate appsettings.json
         with:
           environment: development
-      - name: Generate appsettings.json
         run: |
             ls -al
             echo ${{ secrets.BACKOFFICE_ENV_FILE }} > test.json
