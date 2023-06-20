@@ -30,6 +30,7 @@ jobs:
     name: Test backoffice
     uses: ./.github/workflows/backoffice-test.yml
     with:
+      environment: ${{ inputs.environment }}
       dotnet-version: "7.0.x"
     secrets:
       env_file: ${{secrets.env_file}}

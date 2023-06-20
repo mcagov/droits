@@ -42,9 +42,11 @@ jobs:
       run: dotnet build
 
     - name: Generate appsettings.json
+      env:
+        APPSETTINGS_JSON: ${{ secrets.env_file }}
       run: |
           ls -al src
-          echo -e "${{ secrets.env_file }}" > src/appsettings.json
+          echo -e "${APPSETTINGS_JSON}" > src/appsettings.json
           ls -al src
 
     - name: Archive AppSettings
