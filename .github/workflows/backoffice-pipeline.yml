@@ -43,7 +43,7 @@ jobs:
       image_tag: ${{ inputs.image_tag }}
       environment: ${{ inputs.environment }}
       working-directory: backoffice
-      env_filename: appsettings.json
+      env_filename: src/appsettings.json
     secrets:
       registry_url: ${{ secrets.registry_url }}
       repository_name: ${{ secrets.repository_name }}
