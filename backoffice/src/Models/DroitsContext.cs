@@ -14,8 +14,9 @@ public partial class DroitsContext : DbContext
     {
     }
 
-    public virtual DbSet<Droit> Droits { get; set; } = null!;
-    public virtual DbSet<Email> Emails { get; set; } = null!;
+    public virtual DbSet<Droit> Droits { get; set; }
+    public virtual DbSet<Wreck> Wrecks { get; set; }
+    public virtual DbSet<Email> Emails { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -27,14 +28,11 @@ public partial class DroitsContext : DbContext
         {
             entity.ToTable("droits");
 
-            entity.Property(e => e.Id)
-                .HasColumnName("id");
-
             entity.Property(e => e.Id);
             entity.Property(e => e.Status);
             entity.Property(e => e.ReportedDate);
             entity.Property(e => e.Created);
-            entity.Property(e => e.Modified);
+            entity.Property(e => e.LastModified);
             entity.Property(e => e.Reference);
             entity.Property(e => e.IsHazardousFind);
 
@@ -72,24 +70,41 @@ public partial class DroitsContext : DbContext
             entity.Property(e => e.RecoveredFrom);
             entity.Property(e => e.ImportedFromLegacy);
         });
-        
+
+
+        modelBuilder.Entity<Wreck>(entity =>
+        {
+            entity.ToTable("wrecks");
+
+            entity.Property(e => e.Id);
+            entity.Property(e => e.Status);
+            entity.Property(e => e.Name);
+            entity.Property(e => e.DateOfLoss);
+            entity.Property(e => e.IsWarWreck);
+            entity.Property(e => e.IsAnAircraft);
+            entity.Property(e => e.Latitude);
+            entity.Property(e => e.Longitude);
+            entity.Property(e => e.IsProtectedSite);
+            entity.Property(e => e.ProtectionLegislation);
+            entity.Property(e => e.Created);
+            entity.Property(e => e.LastModified);
+
+        });
+
         modelBuilder.Entity<Email>(entity =>
         {
             entity.ToTable("emails");
-
-            entity.Property(e => e.Id)
-                .HasColumnName("id");
 
             entity.Property(e => e.Id);
             entity.Property(e => e.Subject);
             entity.Property(e => e.Body);
             entity.Property(e => e.DateSent);
             entity.Property(e => e.Recipient);
-            entity.Property(e => e.DateCreated);
-            entity.Property(e => e.DateLastModified);
+            entity.Property(e => e.Created);
+            entity.Property(e => e.LastModified);
             entity.Property(e => e.Type);
         });
-        
+
         OnModelCreatingPartial(modelBuilder);
     }
 

@@ -6,7 +6,7 @@ public class Wreck
 
     public WreckStatus Status { get; set; } = WreckStatus.Active;
     public string Name { get; set; } = string.Empty;
-    public DateTime DateOfLoss { get; set; }
+    public DateTime? DateOfLoss { get; set; }
 
     public bool IsWarWreck { get; set; } = false;
     public bool IsAnAircraft { get; set; } = false;
@@ -17,5 +17,5 @@ public class Wreck
     public string? ProtectionLegislation { get; set; }
 
     public DateTime Created { get; set; }
-    public DateTime Modified { get; set; }
+    public DateTime LastModified { get; set; }
 }

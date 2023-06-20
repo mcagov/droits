@@ -39,15 +39,35 @@ public class DroitController : Controller
     public IActionResult Add()
     {
         var model = new DroitForm();
+        return View(nameof(Edit),model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Edit(Guid id)
+    {
+        var droit = await _service.GetDroitAsync(id);
+
+        if(droit == null) return NotFound();
+
+        var model = new DroitForm(droit);
+
         return View(model);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Create(DroitForm form)
-    {
-        var droit = form.ApplyChanges(new Droit());
 
-        await _service.AddDroitAsync(droit);
+    [HttpPost]
+    public async Task<IActionResult> Save(DroitForm form)
+    {
+        var droit = new Droit();
+
+        if(form.Id != default(Guid)){
+            droit = await _service.GetDroitAsync(form.Id);
+            if(droit == null) return NotFound();
+        }
+
+        droit = form.ApplyChanges(droit);
+
+        await _service.SaveDroitAsync(droit);
         return RedirectToAction(nameof(Index));
     }
 }

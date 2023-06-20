@@ -9,6 +9,7 @@ public class Email
     public EmailType Type { get; set; } = EmailType.CustomEmail;
     public Guid SenderUserId { get; set; }
     public DateTime? DateSent { get; set; }
-    public DateTime DateCreated { get; set; }
-    public DateTime DateLastModified { get; set; }
+    public DateTime Created { get; set; }
+    public DateTime LastModified { get; set; }
+
 }

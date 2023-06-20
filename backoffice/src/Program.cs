@@ -20,6 +20,9 @@ builder.Services.AddScoped<IGovNotifyClient, GovNotifyClient>();
 builder.Services.AddScoped<IDroitRepository, DroitRepository>();
 builder.Services.AddScoped<IDroitService, DroitService>();
 
+builder.Services.AddScoped<IWreckRepository, WreckRepository>();
+builder.Services.AddScoped<IWreckService, WreckService>();
+
 builder.Services.AddGovUkFrontend();
 
 
