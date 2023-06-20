@@ -31,6 +31,9 @@ jobs:
     uses: ./.github/workflows/backoffice-test.yml
     with:
       dotnet-version: "7.0.x"
+    secrets:
+      env_file: ${{secrets.env_file}}
+
 
   publish:
     name: Publish backoffice
