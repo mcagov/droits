@@ -58,7 +58,7 @@ public class EmailController : Controller
         catch (Exception e)
         {
             _logger.LogError(e, "Email not found");
-            TempData["NotFoundMessage"] = "Email not found";
+            TempData["ErrorMessage"] = "Email not found";
         }
         
         return RedirectToAction(nameof(Index));
@@ -71,7 +71,7 @@ public class EmailController : Controller
 
         if (!ModelState.IsValid)
         {
-            TempData["Error"] = "TODO - Populate with actual error.";
+            TempData["ErrorMessage"] = "One or more form fields are incorrect or missing";
             return View(nameof(Compose), form);
         }
         
