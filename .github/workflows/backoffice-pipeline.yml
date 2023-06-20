@@ -36,20 +36,20 @@ jobs:
       env_file: ${{secrets.env_file}}
 
 
-  # publish:
-  #   name: Publish backoffice
-  #   needs: [test]
-  #   uses: ./.github/workflows/publish.yml
-  #   with:
-  #     image_tag: ${{ inputs.image_tag }}
-  #     environment: ${{ inputs.environment }}
-  #     working-directory: backoffice
-  #     env_filename: src/appsettings.json
-  #   secrets:
-  #     registry_url: ${{ secrets.registry_url }}
-  #     repository_name: ${{ secrets.repository_name }}
-  #     aws_role_arn: ${{ secrets.aws_role_arn }}
-  #     env_file: ${{secrets.env_file}}
+  publish:
+    name: Publish backoffice
+    needs: [test]
+    uses: ./.github/workflows/publish.yml
+    with:
+      image_tag: ${{ inputs.image_tag }}
+      environment: ${{ inputs.environment }}
+      working-directory: backoffice
+      env_filename: src/appsettings.json
+    secrets:
+      registry_url: ${{ secrets.registry_url }}
+      repository_name: ${{ secrets.repository_name }}
+      aws_role_arn: ${{ secrets.aws_role_arn }}
+      env_file: ${{secrets.env_file}}
 
 
 
