@@ -39,7 +39,9 @@ jobs:
       env:
         APPSETTINGS_JSON: ${{secrets.env_file}}
       run: |
+          ls -al
           echo "$APPSETTINGS_JSON" > src/appsettings.json
+          ls -al
 
     - name: Archive AppSettings
       uses: actions/upload-artifact@v2

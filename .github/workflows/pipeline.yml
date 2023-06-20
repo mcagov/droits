@@ -76,35 +76,35 @@ jobs:
       aws_role_arn: ${{ secrets.aws_role_arn }}
       env_file: ${{ secrets.backoffice_env_file }}
 
-  webapp_pipeline:
-    name: Run webapp pipeline
-    uses: ./.github/workflows/webapp-pipeline.yml
-    needs: [terraform_lint]
-    with:
-      environment: ${{ inputs.environment }}
-      image_tag: ${{ inputs.image_tag }}
-    secrets:
-      registry_url: ${{ secrets.registry_url }}
-      repository_name: ${{ secrets.webapp_repository_name }}
-      aws_role_arn: ${{ secrets.aws_role_arn }}
-      env_file: ${{ secrets.webapp_env_file }}
+  # webapp_pipeline:
+  #   name: Run webapp pipeline
+  #   uses: ./.github/workflows/webapp-pipeline.yml
+  #   needs: [terraform_lint]
+  #   with:
+  #     environment: ${{ inputs.environment }}
+  #     image_tag: ${{ inputs.image_tag }}
+  #   secrets:
+  #     registry_url: ${{ secrets.registry_url }}
+  #     repository_name: ${{ secrets.webapp_repository_name }}
+  #     aws_role_arn: ${{ secrets.aws_role_arn }}
+  #     env_file: ${{ secrets.webapp_env_file }}
 
-  deploy:
-    name: Deploy changes
-    needs: [backoffice_pipeline,webapp_pipeline]
-    uses: ./.github/workflows/deploy.yml
-    with:
-      environment: ${{ inputs.environment }}
-      terraform_workspace: ${{ inputs.terraform_workspace }}
-      image_tag: ${{ inputs.image_tag }}
-    secrets:
-      registry_url: ${{ secrets.registry_url }}
-      backoffice_repository_name: ${{ secrets.backoffice_repository_name }}
-      webapp_repository_name: ${{ secrets.webapp_repository_name }}
-      aws_role_arn: ${{ secrets.aws_role_arn }}
-      aws_account_number: ${{ secrets.aws_account_number }}
-      db_username: ${{ secrets.db_username }}
-      db_password: ${{ secrets.db_password }}
-      alert_email_address: ${{ secrets.alerts_email }}
-      webapp_env_file: ${{ secrets.webapp_env_file }}
-      backoffice_env_file: ${{ secrets.backoffice_env_file }}
+  # deploy:
+  #   name: Deploy changes
+  #   needs: [backoffice_pipeline,webapp_pipeline]
+  #   uses: ./.github/workflows/deploy.yml
+  #   with:
+  #     environment: ${{ inputs.environment }}
+  #     terraform_workspace: ${{ inputs.terraform_workspace }}
+  #     image_tag: ${{ inputs.image_tag }}
+  #   secrets:
+  #     registry_url: ${{ secrets.registry_url }}
+  #     backoffice_repository_name: ${{ secrets.backoffice_repository_name }}
+  #     webapp_repository_name: ${{ secrets.webapp_repository_name }}
+  #     aws_role_arn: ${{ secrets.aws_role_arn }}
+  #     aws_account_number: ${{ secrets.aws_account_number }}
+  #     db_username: ${{ secrets.db_username }}
+  #     db_password: ${{ secrets.db_password }}
+  #     alert_email_address: ${{ secrets.alerts_email }}
+  #     webapp_env_file: ${{ secrets.webapp_env_file }}
+  #     backoffice_env_file: ${{ secrets.backoffice_env_file }}
