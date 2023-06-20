@@ -31,7 +31,7 @@ jobs:
 
     - name: Generate appsettings.json
       run: |
-        echo $ENV_FILE > $ENV_FILENAME > src/appsettings.json
+        echo $ENV_FILE > src/appsettings.json
 
     - name: Install dependencies
       run: dotnet restore
