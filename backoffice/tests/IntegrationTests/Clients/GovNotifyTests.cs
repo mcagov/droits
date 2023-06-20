@@ -3,22 +3,19 @@ using Droits.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
+using tests;
 
 namespace Droits.Tests;
-public class GovNotifyTests
+public class GovNotifyTests : IClassFixture<TestFixture>
 {
     private readonly IGovNotifyClient _client;
     private readonly IConfiguration _configuration;
 
-    public GovNotifyTests(){
+    public GovNotifyTests(TestFixture fixture){
 
         var logger = new Mock<ILogger<GovNotifyClient>>();
 
-        _configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(@"appsettings.json", false, false)
-            .AddEnvironmentVariables()
-            .Build();
+        _configuration = fixture.Configuration;
 
         _client = new GovNotifyClient(logger.Object, _configuration);
     }
