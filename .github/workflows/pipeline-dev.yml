@@ -29,6 +29,7 @@ jobs:
     name: Generate File
     runs-on: ubuntu-latest
     env:
+      environment: development
       BACKOFFICE_ENV_FILE: ${{ secrets.BACKOFFICE_ENV_FILE }}
     steps:
       - name: Checkout repository
