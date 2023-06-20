@@ -3,6 +3,10 @@
     ViewData["Title"] = $"Emails ({Model.EmailList.Count})";
 }
 
+@{ 
+    await Html.RenderPartialAsync("_MessageBanner");
+}
+
 <h4 class="display-8">@ViewData["Title"]</h4>
 
 <table class="table">

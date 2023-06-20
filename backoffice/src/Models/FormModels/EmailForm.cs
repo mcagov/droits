@@ -1,5 +1,7 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Models;
 
@@ -17,9 +19,11 @@ public class EmailForm
         Body = email.Body;
     }
     public Guid EmailId { get; set; }
-    [Required]
+    [BindProperty]
+    [Required(ErrorMessage = "Email is required")]
+    [EmailAddress(ErrorMessage = "Invalid email address")]
     public string Recipient { get; set; } = string.Empty;
-    [Required]
+    [Required(ErrorMessage = "Subject is required")]
     public string Subject { get; set; } = string.Empty;
     [Required]
     [DataType(DataType.MultilineText)]

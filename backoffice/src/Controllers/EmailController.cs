@@ -50,16 +50,33 @@ public class EmailController : Controller
     [HttpGet]
     public async Task<IActionResult> SendEmail(Guid id)
     {
-        await _service.SendEmailAsync(id);
+        try
+        {
+            var email = await _service.SendEmailAsync(id);
+            if (email != null)
+            {
+                TempData["SuccessMessage"] = "Email sent successfully";
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Email not found");
+            TempData["ErrorMessage"] = "Email not found";
+        }
         
-        //Add feedback (banner or something) to show sent. 
         return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
     public async Task<IActionResult> SaveEmail(EmailForm form)
     {
-        Email email; 
+        Email email;
+
+        if (!ModelState.IsValid)
+        {
+            TempData["ErrorMessage"] = "An error occurred while saving the email";
+            return View(nameof(Compose), form);
+        }
         
         if (form.EmailId == default(Guid))
         {

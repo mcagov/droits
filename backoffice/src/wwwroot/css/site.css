@@ -50,3 +50,7 @@ div.form-sections fieldset {
     outline: none;
     background: #fff;
 }
+
+.input-validation-error{
+    border-color: #dc3545;
+}
