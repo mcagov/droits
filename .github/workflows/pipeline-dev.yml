@@ -6,36 +6,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  # run_pipeline:
-  #   name: Deploying to Development
-  #   uses: ./.github/workflows/pipeline.yml
-  #   with:
-  #     environment: development
-  #     terraform_workspace: dev
-  #     image_tag: ${{ github.sha }}
-  #   secrets:
-  #     registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
-  #     backoffice_repository_name: ${{ secrets.BACKOFFICE_ECR_REPOSITORY_NAME }}
-  #     webapp_repository_name: ${{ secrets.WEBAPP_ECR_REPOSITORY_NAME }}
-  #     aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
-  #     aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
-  #     db_username: ${{ secrets.DB_USERNAME }}
-  #     db_password: ${{ secrets.DB_PASSWORD }}
-  #     webapp_env_file: ${{ secrets.WEBAPP_ENV_FILE }}
-  #     backoffice_env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
-  #     alerts_email: ${{ secrets.ALERTS_EMAIL }}
-
-  writing_file:
-    name: Generate File
-    runs-on: ubuntu-latest
-    environment: development
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Generate appsettings.json
-        env:
-          BACKOFFICE_ENV_FILE: ${{ secrets.BACKOFFICE_ENV_FILE }}
-        run: |
-            ls -al
-            echo "${BACKOFFICE_ENV_FILE}" > test.json
-            ls -al
+  run_pipeline:
+    name: Deploying to Development
+    uses: ./.github/workflows/pipeline.yml
+    with:
+      environment: development
+      terraform_workspace: dev
+      image_tag: ${{ github.sha }}
+    secrets:
+      registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
+      backoffice_repository_name: ${{ secrets.BACKOFFICE_ECR_REPOSITORY_NAME }}
+      webapp_repository_name: ${{ secrets.WEBAPP_ECR_REPOSITORY_NAME }}
+      aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
+      aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
+      db_username: ${{ secrets.DB_USERNAME }}
+      db_password: ${{ secrets.DB_PASSWORD }}
+      webapp_env_file: ${{ secrets.WEBAPP_ENV_FILE }}
+      backoffice_env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
+      alerts_email: ${{ secrets.ALERTS_EMAIL }}
