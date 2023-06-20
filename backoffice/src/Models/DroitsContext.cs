@@ -28,9 +28,6 @@ public partial class DroitsContext : DbContext
         {
             entity.ToTable("droits");
 
-            entity.Property(e => e.Id)
-                .HasColumnName("id");
-
             entity.Property(e => e.Id);
             entity.Property(e => e.Status);
             entity.Property(e => e.ReportedDate);
@@ -79,20 +76,25 @@ public partial class DroitsContext : DbContext
         {
             entity.ToTable("wrecks");
 
-            entity.Property(e => e.Id)
-                .HasColumnName("id");
-
             entity.Property(e => e.Id);
             entity.Property(e => e.Status);
+            entity.Property(e => e.Name);
+            entity.Property(e => e.DateOfLoss);
+            entity.Property(e => e.IsWarWreck);
+            entity.Property(e => e.IsAnAircraft);
+            entity.Property(e => e.Latitude);
+            entity.Property(e => e.Longitude);
+            entity.Property(e => e.IsProtectedSite);
+            entity.Property(e => e.ProtectionLegislation);
+            entity.Property(e => e.Created);
+            entity.Property(e => e.LastModified);
 
         });
+
 
         modelBuilder.Entity<Email>(entity =>
         {
             entity.ToTable("emails");
-
-            entity.Property(e => e.Id)
-                .HasColumnName("id");
 
             entity.Property(e => e.Id);
             entity.Property(e => e.Subject);

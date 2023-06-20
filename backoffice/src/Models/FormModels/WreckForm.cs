@@ -52,16 +52,6 @@ public class WreckForm : FormModel
     [DisplayName("Protection Legislation")]
     public string? ProtectionLegislation { get; set; }
 
-    // public List<SelectListItem> StatusOptions => new List<SelectListItem>
-    //                     {
-    //                         new() { Text = "Received", Value = "Received" },
-    //                         new() { Text = "In Progress", Value = "InProgress" },
-    //                         new() { Text = "Closed", Value = "Closed" },
-    //                         new() { Text = "Unassigned", Value = "Unassigned" },
-    //                         new() { Text = "Awaiting Response", Value = "AwaitingResponse" }
-    //                     };
-
-
     public Wreck ApplyChanges(Wreck wreck)
     {
 
