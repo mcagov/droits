@@ -8,6 +8,7 @@ on:
         required: true
         type: string
       env_file:
+        type: string
         description: The contents of the environment file
         required: true
 
@@ -26,7 +27,7 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ inputs.dotnet-version }}
-        env-file: ${{ inputs.env-file }}
+        env-file: ${{ inputs.env_file }}
     - name: Install dependencies
       run: dotnet restore
     - name: Build
