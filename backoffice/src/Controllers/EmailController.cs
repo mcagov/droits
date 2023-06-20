@@ -50,10 +50,17 @@ public class EmailController : Controller
     [HttpGet]
     public async Task<IActionResult> SendEmail(Guid id)
     {
-        await _service.SendEmailAsync(id);
+        try
+        {
+            await _service.SendEmailAsync(id);
+            TempData["SuccessMessage"] = "Email sent successfully";
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Email not found");
+            TempData["NotFoundMessage"] = "Email not found";
+        }
         
-        //Add feedback (banner or something) to show sent. 
-        TempData["SuccessMessage"] = "Email sent successfully";
         return RedirectToAction(nameof(Index));
     }
 
