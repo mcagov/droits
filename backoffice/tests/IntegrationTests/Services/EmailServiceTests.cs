@@ -22,6 +22,7 @@ public class EmailServiceTests : IClassFixture<TestFixture>
         var logger = new Mock<ILogger<EmailService>>();
         _mockEmailRepository = new Mock<IEmailRepository>();
 
+
         var configuration = fixture.Configuration;
 
         var client = new GovNotifyClient(new Mock<ILogger<GovNotifyClient>>().Object, configuration);

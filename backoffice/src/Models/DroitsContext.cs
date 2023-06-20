@@ -91,7 +91,6 @@ public partial class DroitsContext : DbContext
 
         });
 
-
         modelBuilder.Entity<Email>(entity =>
         {
             entity.ToTable("emails");
