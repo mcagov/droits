@@ -28,13 +28,13 @@ jobs:
   writing_file:
     name: Generate File
     runs-on: ubuntu-latest
-    env:
-      environment: development
-      BACKOFFICE_ENV_FILE: ${{ secrets.BACKOFFICE_ENV_FILE }}
+    environment: development
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Generate appsettings.json
+        env:
+          BACKOFFICE_ENV_FILE: ${{ secrets.BACKOFFICE_ENV_FILE }}
         run: |
             ls -al
             echo "${BACKOFFICE_ENV_FILE}" > test.json
