@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          environment: development
       - name: Generate appsettings.json
         run: |
             ls -al
