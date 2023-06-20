@@ -10,7 +10,7 @@ public class Droit
     public DroitStatus Status { get; set; } = DroitStatus.Received;
     public DateTime ReportedDate { get; set; } = DateTime.UtcNow;
     public DateTime Created { get; set; } = DateTime.UtcNow;
-    public DateTime Modified { get; set; } = DateTime.UtcNow;
+    public DateTime LastModified { get; set; } = DateTime.UtcNow;
 
 
     // public List<DroitItem> WreckMaterials {get;set;} = new List<DroitItem>();

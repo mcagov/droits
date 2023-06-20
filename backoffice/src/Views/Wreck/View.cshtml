@@ -1,0 +1,29 @@
+﻿@model WreckView
+@{
+    ViewData["Title"] = "View Wreck";
+}
+
+<fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h4 class="govuk-heading-m">@ViewData["Title"]</h4>
+    </legend>
+
+
+    <fieldset class="govuk-fieldset form-section">
+
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.Id, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.Id, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+
+        <div class="govuk-form-group">
+            @Html.LabelFor(m => m.Name, new { @class = "govuk-label" })
+            @Html.DisplayFor(m => m.Name, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+        </div>
+
+    </fieldset>
+
+    </fieldset>
+    <button asp-action="Index">View All</button>
+
+</fieldset>

@@ -23,10 +23,10 @@ public class EmailService : IEmailService
     private readonly IGovNotifyClient _client;
     private readonly ILogger<EmailService> _logger;
     private readonly IEmailRepository _emailRepository;
-    
+
     private const string TemplateDirectory = "Views/Email/Templates" ;
 
-    public EmailService(ILogger<EmailService> logger, 
+    public EmailService(ILogger<EmailService> logger,
         IGovNotifyClient client,
         IEmailRepository emailRepository)
     {
@@ -40,15 +40,15 @@ public class EmailService : IEmailService
         var filename = $"{TemplateDirectory}/{emailType.ToString()}.txt";
 
         using StreamReader streamReader = new(filename, Encoding.UTF8);
-        
+
         var template = await streamReader.ReadToEndAsync();
-        
+
         streamReader.Dispose();
-        
-        return template;    
+
+        return template;
     }
 
-    
+
     public async Task<EmailNotificationResponse> SendEmailAsync(Guid id)
     {
         try
@@ -70,24 +70,16 @@ public class EmailService : IEmailService
     private async Task MarkAsSentAsync(Guid id)
     {
         var sentEmail = await GetEmailByIdAsync(id);
-            
+
         sentEmail.DateSent = DateTime.UtcNow;
         await _emailRepository.UpdateEmailAsync(sentEmail);
     }
 
-    public async Task<List<Email>> GetEmailsAsync()
-    {
-        return await _emailRepository.GetEmailsAsync();
-    }
-    
-    public async Task<List<Email>> GetEmailsForRecipientAsync(string recipient)
-    {
-        return _emailRepository.GetEmailsAsync()
-                .Result
-                .Where(e => e.Recipient.Equals(recipient))
-                .OrderByDescending(e => e.DateLastModified)
-                .ToList();
-    }
+    public async Task<List<Email>> GetEmailsAsync() =>
+        await _emailRepository.GetEmailsAsync();
+
+    public async Task<List<Email>> GetEmailsForRecipientAsync(string recipient) =>
+        await _emailRepository.GetEmailsForRecipientAsync(recipient);
 
     public async Task<Email> SaveEmailAsync(EmailForm emailForm)
     {
@@ -108,7 +100,7 @@ public class EmailService : IEmailService
             throw;
         }
     }
-    
+
     public async Task<Email> UpdateEmailAsync(EmailForm emailForm)
     {
 
@@ -117,11 +109,11 @@ public class EmailService : IEmailService
             _logger.LogError("Email with that ID does not exist");
             throw new EmailNotFoundException();
         }
-        
+
         var emailToUpdate = await GetEmailByIdAsync(emailForm.EmailId);
 
         emailToUpdate = emailForm.ApplyChanges(emailToUpdate);
-            
+
         try
         {
             return await _emailRepository.UpdateEmailAsync(emailToUpdate);

@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Droits.Models;
 
 public enum EmailType
 {
-    ReportAcknowledged,
+    [Display(Name = "Report Acknowledged")]ReportAcknowledged,
     ReportCompleteInformation,
     ReportConfirmed,
     LloydsOfLondonNotification,
