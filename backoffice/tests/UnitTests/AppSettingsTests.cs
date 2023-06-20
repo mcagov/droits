@@ -16,7 +16,6 @@ namespace tests
 
         // Then
         Assert.NotEmpty(fileContents);
-        Assert.Equal("", fileContents);
     }
 
     }
