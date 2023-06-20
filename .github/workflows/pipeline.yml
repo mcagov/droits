@@ -76,6 +76,17 @@ jobs:
       aws_role_arn: ${{ secrets.aws_role_arn }}
       env_file: ${{ secrets.backoffice_env_file }}
 
+  writing_file:
+    name: Generate File
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate appsettings.json
+        run: |
+            ls -al
+            echo -e "${{ secrets.backoffice_env_file }}" > test.json
+            ls -al
+
+
   # webapp_pipeline:
   #   name: Run webapp pipeline
   #   uses: ./.github/workflows/webapp-pipeline.yml
