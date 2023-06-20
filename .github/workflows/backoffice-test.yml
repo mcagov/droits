@@ -30,10 +30,8 @@ jobs:
         dotnet-version: ${{ inputs.dotnet-version }}
 
     - name: Generate appsettings.json
-      env:
-        ENV_FILE: ${{secrets.env_file}}
       run: |
-        echo $ENV_FILE > src/appsettings.json
+        echo "${{secrets.env_file}}" > src/appsettings.json
 
     - name: Install dependencies
       run: dotnet restore
