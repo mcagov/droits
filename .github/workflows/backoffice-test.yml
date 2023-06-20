@@ -31,7 +31,7 @@ jobs:
 
     - name: Generate appsettings.json
       run: |
-        echo "${{secrets.env_file}}" > src/appsettings.json
+        echo -n "${{secrets.env_file}}" > src/appsettings.json
 
     - name: Install dependencies
       run: dotnet restore
