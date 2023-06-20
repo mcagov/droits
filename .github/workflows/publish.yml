@@ -17,7 +17,8 @@ on:
           and must match the terraform_workspace input.
         type: string
         required: true
-        env_filename:
+      env_filename:
+          type: string
           description: The name of the environment file
           required: true
     secrets:
