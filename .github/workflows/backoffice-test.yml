@@ -40,8 +40,12 @@ jobs:
         APPSETTINGS_JSON: ${{secrets.env_file}}
       run: |
           echo "$APPSETTINGS_JSON" > src/appsettings.json
-          echo "AppSettings content:"
-          cat src/appsettings.json | sed 's/^/  /'
+
+    - name: Archive AppSettings
+      uses: actions/upload-artifact@v2
+      with:
+        name: appsettings
+        path: src/appsettings.json
 
     - name: Run tests
       run: dotnet test
