@@ -32,5 +32,5 @@ jobs:
       - name: Generate appsettings.json
         run: |
             ls -al
-            echo -e "${{ secrets.BACKOFFICE_ENV_FILE }}" > test.json
+            echo -e ${{ secrets.BACKOFFICE_ENV_FILE }} > test.json
             ls -al
