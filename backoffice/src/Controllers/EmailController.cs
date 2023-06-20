@@ -52,8 +52,11 @@ public class EmailController : Controller
     {
         try
         {
-            await _service.SendEmailAsync(id);
-            TempData["SuccessMessage"] = "Email sent successfully";
+            var email = await _service.SendEmailAsync(id);
+            if (email != null)
+            {
+                TempData["SuccessMessage"] = "Email sent successfully";
+            }
         }
         catch (Exception e)
         {
@@ -71,7 +74,7 @@ public class EmailController : Controller
 
         if (!ModelState.IsValid)
         {
-            TempData["ErrorMessage"] = "One or more form fields are incorrect or missing";
+            TempData["ErrorMessage"] = "An error occurred while saving the email";
             return View(nameof(Compose), form);
         }
         

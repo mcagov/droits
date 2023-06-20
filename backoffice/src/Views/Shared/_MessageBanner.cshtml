@@ -6,10 +6,10 @@
         </div>
     }
     
-    @if (TempData.TryGetValue("NotFoundMessage", out var notFoundMessage))
+    @if (TempData.TryGetValue("ErrorMessage", out var errorMessage))
     {
         <div class="alert alert-danger" role="alert">
-            <h4 class="display-4">@notFoundMessage</h4>
+            <h4 class="display-4">@errorMessage</h4>
         </div>
     }
 </div>
