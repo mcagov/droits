@@ -6,7 +6,7 @@ using Droits.Services;
 
 namespace Droits.Controllers;
 
-public class EmailController : Controller
+public class EmailController : BaseController
 {
     private readonly ILogger<EmailController> _logger;
     private readonly IEmailService _service;
@@ -63,13 +63,13 @@ public class EmailController : Controller
             var email = await _service.SendEmailAsync(id);
             if (email != null)
             {
-                TempData["SuccessMessage"] = "Email sent successfully";
+                AddSuccessMessage("Email sent successfully");
             }
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Email not found");
-            TempData["ErrorMessage"] = "Email not found";
+            AddErrorMessage("Email not found");
         }
 
         return RedirectToAction(nameof(Index));
@@ -82,7 +82,7 @@ public class EmailController : Controller
 
         if (!ModelState.IsValid)
         {
-            TempData["ErrorMessage"] = "An error occurred while saving the email";
+            AddErrorMessage("An error occurred while saving the email");
             return View(nameof(Compose), form);
         }
 
