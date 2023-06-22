@@ -1,11 +1,8 @@
 {
-  "name": "src",
+  "name": "droits_backoffice",
   "version": "1.0.0",
-  "description": "",
+  "description": "DROITS Backoffice",
   "main": "webpack.config.js",
-  "scripts": {
-    "watch": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
