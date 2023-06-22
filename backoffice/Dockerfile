@@ -3,13 +3,19 @@ ENV ASPNETCORE_URLS="http://+:5000"
 EXPOSE 5000
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /src
+
+WORKDIR /app
+
 COPY . ./
+
+WORKDIR /app/src
+
+RUN ls -al
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
     apt-get install -y nodejs && \
-    npm install
+    npm install --production
 
 
 RUN dotnet restore
