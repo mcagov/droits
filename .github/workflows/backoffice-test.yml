@@ -38,7 +38,7 @@ jobs:
     - name: Build frontend assets with webpack
       run: |
         cd src
-        npm ci
+        npm install --production
         npx webpack
 
     - name: Install dependencies
