@@ -15,4 +15,15 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Update="Views\Email\Templates\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <Content Remove="wwwroot/css/**/*" />
+    </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="npx webpack --config webpack.config.js" />
+    </Target>
+
 </Project>

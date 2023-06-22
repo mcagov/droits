@@ -6,14 +6,14 @@
 
 
 <div class="row align-items-start">
-    
+
     @{
         await Html.RenderPartialAsync("_MessageBanner");
     }
-    
+
     <div class="col-lg-8">
 
-        <h4 class="display-8">@ViewData["Title"]</h4>
+        <h4>@ViewData["Title"]</h4>
 
         <form asp-action="SaveEmail" method="POST">
             @Html.HiddenFor(m => m.EmailId)
@@ -35,14 +35,22 @@
                 @Html.EditorFor(m => m.Body, new { htmlAttributes = new { rows = 10, @class = "form-control email-body" } })
             </div>
 
-            <button class="btn btn-success" type="submit">Save</button>
+            <div class="row">
+                <div class="col">
+                    <div class="mt-4 float-end">
+                        <a type="button" class="btn btn-secondary" asp-action="Index">Cancel</a>
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </div>
+            </div>
+
 
         </form>
     </div>
 
     <div class="col-lg-4">
 
-        <h4 class="display-8">Formatting</h4>
+        <h4>Formatting</h4>
 
         <p>To put a title in your template, use a hash:</p>
 
@@ -63,7 +71,7 @@
         <p>---</p>
         <p>Second paragraph</p>
 
-        <h4 class="display-8">Personalisation</h4>
+        <h4>Personalisation</h4>
         <p>Use double brackets to personalise your message:</p>
 
         <p>Hello ((first name)), your reference is ((ref number))</p>

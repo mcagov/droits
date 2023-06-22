@@ -1,0 +1,74 @@
+// Colors
+$primary: #073e6b;
+$secondary: #8ac6d0;
+$success: #2a9d8f;
+$info: #8ac6d0;
+$warning: #f4a261;
+$danger: rgb(205, 68, 53);
+
+// Typography
+$body-bg: #ffffff;
+$body-color: #333333;
+$headings-color: $primary;
+$link-color: $primary;
+$link-hover-color: $secondary;
+$text-color: $body-color;
+
+// Spacing
+$spacer: 1rem;
+$spacer-half: $spacer / 2;
+$spacer-2x: $spacer * 2;
+$spacer-3x: $spacer * 3;
+
+// Container
+$container-max-widths: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+// Navbar
+$navbar-bg: $primary;
+$navbar-text-color: #fff;
+$navbar-link-color: #fff;
+$navbar-link-hover-color: rgba(255, 255, 255, 0.75);
+$navbar-brand-color: #fff;
+$navbar-brand-hover-color: rgba(255, 255, 255, 0.75);
+
+// Buttons
+$btn-primary-bg: $primary;
+$btn-primary-border: $primary;
+$btn-primary-color: #fff;
+$btn-primary-hover-bg: $secondary;
+$btn-secondary-bg: $secondary;
+$btn-secondary-border: $secondary;
+$btn-secondary-color: #fff;
+$btn-secondary-hover-bg: $primary;
+
+// Cards
+$card-border-radius: 0.25rem;
+$card-bg: #fff;
+$card-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+// Forms
+$input-border-radius: 0.25rem;
+$input-bg: #fff;
+$input-color: $body-color;
+$input-placeholder-color: rgba($body-color, 0.5);
+$input-focus-border-color: $secondary;
+$input-focus-box-shadow: 0 0 0 0.2rem rgba($secondary, 0.25);
+$input-disabled-bg: #f8f9fa;
+$input-disabled-color: rgba($body-color, 0.5);
+
+// Alerts
+$alert-success-bg: $success;
+$alert-info-bg: $info;
+$alert-warning-bg: $warning;
+$alert-danger-bg: $danger;
+$alert-color: #fff;
+
+// Tables
+$table-head-bg: $primary;
+$table-head-color: #fff;
+$table-hover-bg: rgba($primary, 0.1);
