@@ -31,20 +31,28 @@ public class EmailController : Controller
     [HttpGet]
     public async Task<IActionResult> Compose(Guid id)
     {
+        if (id != default(Guid))
+        {
+            var email = await _service.GetEmailByIdAsync(id);
+            return View(new EmailForm(email));
+        }
+
+
         //This should be done elsewhere.
         var emailType = EmailType.TestingDroitsv2;
 
-        if (id == default(Guid))
-        {
+        try{
+            var templateBody = await _service.GetTemplateAsync(emailType);
+
             return View(new EmailForm()
             {
-                Body = await _service.GetTemplateAsync(emailType)
+                Body = templateBody
             });
+
+        }catch(FileNotFoundException e){
+            TempData["ErrorMessage"] = "There was an error creating a new email";
+            return RedirectToAction(nameof(Index));
         }
-
-        var email = await _service.GetEmailByIdAsync(id);
-
-        return View(new EmailForm(email));
     }
 
     [HttpGet]

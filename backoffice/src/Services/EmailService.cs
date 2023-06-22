@@ -37,15 +37,14 @@ public class EmailService : IEmailService
 
     public async Task<string> GetTemplateAsync(EmailType emailType)
     {
-        var filename = $"{TemplateDirectory}/{emailType.ToString()}.txt";
+        var templatePath = Path.Combine(AppContext.BaseDirectory,TemplateDirectory,$"{emailType.ToString()}.txt");
 
-        using StreamReader streamReader = new(filename, Encoding.UTF8);
+        if(!File.Exists(templatePath)){
+            _logger.LogError($"Template file could not be found at: {templatePath}");
+            throw new FileNotFoundException("Template file could not be found");
+        }
 
-        var template = await streamReader.ReadToEndAsync();
-
-        streamReader.Dispose();
-
-        return template;
+        return await File.ReadAllTextAsync(templatePath);
     }
 
 
