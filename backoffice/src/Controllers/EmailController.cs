@@ -50,8 +50,8 @@ public class EmailController : BaseController
                 Body = templateBody
             });
 
-        }catch(FileNotFoundException e){
-            SetErrorMessage("There was an error creating a new email");
+        }catch(FileNotFoundException){
+            AddErrorMessage("There was an error creating a new email");
             return RedirectToAction(nameof(Index));
         }
     }
