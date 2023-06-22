@@ -3,164 +3,221 @@
     ViewData["Title"] = "View Droit";
 }
 
-<fieldset class="govuk-fieldset">
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-        <h4 class="govuk-heading-m">@ViewData["Title"]</h4>
-    </legend>
+<fieldset>
+    <legend class="display-4">@ViewData["Title"]</legend>
 
+    <div class="accordion" id="formGroupsAccordion">
 
-    <fieldset class="govuk-fieldset form-section">
+        <div class="card">
+            <div class="card-header" id="generalInfoHeading">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#generalInfoCollapse" aria-expanded="true" aria-controls="generalInfoCollapse">
+                        General Information
+                    </button>
+                </h5>
+            </div>
 
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.Id, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.Id, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
+            <div id="generalInfoCollapse" class="collapse show" aria-labelledby="generalInfoHeading" data-parent="#formGroupsAccordion">
+                <div class="card-body">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Id, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.Id)</div>
+                    </div>
 
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.Reference, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.Reference, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.Status, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.Status, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.ReportedDate, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.ReportedDate, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.Created, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.Created, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.LastModified, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.LastModified, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Reference, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.Reference)</div>
+                    </div>
 
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.IsHazardousFind, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.IsHazardousFind, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-    </fieldset>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Status, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.Status)</div>
+                    </div>
 
-    <fieldset class="govuk-fieldset form-section">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ReportedDate, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.ReportedDate)</div>
+                    </div>
 
-        <label class="govuk-label--m">Wreck</label>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Created, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.Created)</div>
+                    </div>
 
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.WreckVesselName, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.WreckVesselName, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.WreckConstructionDetails, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.WreckConstructionDetails, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.WreckVesselYearConstructed, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.WreckVesselYearConstructed, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.WreckVesselYearSunk, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.WreckVesselYearSunk, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.LastModified, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.LastModified)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.IsHazardousFind, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.IsHazardousFind)</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-    </fieldset>
-    <fieldset class="govuk-fieldset form-section">
-        <label class="govuk-label--m">Location</label>
+        <div class="card">
+            <div class="card-header" id="wreckInfoHeading">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#wreckInfoCollapse" aria-expanded="false" aria-controls="wreckInfoCollapse">
+                        Wreck Information
+                    </button>
+                </h5>
+            </div>
 
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.Latitude, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.Latitude, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.Longitude, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.Longitude, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.InUkWaters, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.InUkWaters, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.LocationRadius, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.LocationRadius, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.Depth, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.Depth, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.LocationDescription, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.LocationDescription, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-    </fieldset>
-    <fieldset class="govuk-fieldset form-section">
+            <div id="wreckInfoCollapse" class="collapse" aria-labelledby="wreckInfoHeading" data-parent="#formGroupsAccordion">
+                <div class="card-body">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.WreckConstructionDetails, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.WreckConstructionDetails)</div>
+                    </div>
 
-        <label class="govuk-label--m">Salvage</label>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.WreckVesselName, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.WreckVesselName)</div>
+                    </div>
 
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.SalvageAwardClaimed, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.SalvageAwardClaimed, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.ServicesDescription, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.ServicesDescription, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.ServicesDuration, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.ServicesDuration, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.ServicesEstimatedCost, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.ServicesEstimatedCost, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.MMOLicenceRequired, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.MMOLicenceRequired, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.MMOLicenceProvided, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.MMOLicenceProvided, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.SalvageClaimAwarded, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.SalvageClaimAwarded, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.WreckVesselYearConstructed, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.WreckVesselYearConstructed)</div>
+                    </div>
 
-    </fieldset>
-    <fieldset class="govuk-fieldset form-section">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.WreckVesselYearSunk, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.WreckVesselYearSunk)</div>
+                    </div>
 
-        <label class="govuk-label--m">Legacy</label>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Latitude, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.Latitude)</div>
+                    </div>
 
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.District, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.District, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.LegacyFileReference, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.LegacyFileReference, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.GoodsDischargedBy, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.GoodsDischargedBy, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.DateDelivered, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.DateDelivered, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.Agent, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.Agent, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.RecoveredFrom, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.RecoveredFrom, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
-        </div>
-        <div class="govuk-form-group">
-            @Html.LabelFor(m => m.ImportedFromLegacy, new { @class = "govuk-label" })
-            @Html.DisplayFor(m => m.ImportedFromLegacy, new { htmlAttributes = new { @class = "govuk-input govuk-!-width-full" } })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Longitude, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.Longitude)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.InUkWaters, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.InUkWaters)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.LocationRadius, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.LocationRadius)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Depth, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.Depth)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.LocationDescription, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.LocationDescription)</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-    </fieldset>
-    <button asp-action="Index">View All</button>
+        <div class="card">
+            <div class="card-header" id="salvageInfoHeading">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#salvageInfoCollapse" aria-expanded="false" aria-controls="salvageInfoCollapse">
+                        Salvage Information
+                    </button>
+                </h5>
+            </div>
 
+            <div id="salvageInfoCollapse" class="collapse" aria-labelledby="salvageInfoHeading" data-parent="#formGroupsAccordion">
+                <div class="card-body">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.SalvageAwardClaimed, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.SalvageAwardClaimed)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ServicesDescription, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.ServicesDescription)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ServicesDuration, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.ServicesDuration)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ServicesEstimatedCost, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.ServicesEstimatedCost)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.MMOLicenceRequired, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.MMOLicenceRequired)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.MMOLicenceProvided, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.MMOLicenceProvided)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.SalvageClaimAwarded, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.SalvageClaimAwarded)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="legacyInfoHeading">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#legacyInfoCollapse" aria-expanded="false" aria-controls="legacyInfoCollapse">
+                        Legacy Information
+                    </button>
+                </h5>
+            </div>
+
+            <div id="legacyInfoCollapse" class="collapse" aria-labelledby="legacyInfoHeading" data-parent="#formGroupsAccordion">
+                <div class="card-body">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.District, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.District)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.LegacyFileReference, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.LegacyFileReference)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.GoodsDischargedBy, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.GoodsDischargedBy)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.DateDelivered, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.DateDelivered)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Agent, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.Agent)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.RecoveredFrom, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.RecoveredFrom)</div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ImportedFromLegacy, new { @class = "form-label" })
+                        <div class="form-control">@Html.DisplayFor(m => m.ImportedFromLegacy)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </fieldset>

@@ -33,11 +33,15 @@ public class WreckView
     public Guid Id { get; }
     public WreckStatus Status { get; }
     public string Name { get; } = string.Empty;
+
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime Created { get; }
+
+    [DisplayName("Last Modified")]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime LastModified { get; }
 
     [DisplayName("Date Of Loss")]
-    [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime? DateOfLoss { get; }
 

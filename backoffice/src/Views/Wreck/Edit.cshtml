@@ -7,7 +7,7 @@
 <h4 class="govuk-heading-m">@ViewData["Title"]</h4>
 <form class="form-horizontal mt-4"asp-action="Save" method="POST">
     @Html.HiddenFor(m => m.Id)
-        <div class="col mt-4">
+        <div class="col mt-4">dede
 
             <div class="card">
                 <h5 class="card-header">Wreck</h5>
@@ -68,7 +68,10 @@
                         @Html.ValidationMessageFor(m => m.ProtectionLegislation,"", new { @class = "text-danger" })
                     </div>
 
-                    <button class="btn btn-success m-2 float-end" type="submit">Save</button>
+                    <div class="mt-4 float-end">
+                        <a type="button" class="btn btn-secondary" asp-action="Index">Cancel</a>
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
                 </div>
             </div>
         </div>
