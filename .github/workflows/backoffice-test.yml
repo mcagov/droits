@@ -35,6 +35,12 @@ jobs:
       with:
         dotnet-version: ${{ inputs.dotnet-version }}
 
+    - name: Build frontend assets with webpack
+      run: |
+        cd src
+        npm ci
+        npx webpack
+
     - name: Install dependencies
       run: dotnet restore
 
