@@ -31,9 +31,9 @@ public class EmailController : Controller
     [HttpGet]
     public async Task<IActionResult> Compose(Guid id)
     {
-        //This should be done elsewhere. 
+        //This should be done elsewhere.
         var emailType = EmailType.TestingDroitsv2;
-        
+
         if (id == default(Guid))
         {
             return View(new EmailForm()
@@ -41,9 +41,9 @@ public class EmailController : Controller
                 Body = await _service.GetTemplateAsync(emailType)
             });
         }
-        
+
         var email = await _service.GetEmailByIdAsync(id);
-        
+
         return View(new EmailForm(email));
     }
 
@@ -63,7 +63,7 @@ public class EmailController : Controller
             _logger.LogError(e, "Email not found");
             TempData["ErrorMessage"] = "Email not found";
         }
-        
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -77,7 +77,7 @@ public class EmailController : Controller
             TempData["ErrorMessage"] = "An error occurred while saving the email";
             return View(nameof(Compose), form);
         }
-        
+
         if (form.EmailId == default(Guid))
         {
             email = await _service.SaveEmailAsync(form);
@@ -86,10 +86,10 @@ public class EmailController : Controller
         {
             email = await _service.UpdateEmailAsync(form);
         }
-        
+
         return RedirectToAction(nameof(Preview), new { id = email.Id });
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> Preview(Guid id)
     {
