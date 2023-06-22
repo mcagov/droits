@@ -1,3 +1,4 @@
+using Droits.Exceptions;
 using Droits.Models;
 using Droits.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -50,7 +51,7 @@ public class EmailController : BaseController
             });
 
         }catch(FileNotFoundException e){
-            TempData["ErrorMessage"] = "There was an error creating a new email";
+            SetErrorMessage("There was an error creating a new email");
             return RedirectToAction(nameof(Index));
         }
     }
@@ -66,7 +67,7 @@ public class EmailController : BaseController
                 AddSuccessMessage("Email sent successfully");
             }
         }
-        catch (Exception e)
+        catch (EmailNotFoundException e)
         {
             _logger.LogError(e, "Email not found");
             AddErrorMessage("Email not found");
