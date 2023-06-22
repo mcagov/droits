@@ -4,7 +4,15 @@
     ViewData["Title"] = Model.Id==default(Guid)?"New Wreck":$"Wreck: {Model.Name}";
 }
 
+<<<<<<< HEAD
 <h4>@ViewData["Title"]</h4>
+=======
+@{
+    await Html.RenderPartialAsync("_MessageBanner");
+}
+
+<h4 class="govuk-heading-m">@ViewData["Title"]</h4>
+>>>>>>> 227839a (Add error message banners to Wreck views)
 <form class="form-horizontal mt-4"asp-action="Save" method="POST">
     @Html.HiddenFor(m => m.Id)
         <div class="col mt-4">

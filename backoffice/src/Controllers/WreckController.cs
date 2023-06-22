@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Droits.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using Droits.Models;
 using Droits.Services;
 
 namespace Droits.Controllers;
 
-public class WreckController : Controller
+public class WreckController : BaseController
 {
     private readonly ILogger<WreckController> _logger;
     private readonly IWreckService _service;
@@ -27,7 +28,17 @@ public class WreckController : Controller
     [HttpGet]
     public async Task<IActionResult> View(Guid id)
     {
-        var wreck = await _service.GetWreckAsync(id);
+        var wreck = new Wreck();
+        try
+        {
+            wreck = await _service.GetWreckAsync(id);
+        }
+        catch (WreckNotFoundException e)
+        {
+            //Add Logger?
+            AddErrorMessage("Wreck not found");
+            return RedirectToAction(nameof(Index));
+        }
 
         var model = new WreckView(wreck);
         return View(model);
@@ -43,11 +54,24 @@ public class WreckController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
-        var wreck = await _service.GetWreckAsync(id);
+        if (id == default(Guid))
+        {
+            return View(new WreckForm());
+        }
 
-        var model = new WreckForm(wreck);
+        try
+        {
+            var wreck = await _service.GetWreckAsync(id);
 
-        return View(model);
+            var model = new WreckForm(wreck);
+
+            return View(model);
+        }
+        catch (WreckNotFoundException e)
+        {
+            AddErrorMessage("Droit not found");
+            return RedirectToAction(nameof(Index));   
+        }
     }
 
 
@@ -58,7 +82,10 @@ public class WreckController : Controller
 
         if(form.Id != default(Guid)){
             wreck = await _service.GetWreckAsync(form.Id);
-            if(wreck == null) return NotFound();
+            if (wreck == null)
+            {
+                AddErrorMessage("Wreck not found");
+            };
         }
 
         wreck = form.ApplyChanges(wreck);

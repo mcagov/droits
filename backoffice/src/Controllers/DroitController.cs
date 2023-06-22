@@ -68,7 +68,7 @@ public class DroitController : BaseController
         catch (DroitNotFoundException e) 
         { 
             AddErrorMessage("Droit not found");
-            return RedirectToAction(nameof(Index),id);    
+            return RedirectToAction(nameof(Index));    
         }
     }
 
