@@ -105,6 +105,7 @@ public class WreckController : BaseController
             return View(nameof(Edit), form);
         }
 
+        AddSuccessMessage("Wreck saved successfully.");
         return RedirectToAction(nameof(Index));
     }
 }
