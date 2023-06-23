@@ -59,7 +59,8 @@ public class DroitForm : FormModel
 
     public Guid Id { get; set; }
 
-    public string? Reference { get; set; } // This is the current reference.
+    [Required]
+    public string Reference { get; set; }
 
     public DroitStatus Status { get; set; } = DroitStatus.Received;
 

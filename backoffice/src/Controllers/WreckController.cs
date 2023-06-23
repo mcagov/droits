@@ -35,8 +35,7 @@ public class WreckController : BaseController
         }
         catch (WreckNotFoundException e)
         {
-            //Add Logger?
-            AddErrorMessage("Wreck not found");
+            HandleError(_logger,"Wreck not found",e);
             return RedirectToAction(nameof(Index));
         }
 
@@ -62,15 +61,12 @@ public class WreckController : BaseController
         try
         {
             var wreck = await _service.GetWreckAsync(id);
-
-            var model = new WreckForm(wreck);
-
-            return View(model);
+            return View(new WreckForm(wreck));
         }
         catch (WreckNotFoundException e)
         {
-            AddErrorMessage("Droit not found");
-            return RedirectToAction(nameof(Index));   
+            HandleError(_logger,"Wreck not found",e);
+            return RedirectToAction(nameof(Index));
         }
     }
 
@@ -78,19 +74,37 @@ public class WreckController : BaseController
     [HttpPost]
     public async Task<IActionResult> Save(WreckForm form)
     {
+
+        if (!ModelState.IsValid)
+        {
+            AddErrorMessage("Could not save Wreck");
+            return View(nameof(Edit), form);
+        }
+
         var wreck = new Wreck();
 
         if(form.Id != default(Guid)){
-            wreck = await _service.GetWreckAsync(form.Id);
-            if (wreck == null)
+            try{
+                wreck = await _service.GetWreckAsync(form.Id);
+            }
+            catch(WreckNotFoundException e)
             {
-                AddErrorMessage("Wreck not found");
-            };
+                HandleError(_logger,"Wreck not found",e);
+                return View(nameof(Edit), form);
+            }
         }
 
         wreck = form.ApplyChanges(wreck);
 
-        await _service.SaveWreckAsync(wreck);
+        try{
+            await _service.SaveWreckAsync(wreck);
+        }
+        catch(WreckNotFoundException e)
+        {
+            HandleError(_logger,"Unable to save Wreck",e);
+            return View(nameof(Edit), form);
+        }
+
         return RedirectToAction(nameof(Index));
     }
 }

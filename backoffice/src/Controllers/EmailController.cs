@@ -30,12 +30,20 @@ public class EmailController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> Compose(Guid id)
+    public async Task<IActionResult> Edit(Guid id)
     {
         if (id != default(Guid))
         {
-            var email = await _service.GetEmailByIdAsync(id);
-            return View(new EmailForm(email));
+            try
+            {
+                var email = await _service.GetEmailByIdAsync(id);
+                return View(new EmailForm(email));
+            }
+            catch (EmailNotFoundException e)
+            {
+                HandleError(_logger,"Email not found",  e);
+                return RedirectToAction(nameof(Index));
+            }
         }
 
 
@@ -50,8 +58,8 @@ public class EmailController : BaseController
                 Body = templateBody
             });
 
-        }catch(FileNotFoundException){
-            AddErrorMessage("There was an error creating a new email");
+        }catch(FileNotFoundException e){
+            HandleError(_logger,"There was an error creating a new Email",  e);
             return RedirectToAction(nameof(Index));
         }
     }
@@ -69,8 +77,7 @@ public class EmailController : BaseController
         }
         catch (EmailNotFoundException e)
         {
-            _logger.LogError(e, "Email not found");
-            AddErrorMessage("Email not found");
+            HandleError(_logger,"Email not found",  e);
         }
 
         return RedirectToAction(nameof(Index));
@@ -83,17 +90,22 @@ public class EmailController : BaseController
 
         if (!ModelState.IsValid)
         {
-            AddErrorMessage("An error occurred while saving the email");
-            return View(nameof(Compose), form);
+            AddErrorMessage("Could not save Email");
+            return View(nameof(Edit), form);
         }
 
-        if (form.EmailId == default(Guid))
-        {
-            email = await _service.SaveEmailAsync(form);
-        }
-        else
-        {
-            email = await _service.UpdateEmailAsync(form);
+        try{
+            if (form.EmailId == default(Guid))
+            {
+                email = await _service.SaveEmailAsync(form);
+            }
+            else
+            {
+                email = await _service.UpdateEmailAsync(form);
+            }
+        }catch(Exception e){
+            HandleError(_logger,"Unable to save email",e);
+            return View(nameof(Edit), form);
         }
 
         return RedirectToAction(nameof(Preview), new { id = email.Id });
@@ -102,10 +114,17 @@ public class EmailController : BaseController
     [HttpGet]
     public async Task<IActionResult> Preview(Guid id)
     {
-        var email = await _service.GetEmailByIdAsync(id);
 
-        var model = new EmailView(email);
+        try{
+            var email = await _service.GetEmailByIdAsync(id);
 
-        return View(model);
+            var model = new EmailView(email);
+
+            return View(model);
+        }catch(EmailNotFoundException e){
+            HandleError(_logger, "Email not found", e);
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

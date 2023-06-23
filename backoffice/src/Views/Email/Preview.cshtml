@@ -40,5 +40,8 @@
     </tbody>
 </table>
 
-<a asp-action="Compose" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-<a asp-action="SendEmail" asp-route-id="@Model.Id" class="btn btn-primary">Send</a>
+<div class="mt-4 mb-4 float-end">
+    <a type="button" class="btn btn-secondary" asp-action="Index">Cancel</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
+    <a asp-action="SendEmail" asp-route-id="@Model.Id" class="btn btn-primary">Send</a>
+</div>

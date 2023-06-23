@@ -9,9 +9,14 @@ public class BaseController : Controller
     {
         TempData.SetSuccessMessage(message);
     }
-    
+
     protected void AddErrorMessage(string message)
     {
         TempData.SetErrorMessage(message);
+    }
+
+    protected void HandleError(ILogger log, string message, Exception e){
+        log.LogError(message,e);
+        AddErrorMessage(message);
     }
 }

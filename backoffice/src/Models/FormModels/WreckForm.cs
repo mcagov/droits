@@ -30,6 +30,7 @@ public class WreckForm : FormModel
 
     public Guid Id { get; set; }
     public WreckStatus Status { get; set; }
+    [Required]
     public string Name { get; set; } = string.Empty;
 
 
