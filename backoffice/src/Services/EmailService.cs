@@ -37,7 +37,7 @@ public class EmailService : IEmailService
 
     public async Task<string> GetTemplateAsync(EmailType emailType)
     {
-        var templatePath = Path.Combine(AppContext.BaseDirectory,TemplateDirectory,$"{emailType.ToString()}.txt");
+        var templatePath = Path.Combine(Environment.CurrentDirectory,TemplateDirectory,$"{emailType.ToString()}.txt");
 
         if(!File.Exists(templatePath)){
             _logger.LogError($"Template file could not be found at: {templatePath}");
