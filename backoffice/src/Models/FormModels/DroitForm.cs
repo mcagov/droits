@@ -60,7 +60,7 @@ public class DroitForm : FormModel
     public Guid Id { get; set; }
 
     [Required]
-    public string Reference { get; set; }
+    public string Reference { get; set; } = string.Empty;
 
     public DroitStatus Status { get; set; } = DroitStatus.Received;
 

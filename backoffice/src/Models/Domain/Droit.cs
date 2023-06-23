@@ -6,7 +6,7 @@ public class Droit
 
     public Guid Id { get; set; }
 
-    public string? Reference { get; set; } // This is the current reference.
+    public string Reference { get; set; } = string.Empty;
     public DroitStatus Status { get; set; } = DroitStatus.Received;
     public DateTime ReportedDate { get; set; } = DateTime.UtcNow;
     public DateTime Created { get; set; } = DateTime.UtcNow;
