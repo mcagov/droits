@@ -1,10 +1,11 @@
-﻿using Droits.Models;
+﻿using Droits.Exceptions;
+using Droits.Models;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Controllers;
 
-public class DroitController : Controller
+public class DroitController : BaseController
 {
     private readonly ILogger<DroitController> _logger;
     private readonly IDroitService _service;
@@ -27,9 +28,16 @@ public class DroitController : Controller
     [HttpGet]
     public async Task<IActionResult> View(Guid id)
     {
-        var droit = await _service.GetDroitAsync(id);
-
-        if (droit == null) return NotFound();
+        var droit = new Droit();
+        try
+        {
+            droit = await _service.GetDroitAsync(id);
+        }
+        catch (DroitNotFoundException e)
+        {
+            HandleError(_logger,"Droit not found.",e);
+            return RedirectToAction(nameof(Index));
+        }
 
         var model = new DroitView(droit);
         return View(model);
@@ -45,29 +53,59 @@ public class DroitController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
-        var droit = await _service.GetDroitAsync(id);
+        if (id == default(Guid))
+        {
+            return View(new DroitForm());
+        }
 
-        if(droit == null) return NotFound();
-
-        var model = new DroitForm(droit);
-
-        return View(model);
+        try
+        {
+          var droit = await _service.GetDroitAsync(id);
+          return View(new DroitForm(droit));
+        }
+        catch (DroitNotFoundException e)
+        {
+            HandleError(_logger,"Droit not found.",e);
+            return RedirectToAction(nameof(Index));
+        }
     }
 
 
     [HttpPost]
     public async Task<IActionResult> Save(DroitForm form)
     {
+
+        if (!ModelState.IsValid)
+        {
+            AddErrorMessage("Could not save Droit");
+            return View(nameof(Edit), form);
+        }
+
         var droit = new Droit();
 
         if(form.Id != default(Guid)){
-            droit = await _service.GetDroitAsync(form.Id);
-            if(droit == null) return NotFound();
+
+            try{
+                droit = await _service.GetDroitAsync(form.Id);
+            }catch(DroitNotFoundException e){
+                HandleError(_logger,"Droit not found.",e);
+                return View(nameof(Edit), form);
+            }
         }
 
         droit = form.ApplyChanges(droit);
 
-        await _service.SaveDroitAsync(droit);
+        try{
+            await _service.SaveDroitAsync(droit);
+        }catch(Exception e){
+            HandleError(_logger,"Could not save Droit.",e);
+            return View(nameof(Edit), form);
+        }
+
+        AddSuccessMessage("Droit saved successfully");
+
         return RedirectToAction(nameof(Index));
     }
+
+
 }
