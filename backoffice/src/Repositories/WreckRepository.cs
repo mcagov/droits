@@ -8,8 +8,8 @@ public interface IWreckRepository
 {
     Task<List<Wreck>> GetWrecksAsync();
     Task<Wreck> GetWreckAsync(Guid id);
-    Task<Wreck> AddWreckAsync(Wreck droit);
-    Task<Wreck> UpdateWreckAsync(Wreck droit);
+    Task<Wreck> AddWreckAsync(Wreck wreck);
+    Task<Wreck> UpdateWreckAsync(Wreck wreck);
 }
 
 public class WreckRepository : IWreckRepository
@@ -28,30 +28,30 @@ public class WreckRepository : IWreckRepository
 
     public async Task<Wreck> GetWreckAsync(Guid id)
     {
-        var droit = await _context.Wrecks.FindAsync(id);
-        if(droit == null){
+        var wreck = await _context.Wrecks.FindAsync(id);
+        if(wreck == null){
             throw new WreckNotFoundException();
         }
-        return droit;
+        return wreck;
     }
 
 
-   public async Task<Wreck> AddWreckAsync(Wreck droit)
+   public async Task<Wreck> AddWreckAsync(Wreck wreck)
     {
-        droit.Created = DateTime.UtcNow;
-        droit.LastModified = DateTime.UtcNow;
+        wreck.Created = DateTime.UtcNow;
+        wreck.LastModified = DateTime.UtcNow;
 
-        var savedWreck = _context.Wrecks.Add(droit).Entity;
+        var savedWreck = _context.Wrecks.Add(wreck).Entity;
         await _context.SaveChangesAsync();
 
         return savedWreck;
     }
 
-    public async Task<Wreck> UpdateWreckAsync(Wreck droit)
+    public async Task<Wreck> UpdateWreckAsync(Wreck wreck)
     {
-        droit.LastModified = DateTime.UtcNow;
+        wreck.LastModified = DateTime.UtcNow;
 
-        var savedWreck = _context.Wrecks.Update(droit).Entity;
+        var savedWreck = _context.Wrecks.Update(wreck).Entity;
         await _context.SaveChangesAsync();
 
         return savedWreck;
