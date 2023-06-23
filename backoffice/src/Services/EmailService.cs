@@ -24,7 +24,7 @@ public class EmailService : IEmailService
     private readonly ILogger<EmailService> _logger;
     private readonly IEmailRepository _emailRepository;
 
-    private const string TemplateDirectory = "Views/Email/Templates" ;
+    private const string TemplateDirectory = "Views/EmailTemplates" ;
 
     public EmailService(ILogger<EmailService> logger,
         IGovNotifyClient client,

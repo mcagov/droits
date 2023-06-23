@@ -16,9 +16,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="Views/Email/Templates/**">
+        <Content Update="Views/EmailTemplates/**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
+        </Content>
         <Content Remove="wwwroot/css/**/*" />
     </ItemGroup>
 
