@@ -17,7 +17,7 @@
 
     <ItemGroup>
         <Content Update="Views/EmailTemplates/**">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
         <Content Remove="wwwroot/css/**/*" />
     </ItemGroup>
