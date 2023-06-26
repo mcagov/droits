@@ -20,7 +20,7 @@ public class SalvorController : BaseController
     {
         var salvors = await _service.GetSalvorsAsync();
 
-        var model = salvors.Select(w => new SalvorView(w)).ToList();
+        var model = salvors.Select(s => new SalvorView(s)).ToList();
 
         return View(model);
     }
