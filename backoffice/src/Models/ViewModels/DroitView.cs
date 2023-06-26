@@ -69,6 +69,7 @@ public class DroitView
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
     public DateTime Created { get; }
 
+    [DisplayName("Last Modified")]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
     public DateTime LastModified { get; }
 
