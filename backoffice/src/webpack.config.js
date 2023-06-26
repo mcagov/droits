@@ -25,8 +25,15 @@ module.exports = {
         ]
       },
       {
-        test: /bootstrap[/\\]dist[/\\]js[/\\]bootstrap\.js$/,
-        use: 'imports-loader?jQuery=jquery'
+        test: /bootstrap[/\\]dist[/\\]js[/\\]bootstrap\.bundle\.js$/,
+        loader: 'imports-loader',
+        options: {
+          imports: {
+            moduleName: 'bootstrap',
+            syntax: 'default',
+            name: 'bootstrap',
+          },
+        },
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -40,11 +47,16 @@ module.exports = {
   },
   plugins: [
     new webpack.ProvidePlugin({
-        $: 'jquery',
-        jQuery: 'jquery',
-      }),
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      bootstrap: 'bootstrap/dist/js/bootstrap.bundle'
+    }),
     new MiniCssExtractPlugin({
       filename: '[name].css'
     })
-  ]
+  ],
+  resolve: {
+    modules: [path.resolve(__dirname, 'node_modules')],
+  }
 };
