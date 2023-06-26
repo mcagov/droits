@@ -23,6 +23,9 @@ builder.Services.AddScoped<IDroitService, DroitService>();
 builder.Services.AddScoped<IWreckRepository, WreckRepository>();
 builder.Services.AddScoped<IWreckService, WreckService>();
 
+builder.Services.AddScoped<ISalvorRepository, SalvorRepository>();
+builder.Services.AddScoped<ISalvorService, SalvorService>();
+
 builder.Services.AddGovUkFrontend();
 
 

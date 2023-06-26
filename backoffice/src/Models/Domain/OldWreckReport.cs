@@ -45,7 +45,7 @@ public class WreckReport
     [JsonProperty("salvage-services")]
     public string SalvageServices { get; set; } = string.Empty;
 
-    public Salvor Personal { get; set; } = new();
+    public OldSalvor Personal { get; set; } = new();
 
     [JsonProperty("wreck-materials")]
     public List<WreckMaterial> WreckMaterials { get; set; } = new();
@@ -88,7 +88,7 @@ public class AddressDetails
     public string Postcode { get; set; } = string.Empty;
 }
 
-public class Salvor
+public class OldSalvor
 {
     [JsonProperty("full-name")]
     public string FullName { get; set; } = string.Empty;

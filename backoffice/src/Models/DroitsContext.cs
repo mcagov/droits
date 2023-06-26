@@ -17,6 +17,7 @@ public partial class DroitsContext : DbContext
     public virtual DbSet<Droit> Droits { get; set; }
     public virtual DbSet<Wreck> Wrecks { get; set; }
     public virtual DbSet<Email> Emails { get; set; }
+    public virtual DbSet<Salvor> Salvors { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -103,6 +104,18 @@ public partial class DroitsContext : DbContext
             entity.Property(e => e.Created);
             entity.Property(e => e.LastModified);
             entity.Property(e => e.Type);
+        });
+        
+        modelBuilder.Entity<Salvor>(entity =>
+        {
+            entity.ToTable("salvors");
+
+            entity.Property(e => e.Id);
+            entity.Property(e => e.Email);
+            entity.Property(e => e.Name);
+            entity.Property(e => e.Created);
+            entity.Property(e => e.LastModified);
+
         });
 
         OnModelCreatingPartial(modelBuilder);
