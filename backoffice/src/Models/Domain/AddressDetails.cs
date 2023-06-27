@@ -1,7 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace Droits.Models;
 
+[Keyless]
 public class AddressDetails
 {
     [JsonProperty("address-line-1")]
