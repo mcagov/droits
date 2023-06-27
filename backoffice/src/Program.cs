@@ -1,5 +1,6 @@
 using Droits.Clients;
 using Droits.Models;
+using Droits.Models.Entities;
 using Droits.Repositories;
 using Droits.Services;
 using GovUk.Frontend.AspNetCore;
@@ -10,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<DroitsContext>(opt => opt.UseInMemoryDatabase("droits"));
+
+
 builder.Services.AddHealthChecks();
 
 builder.Services.AddScoped<IEmailRepository, EmailRepository>();
@@ -39,6 +42,12 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}else{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<DroitsContext>();
+        DatabaseSeeder.SeedData(dbContext);
+    }
 }
 
 app.UseStaticFiles();
@@ -52,3 +61,4 @@ app.MapControllerRoute(
     "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+

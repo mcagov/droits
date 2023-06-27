@@ -1,8 +1,20 @@
 ﻿import $ from 'jquery';
-import 'bootstrap';
+import 'bootstrap/dist/js/bootstrap.bundle';
 
 $(document).ready(function() {
-    $('#formGroupsAccordion').on('show.bs.collapse', function() {
-        $(this).find('.collapse.show').collapse('hide');
+    $("#wreck-id").on("change", function() {
+        toggleWreckFields();
     });
+    toggleWreckFields();
 });
+
+function toggleWreckFields() {
+    var wreckIdSelect = $("#wreck-id");
+    var wreckFormFields = $("#js-wreck-form-fields");
+
+    if (wreckIdSelect.val() === "") {
+        wreckFormFields.removeClass("d-none");
+    } else {
+        wreckFormFields.addClass("d-none");
+    }
+}

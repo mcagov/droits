@@ -3,221 +3,236 @@
     ViewData["Title"] = "View Droit";
 }
 
-<fieldset>
-    <legend class="display-4">@ViewData["Title"]</legend>
+<h4>@ViewData["Title"]</h4>
 
-    <div class="accordion" id="formGroupsAccordion">
+<ul class="nav nav-tabs" id="droitTabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="droit-tab" data-bs-toggle="tab" data-bs-target="#droit-content" type="button" role="tab" aria-controls="droit-content" aria-selected="true">Droit</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="wreck-tab" data-bs-toggle="tab" data-bs-target="#wreck-content" type="button" role="tab" aria-controls="wreck-content" aria-selected="false">Wreck</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="salvage-tab" data-bs-toggle="tab" data-bs-target="#salvage-content" type="button" role="tab" aria-controls="salvage-content" aria-selected="false">Salvage</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="legacy-tab" data-bs-toggle="tab" data-bs-target="#legacy-content" type="button" role="tab" aria-controls="legacy-content" aria-selected="false">Legacy</button>
+  </li>
+</ul>
 
-        <div class="card">
-            <div class="card-header" id="generalInfoHeading">
-                <h5 class="mb-0">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#generalInfoCollapse" aria-expanded="true" aria-controls="generalInfoCollapse">
-                        General Information
-                    </button>
-                </h5>
+<div class="tab-content mt-3" id="droitView">
+    <div class="tab-pane fade show active" id="droit-content" role="tabpanel" aria-labelledby="droit-tab">
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.Id, new { @class = "font-weight-bold" })
             </div>
-
-            <div id="generalInfoCollapse" class="collapse show" aria-labelledby="generalInfoHeading" data-parent="#formGroupsAccordion">
-                <div class="card-body">
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Id, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.Id)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Reference, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.Reference)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Status, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.Status)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.ReportedDate, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.ReportedDate)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Created, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.Created)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.LastModified, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.LastModified)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.IsHazardousFind, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.IsHazardousFind)</div>
-                    </div>
-                </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.Id)
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-header" id="wreckInfoHeading">
-                <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#wreckInfoCollapse" aria-expanded="false" aria-controls="wreckInfoCollapse">
-                        Wreck Information
-                    </button>
-                </h5>
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.Reference, new { @class = "font-weight-bold" })
             </div>
-
-            <div id="wreckInfoCollapse" class="collapse" aria-labelledby="wreckInfoHeading" data-parent="#formGroupsAccordion">
-                <div class="card-body">
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.WreckConstructionDetails, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.WreckConstructionDetails)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.WreckVesselName, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.WreckVesselName)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.WreckVesselYearConstructed, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.WreckVesselYearConstructed)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.WreckVesselYearSunk, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.WreckVesselYearSunk)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Latitude, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.Latitude)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Longitude, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.Longitude)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.InUkWaters, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.InUkWaters)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.LocationRadius, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.LocationRadius)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Depth, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.Depth)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.LocationDescription, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.LocationDescription)</div>
-                    </div>
-                </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.Reference)
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-header" id="salvageInfoHeading">
-                <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#salvageInfoCollapse" aria-expanded="false" aria-controls="salvageInfoCollapse">
-                        Salvage Information
-                    </button>
-                </h5>
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.Status, new { @class = "font-weight-bold" })
             </div>
-
-            <div id="salvageInfoCollapse" class="collapse" aria-labelledby="salvageInfoHeading" data-parent="#formGroupsAccordion">
-                <div class="card-body">
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.SalvageAwardClaimed, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.SalvageAwardClaimed)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.ServicesDescription, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.ServicesDescription)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.ServicesDuration, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.ServicesDuration)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.ServicesEstimatedCost, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.ServicesEstimatedCost)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.MMOLicenceRequired, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.MMOLicenceRequired)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.MMOLicenceProvided, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.MMOLicenceProvided)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.SalvageClaimAwarded, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.SalvageClaimAwarded)</div>
-                    </div>
-                </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.Status)
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-header" id="legacyInfoHeading">
-                <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#legacyInfoCollapse" aria-expanded="false" aria-controls="legacyInfoCollapse">
-                        Legacy Information
-                    </button>
-                </h5>
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.ReportedDate, new { @class = "font-weight-bold" })
             </div>
-
-            <div id="legacyInfoCollapse" class="collapse" aria-labelledby="legacyInfoHeading" data-parent="#formGroupsAccordion">
-                <div class="card-body">
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.District, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.District)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.LegacyFileReference, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.LegacyFileReference)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.GoodsDischargedBy, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.GoodsDischargedBy)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.DateDelivered, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.DateDelivered)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Agent, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.Agent)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.RecoveredFrom, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.RecoveredFrom)</div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.ImportedFromLegacy, new { @class = "form-label" })
-                        <div class="form-control">@Html.DisplayFor(m => m.ImportedFromLegacy)</div>
-                    </div>
-                </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.ReportedDate)
             </div>
         </div>
 
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.Created, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.Created)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.LastModified, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.LastModified)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.IsHazardousFind, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.IsHazardousFind)
+            </div>
+        </div>
     </div>
-</fieldset>
+
+    <div class="tab-pane fade" id="wreck-content" role="tabpanel" aria-labelledby="wreck-tab">
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.WreckConstructionDetails, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.WreckConstructionDetails)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.WreckVesselName, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.WreckVesselName)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.WreckVesselYearConstructed, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.WreckVesselYearConstructed)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.WreckVesselYearSunk, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.WreckVesselYearSunk)
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="salvage-content" role="tabpanel" aria-labelledby="salvage-tab">
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.SalvageAwardClaimed, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.SalvageAwardClaimed)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.ServicesDescription, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.ServicesDescription)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.ServicesDuration, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.ServicesDuration)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.ServicesEstimatedCost, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.ServicesEstimatedCost)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.MMOLicenceRequired, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.MMOLicenceRequired)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.MMOLicenceProvided, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.MMOLicenceProvided)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.SalvageClaimAwarded, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.SalvageClaimAwarded)
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="legacy-content" role="tabpanel" aria-labelledby="legacy-tab">
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.District, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.District)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.LegacyFileReference, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.LegacyFileReference)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.GoodsDischargedBy, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.GoodsDischargedBy)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.DateDelivered, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.DateDelivered)
+            </div>
+        </div>
+
+        <div class="form-group row m-1">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.Agent, new { @class = "font-weight-bold" })
+            </div>
+            <div class="col-md-7">
+                @Html.DisplayFor(m => m.Agent)
+            </div>
+        </div>
+    </div>
+</div>
