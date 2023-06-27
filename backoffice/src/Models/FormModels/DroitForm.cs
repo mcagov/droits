@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Droits.Models;
 
@@ -12,6 +13,8 @@ public class DroitForm : FormModel
     public DroitForm(Droit droit)
     {
         Id = droit.Id;
+        WreckId = droit.WreckId;
+
         Status = droit.Status;
         ReportedDate = droit.ReportedDate;
         Created = droit.Created;
@@ -58,6 +61,8 @@ public class DroitForm : FormModel
     // Base fields...
 
     public Guid Id { get; set; }
+
+    public WreckForm WreckForm { get; set; } = new WreckForm();
 
     [Required]
     public string Reference { get; set; } = string.Empty;
@@ -161,10 +166,11 @@ public class DroitForm : FormModel
 
     [DisplayName("Imported From Legacy")]
     public bool ImportedFromLegacy { get; set; }
-
+    public List<SelectListItem> AllWrecks {get;set;} = new List<SelectListItem>();
     public Droit ApplyChanges(Droit droit)
     {
         droit.Id = Id;
+        droit.WreckId = WreckId;
         droit.Status = Status;
         droit.ReportedDate = ReportedDate;
         droit.Created = Created;
