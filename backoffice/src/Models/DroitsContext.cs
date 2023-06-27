@@ -24,6 +24,8 @@ public partial class DroitsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
+
         modelBuilder.Entity<Droit>(entity =>
         {
             entity.ToTable("droits");
@@ -105,8 +107,12 @@ public partial class DroitsContext : DbContext
             entity.Property(e => e.Type);
         });
 
-        OnModelCreatingPartial(modelBuilder);
+        base.OnModelCreating(modelBuilder);
+
     }
+
+
+
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

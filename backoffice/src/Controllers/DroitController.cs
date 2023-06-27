@@ -2,6 +2,7 @@
 using Droits.Models;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Droits.Controllers;
 
@@ -9,11 +10,13 @@ public class DroitController : BaseController
 {
     private readonly ILogger<DroitController> _logger;
     private readonly IDroitService _service;
+    private readonly IWreckService _wreckService;
 
-    public DroitController(ILogger<DroitController> logger, IDroitService service)
+    public DroitController(ILogger<DroitController> logger, IDroitService service, IWreckService wreckService)
     {
         _logger = logger;
         _service = service;
+        _wreckService = wreckService;
     }
 
     public async Task<IActionResult> Index()
@@ -44,10 +47,10 @@ public class DroitController : BaseController
     }
 
     [HttpGet]
-    public IActionResult Add()
+    public async Task<IActionResult> Add()
     {
-        var model = new DroitForm();
-        return View(nameof(Edit),model);
+        var form = await PopulateDroitFormAsync(new DroitForm());
+        return View(nameof(Edit), form);
     }
 
     [HttpGet]
@@ -55,13 +58,15 @@ public class DroitController : BaseController
     {
         if (id == default(Guid))
         {
-            return View(new DroitForm());
+            var form = await PopulateDroitFormAsync(new DroitForm());
+            return View(form);
         }
 
         try
         {
           var droit = await _service.GetDroitAsync(id);
-          return View(new DroitForm(droit));
+          var form = await PopulateDroitFormAsync(new DroitForm(droit));
+          return View(form);
         }
         catch (DroitNotFoundException e)
         {
@@ -74,6 +79,11 @@ public class DroitController : BaseController
     [HttpPost]
     public async Task<IActionResult> Save(DroitForm form)
     {
+
+        if(form.WreckId.HasValue)
+        {
+            ModelState.Remove("WreckForm.Name");
+        }
 
         if (!ModelState.IsValid)
         {
@@ -95,6 +105,10 @@ public class DroitController : BaseController
 
         droit = form.ApplyChanges(droit);
 
+        if(!droit.WreckId.HasValue){
+            droit.WreckId = await _wreckService.GetWreckIdAsync(form.WreckForm);
+        }
+
         try{
             await _service.SaveDroitAsync(droit);
         }catch(Exception e){
@@ -107,5 +121,15 @@ public class DroitController : BaseController
         return RedirectToAction(nameof(Index));
     }
 
+
+
+    private async Task<DroitForm> PopulateDroitFormAsync(DroitForm form){
+
+        var allWrecks = await _wreckService.GetWrecksAsync();
+
+        form.AllWrecks =  allWrecks.Select(w => new SelectListItem(w.Name, w.Id.ToString())).ToList();
+
+        return form;
+    }
 
 }
