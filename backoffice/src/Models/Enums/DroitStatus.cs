@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Droits.Models;
+namespace Droits.Models.Enums;
 
 public enum DroitStatus
 {
@@ -9,10 +9,4 @@ public enum DroitStatus
     Closed,
     Unassigned,
     [Display(Name = "Awaiting Response")]AwaitingResponse
-}
-
-public enum WreckStatus
-{
-    Active,
-    Inactve
 }

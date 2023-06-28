@@ -1,4 +1,4 @@
-using Droits.Models;
+using Droits.Models.FormModels;
 using Notify.Client;
 using Notify.Models.Responses;
 
@@ -30,14 +30,14 @@ public class GovNotifyClient : IGovNotifyClient
     {
         var personalisation = form.GetPersonalisation();
         personalisation.Add("body",form.GetEmailBody());
-        
+
         return await _client.SendEmailAsync(
             form.Recipient,
             getTemplateId(),
             personalisation
         );
     }
-    
+
     public string getTemplateId()
     {
         return _configuration.GetSection("GovNotify:TemplateId").Value ?? "";

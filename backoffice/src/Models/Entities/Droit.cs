@@ -1,4 +1,6 @@
-namespace Droits.Models;
+using Droits.Models.Enums;
+
+namespace Droits.Models.Entities;
 
 public class Droit
 {

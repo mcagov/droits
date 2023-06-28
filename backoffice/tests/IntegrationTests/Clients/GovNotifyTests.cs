@@ -1,11 +1,9 @@
 using Droits.Clients;
-using Droits.Models;
+using Droits.Models.FormModels;
+using Droits.Tests;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Moq;
-using tests;
-
-namespace Droits.Tests;
+namespace Droits.IntegrationTests.Clients;
 public class GovNotifyTests : IClassFixture<TestFixture>
 {
     private readonly IGovNotifyClient _client;

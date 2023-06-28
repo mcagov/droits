@@ -1,5 +1,5 @@
+using Droits.Helpers.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Droits.Extensions;
 
 namespace Droits.Controllers;
 

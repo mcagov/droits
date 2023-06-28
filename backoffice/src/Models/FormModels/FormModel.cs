@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Droits.Models
+namespace Droits.Models.FormModels;
+public class FormModel
 {
-    public class FormModel
+    public List<SelectListItem> BooleanSelectList => new List<SelectListItem>
     {
-        public List<SelectListItem> BooleanSelectList => new List<SelectListItem>
-        {
-            new() { Text = "Yes", Value = "True" },
-            new() { Text = "No", Value = "False" }
-        };
-    }
+        new() { Text = "Yes", Value = "True" },
+        new() { Text = "No", Value = "False" }
+    };
 }

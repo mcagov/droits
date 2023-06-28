@@ -2,9 +2,7 @@ using Droits.Clients;
 using Droits.Models.Entities;
 using Droits.Services;
 using Droits.Repositories;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using tests;
 
 namespace Droits.Tests.IntegrationTests.Services;
 

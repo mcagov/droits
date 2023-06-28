@@ -1,15 +1,13 @@
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Droits.Models;
-
+namespace Droits.Models.FormModels;
 public class EmailForm
 {
     public EmailForm()
     {
-        
+
     }
     public EmailForm(Email email)
     {
@@ -28,7 +26,7 @@ public class EmailForm
     [Required]
     [DataType(DataType.MultilineText)]
     public string Body { get; set; } = string.Empty;
-    
+
     public Dictionary<string,dynamic> GetPersonalisation()
         => new (){
             { "subject", Subject},
