@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Droits.Models;
 using Droits.Services;
-
 namespace Droits.Controllers;
 
 public class WreckController : BaseController

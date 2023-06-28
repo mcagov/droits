@@ -1,6 +1,7 @@
 using Droits.Clients;
 using Droits.Models;
 using Droits.Models.Entities;
+using Droits.Models.ModelBinders;
 using Droits.Repositories;
 using Droits.Services;
 using GovUk.Frontend.AspNetCore;
@@ -8,8 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services
+        .AddControllersWithViews(options =>
+        {
+            options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
+        })
+        .AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<DroitsContext>(opt => opt.UseInMemoryDatabase("droits"));
 
 
@@ -42,7 +47,9 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-}else{
+}
+else
+{
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<DroitsContext>();
