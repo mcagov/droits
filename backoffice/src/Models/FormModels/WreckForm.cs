@@ -16,6 +16,7 @@ public class WreckForm : FormModel
         Name = wreck.Name;
 
         DateOfLoss = wreck.DateOfLoss;
+
         IsWarWreck = wreck.IsWarWreck;
         IsAnAircraft = wreck.IsAnAircraft;
         Latitude = wreck.Latitude;
