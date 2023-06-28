@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Droits.Models;
+namespace Droits.Models.Entities;
 
 public class Salvor
 {

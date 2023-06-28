@@ -1,4 +1,4 @@
-using Droits.Models;
+using Droits.Models.Entities;
 using Droits.Repositories;
 
 namespace Droits.Services;
