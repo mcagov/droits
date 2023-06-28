@@ -8,7 +8,9 @@ $(document).ready(function() {
     });
     toggleWreckFields();
 
-    $('#js-select-wreck').select2();
+    $('#js-select-wreck').select2({
+        width: '100%'
+    });
 });
 
 function toggleWreckFields() {
@@ -21,5 +23,3 @@ function toggleWreckFields() {
         wreckFormFields.addClass("d-none");
     }
 }
-
-

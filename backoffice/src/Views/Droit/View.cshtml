@@ -122,6 +122,20 @@
                 @Html.DisplayFor(m => m.WreckVesselYearSunk)
             </div>
         </div>
+
+
+        @if(Model.Wreck != null){
+            <p> TODO - View Wreck Fields </p>
+
+            <div class="form-group row m-1">
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.Wreck.Name, new { @class = "font-weight-bold" })
+                </div>
+                <div class="col-md-7">
+                    @Html.DisplayFor(m => m.Wreck.Name)
+                </div>
+            </div>
+        }
     </div>
 
     <div class="tab-pane fade" id="salvage-content" role="tabpanel" aria-labelledby="salvage-tab">
