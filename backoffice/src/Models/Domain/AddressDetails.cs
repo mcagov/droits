@@ -1,9 +1,10 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace Droits.Models;
 
-[Keyless]
+[Owned]
 public class AddressDetails
 {
     [JsonProperty("address-line-1")]

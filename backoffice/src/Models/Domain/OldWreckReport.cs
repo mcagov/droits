@@ -70,7 +70,7 @@ public class WreckMaterial
     public string StorageAddress { get; set; } = string.Empty;
 }
 
-public class OldSalvor : AddressDetails
+public class OldSalvor
 {
     [JsonProperty("full-name")]
     public string FullName { get; set; } = string.Empty;
@@ -79,4 +79,6 @@ public class OldSalvor : AddressDetails
 
     [JsonProperty("telephone-number")]
     public string TelephoneNumber { get; set; } = string.Empty;
+
+    public AddressDetails AddressDetails { get; set; }
 }

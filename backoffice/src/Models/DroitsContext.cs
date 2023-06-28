@@ -116,14 +116,10 @@ public partial class DroitsContext : DbContext
             entity.Property(e => e.Email);
             entity.Property(e => e.Name);
             entity.Property(e => e.TelephoneNumber);
-            entity.Property(e => e.Line1);
-            entity.Property(e => e.Line2);
-            entity.Property(e => e.Town);
-            entity.Property(e => e.County);
-            entity.Property(e => e.Postcode);
             entity.Property(e => e.DateOfBirth);
             entity.Property(e => e.Created);
             entity.Property(e => e.LastModified);
+            entity.OwnsOne(e => e.AddressDetails);
 
         });
 

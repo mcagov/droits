@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Droits.Models;
 
-public class Salvor : AddressDetails
+public class Salvor
 {
     public Guid Id { get; set; }
     public String Email { get; set; } = string.Empty;
