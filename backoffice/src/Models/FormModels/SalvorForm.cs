@@ -16,6 +16,11 @@ public class SalvorForm
         Email = salvor.Email;
         TelephoneNumber = salvor.TelephoneNumber;
         DateOfBirth = salvor.DateOfBirth;
+        AddressLine1 = salvor.Address.Line1;
+        AddressLine2 = salvor.Address.Line2;
+        AddressTown = salvor.Address.Town;
+        AddressCounty = salvor.Address.County;
+        AddressPostcode = salvor.Address.Postcode;
     }
 
     public Guid Id { get; set; }
@@ -31,6 +36,11 @@ public class SalvorForm
     [BindProperty, DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     [DataType(DataType.Date)]
     public DateTime DateOfBirth { get; set; } 
+    public string AddressLine1 { get; set; }
+    public string AddressLine2 { get; set; }
+    public string AddressTown { get; set; }
+    public string AddressCounty { get; set; }
+    public string AddressPostcode { get; set; }
 
     public Salvor ApplyChanges(Salvor salvor)
     {
@@ -38,6 +48,11 @@ public class SalvorForm
         salvor.Name = Name;
         salvor.Email = Email;
         salvor.DateOfBirth = DateOfBirth;
+        salvor.Address.Line1 = AddressLine1;
+        salvor.Address.Line2 = AddressLine2;
+        salvor.Address.Town = AddressTown;
+        salvor.Address.County = AddressCounty;
+        salvor.Address.Postcode = AddressPostcode;
 
         return salvor;
     }

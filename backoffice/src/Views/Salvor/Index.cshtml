@@ -17,6 +17,7 @@
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Date of Birth</th>
+                    <th scope="col">Postcode</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
@@ -28,6 +29,7 @@
                             <a asp-action="View" asp-route-id="@salvor.Id">@salvor.Name</a>
                         </td>
                         <td class="p-3">@salvor.DateOfBirth.ToString("dd/MM/yyyy")</td>
+                        <td class="p-3">@salvor.AddressPostcode</td>
                         <td class="p-3">
                             <div class="btn-group">
                                 <a asp-action="Edit" asp-route-id="@salvor.Id" class="btn btn-primary">Edit</a>
