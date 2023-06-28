@@ -119,7 +119,7 @@ public partial class DroitsContext : DbContext
             entity.Property(e => e.DateOfBirth);
             entity.Property(e => e.Created);
             entity.Property(e => e.LastModified);
-            entity.OwnsOne(e => e.AddressDetails);
+            entity.OwnsOne(e => e.Address);
 
         });
 

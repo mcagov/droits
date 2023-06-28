@@ -64,7 +64,7 @@ public class WreckMaterial
     public string OriginalFilename { get; set; } = string.Empty;
 
     [JsonProperty("address-details")]
-    public AddressDetails AddressDetails { get; set; } = new();
+    public Address Address { get; set; } = new();
 
     [JsonProperty("storage-address")]
     public string StorageAddress { get; set; } = string.Empty;
@@ -80,5 +80,5 @@ public class OldSalvor
     [JsonProperty("telephone-number")]
     public string TelephoneNumber { get; set; } = string.Empty;
 
-    public AddressDetails AddressDetails { get; set; }
+    public Address Address { get; set; }
 }

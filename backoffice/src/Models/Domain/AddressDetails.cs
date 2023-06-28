@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace Droits.Models;
 
 [Owned]
-public class AddressDetails
+public class Address
 {
     [JsonProperty("address-line-1")]
     public string Line1 { get; set; } = string.Empty;
