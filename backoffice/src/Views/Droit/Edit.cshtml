@@ -84,7 +84,7 @@
 
                     <div class="form-group">
                         @Html.LabelFor(m => m.WreckId, "Select Wreck", new { @class = "col-form-label" })
-                        @Html.DropDownListFor(m => m.WreckId, Model.AllWrecks, "New Wreck..", new { @id="wreck-id", @class = "form-control" })
+                        @Html.DropDownListFor(m => m.WreckId, Model.AllWrecks, "New Wreck..", new { @id="js-select-wreck", @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.WreckId,"", new { @class = "text-danger" })
                     </div>
 

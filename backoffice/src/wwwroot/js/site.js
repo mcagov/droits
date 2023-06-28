@@ -1,15 +1,18 @@
 ﻿import $ from 'jquery';
 import 'bootstrap/dist/js/bootstrap.bundle';
+import 'select2';
 
 $(document).ready(function() {
-    $("#wreck-id").on("change", function() {
+    $("#js-select-wreck").on("change", function() {
         toggleWreckFields();
     });
     toggleWreckFields();
+
+    $('#js-select-wreck').select2();
 });
 
 function toggleWreckFields() {
-    var wreckIdSelect = $("#wreck-id");
+    var wreckIdSelect = $("#js-select-wreck");
     var wreckFormFields = $("#js-wreck-form-fields");
 
     if (wreckIdSelect.val() === "") {
@@ -18,3 +21,5 @@ function toggleWreckFields() {
         wreckFormFields.addClass("d-none");
     }
 }
+
+
