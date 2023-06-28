@@ -1,6 +1,6 @@
-namespace Droits.Models.ModelBinders;
+namespace Droits.ModelBinders;
 
-using Droits.Extensions;
+using Droits.Helpers.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Threading.Tasks;

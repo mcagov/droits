@@ -1,7 +1,10 @@
 ﻿using Droits.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using Droits.Models;
 using Droits.Services;
+using Droits.Models.ViewModels;
+using Droits.Models.Entities;
+using Droits.Models.FormModels;
+
 namespace Droits.Controllers;
 
 public class WreckController : BaseController

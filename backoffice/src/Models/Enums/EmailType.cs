@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Droits.Models;
-
+namespace Droits.Models.Enums;
 public enum EmailType
 {
     [Display(Name = "Report Acknowledged")]

@@ -1,3 +1,5 @@
+using Droits.Models.Enums;
+
 namespace Droits.Models.Entities;
 
 public class Email

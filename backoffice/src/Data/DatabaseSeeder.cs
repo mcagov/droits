@@ -1,5 +1,6 @@
-namespace Droits.Models.Entities;
-using Droits.Models;
+using Droits.Models.Entities;
+
+namespace Droits.Data;
 
 public static class DatabaseSeeder
 {

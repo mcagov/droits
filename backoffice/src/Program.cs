@@ -1,7 +1,6 @@
 using Droits.Clients;
-using Droits.Models;
-using Droits.Models.Entities;
-using Droits.Models.ModelBinders;
+using Droits.Data;
+using Droits.ModelBinders;
 using Droits.Repositories;
 using Droits.Services;
 using GovUk.Frontend.AspNetCore;

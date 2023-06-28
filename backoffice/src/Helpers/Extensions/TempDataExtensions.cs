@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace Droits.Extensions;
+namespace Droits.Helpers.Extensions;
 
 public static class TempDataExtensions
 {

@@ -3,6 +3,8 @@ using Droits.Clients;
 using Droits.Exceptions;
 using Droits.Models;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
+using Droits.Models.FormModels;
 using Droits.Repositories;
 using Notify.Models.Responses;
 
