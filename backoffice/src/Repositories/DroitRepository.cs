@@ -1,5 +1,6 @@
+using Droits.Data;
 using Droits.Exceptions;
-using Droits.Models;
+using Droits.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Repositories;
@@ -29,7 +30,8 @@ public class DroitRepository : IDroitRepository
     public async Task<Droit> GetDroitAsync(Guid id)
     {
         var droit = await _context.Droits.FindAsync(id);
-        if(droit == null){
+        if (droit == null)
+        {
             throw new DroitNotFoundException();
         }
         return droit;

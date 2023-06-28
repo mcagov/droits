@@ -1,8 +1,10 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Droits.Models.Entities;
+using Droits.Models.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Droits.Models;
+namespace Droits.Models.FormModels;
 
 public class DroitForm : FormModel
 {

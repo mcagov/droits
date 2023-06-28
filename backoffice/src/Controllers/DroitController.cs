@@ -1,5 +1,7 @@
 ﻿using Droits.Exceptions;
-using Droits.Models;
+using Droits.Models.Entities;
+using Droits.Models.FormModels;
+using Droits.Models.ViewModels;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

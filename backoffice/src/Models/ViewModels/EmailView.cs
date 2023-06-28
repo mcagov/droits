@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using System.Xml.Schema;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 
-namespace Droits.Models;
-
+namespace Droits.Models.ViewModels;
 public class EmailView
 {
     public EmailView(Email email)

@@ -1,5 +1,6 @@
 
-using Droits.Models;
+using Droits.Models.Entities;
+using Droits.Models.FormModels;
 using Droits.Repositories;
 
 namespace Droits.Services;

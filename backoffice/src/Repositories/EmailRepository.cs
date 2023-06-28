@@ -1,5 +1,5 @@
+using Droits.Data;
 using Droits.Exceptions;
-using Droits.Models;
 using Droits.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 

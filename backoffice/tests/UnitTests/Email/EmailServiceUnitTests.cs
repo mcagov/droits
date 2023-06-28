@@ -2,7 +2,6 @@ using Droits.Clients;
 using Droits.Services;
 using Droits.Repositories;
 using Microsoft.Extensions.Logging;
-using Moq;
 
 namespace Droits.Tests.UnitTests.Email;
 

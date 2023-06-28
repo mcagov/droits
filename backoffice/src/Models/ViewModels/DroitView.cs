@@ -1,7 +1,9 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Droits.Models.Entities;
+using Droits.Models.Enums;
 
-namespace Droits.Models;
+namespace Droits.Models.ViewModels;
 
 public class DroitView
 {

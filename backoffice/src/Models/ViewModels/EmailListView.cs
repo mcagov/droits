@@ -1,5 +1,4 @@
-namespace Droits.Models;
-
+namespace Droits.Models.ViewModels;
 public class EmailListView
 {
     public EmailListView(List<EmailView> emails)
