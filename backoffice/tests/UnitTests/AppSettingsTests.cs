@@ -1,4 +1,4 @@
-namespace Droits.Tests;
+namespace Droits.Tests.UnitTests;
 public class AppSettingsUnitTests
 {
 
