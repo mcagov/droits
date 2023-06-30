@@ -29,7 +29,7 @@ public class DroitRepository : IDroitRepository
 
     public async Task<Droit> GetDroitAsync(Guid id)
     {
-        var droit = await _context.Droits.FindAsync(id);
+        var droit = await _context.Droits.Include(d => d.Wreck).FirstOrDefaultAsync(d => d.Id == id);
         if (droit == null)
         {
             throw new DroitNotFoundException();

@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Droits.Models.Enums;
 
 namespace Droits.Models.Entities;
@@ -19,6 +20,8 @@ public class Droit
 
     // Wreck
 
+    [ForeignKey("WreckId")]
+    public Wreck? Wreck { get; set; }
     public Guid? WreckId { get; set; }
 
     public bool IsHazardousFind { get; set; } = false;

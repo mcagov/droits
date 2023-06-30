@@ -23,6 +23,10 @@ public class DroitView
         IsHazardousFind = droit.IsHazardousFind;
 
         //Wreck
+        if(droit.Wreck != null){
+            Wreck = new WreckView(droit.Wreck);
+        }
+
         WreckConstructionDetails = droit.WreckConstructionDetails;
         WreckVesselName = droit.WreckVesselName;
         WreckVesselYearConstructed = droit.WreckVesselYearConstructed;
@@ -78,6 +82,7 @@ public class DroitView
 
     // Wreck
 
+    public WreckView? Wreck {get;}
     public Guid? WreckId { get; }
 
     [DisplayName("Wreck Construction Details")]

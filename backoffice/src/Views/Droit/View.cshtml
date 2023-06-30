@@ -122,6 +122,19 @@
                 @Html.DisplayFor(m => m.WreckVesselYearSunk)
             </div>
         </div>
+
+
+        @if(Model.Wreck != null){
+            <partial name="_WreckViewFields" for="Wreck"/>
+
+            @if ( Model.Wreck.Latitude.HasValue() && Model.Wreck.Longitude.HasValue())
+            {
+                <div class="row mt-3">
+                    <iframe src="https://maps.google.com/maps?q=@Model.Wreck?.Latitude,@Model.Wreck?.Longitude&amp;output=embed"></iframe>
+                </div>
+            }
+
+        }
     </div>
 
     <div class="tab-pane fade" id="salvage-content" role="tabpanel" aria-labelledby="salvage-tab">
