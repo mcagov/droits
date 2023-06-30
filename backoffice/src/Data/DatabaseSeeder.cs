@@ -1,5 +1,5 @@
 using Droits.Models.Entities;
-
+using Bogus;
 namespace Droits.Data;
 
 public static class DatabaseSeeder
@@ -7,6 +7,8 @@ public static class DatabaseSeeder
     public static void SeedData(DroitsContext dbContext)
     {
         dbContext.Database.EnsureCreated();
+
+        var faker = new Faker();
 
         if (!dbContext.Wrecks.Any())
         {
