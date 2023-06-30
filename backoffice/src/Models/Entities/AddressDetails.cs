@@ -1,8 +1,7 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace Droits.Models;
+namespace Droits.Models.Entities;
 
 [Owned]
 public class Address

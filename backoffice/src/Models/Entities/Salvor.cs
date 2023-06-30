@@ -10,8 +10,6 @@ public class Salvor
     public string Name { get; set; } = string.Empty;
     public string TelephoneNumber { get; set; } = string.Empty;
     public Address Address { get; set; } = new();
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
-    [DataType(DataType.Date)]
     public DateTime DateOfBirth { get; set; } 
     public DateTime Created { get; set; }
     public DateTime LastModified { get; set; }

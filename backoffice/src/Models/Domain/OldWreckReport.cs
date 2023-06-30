@@ -1,3 +1,4 @@
+using Droits.Models.Entities;
 using Newtonsoft.Json;
 
 namespace Droits.Models;
