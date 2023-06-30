@@ -112,13 +112,13 @@ public partial class DroitsContext : DbContext
         {
             entity.ToTable("salvors");
 
-            entity.Property(e => e.Id);
-            entity.Property(e => e.Email);
-            entity.Property(e => e.Name);
-            entity.Property(e => e.TelephoneNumber);
-            entity.Property(e => e.DateOfBirth);
-            entity.Property(e => e.Created);
-            entity.Property(e => e.LastModified);
+            entity.Property(s => s.Id);
+            entity.Property(s => s.Email);
+            entity.Property(s => s.Name);
+            entity.Property(s => s.TelephoneNumber);
+            entity.Property(s => s.DateOfBirth);
+            entity.Property(s => s.Created);
+            entity.Property(s => s.LastModified);
             entity.OwnsOne(e => e.Address);
 
         });
