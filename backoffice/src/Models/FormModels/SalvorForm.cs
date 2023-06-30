@@ -17,11 +17,7 @@ public class SalvorForm
         Email = salvor.Email;
         TelephoneNumber = salvor.TelephoneNumber;
         DateOfBirth = salvor.DateOfBirth;
-        AddressLine1 = salvor.Address.Line1;
-        AddressLine2 = salvor.Address.Line2;
-        AddressTown = salvor.Address.Town;
-        AddressCounty = salvor.Address.County;
-        AddressPostcode = salvor.Address.Postcode;
+        _Address = salvor.Address;
     }
 
     public Guid Id { get; set; }
@@ -37,17 +33,9 @@ public class SalvorForm
     [Required(ErrorMessage = "Date of Birth is required")]
     [BindProperty, DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     [DataType(DataType.Date)]
-    public DateTime DateOfBirth { get; set; } 
-    public string AddressLine1 { get; set; } = string.Empty;
-    public string AddressLine2 { get; set; } = string.Empty;
-    public string AddressTown { get; set; } = string.Empty;
-    public string AddressCounty { get; set; } = string.Empty;
-    [Required(ErrorMessage = "Postcode is required")]
-    [RegularExpression("([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})" +
-                       "|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])" +
-                       "|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})",
-        ErrorMessage = "Invalid postcode")]
-    public string AddressPostcode { get; set; } = string.Empty;
+    public DateTime DateOfBirth { get; set; }
+
+    public Address _Address { get; set; } = new();
 
     public Salvor ApplyChanges(Salvor salvor)
     {
@@ -55,11 +43,11 @@ public class SalvorForm
         salvor.Name = Name;
         salvor.Email = Email;
         salvor.DateOfBirth = DateOfBirth;
-        salvor.Address.Line1 = AddressLine1;
-        salvor.Address.Line2 = AddressLine2;
-        salvor.Address.Town = AddressTown;
-        salvor.Address.County = AddressCounty;
-        salvor.Address.Postcode = AddressPostcode;
+        salvor.Address.Line1 = _Address.Line1;
+        salvor.Address.Line2 = _Address.Line2;
+        salvor.Address.Town = _Address.Town;
+        salvor.Address.County = _Address.County;
+        salvor.Address.Postcode = _Address.Postcode;
 
         return salvor;
     }
