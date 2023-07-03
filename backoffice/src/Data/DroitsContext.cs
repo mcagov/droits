@@ -31,47 +31,47 @@ public partial class DroitsContext : DbContext
         {
             entity.ToTable("droits");
 
-            entity.Property(e => e.Id);
-            entity.Property(e => e.Status);
-            entity.Property(e => e.ReportedDate);
-            entity.Property(e => e.Created);
-            entity.Property(e => e.LastModified);
-            entity.Property(e => e.Reference);
-            entity.Property(e => e.IsHazardousFind);
+            entity.Property(d => d.Id);
+            entity.Property(d => d.Status);
+            entity.Property(d => d.ReportedDate);
+            entity.Property(d => d.Created);
+            entity.Property(d => d.LastModified);
+            entity.Property(d => d.Reference);
+            entity.Property(d => d.IsHazardousFind);
 
             //Wreck
-            entity.Property(e => e.WreckConstructionDetails);
-            entity.Property(e => e.WreckVesselName);
-            entity.Property(e => e.WreckVesselYearConstructed);
-            entity.Property(e => e.WreckVesselYearSunk);
+            entity.Property(d => d.WreckConstructionDetails);
+            entity.Property(d => d.WreckVesselName);
+            entity.Property(d => d.WreckVesselYearConstructed);
+            entity.Property(d => d.WreckVesselYearSunk);
 
             // Location
-            entity.Property(e => e.Latitude);
-            entity.Property(e => e.Longitude);
-            entity.Property(e => e.InUkWaters);
-            entity.Property(e => e.LocationRadius);
-            entity.Property(e => e.Depth);
-            entity.Property(e => e.LocationDescription);
+            entity.Property(d => d.Latitude);
+            entity.Property(d => d.Longitude);
+            entity.Property(d => d.InUkWaters);
+            entity.Property(d => d.LocationRadius);
+            entity.Property(d => d.Depth);
+            entity.Property(d => d.LocationDescription);
 
             // Salvage
 
-            entity.Property(e => e.SalvageAwardClaimed);
-            entity.Property(e => e.ServicesDescription);
-            entity.Property(e => e.ServicesDuration);
-            entity.Property(e => e.ServicesEstimatedCost);
-            entity.Property(e => e.MMOLicenceRequired);
-            entity.Property(e => e.MMOLicenceProvided);
-            entity.Property(e => e.SalvageClaimAwarded);
+            entity.Property(d => d.SalvageAwardClaimed);
+            entity.Property(d => d.ServicesDescription);
+            entity.Property(d => d.ServicesDuration);
+            entity.Property(d => d.ServicesEstimatedCost);
+            entity.Property(d => d.MMOLicenceRequired);
+            entity.Property(d => d.MMOLicenceProvided);
+            entity.Property(d => d.SalvageClaimAwarded);
 
             // Legacy fields
 
-            entity.Property(e => e.District);
-            entity.Property(e => e.LegacyFileReference);
-            entity.Property(e => e.GoodsDischargedBy);
-            entity.Property(e => e.DateDelivered);
-            entity.Property(e => e.Agent);
-            entity.Property(e => e.RecoveredFrom);
-            entity.Property(e => e.ImportedFromLegacy);
+            entity.Property(d => d.District);
+            entity.Property(d => d.LegacyFileReference);
+            entity.Property(d => d.GoodsDischargedBy);
+            entity.Property(d => d.DateDelivered);
+            entity.Property(d => d.Agent);
+            entity.Property(d => d.RecoveredFrom);
+            entity.Property(d => d.ImportedFromLegacy);
         });
 
 
@@ -79,18 +79,18 @@ public partial class DroitsContext : DbContext
         {
             entity.ToTable("wrecks");
 
-            entity.Property(e => e.Id);
-            entity.Property(e => e.Status);
-            entity.Property(e => e.Name);
-            entity.Property(e => e.DateOfLoss);
-            entity.Property(e => e.IsWarWreck);
-            entity.Property(e => e.IsAnAircraft);
-            entity.Property(e => e.Latitude);
-            entity.Property(e => e.Longitude);
-            entity.Property(e => e.IsProtectedSite);
-            entity.Property(e => e.ProtectionLegislation);
-            entity.Property(e => e.Created);
-            entity.Property(e => e.LastModified);
+            entity.Property(w => w.Id);
+            entity.Property(w => w.Status);
+            entity.Property(w => w.Name);
+            entity.Property(w => w.DateOfLoss);
+            entity.Property(w => w.IsWarWreck);
+            entity.Property(w => w.IsAnAircraft);
+            entity.Property(w => w.Latitude);
+            entity.Property(w => w.Longitude);
+            entity.Property(w => w.IsProtectedSite);
+            entity.Property(w => w.ProtectionLegislation);
+            entity.Property(w => w.Created);
+            entity.Property(w => w.LastModified);
 
         });
 
@@ -107,7 +107,7 @@ public partial class DroitsContext : DbContext
             entity.Property(e => e.LastModified);
             entity.Property(e => e.Type);
         });
-        
+
         modelBuilder.Entity<Salvor>(entity =>
         {
             entity.ToTable("salvors");
@@ -119,7 +119,7 @@ public partial class DroitsContext : DbContext
             entity.Property(s => s.DateOfBirth);
             entity.Property(s => s.Created);
             entity.Property(s => s.LastModified);
-            entity.OwnsOne(e => e.Address);
+            entity.OwnsOne(s => s.Address);
 
         });
 

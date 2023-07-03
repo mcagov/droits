@@ -46,6 +46,7 @@ public class SalvorForm
         salvor.Id = Id;
         salvor.Name = Name;
         salvor.Email = Email;
+        salvor.TelephoneNumber = TelephoneNumber;
         salvor.DateOfBirth = DateOfBirth;
 
         Address.ApplyChanges(salvor.Address);
