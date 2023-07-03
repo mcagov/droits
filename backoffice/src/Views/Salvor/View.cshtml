@@ -59,14 +59,8 @@
                         @Html.DisplayFor(m => m.LastModified)
                     </div>
                 </div>
-                <div class="form-group row mb-1">
-                    <div class="col-md-2">
-                        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.AddressPostcode)</label>
-                    </div>
-                    <div class="col-md-10">
-                        @Html.DisplayFor(m => m.AddressPostcode)
-                    </div>
-                </div>
+
+                <partial name="_AddressViewFields" for="Address" />
             </div>
         </div>
     </div>

@@ -8,7 +8,7 @@ public static class DatabaseSeeder
     {
         dbContext.Database.EnsureCreated();
 
-        var faker = new Faker();
+        var faker = new Faker("en_GB");
 
         if (!dbContext.Wrecks.Any())
         {
@@ -36,7 +36,7 @@ public static class DatabaseSeeder
                 Line2 = faker.Address.SecondaryAddress(),
                 Town = faker.Address.City(),
                 County = faker.Address.County(),
-                Postcode = faker.Address.ZipCode(),
+                Postcode = faker.Address.ZipCode()
             },
             DateOfBirth = faker.Date.Past(40, DateTime.UtcNow),
             Created = DateTime.Now,

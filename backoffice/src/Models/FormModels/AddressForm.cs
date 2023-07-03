@@ -19,13 +19,19 @@ public class AddressForm
         Postcode = address.Postcode;
     }
 
+    [Required]
     [DisplayName("Line 1")]
     public string Line1 { get; set; } = string.Empty;
-    [DisplayName("Line 2")]
-    public string Line2 { get; set; } = string.Empty;
 
+
+    [DisplayName("Line 2")]
+    public string? Line2 { get; set; } = string.Empty;
+
+    [Required]
     [DisplayName("City/Town")]
     public string Town { get; set; } = string.Empty;
+
+    [Required]
     public string County { get; set; } = string.Empty;
     [Required(ErrorMessage = "Postcode is required")]
     [RegularExpression("^(?i)([A-Z]{1,2}[0-9]{1,2}[A-Z]?)\\s?([0-9][A-Z]{2})$",

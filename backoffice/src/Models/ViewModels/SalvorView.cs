@@ -9,7 +9,7 @@ public class SalvorView
     public SalvorView()
         {
         }
-    
+
         public SalvorView(Salvor salvor)
         {
             Id = salvor.Id;
@@ -19,12 +19,11 @@ public class SalvorView
             DateOfBirth = salvor.DateOfBirth;
             Created = salvor.Created;
             LastModified = salvor.LastModified;
-            AddressPostcode = salvor.Address.Postcode;
-            
+            Address = new AddressView(salvor.Address);
         }
-        
+
         public Guid Id { get; }
-        public string Email { get; }
+        public string Email { get; } = string.Empty;
         public string Name { get; } = string.Empty;
         public string TelephoneNumber { get; } = string.Empty;
         // public AddressDetails Address { get; }
@@ -32,14 +31,14 @@ public class SalvorView
         [DataType(DataType.Date)]
         [DisplayName("Date of Birth")]
         public DateTime DateOfBirth { get; }
-    
+
+        public AddressView Address {get; } = new AddressView();
+
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Created { get; }
-    
+
         [DisplayName("Last Modified")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime LastModified { get; }
-        [DisplayName("Postcode")]
-        public string AddressPostcode { get; }
 }
 
