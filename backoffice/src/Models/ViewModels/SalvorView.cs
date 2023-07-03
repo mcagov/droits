@@ -25,8 +25,10 @@ public class SalvorView
         public Guid Id { get; }
         public string Email { get; } = string.Empty;
         public string Name { get; } = string.Empty;
+
+        [DisplayName("Telephone Number")]
         public string TelephoneNumber { get; } = string.Empty;
-        // public AddressDetails Address { get; }
+
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         [DisplayName("Date of Birth")]
