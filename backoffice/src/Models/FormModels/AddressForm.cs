@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Droits.Helpers;
 using Droits.Models.Entities;
 
 namespace Droits.Models.FormModels;
@@ -34,7 +35,7 @@ public class AddressForm
     [Required]
     public string County { get; set; } = string.Empty;
     [Required(ErrorMessage = "Postcode is required")]
-    [RegularExpression("^(?i)([A-Z]{1,2}[0-9]{1,2}[A-Z]?)\\s?([0-9][A-Z]{2})$",
+    [RegularExpression(Constants.PostcodeRegex,
         ErrorMessage = "Invalid postcode")]
     public string Postcode { get; set; } = string.Empty;
 
