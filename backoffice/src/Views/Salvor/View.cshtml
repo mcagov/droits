@@ -1,0 +1,69 @@
+@model SalvorView
+
+@{
+    ViewData["Title"] = Model.Name == "" ? "Salvor View" : Model.Name;
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">@ViewData["Title"]</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group row mb-1">
+                    <div class="col-md-2">
+                        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.Id)</label>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(m => m.Id)
+                    </div>
+                </div>
+                <div class="form-group row mb-1">
+                    <div class="col-md-2">
+                        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.Email)</label>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(m => m.Email)
+                    </div>
+                </div>
+                <div class="form-group row mb-1">
+                    <div class="col-md-2">
+                        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.Name)</label>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(m => m.Name)
+                    </div>
+                </div>
+                <div class="form-group row mb-1">
+                    <div class="col-md-2">
+                        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.Created)</label>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(m => m.Created)
+                    </div>
+                </div>
+                <div class="form-group row mb-1">
+                    <div class="col-md-2">
+                        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.DateOfBirth)</label>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(m => m.DateOfBirth)
+                    </div>
+                </div>
+                <div class="form-group row mb-1">
+                    <div class="col-md-2">
+                        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.LastModified)</label>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(m => m.LastModified)
+                    </div>
+                </div>
+
+                <partial name="_AddressViewFields" for="Address" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<a class="btn btn-primary mt-2 float-end" asp-action="Index">View Salvors</a>

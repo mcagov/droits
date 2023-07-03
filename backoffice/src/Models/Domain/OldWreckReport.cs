@@ -1,3 +1,4 @@
+using Droits.Models.Entities;
 using Newtonsoft.Json;
 
 namespace Droits.Models;
@@ -45,7 +46,7 @@ public class WreckReport
     [JsonProperty("salvage-services")]
     public string SalvageServices { get; set; } = string.Empty;
 
-    public Salvor Personal { get; set; } = new();
+    public OldSalvor Personal { get; set; } = new();
 
     [JsonProperty("wreck-materials")]
     public List<WreckMaterial> WreckMaterials { get; set; } = new();
@@ -64,31 +65,13 @@ public class WreckMaterial
     public string OriginalFilename { get; set; } = string.Empty;
 
     [JsonProperty("address-details")]
-    public AddressDetails AddressDetails { get; set; } = new();
+    public Address Address { get; set; } = new();
 
     [JsonProperty("storage-address")]
     public string StorageAddress { get; set; } = string.Empty;
 }
 
-public class AddressDetails
-{
-    [JsonProperty("address-line-1")]
-    public string Line1 { get; set; } = string.Empty;
-
-    [JsonProperty("address-line-2")]
-    public string Line2 { get; set; } = string.Empty;
-
-    [JsonProperty("address-town")]
-    public string Town { get; set; } = string.Empty;
-
-    [JsonProperty("address-county")]
-    public string County { get; set; } = string.Empty;
-
-    [JsonProperty("address-postcode")]
-    public string Postcode { get; set; } = string.Empty;
-}
-
-public class Salvor
+public class OldSalvor
 {
     [JsonProperty("full-name")]
     public string FullName { get; set; } = string.Empty;
@@ -98,18 +81,5 @@ public class Salvor
     [JsonProperty("telephone-number")]
     public string TelephoneNumber { get; set; } = string.Empty;
 
-    [JsonProperty("address-line-1")]
-    public string Line1 { get; set; } = string.Empty;
-
-    [JsonProperty("address-line-2")]
-    public string Line2 { get; set; } = string.Empty;
-
-    [JsonProperty("address-town")]
-    public string Town { get; set; } = string.Empty;
-
-    [JsonProperty("address-county")]
-    public string County { get; set; } = string.Empty;
-
-    [JsonProperty("address-postcode")]
-    public string Postcode { get; set; } = string.Empty;
+    public Address Address { get; set; } = new Address();
 }

@@ -8,15 +8,41 @@ public static class DatabaseSeeder
     {
         dbContext.Database.EnsureCreated();
 
-        var faker = new Faker();
+        var faker = new Faker("en_GB");
 
         if (!dbContext.Wrecks.Any())
         {
             dbContext.Wrecks.AddRange(GetWrecks());
         }
 
+        if (!dbContext.Salvors.Any())
+        {
+            dbContext.Salvors.AddRange(GetSalvors(faker));
+        }
+
         dbContext.SaveChanges();
     }
+
+    private static List<Salvor> GetSalvors(Faker faker) => Enumerable.Range(0, 5)
+        .Select(i => new Salvor
+        {
+            Id = Guid.NewGuid(),
+            Email = faker.Internet.Email(),
+            Name = faker.Name.FullName(),
+            TelephoneNumber = faker.Phone.PhoneNumber(),
+            Address = new Address
+            {
+                Line1 = faker.Address.StreetAddress(),
+                Line2 = faker.Address.SecondaryAddress(),
+                Town = faker.Address.City(),
+                County = faker.Address.County(),
+                Postcode = faker.Address.ZipCode()
+            },
+            DateOfBirth = faker.Date.Past(40, DateTime.UtcNow),
+            Created = DateTime.Now,
+            LastModified = DateTime.Now
+        })
+        .ToList();
 
     private static List<Wreck> GetWrecks() => new List<Wreck>{
         new Wreck

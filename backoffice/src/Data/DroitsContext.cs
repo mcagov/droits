@@ -17,6 +17,7 @@ public partial class DroitsContext : DbContext
     public virtual DbSet<Droit> Droits { get; set; }
     public virtual DbSet<Wreck> Wrecks { get; set; }
     public virtual DbSet<Email> Emails { get; set; }
+    public virtual DbSet<Salvor> Salvors { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -71,8 +72,6 @@ public partial class DroitsContext : DbContext
             entity.Property(d => d.Agent);
             entity.Property(d => d.RecoveredFrom);
             entity.Property(d => d.ImportedFromLegacy);
-
-
             entity.HasOne(d => d.Wreck)
                 .WithMany(w => w.Droits)
                 .HasForeignKey(d => d.WreckId)
@@ -96,7 +95,6 @@ public partial class DroitsContext : DbContext
             entity.Property(w => w.ProtectionLegislation);
             entity.Property(w => w.Created);
             entity.Property(w => w.LastModified);
-
             entity.HasMany(w => w.Droits)
                 .WithOne(d => d.Wreck)
                 .HasForeignKey(d => d.WreckId);
@@ -115,6 +113,21 @@ public partial class DroitsContext : DbContext
             entity.Property(e => e.Created);
             entity.Property(e => e.LastModified);
             entity.Property(e => e.Type);
+        });
+
+        modelBuilder.Entity<Salvor>(entity =>
+        {
+            entity.ToTable("salvors");
+
+            entity.Property(s => s.Id);
+            entity.Property(s => s.Email);
+            entity.Property(s => s.Name);
+            entity.Property(s => s.TelephoneNumber);
+            entity.Property(s => s.DateOfBirth);
+            entity.Property(s => s.Created);
+            entity.Property(s => s.LastModified);
+            entity.OwnsOne(s => s.Address);
+
         });
 
         base.OnModelCreating(modelBuilder);

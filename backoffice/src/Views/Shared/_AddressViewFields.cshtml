@@ -1,0 +1,58 @@
+@model AddressView
+
+
+<div class="form-group row mt-3 mb-1">
+    <div class="col-md-2">
+        <label class="font-weight-bold">Address: </label>
+    </div>
+</div>
+
+
+<div class="form-group row mb-1">
+    <div class="col-md-2">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.Line1)</label>
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(m => m.Line1)
+    </div>
+</div>
+
+<div class="form-group row mb-1">
+    <div class="col-md-2">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.Line2)</label>
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(m => m.Line2)
+    </div>
+</div>
+
+
+
+<div class="form-group row mb-1">
+    <div class="col-md-2">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.Town)</label>
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(m => m.Town)
+    </div>
+</div>
+
+
+
+<div class="form-group row mb-1">
+    <div class="col-md-2">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.County)</label>
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(m => m.County)
+    </div>
+</div>
+
+<div class="form-group row mb-1">
+    <div class="col-md-2">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.Postcode)</label>
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(m => m.Postcode)
+    </div>
+</div>

@@ -1,0 +1,31 @@
+@model AddressForm
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Line1, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.Line1, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.Line1,"", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Line2, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.Line2,new { htmlAttributes = new { @class = "form-control" }})
+    @Html.ValidationMessageFor(m => m.Line2,"", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Town, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.Town, new { htmlAttributes = new { @class = "form-control" }})
+    @Html.ValidationMessageFor(m => m.Town,"", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.County, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.County, new { htmlAttributes = new { @class = "form-control" }})
+    @Html.ValidationMessageFor(m => m.County,"", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Postcode, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.Postcode,new { htmlAttributes = new { @class = "form-control" }})
+    @Html.ValidationMessageFor(m => m.Postcode,"", new { @class = "text-danger" })
+</div>
