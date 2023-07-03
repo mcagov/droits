@@ -90,6 +90,7 @@ public class DroitController : BaseController
         if (!ModelState.IsValid)
         {
             AddErrorMessage("Could not save Droit");
+            form = await PopulateDroitFormAsync(form);
             return View(nameof(Edit), form);
         }
 

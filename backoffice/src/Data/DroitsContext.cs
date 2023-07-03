@@ -72,6 +72,10 @@ public partial class DroitsContext : DbContext
             entity.Property(d => d.Agent);
             entity.Property(d => d.RecoveredFrom);
             entity.Property(d => d.ImportedFromLegacy);
+            entity.HasOne(d => d.Wreck)
+                .WithMany(w => w.Droits)
+                .HasForeignKey(d => d.WreckId)
+                .IsRequired(false);
         });
 
 
@@ -91,6 +95,9 @@ public partial class DroitsContext : DbContext
             entity.Property(w => w.ProtectionLegislation);
             entity.Property(w => w.Created);
             entity.Property(w => w.LastModified);
+            entity.HasMany(w => w.Droits)
+                .WithOne(d => d.Wreck)
+                .HasForeignKey(d => d.WreckId);
 
         });
 
