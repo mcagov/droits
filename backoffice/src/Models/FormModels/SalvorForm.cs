@@ -17,7 +17,7 @@ public class SalvorForm
         Email = salvor.Email;
         TelephoneNumber = salvor.TelephoneNumber;
         DateOfBirth = salvor.DateOfBirth;
-        _Address = salvor.Address;
+        _Address = new AddressForm(salvor.Address);
     }
 
     public Guid Id { get; set; }
@@ -35,7 +35,7 @@ public class SalvorForm
     [DataType(DataType.Date)]
     public DateTime DateOfBirth { get; set; }
 
-    public Address _Address { get; set; } = new();
+    public AddressForm _Address { get; set; } = new();
 
     public Salvor ApplyChanges(Salvor salvor)
     {
