@@ -10,7 +10,7 @@ public class Salvor
     public string Name { get; set; } = string.Empty;
     public string TelephoneNumber { get; set; } = string.Empty;
     public Address Address { get; set; } = new();
-    public DateTime DateOfBirth { get; set; } 
+    public DateTime DateOfBirth { get; set; }
     public DateTime Created { get; set; }
     public DateTime LastModified { get; set; }
 }

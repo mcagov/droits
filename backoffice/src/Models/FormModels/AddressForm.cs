@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 
@@ -17,14 +18,29 @@ public class AddressForm
         County = address.County;
         Postcode = address.Postcode;
     }
+
+    [DisplayName("Line 1")]
     public string Line1 { get; set; } = string.Empty;
+    [DisplayName("Line 2")]
     public string Line2 { get; set; } = string.Empty;
+
+    [DisplayName("City/Town")]
     public string Town { get; set; } = string.Empty;
     public string County { get; set; } = string.Empty;
     [Required(ErrorMessage = "Postcode is required")]
-    [RegularExpression("([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})" +
-                       "|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])" +
-                       "|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})",
+    [RegularExpression("^(?i)([A-Z]{1,2}[0-9]{1,2}[A-Z]?)\\s?([0-9][A-Z]{2})$",
         ErrorMessage = "Invalid postcode")]
     public string Postcode { get; set; } = string.Empty;
+
+
+    public Address ApplyChanges(Address address)
+    {
+        address.Line1 = Line1;
+        address.Line2 = Line2;
+        address.Town = Town;
+        address.County = County;
+        address.Postcode = Postcode;
+
+        return address;
+    }
 }
