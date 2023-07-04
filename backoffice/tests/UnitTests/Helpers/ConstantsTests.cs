@@ -6,7 +6,12 @@ namespace Droits.Tests.UnitTests.Helpers;
 
 public class ConstantsTests
 {
-    private Regex regex = new (Constants.PostcodeRegex);
+    private readonly Regex regex;
+
+    public ConstantsTests()
+    {
+        regex = new Regex(Constants.PostcodeRegex);
+    }
     
     [Fact]
     public void PostcodeMatch_WithPostcodeWithSpace_ShouldReturnTrue()
