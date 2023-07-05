@@ -109,11 +109,15 @@ public class DroitController : BaseController
         droit = form.ApplyChanges(droit);
 
         if(!droit.WreckId.HasValue){
-            droit.WreckId = await _wreckService.GetWreckIdAsync(form.WreckForm);
+            droit.WreckId = await _wreckService.SaveWreckFormAsync(form.WreckForm);
         }
 
         try{
-            await _service.SaveDroitAsync(droit);
+            droit = await _service.SaveDroitAsync(droit);
+
+            form.WreckMaterialForm.DroitId = droit.Id;
+            var wreckMaterial = await _service.SaveWreckMaterialAsync(form.WreckMaterialForm);
+
         }catch(Exception e){
             HandleError(_logger,"Could not save Droit.",e);
             return View(nameof(Edit), form);

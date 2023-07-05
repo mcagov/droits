@@ -13,6 +13,9 @@
     <button class="nav-link" id="wreck-tab" data-bs-toggle="tab" data-bs-target="#wreck-content" type="button" role="tab" aria-controls="wreck-content" aria-selected="false">Wreck</button>
   </li>
   <li class="nav-item" role="presentation">
+    <button class="nav-link" id="wreck-materials-tab" data-bs-toggle="tab" data-bs-target="#wreck-materials-content" type="button" role="tab" aria-controls="wreck-materials-content" aria-selected="false">Wreck Materials</button>
+  </li>
+  <li class="nav-item" role="presentation">
     <button class="nav-link" id="salvage-tab" data-bs-toggle="tab" data-bs-target="#salvage-content" type="button" role="tab" aria-controls="salvage-content" aria-selected="false">Salvage</button>
   </li>
   <li class="nav-item" role="presentation">
@@ -125,7 +128,7 @@
 
 
         @if(Model.Wreck != null){
-            <partial name="_WreckViewFields" for="Wreck"/>
+            <partial name="Wreck/_WreckViewFields" for="Wreck"/>
 
             @if ( Model.Wreck.Latitude.HasValue() && Model.Wreck.Longitude.HasValue())
             {
@@ -134,6 +137,14 @@
                 </div>
             }
 
+        }
+    </div>
+
+
+      <div class="tab-pane fade" id="wreck-materials-content" role="tabpanel" aria-labelledby="wreck-materials-tab">
+
+        @if(Model.WreckMaterial != null){
+            <partial name="WreckMaterial/_WreckMaterialViewFields" for="WreckMaterial"/>
         }
     </div>
 

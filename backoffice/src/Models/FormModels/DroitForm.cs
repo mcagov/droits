@@ -57,6 +57,15 @@ public class DroitForm : FormModel
         Agent = droit.Agent;
         RecoveredFrom = droit.RecoveredFrom;
         ImportedFromLegacy = droit.ImportedFromLegacy;
+
+
+        if(droit.WreckMaterials.Any()){
+            WreckMaterialForm = new WreckMaterialForm(droit.WreckMaterials.First());
+        }else{
+            WreckMaterialForm = new WreckMaterialForm(){
+                DroitId = droit.Id
+            };
+        }
     }
 
 
@@ -65,6 +74,7 @@ public class DroitForm : FormModel
     public Guid Id { get; set; }
 
     public WreckForm WreckForm { get; set; } = new WreckForm();
+    public WreckMaterialForm WreckMaterialForm {get; set; } = new WreckMaterialForm();
 
     [Required]
     public string Reference { get; set; } = string.Empty;
