@@ -109,10 +109,20 @@ public static class DatabaseSeeder
         .Select(i => new Wreck
         {
             Id = Guid.NewGuid(),
+            Status = Enum.GetValues(typeof(WreckStatus))
+                .OfType<WreckStatus>()
+                .MinBy(x => Guid.NewGuid()),
             Name = _faker.Name.FullName(),
+            DateOfLoss = _faker.Date.Past(500, DateTime.UtcNow),
+            
+            IsWarWreck = _faker.Random.Bool(),
+            IsAnAircraft = _faker.Random.Bool(),
             Latitude = _faker.Address.Latitude().ToString(),
             Longitude = _faker.Address.Longitude().ToString(),
-            DateOfLoss = _faker.Date.Past(500, DateTime.UtcNow),
+            
+            IsProtectedSite = _faker.Random.Bool(),
+            ProtectionLegislation = _faker.Lorem.Sentence(),
+            
             Created = DateTime.UtcNow,
             LastModified = DateTime.UtcNow
         })
