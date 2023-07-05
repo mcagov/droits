@@ -79,26 +79,35 @@ public static class DatabaseSeeder
             LastModified = DateTime.UtcNow,
 
             WreckId = wreck.Id,
+            IsHazardousFind = _faker.Random.Bool(),
 
             WreckVesselName = wreck.Name,
+            WreckConstructionDetails = _faker.Lorem.Sentence(),
             WreckVesselYearConstructed = _faker.Random.Int(1500, reportedDate.Year),
             WreckVesselYearSunk = _faker.Random.Int(1500, reportedDate.Year),
 
             Latitude = wreck.Latitude,
             Longitude = wreck.Longitude,
+            InUkWaters = _faker.Random.Bool(),
             LocationRadius = _faker.Random.Int(1, 500),
             Depth = _faker.Random.Int(1, 5000),
+            LocationDescription = _faker.Lorem.Sentence(),
 
+            SalvageAwardClaimed = _faker.Random.Bool(),
             ServicesDescription = _faker.Lorem.Sentence(),
             ServicesDuration = _faker.Random.Int(1, 24),
             ServicesEstimatedCost = _faker.Random.Int(1, 5000),
+            MMOLicenceRequired= _faker.Random.Bool(),
+            MMOLicenceProvided = _faker.Random.Bool(),
+            SalvageClaimAwarded = _faker.Random.Float(),
 
             District = _faker.Address.County(),
-            LegacyFileReference = "",
+            LegacyFileReference = _faker.Lorem.Sentence(),
             GoodsDischargedBy = _faker.Name.FullName(),
             DateDelivered = _faker.Date.Between(reportedDate, DateTime.UtcNow).ToShortDateString(),
             Agent = _faker.Name.FullName(),
             RecoveredFrom = _faker.Random.ArrayElement(new[] { "Afloat", "Ashore", "Seabed" }),
+            ImportedFromLegacy = _faker.Random.Bool()
         };
     }
 
