@@ -56,3 +56,13 @@ div.form-sections {
     background-color: var(--bs-danger-bg-subtle);
     border-color: var(--bs-danger-border-subtle);
 }
+
+.progress {
+    .progress-bar {
+        border-right: 1px solid #000;
+    }
+
+    :last-child {
+        border-right: none;
+    }
+}

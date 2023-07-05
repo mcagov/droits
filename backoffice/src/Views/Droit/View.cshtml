@@ -5,6 +5,10 @@
 
 <h4>@ViewData["Title"]</h4>
 
+<div>
+    <partial name="_StatusBar" model=@Model.Status>
+</div>
+
 <ul class="nav nav-tabs" id="droitTabs" role="tablist">
   <li class="nav-item" role="presentation">
     <button class="nav-link active" id="droit-tab" data-bs-toggle="tab" data-bs-target="#droit-content" type="button" role="tab" aria-controls="droit-content" aria-selected="true">Droit</button>

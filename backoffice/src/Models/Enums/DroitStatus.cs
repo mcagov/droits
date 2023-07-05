@@ -4,9 +4,21 @@ namespace Droits.Models.Enums;
 
 public enum DroitStatus
 {
-    Received,
-    [Display(Name = "In Progress")]InProgress,
-    Closed,
+    [Display(Name = "Unassigned")]
     Unassigned,
-    [Display(Name = "Awaiting Response")]AwaitingResponse
+
+    [Display(Name = "Received")]
+    Received,
+
+    [Display(Name = "In Progress")]
+    InProgress,
+
+    [Display(Name = "Research")]
+    Research,
+
+    [Display(Name = "Closed")]
+    Closed,
+
+    [Display(Name = "Awaiting Response")]
+    AwaitingResponse,
 }
