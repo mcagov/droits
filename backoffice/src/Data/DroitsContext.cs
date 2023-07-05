@@ -14,10 +14,10 @@ public partial class DroitsContext : DbContext
     {
     }
 
-    public virtual DbSet<Droit> Droits { get; set; }
-    public virtual DbSet<Wreck> Wrecks { get; set; }
-    public virtual DbSet<Email> Emails { get; set; }
-    public virtual DbSet<Salvor> Salvors { get; set; }
+    public virtual DbSet<Droit> Droits { get; set; } = null!;
+    public virtual DbSet<Wreck> Wrecks { get; set; } = null!;
+    public virtual DbSet<Email> Emails { get; set; } = null!;
+    public virtual DbSet<Salvor> Salvors { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
