@@ -3,6 +3,15 @@ import 'bootstrap/dist/js/bootstrap.bundle';
 import 'select2';
 
 $(function() {
+
+    window.confirm = function (message, callback) {
+        $('#confirmDialogTitle').text('Confirmation');
+        $('#confirmDialogMessage').text(message);
+        $('#confirmDialogBtn').off('click').on('click', callback);
+        $('#confirmDialog').modal('show');
+    };
+
+
     $("#js-select-wreck").on("change", function() {
         toggleWreckFields();
     });
@@ -34,10 +43,15 @@ $(function() {
             });
     });
 
-    wmFormContainer.on('click', '.js-remove-wreck-material-form', function () {
-        $(this).closest('.js-wreck-material-form').remove();
-        refreshWmFormIndexes();
-    });
+    $('body').on('click','.js-remove-wreck-material-form', function () {
+        var confirmMessage = 'Are you sure you want to remove this Wreck Material?';
+        var removeAction = function () {
+          $(this).closest('.js-wreck-material-form').remove();
+          refreshWmFormIndexes();
+          $('#confirmDialog').modal('hide');
+        };
+        confirm(confirmMessage, removeAction.bind(this));
+      });
 
     function toggleWreckFields() {
         var wreckIdSelect = $("#js-select-wreck");

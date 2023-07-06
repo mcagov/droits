@@ -48,5 +48,6 @@
 
 <script src="~/dist/bundle.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", false)
+@await Html.PartialAsync("_ConfirmDialog")
 </body>
 </html>
