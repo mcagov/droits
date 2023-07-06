@@ -8,6 +8,7 @@ namespace Droits.Models.FormModels
         public WreckMaterialForm(){}
         public WreckMaterialForm(WreckMaterial wreckMaterial)
         {
+            Id = wreckMaterial.Id;
             DroitId = wreckMaterial.DroitId;
             Name = wreckMaterial.Name;
             Description = wreckMaterial.Description;
@@ -22,6 +23,8 @@ namespace Droits.Models.FormModels
             WhereSecured = wreckMaterial.WhereSecured;
             ImportedFromLegacy = wreckMaterial.ImportedFromLegacy;
         }
+
+        public Guid Id { get; set; }
 
         [Required]
         public Guid DroitId { get; set; }
@@ -62,6 +65,7 @@ namespace Droits.Models.FormModels
 
         public WreckMaterial ApplyChanges(WreckMaterial wreckMaterial)
         {
+            wreckMaterial.Id = Id;
             wreckMaterial.DroitId = DroitId;
             wreckMaterial.Name = Name;
             wreckMaterial.Description = Description;

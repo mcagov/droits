@@ -21,6 +21,7 @@ public class DroitService : IDroitService
         _repo = repo;
     }
 
+
     public async Task<List<Droit>> GetDroitsAsync()
     {
         return await _repo.GetDroitsAsync();
@@ -42,15 +43,34 @@ public class DroitService : IDroitService
 
     public async Task<Droit> GetDroitAsync(Guid id) =>
         await _repo.GetDroitAsync(id);
-    private async Task DeleteWreckMaterialForDroitAsync(Guid droitId) => await _repo.DeleteWreckMaterialForDroitAsync(droitId);
+
+    private async Task<WreckMaterial> SaveWreckMaterialAsync(WreckMaterialForm wreckMaterialForm)
+    {
+         if(wreckMaterialForm.Id == default(Guid)){
+            return await _repo.AddWreckMaterialAsync(wreckMaterialForm.ApplyChanges(new WreckMaterial()));
+        }
+
+        var wreckMaterial = await _repo.GetWreckMaterialAsync(wreckMaterialForm.Id, wreckMaterialForm.DroitId);
+
+        wreckMaterial = wreckMaterialForm.ApplyChanges(wreckMaterial);
+
+        return await UpdateWreckMaterialAsync(wreckMaterial);
+    }
+
+    private async Task<WreckMaterial> UpdateWreckMaterialAsync(WreckMaterial wreckMaterial) =>
+        await _repo.UpdateWreckMaterialAsync(wreckMaterial);
+
+    private async Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep) => await _repo.DeleteWreckMaterialForDroitAsync(droitId, wmToKeep);
 
     public async Task SaveWreckMaterialsAsync(Guid droitId, List<WreckMaterialForm> wreckMaterialForms)
     {
-        await DeleteWreckMaterialForDroitAsync(droitId);
+        var wreckMaterialIdsToKeep = wreckMaterialForms.Select(wm => wm.Id);
+
+        await DeleteWreckMaterialForDroitAsync(droitId, wreckMaterialIdsToKeep);
 
         foreach(var wmForm in wreckMaterialForms){
             wmForm.DroitId = droitId;
-            await _repo.AddWreckMaterialAsync(wmForm.ApplyChanges(new WreckMaterial()));
+            await SaveWreckMaterialAsync(wmForm);
         }
     }
 }
