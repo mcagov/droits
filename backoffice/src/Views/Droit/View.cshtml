@@ -143,9 +143,13 @@
 
       <div class="tab-pane fade" id="wreck-materials-content" role="tabpanel" aria-labelledby="wreck-materials-tab">
 
-        @if(Model.WreckMaterial != null){
-            <partial name="WreckMaterial/_WreckMaterialViewFields" for="WreckMaterial"/>
-        }
+        <div class="row">
+            @for (int i = 0; i < Model.WreckMaterials.Count; i++)
+            {
+                    <partial name="WreckMaterial/_WreckMaterialViewFields"
+                            for="WreckMaterials[i]" />
+            }
+        </div>
     </div>
 
     <div class="tab-pane fade" id="salvage-content" role="tabpanel" aria-labelledby="salvage-tab">

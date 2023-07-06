@@ -27,10 +27,8 @@ public class DroitView
             Wreck = new WreckView(droit.Wreck);
         }
 
-        WreckMaterial = new WreckMaterialView();
-
         if(droit.WreckMaterials.Any()){
-            WreckMaterial = new WreckMaterialView(droit.WreckMaterials.First());
+            WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).ToList();
         }
 
         WreckConstructionDetails = droit.WreckConstructionDetails;
@@ -87,7 +85,7 @@ public class DroitView
 
     // Wreck Material
 
-    public WreckMaterialView WreckMaterial {get;}
+    public List<WreckMaterialView> WreckMaterials {get;} = new List<WreckMaterialView>();
 
     // Wreck
 
