@@ -6,7 +6,7 @@
 <h4>@ViewData["Title"]</h4>
 
 <div>
-    <partial name="_StatusBar" model=@Model.Status>
+    <partial name="_StatusBar" model=@Model.Status/>
 </div>
 
 <ul class="nav nav-tabs" id="droitTabs" role="tablist">
@@ -215,7 +215,7 @@
                 @Html.DisplayFor(m => m.District)
             </div>
         </div>
-
+        
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.LegacyFileReference, new { @class = "font-weight-bold" })
@@ -224,7 +224,7 @@
                 @Html.DisplayFor(m => m.LegacyFileReference)
             </div>
         </div>
-
+        
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.GoodsDischargedBy, new { @class = "font-weight-bold" })
@@ -233,7 +233,7 @@
                 @Html.DisplayFor(m => m.GoodsDischargedBy)
             </div>
         </div>
-
+        
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.DateDelivered, new { @class = "font-weight-bold" })
@@ -242,7 +242,7 @@
                 @Html.DisplayFor(m => m.DateDelivered)
             </div>
         </div>
-
+        
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.Agent, new { @class = "font-weight-bold" })
@@ -250,6 +250,11 @@
             <div class="col-md-7">
                 @Html.DisplayFor(m => m.Agent)
             </div>
+        </div>
+    </div>
+    <div class="col d-flex flex-row mt-4 justify-content-end">
+        <div class="align-self-end">
+            <a type="button" class="btn btn-primary" asp-action="Edit">Edit</a>
         </div>
     </div>
 </div>

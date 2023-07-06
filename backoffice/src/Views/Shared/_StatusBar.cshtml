@@ -8,7 +8,7 @@
     @foreach (Enum status in Enum.GetValues(viewModel.Status.GetType()))
     {
         <div class="progress-bar flex-grow-1 py-2 @viewModel.GetProgressCssClass(status)" role="progressbar">
-            <span class="@viewModel.GetTextCssClass(status)">@status.GetDisplayName()</span>
+            <span class="@viewModel.GetTextCssClass(status) fs-4 fw-bold">@status.GetDisplayName()</span>
         </div>
     }
 </div>
