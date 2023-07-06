@@ -1,5 +1,6 @@
 ﻿using Droits.Exceptions;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 using Droits.Models.FormModels;
 using Droits.Models.ViewModels;
 using Droits.Services;
@@ -53,6 +54,21 @@ public class DroitController : BaseController
     {
         var form = await PopulateDroitFormAsync(new DroitForm());
         return View(nameof(Edit), form);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> UpdateDroitStatus(Guid id, DroitStatus newStatus)
+    {
+        if (!ModelState.IsValid)
+        {
+            AddErrorMessage("Invalid Status");
+            return RedirectToAction(nameof(View), id);
+        }
+        
+        var droit = await _service.GetDroitAsync(id);
+        droit.Status = newStatus;
+        return RedirectToAction(nameof(View), id);
+        
     }
 
     [HttpGet]
