@@ -8,7 +8,6 @@ namespace Droits.Models.FormModels
         public WreckMaterialForm(){}
         public WreckMaterialForm(WreckMaterial wreckMaterial)
         {
-            Id = wreckMaterial.Id;
             DroitId = wreckMaterial.DroitId;
             Name = wreckMaterial.Name;
             Description = wreckMaterial.Description;
@@ -23,8 +22,6 @@ namespace Droits.Models.FormModels
             WhereSecured = wreckMaterial.WhereSecured;
             ImportedFromLegacy = wreckMaterial.ImportedFromLegacy;
         }
-
-        public Guid Id { get; set; }
 
         [Required]
         public Guid DroitId { get; set; }
@@ -50,14 +47,14 @@ namespace Droits.Models.FormModels
         // public List<string> Images { get; set; } = new List<string>();
 
         [Display(Name = "Wreck Material Owner")]
-        public string WreckMaterialOwner { get; set; } = string.Empty;
+        public string? WreckMaterialOwner { get; set; } = string.Empty;
 
-        public string Purchaser { get; set; } = string.Empty;
+        public string? Purchaser { get; set; } = string.Empty;
 
-        public string Outcome { get; set; } = string.Empty;
+        public string? Outcome { get; set; } = string.Empty;
 
         [Display(Name = "Where Secured")]
-        public string WhereSecured { get; set; } = string.Empty;
+        public string? WhereSecured { get; set; } = string.Empty;
 
         [Display(Name = "Imported From Legacy")]
         public bool ImportedFromLegacy { get; set; } = false;
@@ -65,7 +62,6 @@ namespace Droits.Models.FormModels
 
         public WreckMaterial ApplyChanges(WreckMaterial wreckMaterial)
         {
-            wreckMaterial.Id = Id;
             wreckMaterial.DroitId = DroitId;
             wreckMaterial.Name = Name;
             wreckMaterial.Description = Description;

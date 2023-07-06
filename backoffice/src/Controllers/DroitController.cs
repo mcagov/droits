@@ -114,12 +114,18 @@ public class DroitController : BaseController
 
         try{
             droit = await _service.SaveDroitAsync(droit);
-
-            form.WreckMaterialForm.DroitId = droit.Id;
-            var wreckMaterial = await _service.SaveWreckMaterialAsync(form.WreckMaterialForm);
-
         }catch(Exception e){
             HandleError(_logger,"Could not save Droit.",e);
+            form = await PopulateDroitFormAsync(form);
+            return View(nameof(Edit), form);
+        }
+
+
+        try{
+            await _service.SaveWreckMaterialsAsync(droit.Id, form.WreckMaterialForms);
+        }catch(Exception e){
+            HandleError(_logger,"Could not save Wreck Material.",e);
+            form = await PopulateDroitFormAsync(form);
             return View(nameof(Edit), form);
         }
 
@@ -128,7 +134,11 @@ public class DroitController : BaseController
         return RedirectToAction(nameof(Index));
     }
 
-
+    [HttpGet]
+    public ActionResult WreckMaterialFormPartial()
+    {
+        return PartialView("WreckMaterial/_WreckMaterialFormFields", new WreckMaterialForm());
+    }
 
     private async Task<DroitForm> PopulateDroitFormAsync(DroitForm form){
 

@@ -9,7 +9,7 @@ public interface IDroitService
     Task<List<Droit>> GetDroitsAsync();
     Task<Droit> SaveDroitAsync(Droit droit);
     Task<Droit> GetDroitAsync(Guid id);
-    Task<WreckMaterial> SaveWreckMaterialAsync(WreckMaterialForm wreckMaterialForm);
+    Task SaveWreckMaterialsAsync(Guid id, List<WreckMaterialForm> wreckMaterialForms);
 }
 
 public class DroitService : IDroitService
@@ -42,20 +42,15 @@ public class DroitService : IDroitService
 
     public async Task<Droit> GetDroitAsync(Guid id) =>
         await _repo.GetDroitAsync(id);
+    private async Task DeleteWreckMaterialForDroitAsync(Guid droitId) => await _repo.DeleteWreckMaterialForDroitAsync(droitId);
 
-    public async Task<WreckMaterial> SaveWreckMaterialAsync(WreckMaterialForm wreckMaterialForm)
+    public async Task SaveWreckMaterialsAsync(Guid droitId, List<WreckMaterialForm> wreckMaterialForms)
     {
-         if(wreckMaterialForm.Id == default(Guid)){
-            return await _repo.AddWreckMaterialAsync(wreckMaterialForm.ApplyChanges(new WreckMaterial()));
+        await DeleteWreckMaterialForDroitAsync(droitId);
+
+        foreach(var wmForm in wreckMaterialForms){
+            wmForm.DroitId = droitId;
+            await _repo.AddWreckMaterialAsync(wmForm.ApplyChanges(new WreckMaterial()));
         }
-
-        var wreckMaterial = await _repo.GetWreckMaterialAsync(wreckMaterialForm.DroitId, wreckMaterialForm.DroitId);
-
-        wreckMaterial = wreckMaterialForm.ApplyChanges(wreckMaterial);
-
-        return await UpdateWreckMaterialAsync(wreckMaterial);
     }
-
-        private async Task<WreckMaterial> UpdateWreckMaterialAsync(WreckMaterial wreckMaterial) =>
-            await _repo.UpdateWreckMaterialAsync(wreckMaterial);
 }

@@ -98,10 +98,16 @@
         </div>
 
 
-         <div class="tab-pane fade" id="wreck-materials" role="tabpanel" aria-labelledby="wreck-materials-tab">
-            <div>
-                <partial name="WreckMaterial/_WreckMaterialFormFields" for="WreckMaterialForm"/>
+        <div class="tab-pane fade" id="wreck-materials" role="tabpanel" aria-labelledby="wreck-materials-tab">
+            <div id="js-wreck-materials-form-container">
+            @for (int i = 0; i < Model.WreckMaterialForms.Count; i++)
+            {
+                    <partial name="WreckMaterial/_WreckMaterialFormFields"
+                            for="WreckMaterialForms[i]" />
+            }
             </div>
+
+            <button type="button" id="js-add-wreck-material-form" class="mt-2 btn btn-primary">Add Wreck Material Form</button>
         </div>
 
         <div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="location-tab">

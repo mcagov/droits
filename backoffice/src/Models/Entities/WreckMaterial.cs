@@ -24,9 +24,9 @@ public class WreckMaterial
 
     // Legacy fields ..
 
-    public string WreckMaterialOwner { get; set; } = string.Empty;
-    public string Purchaser { get; set; } = string.Empty;
-    public string Outcome { get; set; } = string.Empty;
-    public string WhereSecured { get; set; } = string.Empty;
+    public string? WreckMaterialOwner { get; set; } = string.Empty;
+    public string? Purchaser { get; set; } = string.Empty;
+    public string? Outcome { get; set; } = string.Empty;
+    public string? WhereSecured { get; set; } = string.Empty;
     public bool ImportedFromLegacy { get; set; } = false;
 }

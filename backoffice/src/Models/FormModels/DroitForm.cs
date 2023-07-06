@@ -60,11 +60,11 @@ public class DroitForm : FormModel
 
 
         if(droit.WreckMaterials.Any()){
-            WreckMaterialForm = new WreckMaterialForm(droit.WreckMaterials.First());
+            WreckMaterialForms = droit.WreckMaterials.Select(wm => new WreckMaterialForm(wm)).ToList();
         }else{
-            WreckMaterialForm = new WreckMaterialForm(){
+            WreckMaterialForms.Add(new WreckMaterialForm(){
                 DroitId = droit.Id
-            };
+            });
         }
     }
 
@@ -74,7 +74,7 @@ public class DroitForm : FormModel
     public Guid Id { get; set; }
 
     public WreckForm WreckForm { get; set; } = new WreckForm();
-    public WreckMaterialForm WreckMaterialForm {get; set; } = new WreckMaterialForm();
+    public List<WreckMaterialForm> WreckMaterialForms {get; set; } = new List<WreckMaterialForm>();
 
     [Required]
     public string Reference { get; set; } = string.Empty;
