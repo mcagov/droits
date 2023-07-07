@@ -1,4 +1,5 @@
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 using Droits.Repositories;
 
 namespace Droits.Services;
@@ -8,6 +9,7 @@ public interface IDroitService
     Task<List<Droit>> GetDroitsAsync();
     Task<Droit> SaveDroitAsync(Droit droit);
     Task<Droit> GetDroitAsync(Guid id);
+    Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
 }
 
 public class DroitService : IDroitService
@@ -41,4 +43,6 @@ public class DroitService : IDroitService
     public async Task<Droit> GetDroitAsync(Guid id) =>
         await _repo.GetDroitAsync(id);
 
+    public async Task UpdateDroitStatusAsync(Guid id, DroitStatus status) =>
+        await _repo.UpdateDroitStatusAsync(id,status);
 }

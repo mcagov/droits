@@ -9,6 +9,22 @@
     <partial name="_StatusBar" model=@Model.Status/>
 </div>
 
+<div class="col d-flex flex-row mt-4 justify-content-end">
+    <form asp-action="UpdateDroitStatus" method="POST">
+        <div class="row">
+            @Html.HiddenFor(m => m.Id)
+            <div class="col form-group mt-auto">
+                @Html.LabelFor(m => m.Status, new { @class = "col-form-label" })
+                @Html.DropDownListFor(m => m.Status, Html.GetEnumSelectList(typeof(DroitStatus)), new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
+            </div>
+            <div class="col form-group mt-auto">
+                <button class="btn btn-primary" type="submit">Update Status</button>
+            </div>
+        </div>
+    </form>
+</div>
+
 <ul class="nav nav-tabs" id="droitTabs" role="tablist">
   <li class="nav-item" role="presentation">
     <button class="nav-link active" id="droit-tab" data-bs-toggle="tab" data-bs-target="#droit-content" type="button" role="tab" aria-controls="droit-content" aria-selected="true">Droit</button>
