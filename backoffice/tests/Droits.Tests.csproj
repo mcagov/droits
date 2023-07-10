@@ -26,5 +26,4 @@
     <ProjectReference Include="..\src\Droits.csproj" />
   </ItemGroup>
 
-
 </Project>

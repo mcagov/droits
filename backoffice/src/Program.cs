@@ -1,9 +1,11 @@
+using System.Globalization;
 using Droits.Clients;
 using Droits.Data;
 using Droits.ModelBinders;
 using Droits.Repositories;
 using Droits.Services;
 using GovUk.Frontend.AspNetCore;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,13 @@ builder.Services
             options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
         })
         .AddRazorRuntimeCompilation();
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new RequestCulture("en-GB");
+});
+
+
 builder.Services.AddDbContext<DroitsContext>(opt => opt.UseInMemoryDatabase("droits"));
 
 
@@ -60,6 +69,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseRequestLocalization();
 
 app.MapControllerRoute(
     "default",
