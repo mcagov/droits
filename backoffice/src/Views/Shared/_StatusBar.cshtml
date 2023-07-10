@@ -1,0 +1,14 @@
+@model Enum
+
+@{
+    var viewModel = new StatusView(Model);
+}
+
+<div class="progress h-100 border border-dark my-2 d-none d-lg-flex">
+    @foreach (Enum status in Enum.GetValues(viewModel.Status.GetType()))
+    {
+        <div class="progress-bar flex-grow-1 py-2 @viewModel.GetProgressCssClass(status)" role="progressbar">
+            <span class="@viewModel.GetTextCssClass(status) fs-6 fw-bold">@status.GetDisplayName()</span>
+        </div>
+    }
+</div>

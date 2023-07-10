@@ -1,6 +1,7 @@
 using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Repositories;
@@ -15,6 +16,8 @@ public interface IDroitRepository
     Task<WreckMaterial> GetWreckMaterialAsync(Guid id,Guid droitId);
     Task<WreckMaterial> AddWreckMaterialAsync(WreckMaterial wreckMaterial);
     Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep);
+    Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
+    
 }
 
 public class DroitRepository : IDroitRepository
@@ -103,5 +106,12 @@ public class DroitRepository : IDroitRepository
 
         _context.WreckMaterials.RemoveRange(wreckMaterials);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateDroitStatusAsync(Guid id, DroitStatus status)
+    {
+        var droit = await GetDroitAsync(id);
+        droit.Status = status;
+        await UpdateDroitAsync(droit);
     }
 }

@@ -2,8 +2,30 @@
 @{
     ViewData["Title"] = "View Droit";
 }
+<div class="row">
+    <div class="col-6 col-lg-8">
+        <h4>@ViewData["Title"]</h4>
+    </div>
+    <div class="col-6 col-lg-4 float-end">
+        <form asp-action="UpdateDroitStatus" method="POST">
+            <div class="row">
+                @Html.HiddenFor(m => m.Id)
+                <div class="col d-flex btn-group">
+                    <div class="input-group flex-grow-1">
+                        @Html.DropDownListFor(m => m.Status, Html.GetEnumSelectList(typeof(DroitStatus)), new { @class = "form-control" })
+                        <button class="btn btn-primary" type="submit">
+                            Update Status
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
-<h4>@ViewData["Title"]</h4>
+<div>
+    <partial name="_StatusBar" model=@Model.Status/>
+</div>
 
 <ul class="nav nav-tabs" id="droitTabs" role="tablist">
   <li class="nav-item" role="presentation">
@@ -226,7 +248,7 @@
                 @Html.DisplayFor(m => m.District)
             </div>
         </div>
-
+        
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.LegacyFileReference, new { @class = "font-weight-bold" })
@@ -235,7 +257,7 @@
                 @Html.DisplayFor(m => m.LegacyFileReference)
             </div>
         </div>
-
+        
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.GoodsDischargedBy, new { @class = "font-weight-bold" })
@@ -244,7 +266,7 @@
                 @Html.DisplayFor(m => m.GoodsDischargedBy)
             </div>
         </div>
-
+        
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.DateDelivered, new { @class = "font-weight-bold" })
@@ -253,7 +275,7 @@
                 @Html.DisplayFor(m => m.DateDelivered)
             </div>
         </div>
-
+        
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.Agent, new { @class = "font-weight-bold" })
@@ -261,6 +283,12 @@
             <div class="col-md-7">
                 @Html.DisplayFor(m => m.Agent)
             </div>
+        </div>
+    </div>
+    <div class="col d-flex flex-row mt-4 justify-content-end">
+        <div class="align-self-end">
+            <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+            <a type="button" class="btn btn-primary" asp-action="Index">View Droits</a>
         </div>
     </div>
 </div>

@@ -1,5 +1,6 @@
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Models.Enums;
 using Droits.Repositories;
 
 namespace Droits.Services;
@@ -10,6 +11,7 @@ public interface IDroitService
     Task<Droit> SaveDroitAsync(Droit droit);
     Task<Droit> GetDroitAsync(Guid id);
     Task SaveWreckMaterialsAsync(Guid id, List<WreckMaterialForm> wreckMaterialForms);
+    Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
 }
 
 public class DroitService : IDroitService
@@ -46,7 +48,7 @@ public class DroitService : IDroitService
 
     private async Task<WreckMaterial> SaveWreckMaterialAsync(WreckMaterialForm wreckMaterialForm)
     {
-         if(wreckMaterialForm.Id == default(Guid)){
+        if(wreckMaterialForm.Id == default(Guid)){
             return await _repo.AddWreckMaterialAsync(wreckMaterialForm.ApplyChanges(new WreckMaterial()));
         }
 
@@ -73,4 +75,6 @@ public class DroitService : IDroitService
             await SaveWreckMaterialAsync(wmForm);
         }
     }
+    public async Task UpdateDroitStatusAsync(Guid id, DroitStatus status) =>
+        await _repo.UpdateDroitStatusAsync(id,status);
 }
