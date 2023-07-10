@@ -57,18 +57,18 @@ public class DroitController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> UpdateDroitStatus(DroitView droitView)
+    public async Task<IActionResult> UpdateDroitStatus(Guid id, DroitStatus status)
     {
         if (!ModelState.IsValid)
         {
             AddErrorMessage("Invalid Status");
-            return RedirectToAction(nameof(View), droitView.Id);
+            return RedirectToAction(nameof(View), id);
         }
-        
-        await _service.UpdateDroitStatusAsync(droitView.Id,droitView.Status);
-        
-        return RedirectToAction(nameof(View), new {id = droitView.Id});
-        
+
+        await _service.UpdateDroitStatusAsync(id,status);
+
+        return RedirectToAction(nameof(View), new {id = id});
+
     }
 
     [HttpGet]
