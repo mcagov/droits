@@ -1,6 +1,7 @@
 using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Repositories;
@@ -11,6 +12,8 @@ public interface IDroitRepository
     Task<Droit> GetDroitAsync(Guid id);
     Task<Droit> AddDroitAsync(Droit droit);
     Task<Droit> UpdateDroitAsync(Droit droit);
+    Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
+
 }
 
 public class DroitRepository : IDroitRepository
@@ -57,5 +60,12 @@ public class DroitRepository : IDroitRepository
         await _context.SaveChangesAsync();
 
         return savedDroit;
+    }
+
+    public async Task UpdateDroitStatusAsync(Guid id, DroitStatus status)
+    {
+        var droit = await GetDroitAsync(id);
+        droit.Status = status;
+        await UpdateDroitAsync(droit);
     }
 }
