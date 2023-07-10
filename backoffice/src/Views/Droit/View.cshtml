@@ -3,21 +3,18 @@
     ViewData["Title"] = "View Droit";
 }
 <div class="row">
-    <div class="col">
+    <div class="col-6 col-lg-8">
         <h4>@ViewData["Title"]</h4>
     </div>
-    <div class="col text-right">
+    <div class="col-6 col-lg-4 float-end">
         <form asp-action="UpdateDroitStatus" method="POST">
             <div class="row">
                 @Html.HiddenFor(m => m.Id)
-                <div class="col form-group mb-auto">
-                    <div class="d-flex justify-content-end align-items-center">
-                        <div class="d-inline-block">
-                            @Html.DropDownListFor(m => m.Status, Html.GetEnumSelectList(typeof(DroitStatus)), new { @class = "form-control" })
-                        </div>
-                        @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
-                        <button class="btn btn-primary ml-2" type="submit">
-                            <span>Update Status</span>
+                <div class="col d-flex btn-group">
+                    <div class="input-group flex-grow-1">
+                        @Html.DropDownListFor(m => m.Status, Html.GetEnumSelectList(typeof(DroitStatus)), new { @class = "form-control" })
+                        <button class="btn btn-primary" type="submit">
+                            Update Status
                         </button>
                     </div>
                 </div>

@@ -62,11 +62,11 @@ public class DroitView
     }
     // Base fields...
 
-    public Guid Id { get; set; }
+    public Guid Id { get; }
 
     public string? Reference { get; } // This is the current reference.
 
-    public DroitStatus Status { get; set; } = DroitStatus.Received;
+    public DroitStatus Status { get; } = DroitStatus.Received;
 
     [DisplayName("Reported Date")]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
