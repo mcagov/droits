@@ -16,17 +16,11 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         return View();
-        // return RedirectToAction("Index","Droit",new {});
     }
 
     public IActionResult Privacy()
     {
         return View();
-    }
-
-    public IActionResult Droits()
-    {
-        return new OkResult();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

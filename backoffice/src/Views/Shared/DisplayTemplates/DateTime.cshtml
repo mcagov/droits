@@ -1,0 +1,8 @@
+@model DateTime?
+
+@{
+    var formatString = ViewData.ModelMetadata.DisplayFormatString ?? "dd/MM/yyyy";
+    var formattedDate = Model.HasValue ? string.Format(formatString, Model.Value.ToLocalTime()) : "N/A";
+}
+
+@formattedDate
