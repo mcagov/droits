@@ -49,10 +49,10 @@ public class WreckReport
     public OldSalvor Personal { get; set; } = new();
 
     [JsonProperty("wreck-materials")]
-    public List<WreckMaterial> WreckMaterials { get; set; } = new();
+    public List<OldWreckMaterial> WreckMaterials { get; set; } = new();
 }
 
-public class WreckMaterial
+public class OldWreckMaterial
 {
     public string Description { get; set; } = string.Empty;
     public string Quantity { get; set; } = string.Empty;

@@ -27,6 +27,10 @@ public class DroitView
             Wreck = new WreckView(droit.Wreck);
         }
 
+        if(droit.WreckMaterials.Any()){
+            WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).ToList();
+        }
+
         WreckConstructionDetails = droit.WreckConstructionDetails;
         WreckVesselName = droit.WreckVesselName;
         WreckVesselYearConstructed = droit.WreckVesselYearConstructed;
@@ -79,6 +83,9 @@ public class DroitView
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
     public DateTime LastModified { get; }
 
+    // Wreck Material
+
+    public List<WreckMaterialView> WreckMaterials {get;} = new List<WreckMaterialView>();
 
     // Wreck
 

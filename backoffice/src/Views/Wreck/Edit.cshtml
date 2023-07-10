@@ -18,7 +18,7 @@
             <div class="card-body">
                 @Html.HiddenFor(m => m.Id)
                 @{
-                    await Html.RenderPartialAsync("_WreckFormFields", Model);
+                    await Html.RenderPartialAsync("Wreck/_WreckFormFields", Model);
                 }
 
                 <div class="mt-4 float-end">

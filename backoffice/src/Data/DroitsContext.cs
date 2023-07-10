@@ -15,6 +15,7 @@ public partial class DroitsContext : DbContext
     }
 
     public virtual DbSet<Droit> Droits { get; set; } = null!;
+    public virtual DbSet<WreckMaterial> WreckMaterials { get; set; } = null!;
     public virtual DbSet<Wreck> Wrecks { get; set; } = null!;
     public virtual DbSet<Email> Emails { get; set; } = null!;
     public virtual DbSet<Salvor> Salvors { get; set; } = null!;
@@ -76,6 +77,35 @@ public partial class DroitsContext : DbContext
                 .WithMany(w => w.Droits)
                 .HasForeignKey(d => d.WreckId)
                 .IsRequired(false);
+        });
+
+
+        modelBuilder.Entity<WreckMaterial>(entity =>
+        {
+            entity.ToTable("wreck_materials");
+
+            entity.Property(w => w.Id);
+            entity.Property(w => w.DroitId);
+            entity.Property(w => w.Name);
+            entity.Property(w => w.Description);
+            entity.Property(w => w.Quantity);
+            entity.Property(w => w.Value);
+            entity.Property(w => w.ReceiverValuation);
+            entity.Property(w => w.ValueConfirmed);
+            // entity.Property(w => w.Images);
+            entity.Property(w => w.Created);
+            entity.Property(w => w.LastModified);
+            entity.Property(w => w.WreckMaterialOwner);
+            entity.Property(w => w.Purchaser);
+            entity.Property(w => w.Outcome);
+            entity.Property(w => w.WhereSecured);
+            entity.Property(w => w.ImportedFromLegacy);
+
+            entity.HasOne(w => w.Droit)
+                .WithMany(d => d.WreckMaterials)
+                .HasForeignKey(w => w.DroitId)
+                .IsRequired();
+
         });
 
 

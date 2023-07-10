@@ -1,0 +1,132 @@
+@model WreckMaterialForm
+<div class="js-wreck-material-form col-md-6 mb-2">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col">
+                    <h5>Wreck Material</h5>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-danger float-end js-remove-wreck-material-form">Remove</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.DroitId)
+
+            <div class="form-group row">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Name, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Description, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Quantity, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Quantity, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Value, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.Value, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Value, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.ReceiverValuation, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.ReceiverValuation, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.ReceiverValuation, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.ValueConfirmed, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.DropDownListFor(m => m.ValueConfirmed, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ValueConfirmed, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.WreckMaterialOwner, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.WreckMaterialOwner, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.WreckMaterialOwner, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Purchaser, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.Purchaser, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Purchaser, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Outcome, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.Outcome, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Outcome, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.WhereSecured, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.WhereSecured, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.WhereSecured, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.ImportedFromLegacy, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.DropDownListFor(m => m.ImportedFromLegacy, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ImportedFromLegacy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

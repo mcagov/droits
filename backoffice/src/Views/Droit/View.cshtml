@@ -35,6 +35,9 @@
     <button class="nav-link" id="wreck-tab" data-bs-toggle="tab" data-bs-target="#wreck-content" type="button" role="tab" aria-controls="wreck-content" aria-selected="false">Wreck</button>
   </li>
   <li class="nav-item" role="presentation">
+    <button class="nav-link" id="wreck-materials-tab" data-bs-toggle="tab" data-bs-target="#wreck-materials-content" type="button" role="tab" aria-controls="wreck-materials-content" aria-selected="false">Wreck Materials</button>
+  </li>
+  <li class="nav-item" role="presentation">
     <button class="nav-link" id="salvage-tab" data-bs-toggle="tab" data-bs-target="#salvage-content" type="button" role="tab" aria-controls="salvage-content" aria-selected="false">Salvage</button>
   </li>
   <li class="nav-item" role="presentation">
@@ -147,7 +150,7 @@
 
 
         @if(Model.Wreck != null){
-            <partial name="_WreckViewFields" for="Wreck"/>
+            <partial name="Wreck/_WreckViewFields" for="Wreck"/>
 
             @if ( Model.Wreck.Latitude.HasValue() && Model.Wreck.Longitude.HasValue())
             {
@@ -157,6 +160,18 @@
             }
 
         }
+    </div>
+
+
+      <div class="tab-pane fade" id="wreck-materials-content" role="tabpanel" aria-labelledby="wreck-materials-tab">
+
+        <div class="row">
+            @for (int i = 0; i < Model.WreckMaterials.Count; i++)
+            {
+                    <partial name="WreckMaterial/_WreckMaterialViewFields"
+                            for="WreckMaterials[i]" />
+            }
+        </div>
     </div>
 
     <div class="tab-pane fade" id="salvage-content" role="tabpanel" aria-labelledby="salvage-tab">
@@ -272,7 +287,8 @@
     </div>
     <div class="col d-flex flex-row mt-4 justify-content-end">
         <div class="align-self-end">
-            <a type="button" class="btn btn-primary" asp-action="Edit">Edit</a>
+            <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+            <a type="button" class="btn btn-primary" asp-action="Index">View Droits</a>
         </div>
     </div>
 </div>

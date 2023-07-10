@@ -10,7 +10,7 @@ public interface IWreckService
     Task<List<Wreck>> GetWrecksAsync();
     Task<Wreck> SaveWreckAsync(Wreck wreck);
     Task<Wreck> GetWreckAsync(Guid id);
-    Task<Guid> GetWreckIdAsync(WreckForm wreckForm);
+    Task<Guid> SaveWreckFormAsync(WreckForm wreckForm);
 }
 
 public class WreckService : IWreckService
@@ -42,7 +42,7 @@ public class WreckService : IWreckService
     public async Task<Wreck> GetWreckAsync(Guid id) =>
         await _repo.GetWreckAsync(id);
 
-    public async Task<Guid> GetWreckIdAsync(WreckForm wreckForm)
+    public async Task<Guid> SaveWreckFormAsync(WreckForm wreckForm)
     {
         var wreck = wreckForm.ApplyChanges(new Wreck());
 
