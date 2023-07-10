@@ -26,5 +26,17 @@
     <ProjectReference Include="..\src\Droits.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="UnitTests\Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="UnitTests\Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="UnitTests\Models\**" />
+  </ItemGroup>
+
 
 </Project>

@@ -14,6 +14,11 @@ builder.Services
             options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
         })
         .AddRazorRuntimeCompilation();
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.SetDefaultCulture("en-GB");
+    options.RequestCultureProviders.Clear();
+});
 builder.Services.AddDbContext<DroitsContext>(opt => opt.UseInMemoryDatabase("droits"));
 
 
@@ -60,6 +65,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseRequestLocalization();
 
 app.MapControllerRoute(
     "default",
