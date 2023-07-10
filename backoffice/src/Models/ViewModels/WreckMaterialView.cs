@@ -45,12 +45,12 @@ namespace Droits.Models.ViewModels
         // public List<string> Images { get; } = new List<string>();
 
         [Display(Name = "Wreck Material Owner")]
-        public string WreckMaterialOwner { get; } = string.Empty;
-        public string Purchaser { get; } = string.Empty;
-        public string Outcome { get; } = string.Empty;
+        public string? WreckMaterialOwner { get; } = string.Empty;
+        public string? Purchaser { get; } = string.Empty;
+        public string? Outcome { get; } = string.Empty;
 
         [Display(Name = "Where Secured")]
-        public string WhereSecured { get; } = string.Empty;
+        public string? WhereSecured { get; } = string.Empty;
 
         [Display(Name = "Imported From Legacy")]
         public bool ImportedFromLegacy { get; }
