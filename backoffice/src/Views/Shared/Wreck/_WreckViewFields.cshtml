@@ -10,14 +10,6 @@
 </div>
 <div class="form-group row m-1">
     <div class="col-md-3">
-        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.Status)</label>
-    </div>
-    <div class="col-md-7">
-        @Html.DisplayFor(m => m.Status)
-    </div>
-</div>
-<div class="form-group row m-1">
-    <div class="col-md-3">
         <label class="font-weight-bold">@Html.DisplayNameFor(m => m.Name)</label>
     </div>
     <div class="col-md-7">
@@ -42,10 +34,34 @@
 </div>
 <div class="form-group row m-1">
     <div class="col-md-3">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.VesselConstructionDetails)</label>
+    </div>
+    <div class="col-md-7">
+        @Html.DisplayFor(m => m.VesselConstructionDetails)
+    </div>
+</div>
+<div class="form-group row m-1">
+    <div class="col-md-3">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.VesselYearConstructed)</label>
+    </div>
+    <div class="col-md-7">
+        @Html.DisplayFor(m => m.VesselYearConstructed)
+    </div>
+</div>
+<div class="form-group row m-1">
+    <div class="col-md-3">
         <label class="font-weight-bold">@Html.DisplayNameFor(m => m.DateOfLoss)</label>
     </div>
     <div class="col-md-7">
         @Html.DisplayFor(m => m.DateOfLoss)
+    </div>
+</div>
+<div class="form-group row m-1">
+    <div class="col-md-3">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.InUkWaters)</label>
+    </div>
+    <div class="col-md-7">
+        @Html.DisplayFor(m => m.InUkWaters)
     </div>
 </div>
 <div class="form-group row m-1">
@@ -94,5 +110,14 @@
     </div>
     <div class="col-md-7">
         @Html.DisplayFor(m => m.ProtectionLegislation)
+    </div>
+</div>
+
+<div class="form-group row m-1">
+    <div class="col-md-3">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.AdditionalInformation)</label>
+    </div>
+    <div class="col-md-7">
+        @Html.DisplayFor(m => m.AdditionalInformation)
     </div>
 </div>

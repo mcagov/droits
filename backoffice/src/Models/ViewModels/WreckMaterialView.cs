@@ -24,7 +24,6 @@ namespace Droits.Models.ViewModels
             Purchaser = wreckMaterial.Purchaser;
             Outcome = wreckMaterial.Outcome;
             WhereSecured = wreckMaterial.WhereSecured;
-            ImportedFromLegacy = wreckMaterial.ImportedFromLegacy;
             Created = wreckMaterial.Created;
             LastModified = wreckMaterial.LastModified;
         }
@@ -32,7 +31,7 @@ namespace Droits.Models.ViewModels
         public Guid Id { get; }
         public Guid DroitId { get; }
         public string Name { get; } = string.Empty;
-        public string Description { get; } = string.Empty;
+        public string? Description { get; } = string.Empty;
         public int Quantity { get; } = 1;
         public float? Value { get; } = 0;
 
@@ -45,15 +44,16 @@ namespace Droits.Models.ViewModels
         // public List<string> Images { get; } = new List<string>();
 
         [Display(Name = "Wreck Material Owner")]
+        [DataType(DataType.MultilineText)]
         public string? WreckMaterialOwner { get; } = string.Empty;
         public string? Purchaser { get; } = string.Empty;
+
+        [DataType(DataType.MultilineText)]
         public string? Outcome { get; } = string.Empty;
 
         [Display(Name = "Where Secured")]
+        [DataType(DataType.MultilineText)]
         public string? WhereSecured { get; } = string.Empty;
-
-        [Display(Name = "Imported From Legacy")]
-        public bool ImportedFromLegacy { get; }
         public DateTime Created { get; }
 
         [Display(Name = "Last Modified")]

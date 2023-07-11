@@ -19,16 +19,13 @@ public class DroitForm : FormModel
 
         Status = droit.Status;
         ReportedDate = droit.ReportedDate;
+        DateFound = droit.DateFound;
+
         Created = droit.Created;
         Modified = droit.LastModified;
         Reference = droit.Reference;
         IsHazardousFind = droit.IsHazardousFind;
-
-        //Wreck
-        WreckConstructionDetails = droit.WreckConstructionDetails;
-        WreckVesselName = droit.WreckVesselName;
-        WreckVesselYearConstructed = droit.WreckVesselYearConstructed;
-        WreckVesselYearSunk = droit.WreckVesselYearSunk;
+        IsDredge = droit.IsDredge;
 
         // Location
         Latitude = droit.Latitude;
@@ -86,6 +83,11 @@ public class DroitForm : FormModel
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime ReportedDate { get; set; } = DateTime.Now;
 
+    [DisplayName("Date Found")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    public DateTime DateFound { get; set; } = DateTime.Now;
+
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime Created { get; set; } = DateTime.Now;
@@ -99,37 +101,25 @@ public class DroitForm : FormModel
 
     public Guid? WreckId { get; set; }
 
-    [DisplayName("Wreck Construction Details")]
-    public string? WreckConstructionDetails { get; set; } = string.Empty;
-
     [DisplayName("Is Hazardous Find")]
     public bool IsHazardousFind { get; set; }
 
-
-    // Wreck Vessel
-
-    [DisplayName("Wreck Vessel Name")]
-    public string? WreckVesselName { get; set; } = string.Empty;
-
-    [DisplayName("Wreck Vessel Year Constructed")]
-    public int? WreckVesselYearConstructed { get; set; }
-
-    [DisplayName("Wreck Vessel Year Sunk")]
-    public int? WreckVesselYearSunk { get; set; }
+    [DisplayName("Is Dredge")]
+    public bool IsDredge { get; set; }
 
 
     // Location
     public string? Latitude { get; set; }
     public string? Longitude { get; set; }
 
-    [DisplayName("In UK Waters?")]
+    [DisplayName("In UK Waters")]
     public bool InUkWaters { get; set; }
 
-    [DisplayName("Location Radius (Units?)")]
-    public int? LocationRadius { get; set; } //Units? Unknown.
+    [DisplayName("Location Radius")]
+    public int? LocationRadius { get; set; }
 
-    [DisplayName("Depth (Units?)")]
-    public int? Depth { get; set; } //Units? Unknown.
+    [DisplayName("Depth (Meters)")]
+    public int? Depth { get; set; }
 
     [DisplayName("Location Description")]
     public string? LocationDescription { get; set; } = string.Empty;
@@ -144,7 +134,7 @@ public class DroitForm : FormModel
     public string? ServicesDescription { get; set; }
 
     [DisplayName("Services Duration")]
-    public int? ServicesDuration { get; set; } //Units? Unknown.
+    public string? ServicesDuration { get; set; } //Units? Unknown.
 
     [DisplayName("Services Estimated Cost")]
 
@@ -185,17 +175,12 @@ public class DroitForm : FormModel
         droit.WreckId = WreckId;
         droit.Status = Status;
         droit.ReportedDate = ReportedDate;
+        droit.DateFound = DateFound;
         droit.Created = Created;
         droit.LastModified = Modified;
         droit.Reference = Reference;
-
-        droit.WreckConstructionDetails = WreckConstructionDetails;
         droit.IsHazardousFind = IsHazardousFind;
-
-        //Wreck
-        droit.WreckVesselName = WreckVesselName;
-        droit.WreckVesselYearConstructed = WreckVesselYearConstructed;
-        droit.WreckVesselYearSunk = WreckVesselYearSunk;
+        droit.IsDredge = IsDredge;
 
         // Location
         droit.Latitude = Latitude;

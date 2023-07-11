@@ -7,16 +7,27 @@
 </div>
 
 <div class="form-group">
-    @Html.LabelFor(m => m.Status, new { @class = "col-form-label" })
-    @Html.DropDownListFor(m => m.Status,Html.GetEnumSelectList(typeof(WreckStatus)),  "Select...",new { @class = "form-control" })
-    @Html.ValidationMessageFor(m => m.Status,"", new { @class = "text-danger" })
-
+    @Html.LabelFor(m => m.VesselConstructionDetails, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.VesselConstructionDetails, new { htmlAttributes = new { @class = "form-control" }})
+    @Html.ValidationMessageFor(m => m.VesselConstructionDetails,"", new { @class = "text-danger" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.VesselYearConstructed, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.VesselYearConstructed, new { htmlAttributes = new { @class = "form-control" }})
+    @Html.ValidationMessageFor(m => m.VesselYearConstructed,"", new { @class = "text-danger" })
 </div>
 
 <div class="form-group">
     @Html.LabelFor(m => m.DateOfLoss, new { @class = "col-form-label" })
     @Html.EditorFor(m => m.DateOfLoss, new { htmlAttributes = new { @class = "form-control" }})
     @Html.ValidationMessageFor(m => m.DateOfLoss,"", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.InUkWaters, new { @class = "col-form-label" })
+    @Html.DropDownListFor(m => m.InUkWaters, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.InUkWaters,"", new { @class = "text-danger" })
+
 </div>
 
 <div class="form-group">
@@ -54,4 +65,10 @@
     @Html.LabelFor(m => m.ProtectionLegislation, new { @class = "col-form-label" })
     @Html.EditorFor(m => m.ProtectionLegislation, new { htmlAttributes = new { @class = "form-control" } })
     @Html.ValidationMessageFor(m => m.ProtectionLegislation,"", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.AdditionalInformation, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.AdditionalInformation, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.AdditionalInformation,"", new { @class = "text-danger" })
 </div>
