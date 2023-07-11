@@ -110,7 +110,7 @@ public class DroitView
     [DisplayName("Location Radius")]
     public int? LocationRadius { get; }
 
-    [DisplayName("Depth (Meters)")]
+    [DisplayName("Depth (Metres)")]
     public int? Depth { get; }
 
     [DisplayName("Location Description")]

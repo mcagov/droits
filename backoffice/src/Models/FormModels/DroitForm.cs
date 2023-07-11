@@ -118,7 +118,7 @@ public class DroitForm : FormModel
     [DisplayName("Location Radius")]
     public int? LocationRadius { get; set; }
 
-    [DisplayName("Depth (Meters)")]
+    [DisplayName("Depth (Metres)")]
     public int? Depth { get; set; }
 
     [DisplayName("Location Description")]
