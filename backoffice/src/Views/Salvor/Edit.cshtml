@@ -39,7 +39,7 @@
                     @Html.ValidationMessageFor(m => m.DateOfBirth,"", new { @class = "text-danger" })
                 </div>
 
-                <partial name="_AddressFormFields" for="Address" />
+                <partial name="Address/_AddressFormFields" for="Address" />
 
                 <div class="mt-4 float-end">
                     <a type="button" class="btn btn-secondary" asp-action="Index">Cancel</a>
