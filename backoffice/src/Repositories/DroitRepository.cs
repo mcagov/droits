@@ -17,7 +17,7 @@ public interface IDroitRepository
     Task<WreckMaterial> AddWreckMaterialAsync(WreckMaterial wreckMaterial);
     Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep);
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
-    
+
 }
 
 public class DroitRepository : IDroitRepository
@@ -112,6 +112,8 @@ public class DroitRepository : IDroitRepository
     {
         var droit = await GetDroitAsync(id);
         droit.Status = status;
+        droit.LastModified = DateTime.UtcNow;
+
         await UpdateDroitAsync(droit);
     }
 }
