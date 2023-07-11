@@ -26,6 +26,11 @@ public class DroitView
         if(droit.Wreck != null){
             Wreck = new WreckView(droit.Wreck);
         }
+        
+        //Salvor
+        if(droit.Salvor != null){
+            Salvor = new SalvorView(droit.Salvor);
+        }
 
         if(droit.WreckMaterials.Any()){
             WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).ToList();
@@ -97,6 +102,11 @@ public class DroitView
 
     [DisplayName("Is Hazardous Find")]
     public bool IsHazardousFind { get; }
+    
+    // Salvor
+
+    public SalvorView? Salvor {get;}
+    public Guid? SalvorId { get; }
 
 
     // Wreck Vessel

@@ -16,6 +16,7 @@ public class DroitForm : FormModel
     {
         Id = droit.Id;
         WreckId = droit.WreckId;
+        SalvorId = droit.SalvorId;
 
         Status = droit.Status;
         ReportedDate = droit.ReportedDate;
@@ -75,6 +76,7 @@ public class DroitForm : FormModel
 
     public WreckForm WreckForm { get; set; } = new WreckForm();
     public List<WreckMaterialForm> WreckMaterialForms {get; set; } = new List<WreckMaterialForm>();
+    public SalvorForm SalvorForm { get; set; } = new SalvorForm();
 
     [Required]
     public string Reference { get; set; } = string.Empty;
@@ -104,7 +106,12 @@ public class DroitForm : FormModel
 
     [DisplayName("Is Hazardous Find")]
     public bool IsHazardousFind { get; set; }
-
+    
+    
+    // Salvor
+    
+    public Guid? SalvorId { get; set; }
+    
 
     // Wreck Vessel
 
@@ -179,10 +186,12 @@ public class DroitForm : FormModel
     [DisplayName("Imported From Legacy")]
     public bool ImportedFromLegacy { get; set; }
     public List<SelectListItem> AllWrecks {get;set;} = new List<SelectListItem>();
+    public List<SelectListItem> AllSalvors {get;set;} = new List<SelectListItem>();
     public Droit ApplyChanges(Droit droit)
     {
         droit.Id = Id;
         droit.WreckId = WreckId;
+        droit.SalvorId = SalvorId;
         droit.Status = Status;
         droit.ReportedDate = ReportedDate;
         droit.Created = Created;

@@ -15,31 +15,9 @@
         <div class="card">
             <h5 class="card-header">Salvor</h5>
             <div class="card-body">
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Name, new { @class = "col-form-label" })
-                    @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(m => m.Name,"", new { @class = "text-danger" })
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Email, new { @class = "col-form-label" })
-                    @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(m => m.Email,"", new { @class = "text-danger" })
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(m => m.TelephoneNumber, new { @class = "col-form-label" })
-                    @Html.EditorFor(m => m.TelephoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(m => m.TelephoneNumber,"", new { @class = "text-danger" })
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(m => m.DateOfBirth, new { @class = "col-form-label" })
-                    @Html.EditorFor(m => m.DateOfBirth, new { htmlAttributes = new { @class = "form-control"} })
-                    @Html.ValidationMessageFor(m => m.DateOfBirth,"", new { @class = "text-danger" })
-                </div>
-
-                <partial name="Address/_AddressFormFields" for="Address" />
+                @{
+                    await Html.RenderPartialAsync("Salvor/_SalvorFormFields", Model);
+                }
 
                 <div class="mt-4 float-end">
                     <a type="button" class="btn btn-secondary" asp-action="Index">Cancel</a>

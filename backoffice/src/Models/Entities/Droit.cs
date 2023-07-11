@@ -24,6 +24,12 @@ public class Droit
     public Guid? WreckId { get; set; }
 
     public bool IsHazardousFind { get; set; } = false;
+    
+    // Salvor
+    
+    [ForeignKey("SalvorId")]
+    public Salvor? Salvor { get; set; }
+    public Guid? SalvorId { get; set; }
 
     // Wreck Vessel
 

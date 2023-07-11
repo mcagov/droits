@@ -22,6 +22,9 @@
         <button class="nav-link active" id="droit-tab" data-bs-toggle="tab" data-bs-target="#droit" type="button" role="tab" aria-controls="droit" aria-selected="true">Droit Report</button>
     </li>
     <li class="nav-item" role="presentation">
+        <button class="nav-link" id="salvor-tab" data-bs-toggle="tab" data-bs-target="#salvor" type="button" role="tab" aria-controls="salvor" aria-selected="false">Salvor</button>
+    </li>
+    <li class="nav-item" role="presentation">
         <button class="nav-link" id="wreck-tab" data-bs-toggle="tab" data-bs-target="#wreck" type="button" role="tab" aria-controls="wreck" aria-selected="false">Wreck</button>
     </li>
     <li class="nav-item" role="presentation">
@@ -66,6 +69,18 @@
                 @Html.LabelFor(m => m.IsHazardousFind, new { @class = "col-form-label" })
                 @Html.DropDownListFor(m => m.IsHazardousFind, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.IsHazardousFind,"", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="tab-pane fade" id="salvor" role="tabpanel" aria-labelledby="salvor-tab">
+            <div class="form-group">
+                @Html.LabelFor(m => m.SalvorId, "Select Salvor", new { @class = "col-form-label" })
+                @Html.DropDownListFor(m => m.SalvorId, Model.AllSalvors, "New Salvor..", new { @id="js-select-salvor", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SalvorId,"", new { @class = "text-danger" })
+            </div>
+
+            <div class="d-none" id="js-salvor-form-fields">
+                <partial name="Salvor/_SalvorFormFields" for="SalvorForm"/>
             </div>
         </div>
 

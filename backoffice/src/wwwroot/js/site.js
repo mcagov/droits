@@ -20,6 +20,15 @@ $(function() {
     $('#js-select-wreck').select2({
         width: '100%'
     });
+    
+    $("#js-select-salvor").on("change", function() {
+        toggleSalvorFields();
+    });
+    toggleSalvorFields();
+
+    $('#js-select-salvor').select2({
+        width: '100%'
+    });
 
     var wmFormContainer = $('#js-wreck-materials-form-container');
     var wmFormAddButton = $('#js-add-wreck-material-form');
@@ -61,6 +70,17 @@ $(function() {
             wreckFormFields.removeClass("d-none");
         } else {
             wreckFormFields.addClass("d-none");
+        }
+    }
+    
+    function toggleSalvorFields() {
+        var salvorIdSelect = $("#js-select-salvor");
+        var salvorFormFields = $("#js-salvor-form-fields");
+
+        if (salvorIdSelect.val() === "") {
+            salvorFormFields.removeClass("d-none");
+        } else {
+            salvorFormFields.addClass("d-none");
         }
     }
 

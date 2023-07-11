@@ -14,12 +14,15 @@ public class DroitController : BaseController
     private readonly ILogger<DroitController> _logger;
     private readonly IDroitService _service;
     private readonly IWreckService _wreckService;
+    private readonly ISalvorService _salvorService;
 
-    public DroitController(ILogger<DroitController> logger, IDroitService service, IWreckService wreckService)
+    public DroitController(ILogger<DroitController> logger, IDroitService service, IWreckService wreckService,
+        ISalvorService salvorService)
     {
         _logger = logger;
         _service = service;
         _wreckService = wreckService;
+        _salvorService = salvorService;
     }
 
     public async Task<IActionResult> Index()
@@ -41,7 +44,7 @@ public class DroitController : BaseController
         }
         catch (DroitNotFoundException e)
         {
-            HandleError(_logger,"Droit not found.",e);
+            HandleError(_logger, "Droit not found.", e);
             return RedirectToAction(nameof(Index));
         }
 
@@ -65,10 +68,9 @@ public class DroitController : BaseController
             return RedirectToAction(nameof(View), id);
         }
 
-        await _service.UpdateDroitStatusAsync(id,status);
+        await _service.UpdateDroitStatusAsync(id, status);
 
-        return RedirectToAction(nameof(View), new {id = id});
-
+        return RedirectToAction(nameof(View), new { id = id });
     }
 
     [HttpGet]
@@ -82,13 +84,13 @@ public class DroitController : BaseController
 
         try
         {
-          var droit = await _service.GetDroitAsync(id);
-          var form = await PopulateDroitFormAsync(new DroitForm(droit));
-          return View(form);
+            var droit = await _service.GetDroitAsync(id);
+            var form = await PopulateDroitFormAsync(new DroitForm(droit));
+            return View(form);
         }
         catch (DroitNotFoundException e)
         {
-            HandleError(_logger,"Droit not found.",e);
+            HandleError(_logger, "Droit not found.", e);
             return RedirectToAction(nameof(Index));
         }
     }
@@ -97,10 +99,20 @@ public class DroitController : BaseController
     [HttpPost]
     public async Task<IActionResult> Save(DroitForm form)
     {
-
-        if(form.WreckId.HasValue)
+        if (form.WreckId.HasValue)
         {
-            ModelState.Remove("WreckForm.Name");
+            foreach (var key in ModelState.Keys.Where(k => k.StartsWith("WreckForm")))
+            {
+                ModelState.Remove(key);
+            }
+        }
+
+        if (form.SalvorId.HasValue)
+        {
+            foreach (var key in ModelState.Keys.Where(k => k.StartsWith("SalvorForm")))
+            {
+                ModelState.Remove(key);
+            }
         }
 
         if (!ModelState.IsValid)
@@ -112,35 +124,50 @@ public class DroitController : BaseController
 
         var droit = new Droit();
 
-        if(form.Id != default(Guid)){
-
-            try{
+        if (form.Id != default(Guid))
+        {
+            try
+            {
                 droit = await _service.GetDroitAsync(form.Id);
-            }catch(DroitNotFoundException e){
-                HandleError(_logger,"Droit not found.",e);
+            }
+            catch (DroitNotFoundException e)
+            {
+                HandleError(_logger, "Droit not found.", e);
                 return View(nameof(Edit), form);
             }
         }
 
         droit = form.ApplyChanges(droit);
 
-        if(!droit.WreckId.HasValue){
+        if (!droit.WreckId.HasValue)
+        {
             droit.WreckId = await _wreckService.SaveWreckFormAsync(form.WreckForm);
         }
 
-        try{
+        if (!droit.SalvorId.HasValue)
+        {
+            droit.SalvorId = await _salvorService.SaveSalvorFormAsync(form.SalvorForm);
+        }
+
+        try
+        {
             droit = await _service.SaveDroitAsync(droit);
-        }catch(Exception e){
-            HandleError(_logger,"Could not save Droit.",e);
+        }
+        catch (Exception e)
+        {
+            HandleError(_logger, "Could not save Droit.", e);
             form = await PopulateDroitFormAsync(form);
             return View(nameof(Edit), form);
         }
 
 
-        try{
+        try
+        {
             await _service.SaveWreckMaterialsAsync(droit.Id, form.WreckMaterialForms);
-        }catch(Exception e){
-            HandleError(_logger,"Could not save Wreck Material.",e);
+        }
+        catch (Exception e)
+        {
+            HandleError(_logger, "Could not save Wreck Material.", e);
             form = await PopulateDroitFormAsync(form);
             return View(nameof(Edit), form);
         }
@@ -156,13 +183,14 @@ public class DroitController : BaseController
         return PartialView("WreckMaterial/_WreckMaterialFormFields", new WreckMaterialForm());
     }
 
-    private async Task<DroitForm> PopulateDroitFormAsync(DroitForm form){
-
+    private async Task<DroitForm> PopulateDroitFormAsync(DroitForm form)
+    {
         var allWrecks = await _wreckService.GetWrecksAsync();
+        var allSalvors = await _salvorService.GetSalvorsAsync();
 
-        form.AllWrecks =  allWrecks.Select(w => new SelectListItem(w.Name, w.Id.ToString())).ToList();
+        form.AllWrecks = allWrecks.Select(w => new SelectListItem(w.Name, w.Id.ToString())).ToList();
+        form.AllSalvors = allSalvors.Select(s => new SelectListItem($"{s.Name} ({s.Email})", s.Id.ToString())).ToList();
 
         return form;
     }
-
 }
