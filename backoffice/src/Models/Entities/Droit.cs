@@ -20,16 +20,20 @@ public class Droit
 
     // Wreck
 
-    [ForeignKey("WreckId")] public Wreck? Wreck { get; set; }
+    [ForeignKey("WreckId")]
+    public Wreck? Wreck { get; set; }
+
     public Guid? WreckId { get; set; }
     public bool IsHazardousFind { get; set; } = false;
     public bool IsDredge { get; set; } = false;
-    
+
     // Salvor
 
-    [ForeignKey("SalvorId")] public Salvor? Salvor { get; set; }
+    [ForeignKey("SalvorId")]
+    public Salvor? Salvor { get; set; }
+
     public Guid? SalvorId { get; set; }
-    
+
     // Location
     public string? Latitude { get; set; }
     public string? Longitude { get; set; }
