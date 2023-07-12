@@ -1,4 +1,5 @@
 ﻿using Droits.Exceptions;
+using Droits.Helpers.Extensions;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
@@ -99,20 +100,15 @@ public class DroitController : BaseController
     [HttpPost]
     public async Task<IActionResult> Save(DroitForm form)
     {
+
         if (form.WreckId.HasValue)
         {
-            foreach (var key in ModelState.Keys.Where(k => k.StartsWith("WreckForm")))
-            {
-                ModelState.Remove(key);
-            }
+            ModelState.RemoveStartingWith("WreckForm");
         }
 
         if (form.SalvorId.HasValue)
-        {
-            foreach (var key in ModelState.Keys.Where(k => k.StartsWith("SalvorForm")))
-            {
-                ModelState.Remove(key);
-            }
+        { 
+           ModelState.RemoveStartingWith("SalvorForm");
         }
 
         if (!ModelState.IsValid)
