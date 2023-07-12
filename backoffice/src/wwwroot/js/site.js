@@ -11,24 +11,31 @@ $(function() {
         $('#confirmDialog').modal('show');
     };
 
+    function toggleFields(selectId, formFieldsId) {
+        var selectElement = $(selectId);
+        var formFields = $(formFieldsId);
+    
+        if (selectElement.val() === "") {
+            formFields.removeClass("d-none");
+        } else {
+            formFields.addClass("d-none");
+        }
+    }
+
+    $('#js-select-wreck, #js-select-salvor').select2({
+        width: '100%'
+    });
 
     $("#js-select-wreck").on("change", function() {
-        toggleWreckFields();
+        toggleFields("#js-select-wreck", "#js-wreck-form-fields");
     });
-    toggleWreckFields();
 
-    $('#js-select-wreck').select2({
-        width: '100%'
-    });
-    
     $("#js-select-salvor").on("change", function() {
-        toggleSalvorFields();
+        toggleFields("#js-select-salvor", "#js-salvor-form-fields");
     });
-    toggleSalvorFields();
 
-    $('#js-select-salvor').select2({
-        width: '100%'
-    });
+    toggleFields("#js-select-wreck", "#js-wreck-form-fields");
+    toggleFields("#js-select-salvor", "#js-salvor-form-fields");
 
     var wmFormContainer = $('#js-wreck-materials-form-container');
     var wmFormAddButton = $('#js-add-wreck-material-form');
@@ -61,28 +68,6 @@ $(function() {
         };
         confirm(confirmMessage, removeAction.bind(this));
       });
-
-    function toggleWreckFields() {
-        var wreckIdSelect = $("#js-select-wreck");
-        var wreckFormFields = $("#js-wreck-form-fields");
-
-        if (wreckIdSelect.val() === "") {
-            wreckFormFields.removeClass("d-none");
-        } else {
-            wreckFormFields.addClass("d-none");
-        }
-    }
-    
-    function toggleSalvorFields() {
-        var salvorIdSelect = $("#js-select-salvor");
-        var salvorFormFields = $("#js-salvor-form-fields");
-
-        if (salvorIdSelect.val() === "") {
-            salvorFormFields.removeClass("d-none");
-        } else {
-            salvorFormFields.addClass("d-none");
-        }
-    }
 
     function refreshWmFormIndexes() {
         $('#js-wreck-materials-form-container').find('.js-wreck-material-form').each(function (index) {
