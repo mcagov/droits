@@ -35,16 +35,12 @@ public partial class DroitsContext : DbContext
             entity.Property(d => d.Id);
             entity.Property(d => d.Status);
             entity.Property(d => d.ReportedDate);
+            entity.Property(d => d.DateFound);
             entity.Property(d => d.Created);
             entity.Property(d => d.LastModified);
             entity.Property(d => d.Reference);
             entity.Property(d => d.IsHazardousFind);
-
-            //Wreck
-            entity.Property(d => d.WreckConstructionDetails);
-            entity.Property(d => d.WreckVesselName);
-            entity.Property(d => d.WreckVesselYearConstructed);
-            entity.Property(d => d.WreckVesselYearSunk);
+            entity.Property(d => d.IsDredge);
 
             // Location
             entity.Property(d => d.Latitude);
@@ -103,7 +99,6 @@ public partial class DroitsContext : DbContext
             entity.Property(w => w.Purchaser);
             entity.Property(w => w.Outcome);
             entity.Property(w => w.WhereSecured);
-            entity.Property(w => w.ImportedFromLegacy);
 
             entity.HasOne(w => w.Droit)
                 .WithMany(d => d.WreckMaterials)
@@ -118,9 +113,11 @@ public partial class DroitsContext : DbContext
             entity.ToTable("wrecks");
 
             entity.Property(w => w.Id);
-            entity.Property(w => w.Status);
             entity.Property(w => w.Name);
+            entity.Property(w => w.VesselYearConstructed);
+            entity.Property(w => w.VesselConstructionDetails);
             entity.Property(w => w.DateOfLoss);
+            entity.Property(w => w.InUkWaters);
             entity.Property(w => w.IsWarWreck);
             entity.Property(w => w.IsAnAircraft);
             entity.Property(w => w.Latitude);
@@ -129,6 +126,7 @@ public partial class DroitsContext : DbContext
             entity.Property(w => w.ProtectionLegislation);
             entity.Property(w => w.Created);
             entity.Property(w => w.LastModified);
+            entity.Property(w => w.AdditionalInformation);
             entity.HasMany(w => w.Droits)
                 .WithOne(d => d.Wreck)
                 .HasForeignKey(d => d.WreckId);

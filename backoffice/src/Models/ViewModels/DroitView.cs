@@ -16,11 +16,14 @@ public class DroitView
         Id = droit.Id;
         Status = droit.Status;
         ReportedDate = droit.ReportedDate;
+        DateFound = droit.DateFound;
+
         Created = droit.Created;
         LastModified = droit.LastModified;
         Reference = droit.Reference;
 
         IsHazardousFind = droit.IsHazardousFind;
+        IsDredge = droit.IsDredge;
 
         //Wreck
         if(droit.Wreck != null){
@@ -35,11 +38,6 @@ public class DroitView
         if(droit.WreckMaterials.Any()){
             WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).ToList();
         }
-
-        WreckConstructionDetails = droit.WreckConstructionDetails;
-        WreckVesselName = droit.WreckVesselName;
-        WreckVesselYearConstructed = droit.WreckVesselYearConstructed;
-        WreckVesselYearSunk = droit.WreckVesselYearSunk;
 
         // Location
         Latitude = droit.Latitude;
@@ -81,6 +79,10 @@ public class DroitView
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime ReportedDate { get; }
 
+    [DisplayName("Date Found")]
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+    public DateTime DateFound { get; }
+
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
     public DateTime Created { get; }
 
@@ -97,12 +99,9 @@ public class DroitView
     public WreckView? Wreck {get;}
     public Guid? WreckId { get; }
 
-    [DisplayName("Wreck Construction Details")]
-    public string? WreckConstructionDetails { get; } = string.Empty;
-
     [DisplayName("Is Hazardous Find")]
     public bool IsHazardousFind { get; }
-    
+
     // Salvor
 
     public SalvorView? Salvor {get;}
@@ -119,20 +118,21 @@ public class DroitView
 
     [DisplayName("Wreck Vessel Year Sunk")]
     public int? WreckVesselYearSunk { get; }
-
+    [DisplayName("Is Dredge")]
+    public bool IsDredge { get; set; }
 
     // Location
     public string? Latitude { get; }
     public string? Longitude { get; }
 
-    [DisplayName("In UK Waters?")]
+    [DisplayName("In UK Waters")]
     public bool InUkWaters { get; }
 
-    [DisplayName("Location Radius (Units?)")]
-    public int? LocationRadius { get; } //Units? Unknown.
+    [DisplayName("Location Radius")]
+    public int? LocationRadius { get; }
 
-    [DisplayName("Depth (Units?)")]
-    public int? Depth { get; } //Units? Unknown.
+    [DisplayName("Depth (Metres)")]
+    public int? Depth { get; }
 
     [DisplayName("Location Description")]
     public string? LocationDescription { get; } = string.Empty;
@@ -147,7 +147,7 @@ public class DroitView
     public string? ServicesDescription { get; }
 
     [DisplayName("Services Duration")]
-    public int? ServicesDuration { get; } //Units? Unknown.
+    public string? ServicesDuration { get; } //Units? Unknown.
 
     [DisplayName("Services Estimated Cost")]
 
