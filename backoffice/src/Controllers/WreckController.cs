@@ -1,9 +1,9 @@
 ﻿using Droits.Exceptions;
-using Microsoft.AspNetCore.Mvc;
-using Droits.Services;
-using Droits.Models.ViewModels;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Models.ViewModels;
+using Droits.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Controllers;
 
@@ -37,7 +37,7 @@ public class WreckController : BaseController
         }
         catch (WreckNotFoundException e)
         {
-            HandleError(_logger,"Wreck not found",e);
+            HandleError(_logger, "Wreck not found", e);
             return RedirectToAction(nameof(Index));
         }
 
@@ -49,16 +49,13 @@ public class WreckController : BaseController
     public IActionResult Add()
     {
         var model = new WreckForm();
-        return View(nameof(Edit),model);
+        return View(nameof(Edit), model);
     }
 
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
-        if (id == default(Guid))
-        {
-            return View(new WreckForm());
-        }
+        if (id == default) return View(new WreckForm());
 
         try
         {
@@ -67,7 +64,7 @@ public class WreckController : BaseController
         }
         catch (WreckNotFoundException e)
         {
-            HandleError(_logger,"Wreck not found",e);
+            HandleError(_logger, "Wreck not found", e);
             return RedirectToAction(nameof(Index));
         }
     }
@@ -76,7 +73,6 @@ public class WreckController : BaseController
     [HttpPost]
     public async Task<IActionResult> Save(WreckForm form)
     {
-
         if (!ModelState.IsValid)
         {
             AddErrorMessage("Could not save Wreck");
@@ -85,25 +81,26 @@ public class WreckController : BaseController
 
         var wreck = new Wreck();
 
-        if(form.Id != default(Guid)){
-            try{
+        if (form.Id != default)
+            try
+            {
                 wreck = await _service.GetWreckAsync(form.Id);
             }
-            catch(WreckNotFoundException e)
+            catch (WreckNotFoundException e)
             {
-                HandleError(_logger,"Wreck not found",e);
+                HandleError(_logger, "Wreck not found", e);
                 return View(nameof(Edit), form);
             }
-        }
 
         wreck = form.ApplyChanges(wreck);
 
-        try{
+        try
+        {
             await _service.SaveWreckAsync(wreck);
         }
-        catch(WreckNotFoundException e)
+        catch (WreckNotFoundException e)
         {
-            HandleError(_logger,"Unable to save Wreck",e);
+            HandleError(_logger, "Unable to save Wreck", e);
             return View(nameof(Edit), form);
         }
 

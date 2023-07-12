@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 
 namespace Droits.Models.ViewModels;
+
 public class WreckView
 {
     public WreckView()
@@ -29,7 +30,6 @@ public class WreckView
         IsProtectedSite = wreck.IsProtectedSite;
         ProtectionLegislation = wreck.ProtectionLegislation;
         AdditionalInformation = wreck.AdditionalInformation;
-
     }
 
 
@@ -56,18 +56,19 @@ public class WreckView
     public DateTime? DateOfLoss { get; }
 
     [DisplayName("In UK Waters")]
-    public bool InUkWaters { get; } = false;
+    public bool InUkWaters { get; }
 
     [DisplayName("Is A War Wreck")]
-    public bool IsWarWreck { get; } = false;
+    public bool IsWarWreck { get; }
 
     [DisplayName("Is An Aircraft")]
-    public bool IsAnAircraft { get; } = false;
+    public bool IsAnAircraft { get; }
+
     public string? Latitude { get; }
     public string? Longitude { get; }
 
     [DisplayName("Is A Protected Site")]
-    public bool IsProtectedSite { get; } = false;
+    public bool IsProtectedSite { get; }
 
     [DisplayName("Protection Legislation")]
     public string? ProtectionLegislation { get; }

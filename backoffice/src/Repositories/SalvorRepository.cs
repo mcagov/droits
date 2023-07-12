@@ -30,14 +30,12 @@ public class SalvorRepository : ISalvorRepository
     public async Task<Salvor> GetSalvorAsync(Guid id)
     {
         var salvor = await _context.Salvors.FindAsync(id);
-        if(salvor == null){
-            throw new SalvorNotFoundException();
-        }
+        if (salvor == null) throw new SalvorNotFoundException();
         return salvor;
     }
 
 
-   public async Task<Salvor> AddSalvorAsync(Salvor salvor)
+    public async Task<Salvor> AddSalvorAsync(Salvor salvor)
     {
         salvor.Created = DateTime.UtcNow;
         salvor.LastModified = DateTime.UtcNow;

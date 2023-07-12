@@ -1,4 +1,3 @@
-using System.Globalization;
 using Droits.Clients;
 using Droits.Data;
 using Droits.ModelBinders;
@@ -11,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-        .AddControllersWithViews(options =>
-        {
-            options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
-        })
-        .AddRazorRuntimeCompilation();
+    .AddControllersWithViews(options =>
+    {
+        options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
+    })
+    .AddRazorRuntimeCompilation();
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -77,4 +76,3 @@ app.MapControllerRoute(
     "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-

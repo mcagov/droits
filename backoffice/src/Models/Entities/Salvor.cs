@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace Droits.Models.Entities;
 
 public class Salvor
@@ -13,5 +10,5 @@ public class Salvor
     public DateTime DateOfBirth { get; set; }
     public DateTime Created { get; set; }
     public DateTime LastModified { get; set; }
-    public List<Droit> Droits { get; set; } = new List<Droit>();
+    public List<Droit> Droits { get; set; } = new();
 }

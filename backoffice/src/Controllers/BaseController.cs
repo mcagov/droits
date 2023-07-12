@@ -15,8 +15,9 @@ public class BaseController : Controller
         TempData.SetErrorMessage(message);
     }
 
-    protected void HandleError(ILogger log, string message, Exception e){
-        log.LogError(message,e);
+    protected void HandleError(ILogger log, string message, Exception e)
+    {
+        log.LogError(message, e);
         AddErrorMessage(message);
     }
 }

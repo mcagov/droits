@@ -1,18 +1,18 @@
 using Droits.Clients;
 using Droits.Models.Entities;
-using Droits.Services;
 using Droits.Repositories;
+using Droits.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Droits.Tests.IntegrationTests.Services;
 
 public class EmailServiceTests : IClassFixture<TestFixture>
 {
-    private readonly IEmailService _service;
     private readonly Mock<IEmailRepository> _mockEmailRepository;
+    private readonly IEmailService _service;
 
-    private Guid _emailId = Guid.NewGuid();
-    private DateTime _todaysDate = DateTime.Now;
+    private readonly Guid _emailId = Guid.NewGuid();
+    private readonly DateTime _todaysDate = DateTime.Now;
 
 
     public EmailServiceTests(TestFixture fixture)
@@ -51,6 +51,7 @@ public class EmailServiceTests : IClassFixture<TestFixture>
 
         Assert.NotNull(response);
     }
+
     [Fact]
     public async void SendEmailAsync_ShouldReturnSubmittedTextInTheBody()
     {
@@ -70,8 +71,9 @@ public class EmailServiceTests : IClassFixture<TestFixture>
 
         var response = await _service.SendEmailAsync(_emailId);
 
-        Assert.Equal("This is a test",response.content.body);
+        Assert.Equal("This is a test", response.content.body);
     }
+
     [Fact]
     public async void SendEmailAsync_ShouldReturnSubmittedSubjectInTheSubject()
     {
@@ -92,7 +94,7 @@ public class EmailServiceTests : IClassFixture<TestFixture>
 
         var response = await _service.SendEmailAsync(_emailId);
 
-        Assert.Equal("Wreckage Found!",response.content.subject);
+        Assert.Equal("Wreckage Found!", response.content.subject);
     }
 
     [Fact]
@@ -150,14 +152,14 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             LastModified = _todaysDate
         };
 
-        List<Email> emailsInRepo = new List<Email>()
+        var emailsInRepo = new List<Email>
         {
             shipwreckEmail,
             paintingEmail,
             testEmail
         };
 
-        Task<List<Email>> emails = Task.FromResult(emailsInRepo);
+        var emails = Task.FromResult(emailsInRepo);
 
         _mockEmailRepository.Setup(m => m.GetEmailsAsync()).Returns(emails);
     }

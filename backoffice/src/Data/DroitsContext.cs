@@ -26,8 +26,6 @@ public partial class DroitsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
-
         modelBuilder.Entity<Droit>(entity =>
         {
             entity.ToTable("droits");
@@ -104,7 +102,6 @@ public partial class DroitsContext : DbContext
                 .WithMany(d => d.WreckMaterials)
                 .HasForeignKey(w => w.DroitId)
                 .IsRequired();
-
         });
 
 
@@ -130,7 +127,6 @@ public partial class DroitsContext : DbContext
             entity.HasMany(w => w.Droits)
                 .WithOne(d => d.Wreck)
                 .HasForeignKey(d => d.WreckId);
-
         });
 
         modelBuilder.Entity<Email>(entity =>
@@ -162,14 +158,10 @@ public partial class DroitsContext : DbContext
             entity.HasMany(s => s.Droits)
                 .WithOne(d => d.Salvor)
                 .HasForeignKey(d => d.SalvorId);
-
         });
 
         base.OnModelCreating(modelBuilder);
-
     }
-
-
 
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

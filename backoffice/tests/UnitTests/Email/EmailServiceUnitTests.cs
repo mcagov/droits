@@ -1,6 +1,6 @@
 using Droits.Clients;
-using Droits.Services;
 using Droits.Repositories;
+using Droits.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Droits.Tests.UnitTests.Email;
@@ -11,16 +11,13 @@ public class EmailServiceUnitTests
 
     public EmailServiceUnitTests()
     {
-        Mock<ILogger<EmailService>> mockLogger = new Mock<ILogger<EmailService>>();
-        Mock<IGovNotifyClient> mockClient = new Mock<IGovNotifyClient>();
-        Mock<IEmailRepository> mockEmailRepository = new Mock<IEmailRepository>();
+        var mockLogger = new Mock<ILogger<EmailService>>();
+        var mockClient = new Mock<IGovNotifyClient>();
+        var mockEmailRepository = new Mock<IEmailRepository>();
 
         _service = new EmailService(
             mockLogger.Object,
             mockClient.Object,
             mockEmailRepository.Object);
     }
-
-
-
 }

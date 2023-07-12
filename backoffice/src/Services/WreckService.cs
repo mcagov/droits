@@ -1,4 +1,3 @@
-
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Repositories;
@@ -22,30 +21,37 @@ public class WreckService : IWreckService
         _repo = repo;
     }
 
-    public async Task<List<Wreck>> GetWrecksAsync() =>
-        await _repo.GetWrecksAsync();
+    public async Task<List<Wreck>> GetWrecksAsync()
+    {
+        return await _repo.GetWrecksAsync();
+    }
 
     public async Task<Wreck> SaveWreckAsync(Wreck wreck)
     {
-        if(wreck.Id == default(Guid)){
-            return await AddWreckAsync(wreck);
-        }
+        if (wreck.Id == default) return await AddWreckAsync(wreck);
 
         return await UpdateWreckAsync(wreck);
     }
-    private async Task<Wreck> AddWreckAsync(Wreck wreck) =>
-        await _repo.AddWreckAsync(wreck);
 
-    private async Task<Wreck> UpdateWreckAsync(Wreck wreck) =>
-        await _repo.UpdateWreckAsync(wreck);
-
-    public async Task<Wreck> GetWreckAsync(Guid id) =>
-        await _repo.GetWreckAsync(id);
+    public async Task<Wreck> GetWreckAsync(Guid id)
+    {
+        return await _repo.GetWreckAsync(id);
+    }
 
     public async Task<Guid> SaveWreckFormAsync(WreckForm wreckForm)
     {
         var wreck = wreckForm.ApplyChanges(new Wreck());
 
         return (await SaveWreckAsync(wreck)).Id;
+    }
+
+    private async Task<Wreck> AddWreckAsync(Wreck wreck)
+    {
+        return await _repo.AddWreckAsync(wreck);
+    }
+
+    private async Task<Wreck> UpdateWreckAsync(Wreck wreck)
+    {
+        return await _repo.UpdateWreckAsync(wreck);
     }
 }

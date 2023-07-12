@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
-using Droits.Models.Enums;
 
 namespace Droits.Models.FormModels;
 
@@ -47,25 +46,25 @@ public class WreckForm : FormModel
     public int? VesselYearConstructed { get; set; }
 
 
-
     [DisplayName("Date Of Loss")]
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime? DateOfLoss { get; set; }
 
     [DisplayName("In UK Waters")]
-    public bool InUkWaters { get; set; } = false;
+    public bool InUkWaters { get; set; }
 
     [DisplayName("Is A War Wreck")]
-    public bool IsWarWreck { get; set; } = false;
+    public bool IsWarWreck { get; set; }
 
     [DisplayName("Is An Aircraft")]
-    public bool IsAnAircraft { get; set; } = false;
+    public bool IsAnAircraft { get; set; }
+
     public string? Latitude { get; set; }
     public string? Longitude { get; set; }
 
     [DisplayName("Is A Protected Site")]
-    public bool IsProtectedSite { get; set; } = false;
+    public bool IsProtectedSite { get; set; }
 
     [DisplayName("Protection Legislation")]
     public string? ProtectionLegislation { get; set; }
@@ -76,7 +75,6 @@ public class WreckForm : FormModel
 
     public Wreck ApplyChanges(Wreck wreck)
     {
-
         wreck.Id = Id;
         wreck.Name = Name;
 

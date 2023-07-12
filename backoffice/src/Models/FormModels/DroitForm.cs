@@ -57,9 +57,8 @@ public class DroitForm : FormModel
         ImportedFromLegacy = droit.ImportedFromLegacy;
 
 
-        if(droit.WreckMaterials.Any()){
+        if (droit.WreckMaterials.Any())
             WreckMaterialForms = droit.WreckMaterials.Select(wm => new WreckMaterialForm(wm)).ToList();
-        }
     }
 
 
@@ -67,9 +66,9 @@ public class DroitForm : FormModel
 
     public Guid Id { get; set; }
 
-    public WreckForm WreckForm { get; set; } = new WreckForm();
-    public List<WreckMaterialForm> WreckMaterialForms {get; set; } = new List<WreckMaterialForm>();
-    public SalvorForm SalvorForm { get; set; } = new SalvorForm();
+    public WreckForm WreckForm { get; set; } = new();
+    public List<WreckMaterialForm> WreckMaterialForms { get; set; } = new();
+    public SalvorForm SalvorForm { get; set; } = new();
 
     [Required]
     public string Reference { get; set; } = string.Empty;
@@ -101,15 +100,13 @@ public class DroitForm : FormModel
 
     [DisplayName("Is Hazardous Find")]
     public bool IsHazardousFind { get; set; }
-    
+
     [DisplayName("Is Dredge")]
     public bool IsDredge { get; set; }
-    
-    // Salvor
-    
-    public Guid? SalvorId { get; set; }
 
-    
+    // Salvor
+
+    public Guid? SalvorId { get; set; }
 
 
     // Location
@@ -172,8 +169,10 @@ public class DroitForm : FormModel
 
     [DisplayName("Imported From Legacy")]
     public bool ImportedFromLegacy { get; set; }
-    public List<SelectListItem> AllWrecks {get;set;} = new List<SelectListItem>();
-    public List<SelectListItem> AllSalvors {get;set;} = new List<SelectListItem>();
+
+    public List<SelectListItem> AllWrecks { get; set; } = new();
+    public List<SelectListItem> AllSalvors { get; set; } = new();
+
     public Droit ApplyChanges(Droit droit)
     {
         droit.Id = Id;

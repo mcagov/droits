@@ -30,14 +30,12 @@ public class WreckRepository : IWreckRepository
     public async Task<Wreck> GetWreckAsync(Guid id)
     {
         var wreck = await _context.Wrecks.FindAsync(id);
-        if(wreck == null){
-            throw new WreckNotFoundException();
-        }
+        if (wreck == null) throw new WreckNotFoundException();
         return wreck;
     }
 
 
-   public async Task<Wreck> AddWreckAsync(Wreck wreck)
+    public async Task<Wreck> AddWreckAsync(Wreck wreck)
     {
         wreck.Created = DateTime.UtcNow;
         wreck.LastModified = DateTime.UtcNow;

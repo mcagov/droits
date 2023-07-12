@@ -1,6 +1,6 @@
 ﻿@model WreckView
 @{
-    ViewData["Title"] = Model.Name==""?"Wreck View":Model.Name;
+    ViewData["Title"] = Model.Name == "" ? "Wreck View" : Model.Name;
 }
 
 
@@ -17,7 +17,7 @@
     </div>
 </div>
 
-@if ( Model.Latitude.HasValue() && Model.Longitude.HasValue())
+@if (Model.Latitude.HasValue() && Model.Longitude.HasValue())
 {
     <div class="row mt-3">
         <iframe src="https://maps.google.com/maps?q=@Model.Latitude,@Model.Longitude&amp;output=embed"></iframe>
@@ -30,4 +30,3 @@
         <a type="button" class="btn btn-primary" asp-action="Index">View Wrecks</a>
     </div>
 </div>
-

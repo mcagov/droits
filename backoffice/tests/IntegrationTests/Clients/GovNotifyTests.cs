@@ -3,14 +3,16 @@ using Droits.Models.FormModels;
 using Droits.Tests;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+
 namespace Droits.IntegrationTests.Clients;
+
 public class GovNotifyTests : IClassFixture<TestFixture>
 {
     private readonly IGovNotifyClient _client;
     private readonly IConfiguration _configuration;
 
-    public GovNotifyTests(TestFixture fixture){
-
+    public GovNotifyTests(TestFixture fixture)
+    {
         var logger = new Mock<ILogger<GovNotifyClient>>();
 
         _configuration = fixture.Configuration;
@@ -21,7 +23,7 @@ public class GovNotifyTests : IClassFixture<TestFixture>
     [Fact]
     public async void SendEmailAsync_ShouldReturnAValidResponse()
     {
-        var form = new EmailForm()
+        var form = new EmailForm
         {
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
@@ -32,10 +34,11 @@ public class GovNotifyTests : IClassFixture<TestFixture>
 
         Assert.NotNull(response);
     }
+
     [Fact]
     public async void SendEmailAsync_ShouldReturnSubmittedTextInTheBody()
     {
-        var form = new EmailForm()
+        var form = new EmailForm
         {
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
@@ -44,12 +47,13 @@ public class GovNotifyTests : IClassFixture<TestFixture>
 
         var response = await _client.SendEmailAsync(form);
 
-        Assert.Equal("This is a test",response.content.body);
+        Assert.Equal("This is a test", response.content.body);
     }
+
     [Fact]
     public async void SendEmailAsync_ShouldReturnSubmittedSubjectInTheSubject()
     {
-        var form = new EmailForm()
+        var form = new EmailForm
         {
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
@@ -58,6 +62,6 @@ public class GovNotifyTests : IClassFixture<TestFixture>
 
         var response = await _client.SendEmailAsync(form);
 
-        Assert.Equal("Test",response.content.subject);
+        Assert.Equal("Test", response.content.subject);
     }
 }

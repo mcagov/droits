@@ -28,21 +28,16 @@ public class SalvorService : ISalvorService
 
     public async Task<Salvor> SaveSalvorAsync(Salvor salvor)
     {
-        if(salvor.Id == default(Guid)){
-            return await AddSalvorAsync(salvor);
-        }
+        if (salvor.Id == default) return await AddSalvorAsync(salvor);
 
         return await UpdateSalvorAsync(salvor);
     }
-    private async Task<Salvor> AddSalvorAsync(Salvor salvor) =>
-        await _repo.AddSalvorAsync(salvor);
 
-    private async Task<Salvor> UpdateSalvorAsync(Salvor salvor) =>
-        await _repo.UpdateSalvorAsync(salvor);
+    public async Task<Salvor> GetSalvorAsync(Guid id)
+    {
+        return await _repo.GetSalvorAsync(id);
+    }
 
-    public async Task<Salvor> GetSalvorAsync(Guid id) =>
-        await _repo.GetSalvorAsync(id);
-    
     public async Task<Guid> SaveSalvorFormAsync(SalvorForm form)
     {
         var salvor = form.ApplyChanges(new Salvor());
@@ -50,4 +45,13 @@ public class SalvorService : ISalvorService
         return (await SaveSalvorAsync(salvor)).Id;
     }
 
+    private async Task<Salvor> AddSalvorAsync(Salvor salvor)
+    {
+        return await _repo.AddSalvorAsync(salvor);
+    }
+
+    private async Task<Salvor> UpdateSalvorAsync(Salvor salvor)
+    {
+        return await _repo.UpdateSalvorAsync(salvor);
+    }
 }

@@ -3,6 +3,7 @@ using Droits.Models.Entities;
 using Droits.Models.Enums;
 
 namespace Droits.Models.ViewModels;
+
 public class EmailView
 {
     public EmailView(Email email)
@@ -19,9 +20,11 @@ public class EmailView
     public Guid Id { get; }
     public string Recipient { get; } = string.Empty;
     public EmailType EmailType { get; }
+
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime DateLastModified { get; }
+
     public string Subject { get; } = string.Empty;
     public string Body { get; } = string.Empty;
     private DateTime? SentDate { get; }

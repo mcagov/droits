@@ -6,9 +6,6 @@ public static class ModelStateExtensions
 {
     public static void RemoveStartingWith(this ModelStateDictionary modelState, string startsWith)
     {
-        foreach (var key in modelState.Keys.Where(k => k.StartsWith(startsWith)))
-        {
-            modelState.Remove(key);
-        }
+        foreach (var key in modelState.Keys.Where(k => k.StartsWith(startsWith))) modelState.Remove(key);
     }
 }

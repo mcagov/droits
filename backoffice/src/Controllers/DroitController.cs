@@ -13,9 +13,9 @@ namespace Droits.Controllers;
 public class DroitController : BaseController
 {
     private readonly ILogger<DroitController> _logger;
+    private readonly ISalvorService _salvorService;
     private readonly IDroitService _service;
     private readonly IWreckService _wreckService;
-    private readonly ISalvorService _salvorService;
 
     public DroitController(ILogger<DroitController> logger, IDroitService service, IWreckService wreckService,
         ISalvorService salvorService)
@@ -71,13 +71,13 @@ public class DroitController : BaseController
 
         await _service.UpdateDroitStatusAsync(id, status);
 
-        return RedirectToAction(nameof(View), new { id = id });
+        return RedirectToAction(nameof(View), new { id });
     }
 
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
-        if (id == default(Guid))
+        if (id == default)
         {
             var form = await PopulateDroitFormAsync(new DroitForm());
             return View(form);
@@ -100,16 +100,9 @@ public class DroitController : BaseController
     [HttpPost]
     public async Task<IActionResult> Save(DroitForm form)
     {
+        if (form.WreckId.HasValue) ModelState.RemoveStartingWith("WreckForm");
 
-        if (form.WreckId.HasValue)
-        {
-            ModelState.RemoveStartingWith("WreckForm");
-        }
-
-        if (form.SalvorId.HasValue)
-        { 
-           ModelState.RemoveStartingWith("SalvorForm");
-        }
+        if (form.SalvorId.HasValue) ModelState.RemoveStartingWith("SalvorForm");
 
         if (!ModelState.IsValid)
         {
@@ -120,8 +113,7 @@ public class DroitController : BaseController
 
         var droit = new Droit();
 
-        if (form.Id != default(Guid))
-        {
+        if (form.Id != default)
             try
             {
                 droit = await _service.GetDroitAsync(form.Id);
@@ -131,19 +123,12 @@ public class DroitController : BaseController
                 HandleError(_logger, "Droit not found.", e);
                 return View(nameof(Edit), form);
             }
-        }
 
         droit = form.ApplyChanges(droit);
 
-        if (!droit.WreckId.HasValue)
-        {
-            droit.WreckId = await _wreckService.SaveWreckFormAsync(form.WreckForm);
-        }
+        if (!droit.WreckId.HasValue) droit.WreckId = await _wreckService.SaveWreckFormAsync(form.WreckForm);
 
-        if (!droit.SalvorId.HasValue)
-        {
-            droit.SalvorId = await _salvorService.SaveSalvorFormAsync(form.SalvorForm);
-        }
+        if (!droit.SalvorId.HasValue) droit.SalvorId = await _salvorService.SaveSalvorFormAsync(form.SalvorForm);
 
         try
         {

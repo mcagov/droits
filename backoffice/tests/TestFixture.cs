@@ -4,16 +4,14 @@ namespace Droits.Tests;
 
 public class TestFixture
 {
-
-    public IConfiguration Configuration {get;}
-
     public TestFixture()
     {
         var builder = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            .AddJsonFile("appsettings.json", false, true);
 
         Configuration = builder.Build();
     }
 
+    public IConfiguration Configuration { get; }
 }

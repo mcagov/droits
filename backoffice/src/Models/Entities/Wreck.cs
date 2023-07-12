@@ -1,5 +1,3 @@
-using Droits.Models.Enums;
-
 namespace Droits.Models.Entities;
 
 public class Wreck
@@ -23,5 +21,5 @@ public class Wreck
     public DateTime Created { get; set; }
     public DateTime LastModified { get; set; }
 
-    public List<Droit> Droits { get; set; } = new List<Droit>();
+    public List<Droit> Droits { get; set; } = new();
 }

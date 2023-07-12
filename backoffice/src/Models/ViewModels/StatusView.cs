@@ -1,14 +1,13 @@
-using System;
-
 namespace Droits.Models.ViewModels;
+
 public class StatusView
 {
-    public Enum Status { get; }
-
     public StatusView(Enum status)
     {
         Status = status;
     }
+
+    public Enum Status { get; }
 
     public string GetProgressCssClass(Enum statusToCheck)
     {
@@ -28,5 +27,4 @@ public class StatusView
 
         return "";
     }
-
 }

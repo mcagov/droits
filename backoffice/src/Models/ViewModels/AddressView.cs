@@ -27,6 +27,7 @@ public class AddressView
 
     [DisplayName("City/Town")]
     public string Town { get; } = string.Empty;
+
     public string County { get; } = string.Empty;
     public string Postcode { get; } = string.Empty;
 }

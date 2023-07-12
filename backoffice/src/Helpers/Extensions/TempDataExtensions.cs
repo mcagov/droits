@@ -8,6 +8,7 @@ public static class TempDataExtensions
     {
         tempData["SuccessMessage"] = message;
     }
+
     public static void SetErrorMessage<T>(this ITempDataDictionary tempData, T message)
     {
         tempData["ErrorMessage"] = message;

@@ -34,6 +34,7 @@ public class AddressForm
 
     [Required]
     public string County { get; set; } = string.Empty;
+
     [Required(ErrorMessage = "Postcode is required")]
     [RegularExpression(Constants.PostcodeRegex,
         ErrorMessage = "Invalid postcode")]

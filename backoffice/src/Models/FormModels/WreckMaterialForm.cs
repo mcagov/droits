@@ -1,85 +1,86 @@
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 
-namespace Droits.Models.FormModels
+namespace Droits.Models.FormModels;
+
+public class WreckMaterialForm : FormModel
 {
-    public class WreckMaterialForm : FormModel
+    public WreckMaterialForm()
     {
-        public WreckMaterialForm(){}
-        public WreckMaterialForm(WreckMaterial wreckMaterial)
-        {
-            Id = wreckMaterial.Id;
-            DroitId = wreckMaterial.DroitId;
-            Name = wreckMaterial.Name;
-            Description = wreckMaterial.Description;
-            Quantity = wreckMaterial.Quantity;
-            Value = wreckMaterial.Value;
-            ReceiverValuation = wreckMaterial.ReceiverValuation;
-            ValueConfirmed = wreckMaterial.ValueConfirmed;
-            // Images = wreckMaterial.Images;
-            WreckMaterialOwner = wreckMaterial.WreckMaterialOwner;
-            Purchaser = wreckMaterial.Purchaser;
-            Outcome = wreckMaterial.Outcome;
-            WhereSecured = wreckMaterial.WhereSecured;
-        }
+    }
 
-        public Guid Id { get; set; }
+    public WreckMaterialForm(WreckMaterial wreckMaterial)
+    {
+        Id = wreckMaterial.Id;
+        DroitId = wreckMaterial.DroitId;
+        Name = wreckMaterial.Name;
+        Description = wreckMaterial.Description;
+        Quantity = wreckMaterial.Quantity;
+        Value = wreckMaterial.Value;
+        ReceiverValuation = wreckMaterial.ReceiverValuation;
+        ValueConfirmed = wreckMaterial.ValueConfirmed;
+        // Images = wreckMaterial.Images;
+        WreckMaterialOwner = wreckMaterial.WreckMaterialOwner;
+        Purchaser = wreckMaterial.Purchaser;
+        Outcome = wreckMaterial.Outcome;
+        WhereSecured = wreckMaterial.WhereSecured;
+    }
 
-        [Required]
-        public Guid DroitId { get; set; }
+    public Guid Id { get; set; }
 
-        public string Name { get; set; } = string.Empty;
+    [Required]
+    public Guid DroitId { get; set; }
 
-        public string? Description { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
 
-        [Range(1, int.MaxValue, ErrorMessage = "Quantity must be a positive number.")]
-        public int Quantity { get; set; } = 1;
+    public string? Description { get; set; } = string.Empty;
 
-        [Range(0, float.MaxValue, ErrorMessage = "Value must be a non-negative number.")]
-        public float? Value { get; set; } = 0;
+    [Range(1, int.MaxValue, ErrorMessage = "Quantity must be a positive number.")]
+    public int Quantity { get; set; } = 1;
 
-        [Range(0, float.MaxValue, ErrorMessage = "Receiver valuation must be a non-negative number.")]
-        [Display(Name = "Receiver Valuation")]
+    [Range(0, float.MaxValue, ErrorMessage = "Value must be a non-negative number.")]
+    public float? Value { get; set; } = 0;
 
-        public float? ReceiverValuation { get; set; } = 0;
+    [Range(0, float.MaxValue, ErrorMessage = "Receiver valuation must be a non-negative number.")]
+    [Display(Name = "Receiver Valuation")]
 
-        [Display(Name = "Value Confirmed")]
-        public bool ValueConfirmed { get; set; } = false;
+    public float? ReceiverValuation { get; set; } = 0;
 
-        // public List<string> Images { get; set; } = new List<string>();
+    [Display(Name = "Value Confirmed")]
+    public bool ValueConfirmed { get; set; }
 
-        [Display(Name = "Wreck Material Owner")]
-        [DataType(DataType.MultilineText)]
-        public string? WreckMaterialOwner { get; set; } = string.Empty;
+    // public List<string> Images { get; set; } = new List<string>();
 
-        public string? Purchaser { get; set; } = string.Empty;
+    [Display(Name = "Wreck Material Owner")]
+    [DataType(DataType.MultilineText)]
+    public string? WreckMaterialOwner { get; set; } = string.Empty;
 
-        [DataType(DataType.MultilineText)]
-        public string? Outcome { get; set; } = string.Empty;
+    public string? Purchaser { get; set; } = string.Empty;
 
-        [Display(Name = "Where Secured")]
-        [DataType(DataType.MultilineText)]
-        public string? WhereSecured { get; set; } = string.Empty;
+    [DataType(DataType.MultilineText)]
+    public string? Outcome { get; set; } = string.Empty;
+
+    [Display(Name = "Where Secured")]
+    [DataType(DataType.MultilineText)]
+    public string? WhereSecured { get; set; } = string.Empty;
 
 
+    public WreckMaterial ApplyChanges(WreckMaterial wreckMaterial)
+    {
+        wreckMaterial.Id = Id;
+        wreckMaterial.DroitId = DroitId;
+        wreckMaterial.Name = Name;
+        wreckMaterial.Description = Description;
+        wreckMaterial.Quantity = Quantity;
+        wreckMaterial.Value = Value;
+        wreckMaterial.ReceiverValuation = ReceiverValuation;
+        wreckMaterial.ValueConfirmed = ValueConfirmed;
+        // wreckMaterial.Images = Images;
+        wreckMaterial.WreckMaterialOwner = WreckMaterialOwner;
+        wreckMaterial.Purchaser = Purchaser;
+        wreckMaterial.Outcome = Outcome;
+        wreckMaterial.WhereSecured = WhereSecured;
 
-        public WreckMaterial ApplyChanges(WreckMaterial wreckMaterial)
-        {
-            wreckMaterial.Id = Id;
-            wreckMaterial.DroitId = DroitId;
-            wreckMaterial.Name = Name;
-            wreckMaterial.Description = Description;
-            wreckMaterial.Quantity = Quantity;
-            wreckMaterial.Value = Value;
-            wreckMaterial.ReceiverValuation = ReceiverValuation;
-            wreckMaterial.ValueConfirmed = ValueConfirmed;
-            // wreckMaterial.Images = Images;
-            wreckMaterial.WreckMaterialOwner = WreckMaterialOwner;
-            wreckMaterial.Purchaser = Purchaser;
-            wreckMaterial.Outcome = Outcome;
-            wreckMaterial.WhereSecured = WhereSecured;
-
-            return wreckMaterial;
-        }
+        return wreckMaterial;
     }
 }

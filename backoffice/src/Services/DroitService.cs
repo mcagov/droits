@@ -1,6 +1,6 @@
 using Droits.Models.Entities;
-using Droits.Models.FormModels;
 using Droits.Models.Enums;
+using Droits.Models.FormModels;
 using Droits.Repositories;
 
 namespace Droits.Services;
@@ -31,26 +31,48 @@ public class DroitService : IDroitService
 
     public async Task<Droit> SaveDroitAsync(Droit droit)
     {
-        if(droit.Id == default(Guid)){
-            return await AddDroitAsync(droit);
-        }
+        if (droit.Id == default) return await AddDroitAsync(droit);
 
         return await UpdateDroitAsync(droit);
     }
-    private async Task<Droit> AddDroitAsync(Droit droit) =>
-        await _repo.AddDroitAsync(droit);
 
-    private async Task<Droit> UpdateDroitAsync(Droit droit) =>
-        await _repo.UpdateDroitAsync(droit);
+    public async Task<Droit> GetDroitAsync(Guid id)
+    {
+        return await _repo.GetDroitAsync(id);
+    }
 
-    public async Task<Droit> GetDroitAsync(Guid id) =>
-        await _repo.GetDroitAsync(id);
+    public async Task SaveWreckMaterialsAsync(Guid droitId, List<WreckMaterialForm> wreckMaterialForms)
+    {
+        var wreckMaterialIdsToKeep = wreckMaterialForms.Select(wm => wm.Id);
+
+        await DeleteWreckMaterialForDroitAsync(droitId, wreckMaterialIdsToKeep);
+
+        foreach (var wmForm in wreckMaterialForms)
+        {
+            wmForm.DroitId = droitId;
+            await SaveWreckMaterialAsync(wmForm);
+        }
+    }
+
+    public async Task UpdateDroitStatusAsync(Guid id, DroitStatus status)
+    {
+        await _repo.UpdateDroitStatusAsync(id, status);
+    }
+
+    private async Task<Droit> AddDroitAsync(Droit droit)
+    {
+        return await _repo.AddDroitAsync(droit);
+    }
+
+    private async Task<Droit> UpdateDroitAsync(Droit droit)
+    {
+        return await _repo.UpdateDroitAsync(droit);
+    }
 
     private async Task<WreckMaterial> SaveWreckMaterialAsync(WreckMaterialForm wreckMaterialForm)
     {
-        if(wreckMaterialForm.Id == default(Guid)){
+        if (wreckMaterialForm.Id == default)
             return await _repo.AddWreckMaterialAsync(wreckMaterialForm.ApplyChanges(new WreckMaterial()));
-        }
 
         var wreckMaterial = await _repo.GetWreckMaterialAsync(wreckMaterialForm.Id, wreckMaterialForm.DroitId);
 
@@ -59,22 +81,13 @@ public class DroitService : IDroitService
         return await UpdateWreckMaterialAsync(wreckMaterial);
     }
 
-    private async Task<WreckMaterial> UpdateWreckMaterialAsync(WreckMaterial wreckMaterial) =>
-        await _repo.UpdateWreckMaterialAsync(wreckMaterial);
-
-    private async Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep) => await _repo.DeleteWreckMaterialForDroitAsync(droitId, wmToKeep);
-
-    public async Task SaveWreckMaterialsAsync(Guid droitId, List<WreckMaterialForm> wreckMaterialForms)
+    private async Task<WreckMaterial> UpdateWreckMaterialAsync(WreckMaterial wreckMaterial)
     {
-        var wreckMaterialIdsToKeep = wreckMaterialForms.Select(wm => wm.Id);
-
-        await DeleteWreckMaterialForDroitAsync(droitId, wreckMaterialIdsToKeep);
-
-        foreach(var wmForm in wreckMaterialForms){
-            wmForm.DroitId = droitId;
-            await SaveWreckMaterialAsync(wmForm);
-        }
+        return await _repo.UpdateWreckMaterialAsync(wreckMaterial);
     }
-    public async Task UpdateDroitStatusAsync(Guid id, DroitStatus status) =>
-        await _repo.UpdateDroitStatusAsync(id,status);
+
+    private async Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep)
+    {
+        await _repo.DeleteWreckMaterialForDroitAsync(droitId, wmToKeep);
+    }
 }
