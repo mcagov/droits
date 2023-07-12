@@ -11,17 +11,6 @@ $(function() {
         $('#confirmDialog').modal('show');
     };
 
-    function toggleFields(selectId, formFieldsId) {
-        var selectElement = $(selectId);
-        var formFields = $(formFieldsId);
-    
-        if (selectElement.val() === "") {
-            formFields.removeClass("d-none");
-        } else {
-            formFields.addClass("d-none");
-        }
-    }
-
     $('#js-select-wreck, #js-select-salvor').select2({
         width: '100%'
     });
@@ -37,10 +26,18 @@ $(function() {
     toggleFields("#js-select-wreck", "#js-wreck-form-fields");
     toggleFields("#js-select-salvor", "#js-salvor-form-fields");
 
-    var wmFormContainer = $('#js-wreck-materials-form-container');
-    var wmFormAddButton = $('#js-add-wreck-material-form');
-
-    wmFormAddButton.on('click', function () {
+    $('body').on('click','.js-remove-wreck-material-form', function () {
+        var confirmMessage = 'Are you sure you want to remove this Wreck Material?';
+        var removeAction = function () {
+          $(this).closest('.js-wreck-material-form').remove();
+          refreshWmFormIndexes();
+          $('#confirmDialog').modal('hide');
+        };
+        confirm(confirmMessage, removeAction.bind(this));
+      });
+    
+    $('#js-add-wreck-material-form').on('click', function () {
+        var wmFormContainer = $('#js-wreck-materials-form-container');
         $.get('/Droit/WreckMaterialFormPartial')
             .done(function (response) {
                 var index = wmFormContainer.find('.js-wreck-material-form').length;
@@ -58,16 +55,17 @@ $(function() {
                 refreshWmFormIndexes();
             });
     });
-
-    $('body').on('click','.js-remove-wreck-material-form', function () {
-        var confirmMessage = 'Are you sure you want to remove this Wreck Material?';
-        var removeAction = function () {
-          $(this).closest('.js-wreck-material-form').remove();
-          refreshWmFormIndexes();
-          $('#confirmDialog').modal('hide');
-        };
-        confirm(confirmMessage, removeAction.bind(this));
-      });
+    
+    function toggleFields(selectId, formFieldsId) {
+        var selectElement = $(selectId);
+        var formFields = $(formFieldsId);
+    
+        if (selectElement.val() === "") {
+            formFields.removeClass("d-none");
+        } else {
+            formFields.addClass("d-none");
+        }
+    }
 
     function refreshWmFormIndexes() {
         $('#js-wreck-materials-form-container').find('.js-wreck-material-form').each(function (index) {

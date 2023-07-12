@@ -59,10 +59,6 @@ public class DroitForm : FormModel
 
         if(droit.WreckMaterials.Any()){
             WreckMaterialForms = droit.WreckMaterials.Select(wm => new WreckMaterialForm(wm)).ToList();
-        }else{
-            WreckMaterialForms.Add(new WreckMaterialForm(){
-                DroitId = droit.Id
-            });
         }
     }
 
