@@ -15,6 +15,6 @@ public class DroitItemOwner
     public bool OwnerHasResponded => OwnerRespondedDate.HasValue;
 
     public bool OwnerResponseWindowClosed => OwnerRespondedDate != null && !OwnerHasResponded &&
-                                             (DateTime.UtcNow - OwnerRespondedDate.Value).Days >
+                                             ( DateTime.UtcNow - OwnerRespondedDate.Value ).Days >
                                              OwnerResponseWindowDays;
 }

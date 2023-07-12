@@ -19,34 +19,34 @@
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
-            <tr>
-                <th scope="col">Recipient</th>
-                <th scope="col">Subject</th>
-                <th scope="col">Type</th>
-                <th scope="col">Last Modified</th>
-                <th scope="col">Is Sent?</th>
-                <th scope="col">Actions</th>
-            </tr>
+        <tr>
+            <th scope="col">Recipient</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Type</th>
+            <th scope="col">Last Modified</th>
+            <th scope="col">Is Sent?</th>
+            <th scope="col">Actions</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var email in Model.EmailList)
-            {
-                <tr>
-                    <td class="p-3 text-uppercase">
-                        @email.Recipient
-                    </td>
-                    <td class="p-3">@email.Subject</td>
-                    <td class="p-3">@email.EmailType</td>
-                    <td class="p-3">@email.DateLastModified.ToString("dd/MM/yyyy")</td>
-                    <td class="p-3">@Html.DisplayFor(m => email.IsSent)</td>
-                    <td class="p-3">
-                        <div class="btn-group">
-                            <a asp-action="Edit" asp-route-id="@email.Id" class="btn btn-primary">Edit</a>
-                            <a asp-action="Preview" asp-route-id="@email.Id" class="btn btn-primary">View</a>
-                        </div>
-                    </td>
-                </tr>
-            }
+        @foreach (var email in Model.EmailList)
+        {
+            <tr>
+                <td class="p-3 text-uppercase">
+                    @email.Recipient
+                </td>
+                <td class="p-3">@email.Subject</td>
+                <td class="p-3">@email.EmailType</td>
+                <td class="p-3">@email.DateLastModified.ToString("dd/MM/yyyy")</td>
+                <td class="p-3">@Html.DisplayFor(m => email.IsSent)</td>
+                <td class="p-3">
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-route-id="@email.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="Preview" asp-route-id="@email.Id" class="btn btn-primary">View</a>
+                    </div>
+                </td>
+            </tr>
+        }
         </tbody>
     </table>
 </div>

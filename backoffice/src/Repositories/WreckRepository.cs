@@ -17,27 +17,32 @@ public class WreckRepository : IWreckRepository
 {
     private readonly DroitsContext _context;
 
+
     public WreckRepository(DroitsContext dbContext)
     {
         _context = dbContext;
     }
+
 
     public async Task<List<Wreck>> GetWrecksAsync()
     {
         return await _context.Wrecks.ToListAsync();
     }
 
+
     public async Task<Wreck> GetWreckAsync(Guid id)
     {
         var wreck = await _context.Wrecks.FindAsync(id);
-        if(wreck == null){
+        if ( wreck == null )
+        {
             throw new WreckNotFoundException();
         }
+
         return wreck;
     }
 
 
-   public async Task<Wreck> AddWreckAsync(Wreck wreck)
+    public async Task<Wreck> AddWreckAsync(Wreck wreck)
     {
         wreck.Created = DateTime.UtcNow;
         wreck.LastModified = DateTime.UtcNow;
@@ -47,6 +52,7 @@ public class WreckRepository : IWreckRepository
 
         return savedWreck;
     }
+
 
     public async Task<Wreck> UpdateWreckAsync(Wreck wreck)
     {

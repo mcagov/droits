@@ -1,7 +1,6 @@
 ﻿@model WreckForm
 @{
-
-    ViewData["Title"] = Model.Id==default(Guid)?"New Wreck":$"Wreck: {Model.Name}";
+    ViewData["Title"] = Model.Id == default ? "New Wreck" : $"Wreck: {Model.Name}";
 }
 
 @{

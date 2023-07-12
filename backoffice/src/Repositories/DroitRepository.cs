@@ -13,34 +13,38 @@ public interface IDroitRepository
     Task<Droit> AddDroitAsync(Droit droit);
     Task<Droit> UpdateDroitAsync(Droit droit);
     Task<WreckMaterial> UpdateWreckMaterialAsync(WreckMaterial wreckMaterial);
-    Task<WreckMaterial> GetWreckMaterialAsync(Guid id,Guid droitId);
+    Task<WreckMaterial> GetWreckMaterialAsync(Guid id, Guid droitId);
     Task<WreckMaterial> AddWreckMaterialAsync(WreckMaterial wreckMaterial);
     Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep);
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
-
 }
 
 public class DroitRepository : IDroitRepository
 {
     private readonly DroitsContext _context;
 
+
     public DroitRepository(DroitsContext dbContext)
     {
         _context = dbContext;
     }
+
 
     public async Task<List<Droit>> GetDroitsAsync()
     {
         return await _context.Droits.Include(d => d.Wreck).Include(d => d.Salvor).ToListAsync();
     }
 
+
     public async Task<Droit> GetDroitAsync(Guid id)
     {
-        var droit = await _context.Droits.Include(d => d.Wreck).Include(d => d.Salvor).Include(d => d.WreckMaterials).FirstOrDefaultAsync(d => d.Id == id);
-        if (droit == null)
+        var droit = await _context.Droits.Include(d => d.Wreck).Include(d => d.Salvor)
+            .Include(d => d.WreckMaterials).FirstOrDefaultAsync(d => d.Id == id);
+        if ( droit == null )
         {
             throw new DroitNotFoundException();
         }
+
         return droit;
     }
 
@@ -56,6 +60,7 @@ public class DroitRepository : IDroitRepository
         return savedDroit;
     }
 
+
     public async Task<Droit> UpdateDroitAsync(Droit droit)
     {
         droit.LastModified = DateTime.UtcNow;
@@ -65,6 +70,7 @@ public class DroitRepository : IDroitRepository
 
         return savedDroit;
     }
+
 
     public async Task<WreckMaterial> UpdateWreckMaterialAsync(WreckMaterial wreckMaterial)
     {
@@ -79,13 +85,17 @@ public class DroitRepository : IDroitRepository
 
     public async Task<WreckMaterial> GetWreckMaterialAsync(Guid id, Guid droitId)
     {
-        var wreckMaterial = await _context.WreckMaterials.FirstOrDefaultAsync(wm => wm.Id == id && wm.DroitId == droitId);
-        if (wreckMaterial == null)
+        var wreckMaterial =
+            await _context.WreckMaterials.FirstOrDefaultAsync(wm =>
+                wm.Id == id && wm.DroitId == droitId);
+        if ( wreckMaterial == null )
         {
             throw new WreckMaterialNotFoundException();
         }
+
         return wreckMaterial;
     }
+
 
     public async Task<WreckMaterial> AddWreckMaterialAsync(WreckMaterial wreckMaterial)
     {
@@ -98,6 +108,7 @@ public class DroitRepository : IDroitRepository
         return savedWreckMaterial;
     }
 
+
     public async Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep)
     {
         var wreckMaterials = await _context.WreckMaterials
@@ -107,6 +118,7 @@ public class DroitRepository : IDroitRepository
         _context.WreckMaterials.RemoveRange(wreckMaterials);
         await _context.SaveChangesAsync();
     }
+
 
     public async Task UpdateDroitStatusAsync(Guid id, DroitStatus status)
     {

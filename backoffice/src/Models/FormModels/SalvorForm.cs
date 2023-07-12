@@ -11,6 +11,7 @@ public class SalvorForm
     {
     }
 
+
     public SalvorForm(Salvor salvor)
     {
         Id = salvor.Id;
@@ -21,12 +22,16 @@ public class SalvorForm
         Address = new AddressForm(salvor.Address);
     }
 
+
     public Guid Id { get; set; }
+
     [Required(ErrorMessage = "Name is required")]
     public string Name { get; set; } = string.Empty;
+
     [Required(ErrorMessage = "Email is required")]
     [EmailAddress(ErrorMessage = "Invalid email address")]
     public string Email { get; set; } = string.Empty;
+
     [Required(ErrorMessage = "Phone number is required")]
     [Phone()]
     [DisplayName("Telephone Number")]
@@ -34,12 +39,14 @@ public class SalvorForm
     public string TelephoneNumber { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Date of Birth is required")]
-    [BindProperty, DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    [BindProperty]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     [DataType(DataType.Date)]
     [DisplayName("Date of Birth")]
     public DateTime DateOfBirth { get; set; }
 
     public AddressForm Address { get; set; } = new();
+
 
     public Salvor ApplyChanges(Salvor salvor)
     {

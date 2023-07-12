@@ -9,10 +9,12 @@ public partial class DroitsContext : DbContext
     {
     }
 
+
     public DroitsContext(DbContextOptions<DroitsContext> options)
         : base(options)
     {
     }
+
 
     public virtual DbSet<Droit> Droits { get; set; } = null!;
     public virtual DbSet<WreckMaterial> WreckMaterials { get; set; } = null!;
@@ -20,14 +22,14 @@ public partial class DroitsContext : DbContext
     public virtual DbSet<Email> Emails { get; set; } = null!;
     public virtual DbSet<Salvor> Salvors { get; set; } = null!;
 
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
     }
 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
-
         modelBuilder.Entity<Droit>(entity =>
         {
             entity.ToTable("droits");
@@ -104,7 +106,6 @@ public partial class DroitsContext : DbContext
                 .WithMany(d => d.WreckMaterials)
                 .HasForeignKey(w => w.DroitId)
                 .IsRequired();
-
         });
 
 
@@ -130,7 +131,6 @@ public partial class DroitsContext : DbContext
             entity.HasMany(w => w.Droits)
                 .WithOne(d => d.Wreck)
                 .HasForeignKey(d => d.WreckId);
-
         });
 
         modelBuilder.Entity<Email>(entity =>
@@ -162,14 +162,10 @@ public partial class DroitsContext : DbContext
             entity.HasMany(s => s.Droits)
                 .WithOne(d => d.Salvor)
                 .HasForeignKey(d => d.SalvorId);
-
         });
 
         base.OnModelCreating(modelBuilder);
-
     }
-
-
 
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

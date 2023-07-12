@@ -11,6 +11,7 @@ public class AddressForm
     {
     }
 
+
     public AddressForm(Address address)
     {
         Line1 = address.Line1;
@@ -19,6 +20,7 @@ public class AddressForm
         County = address.County;
         Postcode = address.Postcode;
     }
+
 
     [Required]
     [DisplayName("Line 1")]
@@ -34,6 +36,7 @@ public class AddressForm
 
     [Required]
     public string County { get; set; } = string.Empty;
+
     [Required(ErrorMessage = "Postcode is required")]
     [RegularExpression(Constants.PostcodeRegex,
         ErrorMessage = "Invalid postcode")]

@@ -19,28 +19,28 @@
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Created</th>
-                <th scope="col">Actions</th>
-            </tr>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Created</th>
+            <th scope="col">Actions</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var wreck in Model)
-            {
-                <tr>
-                    <td class="p-3 text-uppercase">
-                        <a asp-action="View" asp-route-id="@wreck.Id">@wreck.Name</a>
-                    </td>
-                    <td class="p-3">@wreck.Created.ToString("dd/MM/yyyy")</td>
-                    <td class="p-3">
-                        <div class="btn-group">
-                            <a asp-action="Edit" asp-route-id="@wreck.Id" class="btn btn-primary">Edit</a>
-                            <a asp-action="View" asp-route-id="@wreck.Id" class="btn btn-primary">View</a>
-                        </div>
-                    </td>
-                </tr>
-            }
+        @foreach (var wreck in Model)
+        {
+            <tr>
+                <td class="p-3 text-uppercase">
+                    <a asp-action="View" asp-route-id="@wreck.Id">@wreck.Name</a>
+                </td>
+                <td class="p-3">@wreck.Created.ToString("dd/MM/yyyy")</td>
+                <td class="p-3">
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-route-id="@wreck.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="View" asp-route-id="@wreck.Id" class="btn btn-primary">View</a>
+                    </div>
+                </td>
+            </tr>
+        }
         </tbody>
     </table>
 </div>

@@ -81,5 +81,5 @@ public class OldSalvor
     [JsonProperty("telephone-number")]
     public string TelephoneNumber { get; set; } = string.Empty;
 
-    public Address Address { get; set; } = new Address();
+    public Address Address { get; set; } = new();
 }

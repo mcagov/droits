@@ -12,11 +12,13 @@ public class SalvorController : BaseController
     private readonly ILogger<SalvorController> _logger;
     private readonly ISalvorService _service;
 
+
     public SalvorController(ILogger<SalvorController> logger, ISalvorService service)
     {
         _logger = logger;
         _service = service;
     }
+
 
     public async Task<IActionResult> Index()
     {
@@ -27,6 +29,7 @@ public class SalvorController : BaseController
         return View(model);
     }
 
+
     [HttpGet]
     public async Task<IActionResult> View(Guid id)
     {
@@ -35,9 +38,9 @@ public class SalvorController : BaseController
         {
             salvor = await _service.GetSalvorAsync(id);
         }
-        catch (SalvorNotFoundException e)
+        catch ( SalvorNotFoundException e )
         {
-            HandleError(_logger,"Salvor not found",e);
+            HandleError(_logger, "Salvor not found", e);
             return RedirectToAction(nameof(Index));
         }
 
@@ -45,17 +48,19 @@ public class SalvorController : BaseController
         return View(model);
     }
 
+
     [HttpGet]
     public IActionResult Add()
     {
         var model = new SalvorForm();
-        return View(nameof(Edit),model);
+        return View(nameof(Edit), model);
     }
+
 
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
-        if (id == default(Guid))
+        if ( id == default )
         {
             return View(new SalvorForm());
         }
@@ -65,9 +70,9 @@ public class SalvorController : BaseController
             var salvor = await _service.GetSalvorAsync(id);
             return View(new SalvorForm(salvor));
         }
-        catch (SalvorNotFoundException e)
+        catch ( SalvorNotFoundException e )
         {
-            HandleError(_logger,"Salvor not found",e);
+            HandleError(_logger, "Salvor not found", e);
             return RedirectToAction(nameof(Index));
         }
     }
@@ -76,8 +81,7 @@ public class SalvorController : BaseController
     [HttpPost]
     public async Task<IActionResult> Save(SalvorForm form)
     {
-
-        if (!ModelState.IsValid)
+        if ( !ModelState.IsValid )
         {
             AddErrorMessage("Could not save Salvor");
             return View(nameof(Edit), form);
@@ -85,25 +89,28 @@ public class SalvorController : BaseController
 
         var salvor = new Salvor();
 
-        if(form.Id != default(Guid)){
-            try{
+        if ( form.Id != default )
+        {
+            try
+            {
                 salvor = await _service.GetSalvorAsync(form.Id);
             }
-            catch(SalvorNotFoundException e)
+            catch ( SalvorNotFoundException e )
             {
-                HandleError(_logger,"Salvor not found",e);
+                HandleError(_logger, "Salvor not found", e);
                 return View(nameof(Edit), form);
             }
         }
 
         salvor = form.ApplyChanges(salvor);
 
-        try{
+        try
+        {
             await _service.SaveSalvorAsync(salvor);
         }
-        catch(SalvorNotFoundException e)
+        catch ( SalvorNotFoundException e )
         {
-            HandleError(_logger,"Unable to save Salvor",e);
+            HandleError(_logger, "Unable to save Salvor", e);
             return View(nameof(Edit), form);
         }
 
