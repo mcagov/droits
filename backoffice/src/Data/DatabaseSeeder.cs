@@ -83,14 +83,9 @@ public static class DatabaseSeeder
 
             WreckId = wreck.Id,
             IsHazardousFind = _faker.Random.Bool(),
-
-            SalvorId = salvor.Id,
-
-            WreckVesselName = wreck.Name,
-            WreckConstructionDetails = _faker.Lorem.Sentence(),
-            WreckVesselYearConstructed = _faker.Random.Int(1500, reportedDate.Year),
-            WreckVesselYearSunk = _faker.Random.Int(1500, reportedDate.Year),
             IsDredge = _faker.Random.Bool(),
+            
+            SalvorId = salvor.Id,
 
             Latitude = wreck.Latitude,
             Longitude = wreck.Longitude,

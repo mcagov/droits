@@ -22,23 +22,14 @@ public class Droit
 
     [ForeignKey("WreckId")] public Wreck? Wreck { get; set; }
     public Guid? WreckId { get; set; }
-
     public bool IsHazardousFind { get; set; } = false;
-
+    public bool IsDredge { get; set; } = false;
+    
     // Salvor
 
     [ForeignKey("SalvorId")] public Salvor? Salvor { get; set; }
     public Guid? SalvorId { get; set; }
-
-    // Wreck Vessel
-
-    public string? WreckVesselName { get; set; } = string.Empty;
-    public string? WreckConstructionDetails { get; set; } = string.Empty;
-    public int? WreckVesselYearConstructed { get; set; }
-    public int? WreckVesselYearSunk { get; set; }
-
-    public bool IsDredge { get; set; } = false;
-
+    
     // Location
     public string? Latitude { get; set; }
     public string? Longitude { get; set; }

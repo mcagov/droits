@@ -105,25 +105,15 @@ public class DroitForm : FormModel
 
     [DisplayName("Is Hazardous Find")]
     public bool IsHazardousFind { get; set; }
-
+    
+    [DisplayName("Is Dredge")]
+    public bool IsDredge { get; set; }
+    
     // Salvor
     
     public Guid? SalvorId { get; set; }
+
     
-
-    // Wreck Vessel
-
-    [DisplayName("Wreck Vessel Name")]
-    public string? WreckVesselName { get; set; } = string.Empty;
-
-    [DisplayName("Wreck Vessel Year Constructed")]
-    public int? WreckVesselYearConstructed { get; set; }
-
-    [DisplayName("Wreck Vessel Year Sunk")]
-    public int? WreckVesselYearSunk { get; set; }
-
-    [DisplayName("Is Dredge")]
-    public bool IsDredge { get; set; }
 
 
     // Location
