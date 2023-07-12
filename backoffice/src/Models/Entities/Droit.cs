@@ -12,6 +12,7 @@ public class Droit
     public string Reference { get; set; } = string.Empty;
     public DroitStatus Status { get; set; } = DroitStatus.Received;
     public DateTime ReportedDate { get; set; } = DateTime.UtcNow;
+    public DateTime DateFound { get; set; } = DateTime.UtcNow;
     public DateTime Created { get; set; } = DateTime.UtcNow;
     public DateTime LastModified { get; set; } = DateTime.UtcNow;
 
@@ -24,14 +25,7 @@ public class Droit
     public Guid? WreckId { get; set; }
 
     public bool IsHazardousFind { get; set; } = false;
-
-    // Wreck Vessel
-
-    public string? WreckVesselName { get; set; } = string.Empty;
-    public string? WreckConstructionDetails { get; set; } = string.Empty;
-    public int? WreckVesselYearConstructed { get; set; }
-    public int? WreckVesselYearSunk { get; set; }
-
+    public bool IsDredge { get; set; } = false;
 
     // Location
     public string? Latitude { get; set; }
@@ -46,7 +40,7 @@ public class Droit
 
     public bool SalvageAwardClaimed { get; set; } = false;
     public string? ServicesDescription { get; set; }
-    public int? ServicesDuration { get; set; } //Units? Unknown.
+    public string? ServicesDuration { get; set; } //Units? Unknown.
     public float? ServicesEstimatedCost { get; set; }
     public bool MMOLicenceRequired { get; set; } = false;
     public bool MMOLicenceProvided { get; set; } = false;

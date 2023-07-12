@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.JavaScript;
 using Droits.Models.Entities;
 using Bogus;
 using Droits.Models.Enums;
@@ -78,16 +77,13 @@ public static class DatabaseSeeder
                 .OfType<DroitStatus>()
                 .MinBy(x => Guid.NewGuid()),
             ReportedDate = reportedDate,
+            DateFound = _faker.Date.Past(2, reportedDate),
             Created = DateTime.UtcNow,
             LastModified = DateTime.UtcNow,
 
             WreckId = wreck.Id,
             IsHazardousFind = _faker.Random.Bool(),
-
-            WreckVesselName = wreck.Name,
-            WreckConstructionDetails = _faker.Lorem.Sentence(),
-            WreckVesselYearConstructed = _faker.Random.Int(1500, reportedDate.Year),
-            WreckVesselYearSunk = _faker.Random.Int(1500, reportedDate.Year),
+            IsDredge = _faker.Random.Bool(),
 
             Latitude = wreck.Latitude,
             Longitude = wreck.Longitude,
@@ -98,7 +94,7 @@ public static class DatabaseSeeder
 
             SalvageAwardClaimed = _faker.Random.Bool(),
             ServicesDescription = _faker.Lorem.Sentence(),
-            ServicesDuration = _faker.Random.Int(1, 24),
+            ServicesDuration = _faker.Lorem.Sentence(),
             ServicesEstimatedCost = _faker.Random.Int(1, 5000),
             MMOLicenceRequired= _faker.Random.Bool(),
             MMOLicenceProvided = _faker.Random.Bool(),
@@ -118,20 +114,20 @@ public static class DatabaseSeeder
         .Select(i => new Wreck
         {
             Id = Guid.NewGuid(),
-            Status = Enum.GetValues(typeof(WreckStatus))
-                .OfType<WreckStatus>()
-                .MinBy(x => Guid.NewGuid()),
             Name = _faker.Name.FullName(),
+            VesselConstructionDetails = _faker.Lorem.Sentence(),
+            VesselYearConstructed = _faker.Random.Int(1500, DateTime.UtcNow.Year),
             DateOfLoss = _faker.Date.Past(500, DateTime.UtcNow),
-            
+            InUkWaters = _faker.Random.Bool(),
             IsWarWreck = _faker.Random.Bool(),
             IsAnAircraft = _faker.Random.Bool(),
             Latitude = _faker.Address.Latitude().ToString(),
             Longitude = _faker.Address.Longitude().ToString(),
-            
+
             IsProtectedSite = _faker.Random.Bool(),
             ProtectionLegislation = _faker.Lorem.Sentence(),
-            
+            AdditionalInformation = _faker.Lorem.Sentence(),
+
             Created = DateTime.UtcNow,
             LastModified = DateTime.UtcNow
         })

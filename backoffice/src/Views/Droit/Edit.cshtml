@@ -63,36 +63,25 @@
             </div>
 
             <div class="form-group">
+                @Html.LabelFor(m => m.DateFound, new { @class = "col-form-label" })
+                @Html.EditorFor(m => m.DateFound, new { htmlAttributes = new { @type="date", @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.DateFound,"", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
                 @Html.LabelFor(m => m.IsHazardousFind, new { @class = "col-form-label" })
                 @Html.DropDownListFor(m => m.IsHazardousFind, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.IsHazardousFind,"", new { @class = "text-danger" })
             </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.IsDredge, new { @class = "col-form-label" })
+                @Html.DropDownListFor(m => m.IsDredge, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.IsDredge,"", new { @class = "text-danger" })
+            </div>
         </div>
 
         <div class="tab-pane fade" id="wreck" role="tabpanel" aria-labelledby="wreck-tab">
-
-            <div class="form-group">
-                @Html.LabelFor(m => m.WreckVesselName, new { @class = "col-form-label" })
-                @Html.EditorFor(m => m.WreckVesselName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(m => m.WreckVesselName,"", new { @class = "text-danger" })
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(m => m.WreckConstructionDetails, "Wreck Construction Details", new { @class = "col-form-label" })
-                @Html.EditorFor(m => m.WreckConstructionDetails, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(m => m.WreckConstructionDetails,"", new { @class = "text-danger" })
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.WreckVesselYearConstructed, new { @class = "col-form-label" })
-                @Html.EditorFor(m => m.WreckVesselYearConstructed, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(m => m.WreckVesselYearConstructed,"", new { @class = "text-danger" })
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.WreckVesselYearSunk, new { @class = "col-form-label" })
-                @Html.EditorFor(m => m.WreckVesselYearSunk, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(m => m.WreckVesselYearSunk,"", new { @class = "text-danger" })
-            </div>
-
             <div class="form-group">
                 @Html.LabelFor(m => m.WreckId, "Select Wreck", new { @class = "col-form-label" })
                 @Html.DropDownListFor(m => m.WreckId, Model.AllWrecks, "New Wreck..", new { @id="js-select-wreck", @class = "form-control" })

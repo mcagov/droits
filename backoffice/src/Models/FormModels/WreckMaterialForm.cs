@@ -21,7 +21,6 @@ namespace Droits.Models.FormModels
             Purchaser = wreckMaterial.Purchaser;
             Outcome = wreckMaterial.Outcome;
             WhereSecured = wreckMaterial.WhereSecured;
-            ImportedFromLegacy = wreckMaterial.ImportedFromLegacy;
         }
 
         public Guid Id { get; set; }
@@ -31,7 +30,7 @@ namespace Droits.Models.FormModels
 
         public string Name { get; set; } = string.Empty;
 
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
 
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be a positive number.")]
         public int Quantity { get; set; } = 1;
@@ -50,17 +49,18 @@ namespace Droits.Models.FormModels
         // public List<string> Images { get; set; } = new List<string>();
 
         [Display(Name = "Wreck Material Owner")]
+        [DataType(DataType.MultilineText)]
         public string? WreckMaterialOwner { get; set; } = string.Empty;
 
         public string? Purchaser { get; set; } = string.Empty;
 
+        [DataType(DataType.MultilineText)]
         public string? Outcome { get; set; } = string.Empty;
 
         [Display(Name = "Where Secured")]
+        [DataType(DataType.MultilineText)]
         public string? WhereSecured { get; set; } = string.Empty;
 
-        [Display(Name = "Imported From Legacy")]
-        public bool ImportedFromLegacy { get; set; } = false;
 
 
         public WreckMaterial ApplyChanges(WreckMaterial wreckMaterial)
@@ -78,7 +78,6 @@ namespace Droits.Models.FormModels
             wreckMaterial.Purchaser = Purchaser;
             wreckMaterial.Outcome = Outcome;
             wreckMaterial.WhereSecured = WhereSecured;
-            wreckMaterial.ImportedFromLegacy = ImportedFromLegacy;
 
             return wreckMaterial;
         }

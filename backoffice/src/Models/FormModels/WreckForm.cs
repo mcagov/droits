@@ -14,33 +14,47 @@ public class WreckForm : FormModel
     public WreckForm(Wreck wreck)
     {
         Id = wreck.Id;
-        Status = wreck.Status;
         Name = wreck.Name;
+
+        VesselConstructionDetails = wreck.VesselConstructionDetails;
+        VesselYearConstructed = wreck.VesselYearConstructed;
 
         DateOfLoss = wreck.DateOfLoss;
 
+        InUkWaters = wreck.InUkWaters;
         IsWarWreck = wreck.IsWarWreck;
         IsAnAircraft = wreck.IsAnAircraft;
+
         Latitude = wreck.Latitude;
         Longitude = wreck.Longitude;
         IsProtectedSite = wreck.IsProtectedSite;
         ProtectionLegislation = wreck.ProtectionLegislation;
-
+        AdditionalInformation = wreck.AdditionalInformation;
     }
 
 
     // Base fields...
 
     public Guid Id { get; set; }
-    public WreckStatus Status { get; set; }
+
     [Required]
     public string Name { get; set; } = string.Empty;
+
+    [DisplayName("Vessel Construction Details")]
+    public string? VesselConstructionDetails { get; set; } = string.Empty;
+
+    [DisplayName("Vessel Year Constructed")]
+    public int? VesselYearConstructed { get; set; }
+
 
 
     [DisplayName("Date Of Loss")]
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime? DateOfLoss { get; set; }
+
+    [DisplayName("In UK Waters")]
+    public bool InUkWaters { get; set; } = false;
 
     [DisplayName("Is A War Wreck")]
     public bool IsWarWreck { get; set; } = false;
@@ -56,20 +70,30 @@ public class WreckForm : FormModel
     [DisplayName("Protection Legislation")]
     public string? ProtectionLegislation { get; set; }
 
+    [DisplayName("Additional Information")]
+    [DataType(DataType.MultilineText)]
+    public string? AdditionalInformation { get; set; } = string.Empty;
+
     public Wreck ApplyChanges(Wreck wreck)
     {
 
         wreck.Id = Id;
-        wreck.Status = Status;
         wreck.Name = Name;
 
+        wreck.VesselConstructionDetails = VesselConstructionDetails;
+        wreck.VesselYearConstructed = VesselYearConstructed;
+
         wreck.DateOfLoss = DateOfLoss;
+
+        wreck.InUkWaters = InUkWaters;
         wreck.IsWarWreck = IsWarWreck;
         wreck.IsAnAircraft = IsAnAircraft;
         wreck.Latitude = Latitude;
         wreck.Longitude = Longitude;
         wreck.IsProtectedSite = IsProtectedSite;
         wreck.ProtectionLegislation = ProtectionLegislation;
+
+        wreck.AdditionalInformation = AdditionalInformation;
 
         return wreck;
     }
