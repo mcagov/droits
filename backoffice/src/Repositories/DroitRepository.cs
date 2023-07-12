@@ -31,12 +31,12 @@ public class DroitRepository : IDroitRepository
 
     public async Task<List<Droit>> GetDroitsAsync()
     {
-        return await _context.Droits.ToListAsync();
+        return await _context.Droits.Include(d => d.Wreck).Include(d => d.Salvor).ToListAsync();
     }
 
     public async Task<Droit> GetDroitAsync(Guid id)
     {
-        var droit = await _context.Droits.Include(d => d.Wreck).Include(d => d.WreckMaterials).FirstOrDefaultAsync(d => d.Id == id);
+        var droit = await _context.Droits.Include(d => d.Wreck).Include(d => d.Salvor).Include(d => d.WreckMaterials).FirstOrDefaultAsync(d => d.Id == id);
         if (droit == null)
         {
             throw new DroitNotFoundException();

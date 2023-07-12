@@ -28,21 +28,24 @@
 </div>
 
 <ul class="nav nav-tabs" id="droitTabs" role="tablist">
-  <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="droit-tab" data-bs-toggle="tab" data-bs-target="#droit-content" type="button" role="tab" aria-controls="droit-content" aria-selected="true">Droit</button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="wreck-tab" data-bs-toggle="tab" data-bs-target="#wreck-content" type="button" role="tab" aria-controls="wreck-content" aria-selected="false">Wreck</button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="wreck-materials-tab" data-bs-toggle="tab" data-bs-target="#wreck-materials-content" type="button" role="tab" aria-controls="wreck-materials-content" aria-selected="false">Wreck Materials</button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="salvage-tab" data-bs-toggle="tab" data-bs-target="#salvage-content" type="button" role="tab" aria-controls="salvage-content" aria-selected="false">Salvage</button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="legacy-tab" data-bs-toggle="tab" data-bs-target="#legacy-content" type="button" role="tab" aria-controls="legacy-content" aria-selected="false">Legacy</button>
-  </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="droit-tab" data-bs-toggle="tab" data-bs-target="#droit-content" type="button" role="tab" aria-controls="droit-content" aria-selected="true">Droit</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="salvor-tab" data-bs-toggle="tab" data-bs-target="#salvor-content" type="button" role="tab" aria-controls="salvor-content" aria-selected="false">Salvor</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="wreck-tab" data-bs-toggle="tab" data-bs-target="#wreck-content" type="button" role="tab" aria-controls="wreck-content" aria-selected="false">Wreck</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="wreck-materials-tab" data-bs-toggle="tab" data-bs-target="#wreck-materials-content" type="button" role="tab" aria-controls="wreck-materials-content" aria-selected="false">Wreck Materials</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="salvage-tab" data-bs-toggle="tab" data-bs-target="#salvage-content" type="button" role="tab" aria-controls="salvage-content" aria-selected="false">Salvage</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="legacy-tab" data-bs-toggle="tab" data-bs-target="#legacy-content" type="button" role="tab" aria-controls="legacy-content" aria-selected="false">Legacy</button>
+    </li>
 </ul>
 
 <div class="tab-content mt-3" id="droitView">
@@ -55,7 +58,7 @@
                 @Html.DisplayFor(m => m.Id)
             </div>
         </div>
-
+    
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.Reference, new { @class = "font-weight-bold" })
@@ -64,7 +67,7 @@
                 @Html.DisplayFor(m => m.Reference)
             </div>
         </div>
-
+    
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.Status, new { @class = "font-weight-bold" })
@@ -73,7 +76,7 @@
                 @Html.DisplayFor(m => m.Status)
             </div>
         </div>
-
+    
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.ReportedDate, new { @class = "font-weight-bold" })
@@ -82,7 +85,7 @@
                 @Html.DisplayFor(m => m.ReportedDate)
             </div>
         </div>
-
+    
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.DateFound, new { @class = "font-weight-bold" })
@@ -91,8 +94,7 @@
                 @Html.DisplayFor(m => m.DateFound)
             </div>
         </div>
-
-
+            
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.Created, new { @class = "font-weight-bold" })
@@ -101,7 +103,7 @@
                 @Html.DisplayFor(m => m.Created)
             </div>
         </div>
-
+    
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.LastModified, new { @class = "font-weight-bold" })
@@ -110,7 +112,7 @@
                 @Html.DisplayFor(m => m.LastModified)
             </div>
         </div>
-
+    
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.IsHazardousFind, new { @class = "font-weight-bold" })
@@ -119,6 +121,7 @@
                 @Html.DisplayFor(m => m.IsHazardousFind)
             </div>
         </div>
+        
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.IsDredge, new { @class = "font-weight-bold" })
@@ -128,34 +131,40 @@
             </div>
         </div>
     </div>
-
+        
     <div class="tab-pane fade" id="wreck-content" role="tabpanel" aria-labelledby="wreck-tab">
-
-        @if(Model.Wreck != null){
+        
+        @if (Model.Wreck != null)
+        {
             <partial name="Wreck/_WreckViewFields" for="Wreck"/>
-
-            @if ( Model.Wreck.Latitude.HasValue() && Model.Wreck.Longitude.HasValue())
+        
+            @if (Model.Wreck.Latitude.HasValue() && Model.Wreck.Longitude.HasValue())
             {
                 <div class="row mt-3">
                     <iframe src="https://maps.google.com/maps?q=@Model.Wreck?.Latitude,@Model.Wreck?.Longitude&amp;output=embed"></iframe>
                 </div>
             }
-
         }
     </div>
 
 
-      <div class="tab-pane fade" id="wreck-materials-content" role="tabpanel" aria-labelledby="wreck-materials-tab">
+    <div class="tab-pane fade" id="salvor-content" role="tabpanel" aria-labelledby="salvor-tab">
+        @if (Model.Salvor != null)
+        {
+            <partial name="Salvor/_SalvorViewFields" for="Salvor"/>
+        }
+    </div>
 
+    <div class="tab-pane fade" id="wreck-materials-content" role="tabpanel" aria-labelledby="wreck-materials-tab">
         <div class="row">
             @for (int i = 0; i < Model.WreckMaterials.Count; i++)
             {
-                    <partial name="WreckMaterial/_WreckMaterialViewFields"
-                            for="WreckMaterials[i]" />
+                <partial name="WreckMaterial/_WreckMaterialViewFields"
+                         for="WreckMaterials[i]"/>
             }
         </div>
     </div>
-
+    
     <div class="tab-pane fade" id="salvage-content" role="tabpanel" aria-labelledby="salvage-tab">
         <div class="form-group row m-1">
             <div class="col-md-3">
@@ -165,7 +174,7 @@
                 @Html.DisplayFor(m => m.SalvageAwardClaimed)
             </div>
         </div>
-
+    
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.ServicesDescription, new { @class = "font-weight-bold" })
@@ -174,7 +183,7 @@
                 @Html.DisplayFor(m => m.ServicesDescription)
             </div>
         </div>
-
+    
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.ServicesDuration, new { @class = "font-weight-bold" })
@@ -183,7 +192,7 @@
                 @Html.DisplayFor(m => m.ServicesDuration)
             </div>
         </div>
-
+    
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.ServicesEstimatedCost, new { @class = "font-weight-bold" })
@@ -192,7 +201,7 @@
                 @Html.DisplayFor(m => m.ServicesEstimatedCost)
             </div>
         </div>
-
+    
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.MMOLicenceRequired, new { @class = "font-weight-bold" })
@@ -201,7 +210,7 @@
                 @Html.DisplayFor(m => m.MMOLicenceRequired)
             </div>
         </div>
-
+    
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.MMOLicenceProvided, new { @class = "font-weight-bold" })
@@ -210,7 +219,7 @@
                 @Html.DisplayFor(m => m.MMOLicenceProvided)
             </div>
         </div>
-
+    
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.SalvageClaimAwarded, new { @class = "font-weight-bold" })
@@ -220,7 +229,7 @@
             </div>
         </div>
     </div>
-
+    
     <div class="tab-pane fade" id="legacy-content" role="tabpanel" aria-labelledby="legacy-tab">
         <div class="form-group row m-1">
             <div class="col-md-3">
@@ -230,7 +239,7 @@
                 @Html.DisplayFor(m => m.District)
             </div>
         </div>
-
+        
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.LegacyFileReference, new { @class = "font-weight-bold" })
@@ -239,7 +248,7 @@
                 @Html.DisplayFor(m => m.LegacyFileReference)
             </div>
         </div>
-
+        
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.GoodsDischargedBy, new { @class = "font-weight-bold" })
@@ -248,7 +257,7 @@
                 @Html.DisplayFor(m => m.GoodsDischargedBy)
             </div>
         </div>
-
+        
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.DateDelivered, new { @class = "font-weight-bold" })
@@ -257,7 +266,7 @@
                 @Html.DisplayFor(m => m.DateDelivered)
             </div>
         </div>
-
+        
         <div class="form-group row m-1">
             <div class="col-md-3">
                 @Html.LabelFor(m => m.Agent, new { @class = "font-weight-bold" })
@@ -267,6 +276,7 @@
             </div>
         </div>
     </div>
+
     <div class="col d-flex flex-row mt-4 justify-content-end">
         <div class="align-self-end">
             <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>

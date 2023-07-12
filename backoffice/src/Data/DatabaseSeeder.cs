@@ -30,7 +30,7 @@ public static class DatabaseSeeder
 
         if (!dbContext.Droits.Any())
         {
-            dbContext.Droits.AddRange(GetDroits(dbContext.Wrecks.ToList()));
+            dbContext.Droits.AddRange(GetDroits(dbContext.Wrecks.ToList(),dbContext.Salvors.ToList()));
             dbContext.SaveChanges();
         }
 
@@ -58,13 +58,13 @@ public static class DatabaseSeeder
         .ToList();
 
 
-    private static List<Droit> GetDroits(List<Wreck> wrecks) =>
+    private static List<Droit> GetDroits(List<Wreck> wrecks, List<Salvor> salvors) =>
         Enumerable.Range(0, 5)
-            .Select(i => SeedDroit(_faker.Random.ArrayElement(wrecks.ToArray())))
+            .Select(i => SeedDroit(_faker.Random.ArrayElement(wrecks.ToArray()),_faker.Random.ArrayElement(salvors.ToArray())))
             .ToList();
 
 
-    private static Droit SeedDroit(Wreck wreck)
+    private static Droit SeedDroit(Wreck wreck, Salvor salvor)
     {
         var reportedDate = _faker.Date.Past(3, DateTime.UtcNow);
 
@@ -84,6 +84,8 @@ public static class DatabaseSeeder
             WreckId = wreck.Id,
             IsHazardousFind = _faker.Random.Bool(),
             IsDredge = _faker.Random.Bool(),
+            
+            SalvorId = salvor.Id,
 
             Latitude = wreck.Latitude,
             Longitude = wreck.Longitude,

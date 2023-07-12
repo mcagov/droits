@@ -73,6 +73,10 @@ public partial class DroitsContext : DbContext
                 .WithMany(w => w.Droits)
                 .HasForeignKey(d => d.WreckId)
                 .IsRequired(false);
+            entity.HasOne(d => d.Salvor)
+                .WithMany(s => s.Droits)
+                .HasForeignKey(d => d.SalvorId)
+                .IsRequired(false);
         });
 
 
@@ -155,6 +159,9 @@ public partial class DroitsContext : DbContext
             entity.Property(s => s.Created);
             entity.Property(s => s.LastModified);
             entity.OwnsOne(s => s.Address);
+            entity.HasMany(s => s.Droits)
+                .WithOne(d => d.Salvor)
+                .HasForeignKey(d => d.SalvorId);
 
         });
 

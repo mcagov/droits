@@ -1,4 +1,5 @@
 using Droits.Models.Entities;
+using Droits.Models.FormModels;
 using Droits.Repositories;
 
 namespace Droits.Services;
@@ -8,6 +9,7 @@ public interface ISalvorService
     Task<List<Salvor>> GetSalvorsAsync();
     Task<Salvor> SaveSalvorAsync(Salvor salvor);
     Task<Salvor> GetSalvorAsync(Guid id);
+    Task<Guid> SaveSalvorFormAsync(SalvorForm form);
 }
 
 public class SalvorService : ISalvorService
@@ -40,5 +42,12 @@ public class SalvorService : ISalvorService
 
     public async Task<Salvor> GetSalvorAsync(Guid id) =>
         await _repo.GetSalvorAsync(id);
+    
+    public async Task<Guid> SaveSalvorFormAsync(SalvorForm form)
+    {
+        var salvor = form.ApplyChanges(new Salvor());
+
+        return (await SaveSalvorAsync(salvor)).Id;
+    }
 
 }

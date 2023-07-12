@@ -11,20 +11,33 @@ $(function() {
         $('#confirmDialog').modal('show');
     };
 
-
-    $("#js-select-wreck").on("change", function() {
-        toggleWreckFields();
-    });
-    toggleWreckFields();
-
-    $('#js-select-wreck').select2({
+    $('#js-select-wreck, #js-select-salvor').select2({
         width: '100%'
     });
 
-    var wmFormContainer = $('#js-wreck-materials-form-container');
-    var wmFormAddButton = $('#js-add-wreck-material-form');
+    $("#js-select-wreck").on("change", function() {
+        toggleFields("#js-select-wreck", "#js-wreck-form-fields");
+    });
 
-    wmFormAddButton.on('click', function () {
+    $("#js-select-salvor").on("change", function() {
+        toggleFields("#js-select-salvor", "#js-salvor-form-fields");
+    });
+
+    toggleFields("#js-select-wreck", "#js-wreck-form-fields");
+    toggleFields("#js-select-salvor", "#js-salvor-form-fields");
+
+    $('body').on('click','.js-remove-wreck-material-form', function () {
+        var confirmMessage = 'Are you sure you want to remove this Wreck Material?';
+        var removeAction = function () {
+          $(this).closest('.js-wreck-material-form').remove();
+          refreshWmFormIndexes();
+          $('#confirmDialog').modal('hide');
+        };
+        confirm(confirmMessage, removeAction.bind(this));
+      });
+    
+    $('#js-add-wreck-material-form').on('click', function () {
+        var wmFormContainer = $('#js-wreck-materials-form-container');
         $.get('/Droit/WreckMaterialFormPartial')
             .done(function (response) {
                 var index = wmFormContainer.find('.js-wreck-material-form').length;
@@ -42,25 +55,15 @@ $(function() {
                 refreshWmFormIndexes();
             });
     });
-
-    $('body').on('click','.js-remove-wreck-material-form', function () {
-        var confirmMessage = 'Are you sure you want to remove this Wreck Material?';
-        var removeAction = function () {
-          $(this).closest('.js-wreck-material-form').remove();
-          refreshWmFormIndexes();
-          $('#confirmDialog').modal('hide');
-        };
-        confirm(confirmMessage, removeAction.bind(this));
-      });
-
-    function toggleWreckFields() {
-        var wreckIdSelect = $("#js-select-wreck");
-        var wreckFormFields = $("#js-wreck-form-fields");
-
-        if (wreckIdSelect.val() === "") {
-            wreckFormFields.removeClass("d-none");
+    
+    function toggleFields(selectId, formFieldsId) {
+        var selectElement = $(selectId);
+        var formFields = $(formFieldsId);
+    
+        if (selectElement.val() === "") {
+            formFields.removeClass("d-none");
         } else {
-            wreckFormFields.addClass("d-none");
+            formFields.addClass("d-none");
         }
     }
 
