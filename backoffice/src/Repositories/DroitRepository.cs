@@ -31,7 +31,7 @@ public class DroitRepository : IDroitRepository
 
     public async Task<List<Droit>> GetDroitsAsync()
     {
-        return await _context.Droits.ToListAsync();
+        return await _context.Droits.Include(d => d.Wreck).Include(d => d.Salvor).ToListAsync();
     }
 
     public async Task<Droit> GetDroitAsync(Guid id)
