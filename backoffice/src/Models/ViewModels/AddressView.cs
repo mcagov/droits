@@ -9,6 +9,7 @@ public class AddressView
     {
     }
 
+
     public AddressView(Address address)
     {
         Line1 = address.Line1;
@@ -17,6 +18,7 @@ public class AddressView
         County = address.County;
         Postcode = address.Postcode;
     }
+
 
     [DisplayName("Line 1")]
     public string Line1 { get; } = string.Empty;
@@ -27,6 +29,7 @@ public class AddressView
 
     [DisplayName("City/Town")]
     public string Town { get; } = string.Empty;
+
     public string County { get; } = string.Empty;
     public string Postcode { get; } = string.Empty;
 }

@@ -17,27 +17,32 @@ public class SalvorRepository : ISalvorRepository
 {
     private readonly DroitsContext _context;
 
+
     public SalvorRepository(DroitsContext dbContext)
     {
         _context = dbContext;
     }
+
 
     public async Task<List<Salvor>> GetSalvorsAsync()
     {
         return await _context.Salvors.ToListAsync();
     }
 
+
     public async Task<Salvor> GetSalvorAsync(Guid id)
     {
         var salvor = await _context.Salvors.FindAsync(id);
-        if(salvor == null){
+        if ( salvor == null )
+        {
             throw new SalvorNotFoundException();
         }
+
         return salvor;
     }
 
 
-   public async Task<Salvor> AddSalvorAsync(Salvor salvor)
+    public async Task<Salvor> AddSalvorAsync(Salvor salvor)
     {
         salvor.Created = DateTime.UtcNow;
         salvor.LastModified = DateTime.UtcNow;
@@ -47,6 +52,7 @@ public class SalvorRepository : ISalvorRepository
 
         return savedSalvor;
     }
+
 
     public async Task<Salvor> UpdateSalvorAsync(Salvor salvor)
     {

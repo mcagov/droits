@@ -24,7 +24,7 @@
 </div>
 
 <div>
-    <partial name="_StatusBar" model=@Model.Status/>
+    <partial name="_StatusBar" model="@Model.Status"/>
 </div>
 
 <ul class="nav nav-tabs" id="droitTabs" role="tablist">
@@ -49,238 +49,238 @@
 </ul>
 
 <div class="tab-content mt-3" id="droitView">
-    <div class="tab-pane fade show active" id="droit-content" role="tabpanel" aria-labelledby="droit-tab">
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.Id, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.Id)
-            </div>
+<div class="tab-pane fade show active" id="droit-content" role="tabpanel" aria-labelledby="droit-tab">
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.Id, new { @class = "font-weight-bold" })
         </div>
-    
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.Reference, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.Reference)
-            </div>
-        </div>
-    
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.Status, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.Status)
-            </div>
-        </div>
-    
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.ReportedDate, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.ReportedDate)
-            </div>
-        </div>
-    
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.DateFound, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.DateFound)
-            </div>
-        </div>
-            
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.Created, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.Created)
-            </div>
-        </div>
-    
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.LastModified, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.LastModified)
-            </div>
-        </div>
-    
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.IsHazardousFind, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.IsHazardousFind)
-            </div>
-        </div>
-        
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.IsDredge, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.IsDredge)
-            </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.Id)
         </div>
     </div>
-        
-    <div class="tab-pane fade" id="wreck-content" role="tabpanel" aria-labelledby="wreck-tab">
-        
-        @if (Model.Wreck != null)
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.Reference, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.Reference)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.Status, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.Status)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.ReportedDate, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.ReportedDate)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.DateFound, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.DateFound)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.Created, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.Created)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.LastModified, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.LastModified)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.IsHazardousFind, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.IsHazardousFind)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.IsDredge, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.IsDredge)
+        </div>
+    </div>
+</div>
+
+<div class="tab-pane fade" id="wreck-content" role="tabpanel" aria-labelledby="wreck-tab">
+
+    @if (Model.Wreck != null)
+    {
+        <partial name="Wreck/_WreckViewFields" for="Wreck"/>
+
+        @if (Model.Wreck.Latitude.HasValue() && Model.Wreck.Longitude.HasValue())
         {
-            <partial name="Wreck/_WreckViewFields" for="Wreck"/>
-        
-            @if (Model.Wreck.Latitude.HasValue() && Model.Wreck.Longitude.HasValue())
-            {
-                <div class="row mt-3">
-                    <iframe src="https://maps.google.com/maps?q=@Model.Wreck?.Latitude,@Model.Wreck?.Longitude&amp;output=embed"></iframe>
-                </div>
-            }
+            <div class="row mt-3">
+                <iframe src="https://maps.google.com/maps?q=@Model.Wreck?.Latitude,@Model.Wreck?.Longitude&amp;output=embed"></iframe>
+            </div>
+        }
+    }
+</div>
+
+
+<div class="tab-pane fade" id="salvor-content" role="tabpanel" aria-labelledby="salvor-tab">
+    @if (Model.Salvor != null)
+    {
+        <partial name="Salvor/_SalvorViewFields" for="Salvor"/>
+    }
+</div>
+
+<div class="tab-pane fade" id="wreck-materials-content" role="tabpanel" aria-labelledby="wreck-materials-tab">
+    <div class="row">
+        @for (var i = 0; i < Model.WreckMaterials.Count; i++)
+        {
+            <partial name="WreckMaterial/_WreckMaterialViewFields"
+                     for="WreckMaterials[i]"/>
         }
     </div>
+</div>
 
-
-    <div class="tab-pane fade" id="salvor-content" role="tabpanel" aria-labelledby="salvor-tab">
-        @if (Model.Salvor != null)
-        {
-            <partial name="Salvor/_SalvorViewFields" for="Salvor"/>
-        }
-    </div>
-
-    <div class="tab-pane fade" id="wreck-materials-content" role="tabpanel" aria-labelledby="wreck-materials-tab">
-        <div class="row">
-            @for (int i = 0; i < Model.WreckMaterials.Count; i++)
-            {
-                <partial name="WreckMaterial/_WreckMaterialViewFields"
-                         for="WreckMaterials[i]"/>
-            }
+<div class="tab-pane fade" id="salvage-content" role="tabpanel" aria-labelledby="salvage-tab">
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.SalvageAwardClaimed, new { @class = "font-weight-bold" })
         </div>
-    </div>
-    
-    <div class="tab-pane fade" id="salvage-content" role="tabpanel" aria-labelledby="salvage-tab">
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.SalvageAwardClaimed, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.SalvageAwardClaimed)
-            </div>
-        </div>
-    
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.ServicesDescription, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.ServicesDescription)
-            </div>
-        </div>
-    
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.ServicesDuration, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.ServicesDuration)
-            </div>
-        </div>
-    
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.ServicesEstimatedCost, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.ServicesEstimatedCost)
-            </div>
-        </div>
-    
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.MMOLicenceRequired, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.MMOLicenceRequired)
-            </div>
-        </div>
-    
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.MMOLicenceProvided, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.MMOLicenceProvided)
-            </div>
-        </div>
-    
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.SalvageClaimAwarded, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.SalvageClaimAwarded)
-            </div>
-        </div>
-    </div>
-    
-    <div class="tab-pane fade" id="legacy-content" role="tabpanel" aria-labelledby="legacy-tab">
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.District, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.District)
-            </div>
-        </div>
-        
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.LegacyFileReference, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.LegacyFileReference)
-            </div>
-        </div>
-        
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.GoodsDischargedBy, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.GoodsDischargedBy)
-            </div>
-        </div>
-        
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.DateDelivered, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.DateDelivered)
-            </div>
-        </div>
-        
-        <div class="form-group row m-1">
-            <div class="col-md-3">
-                @Html.LabelFor(m => m.Agent, new { @class = "font-weight-bold" })
-            </div>
-            <div class="col-md-7">
-                @Html.DisplayFor(m => m.Agent)
-            </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.SalvageAwardClaimed)
         </div>
     </div>
 
-    <div class="col d-flex flex-row mt-4 justify-content-end">
-        <div class="align-self-end">
-            <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-            <a type="button" class="btn btn-primary" asp-action="Index">View Droits</a>
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.ServicesDescription, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.ServicesDescription)
         </div>
     </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.ServicesDuration, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.ServicesDuration)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.ServicesEstimatedCost, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.ServicesEstimatedCost)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.MMOLicenceRequired, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.MMOLicenceRequired)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.MMOLicenceProvided, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.MMOLicenceProvided)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.SalvageClaimAwarded, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.SalvageClaimAwarded)
+        </div>
+    </div>
+</div>
+
+<div class="tab-pane fade" id="legacy-content" role="tabpanel" aria-labelledby="legacy-tab">
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.District, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.District)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.LegacyFileReference, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.LegacyFileReference)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.GoodsDischargedBy, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.GoodsDischargedBy)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.DateDelivered, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.DateDelivered)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.Agent, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.Agent)
+        </div>
+    </div>
+</div>
+
+<div class="col d-flex flex-row mt-4 justify-content-end">
+    <div class="align-self-end">
+        <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <a type="button" class="btn btn-primary" asp-action="Index">View Droits</a>
+    </div>
+</div>
 </div>

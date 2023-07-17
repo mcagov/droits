@@ -4,7 +4,6 @@ using Notify.Models.Responses;
 
 namespace Droits.Clients;
 
-
 public interface IGovNotifyClient
 {
     Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
@@ -26,10 +25,11 @@ public class GovNotifyClient : IGovNotifyClient
         _client = new NotificationClient(getApiKey());
     }
 
+
     public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form)
     {
         var personalisation = form.GetPersonalisation();
-        personalisation.Add("body",form.GetEmailBody());
+        personalisation.Add("body", form.GetEmailBody());
 
         return await _client.SendEmailAsync(
             form.Recipient,
@@ -38,10 +38,12 @@ public class GovNotifyClient : IGovNotifyClient
         );
     }
 
+
     public string getTemplateId()
     {
         return _configuration.GetSection("GovNotify:TemplateId").Value ?? "";
     }
+
 
     public string getApiKey()
     {

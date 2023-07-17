@@ -11,6 +11,7 @@ public class WreckForm : FormModel
     {
     }
 
+
     public WreckForm(Wreck wreck)
     {
         Id = wreck.Id;
@@ -47,7 +48,6 @@ public class WreckForm : FormModel
     public int? VesselYearConstructed { get; set; }
 
 
-
     [DisplayName("Date Of Loss")]
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -61,6 +61,7 @@ public class WreckForm : FormModel
 
     [DisplayName("Is An Aircraft")]
     public bool IsAnAircraft { get; set; } = false;
+
     public string? Latitude { get; set; }
     public string? Longitude { get; set; }
 
@@ -74,9 +75,9 @@ public class WreckForm : FormModel
     [DataType(DataType.MultilineText)]
     public string? AdditionalInformation { get; set; } = string.Empty;
 
+
     public Wreck ApplyChanges(Wreck wreck)
     {
-
         wreck.Id = Id;
         wreck.Name = Name;
 

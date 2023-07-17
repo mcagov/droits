@@ -18,20 +18,24 @@ public class EmailRepository : IEmailRepository
 {
     private readonly DroitsContext _context;
 
+
     public EmailRepository(DroitsContext dbContext)
     {
         _context = dbContext;
     }
 
-    public async Task<List<Email>> GetEmailsAsync() =>
-        await _context.Emails.ToListAsync();
+
+    public async Task<List<Email>> GetEmailsAsync()
+    {
+        return await _context.Emails.ToListAsync();
+    }
 
 
     public async Task<Email> GetEmailAsync(Guid id)
     {
         var email = await _context.Emails.FindAsync(id);
 
-        if (email == null)
+        if ( email == null )
         {
             throw new EmailNotFoundException();
         }
@@ -45,6 +49,7 @@ public class EmailRepository : IEmailRepository
         return _context.Emails.ToList();
     }
 
+
     public async Task<Email> AddEmailAsync(Email email)
     {
         email.Created = DateTime.UtcNow;
@@ -55,6 +60,7 @@ public class EmailRepository : IEmailRepository
 
         return savedEmail;
     }
+
 
     public async Task<Email> UpdateEmailAsync(Email email)
     {
@@ -67,9 +73,12 @@ public class EmailRepository : IEmailRepository
         return email;
     }
 
-    public async Task<List<Email>> GetEmailsForRecipientAsync(string recipient) =>
-            await _context.Emails
-               .Where(e => e.Recipient.Equals(recipient))
-               .OrderByDescending(e => e.LastModified)
-               .ToListAsync();
+
+    public async Task<List<Email>> GetEmailsForRecipientAsync(string recipient)
+    {
+        return await _context.Emails
+            .Where(e => e.Recipient.Equals(recipient))
+            .OrderByDescending(e => e.LastModified)
+            .ToListAsync();
+    }
 }

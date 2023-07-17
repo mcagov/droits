@@ -8,12 +8,14 @@ public class WreckMaterial
 
     [ForeignKey("Droit")]
     public Guid DroitId { get; set; }
+
     public virtual Droit? Droit { get; set; }
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; } = string.Empty;
     public int Quantity { get; set; } = 1;
     public float? Value { get; set; } = 0;
     public float? ReceiverValuation { get; set; } = 0;
+
     public bool ValueConfirmed { get; set; } = false;
     // public List<string> Images { get; set; } = new List<string>();
 

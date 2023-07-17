@@ -11,11 +11,11 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-        .AddControllersWithViews(options =>
-        {
-            options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
-        })
-        .AddRazorRuntimeCompilation();
+    .AddControllersWithViews(options =>
+    {
+        options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
+    })
+    .AddRazorRuntimeCompilation();
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -50,14 +50,14 @@ var app = builder.Build();
 app.MapHealthChecks("/healthz");
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if ( !app.Environment.IsDevelopment() )
 {
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
-using (var scope = app.Services.CreateScope())
+using ( var scope = app.Services.CreateScope() )
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<DroitsContext>();
     DatabaseSeeder.SeedData(dbContext);
@@ -77,4 +77,3 @@ app.MapControllerRoute(
     "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
