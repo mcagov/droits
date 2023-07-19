@@ -68,6 +68,24 @@
 </div>
 
 <div class="form-group">
+    @Html.LabelFor(m => m.OwnerName, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.OwnerName, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.OwnerName, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.OwnerEmail, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.OwnerEmail, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.OwnerEmail, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.OwnerNumber, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.OwnerNumber, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.OwnerNumber, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
     @Html.LabelFor(m => m.AdditionalInformation, new { @class = "col-form-label" })
     @Html.EditorFor(m => m.AdditionalInformation, new { htmlAttributes = new { @class = "form-control" } })
     @Html.ValidationMessageFor(m => m.AdditionalInformation, "", new { @class = "text-danger" })

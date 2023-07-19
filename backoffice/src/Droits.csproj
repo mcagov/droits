@@ -7,24 +7,28 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Bogus" Version="34.0.2"/>
-        <PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.0.1"/>
-        <PackageReference Include="GovukNotify" Version="6.1.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.3"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.3"/>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.2"/>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3"/>
+        <PackageReference Include="Bogus" Version="34.0.2" />
+        <PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.0.1" />
+        <PackageReference Include="GovukNotify" Version="6.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.3" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
     </ItemGroup>
 
     <ItemGroup>
         <Content Include="Views/EmailTemplates/**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Remove="wwwroot/css/**/*"/>
+        <Content Remove="wwwroot/css/**/*" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Shared\Email\_EmailFormFields.cshtml" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="npx webpack --config webpack.config.js"/>
+        <Exec Command="npx webpack --config webpack.config.js" />
     </Target>
 
 </Project>
