@@ -33,14 +33,14 @@ public class LetterRepository : ILetterRepository
 
     public async Task<Letter> GetLetterAsync(Guid id)
     {
-        var email = await _context.Letters.FindAsync(id);
+        var letter = await _context.Letters.FindAsync(id);
 
-        if ( email == null )
+        if ( letter == null )
         {
             throw new LetterNotFoundException();
         }
 
-        return email;
+        return letter;
     }
 
 
