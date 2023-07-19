@@ -148,6 +148,10 @@ public partial class DroitsContext : DbContext
             entity.Property(l => l.Created);
             entity.Property(l => l.LastModified);
             entity.Property(l => l.Type);
+            entity.HasOne(l => l.Droit)
+                .WithMany(d => d.Letters)
+                .HasForeignKey(l => l.DroitId)
+                .IsRequired();
         });
 
         modelBuilder.Entity<Salvor>(entity =>
