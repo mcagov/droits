@@ -142,6 +142,10 @@ public static class DatabaseSeeder
                 IsProtectedSite = _faker.Random.Bool(),
                 ProtectionLegislation = _faker.Lorem.Sentence(),
                 AdditionalInformation = _faker.Lorem.Sentence(),
+                
+                OwnerName = _faker.Name.FullName(),
+                OwnerEmail = _faker.Internet.Email(),
+                OwnerNumber = _faker.Phone.PhoneNumber(),
 
                 Created = DateTime.UtcNow,
                 LastModified = DateTime.UtcNow
