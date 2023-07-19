@@ -37,6 +37,31 @@ public static class DatabaseSeeder
                 dbContext.Salvors.ToList()));
             dbContext.SaveChanges();
         }
+
+        if ( !dbContext.Letters.Any() )
+        {
+            dbContext.Letters.AddRange(GetLetters(dbContext.Droits.ToList()));
+            dbContext.SaveChanges();
+        }
+    }
+
+
+    private static List<Letter> GetLetters(List<Droit> droits)
+    {
+        return Enumerable.Range(0, 20)
+            .Select(i => new Letter
+            {
+                Id = new Guid(),
+                DroitId = _faker.Random.ArrayElement(droits.ToArray()).Id, //should associate to created Droit
+                Recipient = _faker.Internet.Email(),
+                Subject = _faker.Lorem.Sentence(),
+                Body = _faker.Lorem.Paragraph(),
+                Type = LetterType.CustomLetter,
+                SenderUserId = new Guid(),
+                Created = DateTime.Now,
+                LastModified = DateTime.Now
+            })
+            .ToList();
     }
 
 
