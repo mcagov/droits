@@ -77,8 +77,10 @@ public class WreckForm : FormModel
     [DisplayName("Owner Name")]
     public string? OwnerName { get; set; }
     [DisplayName("Owner Email")]
+    [EmailAddress(ErrorMessage = "Invalid email")]
     public string? OwnerEmail { get; set; }
     [DisplayName("Owner Number")]
+    [Phone(ErrorMessage = "Invalid phone number")]
     public string? OwnerNumber { get; set; }
 
     [DisplayName("Additional Information")]
