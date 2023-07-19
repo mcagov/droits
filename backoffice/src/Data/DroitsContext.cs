@@ -125,6 +125,9 @@ public partial class DroitsContext : DbContext
             entity.Property(w => w.Longitude);
             entity.Property(w => w.IsProtectedSite);
             entity.Property(w => w.ProtectionLegislation);
+            entity.Property(w => w.OwnerName);
+            entity.Property(w => w.OwnerEmail);
+            entity.Property(w => w.OwnerNumber);
             entity.Property(w => w.Created);
             entity.Property(w => w.LastModified);
             entity.Property(w => w.AdditionalInformation);

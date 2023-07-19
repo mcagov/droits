@@ -31,6 +31,10 @@ public class WreckForm : FormModel
         IsProtectedSite = wreck.IsProtectedSite;
         ProtectionLegislation = wreck.ProtectionLegislation;
         AdditionalInformation = wreck.AdditionalInformation;
+
+        OwnerName = wreck.OwnerName;
+        OwnerEmail = wreck.OwnerEmail;
+        OwnerNumber = wreck.OwnerNumber;
     }
 
 
@@ -70,6 +74,14 @@ public class WreckForm : FormModel
 
     [DisplayName("Protection Legislation")]
     public string? ProtectionLegislation { get; set; }
+    [DisplayName("Owner Name")]
+    public string? OwnerName { get; set; }
+    [DisplayName("Owner Email")]
+    [EmailAddress(ErrorMessage = "Invalid email")]
+    public string? OwnerEmail { get; set; }
+    [DisplayName("Owner Number")]
+    [Phone(ErrorMessage = "Invalid phone number")]
+    public string? OwnerNumber { get; set; }
 
     [DisplayName("Additional Information")]
     [DataType(DataType.MultilineText)]
@@ -93,6 +105,10 @@ public class WreckForm : FormModel
         wreck.Longitude = Longitude;
         wreck.IsProtectedSite = IsProtectedSite;
         wreck.ProtectionLegislation = ProtectionLegislation;
+
+        wreck.OwnerName = OwnerName;
+        wreck.OwnerEmail = OwnerEmail;
+        wreck.OwnerNumber = OwnerNumber;
 
         wreck.AdditionalInformation = AdditionalInformation;
 

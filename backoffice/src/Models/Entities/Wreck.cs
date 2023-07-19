@@ -17,6 +17,10 @@ public class Wreck
 
     public bool IsProtectedSite { get; set; } = false;
     public string? ProtectionLegislation { get; set; }
+    
+    public string? OwnerName { get; set; }
+    public string? OwnerEmail { get; set; }
+    public string? OwnerNumber { get; set; }
 
     public string? AdditionalInformation { get; set; } = string.Empty;
 

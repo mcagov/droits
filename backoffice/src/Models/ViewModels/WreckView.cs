@@ -31,8 +31,10 @@ public class WreckView
         IsProtectedSite = wreck.IsProtectedSite;
         ProtectionLegislation = wreck.ProtectionLegislation;
         AdditionalInformation = wreck.AdditionalInformation;
+        OwnerName = wreck.OwnerName;
+        OwnerEmail = wreck.OwnerEmail;
+        OwnerNumber = wreck.OwnerNumber;
     }
-
 
     // Base fields...
 
@@ -73,6 +75,15 @@ public class WreckView
 
     [DisplayName("Protection Legislation")]
     public string? ProtectionLegislation { get; }
+    
+    [DisplayName("Owner Number")]
+    public string? OwnerNumber { get; }
+    
+    [DisplayName("Owner Email")]
+    public string? OwnerEmail { get; }
+    
+    [DisplayName("Owner Name")]
+    public string? OwnerName { get; }
 
 
     [DisplayName("Additional Information")]
