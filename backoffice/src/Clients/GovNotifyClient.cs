@@ -6,7 +6,7 @@ namespace Droits.Clients;
 
 public interface IGovNotifyClient
 {
-    Task<EmailNotificationResponse> SendEmailAsync(EmailForm form);
+    Task<EmailNotificationResponse> SendLetterAsync(LetterForm form);
     string? getTemplateId();
     string? getApiKey();
 }
@@ -26,10 +26,10 @@ public class GovNotifyClient : IGovNotifyClient
     }
 
 
-    public async Task<EmailNotificationResponse> SendEmailAsync(EmailForm form)
+    public async Task<EmailNotificationResponse> SendLetterAsync(LetterForm form)
     {
         var personalisation = form.GetPersonalisation();
-        personalisation.Add("body", form.GetEmailBody());
+        personalisation.Add("body", form.GetLetterBody());
 
         return await _client.SendEmailAsync(
             form.Recipient,

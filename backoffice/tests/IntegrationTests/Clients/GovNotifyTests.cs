@@ -21,7 +21,7 @@ public class GovNotifyTests : IClassFixture<TestFixture>
     [Fact]
     public async void SendEmailAsync_ShouldReturnAValidResponse()
     {
-        var form = new EmailForm()
+        var form = new LetterForm()
         {
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
@@ -35,7 +35,7 @@ public class GovNotifyTests : IClassFixture<TestFixture>
     [Fact]
     public async void SendEmailAsync_ShouldReturnSubmittedTextInTheBody()
     {
-        var form = new EmailForm()
+        var form = new LetterForm()
         {
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
@@ -49,7 +49,7 @@ public class GovNotifyTests : IClassFixture<TestFixture>
     [Fact]
     public async void SendEmailAsync_ShouldReturnSubmittedSubjectInTheSubject()
     {
-        var form = new EmailForm()
+        var form = new LetterForm()
         {
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
