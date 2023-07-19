@@ -23,10 +23,6 @@
         <Content Remove="wwwroot/css/**/*" />
     </ItemGroup>
 
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="Views\Shared\Letter\_LetterFormFields.cshtml" />
-    </ItemGroup>
-
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
         <Exec Command="npx webpack --config webpack.config.js" />
     </Target>
