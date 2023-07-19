@@ -4,23 +4,23 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Models.FormModels;
 
-public class EmailForm
+public class LetterForm
 {
-    public EmailForm()
+    public LetterForm()
     {
     }
 
 
-    public EmailForm(Email email)
+    public LetterForm(Letter letter)
     {
-        EmailId = email.Id;
-        Recipient = email.Recipient;
-        Subject = email.Subject;
-        Body = email.Body;
+        LetterId = letter.Id;
+        Recipient = letter.Recipient;
+        Subject = letter.Subject;
+        Body = letter.Body;
     }
 
 
-    public Guid EmailId { get; set; }
+    public Guid LetterId { get; set; }
 
     [BindProperty]
     [Required(ErrorMessage = "Email is required")]
@@ -45,7 +45,7 @@ public class EmailForm
     }
 
 
-    public string GetEmailBody()
+    public string GetLetterBody()
     {
         var output = Body;
         foreach ( var param in GetPersonalisation() )
@@ -57,12 +57,12 @@ public class EmailForm
     }
 
 
-    public Email ApplyChanges(Email email)
+    public Letter ApplyChanges(Letter letter)
     {
-        email.Recipient = Recipient;
-        email.Subject = Subject;
-        email.Body = GetEmailBody();
+        letter.Recipient = Recipient;
+        letter.Subject = Subject;
+        letter.Body = GetLetterBody();
 
-        return email;
+        return letter;
     }
 }

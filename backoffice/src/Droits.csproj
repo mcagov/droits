@@ -17,14 +17,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="Views/EmailTemplates/**">
+        <Content Include="Views/LetterTemplates/**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
         <Content Remove="wwwroot/css/**/*" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="Views\Shared\Email\_EmailFormFields.cshtml" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">

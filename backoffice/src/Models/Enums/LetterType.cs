@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Droits.Models.Enums;
 
-public enum EmailType
+public enum LetterType
 {
     [Display(Name = "Report Acknowledged")]
     ReportAcknowledged,
@@ -26,7 +26,7 @@ public enum EmailType
     ClosureCustom,
 
     [Display(Name = "Custom Email")]
-    CustomEmail,
+    CustomLetter,
 
     [Display(Name = "Test Email")]
     TestingDroitsv2

@@ -4,23 +4,23 @@ using Droits.Models.Enums;
 
 namespace Droits.Models.ViewModels;
 
-public class EmailView
+public class LetterView
 {
-    public EmailView(Email email)
+    public LetterView(Letter letter)
     {
-        Id = email.Id;
-        Recipient = email.Recipient;
-        EmailType = email.Type;
-        DateLastModified = email.LastModified;
-        Subject = email.Subject;
-        Body = email.Body;
-        SentDate = email.DateSent;
+        Id = letter.Id;
+        Recipient = letter.Recipient;
+        LetterType = letter.Type;
+        DateLastModified = letter.LastModified;
+        Subject = letter.Subject;
+        Body = letter.Body;
+        SentDate = letter.DateSent;
     }
 
 
     public Guid Id { get; }
     public string Recipient { get; } = string.Empty;
-    public EmailType EmailType { get; }
+    public LetterType LetterType { get; }
 
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]

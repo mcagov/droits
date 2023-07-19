@@ -19,7 +19,7 @@ public partial class DroitsContext : DbContext
     public virtual DbSet<Droit> Droits { get; set; } = null!;
     public virtual DbSet<WreckMaterial> WreckMaterials { get; set; } = null!;
     public virtual DbSet<Wreck> Wrecks { get; set; } = null!;
-    public virtual DbSet<Email> Emails { get; set; } = null!;
+    public virtual DbSet<Letter> Letters { get; set; } = null!;
     public virtual DbSet<Salvor> Salvors { get; set; } = null!;
 
 
@@ -136,18 +136,18 @@ public partial class DroitsContext : DbContext
                 .HasForeignKey(d => d.WreckId);
         });
 
-        modelBuilder.Entity<Email>(entity =>
+        modelBuilder.Entity<Letter>(entity =>
         {
-            entity.ToTable("emails");
+            entity.ToTable("letters");
 
-            entity.Property(e => e.Id);
-            entity.Property(e => e.Subject);
-            entity.Property(e => e.Body);
-            entity.Property(e => e.DateSent);
-            entity.Property(e => e.Recipient);
-            entity.Property(e => e.Created);
-            entity.Property(e => e.LastModified);
-            entity.Property(e => e.Type);
+            entity.Property(l => l.Id);
+            entity.Property(l => l.Subject);
+            entity.Property(l => l.Body);
+            entity.Property(l => l.DateSent);
+            entity.Property(l => l.Recipient);
+            entity.Property(l => l.Created);
+            entity.Property(l => l.LastModified);
+            entity.Property(l => l.Type);
         });
 
         modelBuilder.Entity<Salvor>(entity =>

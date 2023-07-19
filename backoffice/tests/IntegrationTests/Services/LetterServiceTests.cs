@@ -6,36 +6,36 @@ using Microsoft.Extensions.Logging;
 
 namespace Droits.Tests.IntegrationTests.Services;
 
-public class EmailServiceTests : IClassFixture<TestFixture>
+public class LetterServiceTests : IClassFixture<TestFixture>
 {
-    private readonly IEmailService _service;
-    private readonly Mock<IEmailRepository> _mockEmailRepository;
+    private readonly ILetterService _service;
+    private readonly Mock<ILetterRepository> _mockLetterRepository;
 
-    private Guid _emailId = Guid.NewGuid();
+    private Guid _letterId = Guid.NewGuid();
     private DateTime _todaysDate = DateTime.Now;
 
 
-    public EmailServiceTests(TestFixture fixture)
+    public LetterServiceTests(TestFixture fixture)
     {
-        var logger = new Mock<ILogger<EmailService>>();
-        _mockEmailRepository = new Mock<IEmailRepository>();
+        var logger = new Mock<ILogger<LetterService>>();
+        _mockLetterRepository = new Mock<ILetterRepository>();
 
 
         var configuration = fixture.Configuration;
 
         var client = new GovNotifyClient(new Mock<ILogger<GovNotifyClient>>().Object, configuration);
 
-        _service = new EmailService(logger.Object, client, _mockEmailRepository.Object);
+        _service = new LetterService(logger.Object, client, _mockLetterRepository.Object);
     }
 
     [Fact]
-    public async void SendEmailAsync_ShouldReturnAValidResponse()
+    public async void SendLetterAsync_ShouldReturnAValidResponse()
     {
         SeedMockDatabase();
 
-        Email testEmail = new()
+        Letter testLetter = new()
         {
-            Id = _emailId,
+            Id = _letterId,
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Wreckage Found!",
             Body = "This is a test",
@@ -43,21 +43,21 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             LastModified = _todaysDate
         };
 
-        _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(Task.FromResult(testEmail));
-        _mockEmailRepository.Setup(m => m.UpdateEmailAsync(testEmail));
+        _mockLetterRepository.Setup(m => m.GetLetterAsync(_letterId)).Returns(Task.FromResult(testLetter));
+        _mockLetterRepository.Setup(m => m.UpdateLetterAsync(testLetter));
 
 
-        var response = await _service.SendEmailAsync(_emailId);
+        var response = await _service.SendLetterAsync(_letterId);
 
         Assert.NotNull(response);
     }
     [Fact]
-    public async void SendEmailAsync_ShouldReturnSubmittedTextInTheBody()
+    public async void SendLetterAsync_ShouldReturnSubmittedTextInTheBody()
     {
         SeedMockDatabase();
-        Email testEmail = new()
+        Letter testLetter = new()
         {
-            Id = _emailId,
+            Id = _letterId,
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Wreckage Found!",
             Body = "This is a test",
@@ -65,21 +65,21 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             LastModified = _todaysDate
         };
 
-        _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(Task.FromResult(testEmail));
-        _mockEmailRepository.Setup(m => m.UpdateEmailAsync(testEmail));
+        _mockLetterRepository.Setup(m => m.GetLetterAsync(_letterId)).Returns(Task.FromResult(testLetter));
+        _mockLetterRepository.Setup(m => m.UpdateLetterAsync(testLetter));
 
-        var response = await _service.SendEmailAsync(_emailId);
+        var response = await _service.SendLetterAsync(_letterId);
 
         Assert.Equal("This is a test",response.content.body);
     }
     [Fact]
-    public async void SendEmailAsync_ShouldReturnSubmittedSubjectInTheSubject()
+    public async void SendLetterAsync_ShouldReturnSubmittedSubjectInTheSubject()
     {
         SeedMockDatabase();
 
-        Email testEmail = new()
+        Letter testLetter = new()
         {
-            Id = _emailId,
+            Id = _letterId,
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Wreckage Found!",
             Body = "This is a test",
@@ -87,22 +87,22 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             LastModified = _todaysDate
         };
 
-        _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(Task.FromResult(testEmail));
-        _mockEmailRepository.Setup(m => m.UpdateEmailAsync(testEmail));
+        _mockLetterRepository.Setup(m => m.GetLetterAsync(_letterId)).Returns(Task.FromResult(testLetter));
+        _mockLetterRepository.Setup(m => m.UpdateLetterAsync(testLetter));
 
-        var response = await _service.SendEmailAsync(_emailId);
+        var response = await _service.SendLetterAsync(_letterId);
 
         Assert.Equal("Wreckage Found!",response.content.subject);
     }
 
     [Fact]
-    public async void SendEmailAsync_ShouldInvokeTheUpdateMethodInTheRepository()
+    public async void SendLetterAsync_ShouldInvokeTheUpdateMethodInTheRepository()
     {
         SeedMockDatabase();
 
-        Email testEmail = new()
+        Letter testLetter = new()
         {
-            Id = _emailId,
+            Id = _letterId,
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Wreckage Found!",
             Body = "This is a test",
@@ -110,17 +110,17 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             LastModified = _todaysDate
         };
 
-        _mockEmailRepository.Setup(m => m.GetEmailAsync(_emailId)).Returns(Task.FromResult(testEmail));
-        _mockEmailRepository.Setup(m => m.UpdateEmailAsync(testEmail));
+        _mockLetterRepository.Setup(m => m.GetLetterAsync(_letterId)).Returns(Task.FromResult(testLetter));
+        _mockLetterRepository.Setup(m => m.UpdateLetterAsync(testLetter));
 
-        await _service.SendEmailAsync(_emailId);
+        await _service.SendLetterAsync(_letterId);
 
-        _mockEmailRepository.Verify(m => m.UpdateEmailAsync(testEmail), Times.Once);
+        _mockLetterRepository.Verify(m => m.UpdateLetterAsync(testLetter), Times.Once);
     }
 
     private void SeedMockDatabase()
     {
-        Email shipwreckEmail = new()
+        Letter shipwreckLetter = new()
         {
             Id = Guid.NewGuid(),
             Recipient = "barry@gmail.com",
@@ -130,7 +130,7 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             LastModified = _todaysDate
         };
 
-        Email paintingEmail = new()
+        Letter paintingLetter = new()
         {
             Id = Guid.NewGuid(),
             Recipient = "denise@gmail.com",
@@ -140,9 +140,9 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             LastModified = _todaysDate
         };
 
-        Email testEmail = new()
+        Letter testLetter = new()
         {
-            Id = _emailId,
+            Id = _letterId,
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Wreckage Found!",
             Body = "This is a test",
@@ -150,15 +150,15 @@ public class EmailServiceTests : IClassFixture<TestFixture>
             LastModified = _todaysDate
         };
 
-        List<Email> emailsInRepo = new List<Email>()
+        List<Letter> lettersInRepo = new List<Letter>()
         {
-            shipwreckEmail,
-            paintingEmail,
-            testEmail
+            shipwreckLetter,
+            paintingLetter,
+            testLetter
         };
 
-        Task<List<Email>> emails = Task.FromResult(emailsInRepo);
+        Task<List<Letter>> letters = Task.FromResult(lettersInRepo);
 
-        _mockEmailRepository.Setup(m => m.GetEmailsAsync()).Returns(emails);
+        _mockLetterRepository.Setup(m => m.GetLettersAsync()).Returns(letters);
     }
 }

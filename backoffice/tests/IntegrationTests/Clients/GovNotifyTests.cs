@@ -19,44 +19,44 @@ public class GovNotifyTests : IClassFixture<TestFixture>
     }
 
     [Fact]
-    public async void SendEmailAsync_ShouldReturnAValidResponse()
+    public async void SendLetterAsync_ShouldReturnAValidResponse()
     {
-        var form = new EmailForm()
+        var form = new LetterForm()
         {
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
             Body = "This is a test"
         };
 
-        var response = await _client.SendEmailAsync(form);
+        var response = await _client.SendLetterAsync(form);
 
         Assert.NotNull(response);
     }
     [Fact]
-    public async void SendEmailAsync_ShouldReturnSubmittedTextInTheBody()
+    public async void SendLetterAsync_ShouldReturnSubmittedTextInTheBody()
     {
-        var form = new EmailForm()
+        var form = new LetterForm()
         {
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
             Body = "This is a test"
         };
 
-        var response = await _client.SendEmailAsync(form);
+        var response = await _client.SendLetterAsync(form);
 
         Assert.Equal("This is a test",response.content.body);
     }
     [Fact]
-    public async void SendEmailAsync_ShouldReturnSubmittedSubjectInTheSubject()
+    public async void SendLetterAsync_ShouldReturnSubmittedSubjectInTheSubject()
     {
-        var form = new EmailForm()
+        var form = new LetterForm()
         {
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
             Body = "This is a test"
         };
 
-        var response = await _client.SendEmailAsync(form);
+        var response = await _client.SendLetterAsync(form);
 
         Assert.Equal("Test",response.content.subject);
     }

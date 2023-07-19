@@ -28,8 +28,8 @@ builder.Services.AddDbContext<DroitsContext>(opt => opt.UseInMemoryDatabase("dro
 
 builder.Services.AddHealthChecks();
 
-builder.Services.AddScoped<IEmailRepository, EmailRepository>();
-builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ILetterRepository, LetterRepository>();
+builder.Services.AddScoped<ILetterService, LetterService>();
 
 builder.Services.AddScoped<IGovNotifyClient, GovNotifyClient>();
 

@@ -1,7 +1,7 @@
 @using System.Runtime.InteropServices.JavaScript
-@model EmailForm
+@model LetterForm
 @{
-    ViewData["Title"] = "Compose Email";
+    ViewData["Title"] = "Compose Letter";
 }
 
 
@@ -15,8 +15,8 @@
 
         <h4>@ViewData["Title"]</h4>
 
-        <form asp-action="SaveEmail" method="POST">
-            @Html.HiddenFor(m => m.EmailId)
+        <form asp-action="SaveLetter" method="POST">
+            @Html.HiddenFor(m => m.LetterId)
 
             <div class="mb-3">
                 @Html.LabelFor(m => m.Recipient, new { @class = "form-label" })
