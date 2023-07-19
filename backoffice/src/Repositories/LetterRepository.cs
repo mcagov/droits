@@ -77,8 +77,8 @@ public class LetterRepository : ILetterRepository
     public async Task<List<Letter>> GetLettersForRecipientAsync(string recipient)
     {
         return await _context.Letters
-            .Where(e => e.Recipient.Equals(recipient))
-            .OrderByDescending(e => e.LastModified)
+            .Where(l => l.Recipient.Equals(recipient))
+            .OrderByDescending(l => l.LastModified)
             .ToListAsync();
     }
 }
