@@ -140,14 +140,14 @@ public partial class DroitsContext : DbContext
         {
             entity.ToTable("letters");
 
-            entity.Property(e => e.Id);
-            entity.Property(e => e.Subject);
-            entity.Property(e => e.Body);
-            entity.Property(e => e.DateSent);
-            entity.Property(e => e.Recipient);
-            entity.Property(e => e.Created);
-            entity.Property(e => e.LastModified);
-            entity.Property(e => e.Type);
+            entity.Property(l => l.Id);
+            entity.Property(l => l.Subject);
+            entity.Property(l => l.Body);
+            entity.Property(l => l.DateSent);
+            entity.Property(l => l.Recipient);
+            entity.Property(l => l.Created);
+            entity.Property(l => l.LastModified);
+            entity.Property(l => l.Type);
         });
 
         modelBuilder.Entity<Salvor>(entity =>
