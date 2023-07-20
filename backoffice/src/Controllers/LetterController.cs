@@ -73,7 +73,7 @@ public class LetterController : BaseController
     }
 
 
-    [HttpGet]
+    [HttpPost]
     public async Task<IActionResult> AddLetterToDroit(Guid droitId,LetterType type)
     {
         var droit = await _droitService.GetDroitAsync(droitId);
