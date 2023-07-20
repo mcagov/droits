@@ -11,6 +11,12 @@ public class LetterForm
     }
 
 
+    public LetterForm(Guid droitId)
+    {
+        DroitId = droitId;
+    }
+
+
     public LetterForm(Letter letter)
     {
         LetterId = letter.Id;
@@ -21,6 +27,7 @@ public class LetterForm
 
 
     public Guid LetterId { get; set; }
+    public Guid DroitId { get; set; }
 
     [BindProperty]
     [Required(ErrorMessage = "Email is required")]
@@ -62,6 +69,7 @@ public class LetterForm
         letter.Recipient = Recipient;
         letter.Subject = Subject;
         letter.Body = GetLetterBody();
+        letter.DroitId = DroitId;
 
         return letter;
     }

@@ -17,6 +17,7 @@
 
         <form asp-action="SaveLetter" method="POST">
             @Html.HiddenFor(m => m.LetterId)
+            @Html.HiddenFor(m => m.DroitId)
 
             <div class="mb-3">
                 @Html.LabelFor(m => m.Recipient, new { @class = "form-label" })

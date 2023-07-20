@@ -98,6 +98,7 @@ public class LetterService : ILetterService
     {
         Letter letter = new()
         {
+            DroitId = letterForm.DroitId,
             Subject = letterForm.Subject,
             Body = letterForm.GetLetterBody(),
             Recipient = letterForm.Recipient
