@@ -76,9 +76,21 @@ public class LetterController : BaseController
     [HttpPost]
     public async Task<IActionResult> AddLetterToDroit(Guid droitId,LetterType type)
     {
-        var droit = await _droitService.GetDroitAsync(droitId);
+        var droit = new Droit();
+        try
+        {
+            droit = await _droitService.GetDroitAsync(droitId);
+        }
+        catch ( DroitNotFoundException e )
+        {
+            HandleError(_logger, "Droit not found.", e);
+            return RedirectToAction("Index", "Droit");
+        }
         var model = new LetterForm(droitId);
-        model.Recipient = droit.Salvor.Email;
+        if (droit.Salvor != null)
+        {
+            model.Recipient = droit.Salvor.Email;
+        }
         model.Type = type;
         model.Body = await _service.GetTemplateAsync(type);
         return View(nameof(Edit), model);
