@@ -56,7 +56,9 @@ public static class DatabaseSeeder
                 Recipient = _faker.Internet.Email(),
                 Subject = _faker.Lorem.Sentence(),
                 Body = _faker.Lorem.Paragraph(),
-                Type = LetterType.CustomLetter,
+                Type = Enum.GetValues(typeof(LetterType))
+                    .OfType<LetterType>()
+                    .MinBy(x => Guid.NewGuid()),
                 SenderUserId = new Guid(),
                 Created = DateTime.Now,
                 LastModified = DateTime.Now

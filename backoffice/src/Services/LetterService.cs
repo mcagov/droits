@@ -101,7 +101,8 @@ public class LetterService : ILetterService
             DroitId = letterForm.DroitId,
             Subject = letterForm.Subject,
             Body = letterForm.GetLetterBody(),
-            Recipient = letterForm.Recipient
+            Recipient = letterForm.Recipient,
+            Type = letterForm.Type
         };
 
         try

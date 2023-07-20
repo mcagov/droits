@@ -20,7 +20,7 @@
                     @letter.Recipient
                 </td>
                 <td class="p-3">@letter.Subject</td>
-                <td class="p-3">@letter.LetterType</td>
+                <td class="p-3">@Html.DisplayFor(m => letter.LetterType)</td>
                 <td class="p-3">@letter.DateLastModified.ToString("dd/MM/yyyy")</td>
                 <td class="p-3">@Html.DisplayFor(m => letter.IsSent)</td>
                 <td class="p-3">

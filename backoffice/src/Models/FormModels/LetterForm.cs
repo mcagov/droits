@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Models.FormModels;
@@ -28,6 +29,7 @@ public class LetterForm
 
     public Guid LetterId { get; set; }
     public Guid DroitId { get; set; }
+    public LetterType Type { get; set; }
 
     [BindProperty]
     [Required(ErrorMessage = "Email is required")]
@@ -70,6 +72,7 @@ public class LetterForm
         letter.Subject = Subject;
         letter.Body = GetLetterBody();
         letter.DroitId = DroitId;
+        letter.Type = Type;
 
         return letter;
     }

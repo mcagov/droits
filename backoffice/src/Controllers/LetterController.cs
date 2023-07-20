@@ -75,6 +75,7 @@ public class LetterController : BaseController
     public async Task<IActionResult> AddAcknowledgeLetter(Guid droitId)
     {
         var model = new LetterForm(droitId);
+        model.Type = LetterType.ReportAcknowledged;
         model.Body = await _service.GetTemplateAsync(LetterType.ReportAcknowledged);
         return View(nameof(Edit), model);
     }
