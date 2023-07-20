@@ -55,9 +55,7 @@ public class DroitController : BaseController
             HandleError(_logger, "Droit not found.", e);
             return RedirectToAction(nameof(Index));
         }
-
-        //remove this 
-        droit.Letters = await _letterService.GetLettersAsync();
+        
         var model = new DroitView(droit);
         return View(model);
     }

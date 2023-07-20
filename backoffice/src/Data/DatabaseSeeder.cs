@@ -52,7 +52,7 @@ public static class DatabaseSeeder
             .Select(i => new Letter
             {
                 Id = new Guid(),
-                DroitId = _faker.Random.ArrayElement(droits.ToArray()).Id, //should associate to created Droit
+                DroitId = _faker.Random.ArrayElement(droits.ToArray()).Id,
                 Recipient = _faker.Internet.Email(),
                 Subject = _faker.Lorem.Sentence(),
                 Body = _faker.Lorem.Paragraph(),
