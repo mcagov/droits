@@ -169,7 +169,8 @@
 </div>
 
 <div class="tab-pane fade" id="letters-content" role="tabpanel" aria-labelledby="letters-tab">
-    <a type="button" class="btn btn-primary" asp-controller="Letter" asp-action="AddAcknowledgeLetter" asp-route-droitId="@Model.Id">Add Acknowledgment letter</a>
+    <a type="button" class="btn btn-primary" asp-controller="Letter" asp-action="AddLetterToDroit" 
+       asp-route-droitId="@Model.Id" asp-route-type="ReportAcknowledged">Add Acknowledgment letter</a>
     <partial name="_LetterListTable" for="Letters"/>
 </div>
 

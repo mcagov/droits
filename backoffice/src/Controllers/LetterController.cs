@@ -12,12 +12,14 @@ public class LetterController : BaseController
 {
     private readonly ILogger<LetterController> _logger;
     private readonly ILetterService _service;
+    private readonly IDroitService _droitService;
 
 
-    public LetterController(ILogger<LetterController> logger, ILetterService service)
+    public LetterController(ILogger<LetterController> logger, ILetterService service, IDroitService droitService)
     {
         _logger = logger;
         _service = service;
+        _droitService = droitService;
     }
 
 
@@ -72,11 +74,13 @@ public class LetterController : BaseController
 
 
     [HttpGet]
-    public async Task<IActionResult> AddAcknowledgeLetter(Guid droitId)
+    public async Task<IActionResult> AddLetterToDroit(Guid droitId,LetterType type)
     {
+        var droit = await _droitService.GetDroitAsync(droitId);
         var model = new LetterForm(droitId);
-        model.Type = LetterType.ReportAcknowledged;
-        model.Body = await _service.GetTemplateAsync(LetterType.ReportAcknowledged);
+        model.Recipient = droit.Salvor.Email;
+        model.Type = type;
+        model.Body = await _service.GetTemplateAsync(type);
         return View(nameof(Edit), model);
     }
 
