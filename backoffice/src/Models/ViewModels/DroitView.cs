@@ -45,7 +45,7 @@ public class DroitView
         
         if ( droit.Letters.Any() )
         {
-            Letters = droit.Letters.Select(l => new LetterView(l)).ToList();
+            Letters = droit.Letters.Select(l => new LetterView(l)).OrderBy(l => l.DateLastModified).ToList();
         }
 
         // Location
