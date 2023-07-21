@@ -1,3 +1,4 @@
+using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Notify.Client;
 using Notify.Models.Responses;
@@ -6,7 +7,7 @@ namespace Droits.Clients;
 
 public interface IGovNotifyClient
 {
-    Task<EmailNotificationResponse> SendLetterAsync(LetterForm form);
+    Task<EmailNotificationResponse> SendLetterAsync(Letter form);
     string? getTemplateId();
     string? getApiKey();
 }
@@ -26,15 +27,17 @@ public class GovNotifyClient : IGovNotifyClient
     }
 
 
-    public async Task<EmailNotificationResponse> SendLetterAsync(LetterForm form)
+    public async Task<EmailNotificationResponse> SendLetterAsync(Letter letter)
     {
-        var personalisation = form.GetPersonalisation();
-        personalisation.Add("body", form.GetLetterBody());
+        var data = new Dictionary<string, dynamic>();
+
+        data.Add("body",letter.Body);
+        data.Add("subject", letter.Subject);
 
         return await _client.SendEmailAsync(
-            form.Recipient,
+            letter.Recipient,
             getTemplateId(),
-            personalisation
+            data
         );
     }
 

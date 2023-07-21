@@ -11,24 +11,17 @@ public class LetterForm
     {
     }
 
-
-    public LetterForm(Guid droitId)
-    {
-        DroitId = droitId;
-    }
-
-
     public LetterForm(Letter letter)
     {
+        Id = letter.Id;
         DroitId = letter.DroitId;
-        LetterId = letter.Id;
         Recipient = letter.Recipient;
         Subject = letter.Subject;
         Body = letter.Body;
     }
 
 
-    public Guid LetterId { get; set; }
+    public Guid Id { get; set; }
     public Guid DroitId { get; set; }
     public LetterType Type { get; set; }
 
@@ -43,46 +36,13 @@ public class LetterForm
     [Required]
     [DataType(DataType.MultilineText)]
     public string Body { get; set; } = string.Empty;
-
-
-    public Dictionary<string, dynamic> GetPersonalisation()
-    {
-        return new Dictionary<string, dynamic>
-        {
-            { "email address", Recipient},
-            { "subject", Subject },
-            { "reference", "TestRef123" },
-            { "custom message", "message le custom" },
-            { "item pluralised", "*item pluralised*" },
-            { "items", "*items*" },
-            { "this pluralised", "*this pluralised*" },
-            { "wreck", "*wreck name*" },
-            { "date", "*date*" },
-            { "has pluralised", "*has pluralised*" },
-            { "link_to_file", "*link to file*" },
-            { "is pluralised", "*is pluralised*" }
-        };
-    }
-
-
-    public string GetLetterBody()
-    {
-        var output = Body;
-        foreach ( var param in GetPersonalisation() )
-        {
-            output = output.Replace($"(({param.Key}))", param.Value);
-        }
-
-        return output;
-    }
-
-
     public Letter ApplyChanges(Letter letter)
     {
+        letter.Id = Id;
+        letter.DroitId = DroitId;
         letter.Recipient = Recipient;
         letter.Subject = Subject;
-        letter.Body = GetLetterBody();
-        letter.DroitId = DroitId;
+        letter.Body = Body;
         letter.Type = Type;
 
         return letter;

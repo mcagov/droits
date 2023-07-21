@@ -86,12 +86,13 @@ public class LetterController : BaseController
             HandleError(_logger, "Droit not found.", e);
             return RedirectToAction("Index", "Droit");
         }
-        var model = new LetterForm(droitId);
-        if (droit.Salvor != null)
-        {
-            model.Recipient = droit.Salvor.Email;
-        }
-        model.Type = type;
+
+        var model = new LetterForm{
+            DroitId = droit.Id,
+            Recipient = droit?.Salvor?.Email ?? "",
+            Type = type
+        };
+
         model.Subject = await _service.GetTemplateSubjectAsync(type);
         model.Body = await _service.GetTemplateBodyAsync(type);
         return View(nameof(Edit), model);
@@ -130,7 +131,7 @@ public class LetterController : BaseController
 
         try
         {
-            if ( form.LetterId == default )
+            if ( form.Id == default )
             {
                 letter = await _service.SaveLetterAsync(form);
             }
