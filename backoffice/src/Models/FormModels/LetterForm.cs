@@ -48,8 +48,18 @@ public class LetterForm
     {
         return new Dictionary<string, dynamic>
         {
+            { "email address", Recipient},
             { "subject", Subject },
-            { "reference", "TestRef123" }
+            { "reference", "TestRef123" },
+            { "custom message", "message le custom" },
+            { "item pluralised", "*item pluralised*" },
+            { "items", "*items*" },
+            { "this pluralised", "*this pluralised*" },
+            { "wreck", "*wreck name*" },
+            { "date", "*date*" },
+            { "has pluralised", "*has pluralised*" },
+            { "link_to_file", "*link to file*" },
+            { "is pluralised", "*is pluralised*" }
         };
     }
 
