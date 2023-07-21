@@ -20,6 +20,7 @@ public class LetterForm
 
     public LetterForm(Letter letter)
     {
+        DroitId = letter.DroitId;
         LetterId = letter.Id;
         Recipient = letter.Recipient;
         Subject = letter.Subject;
