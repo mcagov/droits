@@ -129,7 +129,7 @@ public class LetterService : ILetterService
 
     //TODO - This is not great - should be an object with fixed properties. Middle ground between what it was and what we want.
     //Also perfect example of where TDD should be used.
-    public Dictionary<string, dynamic> GetPersonalisation(Droit droit)
+    private Dictionary<string, dynamic> GetPersonalisation(Droit droit)
     {
         return new Dictionary<string, dynamic>
         {
