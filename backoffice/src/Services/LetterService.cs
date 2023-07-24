@@ -13,8 +13,8 @@ namespace Droits.Services;
 public interface ILetterService
 {
 
-    Task<string> GetTemplateBodyAsync(LetterType letterType);
-    Task<string> GetTemplateSubjectAsync(LetterType letterType);
+    Task<string> GetTemplateBodyAsync(LetterType letterType, Droit? droit);
+    Task<string> GetTemplateSubjectAsync(LetterType letterType, Droit? droit);
     Task<EmailNotificationResponse> SendLetterAsync(Guid id);
     Task<Letter> GetLetterByIdAsync(Guid id);
     Task<Letter> SaveLetterAsync(LetterForm form);
@@ -42,20 +42,33 @@ public class LetterService : ILetterService
     }
 
 
-    public async Task<string> GetTemplateBodyAsync(LetterType letterType)
+    public async Task<string> GetTemplateBodyAsync(LetterType letterType, Droit? droit)
     {
         var templatePath = Path.Combine(Environment.CurrentDirectory, TemplateDirectory,
             $"{letterType.ToString()}.Body.txt");
 
-        return await ReadFileContentAsync(templatePath);
+        var content = await ReadFileContentAsync(templatePath);
+  
+        if ( droit == null )
+        {
+            return content;
+        }
+        
+        return SubstituteContentWithParams(content, new LetterPersonalisationView(droit));
     }
-    public async Task<string> GetTemplateSubjectAsync(LetterType letterType)
+    public async Task<string> GetTemplateSubjectAsync(LetterType letterType, Droit? droit)
     {
         var templatePath = Path.Combine(Environment.CurrentDirectory, TemplateDirectory,
             $"{letterType.ToString()}.Subject.txt");
 
-        return await ReadFileContentAsync(templatePath);
-
+        var content = await ReadFileContentAsync(templatePath);
+  
+        if ( droit == null )
+        {
+            return content;
+        }
+        
+        return SubstituteContentWithParams(content, new LetterPersonalisationView(droit));
     }
 
     private async Task<string> ReadFileContentAsync(string path){

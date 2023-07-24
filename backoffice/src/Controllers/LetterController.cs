@@ -58,7 +58,7 @@ public class LetterController : BaseController
 
         try
         {
-            var templateBody = await _service.GetTemplateBodyAsync(letterType);
+            var templateBody = await _service.GetTemplateBodyAsync(letterType, null);
 
             return View(new LetterForm()
             {
@@ -92,9 +92,10 @@ public class LetterController : BaseController
             Recipient = droit?.Salvor?.Email ?? "",
             Type = type
         };
-
-        model.Subject = await _service.GetTemplateSubjectAsync(type);
-        model.Body = await _service.GetTemplateBodyAsync(type);
+        
+        
+        model.Subject = await _service.GetTemplateSubjectAsync(type, droit);
+        model.Body = await _service.GetTemplateBodyAsync(type, droit);
         return View(nameof(Edit), model);
     }
 
