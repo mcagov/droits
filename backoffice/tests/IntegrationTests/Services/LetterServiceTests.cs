@@ -19,13 +19,15 @@ public class LetterServiceTests : IClassFixture<TestFixture>
     {
         var logger = new Mock<ILogger<LetterService>>();
         _mockLetterRepository = new Mock<ILetterRepository>();
+        Mock<IDroitService> mockDroitService = new Mock<IDroitService>();
+
 
 
         var configuration = fixture.Configuration;
 
         var client = new GovNotifyClient(new Mock<ILogger<GovNotifyClient>>().Object, configuration);
 
-        _service = new LetterService(logger.Object, client, _mockLetterRepository.Object);
+        _service = new LetterService(logger.Object, client, _mockLetterRepository.Object, mockDroitService.Object);
     }
 
     [Fact]

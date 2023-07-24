@@ -14,13 +14,14 @@ public class LetterServiceUnitTests
         Mock<ILogger<LetterService>> mockLogger = new Mock<ILogger<LetterService>>();
         Mock<IGovNotifyClient> mockClient = new Mock<IGovNotifyClient>();
         Mock<ILetterRepository> mockLetterRepository = new Mock<ILetterRepository>();
-
+        Mock<IDroitService> mockDroitService = new Mock<IDroitService>();
+        
         _service = new LetterService(
             mockLogger.Object,
             mockClient.Object,
-            mockLetterRepository.Object);
+            mockLetterRepository.Object, mockDroitService.Object);
     }
 
-
+    //Add tests here for SubstituteLetterContentWithParamsAsync// SamB
 
 }
