@@ -33,6 +33,8 @@ public class WreckMaterialView
     public Guid Id { get; }
     public Guid DroitId { get; }
     public string Name { get; } = string.Empty;
+
+    [DataType(DataType.MultilineText)]
     public string? Description { get; } = string.Empty;
     public int Quantity { get; } = 1;
     public float? Value { get; } = 0;

@@ -35,6 +35,7 @@ public class WreckMaterialForm : FormModel
 
     public string Name { get; set; } = string.Empty;
 
+    [DataType(DataType.MultilineText)]
     public string? Description { get; set; } = string.Empty;
 
     [Range(1, int.MaxValue, ErrorMessage = "Quantity must be a positive number.")]
