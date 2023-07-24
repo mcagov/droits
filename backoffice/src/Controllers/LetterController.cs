@@ -131,14 +131,7 @@ public class LetterController : BaseController
 
         try
         {
-            if ( form.Id == default )
-            {
-                letter = await _service.SaveLetterAsync(form);
-            }
-            else
-            {
-                letter = await _service.UpdateLetterAsync(form);
-            }
+            letter = await _service.SaveLetterAsync(form);
         }
         catch ( Exception e )
         {

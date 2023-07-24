@@ -1,4 +1,5 @@
 using Droits.Clients;
+using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Tests;
 using Microsoft.Extensions.Configuration;
@@ -21,42 +22,41 @@ public class GovNotifyTests : IClassFixture<TestFixture>
     [Fact]
     public async void SendLetterAsync_ShouldReturnAValidResponse()
     {
-        var form = new LetterForm()
+        var model = new Letter()
         {
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
             Body = "This is a test"
         };
 
-        var response = await _client.SendLetterAsync(form);
+        var response = await _client.SendLetterAsync(model);
 
         Assert.NotNull(response);
     }
     [Fact]
     public async void SendLetterAsync_ShouldReturnSubmittedTextInTheBody()
     {
-        var form = new LetterForm()
+        var model = new Letter()
         {
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
             Body = "This is a test"
         };
 
-        var response = await _client.SendLetterAsync(form);
-
+        var response = await _client.SendLetterAsync(model);
         Assert.Equal("This is a test",response.content.body);
     }
     [Fact]
     public async void SendLetterAsync_ShouldReturnSubmittedSubjectInTheSubject()
     {
-        var form = new LetterForm()
+        var model = new Letter()
         {
             Recipient = "sam.kendell+testing@madetech.com",
             Subject = "Test",
             Body = "This is a test"
         };
 
-        var response = await _client.SendLetterAsync(form);
+        var response = await _client.SendLetterAsync(model);
 
         Assert.Equal("Test",response.content.subject);
     }
