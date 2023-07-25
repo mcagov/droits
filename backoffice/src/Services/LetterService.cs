@@ -53,8 +53,8 @@ public class LetterService : ILetterService
         {
             return content;
         }
-        
-        return SubstituteContentWithParams(content, new LetterPersonalisationView(droit));
+
+        return new LetterPersonalisationView(droit).SubstituteContent(content);
     }
     public async Task<string> GetTemplateSubjectAsync(LetterType letterType, Droit? droit)
     {
@@ -68,7 +68,7 @@ public class LetterService : ILetterService
             return content;
         }
         
-        return SubstituteContentWithParams(content, new LetterPersonalisationView(droit));
+        return new LetterPersonalisationView(droit).SubstituteContent(content);
     }
 
     private async Task<string> ReadFileContentAsync(string path){
@@ -165,20 +165,10 @@ public class LetterService : ILetterService
         var droit = await _droitService.GetDroitAsync(letter.DroitId);
 
         var model = new LetterPersonalisationView(droit);
-        letter.Body = SubstituteContentWithParams(letter.Body, model);
-        letter.Subject = SubstituteContentWithParams(letter.Subject, model);
+        letter.Body = model.SubstituteContent(letter.Body);
+        letter.Subject = model.SubstituteContent(letter.Subject);
 
         return letter;
-    }
-
-    private string SubstituteContentWithParams(string content, LetterPersonalisationView model)
-    {
-        foreach ( var param in model.GetAsPersonalisation() )
-        {
-            content = content.Replace($"(({param.Key}))", param.Value);
-        }
-
-        return content;
     }
 
     public async Task<Letter> GetLetterByIdAsync(Guid id)

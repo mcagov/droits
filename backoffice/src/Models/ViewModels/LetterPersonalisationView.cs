@@ -26,6 +26,16 @@ public class LetterPersonalisationView
             { "date", Date }
         };
     }
+    
+    public string SubstituteContent(string content)
+    {
+        foreach ( var param in GetAsPersonalisation() )
+        {
+            content = content.Replace($"(({param.Key}))", param.Value);
+        }
+
+        return content;
+    }
 }
 
 //         Known:
