@@ -22,6 +22,4 @@ public class LetterServiceUnitTests
             mockLetterRepository.Object, mockDroitService.Object);
     }
 
-    //Add tests here for SubstituteLetterContentWithParamsAsync// SamB
-
 }
