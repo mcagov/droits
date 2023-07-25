@@ -5,23 +5,34 @@ namespace Droits.Tests.UnitTests.Letter;
 
 public class LetterPersonalisationViewUnitTests
 {
-    [Fact]
-    public void ShouldReturnCorrectLetterContent()
+    private readonly Droit _droit;
+    public LetterPersonalisationViewUnitTests()
     {
-        Wreck wreck = new()
-        {
-            Name = "Sinky"
-        };
-        Droit droit = new()
+        _droit = new Droit()
         {
             Reference = "111/11",
             ReportedDate = new DateTime(1971, 7, 14),
-            Wreck = wreck
+            Wreck = new Wreck() 
+            {
+                Name = "Sinky"
+            }
         };
 
-        var letterView = new LetterPersonalisationView(droit);
+    }
+    [Fact]
+    public void ShouldReturnCorrectLetterContent()
+    {
+        var letterView = new LetterPersonalisationView(_droit);
         var response = letterView.SubstituteContent("((reference)) ((wreck)) ((foobar)) ((date))");
 
         Assert.Equal("111/11 Sinky ((foobar)) 14/07/1971", response);
+    }
+    [Fact]
+    public void ShouldReturnCorrectLetterContentForDuplicates()
+    {
+        var letterView = new LetterPersonalisationView(_droit);
+        var response = letterView.SubstituteContent("((reference)) ((reference))");
+
+        Assert.Equal("111/11 111/11", response);
     }
 }
