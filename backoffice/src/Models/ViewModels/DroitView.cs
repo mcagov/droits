@@ -42,6 +42,11 @@ public class DroitView
         {
             WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).ToList();
         }
+        
+        if ( droit.Letters.Any() )
+        {
+            Letters = droit.Letters.Select(l => new LetterView(l)).OrderBy(l => l.DateLastModified).ToList();
+        }
 
         // Location
         Latitude = droit.Latitude;
@@ -98,6 +103,10 @@ public class DroitView
     // Wreck Material
 
     public List<WreckMaterialView> WreckMaterials { get; } = new();
+    
+    // Letters
+    
+    public List<LetterView> Letters { get; } = new();
 
     // Wreck
 

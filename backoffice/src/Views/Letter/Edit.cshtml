@@ -16,7 +16,8 @@
         <h4>@ViewData["Title"]</h4>
 
         <form asp-action="SaveLetter" method="POST">
-            @Html.HiddenFor(m => m.LetterId)
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.DroitId)
 
             <div class="mb-3">
                 @Html.LabelFor(m => m.Recipient, new { @class = "form-label" })
@@ -46,6 +47,22 @@
 
 
         </form>
+    </div>
+
+    <div class="col">
+
+        <h2>Inserting Droit Information</h2>
+
+        <h4>The following keys can be used to insert the stated information
+            on a droit </h4>
+
+        <p>((subject))</p>
+
+        <p>This inserts the default subject for the template</p>
+
+        <p>((reference))</p>
+
+        <p>This inserts the current Droit's reference number</p>
     </div>
 
     <div class="col-lg-4">

@@ -46,6 +46,9 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="legacy-tab" data-bs-toggle="tab" data-bs-target="#legacy-content" type="button" role="tab" aria-controls="legacy-content" aria-selected="false">Legacy</button>
     </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="letters-tab" data-bs-toggle="tab" data-bs-target="#letters-content" type="button" role="tab" aria-controls="letters-content" aria-selected="false">Letters</button>
+    </li>
 </ul>
 
 <div class="tab-content mt-3" id="droitView">
@@ -163,6 +166,27 @@
                      for="WreckMaterials[i]"/>
         }
     </div>
+</div>
+
+<div class="tab-pane fade" id="letters-content" role="tabpanel" aria-labelledby="letters-tab">
+    <div class="row justify-content-end">
+        <div class="col-6 col-lg-4 float-end">
+            <form asp-controller="Letter" asp-action="AddLetterToDroit" method="POST">
+                <div class="row">
+                    @Html.Hidden("droitId", Model.Id)
+                    <div class="col d-flex btn-group">
+                        <div class="input-group flex-grow-1">
+                            @Html.DropDownList("Type", Html.GetEnumSelectList(typeof(LetterType)), new { @class = "form-control" })
+                            <button class="btn btn-primary" type="submit">
+                                Add Letter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <partial name="_LetterListTable" for="Letters"/>
 </div>
 
 <div class="tab-pane fade" id="salvage-content" role="tabpanel" aria-labelledby="salvage-tab">

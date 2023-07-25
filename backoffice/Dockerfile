@@ -2,6 +2,8 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 as base
 ENV ASPNETCORE_URLS="http://+:5000"
 EXPOSE 5000
 
+RUN ln -snf /usr/share/zoneinfo/Europe/London /etc/localtime && echo "Europe/London" > /etc/timezone
+
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
 WORKDIR /app

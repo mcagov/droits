@@ -12,12 +12,14 @@ public class LetterController : BaseController
 {
     private readonly ILogger<LetterController> _logger;
     private readonly ILetterService _service;
+    private readonly IDroitService _droitService;
 
 
-    public LetterController(ILogger<LetterController> logger, ILetterService service)
+    public LetterController(ILogger<LetterController> logger, ILetterService service, IDroitService droitService)
     {
         _logger = logger;
         _service = service;
+        _droitService = droitService;
     }
 
 
@@ -56,7 +58,7 @@ public class LetterController : BaseController
 
         try
         {
-            var templateBody = await _service.GetTemplateAsync(letterType);
+            var templateBody = await _service.GetTemplateBodyAsync(letterType, null);
 
             return View(new LetterForm()
             {
@@ -70,6 +72,32 @@ public class LetterController : BaseController
         }
     }
 
+
+    [HttpPost]
+    public async Task<IActionResult> AddLetterToDroit(Guid droitId,LetterType type)
+    {
+        var droit = new Droit();
+        try
+        {
+            droit = await _droitService.GetDroitAsync(droitId);
+        }
+        catch ( DroitNotFoundException e )
+        {
+            HandleError(_logger, "Droit not found.", e);
+            return RedirectToAction("Index", "Droit");
+        }
+
+        var model = new LetterForm{
+            DroitId = droit.Id,
+            Recipient = droit?.Salvor?.Email ?? "",
+            Type = type
+        };
+        
+        
+        model.Subject = await _service.GetTemplateSubjectAsync(type, droit);
+        model.Body = await _service.GetTemplateBodyAsync(type, droit);
+        return View(nameof(Edit), model);
+    }
 
     [HttpGet]
     public async Task<IActionResult> SendLetter(Guid id)
@@ -104,14 +132,7 @@ public class LetterController : BaseController
 
         try
         {
-            if ( form.LetterId == default )
-            {
-                letter = await _service.SaveLetterAsync(form);
-            }
-            else
-            {
-                letter = await _service.UpdateLetterAsync(form);
-            }
+            letter = await _service.SaveLetterAsync(form);
         }
         catch ( Exception e )
         {

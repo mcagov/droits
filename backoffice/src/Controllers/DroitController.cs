@@ -16,16 +16,19 @@ public class DroitController : BaseController
     private readonly IDroitService _service;
     private readonly IWreckService _wreckService;
     private readonly ISalvorService _salvorService;
+    private readonly ILetterService _letterService;
 
 
     public DroitController(ILogger<DroitController> logger, IDroitService service,
         IWreckService wreckService,
-        ISalvorService salvorService)
+        ISalvorService salvorService,
+        ILetterService letterService)
     {
         _logger = logger;
         _service = service;
         _wreckService = wreckService;
         _salvorService = salvorService;
+        _letterService = letterService;
     }
 
 
@@ -52,7 +55,7 @@ public class DroitController : BaseController
             HandleError(_logger, "Droit not found.", e);
             return RedirectToAction(nameof(Index));
         }
-
+        
         var model = new DroitView(droit);
         return View(model);
     }

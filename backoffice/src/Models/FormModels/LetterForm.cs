@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Models.FormModels;
@@ -10,17 +11,19 @@ public class LetterForm
     {
     }
 
-
     public LetterForm(Letter letter)
     {
-        LetterId = letter.Id;
+        Id = letter.Id;
+        DroitId = letter.DroitId;
         Recipient = letter.Recipient;
         Subject = letter.Subject;
         Body = letter.Body;
     }
 
 
-    public Guid LetterId { get; set; }
+    public Guid Id { get; set; }
+    public Guid DroitId { get; set; }
+    public LetterType Type { get; set; }
 
     [BindProperty]
     [Required(ErrorMessage = "Email is required")]
@@ -33,35 +36,14 @@ public class LetterForm
     [Required]
     [DataType(DataType.MultilineText)]
     public string Body { get; set; } = string.Empty;
-
-
-    public Dictionary<string, dynamic> GetPersonalisation()
-    {
-        return new Dictionary<string, dynamic>
-        {
-            { "subject", Subject },
-            { "reference", "TestRef123" }
-        };
-    }
-
-
-    public string GetLetterBody()
-    {
-        var output = Body;
-        foreach ( var param in GetPersonalisation() )
-        {
-            output = output.Replace($"(({param.Key}))", param.Value);
-        }
-
-        return output;
-    }
-
-
     public Letter ApplyChanges(Letter letter)
     {
+        letter.Id = Id;
+        letter.DroitId = DroitId;
         letter.Recipient = Recipient;
         letter.Subject = Subject;
-        letter.Body = GetLetterBody();
+        letter.Body = Body;
+        letter.Type = Type;
 
         return letter;
     }

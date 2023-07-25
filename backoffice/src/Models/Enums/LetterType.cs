@@ -25,7 +25,7 @@ public enum LetterType
     [Display(Name = "Custom Closure")]
     ClosureCustom,
 
-    [Display(Name = "Custom Email")]
+    [Display(Name = "Custom Letter")]
     CustomLetter,
 
     [Display(Name = "Test Email")]

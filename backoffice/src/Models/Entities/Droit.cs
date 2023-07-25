@@ -17,6 +17,8 @@ public class Droit
     public DateTime LastModified { get; set; } = DateTime.UtcNow;
 
     public ICollection<WreckMaterial> WreckMaterials { get; set; } = new List<WreckMaterial>();
+    public ICollection<Letter> Letters { get; set; } = new List<Letter>();
+ 
 
     // Wreck
 
