@@ -7,18 +7,53 @@ export function initializeSelect2() {
 
     $("#js-select-wreck").on("change", function () {
         toggleFields("#js-select-wreck", "#js-wreck-form-fields");
+        renderWreckPartial();
     });
     $("#js-select-salvor").on("change", function () {
         toggleFields("#js-select-salvor", "#js-salvor-form-fields");
+        renderSalvorPartial();
     });
     
     toggleFields("#js-select-wreck", "#js-wreck-form-fields");
     toggleFields("#js-select-salvor", "#js-salvor-form-fields");
     
     $("#js-select-unknown-wreck").on("change", toggleKnownWreck);
+
+    renderWreckPartial();
+    renderSalvorPartial();
     
     toggleKnownWreck();
 }
+
+function renderWreckPartial() {
+    renderPreviewPartial("#js-select-wreck",'.js-wreck-preview', "/Wreck/WreckViewPartial")
+}
+
+function renderSalvorPartial() {
+    renderPreviewPartial("#js-select-salvor",'.js-salvor-preview', "/Salvor/SalvorViewPartial")
+}
+
+
+
+function renderPreviewPartial(selectSelector, containerSelector, endpoint) {
+    const id = $(selectSelector).val();
+    const container = $(containerSelector);
+    container.empty();
+
+    if (id === "") {
+        return;
+    }
+
+    $.get(`${endpoint}/${id}`)
+        .done(function (response) {
+            const $responseElement = $('<div>').addClass('js-preview mt-2 border border-grey').append(response);
+            container.append($responseElement);
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            console.error("Error occurred during AJAX request:", errorThrown);
+        });
+}
+
 
 export function toggleFields(selectId, formFieldsId) {
     const selectElement = $(selectId);
