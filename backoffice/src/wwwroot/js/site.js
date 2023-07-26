@@ -2,15 +2,22 @@
 import 'bootstrap/dist/js/bootstrap.bundle';
 import 'select2';
 
-$(function () {
 
+$(function () {
+    
+    
     window.confirm = function (message, callback) {
         $('#confirmDialogTitle').text('Confirmation');
         $('#confirmDialogMessage').text(message);
         $('#confirmDialogBtn').off('click').on('click', callback);
         $('#confirmDialog').modal('show');
     };
-
+    
+    $('.nav-item').each(function () {
+        var navLink = $(this).find('button');
+        validateFormTab(navLink);
+    });
+    
     $('#js-select-wreck, #js-select-salvor').select2({
         width: '100%'
     });
@@ -55,7 +62,12 @@ $(function () {
                 refreshWmFormIndexes();
             });
     });
-
+    
+    function validateFormTab(navLink){
+        if ($(navLink.attr('data-bs-target')).find(".input-validation-error").length > 0) {
+            navLink.addClass("text-danger");
+        }
+    }
     function toggleFields(selectId, formFieldsId) {
         var selectElement = $(selectId);
         var formFields = $(formFieldsId);
