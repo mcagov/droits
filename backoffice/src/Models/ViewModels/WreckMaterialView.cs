@@ -27,12 +27,14 @@ public class WreckMaterialView
         WhereSecured = wreckMaterial.WhereSecured;
         Created = wreckMaterial.Created;
         LastModified = wreckMaterial.LastModified;
+        Address = new AddressView(wreckMaterial.Address);
     }
 
 
     public Guid Id { get; }
     public Guid DroitId { get; }
     public string Name { get; } = string.Empty;
+    public AddressView Address { get; } = new();
 
     [DataType(DataType.MultilineText)]
     public string? Description { get; } = string.Empty;

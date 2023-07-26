@@ -116,6 +116,10 @@
                     @Html.ValidationMessageFor(m => m.WhereSecured, "", new { @class = "text-danger" })
                 </div>
             </div>
+            
+            <h5>Storage Address</h5>
+            
+            <partial name="Address/_AddressFormFields" for="Address"/>
         </div>
     </div>
 </div>
