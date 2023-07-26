@@ -36,8 +36,27 @@
                     <a asp-action="View" asp-route-id="@droit.Id">@droit.Reference</a>
                 </td>
                 <td class="p-3">@Html.DisplayFor(m => droit.Status)</td>
-                <td class="p-3">@Html.ActionLink(droit?.Salvor?.Name??"Unknown Salvor", "View", "Salvor", new { id = droit?.Salvor?.Id })</td>
-                <td class="p-3">@Html.ActionLink(droit?.Wreck?.Name??"Unknown Wreck", "View", "Wreck", new { id = droit?.Wreck?.Id })</td>
+                @* change Actions links to only be used when salvor/wreck is known *@
+                <td class="p-3">@{
+                        if (droit.Salvor == null)
+                        {
+                            @Html.Display("Unknown Salvor")
+                        }
+                        else
+                        {
+                            @Html.ActionLink(droit?.Salvor?.Name,"View", "Salvor", new { id = droit?.Salvor?.Id })
+                        }
+                    }</td>
+                <td class="p-3">@{
+                    if (droit.Wreck == null)
+                    {
+                        <p>Unknown Wreck</p>
+                    }
+                    else
+                    {
+                        @Html.ActionLink(droit?.Wreck?.Name,"View", "Wreck", new { id = droit?.Wreck?.Id })
+                    }
+                }</td>
                 <td class="p-3">@droit?.Created.ToString("dd/MM/yyyy")</td>
                 <td class="p-3">
                     <div class="btn-group">
