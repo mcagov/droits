@@ -36,7 +36,6 @@
                     <a asp-action="View" asp-route-id="@droit.Id">@droit.Reference</a>
                 </td>
                 <td class="p-3">@Html.DisplayFor(m => droit.Status)</td>
-                @* change Actions links to only be used when salvor/wreck is known *@
                 <td class="p-3">@{
                         if (droit.Salvor?.Name != null)
                         {                            
