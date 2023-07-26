@@ -14,15 +14,22 @@ export function initializeSelect2() {
     
     toggleFields("#js-select-wreck", "#js-wreck-form-fields");
     toggleFields("#js-select-salvor", "#js-salvor-form-fields");
+    
+    $("#js-select-unknown-wreck").on("change", toggleKnownWreck);
+    
+    toggleKnownWreck();
 }
 
 export function toggleFields(selectId, formFieldsId) {
-    var selectElement = $(selectId);
-    var formFields = $(formFieldsId);
+    const selectElement = $(selectId);
+    const formFields = $(formFieldsId);
+    
+    const showFields = selectElement.val() !== "";
 
-    if (selectElement.val() === "") {
-        formFields.removeClass("d-none");
-    } else {
-        formFields.addClass("d-none");
-    }
+    formFields.toggleClass("d-none",showFields);
+}
+
+function toggleKnownWreck(){
+    const showKnownWreck = $("#js-select-unknown-wreck").val() === "True";
+    $(".js-known-wreck").toggleClass("d-none", showKnownWreck);
 }
