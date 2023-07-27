@@ -94,8 +94,11 @@
             <div class="d-none" id="js-salvor-form-fields">
                 <partial name="Salvor/_SalvorFormFields" for="SalvorForm"/>
             </div>
+            
+            <div class="js-salvor-preview">
+                
+            </div>
         </div>
-
         <div class="tab-pane fade" id="wreck" role="tabpanel" aria-labelledby="wreck-tab">
             <div class="form-group">
                 @Html.LabelFor(m => m.IsUnknownWreck, new { @class = "col-form-label" })
@@ -111,6 +114,10 @@
 
                 <div class="d-none" id="js-wreck-form-fields">
                     <partial name="Wreck/_WreckFormFields" for="WreckForm"/>
+                </div>
+                
+                <div class="js-wreck-preview">
+                    
                 </div>
             </div>
         </div>

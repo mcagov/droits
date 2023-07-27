@@ -117,4 +117,18 @@ public class SalvorController : BaseController
         AddSuccessMessage("Salvor saved successfully.");
         return RedirectToAction(nameof(Index));
     }
+    
+    [HttpGet]
+    public async Task<ActionResult> SalvorViewPartial(Guid id)
+    {
+        try
+        {
+            var salvor = await _service.GetSalvorAsync(id);
+            return PartialView("Salvor/_SalvorViewFields", new SalvorView(salvor));
+        }
+        catch ( SalvorNotFoundException e )
+        {
+            return NotFound();
+        }
+    }
 }
