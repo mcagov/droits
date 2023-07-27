@@ -33,7 +33,7 @@ public class WreckController : BaseController
     [HttpGet]
     public async Task<IActionResult> View(Guid id)
     {
-        var wreck = new Wreck();
+        Wreck wreck;
         try
         {
             wreck = await _service.GetWreckAsync(id);
