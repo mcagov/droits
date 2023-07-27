@@ -71,6 +71,9 @@ public partial class DroitsContext : DbContext
             entity.Property(d => d.Agent);
             entity.Property(d => d.RecoveredFrom);
             entity.Property(d => d.ImportedFromLegacy);
+            
+            //Relationships 
+            
             entity.HasOne(d => d.Wreck)
                 .WithMany(w => w.Droits)
                 .HasForeignKey(d => d.WreckId)

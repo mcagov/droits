@@ -32,7 +32,7 @@ public class SalvorRepository : ISalvorRepository
 
     public async Task<Salvor> GetSalvorAsync(Guid id)
     {
-        var salvor = await _context.Salvors.FindAsync(id);
+        var salvor = await _context.Salvors.Include(s => s.Droits).FirstOrDefaultAsync(s => s.Id == id);
         if ( salvor == null )
         {
             throw new SalvorNotFoundException();

@@ -33,7 +33,7 @@ public class SalvorController : BaseController
     [HttpGet]
     public async Task<IActionResult> View(Guid id)
     {
-        var salvor = new Salvor();
+        Salvor salvor;
         try
         {
             salvor = await _service.GetSalvorAsync(id);
@@ -44,7 +44,7 @@ public class SalvorController : BaseController
             return RedirectToAction(nameof(Index));
         }
 
-        var model = new SalvorView(salvor);
+        var model = new SalvorView(salvor, true);
         return View(model);
     }
 
@@ -128,6 +128,7 @@ public class SalvorController : BaseController
         }
         catch ( SalvorNotFoundException e )
         {
+            _logger.LogError("Salvor not found for partial", e);
             return NotFound();
         }
     }

@@ -44,7 +44,7 @@ public class WreckController : BaseController
             return RedirectToAction(nameof(Index));
         }
 
-        var model = new WreckView(wreck);
+        var model = new WreckView(wreck, true);
         return View(model);
     }
 
@@ -126,8 +126,9 @@ public class WreckController : BaseController
             var wreck = await _service.GetWreckAsync(id);
             return PartialView("Wreck/_WreckViewFields", new WreckView(wreck));
         }
-        catch ( WreckNotFoundException e )
+        catch ( WreckNotFoundException e)
         {
+            _logger.LogError("Wreck not found for partial", e);
             return NotFound();
         }
     }

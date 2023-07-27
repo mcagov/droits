@@ -11,7 +11,7 @@ public class SalvorView
     }
 
 
-    public SalvorView(Salvor salvor)
+    public SalvorView(Salvor salvor, bool includeAssociations = false)
     {
         Id = salvor.Id;
         Email = salvor.Email;
@@ -21,6 +21,11 @@ public class SalvorView
         Created = salvor.Created;
         LastModified = salvor.LastModified;
         Address = new AddressView(salvor.Address);
+
+        if ( includeAssociations )
+        {
+            Droits = new DroitListView(salvor.Droits.Select(d => new DroitView(d)).ToList());
+        }
     }
 
 
@@ -44,4 +49,7 @@ public class SalvorView
     [DisplayName("Last Modified")]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime LastModified { get; }
+    
+    public DroitListView Droits { get; } = new();
+
 }
