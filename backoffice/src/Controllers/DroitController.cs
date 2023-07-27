@@ -16,27 +16,23 @@ public class DroitController : BaseController
     private readonly IDroitService _service;
     private readonly IWreckService _wreckService;
     private readonly ISalvorService _salvorService;
-    private readonly ILetterService _letterService;
-
-
+    
     public DroitController(ILogger<DroitController> logger, IDroitService service,
         IWreckService wreckService,
-        ISalvorService salvorService,
-        ILetterService letterService)
+        ISalvorService salvorService)
     {
         _logger = logger;
         _service = service;
         _wreckService = wreckService;
         _salvorService = salvorService;
-        _letterService = letterService;
     }
 
 
     public async Task<IActionResult> Index()
     {
-        var droits = await _service.GetDroitsAsync();
+        var droits = await _service.GetDroitsWithAssociationsAsync();
 
-        var model = droits.Select(d => new DroitView(d)).ToList();
+        var model = new DroitListView(droits.Select(d => new DroitView(d)).ToList(), true);
 
         return View(model);
     }
@@ -48,7 +44,7 @@ public class DroitController : BaseController
         var droit = new Droit();
         try
         {
-            droit = await _service.GetDroitAsync(id);
+            droit = await _service.GetDroitWithAssociationsAsync(id);
         }
         catch ( DroitNotFoundException e )
         {

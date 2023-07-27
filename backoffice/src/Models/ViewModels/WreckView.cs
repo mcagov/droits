@@ -11,7 +11,7 @@ public class WreckView
     }
 
 
-    public WreckView(Wreck wreck)
+    public WreckView(Wreck wreck, bool includeAssociations = false)
     {
         Id = wreck.Id;
         Name = wreck.Name;
@@ -34,6 +34,12 @@ public class WreckView
         OwnerName = wreck.OwnerName;
         OwnerEmail = wreck.OwnerEmail;
         OwnerNumber = wreck.OwnerNumber;
+
+        if ( includeAssociations )
+        {
+            Droits = new DroitListView(wreck.Droits.Select(d => new DroitView(d)).ToList());
+        }
+        
     }
 
     // Base fields...
@@ -89,4 +95,6 @@ public class WreckView
     [DisplayName("Additional Information")]
     [DataType(DataType.MultilineText)]
     public string? AdditionalInformation { get; } = string.Empty;
+
+    public DroitListView Droits { get; } = new();
 }

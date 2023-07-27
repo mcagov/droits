@@ -9,6 +9,9 @@ namespace Droits.Repositories;
 public interface IDroitRepository
 {
     Task<List<Droit>> GetDroitsAsync();
+    Task<List<Droit>> GetDroitsWithAssociationsAsync();
+    
+    Task<Droit> GetDroitWithAssociationsAsync(Guid id);
     Task<Droit> GetDroitAsync(Guid id);
     Task<Droit> AddDroitAsync(Droit droit);
     Task<Droit> UpdateDroitAsync(Droit droit);
@@ -32,14 +35,38 @@ public class DroitRepository : IDroitRepository
 
     public async Task<List<Droit>> GetDroitsAsync()
     {
-        return await _context.Droits.Include(d => d.Letters).Include(d => d.Wreck).Include(d => d.Salvor).ToListAsync();
+        return await _context.Droits.ToListAsync();
     }
 
+    public async Task<List<Droit>> GetDroitsWithAssociationsAsync()
+    {
+        return await _context.Droits
+                             .Include(d => d.Letters)
+                             .Include(d => d.Wreck)
+                             .Include(d => d.Salvor)
+                             .Include(d => d.WreckMaterials)
+                             .ToListAsync();
+    }
 
+    public async Task<Droit> GetDroitWithAssociationsAsync(Guid id)
+    {
+        var droit = await _context.Droits
+            .Include(d => d.Letters)
+            .Include(d => d.Wreck)
+            .Include(d => d.Salvor)
+            .Include(d => d.WreckMaterials)
+            .FirstOrDefaultAsync(d => d.Id == id);
+        if ( droit == null )
+        {
+            throw new DroitNotFoundException();
+        }
+
+        return droit;
+    }
+    
     public async Task<Droit> GetDroitAsync(Guid id)
     {
-        var droit = await _context.Droits.Include(d => d.Letters).Include(d => d.Wreck).Include(d => d.Salvor)
-            .Include(d => d.WreckMaterials).FirstOrDefaultAsync(d => d.Id == id);
+        var droit = await _context.Droits.Include(d => d.WreckMaterials).FirstOrDefaultAsync(d => d.Id == id);
         if ( droit == null )
         {
             throw new DroitNotFoundException();

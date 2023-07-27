@@ -8,16 +8,17 @@ namespace Droits.Services;
 public interface IDroitService
 {
     Task<List<Droit>> GetDroitsAsync();
+    Task<List<Droit>> GetDroitsWithAssociationsAsync();
     Task<Droit> SaveDroitAsync(Droit droit);
     Task<Droit> GetDroitAsync(Guid id);
+    Task<Droit> GetDroitWithAssociationsAsync(Guid id);
     Task SaveWreckMaterialsAsync(Guid id, List<WreckMaterialForm> wreckMaterialForms);
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
 }
 
 public class DroitService : IDroitService
 {
-    public readonly IDroitRepository _repo;
-
+    private readonly IDroitRepository _repo;
 
     public DroitService(IDroitRepository repo)
     {
@@ -28,6 +29,12 @@ public class DroitService : IDroitService
     public async Task<List<Droit>> GetDroitsAsync()
     {
         return await _repo.GetDroitsAsync();
+    }
+    
+    
+    public async Task<List<Droit>> GetDroitsWithAssociationsAsync()
+    {
+        return await _repo.GetDroitsWithAssociationsAsync();
     }
 
 
@@ -53,13 +60,16 @@ public class DroitService : IDroitService
         return await _repo.UpdateDroitAsync(droit);
     }
 
+    public async Task<Droit> GetDroitWithAssociationsAsync(Guid id)
+    {
+        return await _repo.GetDroitWithAssociationsAsync(id);
+    }
 
     public async Task<Droit> GetDroitAsync(Guid id)
     {
         return await _repo.GetDroitAsync(id);
     }
-
-
+    
     private async Task<WreckMaterial> SaveWreckMaterialAsync(WreckMaterialForm wreckMaterialForm)
     {
         if ( wreckMaterialForm.Id == default )
