@@ -36,6 +36,7 @@ public class WreckMaterialForm : FormModel
 
     public string Name { get; set; } = string.Empty;
     public AddressForm StorageAddress { get; set; } = new();
+    public bool StoredAtSalvor { get; set; }
 
     [DataType(DataType.MultilineText)]
     public string? Description { get; set; } = string.Empty;

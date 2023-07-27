@@ -115,7 +115,19 @@ public class DroitController : BaseController
         {
             ModelState.RemoveStartingWith("SalvorForm");
         }
+        
+        for ( int i =0; i < form.WreckMaterialForms.Count; i++ )
+        {
+            var wmForm = form.WreckMaterialForms[i];
+            
+            if ( wmForm.StoredAtSalvor )
+            {
+                ModelState.RemoveStartingWith($"WreckMaterialForms[{i}].StorageAddress");    
+            }
+        }
 
+        
+         
         if ( !ModelState.IsValid )
         {
             AddErrorMessage("Could not save Droit");

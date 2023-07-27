@@ -117,7 +117,10 @@
                 </div>
             </div>
             
-            <h5>Storage Address</h5>
+            <div class="form-group row mt-2">
+                <h5>Storage Address</h5>
+                @Html.CheckBoxFor(m => m.StoredAtSalvor)
+            </div>
             
             <partial name="Address/_AddressFormFields" for="StorageAddress"/>
         </div>

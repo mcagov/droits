@@ -106,9 +106,16 @@ public class DroitService : IDroitService
 
         await DeleteWreckMaterialForDroitAsync(droitId, wreckMaterialIdsToKeep);
 
+        var droit = await GetDroitWithAssociationsAsync(droitId);
+        var salvorAddress = droit.Salvor.Address;
+
         foreach ( var wmForm in wreckMaterialForms )
         {
             wmForm.DroitId = droitId;
+            if ( wmForm.StoredAtSalvor )
+            {
+                wmForm.StorageAddress = new AddressForm(salvorAddress);
+            }
             await SaveWreckMaterialAsync(wmForm);
         }
     }
