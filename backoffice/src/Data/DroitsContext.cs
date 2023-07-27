@@ -101,6 +101,8 @@ public partial class DroitsContext : DbContext
             entity.Property(w => w.Purchaser);
             entity.Property(w => w.Outcome);
             entity.Property(w => w.WhereSecured);
+            
+            entity.OwnsOne(w => w.StorageAddress);
 
             entity.HasOne(w => w.Droit)
                 .WithMany(d => d.WreckMaterials)
