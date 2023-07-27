@@ -117,4 +117,19 @@ public class WreckController : BaseController
         AddSuccessMessage("Wreck saved successfully.");
         return RedirectToAction(nameof(Index));
     }
+    
+    [HttpGet]
+    public async Task<ActionResult> WreckViewPartial(Guid id)
+    {
+        try
+        {
+            var wreck = await _service.GetWreckAsync(id);
+            return PartialView("Wreck/_WreckViewFields", new WreckView(wreck));
+        }
+        catch ( WreckNotFoundException e )
+        {
+            return NotFound();
+        }
+    }
+
 }
