@@ -25,7 +25,7 @@ public class WreckMaterialForm : FormModel
         Purchaser = wreckMaterial.Purchaser;
         Outcome = wreckMaterial.Outcome;
         WhereSecured = wreckMaterial.WhereSecured;
-        Address = new AddressForm(wreckMaterial.Address);
+        StorageAddress = new AddressForm(wreckMaterial.StorageAddress);
     }
 
 
@@ -35,7 +35,7 @@ public class WreckMaterialForm : FormModel
     public Guid DroitId { get; set; }
 
     public string Name { get; set; } = string.Empty;
-    public AddressForm Address { get; set; } = new();
+    public AddressForm StorageAddress { get; set; } = new();
 
     [DataType(DataType.MultilineText)]
     public string? Description { get; set; } = string.Empty;
@@ -86,7 +86,7 @@ public class WreckMaterialForm : FormModel
         wreckMaterial.Outcome = Outcome;
         wreckMaterial.WhereSecured = WhereSecured;
         
-        Address.ApplyChanges(wreckMaterial.Address);
+        StorageAddress.ApplyChanges(wreckMaterial.StorageAddress);
 
         return wreckMaterial;
     }

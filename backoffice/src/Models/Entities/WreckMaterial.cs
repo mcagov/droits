@@ -11,7 +11,7 @@ public class WreckMaterial
 
     public virtual Droit? Droit { get; set; }
     public string Name { get; set; } = string.Empty;
-    public Address Address { get; set; } = new();
+    public Address StorageAddress { get; set; } = new();
     public string? Description { get; set; } = string.Empty;
     public int Quantity { get; set; } = 1;
     public float? Value { get; set; } = 0;
