@@ -16,10 +16,16 @@
     </div>
 </div>
 
-<partial name="_LetterListTable" model="@Model.LetterList"/>
+<partial name="_LetterListTable" model="@Model.Letters"/>
 
 <div class="row">
     <div class="col">
         <a class="btn btn-primary float-end" asp-action="Edit">Compose Letter</a>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col">
+        @await Html.PartialAsync("_PaginationPartial", Model)
     </div>
 </div>

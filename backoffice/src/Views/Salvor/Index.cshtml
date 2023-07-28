@@ -1,4 +1,4 @@
-@model List<SalvorView>
+@model Droits.Models.ViewModels.ListViews.SalvorListView
 
 @{
     ViewData["Title"] = "Salvors";
@@ -28,7 +28,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var salvor in Model)
+        @foreach (SalvorView salvor in Model.Items)
         {
             <tr>
                 <td class="p-3 text-uppercase">
@@ -51,5 +51,11 @@
 <div class="row">
     <div class="col">
         <a class="btn btn-primary float-end" asp-action="Add">Add Salvor</a>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col">
+        @await Html.PartialAsync("_PaginationPartial", Model)
     </div>
 </div>

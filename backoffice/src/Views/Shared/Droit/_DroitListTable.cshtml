@@ -1,4 +1,4 @@
-@model DroitListView
+@model Droits.Models.ViewModels.ListViews.DroitListView
 
 <div class="table-responsive">
     <table class="table table-striped">
@@ -16,7 +16,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var droit in Model.Droits)
+        @foreach (DroitView droit in Model.Items)
         {
             <tr>
                 <td class="p-3 text-uppercase">

@@ -7,7 +7,8 @@ namespace Droits.Repositories;
 
 public interface ISalvorRepository
 {
-    Task<List<Salvor>> GetSalvorsAsync();
+    IQueryable<Salvor> GetSalvors();
+    IQueryable<Salvor> GetSalvorsWithAssociations();
     Task<Salvor> GetSalvorAsync(Guid id);
     Task<Salvor> AddSalvorAsync(Salvor salvor);
     Task<Salvor> UpdateSalvorAsync(Salvor salvor);
@@ -24,11 +25,15 @@ public class SalvorRepository : ISalvorRepository
     }
 
 
-    public async Task<List<Salvor>> GetSalvorsAsync()
+    public IQueryable<Salvor> GetSalvors()
     {
-        return await _context.Salvors.ToListAsync();
+        return _context.Salvors;
     }
-
+    
+    public IQueryable<Salvor> GetSalvorsWithAssociations()
+    {
+        return GetSalvors();
+    }
 
     public async Task<Salvor> GetSalvorAsync(Guid id)
     {

@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
+using Droits.Models.ViewModels.ListViews;
 
 namespace Droits.Models.ViewModels;
 

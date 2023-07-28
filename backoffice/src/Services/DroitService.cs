@@ -1,12 +1,18 @@
+using Droits.Helpers;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Models.Enums;
+using Droits.Models.ViewModels;
+using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Services;
 
 public interface IDroitService
 {
+
+    Task<DroitListView> GetDroitsListViewAsync(SearchOptions searchOptions);
     Task<List<Droit>> GetDroitsAsync();
     Task<List<Droit>> GetDroitsWithAssociationsAsync();
     Task<Droit> SaveDroitAsync(Droit droit);
@@ -26,15 +32,31 @@ public class DroitService : IDroitService
     }
 
 
+    public async Task<DroitListView> GetDroitsListViewAsync(SearchOptions searchOptions)
+    {
+        var query = searchOptions.IncludeAssociations ? _repo.GetDroitsWithAssociations() : _repo.GetDroits();
+        var pagedDroits = await ServiceHelpers.GetPagedResult(query.Select(d => new DroitView(d)), searchOptions);
+
+        return new DroitListView(pagedDroits.Items)
+        {
+            PageNumber = pagedDroits.PageNumber,
+            PageSize = pagedDroits.PageSize,
+            IncludeAssociations = pagedDroits.IncludeAssociations,
+            TotalCount = pagedDroits.TotalCount
+        };
+    }
+
+
+    
     public async Task<List<Droit>> GetDroitsAsync()
     {
-        return await _repo.GetDroitsAsync();
+        return await _repo.GetDroits().ToListAsync();
     }
     
     
     public async Task<List<Droit>> GetDroitsWithAssociationsAsync()
     {
-        return await _repo.GetDroitsWithAssociationsAsync();
+        return await _repo.GetDroitsWithAssociations().ToListAsync();
     }
 
 

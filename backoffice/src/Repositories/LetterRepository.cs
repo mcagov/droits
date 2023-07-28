@@ -7,11 +7,11 @@ namespace Droits.Repositories;
 
 public interface ILetterRepository
 {
-    Task<List<Letter>> GetLettersAsync();
+    IQueryable<Letter> GetLetters();
+    IQueryable<Letter> GetLettersWithAssociations();
     Task<Letter> GetLetterAsync(Guid id);
     Task<Letter> AddLetterAsync(Letter letter);
     Task<Letter> UpdateLetterAsync(Letter letter);
-    Task<List<Letter>> GetLettersForRecipientAsync(string recipient);
 }
 
 public class LetterRepository : ILetterRepository
@@ -25,11 +25,15 @@ public class LetterRepository : ILetterRepository
     }
 
 
-    public async Task<List<Letter>> GetLettersAsync()
+    public IQueryable<Letter> GetLetters()
     {
-        return await _context.Letters.ToListAsync();
+        return _context.Letters;
     }
-
+    
+    public IQueryable<Letter> GetLettersWithAssociations()
+    {
+        return GetLetters();
+    }
 
     public async Task<Letter> GetLetterAsync(Guid id)
     {
@@ -42,14 +46,7 @@ public class LetterRepository : ILetterRepository
 
         return letter;
     }
-
-
-    public List<Letter> GetLetters()
-    {
-        return _context.Letters.ToList();
-    }
-
-
+    
     public async Task<Letter> AddLetterAsync(Letter letter)
     {
         letter.Created = DateTime.UtcNow;
@@ -72,13 +69,5 @@ public class LetterRepository : ILetterRepository
 
         return letter;
     }
-
-
-    public async Task<List<Letter>> GetLettersForRecipientAsync(string recipient)
-    {
-        return await _context.Letters
-            .Where(l => l.Recipient.Equals(recipient))
-            .OrderByDescending(l => l.LastModified)
-            .ToListAsync();
-    }
+    
 }

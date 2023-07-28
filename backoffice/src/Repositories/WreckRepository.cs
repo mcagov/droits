@@ -7,7 +7,8 @@ namespace Droits.Repositories;
 
 public interface IWreckRepository
 {
-    Task<List<Wreck>> GetWrecksAsync();
+    IQueryable<Wreck> GetWrecks();
+    IQueryable<Wreck> GetWrecksWithAssociations();
     Task<Wreck> GetWreckAsync(Guid id);
     Task<Wreck> AddWreckAsync(Wreck wreck);
     Task<Wreck> UpdateWreckAsync(Wreck wreck);
@@ -22,11 +23,15 @@ public class WreckRepository : IWreckRepository
     {
         _context = dbContext;
     }
-
-
-    public async Task<List<Wreck>> GetWrecksAsync()
+    
+    public IQueryable<Wreck> GetWrecks()
     {
-        return await _context.Wrecks.ToListAsync();
+        return _context.Wrecks;
+    }
+    
+    public IQueryable<Wreck> GetWrecksWithAssociations()
+    {
+        return GetWrecks();
     }
 
 
