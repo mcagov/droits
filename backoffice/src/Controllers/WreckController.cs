@@ -20,14 +20,13 @@ public class WreckController : BaseController
     }
 
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(SearchOptions searchOptions)
     {
-        var wrecks = await _service.GetWrecksAsync();
-
-        var model = wrecks.Select(w => new WreckView(w)).ToList();
-
+        searchOptions.IncludeAssociations = true;
+        var model = await _service.GetWrecksListViewAsync(searchOptions);
         return View(model);
     }
+
 
 
     [HttpGet]

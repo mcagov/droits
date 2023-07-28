@@ -28,20 +28,17 @@ public class DroitController : BaseController
     }
 
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(SearchOptions searchOptions)
     {
-        var droits = await _service.GetDroitsWithAssociationsAsync();
-
-        var model = new DroitListView(droits.Select(d => new DroitView(d)).ToList(), true);
-
+        searchOptions.IncludeAssociations = true;
+        var model = await _service.GetDroitsListViewAsync(searchOptions);
         return View(model);
     }
-
 
     [HttpGet]
     public async Task<IActionResult> View(Guid id)
     {
-        var droit = new Droit();
+        Droit droit;
         try
         {
             droit = await _service.GetDroitWithAssociationsAsync(id);

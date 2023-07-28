@@ -2,6 +2,7 @@ using Droits.Exceptions;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Models.ViewModels;
+using Droits.Models.ViewModels.ListViews;
 using Microsoft.AspNetCore.Mvc;
 using Droits.Services;
 
@@ -19,14 +20,11 @@ public class SalvorController : BaseController
         _service = service;
     }
 
-
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(SearchOptions searchOptions)
     {
-        var salvors = await _service.GetSalvorsAsync();
-
-        var model = salvors.Select(s => new SalvorView(s)).ToList();
-
-        return View(model);
+        searchOptions.IncludeAssociations = true;
+        var model = await _service.GetSalvorListViewAsync(searchOptions);
+        return View(model as SalvorListView);
     }
 
 
