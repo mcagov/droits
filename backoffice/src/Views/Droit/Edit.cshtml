@@ -101,9 +101,9 @@
         </div>
         <div class="tab-pane fade" id="wreck" role="tabpanel" aria-labelledby="wreck-tab">
             <div class="form-group">
-                @Html.LabelFor(m => m.IsUnknownWreck, new { @class = "col-form-label" })
-                @Html.DropDownListFor(m => m.IsUnknownWreck, Model.BooleanSelectList, "Select.....", new { @id= "js-select-unknown-wreck" , @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.IsUnknownWreck, "", new { @class = "text-danger" })
+                @Html.LabelFor(m => m.IsIsolatedFind, new { @class = "col-form-label" })
+                @Html.DropDownListFor(m => m.IsIsolatedFind, Model.BooleanSelectList, "Select.....", new { @id= "js-select-isolated-find" , @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.IsIsolatedFind, "", new { @class = "text-danger" })
             </div>
             <div class="js-known-wreck">
                 <div class="form-group">

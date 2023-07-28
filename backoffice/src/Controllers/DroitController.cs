@@ -106,7 +106,7 @@ public class DroitController : BaseController
     [HttpPost]
     public async Task<IActionResult> Save(DroitForm form)
     {
-        if ( form.WreckId.HasValue || form.IsUnknownWreck)
+        if ( form.WreckId.HasValue || form.IsIsolatedFind)
         {
             ModelState.RemoveStartingWith("WreckForm");
         }
@@ -140,7 +140,7 @@ public class DroitController : BaseController
 
         droit = form.ApplyChanges(droit);
 
-        if ( !droit.WreckId.HasValue && !form.IsUnknownWreck)
+        if ( !droit.WreckId.HasValue && !form.IsIsolatedFind)
         {
             droit.WreckId = await _wreckService.SaveWreckFormAsync(form.WreckForm);
         }

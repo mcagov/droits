@@ -23,7 +23,7 @@ public class DroitForm : FormModel
         ReportedDate = droit.ReportedDate;
         DateFound = droit.DateFound;
 
-        IsUnknownWreck = droit.WreckId == default;
+        IsIsolatedFind = droit.WreckId == default;
 
         Created = droit.Created;
         Modified = droit.LastModified;
@@ -73,8 +73,8 @@ public class DroitForm : FormModel
     public Guid Id { get; set; }
 
     public WreckForm WreckForm { get; set; } = new();
-    [DisplayName("Is Unknown Wreck")]
-    public bool IsUnknownWreck { get; set; } = true;
+    [DisplayName("Is Isolated Find")]
+    public bool IsIsolatedFind { get; set; } = true;
     public List<WreckMaterialForm> WreckMaterialForms { get; set; } = new();
     public SalvorForm SalvorForm { get; set; } = new();
 
@@ -185,7 +185,7 @@ public class DroitForm : FormModel
     public Droit ApplyChanges(Droit droit)
     {
         droit.Id = Id;
-        droit.WreckId = IsUnknownWreck?default:WreckId;
+        droit.WreckId = IsIsolatedFind?default:WreckId;
         droit.SalvorId = SalvorId;
         droit.Status = Status;
         droit.ReportedDate = ReportedDate;
