@@ -24,7 +24,7 @@ public class SalvorController : BaseController
     {
         searchOptions.IncludeAssociations = true;
         var model = await _service.GetSalvorListViewAsync(searchOptions);
-        return View(model as SalvorListView);
+        return View(model);
     }
 
 
