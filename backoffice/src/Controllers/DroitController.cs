@@ -116,18 +116,12 @@ public class DroitController : BaseController
             ModelState.RemoveStartingWith("SalvorForm");
         }
         
-        for ( int i =0; i < form.WreckMaterialForms.Count; i++ )
-        {
-            var wmForm = form.WreckMaterialForms[i];
-            
-            if ( wmForm.StoredAtSalvor )
-            {
-                ModelState.RemoveStartingWith($"WreckMaterialForms[{i}].StorageAddress");    
-            }
-        }
-
+        form.WreckMaterialForms
+            .Select((wmForm, i) => new { Form = wmForm, Index = i })
+            .Where(item => item.Form.StoredAtSalvor)
+            .ToList()
+            .ForEach(item => ModelState.RemoveStartingWith($"WreckMaterialForms[{item.Index}].StorageAddress"));
         
-         
         if ( !ModelState.IsValid )
         {
             AddErrorMessage("Could not save Droit");
