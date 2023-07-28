@@ -24,4 +24,7 @@
     @Html.ValidationMessageFor(m => m.DateOfBirth, "", new { @class = "text-danger" })
 </div>
 
-<partial name="Address/_AddressFormFields" for="Address"/>
+<div class="form-group mt-2">
+    <h5>Address</h5>
+    <partial name="Address/_AddressFormFields" for="Address"/>
+</div>
