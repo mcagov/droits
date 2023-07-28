@@ -1,0 +1,31 @@
+root = true
+
+[*.{cs, csharp}]
+indent_size = 4
+max_line_length = 100
+
+csharp_space_between_parentheses = expressions, type_casts, control_flow_statements
+csharp_style_var_for_built_in_types = true
+csharp_prefer_braces_for_single_line_statements = true
+
+resharper_csharp_brace_style = next_line
+resharper_csharp_blank_lines_around_invocable = 2
+
+csharp_default_private_modifier = explicit
+braces_for_ifelse = not_required
+
+resharper_possible_null_reference_exception_highlighting = error
+resharper_replace_with_string_is_null_or_empty_highlighting = none
+
+resharper_csharp_place_type_attribute_on_same_line = never
+resharper_csharp_place_attribute_on_same_line = never
+resharper_place_type_attribute_on_same_line = never
+resharper_place_attribute_on_same_line = never
+
+resharper_csharp_place_simple_embedded_statement_on_same_line = never
+resharper_place_simple_embedded_statement_on_same_line = never
+
+resharper_csharp_place_simple_embedded_block_on_same_line = never
+resharper_csharp_place_simple_blocks_on_single_line = never
+resharper_place_simple_embedded_block_on_same_line = never
+resharper_place_simple_blocks_on_single_line = never

@@ -1,0 +1,75 @@
+@import 'variables';
+@import 'bootstrap/scss/bootstrap';
+@import 'select2/dist/css/select2.css';
+
+html {
+  font-size: 14px;
+  position: relative;
+  min-height: 100%;
+  color: $text-color;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+body {
+  margin-bottom: 60px;
+  min-height: 100%;
+}
+
+nav.navbar {
+  background-color: $navbar-bg;
+
+  .mca-logo {
+    max-height: 65px;
+  }
+}
+
+.font-weight-bold {
+  font-weight: bold;
+}
+
+
+div.form-sections {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: stretch;
+
+  fieldset {
+    width: 30%;
+    padding: 20px 15px;
+    margin: 15px 5px;
+    border: 1px solid var(--bs-gray-500);
+  }
+}
+
+.readonly-input {
+  border: none;
+
+  :focus {
+    outline: none;
+  }
+}
+
+.input-validation-error {
+  background-color: var(--bs-danger-bg-subtle);
+  border-color: var(--bs-danger-border-subtle);
+}
+
+.progress {
+  .progress-bar {
+    border-right: 1px solid #000;
+  }
+
+  :last-child {
+    border-right: none;
+  }
+}
+
+.multi-line-text {
+  white-space: pre-wrap;
+}

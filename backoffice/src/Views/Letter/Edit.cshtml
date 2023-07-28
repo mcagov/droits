@@ -1,0 +1,98 @@
+@using System.Runtime.InteropServices.JavaScript
+@model LetterForm
+@{
+    ViewData["Title"] = "Compose Letter";
+}
+
+
+<div class="row align-items-start">
+
+    @{
+        await Html.RenderPartialAsync("_MessageBanner");
+    }
+
+    <div class="col-lg-8">
+
+        <h4>@ViewData["Title"]</h4>
+
+        <form asp-action="SaveLetter" method="POST">
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.DroitId)
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Recipient, new { @class = "form-label" })
+                @Html.EditorFor(m => m.Recipient, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.Recipient, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Subject, new { @class = "form-label" })
+                @Html.EditorFor(m => m.Subject, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.Subject, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Body, new { @class = "form-label" })
+                @Html.EditorFor(m => m.Body, new { htmlAttributes = new { rows = 10, @class = "form-control email-body" } })
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="mt-4 float-end">
+                        <a type="button" class="btn btn-secondary" asp-action="Index">Cancel</a>
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+
+    <div class="col">
+
+        <h2>Inserting Droit Information</h2>
+
+        <h4>The following keys can be used to insert the stated information
+            on a droit </h4>
+
+        <p>((subject))</p>
+
+        <p>This inserts the default subject for the template</p>
+
+        <p>((reference))</p>
+
+        <p>This inserts the current Droit's reference number</p>
+    </div>
+
+    <div class="col-lg-4">
+
+        <h4>Formatting</h4>
+
+        <p>To put a title in your template, use a hash:</p>
+
+        <span class=""> # This is a title </span>
+
+        <p>To make bullet points, use asterisks:</p>
+
+        <p> * point 1 </p>
+        <p> * point 2 </p>
+        <p> * point 3 </p>
+
+        <p> To add inset text, use a caret:</p>
+        <p> ^ You must tell us if your circumstances change</p>
+
+        <p>To add a horizontal line, use three dashes: </p>
+
+        <p>First paragraph</p>
+        <p>---</p>
+        <p>Second paragraph</p>
+
+        <h4>Personalisation</h4>
+        <p>Use double brackets to personalise your message:</p>
+
+        <p>Hello ((first name)), your reference is ((ref number))</p>
+
+    </div>
+
+</div>

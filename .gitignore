@@ -12,9 +12,19 @@
 ##Backoffice
 backoffice/src/bin/
 backoffice/src/obj/
+backoffice/src/appsettings.*
+backoffice/src/wwwroot/dist/
+backoffice/src/wwwroot/scss/site.css.map
+backoffice/src/wwwroot/scss/site.css
+backoffice/src/node_modules
+backoffice/src/package-lock.json
 
 backoffice/tests/bin/
 backoffice/tests/obj/
+backoffice/tests/appsettings.*
+
+backoffice/Droits.sln.DotSettings.user
+
 
 ##terraform
 .terraform

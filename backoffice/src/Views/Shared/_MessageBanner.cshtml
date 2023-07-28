@@ -1,0 +1,15 @@
+<div>
+    @if (TempData.TryGetValue("SuccessMessage", out var successMessage))
+    {
+        <div class="alert alert-success" role="alert">
+            @successMessage
+        </div>
+    }
+
+    @if (TempData.TryGetValue("ErrorMessage", out var errorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @errorMessage
+        </div>
+    }
+</div>

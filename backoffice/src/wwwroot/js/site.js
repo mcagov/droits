@@ -1,4 +1,17 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿import $ from 'jquery';
+import 'bootstrap/dist/js/bootstrap.bundle';
+import 'select2';
 
-// Write your JavaScript code.
+import {confirmDialog} from './confirmDialog.js';
+import {initializeDroitForm} from './droitForm.js';
+
+$(function () {
+
+    window.confirm = function (message, callback) {
+        confirmDialog(message, callback);
+    };
+
+    if ($('.js-droit-form').length > 0) {
+        initializeDroitForm();
+    }
+});

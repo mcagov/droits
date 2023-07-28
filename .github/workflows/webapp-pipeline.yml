@@ -40,6 +40,7 @@ jobs:
       image_tag: ${{ inputs.image_tag }}
       environment: ${{ inputs.environment }}
       working-directory: webapp
+      env_filename: .env.json
     secrets:
       registry_url: ${{ secrets.registry_url }}
       repository_name: ${{ secrets.repository_name }}

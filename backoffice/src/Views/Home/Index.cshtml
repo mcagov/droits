@@ -1,7 +1,11 @@
 ﻿@{
-    ViewData["Title"] = "Droits V2 - Role auth flow - Updated";
+    ViewData["Title"] = "Droits V2";
 }
 
-<h4 class="govuk-heading-m">@ViewData["Title"]</h4>
-
-@* <govuk-button asp-controller="Droits" asp-action="Index">Manage Droits</govuk-button> *@
+<div class="jumbotron">
+    <h3 class="display-6">@ViewData["Title"]</h3>
+    <p class="lead">This is the droits replacement system to replace the PowerApps current system.</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg float-end" asp-controller="Droit" asp-action="Index" role="button">Manage Droits</a>
+    </p>
+</div>

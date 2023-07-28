@@ -1,0 +1,58 @@
+﻿@model WreckListView
+@{
+    ViewData["Title"] = "Wrecks";
+}
+
+@{
+    await Html.RenderPartialAsync("_MessageBanner");
+}
+
+<div class="row">
+    <div class="col">
+        <h4>@ViewData["Title"]</h4>
+    </div>
+    <div class="col">
+        <a class="btn btn-primary float-end" asp-action="Add">Add Wreck</a>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Created</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (WreckView wreck in Model.Items)
+        {
+            <tr>
+                <td class="p-3 text-uppercase">
+                    <a asp-action="View" asp-route-id="@wreck.Id">@wreck.Name</a>
+                </td>
+                <td class="p-3">@wreck.Created.ToString("dd/MM/yyyy")</td>
+                <td class="p-3">
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-route-id="@wreck.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="View" asp-route-id="@wreck.Id" class="btn btn-primary">View</a>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="col">
+        <a class="btn btn-primary float-end" asp-action="Add">Add Wreck</a>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col">
+        @await Html.PartialAsync("_PaginationPartial", Model)
+    </div>
+</div>

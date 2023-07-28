@@ -1,0 +1,64 @@
+@model Droits.Models.ViewModels.ListViews.DroitListView
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Reference</th>
+            <th scope="col">Status</th>
+            @if (Model.IncludeAssociations)
+            {
+                <th scope="col">Salvor</th>
+                <th scope="col">Wreck</th>
+            }
+            <th scope="col">Created</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (DroitView droit in Model.Items)
+        {
+            <tr>
+                <td class="p-3 text-uppercase">
+                    <a asp-action="View" asp-route-id="@droit.Id">@droit.Reference</a>
+                </td>
+                <td class="p-3">@Html.DisplayFor(m => droit.Status)</td>
+                @if (Model.IncludeAssociations)
+                {
+                    <td class="p-3">
+                        @{
+                            if (droit?.Salvor?.Name != null)
+                            {
+                                @Html.ActionLink(droit?.Salvor?.Name, "View", "Salvor", new { id = droit?.Salvor?.Id })
+                            }
+                            else
+                            {
+                                <span>Unknown Salvor</span>
+                            }
+                        }
+                    </td>
+                    <td class="p-3">
+                        @{
+                            if (droit?.Wreck?.Name != null)
+                            {
+                                @Html.ActionLink(droit?.Wreck?.Name, "View", "Wreck", new { id = droit?.Wreck?.Id })
+                            }
+                            else
+                            {
+                                <span>No Wreck</span>
+                            }
+                        }
+                    </td>
+                }
+                <td class="p-3">@droit?.Created.ToString("dd/MM/yyyy")</td>
+                <td class="p-3">
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-controller="Droit" asp-route-id="@droit?.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="View" asp-controller="Droit" asp-route-id="@droit?.Id" class="btn btn-primary">View</a>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

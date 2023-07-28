@@ -1,0 +1,47 @@
+@model LetterView
+
+@{
+    ViewData["Title"] = "Preview Letter";
+}
+<h4 class="display-8">@ViewData["Title"]</h4>
+<table class="table">
+    <tbody>
+    <tr>
+        <th scope="row">From</th>
+        <td>Report Wreck Material</td>
+    </tr>
+    <tr>
+        <th scope="row">Reply to</th>
+        <td>row@mcga.gov.uk</td>
+    </tr>
+    <tr>
+        <th scope="row">To</th>
+        <td>
+            @Html.DisplayFor(m => m.Recipient,
+                new { htmlAttributes = new { @class = "readonly-input", @readonly = "readonly" } })
+        </td>
+    </tr>
+
+    <tr>
+        <th scope="row">Subject</th>
+        <td>
+            @Html.DisplayFor(m => m.Subject,
+                new { htmlAttributes = new { @class = "readonly-input", @readonly = "readonly" } })
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            @{
+                await Html.RenderPartialAsync("_GovNotifyText", Model.Body);
+            }
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="mt-4 mb-4 float-end">
+    <a type="button" class="btn btn-secondary" asp-action="Index">Cancel</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
+    <a asp-action="SendLetter" asp-route-id="@Model.Id" class="btn btn-primary">Send</a>
+</div>

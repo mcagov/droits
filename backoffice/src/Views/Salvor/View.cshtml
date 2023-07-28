@@ -1,0 +1,40 @@
+@model SalvorView
+
+@{
+    ViewData["Title"] = Model.Name == "" ? "Salvor View" : Model.Name;
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">@ViewData["Title"]</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <partial name="Salvor/_SalvorViewFields"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h2 class="card-title">Droits</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <partial name="Droit/_DroitListTable" model="@Model.Droits"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col d-flex flex-row mt-4 justify-content-end">
+    <div class="align-self-end">
+        <a type="button" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <a type="button" class="btn btn-primary" asp-action="Index">View Salvors</a>
+    </div>
+</div>
