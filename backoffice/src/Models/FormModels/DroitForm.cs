@@ -73,8 +73,10 @@ public class DroitForm : FormModel
     public Guid Id { get; set; }
 
     public WreckForm WreckForm { get; set; } = new();
+
     [DisplayName("Is Isolated Find")]
     public bool IsIsolatedFind { get; set; } = true;
+
     public List<WreckMaterialForm> WreckMaterialForms { get; set; } = new();
     public SalvorForm SalvorForm { get; set; } = new();
 
@@ -185,7 +187,7 @@ public class DroitForm : FormModel
     public Droit ApplyChanges(Droit droit)
     {
         droit.Id = Id;
-        droit.WreckId = IsIsolatedFind?default:WreckId;
+        droit.WreckId = IsIsolatedFind ? default : WreckId;
         droit.SalvorId = SalvorId;
         droit.Status = Status;
         droit.ReportedDate = ReportedDate;

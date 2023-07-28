@@ -27,10 +27,14 @@ public class SalvorService : ISalvorService
         _repo = repo;
     }
 
+
     public async Task<SalvorListView> GetSalvorListViewAsync(SearchOptions searchOptions)
     {
-        var query = searchOptions.IncludeAssociations ? _repo.GetSalvorsWithAssociations() : _repo.GetSalvors();
-        var pagedItems = await ServiceHelpers.GetPagedResult(query.Select(s => new SalvorView(s, searchOptions.IncludeAssociations)), searchOptions);
+        var query = searchOptions.IncludeAssociations
+            ? _repo.GetSalvorsWithAssociations()
+            : _repo.GetSalvors();
+        var pagedItems = await ServiceHelpers.GetPagedResult(
+            query.Select(s => new SalvorView(s, searchOptions.IncludeAssociations)), searchOptions);
 
         return new SalvorListView(pagedItems.Items)
         {
@@ -40,6 +44,7 @@ public class SalvorService : ISalvorService
             TotalCount = pagedItems.TotalCount
         };
     }
+
 
     public async Task<List<Salvor>> GetSalvorsAsync()
     {

@@ -50,7 +50,6 @@ public class SalvorView
     [DisplayName("Last Modified")]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime LastModified { get; }
-    
-    public DroitListView Droits { get; } = new();
 
+    public DroitListView Droits { get; } = new();
 }

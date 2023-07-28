@@ -40,8 +40,8 @@ public class WreckView
         {
             Droits = new DroitListView(wreck.Droits.Select(d => new DroitView(d)).ToList());
         }
-        
     }
+
 
     // Base fields...
 
@@ -82,13 +82,13 @@ public class WreckView
 
     [DisplayName("Protection Legislation")]
     public string? ProtectionLegislation { get; }
-    
+
     [DisplayName("Owner Number")]
     public string? OwnerNumber { get; }
-    
+
     [DisplayName("Owner Email")]
     public string? OwnerEmail { get; }
-    
+
     [DisplayName("Owner Name")]
     public string? OwnerName { get; }
 

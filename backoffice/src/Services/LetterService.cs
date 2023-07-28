@@ -44,10 +44,15 @@ public class LetterService : ILetterService
         _droitService = droitService;
     }
 
+
     public async Task<LetterListView> GetLettersListViewAsync(SearchOptions searchOptions)
     {
-        var query = searchOptions.IncludeAssociations ? _repo.GetLettersWithAssociations() : _repo.GetLetters();
-        var pagedItems = await ServiceHelpers.GetPagedResult(query.Select(l => new LetterView(l)),searchOptions);
+        var query = searchOptions.IncludeAssociations
+            ? _repo.GetLettersWithAssociations()
+            : _repo.GetLetters();
+        var pagedItems =
+            await ServiceHelpers.GetPagedResult(query.Select(l => new LetterView(l)),
+                searchOptions);
 
         return new LetterListView(pagedItems.Items)
         {
@@ -58,13 +63,14 @@ public class LetterService : ILetterService
         };
     }
 
+
     public async Task<string> GetTemplateBodyAsync(LetterType letterType, Droit? droit)
     {
         var templatePath = Path.Combine(Environment.CurrentDirectory, TemplateDirectory,
             $"{letterType.ToString()}.Body.txt");
 
         var content = await ReadFileContentAsync(templatePath);
-  
+
         if ( droit == null )
         {
             return content;
@@ -72,22 +78,26 @@ public class LetterService : ILetterService
 
         return new LetterPersonalisationView(droit).SubstituteContent(content);
     }
+
+
     public async Task<string> GetTemplateSubjectAsync(LetterType letterType, Droit? droit)
     {
         var templatePath = Path.Combine(Environment.CurrentDirectory, TemplateDirectory,
             $"{letterType.ToString()}.Subject.txt");
 
         var content = await ReadFileContentAsync(templatePath);
-  
+
         if ( droit == null )
         {
             return content;
         }
-        
+
         return new LetterPersonalisationView(droit).SubstituteContent(content);
     }
 
-    private async Task<string> ReadFileContentAsync(string path){
+
+    private async Task<string> ReadFileContentAsync(string path)
+    {
         if ( !File.Exists(path) )
         {
             _logger.LogError($"File could not be found at: {path}");
@@ -96,6 +106,7 @@ public class LetterService : ILetterService
 
         return await File.ReadAllTextAsync(path);
     }
+
 
     public async Task<EmailNotificationResponse> SendLetterAsync(Guid id)
     {
@@ -129,14 +140,14 @@ public class LetterService : ILetterService
     {
         return await _repo.GetLetters().ToListAsync();
     }
-    
+
 
     public async Task<Letter> SaveLetterAsync(LetterForm form)
     {
         Letter letter;
         if ( form.Id == default )
         {
-            letter = new()
+            letter = new Letter
             {
                 DroitId = form.DroitId,
                 Subject = form.Subject,
@@ -153,9 +164,9 @@ public class LetterService : ILetterService
 
         if ( letter.DroitId != default )
         {
-            letter = await SubstituteLetterContentWithParamsAsync(letter);    
+            letter = await SubstituteLetterContentWithParamsAsync(letter);
         }
-        
+
         try
         {
             if ( form.Id == default )
@@ -176,8 +187,9 @@ public class LetterService : ILetterService
         return letter;
     }
 
-    private async Task<Letter> SubstituteLetterContentWithParamsAsync(Letter letter){
 
+    private async Task<Letter> SubstituteLetterContentWithParamsAsync(Letter letter)
+    {
         var droit = await _droitService.GetDroitAsync(letter.DroitId);
 
         var model = new LetterPersonalisationView(droit);
@@ -187,10 +199,9 @@ public class LetterService : ILetterService
         return letter;
     }
 
+
     public async Task<Letter> GetLetterByIdAsync(Guid id)
     {
         return await _repo.GetLetterAsync(id);
     }
-
-
 }

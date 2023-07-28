@@ -29,17 +29,19 @@ public class SalvorRepository : ISalvorRepository
     {
         return _context.Salvors;
     }
-    
+
+
     public IQueryable<Salvor> GetSalvorsWithAssociations()
     {
         return GetSalvors();
     }
 
+
     public async Task<Salvor> GetSalvorAsync(Guid id)
     {
         var salvor = await _context.Salvors
-                           .Include(s => s.Droits)
-                           .FirstOrDefaultAsync(s => s.Id == id);
+            .Include(s => s.Droits)
+            .FirstOrDefaultAsync(s => s.Id == id);
         if ( salvor == null )
         {
             throw new SalvorNotFoundException();

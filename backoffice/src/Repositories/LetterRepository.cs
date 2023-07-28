@@ -29,11 +29,13 @@ public class LetterRepository : ILetterRepository
     {
         return _context.Letters;
     }
-    
+
+
     public IQueryable<Letter> GetLettersWithAssociations()
     {
         return GetLetters();
     }
+
 
     public async Task<Letter> GetLetterAsync(Guid id)
     {
@@ -46,7 +48,8 @@ public class LetterRepository : ILetterRepository
 
         return letter;
     }
-    
+
+
     public async Task<Letter> AddLetterAsync(Letter letter)
     {
         letter.Created = DateTime.UtcNow;
@@ -69,5 +72,4 @@ public class LetterRepository : ILetterRepository
 
         return letter;
     }
-    
 }

@@ -16,7 +16,8 @@ public class LetterController : BaseController
     private readonly IDroitService _droitService;
 
 
-    public LetterController(ILogger<LetterController> logger, ILetterService service, IDroitService droitService)
+    public LetterController(ILogger<LetterController> logger, ILetterService service,
+        IDroitService droitService)
     {
         _logger = logger;
         _service = service;
@@ -31,7 +32,6 @@ public class LetterController : BaseController
         var model = await _service.GetLettersListViewAsync(searchOptions);
         return View(model);
     }
-
 
 
     [HttpGet]
@@ -73,7 +73,7 @@ public class LetterController : BaseController
 
 
     [HttpPost]
-    public async Task<IActionResult> AddLetterToDroit(Guid droitId,LetterType type)
+    public async Task<IActionResult> AddLetterToDroit(Guid droitId, LetterType type)
     {
         var droit = new Droit();
         try
@@ -86,17 +86,19 @@ public class LetterController : BaseController
             return RedirectToAction("Index", "Droit");
         }
 
-        var model = new LetterForm{
+        var model = new LetterForm
+        {
             DroitId = droit.Id,
             Recipient = droit?.Salvor?.Email ?? "",
             Type = type
         };
-        
-        
+
+
         model.Subject = await _service.GetTemplateSubjectAsync(type, droit);
         model.Body = await _service.GetTemplateBodyAsync(type, droit);
         return View(nameof(Edit), model);
     }
+
 
     [HttpGet]
     public async Task<IActionResult> SendLetter(Guid id)

@@ -23,12 +23,14 @@ public class WreckRepository : IWreckRepository
     {
         _context = dbContext;
     }
-    
+
+
     public IQueryable<Wreck> GetWrecks()
     {
         return _context.Wrecks;
     }
-    
+
+
     public IQueryable<Wreck> GetWrecksWithAssociations()
     {
         return GetWrecks();
@@ -38,8 +40,8 @@ public class WreckRepository : IWreckRepository
     public async Task<Wreck> GetWreckAsync(Guid id)
     {
         var wreck = await _context.Wrecks
-                            .Include(w => w.Droits)
-                            .FirstOrDefaultAsync(w => w.Id == id);
+            .Include(w => w.Droits)
+            .FirstOrDefaultAsync(w => w.Id == id);
         if ( wreck == null )
         {
             throw new WreckNotFoundException();
