@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-export function initializeWreckMaterial(){
+export function initializeWreckMaterial() {
 
     $("body").on("change", ".js-stored-salvor", function (e) {
         toggleWreckMaterialStorageAddress(e.target);
@@ -15,7 +15,7 @@ export function initializeWreckMaterial(){
     });
 }
 
-function toggleWreckMaterialStorageAddress(salvorAddressCheckbox){
+function toggleWreckMaterialStorageAddress(salvorAddressCheckbox) {
     const useSalvorAddress = $(salvorAddressCheckbox).prop("checked");
     const addressContainer = $(salvorAddressCheckbox).closest(".js-wreck-material-form").find(".js-wreck-material-address");
     addressContainer.toggleClass("d-none", useSalvorAddress);

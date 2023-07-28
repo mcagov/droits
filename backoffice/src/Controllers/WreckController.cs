@@ -28,7 +28,6 @@ public class WreckController : BaseController
     }
 
 
-
     [HttpGet]
     public async Task<IActionResult> View(Guid id)
     {
@@ -116,7 +115,8 @@ public class WreckController : BaseController
         AddSuccessMessage("Wreck saved successfully.");
         return RedirectToAction(nameof(Index));
     }
-    
+
+
     [HttpGet]
     public async Task<ActionResult> WreckViewPartial(Guid id)
     {
@@ -125,11 +125,10 @@ public class WreckController : BaseController
             var wreck = await _service.GetWreckAsync(id);
             return PartialView("Wreck/_WreckViewFields", new WreckView(wreck));
         }
-        catch ( WreckNotFoundException e)
+        catch ( WreckNotFoundException e )
         {
             _logger.LogError("Wreck not found for partial", e);
             return NotFound();
         }
     }
-
 }

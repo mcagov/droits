@@ -3,9 +3,9 @@ import {validateFormTab} from "./validation";
 import {initializeWreckMaterial} from './wreckMaterial.js';
 
 export function initializeDroitForm() {
-    
+
     initializeWreckMaterial();
-    
+
     $('#js-select-wreck, #js-select-salvor').select2({
         width: '100%'
     });
@@ -18,10 +18,10 @@ export function initializeDroitForm() {
         toggleFields("#js-select-salvor", "#js-salvor-form-fields");
         renderSalvorPartial();
     });
-    
+
     toggleFields("#js-select-wreck", "#js-wreck-form-fields");
     toggleFields("#js-select-salvor", "#js-salvor-form-fields");
-    
+
     $("#js-select-isolated-find").on("change", toggleIsolatedFind);
 
     renderWreckPartial();
@@ -33,17 +33,16 @@ export function initializeDroitForm() {
         var navLink = $(this).find('button');
         validateFormTab(navLink);
     });
- 
+
 }
 
 function renderWreckPartial() {
-    renderPreviewPartial("#js-select-wreck",'.js-wreck-preview', "/Wreck/WreckViewPartial")
+    renderPreviewPartial("#js-select-wreck", '.js-wreck-preview', "/Wreck/WreckViewPartial")
 }
 
 function renderSalvorPartial() {
-    renderPreviewPartial("#js-select-salvor",'.js-salvor-preview', "/Salvor/SalvorViewPartial")
+    renderPreviewPartial("#js-select-salvor", '.js-salvor-preview', "/Salvor/SalvorViewPartial")
 }
-
 
 
 function renderPreviewPartial(selectSelector, containerSelector, endpoint) {
@@ -69,13 +68,13 @@ function renderPreviewPartial(selectSelector, containerSelector, endpoint) {
 export function toggleFields(selectId, formFieldsId) {
     const selectElement = $(selectId);
     const formFields = $(formFieldsId);
-    
+
     const showFields = selectElement.val() !== "";
 
-    formFields.toggleClass("d-none",showFields);
+    formFields.toggleClass("d-none", showFields);
 }
 
-function toggleIsolatedFind(){
+function toggleIsolatedFind() {
     const isIsolatedFind = $("#js-select-isolated-find").val() === "True";
     $(".js-known-wreck").toggleClass("d-none", isIsolatedFind);
 }

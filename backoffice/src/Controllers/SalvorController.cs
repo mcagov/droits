@@ -20,6 +20,7 @@ public class SalvorController : BaseController
         _service = service;
     }
 
+
     public async Task<IActionResult> Index(SearchOptions searchOptions)
     {
         searchOptions.IncludeAssociations = true;
@@ -115,7 +116,8 @@ public class SalvorController : BaseController
         AddSuccessMessage("Salvor saved successfully.");
         return RedirectToAction(nameof(Index));
     }
-    
+
+
     [HttpGet]
     public async Task<ActionResult> SalvorViewPartial(Guid id)
     {

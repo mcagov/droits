@@ -16,7 +16,8 @@ public class DroitController : BaseController
     private readonly IDroitService _service;
     private readonly IWreckService _wreckService;
     private readonly ISalvorService _salvorService;
-    
+
+
     public DroitController(ILogger<DroitController> logger, IDroitService service,
         IWreckService wreckService,
         ISalvorService salvorService)
@@ -35,6 +36,7 @@ public class DroitController : BaseController
         return View(model);
     }
 
+
     [HttpGet]
     public async Task<IActionResult> View(Guid id)
     {
@@ -48,7 +50,7 @@ public class DroitController : BaseController
             HandleError(_logger, "Droit not found.", e);
             return RedirectToAction(nameof(Index));
         }
-        
+
         var model = new DroitView(droit);
         return View(model);
     }
@@ -103,7 +105,7 @@ public class DroitController : BaseController
     [HttpPost]
     public async Task<IActionResult> Save(DroitForm form)
     {
-        if ( form.WreckId.HasValue || form.IsIsolatedFind)
+        if ( form.WreckId.HasValue || form.IsIsolatedFind )
         {
             ModelState.RemoveStartingWith("WreckForm");
         }
@@ -112,13 +114,14 @@ public class DroitController : BaseController
         {
             ModelState.RemoveStartingWith("SalvorForm");
         }
-        
+
         form.WreckMaterialForms
             .Select((wmForm, i) => new { Form = wmForm, Index = i })
             .Where(item => item.Form.StoredAtSalvor)
             .ToList()
-            .ForEach(item => ModelState.RemoveStartingWith($"WreckMaterialForms[{item.Index}].StorageAddress"));
-        
+            .ForEach(item =>
+                ModelState.RemoveStartingWith($"WreckMaterialForms[{item.Index}].StorageAddress"));
+
         if ( !ModelState.IsValid )
         {
             AddErrorMessage("Could not save Droit");
@@ -143,7 +146,7 @@ public class DroitController : BaseController
 
         droit = form.ApplyChanges(droit);
 
-        if ( !droit.WreckId.HasValue && !form.IsIsolatedFind)
+        if ( !droit.WreckId.HasValue && !form.IsIsolatedFind )
         {
             droit.WreckId = await _wreckService.SaveWreckFormAsync(form.WreckForm);
         }

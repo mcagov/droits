@@ -37,6 +37,7 @@ public class DroitRepository : IDroitRepository
         return _context.Droits;
     }
 
+
     public IQueryable<Droit> GetDroitsWithAssociations()
     {
         return GetDroits()
@@ -44,8 +45,8 @@ public class DroitRepository : IDroitRepository
             .Include(d => d.Wreck)
             .Include(d => d.Salvor)
             .Include(d => d.WreckMaterials);
-
     }
+
 
     public async Task<Droit> GetDroitWithAssociationsAsync(Guid id)
     {
@@ -62,10 +63,12 @@ public class DroitRepository : IDroitRepository
 
         return droit;
     }
-    
+
+
     public async Task<Droit> GetDroitAsync(Guid id)
     {
-        var droit = await _context.Droits.Include(d => d.WreckMaterials).FirstOrDefaultAsync(d => d.Id == id);
+        var droit = await _context.Droits.Include(d => d.WreckMaterials)
+            .FirstOrDefaultAsync(d => d.Id == id);
         if ( droit == null )
         {
             throw new DroitNotFoundException();

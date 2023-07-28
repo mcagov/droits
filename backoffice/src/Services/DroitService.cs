@@ -11,7 +11,6 @@ namespace Droits.Services;
 
 public interface IDroitService
 {
-
     Task<DroitListView> GetDroitsListViewAsync(SearchOptions searchOptions);
     Task<List<Droit>> GetDroitsAsync();
     Task<List<Droit>> GetDroitsWithAssociationsAsync();
@@ -26,6 +25,7 @@ public class DroitService : IDroitService
 {
     private readonly IDroitRepository _repo;
 
+
     public DroitService(IDroitRepository repo)
     {
         _repo = repo;
@@ -34,8 +34,11 @@ public class DroitService : IDroitService
 
     public async Task<DroitListView> GetDroitsListViewAsync(SearchOptions searchOptions)
     {
-        var query = searchOptions.IncludeAssociations ? _repo.GetDroitsWithAssociations() : _repo.GetDroits();
-        var pagedDroits = await ServiceHelpers.GetPagedResult(query.Select(d => new DroitView(d)), searchOptions);
+        var query = searchOptions.IncludeAssociations
+            ? _repo.GetDroitsWithAssociations()
+            : _repo.GetDroits();
+        var pagedDroits =
+            await ServiceHelpers.GetPagedResult(query.Select(d => new DroitView(d)), searchOptions);
 
         return new DroitListView(pagedDroits.Items)
         {
@@ -47,13 +50,12 @@ public class DroitService : IDroitService
     }
 
 
-    
     public async Task<List<Droit>> GetDroitsAsync()
     {
         return await _repo.GetDroits().ToListAsync();
     }
-    
-    
+
+
     public async Task<List<Droit>> GetDroitsWithAssociationsAsync()
     {
         return await _repo.GetDroitsWithAssociations().ToListAsync();
@@ -82,16 +84,19 @@ public class DroitService : IDroitService
         return await _repo.UpdateDroitAsync(droit);
     }
 
+
     public async Task<Droit> GetDroitWithAssociationsAsync(Guid id)
     {
         return await _repo.GetDroitWithAssociationsAsync(id);
     }
 
+
     public async Task<Droit> GetDroitAsync(Guid id)
     {
         return await _repo.GetDroitAsync(id);
     }
-    
+
+
     private async Task<WreckMaterial> SaveWreckMaterialAsync(WreckMaterialForm wreckMaterialForm)
     {
         if ( wreckMaterialForm.Id == default )
@@ -138,6 +143,7 @@ public class DroitService : IDroitService
             {
                 wmForm.StorageAddress = new AddressForm(salvorAddress);
             }
+
             await SaveWreckMaterialAsync(wmForm);
         }
     }

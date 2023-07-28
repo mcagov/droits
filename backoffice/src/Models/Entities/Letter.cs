@@ -6,7 +6,7 @@ namespace Droits.Models.Entities;
 public class Letter
 {
     public Guid Id { get; set; }
-    
+
     [ForeignKey("Droit")]
     public Guid DroitId { get; set; }
 
