@@ -1,3 +1,4 @@
+using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
@@ -24,10 +25,12 @@ public interface IDroitService
 public class DroitService : IDroitService
 {
     private readonly IDroitRepository _repo;
+    private readonly ILogger<DroitService> _logger;
 
 
-    public DroitService(IDroitRepository repo)
+    public DroitService(ILogger<DroitService> logger, IDroitRepository repo)
     {
+        _logger = logger;
         _repo = repo;
     }
 
@@ -133,18 +136,26 @@ public class DroitService : IDroitService
 
         await DeleteWreckMaterialForDroitAsync(droitId, wreckMaterialIdsToKeep);
 
-        var droit = await GetDroitWithAssociationsAsync(droitId);
-        var salvorAddress = droit.Salvor.Address;
-
-        foreach ( var wmForm in wreckMaterialForms )
+        try
         {
-            wmForm.DroitId = droitId;
-            if ( wmForm.StoredAtSalvor )
-            {
-                wmForm.StorageAddress = new AddressForm(salvorAddress);
-            }
+            var droit = await GetDroitWithAssociationsAsync(droitId);
 
-            await SaveWreckMaterialAsync(wmForm);
+            var salvorAddress = droit?.Salvor?.Address;
+
+            foreach ( var wmForm in wreckMaterialForms )
+            {
+                wmForm.DroitId = droitId;
+                if ( salvorAddress != null && wmForm.StoredAtSalvor )
+                {
+                    wmForm.StorageAddress = new AddressForm(salvorAddress);
+                }
+
+                await SaveWreckMaterialAsync(wmForm);
+            }
+        }
+        catch ( DroitNotFoundException e )
+        {
+            _logger.LogError("Droit not found", e);
         }
     }
 
