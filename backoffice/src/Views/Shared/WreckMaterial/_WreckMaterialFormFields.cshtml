@@ -119,7 +119,14 @@
             
             <div class="form-group row mt-2">
                 <h5>Storage Address</h5>
-                @Html.CheckBoxFor(m => m.StoredAtSalvor)
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.StoredAtSalvor, new { @class = "col-form-label font-weight-bold" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.CheckBoxFor(m => m.StoredAtSalvor)
+                    </div>
+                </div>
             </div>
             
             <partial name="Address/_AddressFormFields" for="StorageAddress"/>
