@@ -5,6 +5,14 @@ export function initializeWreckMaterial(){
     $("body").on("change", ".js-stored-salvor", function (e) {
         toggleWreckMaterialStorageAddress(e.target);
     });
+
+    $('body').on('click', '.js-remove-wreck-material-form', function () {
+        removeWreckMaterialForm.call(this);
+    });
+
+    $('#js-add-wreck-material-form').on('click', function () {
+        addWreckMaterialForm();
+    });
 }
 
 function toggleWreckMaterialStorageAddress(salvorAddressCheckbox){
