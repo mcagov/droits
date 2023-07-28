@@ -1,8 +1,11 @@
 import $ from 'jquery';
 import {validateFormTab} from "./validation";
-import { removeWreckMaterialForm, addWreckMaterialForm } from './wreckMaterial.js';
+import {initializeWreckMaterial} from './wreckMaterial.js';
 
 export function initializeDroitForm() {
+    
+    initializeWreckMaterial();
+    
     $('#js-select-wreck, #js-select-salvor').select2({
         width: '100%'
     });
@@ -30,15 +33,7 @@ export function initializeDroitForm() {
         var navLink = $(this).find('button');
         validateFormTab(navLink);
     });
-
-    $('body').on('click', '.js-remove-wreck-material-form', function () {
-        removeWreckMaterialForm.call(this);
-    });
-
-    $('#js-add-wreck-material-form').on('click', function () {
-        addWreckMaterialForm();
-    });
-    
+ 
 }
 
 function renderWreckPartial() {

@@ -117,9 +117,21 @@
                 </div>
             </div>
             
-            <h5>Storage Address</h5>
+            <div class="form-group row mt-2">
+                <h5>Storage Address</h5>
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.StoredAtSalvor, new { @class = "col-form-label font-weight-bold" })
+                    </div>
+                    <div class="col-md-6 form-switch">
+                        @Html.CheckBoxFor(m => m.StoredAtSalvor, new { @class = "js-stored-salvor form-check-input font-weight-bold" } )
+                    </div>
+                </div>
+            </div>
             
-            <partial name="Address/_AddressFormFields" for="StorageAddress"/>
+            <div class="js-wreck-material-address">
+                <partial name="Address/_AddressFormFields" for="StorageAddress"/>
+            </div>
         </div>
     </div>
 </div>

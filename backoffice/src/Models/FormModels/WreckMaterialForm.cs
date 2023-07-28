@@ -36,6 +36,8 @@ public class WreckMaterialForm : FormModel
 
     public string Name { get; set; } = string.Empty;
     public AddressForm StorageAddress { get; set; } = new();
+    [Display(Name = "Is Stored At Salvor's Address?")]
+    public bool StoredAtSalvor { get; set; }
 
     [DataType(DataType.MultilineText)]
     public string? Description { get; set; } = string.Empty;

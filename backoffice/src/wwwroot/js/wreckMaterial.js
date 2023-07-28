@@ -1,5 +1,26 @@
 import $ from 'jquery';
 
+export function initializeWreckMaterial(){
+
+    $("body").on("change", ".js-stored-salvor", function (e) {
+        toggleWreckMaterialStorageAddress(e.target);
+    });
+
+    $('body').on('click', '.js-remove-wreck-material-form', function () {
+        removeWreckMaterialForm.call(this);
+    });
+
+    $('#js-add-wreck-material-form').on('click', function () {
+        addWreckMaterialForm();
+    });
+}
+
+function toggleWreckMaterialStorageAddress(salvorAddressCheckbox){
+    const useSalvorAddress = $(salvorAddressCheckbox).prop("checked");
+    const addressContainer = $(salvorAddressCheckbox).closest(".js-wreck-material-form").find(".js-wreck-material-address");
+    addressContainer.toggleClass("d-none", useSalvorAddress);
+}
+
 export function removeWreckMaterialForm() {
     var confirmMessage = 'Are you sure you want to remove this Wreck Material?';
     var removeAction = function () {
