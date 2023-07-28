@@ -22,12 +22,12 @@ export function initializeDroitForm() {
     toggleFields("#js-select-wreck", "#js-wreck-form-fields");
     toggleFields("#js-select-salvor", "#js-salvor-form-fields");
     
-    $("#js-select-unknown-wreck").on("change", toggleKnownWreck);
+    $("#js-select-isolated-find").on("change", toggleIsolatedFind);
 
     renderWreckPartial();
     renderSalvorPartial();
-    
-    toggleKnownWreck();
+
+    toggleIsolatedFind();
 
     $('.nav-item').each(function () {
         var navLink = $(this).find('button');
@@ -83,7 +83,7 @@ export function toggleFields(selectId, formFieldsId) {
     formFields.toggleClass("d-none",showFields);
 }
 
-function toggleKnownWreck(){
-    const showKnownWreck = $("#js-select-unknown-wreck").val() === "True";
-    $(".js-known-wreck").toggleClass("d-none", showKnownWreck);
+function toggleIsolatedFind(){
+    const isIsolatedFind = $("#js-select-isolated-find").val() === "True";
+    $(".js-known-wreck").toggleClass("d-none", isIsolatedFind);
 }
