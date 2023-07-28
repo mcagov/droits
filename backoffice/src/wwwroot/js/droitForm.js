@@ -1,8 +1,11 @@
 import $ from 'jquery';
 import {validateFormTab} from "./validation";
-import { removeWreckMaterialForm, addWreckMaterialForm } from './wreckMaterial.js';
+import {removeWreckMaterialForm, addWreckMaterialForm, initializeWreckMaterial} from './wreckMaterial.js';
 
 export function initializeDroitForm() {
+    
+    initializeWreckMaterial();
+    
     $('#js-select-wreck, #js-select-salvor').select2({
         width: '100%'
     });

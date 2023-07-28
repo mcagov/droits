@@ -124,12 +124,14 @@
                         @Html.LabelFor(m => m.StoredAtSalvor, new { @class = "col-form-label font-weight-bold" })
                     </div>
                     <div class="col-md-6">
-                        @Html.CheckBoxFor(m => m.StoredAtSalvor)
+                        @Html.CheckBoxFor(m => m.StoredAtSalvor, new { @class = "js-stored-salvor" } )
                     </div>
                 </div>
             </div>
             
-            <partial name="Address/_AddressFormFields" for="StorageAddress"/>
+            <div class="js-wreck-material-address">
+                <partial name="Address/_AddressFormFields" for="StorageAddress"/>
+            </div>
         </div>
     </div>
 </div>
