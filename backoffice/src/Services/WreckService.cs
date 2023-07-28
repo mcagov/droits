@@ -1,6 +1,10 @@
+using Droits.Helpers;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Models.ViewModels;
+using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Services;
 
@@ -10,11 +14,12 @@ public interface IWreckService
     Task<Wreck> SaveWreckAsync(Wreck wreck);
     Task<Wreck> GetWreckAsync(Guid id);
     Task<Guid> SaveWreckFormAsync(WreckForm wreckForm);
+    Task<WreckListView> GetWrecksListViewAsync(SearchOptions searchOptions);
 }
 
 public class WreckService : IWreckService
 {
-    public readonly IWreckRepository _repo;
+    private readonly IWreckRepository _repo;
 
 
     public WreckService(IWreckRepository repo)
@@ -23,9 +28,23 @@ public class WreckService : IWreckService
     }
 
 
+    public async Task<WreckListView> GetWrecksListViewAsync(SearchOptions searchOptions)
+    {
+        var query = searchOptions.IncludeAssociations ? _repo.GetWrecksWithAssociations() : _repo.GetWrecks();
+        var pagedItems = await ServiceHelpers.GetPagedResult(query.Select(w => new WreckView(w, searchOptions.IncludeAssociations)), searchOptions);
+
+        return new WreckListView(pagedItems.Items)
+        {
+            PageNumber = pagedItems.PageNumber,
+            PageSize = pagedItems.PageSize,
+            IncludeAssociations = pagedItems.IncludeAssociations,
+            TotalCount = pagedItems.TotalCount
+        };
+    }
+    
     public async Task<List<Wreck>> GetWrecksAsync()
     {
-        return await _repo.GetWrecksAsync();
+        return await _repo.GetWrecks().ToListAsync();
     }
 
 

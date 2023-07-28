@@ -1,0 +1,39 @@
+@model ListView<object>
+@using X.PagedList
+@{
+    string controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? "DefaultController";
+    string actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? "DefaultAction";
+    IPagedList<object> pagedItems = new StaticPagedList<object>(Model.Items, Model.PageNumber, Model.PageSize, Model.TotalCount);
+}
+
+<ul class="pagination justify-content-center">
+    @if (pagedItems.HasPreviousPage)
+    {
+        <li class="page-item">
+            <a class="page-link" href="@Url.Action(actionName, controllerName, new { PageNumber = pagedItems.PageNumber - 1, PageSize = Model.PageSize })">Previous</a>
+        </li>
+    }
+
+    @for (int i = 1; i <= pagedItems.PageCount; i++)
+    {
+        @if (pagedItems.PageCount <= 10 || i <= 3 || i > pagedItems.PageCount - 3 || i >= pagedItems.PageNumber - 1 && i <= pagedItems.PageNumber + 1)
+        {
+            <li class="page-item @(i == pagedItems.PageNumber ? "active" : "")">
+                <a class="page-link" href="@Url.Action(actionName, controllerName, new { PageNumber = i, PageSize = Model.PageSize })">@i</a>
+            </li>
+        }
+        else if (i == 4 || i == pagedItems.PageCount - 3)
+        {
+            <li class="page-item disabled">
+                <a class="page-link">...</a>
+            </li>
+        }
+    }
+
+    @if (pagedItems.HasNextPage)
+    {
+        <li class="page-item">
+            <a class="page-link" href="@Url.Action(actionName, controllerName, new { PageNumber = pagedItems.PageNumber + 1, PageSize = Model.PageSize })">Next</a>
+        </li>
+    }
+</ul>

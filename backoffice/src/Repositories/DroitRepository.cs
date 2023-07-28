@@ -8,9 +8,8 @@ namespace Droits.Repositories;
 
 public interface IDroitRepository
 {
-    Task<List<Droit>> GetDroitsAsync();
-    Task<List<Droit>> GetDroitsWithAssociationsAsync();
-    
+    IQueryable<Droit> GetDroits();
+    IQueryable<Droit> GetDroitsWithAssociations();
     Task<Droit> GetDroitWithAssociationsAsync(Guid id);
     Task<Droit> GetDroitAsync(Guid id);
     Task<Droit> AddDroitAsync(Droit droit);
@@ -33,19 +32,19 @@ public class DroitRepository : IDroitRepository
     }
 
 
-    public async Task<List<Droit>> GetDroitsAsync()
+    public IQueryable<Droit> GetDroits()
     {
-        return await _context.Droits.ToListAsync();
+        return _context.Droits;
     }
 
-    public async Task<List<Droit>> GetDroitsWithAssociationsAsync()
+    public IQueryable<Droit> GetDroitsWithAssociations()
     {
-        return await _context.Droits
-                             .Include(d => d.Letters)
-                             .Include(d => d.Wreck)
-                             .Include(d => d.Salvor)
-                             .Include(d => d.WreckMaterials)
-                             .ToListAsync();
+        return GetDroits()
+            .Include(d => d.Letters)
+            .Include(d => d.Wreck)
+            .Include(d => d.Salvor)
+            .Include(d => d.WreckMaterials);
+
     }
 
     public async Task<Droit> GetDroitWithAssociationsAsync(Guid id)

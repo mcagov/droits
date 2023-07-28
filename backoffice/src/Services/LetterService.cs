@@ -1,18 +1,21 @@
 using Droits.Clients;
 using Droits.Exceptions;
+using Droits.Helpers;
 using Droits.Models;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
 using Droits.Models.ViewModels;
+using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Notify.Models.Responses;
 
 namespace Droits.Services;
 
 public interface ILetterService
 {
-
+    Task<LetterListView> GetLettersListViewAsync(SearchOptions searchOptions);
     Task<string> GetTemplateBodyAsync(LetterType letterType, Droit? droit);
     Task<string> GetTemplateSubjectAsync(LetterType letterType, Droit? droit);
     Task<EmailNotificationResponse> SendLetterAsync(Guid id);
@@ -25,22 +28,35 @@ public class LetterService : ILetterService
 {
     private readonly IGovNotifyClient _client;
     private readonly ILogger<LetterService> _logger;
-    private readonly ILetterRepository _letterRepository;
+    private readonly ILetterRepository _repo;
     private readonly IDroitService _droitService;
     private const string TemplateDirectory = "Views/LetterTemplates";
 
 
     public LetterService(ILogger<LetterService> logger,
         IGovNotifyClient client,
-        ILetterRepository letterRepository,
+        ILetterRepository repo,
         IDroitService droitService)
     {
         _logger = logger;
         _client = client;
-        _letterRepository = letterRepository;
+        _repo = repo;
         _droitService = droitService;
     }
 
+    public async Task<LetterListView> GetLettersListViewAsync(SearchOptions searchOptions)
+    {
+        var query = searchOptions.IncludeAssociations ? _repo.GetLettersWithAssociations() : _repo.GetLetters();
+        var pagedItems = await ServiceHelpers.GetPagedResult(query.Select(l => new LetterView(l)),searchOptions);
+
+        return new LetterListView(pagedItems.Items)
+        {
+            PageNumber = pagedItems.PageNumber,
+            PageSize = pagedItems.PageSize,
+            IncludeAssociations = pagedItems.IncludeAssociations,
+            TotalCount = pagedItems.TotalCount
+        };
+    }
 
     public async Task<string> GetTemplateBodyAsync(LetterType letterType, Droit? droit)
     {
@@ -105,13 +121,13 @@ public class LetterService : ILetterService
         var sentLetter = await GetLetterByIdAsync(id);
 
         sentLetter.DateSent = DateTime.UtcNow;
-        await _letterRepository.UpdateLetterAsync(sentLetter);
+        await _repo.UpdateLetterAsync(sentLetter);
     }
 
 
     public async Task<List<Letter>> GetLettersAsync()
     {
-        return await _letterRepository.GetLettersAsync();
+        return await _repo.GetLetters().ToListAsync();
     }
     
 
@@ -144,11 +160,11 @@ public class LetterService : ILetterService
         {
             if ( form.Id == default )
             {
-                letter = await _letterRepository.AddLetterAsync(letter);
+                letter = await _repo.AddLetterAsync(letter);
             }
             else
             {
-                letter = await _letterRepository.UpdateLetterAsync(letter);
+                letter = await _repo.UpdateLetterAsync(letter);
             }
         }
         catch ( Exception e )
@@ -173,7 +189,7 @@ public class LetterService : ILetterService
 
     public async Task<Letter> GetLetterByIdAsync(Guid id)
     {
-        return await _letterRepository.GetLetterAsync(id);
+        return await _repo.GetLetterAsync(id);
     }
 
 

@@ -5,6 +5,7 @@ using Droits.Services;
 using Droits.Models.ViewModels;
 using Droits.Models.FormModels;
 using Droits.Models.Enums;
+using Droits.Models.ViewModels.ListViews;
 
 namespace Droits.Controllers;
 
@@ -24,15 +25,13 @@ public class LetterController : BaseController
 
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(SearchOptions searchOptions)
     {
-        var letters = await _service.GetLettersAsync();
-
-        var letterViews = letters.Select(e => new LetterView(e)).ToList();
-
-        var model = new LetterListView(letterViews);
+        searchOptions.IncludeAssociations = true;
+        var model = await _service.GetLettersListViewAsync(searchOptions);
         return View(model);
     }
+
 
 
     [HttpGet]

@@ -48,7 +48,7 @@ public static class DatabaseSeeder
 
     private static List<Letter> GetLetters(List<Droit> droits)
     {
-        return Enumerable.Range(0, 20)
+        return Enumerable.Range(0, 100)
             .Select(i => new Letter
             {
                 Id = new Guid(),
@@ -69,7 +69,7 @@ public static class DatabaseSeeder
 
     private static List<Salvor> GetSalvors()
     {
-        return Enumerable.Range(0, 5)
+        return Enumerable.Range(0, 150)
             .Select(i => new Salvor
             {
                 Id = Guid.NewGuid(),
@@ -94,7 +94,7 @@ public static class DatabaseSeeder
 
     private static List<Droit> GetDroits(List<Wreck> wrecks, List<Salvor> salvors)
     {
-        return Enumerable.Range(0, 5)
+        return Enumerable.Range(0, 50)
             .Select(i => SeedDroit(_faker.Random.ArrayElement(wrecks.ToArray()),
                 _faker.Random.ArrayElement(salvors.ToArray())))
             .ToList();
@@ -152,7 +152,7 @@ public static class DatabaseSeeder
 
     private static List<Wreck> GetWrecks()
     {
-        return Enumerable.Range(0, 5)
+        return Enumerable.Range(0, 50)
             .Select(i => new Wreck
             {
                 Id = Guid.NewGuid(),

@@ -1,4 +1,4 @@
-﻿@model List<WreckView>
+﻿@model WreckListView
 @{
     ViewData["Title"] = "Wrecks";
 }
@@ -26,7 +26,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var wreck in Model)
+        @foreach (WreckView wreck in Model.Items)
         {
             <tr>
                 <td class="p-3 text-uppercase">
@@ -48,5 +48,11 @@
 <div class="row">
     <div class="col">
         <a class="btn btn-primary float-end" asp-action="Add">Add Wreck</a>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col">
+        @await Html.PartialAsync("_PaginationPartial", Model)
     </div>
 </div>
