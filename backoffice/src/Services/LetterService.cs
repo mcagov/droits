@@ -1,7 +1,5 @@
 using Droits.Clients;
-using Droits.Exceptions;
 using Droits.Helpers;
-using Droits.Models;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
@@ -51,7 +49,7 @@ public class LetterService : ILetterService
             ? _repo.GetLettersWithAssociations()
             : _repo.GetLetters();
         var pagedItems =
-            await ServiceHelpers.GetPagedResult(query.Select(l => new LetterView(l)),
+            await ServiceHelpers.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.IncludeAssociations)),
                 searchOptions);
 
         return new LetterListView(pagedItems.Items)

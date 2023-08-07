@@ -48,7 +48,7 @@ public static class DatabaseSeeder
 
     private static List<Letter> GetLetters(List<Droit> droits)
     {
-        return Enumerable.Range(0, 100)
+        return Enumerable.Range(0, 50)
             .Select(i => new Letter
             {
                 Id = new Guid(),

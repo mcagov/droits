@@ -27,7 +27,7 @@ public class SalvorRepository : ISalvorRepository
 
     public IQueryable<Salvor> GetSalvors()
     {
-        return _context.Salvors;
+        return _context.Salvors.OrderByDescending(l => l.LastModified);
     }
 
 

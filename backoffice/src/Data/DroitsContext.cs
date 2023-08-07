@@ -72,7 +72,7 @@ public partial class DroitsContext : DbContext
             entity.Property(d => d.RecoveredFrom);
             entity.Property(d => d.ImportedFromLegacy);
 
-            //Relationships 
+            //Relationships
 
             entity.HasOne(d => d.Wreck)
                 .WithMany(w => w.Droits)
@@ -156,7 +156,7 @@ public partial class DroitsContext : DbContext
             entity.HasOne(l => l.Droit)
                 .WithMany(d => d.Letters)
                 .HasForeignKey(l => l.DroitId)
-                .IsRequired();
+                .IsRequired(false);
         });
 
         modelBuilder.Entity<Salvor>(entity =>

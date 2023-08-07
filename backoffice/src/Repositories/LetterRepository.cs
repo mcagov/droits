@@ -27,13 +27,13 @@ public class LetterRepository : ILetterRepository
 
     public IQueryable<Letter> GetLetters()
     {
-        return _context.Letters;
+        return _context.Letters.OrderByDescending(l => l.LastModified);
     }
 
 
     public IQueryable<Letter> GetLettersWithAssociations()
     {
-        return GetLetters();
+        return GetLetters().Include(l => l.Droit);
     }
 
 

@@ -27,7 +27,7 @@ public class WreckRepository : IWreckRepository
 
     public IQueryable<Wreck> GetWrecks()
     {
-        return _context.Wrecks;
+        return _context.Wrecks.OrderByDescending(l => l.LastModified);
     }
 
 
