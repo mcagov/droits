@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
+using Droits.Models.ViewModels.ListViews;
 
 namespace Droits.Models.ViewModels;
 
@@ -45,8 +46,10 @@ public class DroitView
 
         if ( droit.Letters.Any() )
         {
-            Letters = droit.Letters.Select(l => new LetterView(l)).OrderBy(l => l.DateLastModified)
+            var letters = droit.Letters.Select(l => new LetterView(l)).OrderBy(l => l.LastModified)
                 .ToList();
+
+            Letters = new LetterListView(letters);
         }
 
         // Location
@@ -107,7 +110,7 @@ public class DroitView
 
     // Letters
 
-    public List<LetterView> Letters { get; } = new();
+    public LetterListView Letters { get; } = new();
 
     // Wreck
 

@@ -78,7 +78,7 @@ public class LetterController : BaseController
         var droit = new Droit();
         try
         {
-            droit = await _droitService.GetDroitAsync(droitId);
+            droit = await _droitService.GetDroitWithAssociationsAsync(droitId);
         }
         catch ( DroitNotFoundException e )
         {
@@ -121,7 +121,7 @@ public class LetterController : BaseController
 
 
     [HttpPost]
-    public async Task<IActionResult> SaveLetter(LetterForm form)
+    public async Task<IActionResult> Save(LetterForm form)
     {
         Letter letter;
 
@@ -152,7 +152,7 @@ public class LetterController : BaseController
         {
             var letter = await _service.GetLetterByIdAsync(id);
 
-            var model = new LetterView(letter);
+            var model = new LetterView(letter, true);
 
             return View(model);
         }
