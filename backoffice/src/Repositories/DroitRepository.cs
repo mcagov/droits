@@ -34,7 +34,7 @@ public class DroitRepository : IDroitRepository
 
     public IQueryable<Droit> GetDroits()
     {
-        return _context.Droits;
+        return _context.Droits.OrderByDescending(l => l.LastModified);;
     }
 
 

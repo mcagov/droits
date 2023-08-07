@@ -27,7 +27,7 @@ public class LetterRepository : ILetterRepository
 
     public IQueryable<Letter> GetLetters()
     {
-        return _context.Letters.OrderByDescending(l => l.Created);
+        return _context.Letters.OrderByDescending(l => l.LastModified);
     }
 
 

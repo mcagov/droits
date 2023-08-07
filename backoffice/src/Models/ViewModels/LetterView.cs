@@ -8,11 +8,6 @@ public class LetterView
 {
     public LetterView(Letter letter, bool includeAssociations = false)
     {
-        if (letter == null)
-        {
-            throw new ArgumentNullException(nameof(letter));
-        }
-
         Id = letter.Id;
         Recipient = letter.Recipient;
         LetterType = letter.Type;
