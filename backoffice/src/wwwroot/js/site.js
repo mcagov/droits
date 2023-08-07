@@ -7,6 +7,8 @@ import {initializeDroitForm} from './droitForm.js';
 
 $(function () {
 
+    $('.dropdown-toggle').dropdown();
+
     window.confirm = function (message, callback) {
         confirmDialog(message, callback);
     };

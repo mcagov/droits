@@ -34,7 +34,7 @@ public partial class DroitsContext : DbContext
             entity.ToTable("users");
             entity.Property(u => u.Id);
             entity.Property(u => u.AuthId);
-            entity.Property(u => u.FullName);
+            entity.Property(u => u.Name);
             entity.Property(u => u.Email);
             entity.Property(u => u.Created);
             entity.Property(u => u.LastModified);

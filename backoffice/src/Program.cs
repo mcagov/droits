@@ -15,7 +15,10 @@ using Microsoft.Identity.Web.UI;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+    .AddMicrosoftIdentityWebApp(options =>
+    {
+        builder.Configuration.Bind("AzureAd", options);
+    });
 
 builder.Services
     .AddControllersWithViews(options =>
@@ -60,11 +63,11 @@ builder.Services.AddScoped<ISalvorService, SalvorService>();
 
 builder.Services.AddGovUkFrontend();
 
+builder.Logging.AddConsole();
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
 
 var app = builder.Build();
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapHealthChecks("/healthz");
 
@@ -86,6 +89,8 @@ using ( var scope = app.Services.CreateScope() )
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

@@ -15,14 +15,16 @@ public class UserForm
     {
         Id = user.Id;
         AuthId = user.AuthId;
-        FullName = user.FullName;
+        Name = user.Name;
         Email = user.Email;
     }
 
     public Guid Id { get; set; }
-    public string FullName { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Auth ID is required")]
+    
+    [DisplayName("Auth ID")]
     public string AuthId { get; set; } = string.Empty;
     
     [Required(ErrorMessage = "Email is required")]
@@ -33,7 +35,7 @@ public class UserForm
     {
         user.Id = Id;
         user.AuthId = AuthId;
-        user.FullName = FullName;
+        user.Name = Name;
         user.Email = Email;
 
         return user;
