@@ -15,14 +15,13 @@ public partial class DroitsContext : DbContext
     {
     }
 
-
+    public virtual DbSet<ApplicationUser> Users { get; set; } = null!;
     public virtual DbSet<Droit> Droits { get; set; } = null!;
     public virtual DbSet<WreckMaterial> WreckMaterials { get; set; } = null!;
     public virtual DbSet<Wreck> Wrecks { get; set; } = null!;
     public virtual DbSet<Letter> Letters { get; set; } = null!;
     public virtual DbSet<Salvor> Salvors { get; set; } = null!;
-
-
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
     }
@@ -30,6 +29,17 @@ public partial class DroitsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<ApplicationUser>(entity =>
+        {
+            entity.ToTable("users");
+            entity.Property(u => u.Id);
+            entity.Property(u => u.AuthId);
+            entity.Property(u => u.FullName);
+            entity.Property(u => u.Email);
+            entity.Property(u => u.Created);
+            entity.Property(u => u.LastModified);
+        });
+        
         modelBuilder.Entity<Droit>(entity =>
         {
             entity.ToTable("droits");

@@ -1,0 +1,46 @@
+@model UserView
+
+<div class="form-group row m-1">
+    <div class="col-md-2">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.FullName)</label>
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(m => m.FullName)
+    </div>
+</div>
+
+<div class="form-group row m-1">
+    <div class="col-md-2">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.Email)</label>
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(m => m.Email)
+    </div>
+</div>
+
+<div class="form-group row m-1">
+    <div class="col-md-2">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.AuthId)</label>
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(m => m.AuthId)
+    </div>
+</div>
+
+<div class="form-group row m-1">
+    <div class="col-md-2">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.Created)</label>
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(m => m.Created)
+    </div>
+</div>
+
+<div class="form-group row m-1">
+    <div class="col-md-2">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.LastModified)</label>
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(m => m.LastModified)
+    </div>
+</div>

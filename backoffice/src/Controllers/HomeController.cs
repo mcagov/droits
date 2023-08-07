@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Droits.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Controllers;
@@ -25,8 +26,7 @@ public class HomeController : Controller
     {
         return View();
     }
-
-
+    
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

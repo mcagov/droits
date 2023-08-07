@@ -12,6 +12,8 @@
         <PackageReference Include="GovukNotify" Version="6.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.3" />
+        <PackageReference Include="Microsoft.Identity.Web" Version="2.13.2" />
+        <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.13.2" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
         <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
@@ -22,6 +24,14 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
         <Content Remove="wwwroot/css/**/*" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Views\Shared\User\_SalvorFormFields.cshtml" />
+      <AdditionalFiles Include="Views\Shared\User\_SalvorViewFields.cshtml" />
+      <AdditionalFiles Include="Views\User\Edit.cshtml" />
+      <AdditionalFiles Include="Views\User\Index.cshtml" />
+      <AdditionalFiles Include="Views\User\View.cshtml" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">

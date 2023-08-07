@@ -1,21 +1,33 @@
-using System.Globalization;
 using Droits.Clients;
 using Droits.Data;
 using Droits.ModelBinders;
 using Droits.Repositories;
 using Droits.Services;
 using GovUk.Frontend.AspNetCore;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
 builder.Services
     .AddControllersWithViews(options =>
     {
         options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
+        
+        var policy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
+        options.Filters.Add(new AuthorizeFilter(policy));
     })
-    .AddRazorRuntimeCompilation();
+    .AddRazorRuntimeCompilation().AddMicrosoftIdentityUI();
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -27,6 +39,10 @@ builder.Services.AddDbContext<DroitsContext>(opt => opt.UseInMemoryDatabase("dro
 
 
 builder.Services.AddHealthChecks();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 
 builder.Services.AddScoped<ILetterRepository, LetterRepository>();
 builder.Services.AddScoped<ILetterService, LetterService>();
@@ -46,6 +62,9 @@ builder.Services.AddGovUkFrontend();
 
 
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapHealthChecks("/healthz");
 
