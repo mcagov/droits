@@ -26,14 +26,6 @@
         <Content Remove="wwwroot/css/**/*" />
     </ItemGroup>
 
-    <ItemGroup>
-      <AdditionalFiles Include="Views\Shared\User\_SalvorFormFields.cshtml" />
-      <AdditionalFiles Include="Views\Shared\User\_SalvorViewFields.cshtml" />
-      <AdditionalFiles Include="Views\User\Edit.cshtml" />
-      <AdditionalFiles Include="Views\User\Index.cshtml" />
-      <AdditionalFiles Include="Views\User\View.cshtml" />
-    </ItemGroup>
-
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
         <Exec Command="npx webpack --config webpack.config.js" />
     </Target>

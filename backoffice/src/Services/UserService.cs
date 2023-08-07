@@ -62,6 +62,3 @@ public class UserService : IUserService
         return await _repo.GetUserAsync(id);
     }
 }
-
-// Note: This assumes you have UserView and UserListView similar to SalvorView and SalvorListView. 
-// Also, you might need to adapt SearchOptions if it has specific features tied to Salvors.
