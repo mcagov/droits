@@ -1,6 +1,5 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const webpack = require('webpack');
 
 module.exports = {
     mode: 'development',
@@ -22,14 +21,7 @@ module.exports = {
                     MiniCssExtractPlugin.loader,
                     'css-loader',
                     'postcss-loader',
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            sassOptions: {
-                                includePaths: [path.resolve(__dirname, 'node_modules')]
-                            }
-                        }
-                    }
+                    'sass-loader'
                 ]
             },
             {
@@ -53,15 +45,10 @@ module.exports = {
             },
             {
                 test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            outputPath: 'webfonts/'
-                        }
-                    }
-                ],
+                type: 'asset/resource',
+                generator: {
+                    filename: 'webfonts/[name][ext]'
+                },
                 include: [
                     path.resolve(__dirname, 'node_modules/@fortawesome/fontawesome-free'),
                 ]
@@ -69,18 +56,12 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
-            'window.jQuery': 'jquery',
-            bootstrap: 'bootstrap/dist/js/bootstrap.bundle',
-            select2: 'select2',
-        }),
         new MiniCssExtractPlugin({
             filename: '[name].css',
         })
     ],
     resolve: {
         modules: [path.resolve(__dirname, 'node_modules')]
-    }
+    },
+    devtool: 'source-map'
 };

@@ -7,7 +7,7 @@
     await Html.RenderPartialAsync("_MessageBanner");
 }
 
-<h4>@ViewData["Title"] <i class="fa fa-user-circle"/></h4>
+<h4>@ViewData["Title"]</h4>
 <form class="form-horizontal mt-4" asp-action="Save" method="POST">
     @Html.HiddenFor(m => m.Id)
     <div class="col mt-4">
