@@ -1,5 +1,6 @@
 using Droits.Clients;
 using Droits.Data;
+using Droits.Middleware;
 using Droits.ModelBinders;
 using Droits.Repositories;
 using Droits.Services;
@@ -19,6 +20,7 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     {
         builder.Configuration.Bind("AzureAd", options);
     });
+
 
 builder.Services
     .AddControllersWithViews(options =>
@@ -61,10 +63,19 @@ builder.Services.AddScoped<IWreckService, WreckService>();
 builder.Services.AddScoped<ISalvorRepository, SalvorRepository>();
 builder.Services.AddScoped<ISalvorService, SalvorService>();
 
+
+builder.Services.AddScoped<ITokenValidationService, TokenValidationService>();
+
+
 builder.Services.AddGovUkFrontend();
 
 builder.Logging.AddConsole();
-builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.AddConsole();
+    loggingBuilder.SetMinimumLevel(LogLevel.Debug);
+});
 
 
 var app = builder.Build();
@@ -84,17 +95,17 @@ using ( var scope = app.Services.CreateScope() )
     var dbContext = scope.ServiceProvider.GetRequiredService<DroitsContext>();
     DatabaseSeeder.SeedData(dbContext);
 }
+app.UseRequestLocalization();
 
 
 app.UseStaticFiles();
-
 app.UseRouting();
 
 app.UseAuthentication();
 
-app.UseAuthorization();
+app.UseMiddleware<TokenValidationMiddleware>();
 
-app.UseRequestLocalization();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     "default",

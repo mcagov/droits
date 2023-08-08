@@ -6,6 +6,7 @@ using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Droits.Exceptions;
 
 namespace Droits.Services;
 
@@ -15,6 +16,7 @@ public interface IUserService
     Task<List<ApplicationUser>> GetUsersAsync();
     Task<ApplicationUser> SaveUserAsync(ApplicationUser user);
     Task<ApplicationUser> GetUserAsync(Guid id);
+    Task<ApplicationUser> GetOrCreateUserAsync(string authId, string name, string email);
 }
 
 public class UserService : IUserService
@@ -60,5 +62,24 @@ public class UserService : IUserService
     public async Task<ApplicationUser> GetUserAsync(Guid id)
     {
         return await _repo.GetUserAsync(id);
+    }
+    
+    public async Task<ApplicationUser> GetOrCreateUserAsync(string authId, string name, string email)
+    {
+        try
+        {
+            return await _repo.GetUserByAuthIdAsync(authId);
+        }
+        catch ( UserNotFoundException )
+        {
+            var newUser = new ApplicationUser
+            {
+                AuthId = authId,
+                Name = name,
+                Email = email,
+            };
+
+            return await _repo.AddUserAsync(newUser);    
+        }
     }
 }
