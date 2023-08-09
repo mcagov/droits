@@ -26,7 +26,7 @@ namespace Droits.Models.FormModels
         protected DateTime LastModified { get; set; }
 
 
-        protected virtual void ApplyChanges(BaseEntity entity)
+        protected void ApplyChanges(BaseEntity entity)
         {
             entity.Created = Created;
             entity.LastModified = LastModified;
