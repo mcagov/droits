@@ -1,6 +1,7 @@
 using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
+using Droits.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Repositories;
@@ -16,7 +17,7 @@ public interface ISalvorRepository
 
 public class SalvorRepository : BaseRepository<Salvor>, ISalvorRepository
 {
-    public SalvorRepository(DroitsContext dbContext) : base(dbContext)
+    public SalvorRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
     {
     }
 

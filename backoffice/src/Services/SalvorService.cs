@@ -33,7 +33,7 @@ public class SalvorService : ISalvorService
         var query = searchOptions.IncludeAssociations
             ? _repo.GetSalvorsWithAssociations()
             : _repo.GetSalvors();
-        var pagedItems = await ServiceHelpers.GetPagedResult(
+        var pagedItems = await ServiceHelper.GetPagedResult(
             query.Select(s => new SalvorView(s, searchOptions.IncludeAssociations)), searchOptions);
 
         return new SalvorListView(pagedItems.Items)

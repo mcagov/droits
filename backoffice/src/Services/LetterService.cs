@@ -49,7 +49,7 @@ public class LetterService : ILetterService
             ? _repo.GetLettersWithAssociations()
             : _repo.GetLetters();
         var pagedItems =
-            await ServiceHelpers.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.IncludeAssociations)),
+            await ServiceHelper.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.IncludeAssociations)),
                 searchOptions);
 
         return new LetterListView(pagedItems.Items)

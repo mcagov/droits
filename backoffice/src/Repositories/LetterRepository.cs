@@ -1,6 +1,7 @@
 using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
+using Droits.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Repositories;
@@ -16,7 +17,7 @@ public interface ILetterRepository
 
 public class LetterRepository : BaseRepository<Letter>, ILetterRepository
 {
-    public LetterRepository(DroitsContext dbContext): base(dbContext)
+    public LetterRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
     {
     }
 

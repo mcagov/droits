@@ -3,6 +3,7 @@ using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
+using Droits.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Repositories;
@@ -18,7 +19,7 @@ public interface IWreckMaterialRepository
 
 public class WreckMaterialRepository : BaseRepository<WreckMaterial>, IWreckMaterialRepository
 {
-    public WreckMaterialRepository(DroitsContext dbContext) : base(dbContext)
+    public WreckMaterialRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
     {
 
     }

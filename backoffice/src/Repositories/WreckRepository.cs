@@ -1,6 +1,7 @@
 using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
+using Droits.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Repositories;
@@ -16,7 +17,7 @@ public interface IWreckRepository
 
 public class WreckRepository : BaseRepository<Wreck>, IWreckRepository
 {
-    public WreckRepository(DroitsContext dbContext) : base(dbContext)
+    public WreckRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
     {
     }
 

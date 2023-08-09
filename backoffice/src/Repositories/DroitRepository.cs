@@ -3,6 +3,7 @@ using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
+using Droits.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Repositories;
@@ -20,7 +21,7 @@ public interface IDroitRepository
 
 public class DroitRepository : BaseRepository<Droit>, IDroitRepository
 {
-    public DroitRepository(DroitsContext dbContext) : base(dbContext)
+    public DroitRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
     {
 
     }

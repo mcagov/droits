@@ -43,7 +43,7 @@ public class DroitService : IDroitService
             ? _repo.GetDroitsWithAssociations()
             : _repo.GetDroits();
         var pagedDroits =
-            await ServiceHelpers.GetPagedResult(query.Select(d => new DroitView(d)), searchOptions);
+            await ServiceHelper.GetPagedResult(query.Select(d => new DroitView(d)), searchOptions);
 
         return new DroitListView(pagedDroits.Items)
         {

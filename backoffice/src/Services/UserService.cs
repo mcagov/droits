@@ -33,7 +33,7 @@ public class UserService : IUserService
         var query = searchOptions.IncludeAssociations
             ? _repo.GetUsersWithAssociations()
             : _repo.GetUsers();
-        var pagedItems = await ServiceHelpers.GetPagedResult(
+        var pagedItems = await ServiceHelper.GetPagedResult(
             query.Select(u => new UserView(u, searchOptions.IncludeAssociations)), searchOptions);
 
         return new UserListView(pagedItems.Items)
