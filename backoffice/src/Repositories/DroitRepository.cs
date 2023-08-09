@@ -19,7 +19,7 @@ public interface IDroitRepository
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
 }
 
-public class DroitRepository : BaseRepository<Droit>, IDroitRepository
+public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
 {
     public DroitRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
     {

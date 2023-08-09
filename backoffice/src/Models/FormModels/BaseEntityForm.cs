@@ -3,7 +3,7 @@ using Droits.Models.Entities;
 
 namespace Droits.Models.FormModels
 {
-    public class BaseEntityForm : FormModel
+    public class BaseEntityForm
     {
         protected BaseEntityForm()
         {

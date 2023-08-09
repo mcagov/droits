@@ -15,7 +15,7 @@ public interface ILetterRepository
     Task<Letter> UpdateAsync(Letter letter);
 }
 
-public class LetterRepository : BaseRepository<Letter>, ILetterRepository
+public class LetterRepository : BaseEntityRepository<Letter>, ILetterRepository
 {
     public LetterRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
     {

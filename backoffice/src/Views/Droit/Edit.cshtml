@@ -73,13 +73,13 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m.IsHazardousFind, new { @class = "col-form-label" })
-        @Html.DropDownListFor(m => m.IsHazardousFind, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.IsHazardousFind, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.IsHazardousFind, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.IsDredge, new { @class = "col-form-label" })
-        @Html.DropDownListFor(m => m.IsDredge, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.IsDredge, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.IsDredge, "", new { @class = "text-danger" })
     </div>
 </div>
@@ -102,7 +102,7 @@
 <div class="tab-pane fade" id="wreck" role="tabpanel" aria-labelledby="wreck-tab">
     <div class="form-group">
         @Html.LabelFor(m => m.IsIsolatedFind, new { @class = "col-form-label" })
-        @Html.DropDownListFor(m => m.IsIsolatedFind, Model.BooleanSelectList, "Select.....", new { @id = "js-select-isolated-find", @class = "form-control" })
+        @Html.DropDownListFor(m => m.IsIsolatedFind, FormModelHelper.BooleanSelectList, "Select.....", new { @id = "js-select-isolated-find", @class = "form-control" })
         @Html.ValidationMessageFor(m => m.IsIsolatedFind, "", new { @class = "text-danger" })
     </div>
     <div class="js-known-wreck">
@@ -149,7 +149,7 @@
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.InUkWaters, new { @class = "col-form-label" })
-        @Html.DropDownListFor(m => m.InUkWaters, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.InUkWaters, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.InUkWaters, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
@@ -173,7 +173,7 @@
 <div class="tab-pane fade" id="salvage" role="tabpanel" aria-labelledby="salvage-tab">
     <div class="form-group">
         @Html.LabelFor(m => m.SalvageAwardClaimed, new { @class = "col-form-label" })
-        @Html.DropDownListFor(m => m.SalvageAwardClaimed, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.SalvageAwardClaimed, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.SalvageAwardClaimed, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
@@ -193,12 +193,12 @@
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.MMOLicenceRequired, new { @class = "col-form-label" })
-        @Html.DropDownListFor(m => m.MMOLicenceRequired, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.MMOLicenceRequired, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.MMOLicenceRequired, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.MMOLicenceProvided, new { @class = "col-form-label" })
-        @Html.DropDownListFor(m => m.MMOLicenceProvided, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.MMOLicenceProvided, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.MMOLicenceProvided, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
@@ -242,7 +242,7 @@
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.ImportedFromLegacy, new { @class = "col-form-label" })
-        @Html.DropDownListFor(m => m.ImportedFromLegacy, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.ImportedFromLegacy, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.ImportedFromLegacy, "", new { @class = "text-danger" })
     </div>
 </div>

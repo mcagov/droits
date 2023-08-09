@@ -15,7 +15,7 @@ public interface ISalvorRepository
     Task<Salvor> UpdateAsync(Salvor salvor);
 }
 
-public class SalvorRepository : BaseRepository<Salvor>, ISalvorRepository
+public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
 {
     public SalvorRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
     {

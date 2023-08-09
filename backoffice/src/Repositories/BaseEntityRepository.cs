@@ -4,13 +4,13 @@ using Droits.Services;
 
 namespace Droits.Repositories;
 
-public class BaseRepository<TEntity> where TEntity : BaseEntity
+public class BaseEntityRepository<TEntity> where TEntity : BaseEntity
 {
     protected readonly DroitsContext Context;
     private readonly ICurrentUserService _currentUserService;
 
 
-    protected BaseRepository(DroitsContext context, ICurrentUserService currentUserService)
+    protected BaseEntityRepository(DroitsContext context, ICurrentUserService currentUserService)
     {
         Context = context;
         _currentUserService = currentUserService;

@@ -15,7 +15,7 @@ public interface IWreckRepository
     Task<Wreck> UpdateAsync(Wreck wreck);
 }
 
-public class WreckRepository : BaseRepository<Wreck>, IWreckRepository
+public class WreckRepository : BaseEntityRepository<Wreck>, IWreckRepository
 {
     public WreckRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
     {

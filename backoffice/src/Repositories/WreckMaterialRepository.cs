@@ -17,7 +17,7 @@ public interface IWreckMaterialRepository
     Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep);
 }
 
-public class WreckMaterialRepository : BaseRepository<WreckMaterial>, IWreckMaterialRepository
+public class WreckMaterialRepository : BaseEntityRepository<WreckMaterial>, IWreckMaterialRepository
 {
     public WreckMaterialRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
     {
