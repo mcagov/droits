@@ -3,14 +3,14 @@ using Droits.Models.Entities;
 
 namespace Droits.Models.FormModels;
 
-public class WreckMaterialForm : FormModel
+public class WreckMaterialForm : BaseEntityForm
 {
     public WreckMaterialForm()
     {
     }
 
 
-    public WreckMaterialForm(WreckMaterial wreckMaterial)
+    public WreckMaterialForm(WreckMaterial wreckMaterial) : base(wreckMaterial)
     {
         Id = wreckMaterial.Id;
         DroitId = wreckMaterial.DroitId;
@@ -74,6 +74,9 @@ public class WreckMaterialForm : FormModel
 
     public WreckMaterial ApplyChanges(WreckMaterial wreckMaterial)
     {
+        
+        base.ApplyChanges(wreckMaterial);
+        
         wreckMaterial.Id = Id;
         wreckMaterial.DroitId = DroitId;
         wreckMaterial.Name = Name;

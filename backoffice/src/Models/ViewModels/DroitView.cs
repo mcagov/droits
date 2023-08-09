@@ -6,22 +6,20 @@ using Droits.Models.ViewModels.ListViews;
 
 namespace Droits.Models.ViewModels;
 
-public class DroitView
+public class DroitView : BaseEntityView
 {
     public DroitView()
     {
     }
 
 
-    public DroitView(Droit droit)
+    public DroitView(Droit droit) : base(droit)
     {
         Id = droit.Id;
         Status = droit.Status;
         ReportedDate = droit.ReportedDate;
         DateFound = droit.DateFound;
-
-        Created = droit.Created;
-        LastModified = droit.LastModified;
+        
         Reference = droit.Reference;
 
         IsHazardousFind = droit.IsHazardousFind;
@@ -97,12 +95,6 @@ public class DroitView
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime DateFound { get; }
 
-    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
-    public DateTime Created { get; }
-
-    [DisplayName("Last Modified")]
-    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
-    public DateTime LastModified { get; }
 
     // Wreck Material
 

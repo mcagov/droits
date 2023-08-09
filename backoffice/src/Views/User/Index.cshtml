@@ -8,15 +8,6 @@
     await Html.RenderPartialAsync("_MessageBanner");
 }
 
-<div class="row">
-    <div class="col">
-        <h4>@ViewData["Title"]</h4>
-    </div>
-    <div class="col">
-        <a class="btn btn-primary float-end" asp-action="Add">Add User</a>
-    </div>
-</div>
-
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
@@ -44,12 +35,6 @@
         }
         </tbody>
     </table>
-</div>
-
-<div class="row">
-    <div class="col">
-        <a class="btn btn-primary float-end" asp-action="Add">Add User</a>
-    </div>
 </div>
 
 <div class="row mt-4">

@@ -5,14 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Models.FormModels;
 
-public class SalvorForm
+public class SalvorForm : BaseEntityForm
 {
     public SalvorForm()
     {
     }
 
 
-    public SalvorForm(Salvor salvor)
+    public SalvorForm(Salvor salvor) : base(salvor)
     {
         Id = salvor.Id;
         Name = salvor.Name;
@@ -50,6 +50,8 @@ public class SalvorForm
 
     public Salvor ApplyChanges(Salvor salvor)
     {
+        base.ApplyChanges(salvor);
+        
         salvor.Id = Id;
         salvor.Name = Name;
         salvor.Email = Email;

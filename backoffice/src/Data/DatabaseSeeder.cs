@@ -1,12 +1,13 @@
 using Droits.Models.Entities;
 using Bogus;
 using Droits.Models.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Data;
 
 public static class DatabaseSeeder
 {
-    private static Faker _faker;
+    private static readonly Faker _faker;
 
 
     static DatabaseSeeder()
@@ -19,34 +20,43 @@ public static class DatabaseSeeder
     {
         dbContext.Database.EnsureCreated();
 
+        if ( !dbContext.Users.Any() )
+        {
+            dbContext.Users.AddRange(GetUsers());
+            dbContext.SaveChanges();
+        }
+        
         if ( !dbContext.Wrecks.Any() )
         {
-            dbContext.Wrecks.AddRange(GetWrecks());
+            dbContext.Wrecks.AddRange(GetWrecks(_faker.Random.ArrayElement(dbContext.Users.ToArray())));
             dbContext.SaveChanges();
         }
 
         if ( !dbContext.Salvors.Any() )
         {
-            dbContext.Salvors.AddRange(GetSalvors());
+            dbContext.Salvors.AddRange(GetSalvors(_faker.Random.ArrayElement(dbContext.Users.ToArray())));
             dbContext.SaveChanges();
         }
-
+        
         if ( !dbContext.Droits.Any() )
         {
-            dbContext.Droits.AddRange(GetDroits(dbContext.Wrecks.ToList(),
-                dbContext.Salvors.ToList()));
+            dbContext.Droits.AddRange(GetDroits(dbContext.Wrecks,
+                dbContext.Salvors, dbContext.Users));
             dbContext.SaveChanges();
         }
 
         if ( !dbContext.Letters.Any() )
         {
-            dbContext.Letters.AddRange(GetLetters(dbContext.Droits.ToList()));
+            dbContext.Letters.AddRange(GetLetters(dbContext.Droits, _faker.Random.ArrayElement(dbContext.Users.ToArray())));
             dbContext.SaveChanges();
         }
+        
+        
+
     }
 
 
-    private static List<Letter> GetLetters(List<Droit> droits)
+    private static IEnumerable<Letter> GetLetters(IEnumerable<Droit> droits, ApplicationUser user)
     {
         return Enumerable.Range(0, 50)
             .Select(i => new Letter
@@ -61,13 +71,14 @@ public static class DatabaseSeeder
                     .MinBy(x => Guid.NewGuid()),
                 SenderUserId = new Guid(),
                 Created = DateTime.Now,
-                LastModified = DateTime.Now
+                LastModified = DateTime.Now,
+                LastModifiedByUserId = user.Id,
             })
             .ToList();
     }
 
 
-    private static List<Salvor> GetSalvors()
+    private static IEnumerable<Salvor> GetSalvors(ApplicationUser user)
     {
         return Enumerable.Range(0, 150)
             .Select(i => new Salvor
@@ -86,22 +97,23 @@ public static class DatabaseSeeder
                 },
                 DateOfBirth = _faker.Date.Past(40, DateTime.UtcNow),
                 Created = DateTime.Now,
-                LastModified = DateTime.Now
+                LastModified = DateTime.Now,
+                LastModifiedByUserId = user.Id,
             })
             .ToList();
     }
 
 
-    private static List<Droit> GetDroits(List<Wreck> wrecks, List<Salvor> salvors)
+    private static IEnumerable<Droit> GetDroits(IEnumerable<Wreck> wrecks, IEnumerable<Salvor> salvors, IEnumerable<ApplicationUser> users)
     {
         return Enumerable.Range(0, 50)
             .Select(i => SeedDroit(_faker.Random.ArrayElement(wrecks.ToArray()),
-                _faker.Random.ArrayElement(salvors.ToArray())))
+                _faker.Random.ArrayElement(salvors.ToArray()),_faker.Random.ArrayElement(users.ToArray()) ))
             .ToList();
     }
 
 
-    private static Droit SeedDroit(Wreck wreck, Salvor salvor)
+    private static Droit SeedDroit(Wreck wreck, Salvor salvor, ApplicationUser user)
     {
         var reportedDate = _faker.Date.Past(3, DateTime.UtcNow);
 
@@ -117,6 +129,7 @@ public static class DatabaseSeeder
             DateFound = _faker.Date.Past(2, reportedDate),
             Created = DateTime.UtcNow,
             LastModified = DateTime.UtcNow,
+            LastModifiedByUserId = user.Id,
 
             WreckId = wreck.Id,
             IsHazardousFind = _faker.Random.Bool(),
@@ -150,7 +163,7 @@ public static class DatabaseSeeder
     }
 
 
-    private static List<Wreck> GetWrecks()
+    private static IEnumerable<Wreck> GetWrecks(ApplicationUser user)
     {
         return Enumerable.Range(0, 50)
             .Select(i => new Wreck
@@ -175,7 +188,24 @@ public static class DatabaseSeeder
                 OwnerNumber = _faker.Phone.PhoneNumber(),
 
                 Created = DateTime.UtcNow,
-                LastModified = DateTime.UtcNow
+                LastModified = DateTime.UtcNow,
+                LastModifiedByUserId = user.Id,
+            })
+            .ToList();
+    }
+    
+    
+    private static IEnumerable<ApplicationUser> GetUsers()
+    {
+        return Enumerable.Range(0, 5)
+            .Select(i => new ApplicationUser()
+            {
+                Id = Guid.NewGuid(),
+                AuthId = Guid.NewGuid().ToString(),
+                Email = _faker.Internet.Email(),
+                Name = _faker.Name.FullName(),
+                Created = DateTime.Now,
+                LastModified = DateTime.Now
             })
             .ToList();
     }

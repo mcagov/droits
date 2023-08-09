@@ -55,6 +55,7 @@ builder.Services.AddScoped<ILetterService, LetterService>();
 builder.Services.AddScoped<IGovNotifyClient, GovNotifyClient>();
 
 builder.Services.AddScoped<IDroitRepository, DroitRepository>();
+builder.Services.AddScoped<IWreckMaterialRepository, WreckMaterialRepository>();
 builder.Services.AddScoped<IDroitService, DroitService>();
 
 builder.Services.AddScoped<IWreckRepository, WreckRepository>();

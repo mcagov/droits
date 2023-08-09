@@ -3,14 +3,14 @@ using Droits.Models.Entities;
 
 namespace Droits.Models.ViewModels;
 
-public class WreckMaterialView
+public class WreckMaterialView : BaseEntityView
 {
     public WreckMaterialView()
     {
     }
 
 
-    public WreckMaterialView(WreckMaterial wreckMaterial)
+    public WreckMaterialView(WreckMaterial wreckMaterial) : base(wreckMaterial)
     {
         Id = wreckMaterial.Id;
         DroitId = wreckMaterial.DroitId;
@@ -25,8 +25,6 @@ public class WreckMaterialView
         Purchaser = wreckMaterial.Purchaser;
         Outcome = wreckMaterial.Outcome;
         WhereSecured = wreckMaterial.WhereSecured;
-        Created = wreckMaterial.Created;
-        LastModified = wreckMaterial.LastModified;
         StorageAddress = new AddressView(wreckMaterial.StorageAddress);
     }
 
@@ -61,9 +59,4 @@ public class WreckMaterialView
     [Display(Name = "Where Secured")]
     [DataType(DataType.MultilineText)]
     public string? WhereSecured { get; } = string.Empty;
-
-    public DateTime Created { get; }
-
-    [Display(Name = "Last Modified")]
-    public DateTime LastModified { get; }
 }

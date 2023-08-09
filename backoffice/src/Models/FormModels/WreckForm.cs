@@ -5,14 +5,14 @@ using Droits.Models.Enums;
 
 namespace Droits.Models.FormModels;
 
-public class WreckForm : FormModel
+public class WreckForm : BaseEntityForm
 {
     public WreckForm()
     {
     }
 
 
-    public WreckForm(Wreck wreck)
+    public WreckForm(Wreck wreck) : base(wreck)
     {
         Id = wreck.Id;
         Name = wreck.Name;

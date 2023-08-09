@@ -22,10 +22,9 @@ public class UserForm
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Auth ID is required")]
-    
+   
     [DisplayName("Auth ID")]
-    public string AuthId { get; set; } = string.Empty;
+    public string? AuthId { get; set; } = string.Empty;
     
     [Required(ErrorMessage = "Email is required")]
     [EmailAddress(ErrorMessage = "Invalid email address")]
@@ -34,9 +33,14 @@ public class UserForm
     public ApplicationUser ApplyChanges(ApplicationUser user)
     {
         user.Id = Id;
-        user.AuthId = AuthId;
         user.Name = Name;
-        user.Email = Email;
+        
+        if ( user.Id == default )
+        {
+            user.AuthId = AuthId??"";
+            user.Email = Email;    
+        }
+        
 
         return user;
     }

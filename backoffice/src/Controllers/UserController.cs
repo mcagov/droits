@@ -55,13 +55,6 @@ public class UserController : BaseController
     }
 
     [HttpGet]
-    public IActionResult Add()
-    {
-        var model = new UserForm();
-        return View(nameof(Edit), model);
-    }
-
-    [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
         if (id == default)

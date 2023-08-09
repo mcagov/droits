@@ -25,13 +25,15 @@ public interface IDroitService
 public class DroitService : IDroitService
 {
     private readonly IDroitRepository _repo;
+    private readonly IWreckMaterialRepository _wreckMaterialRepo;
     private readonly ILogger<DroitService> _logger;
 
 
-    public DroitService(ILogger<DroitService> logger, IDroitRepository repo)
+    public DroitService(ILogger<DroitService> logger, IDroitRepository repo, IWreckMaterialRepository wmRepo)
     {
         _logger = logger;
         _repo = repo;
+        _wreckMaterialRepo = wmRepo;
     }
 
 
@@ -78,13 +80,13 @@ public class DroitService : IDroitService
 
     private async Task<Droit> AddDroitAsync(Droit droit)
     {
-        return await _repo.AddDroitAsync(droit);
+        return await _repo.AddAsync(droit);
     }
 
 
     private async Task<Droit> UpdateDroitAsync(Droit droit)
     {
-        return await _repo.UpdateDroitAsync(droit);
+        return await _repo.UpdateAsync(droit);
     }
 
 
@@ -104,12 +106,12 @@ public class DroitService : IDroitService
     {
         if ( wreckMaterialForm.Id == default )
         {
-            return await _repo.AddWreckMaterialAsync(
+            return await _wreckMaterialRepo.AddAsync(
                 wreckMaterialForm.ApplyChanges(new WreckMaterial()));
         }
 
         var wreckMaterial =
-            await _repo.GetWreckMaterialAsync(wreckMaterialForm.Id, wreckMaterialForm.DroitId);
+            await _wreckMaterialRepo.GetWreckMaterialAsync(wreckMaterialForm.Id, wreckMaterialForm.DroitId);
 
         wreckMaterial = wreckMaterialForm.ApplyChanges(wreckMaterial);
 
@@ -119,13 +121,13 @@ public class DroitService : IDroitService
 
     private async Task<WreckMaterial> UpdateWreckMaterialAsync(WreckMaterial wreckMaterial)
     {
-        return await _repo.UpdateWreckMaterialAsync(wreckMaterial);
+        return await _wreckMaterialRepo.UpdateAsync(wreckMaterial);
     }
 
 
     private async Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep)
     {
-        await _repo.DeleteWreckMaterialForDroitAsync(droitId, wmToKeep);
+        await _wreckMaterialRepo.DeleteWreckMaterialForDroitAsync(droitId, wmToKeep);
     }
 
 

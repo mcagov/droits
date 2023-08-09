@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Droits.Models.FormModels;
 
-public class DroitForm : FormModel
+public class DroitForm : BaseEntityForm
 {
     public DroitForm()
     {
     }
 
 
-    public DroitForm(Droit droit)
+    public DroitForm(Droit droit) : base(droit)
     {
         Id = droit.Id;
         WreckId = droit.WreckId;
@@ -24,9 +24,7 @@ public class DroitForm : FormModel
         DateFound = droit.DateFound;
 
         IsIsolatedFind = droit.WreckId == default;
-
-        Created = droit.Created;
-        Modified = droit.LastModified;
+        
         Reference = droit.Reference;
         IsHazardousFind = droit.IsHazardousFind;
         IsDredge = droit.IsDredge;
@@ -95,13 +93,6 @@ public class DroitForm : FormModel
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime DateFound { get; set; } = DateTime.Now;
 
-    [DataType(DataType.Date)]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime Created { get; set; } = DateTime.Now;
-
-    [DataType(DataType.Date)]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime Modified { get; set; } = DateTime.Now;
 
 
     // Wreck
@@ -186,14 +177,15 @@ public class DroitForm : FormModel
 
     public Droit ApplyChanges(Droit droit)
     {
+        
+        base.ApplyChanges(droit);
+        
         droit.Id = Id;
         droit.WreckId = IsIsolatedFind ? default : WreckId;
         droit.SalvorId = SalvorId;
         droit.Status = Status;
         droit.ReportedDate = ReportedDate;
         droit.DateFound = DateFound;
-        droit.Created = Created;
-        droit.LastModified = Modified;
         droit.Reference = Reference;
         droit.IsHazardousFind = IsHazardousFind;
         droit.IsDredge = IsDredge;

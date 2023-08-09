@@ -65,13 +65,13 @@ public class SalvorService : ISalvorService
 
     private async Task<Salvor> AddSalvorAsync(Salvor salvor)
     {
-        return await _repo.AddSalvorAsync(salvor);
+        return await _repo.AddAsync(salvor);
     }
 
 
     private async Task<Salvor> UpdateSalvorAsync(Salvor salvor)
     {
-        return await _repo.UpdateSalvorAsync(salvor);
+        return await _repo.UpdateAsync(salvor);
     }
 
 

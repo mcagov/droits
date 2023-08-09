@@ -4,9 +4,9 @@ using Droits.Models.Enums;
 
 namespace Droits.Models.ViewModels;
 
-public class LetterView
+public class LetterView : BaseEntityView
 {
-    public LetterView(Letter letter, bool includeAssociations = false)
+    public LetterView(Letter letter, bool includeAssociations = false) : base(letter)
     {
         Id = letter.Id;
         Recipient = letter.Recipient;
@@ -14,9 +14,6 @@ public class LetterView
         Subject = letter.Subject;
         Body = letter.Body;
         SentDate = letter.DateSent;
-        
-        Created = letter.Created;
-        LastModified = letter.LastModified;
         
         if ( includeAssociations && letter.Droit != null)
         {
@@ -34,13 +31,5 @@ public class LetterView
     public string Body { get; }
     private DateTime? SentDate { get; }
     public bool IsSent => SentDate.HasValue;
-    
-    [DataType(DataType.Date)]
-    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-    public DateTime LastModified { get; }
-    
-    [DataType(DataType.Date)]
-    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-    public DateTime Created { get; }
 
 }

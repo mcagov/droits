@@ -3,18 +3,12 @@ using Droits.Models.Enums;
 
 namespace Droits.Models.Entities;
 
-public class Droit
+public class Droit : BaseEntity
 {
-    // Base fields...
-
-    public Guid Id { get; set; }
-
     public string Reference { get; set; } = string.Empty;
     public DroitStatus Status { get; set; } = DroitStatus.Received;
     public DateTime ReportedDate { get; set; } = DateTime.UtcNow;
     public DateTime DateFound { get; set; } = DateTime.UtcNow;
-    public DateTime Created { get; set; } = DateTime.UtcNow;
-    public DateTime LastModified { get; set; } = DateTime.UtcNow;
 
     public ICollection<WreckMaterial> WreckMaterials { get; set; } = new List<WreckMaterial>();
     public ICollection<Letter> Letters { get; set; } = new List<Letter>();
