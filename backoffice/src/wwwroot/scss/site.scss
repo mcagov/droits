@@ -1,6 +1,6 @@
 @import 'variables';
-@import 'bootstrap/scss/bootstrap';
-@import 'select2/dist/css/select2.css';
+@import "~bootstrap/scss/bootstrap";
+@import '~choices.js/public/assets/styles/choices.min.css';
 
 $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 

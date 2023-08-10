@@ -1,80 +1,98 @@
-import $ from 'jquery';
 import {validateFormTab} from "./validation";
 import {initializeWreckMaterial} from './wreckMaterial.js';
+import Choices from "choices.js";
 
 export function initializeDroitForm() {
 
     initializeWreckMaterial();
 
-    $('#js-select-wreck, #js-select-salvor').select2({
-        width: '100%'
+    const selectWreck = document.querySelector('#js-select-wreck');
+    const selectSalvor = document.querySelector('#js-select-salvor');
+    const selectIsolatedFind = document.querySelector("#js-select-isolated-find");
+
+     new Choices('#js-select-salvor', {
+        allowHTML: false,
+        searchEnabled: true,
+        itemSelectText: 'Select',
     });
 
-    $("#js-select-wreck").on("change", function () {
-        toggleFields("#js-select-wreck", "#js-wreck-form-fields");
+    new Choices('#js-select-wreck', {
+        allowHTML: false,
+        searchEnabled: true,
+        itemSelectText: 'Select',
+    });
+
+    selectWreck.addEventListener("change", function() {
+        toggleFields(selectWreck, document.querySelector("#js-wreck-form-fields"));
         renderWreckPartial();
     });
-    $("#js-select-salvor").on("change", function () {
-        toggleFields("#js-select-salvor", "#js-salvor-form-fields");
+
+    selectSalvor.addEventListener("change", function() {
+        toggleFields(selectSalvor, document.querySelector("#js-salvor-form-fields"));
         renderSalvorPartial();
     });
 
-    toggleFields("#js-select-wreck", "#js-wreck-form-fields");
-    toggleFields("#js-select-salvor", "#js-salvor-form-fields");
+    toggleFields(selectWreck, document.querySelector("#js-wreck-form-fields"));
+    toggleFields(selectSalvor, document.querySelector("#js-salvor-form-fields"));
 
-    $("#js-select-isolated-find").on("change", toggleIsolatedFind);
+    selectIsolatedFind.addEventListener("change", toggleIsolatedFind);
 
     renderWreckPartial();
     renderSalvorPartial();
 
     toggleIsolatedFind();
 
-    $('.nav-item').each(function () {
-        var navLink = $(this).find('button');
-        validateFormTab(navLink);
+    document.querySelectorAll('.nav-item').forEach(navItem => {
+        validateFormTab(navItem.querySelector('button'));
     });
 
 }
 
 function renderWreckPartial() {
-    renderPreviewPartial("#js-select-wreck", '.js-wreck-preview', "/Wreck/WreckViewPartial")
+    renderPreviewPartial("#js-select-wreck", '.js-wreck-preview', "/Wreck/WreckViewPartial");
 }
 
 function renderSalvorPartial() {
-    renderPreviewPartial("#js-select-salvor", '.js-salvor-preview', "/Salvor/SalvorViewPartial")
+    renderPreviewPartial("#js-select-salvor", '.js-salvor-preview', "/Salvor/SalvorViewPartial");
 }
 
-
 function renderPreviewPartial(selectSelector, containerSelector, endpoint) {
-    const id = $(selectSelector).val();
-    const container = $(containerSelector);
-    container.empty();
+    const id = document.querySelector(selectSelector).value;
+    const container = document.querySelector(containerSelector);
+    container.innerHTML = "";
 
     if (id === "") {
         return;
     }
 
-    $.get(`${endpoint}/${id}`)
-        .done(function (response) {
-            const $responseElement = $('<div>').addClass('js-preview mt-2 border border-grey').append(response);
-            container.append($responseElement);
+    fetch(`${endpoint}/${id}`)
+        .then(response => response.text())
+        .then(response => {
+            const responseElement = document.createElement('div');
+            responseElement.classList.add('js-preview', 'mt-2', 'border', 'border-grey');
+            responseElement.innerHTML = response;
+            container.appendChild(responseElement);
         })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            console.error("Error occurred during AJAX request:", errorThrown);
+        .catch(error => {
+            console.error("Error occurred during fetch request:", error);
         });
 }
 
-
-export function toggleFields(selectId, formFieldsId) {
-    const selectElement = $(selectId);
-    const formFields = $(formFieldsId);
-
-    const showFields = selectElement.val() !== "";
-
-    formFields.toggleClass("d-none", showFields);
+export function toggleFields(selectElement, formFields) {
+    const showFields = selectElement.value === "";
+    if (showFields) {
+        formFields.classList.remove("d-none");
+    } else {
+        formFields.classList.add("d-none");
+    }
 }
 
 function toggleIsolatedFind() {
-    const isIsolatedFind = $("#js-select-isolated-find").val() === "True";
-    $(".js-known-wreck").toggleClass("d-none", isIsolatedFind);
+    const isIsolatedFind = document.querySelector("#js-select-isolated-find").value === "True";
+    const knownWreck = document.querySelector(".js-known-wreck");
+    if (isIsolatedFind) {
+        knownWreck.classList.add("d-none");
+    } else {
+        knownWreck.classList.remove("d-none");
+    }
 }

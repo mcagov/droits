@@ -1,7 +1,7 @@
-import $ from 'jquery';
-
 export function validateFormTab(navLink) {
-    if ($(navLink.attr('data-bs-target')).find(".input-validation-error").length > 0) {
-        navLink.addClass("text-danger");
+    if(!navLink){ return; }
+    const target = document.querySelector(navLink.getAttribute('data-bs-target'));
+    if (target && target.querySelectorAll(".input-validation-error").length > 0) {
+        navLink.classList.add("text-danger");
     }
 }

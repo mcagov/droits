@@ -32,19 +32,13 @@
                     <li class="nav-item">
                         <a class="nav-link text-light" asp-area="" asp-controller="Salvor" asp-action="Index">Salvors</a>
                     </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Index">Users</a>
+                        
                     </li>
                 </ul>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-user" aria-hidden="true" role="presentation"></i> @User.FindFirst("name")?.Value
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="/User/Info">Information</a>
-                        <a class="dropdown-item" href="/PathToYourSignOutAction">Sign out</a>
-                    </div>
-                </div>
+                <partial name="_userDropdown"/>
             </div>
         </div>
     </nav>

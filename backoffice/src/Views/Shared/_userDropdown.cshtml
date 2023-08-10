@@ -1,0 +1,10 @@
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-user" aria-hidden="true" role="presentation"></i> @User.FindFirst("name")?.Value
+    </button>
+    <div class="dropdown-menu dropdown-menu-end w-100" aria-labelledby="userDropdown">
+        <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Index">Manage Users</a>
+        <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Profile">My Profile</a>
+        <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="LogOut">Sign Out</a>
+    </div>
+</div>

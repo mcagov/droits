@@ -124,7 +124,7 @@
 
 
 <div class="tab-pane fade" id="wreck-materials" role="tabpanel" aria-labelledby="wreck-materials-tab">
-    <div id="js-wreck-materials-form-container" class="row">
+    <div id="js-wreck-materials-form-container" class="row row-cols-1 row-cols-lg-2 g-4">
         @for (var i = 0; i < Model.WreckMaterialForms.Count; i++)
         {
             <partial name="WreckMaterial/_WreckMaterialFormFields"
