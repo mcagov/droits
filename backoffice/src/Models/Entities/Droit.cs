@@ -5,6 +5,11 @@ namespace Droits.Models.Entities;
 
 public class Droit : BaseEntity
 {
+    public Guid? AssignedToUserId { get; set; }
+    
+    [ForeignKey("AssignedToUserId")]
+    public virtual ApplicationUser? AssignedToUser { get; set; } = null!;
+    
     public string Reference { get; set; } = string.Empty;
     public DroitStatus Status { get; set; } = DroitStatus.Received;
     public DateTime ReportedDate { get; set; } = DateTime.UtcNow;

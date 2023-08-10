@@ -15,6 +15,7 @@ public class DroitForm : BaseEntityForm
 
     public DroitForm(Droit droit) : base(droit)
     {
+        AssignedToUserId = droit.AssignedToUserId;
         WreckId = droit.WreckId;
         SalvorId = droit.SalvorId;
 
@@ -66,7 +67,6 @@ public class DroitForm : BaseEntityForm
 
 
     // Base fields...
-
     public WreckForm WreckForm { get; set; } = new();
 
     [DisplayName("Is Isolated Find")]
@@ -79,7 +79,10 @@ public class DroitForm : BaseEntityForm
     public string Reference { get; set; } = string.Empty;
 
     public DroitStatus Status { get; set; } = DroitStatus.Received;
-
+    
+    [DisplayName("Assigned To")]
+    public Guid? AssignedToUserId { get; set; }
+    
     [DisplayName("Reported Date")]
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -168,6 +171,7 @@ public class DroitForm : BaseEntityForm
     [DisplayName("Imported From Legacy")]
     public bool ImportedFromLegacy { get; set; }
 
+    public List<SelectListItem> AllUsers { get; set; } = new();
     public List<SelectListItem> AllWrecks { get; set; } = new();
     public List<SelectListItem> AllSalvors { get; set; } = new();
 
@@ -176,7 +180,7 @@ public class DroitForm : BaseEntityForm
     {
         
         base.ApplyChanges(droit);
-        
+        droit.AssignedToUserId = AssignedToUserId;
         droit.WreckId = IsIsolatedFind ? default : WreckId;
         droit.SalvorId = SalvorId;
         droit.Status = Status;

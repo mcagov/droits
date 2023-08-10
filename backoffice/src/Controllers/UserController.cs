@@ -2,15 +2,10 @@ using Droits.Exceptions;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Models.ViewModels;
-using Droits.Models.ViewModels.ListViews;
 using Microsoft.AspNetCore.Mvc;
 using Droits.Services;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Droits.Controllers;

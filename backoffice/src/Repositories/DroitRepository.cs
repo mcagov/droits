@@ -1,4 +1,3 @@
-using System.Transactions;
 using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
@@ -29,13 +28,14 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
 
     public IQueryable<Droit> GetDroits()
     {
-        return Context.Droits.OrderByDescending(d => d.LastModified);;
+        return Context.Droits.Include(d => d.AssignedToUser).OrderByDescending(d => d.LastModified);;
     }
 
 
     public IQueryable<Droit> GetDroitsWithAssociations()
     {
         return GetDroits()
+            .Include(d => d.AssignedToUser)
             .Include(d => d.Letters)
             .Include(d => d.Wreck)
             .Include(d => d.Salvor)
@@ -46,6 +46,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
     public async Task<Droit> GetDroitWithAssociationsAsync(Guid id)
     {
         var droit = await Context.Droits
+            .Include(d => d.AssignedToUser)
             .Include(d => d.Letters)
             .Include(d => d.Wreck)
             .Include(d => d.Salvor)
@@ -63,8 +64,11 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
 
     public async Task<Droit> GetDroitAsync(Guid id)
     {
-        var droit = await Context.Droits.Include(d => d.WreckMaterials).Include(d => d.LastModifiedByUser)
-            .FirstOrDefaultAsync(d => d.Id == id);
+        var droit = await Context.Droits
+                                .Include(d => d.WreckMaterials)
+                                .Include(d => d.LastModifiedByUser)
+                                .Include(d => d.AssignedToUser)
+                                .FirstOrDefaultAsync(d => d.Id == id);
         if ( droit == null )
         {
             throw new DroitNotFoundException();

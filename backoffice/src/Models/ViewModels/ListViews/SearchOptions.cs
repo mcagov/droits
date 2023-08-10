@@ -6,5 +6,6 @@ public class SearchOptions
     public int PageSize { get; set; } = 10;
     public bool IncludeAssociations { get; set; } = false;
     public int TotalCount { get; set; }
+    public bool FilterByAssignedUser { get; set; }
 }
 

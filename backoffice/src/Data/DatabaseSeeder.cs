@@ -121,6 +121,7 @@ public static class DatabaseSeeder
         return new Droit
         {
             Id = Guid.NewGuid(),
+            AssignedToUserId = user.Id,
             Reference = $"{Faker.Random.Int(0, 999):000}/" +
                         $"{reportedDate:yy}",
             Status = Enum.GetValues(typeof(DroitStatus))

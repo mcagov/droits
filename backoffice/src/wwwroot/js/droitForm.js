@@ -10,6 +10,12 @@ export function initializeDroitForm() {
     const selectSalvor = document.querySelector('#js-select-salvor');
     const selectIsolatedFind = document.querySelector("#js-select-isolated-find");
 
+    new Choices('#js-select-user', {
+        allowHTML: false,
+        searchEnabled: true,
+        itemSelectText: 'Select',
+    });
+    
      new Choices('#js-select-salvor', {
         allowHTML: false,
         searchEnabled: true,

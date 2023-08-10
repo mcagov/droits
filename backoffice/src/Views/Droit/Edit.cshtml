@@ -59,6 +59,13 @@
         @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
 
     </div>
+    
+    <div class="form-group">
+        @Html.LabelFor(m => m.AssignedToUserId, "Select RoW", new { @class = "col-form-label" })
+        @Html.DropDownListFor(m => m.AssignedToUserId, Model.AllUsers, "Unassigned", new { @id = "js-select-user", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.AssignedToUserId, "", new { @class = "text-danger" })
+    </div>
+    
     <div class="form-group">
         @Html.LabelFor(m => m.ReportedDate, new { @class = "col-form-label" })
         @Html.EditorFor(m => m.ReportedDate, new { htmlAttributes = new { @type = "date", @class = "form-control" } })

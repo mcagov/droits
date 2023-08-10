@@ -45,6 +45,7 @@ public partial class DroitsContext : DbContext
             entity.ToTable("droits");
 
             entity.Property(d => d.Id);
+            entity.Property(d => d.AssignedToUserId);
             entity.Property(d => d.Status);
             entity.Property(d => d.ReportedDate);
             entity.Property(d => d.DateFound);
@@ -100,6 +101,10 @@ public partial class DroitsContext : DbContext
             entity.HasOne(d => d.LastModifiedByUser)
                 .WithMany()
                 .HasForeignKey(d => d.LastModifiedByUserId);
+            
+            entity.HasOne(d => d.AssignedToUser)
+                .WithMany()
+                .HasForeignKey(d => d.AssignedToUserId);
         });
 
 

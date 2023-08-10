@@ -70,7 +70,16 @@
             @Html.DisplayFor(m => m.Status)
         </div>
     </div>
-
+    
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.AssignedUser, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.AssignedUser)
+        </div>
+    </div>
+    
     <div class="form-group row m-1">
         <div class="col-md-3">
             @Html.LabelFor(m => m.ReportedDate, new { @class = "font-weight-bold" })

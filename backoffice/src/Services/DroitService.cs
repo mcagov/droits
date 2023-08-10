@@ -26,14 +26,16 @@ public class DroitService : IDroitService
 {
     private readonly IDroitRepository _repo;
     private readonly IWreckMaterialRepository _wreckMaterialRepo;
+    private readonly ICurrentUserService _currentUserService;
     private readonly ILogger<DroitService> _logger;
 
 
-    public DroitService(ILogger<DroitService> logger, IDroitRepository repo, IWreckMaterialRepository wmRepo)
+    public DroitService(ILogger<DroitService> logger, IDroitRepository repo, IWreckMaterialRepository wmRepo, ICurrentUserService currentUserService)
     {
         _logger = logger;
         _repo = repo;
         _wreckMaterialRepo = wmRepo;
+        _currentUserService = currentUserService;
     }
 
 
@@ -42,6 +44,14 @@ public class DroitService : IDroitService
         var query = searchOptions.IncludeAssociations
             ? _repo.GetDroitsWithAssociations()
             : _repo.GetDroits();
+        
+        if (searchOptions.FilterByAssignedUser)
+        {
+            var currentUserId = _currentUserService.GetCurrentUserId();
+
+            query = query.Where(d => d.AssignedToUserId.HasValue && d.AssignedToUserId == currentUserId);
+        }
+        
         var pagedDroits =
             await ServiceHelper.GetPagedResult(query.Select(d => new DroitView(d)), searchOptions);
 

@@ -18,6 +18,9 @@ public class DroitView : BaseEntityView
         Id = droit.Id;
         Status = droit.Status;
         ReportedDate = droit.ReportedDate;
+        
+        AssignedUser = droit.AssignedToUser?.Name ?? "Unassigned";
+        
         DateFound = droit.DateFound;
         
         Reference = droit.Reference;
@@ -78,6 +81,8 @@ public class DroitView : BaseEntityView
         RecoveredFrom = droit.RecoveredFrom;
         ImportedFromLegacy = droit.ImportedFromLegacy;
     }
+
+
     // Base fields...
 
 
@@ -91,6 +96,9 @@ public class DroitView : BaseEntityView
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime ReportedDate { get; }
 
+    [DisplayName("Assigned To")]
+    public string AssignedUser { get; } = "Unassigned";
+    
     [DisplayName("Date Found")]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime DateFound { get; }
