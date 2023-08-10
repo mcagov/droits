@@ -1,5 +1,5 @@
 ﻿import 'bootstrap/dist/js/bootstrap.bundle';
-import 'bootstrap/dist/js/bootstrap.min';
+import 'bootstrap/dist/js/bootstrap';
 
 import {confirmDialog} from './confirmDialog.js';
 import {initializeDroitForm} from './droitForm.js';
