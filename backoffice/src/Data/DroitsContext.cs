@@ -207,9 +207,9 @@ public partial class DroitsContext : DbContext
             entity.Property(s => s.TelephoneNumber);
             entity.Property(s => s.DateOfBirth);
 
-            entity.Property(d => d.Created);
-            entity.Property(d => d.LastModified);
-            entity.Property(d => d.LastModifiedByUserId);
+            entity.Property(s => s.Created);
+            entity.Property(s => s.LastModified);
+            entity.Property(s => s.LastModifiedByUserId);
             
             entity.OwnsOne(s => s.Address);
             entity.HasMany(s => s.Droits)

@@ -10,7 +10,7 @@ namespace Droits.Models.ViewModels
         {
         }
 
-        public BaseEntityView(BaseEntity entity)
+        protected BaseEntityView(BaseEntity entity)
         {
             Created = entity.Created;
             LastModified = entity.LastModified;

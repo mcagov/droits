@@ -8,28 +8,16 @@ namespace Droits.Models.FormModels
         protected BaseEntityForm()
         {
         }
-
-
+        
         protected BaseEntityForm(BaseEntity entity)
         {
-            Created = entity.Created;
-            LastModified = entity.LastModified;
+         
         }
-        
-        
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        protected DateTime Created { get; set; }
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        protected DateTime LastModified { get; set; }
 
 
         protected void ApplyChanges(BaseEntity entity)
         {
-            entity.Created = Created;
-            entity.LastModified = LastModified;
+
         }
     }
 }
