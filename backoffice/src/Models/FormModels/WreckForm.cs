@@ -14,7 +14,6 @@ public class WreckForm : BaseEntityForm
 
     public WreckForm(Wreck wreck) : base(wreck)
     {
-        Id = wreck.Id;
         Name = wreck.Name;
 
         VesselConstructionDetails = wreck.VesselConstructionDetails;
@@ -37,10 +36,6 @@ public class WreckForm : BaseEntityForm
         OwnerNumber = wreck.OwnerNumber;
     }
 
-
-    // Base fields...
-
-    public Guid Id { get; set; }
 
     [Required]
     public string Name { get; set; } = string.Empty;
@@ -90,7 +85,9 @@ public class WreckForm : BaseEntityForm
 
     public Wreck ApplyChanges(Wreck wreck)
     {
-        wreck.Id = Id;
+        
+        base.ApplyChanges(wreck);
+        
         wreck.Name = Name;
 
         wreck.VesselConstructionDetails = VesselConstructionDetails;

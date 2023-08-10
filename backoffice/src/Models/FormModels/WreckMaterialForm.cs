@@ -12,7 +12,6 @@ public class WreckMaterialForm : BaseEntityForm
 
     public WreckMaterialForm(WreckMaterial wreckMaterial) : base(wreckMaterial)
     {
-        Id = wreckMaterial.Id;
         DroitId = wreckMaterial.DroitId;
         Name = wreckMaterial.Name;
         Description = wreckMaterial.Description;
@@ -28,8 +27,6 @@ public class WreckMaterialForm : BaseEntityForm
         StorageAddress = new AddressForm(wreckMaterial.StorageAddress);
     }
 
-
-    public Guid Id { get; set; }
 
     [Required]
     public Guid DroitId { get; set; }
@@ -77,7 +74,6 @@ public class WreckMaterialForm : BaseEntityForm
         
         base.ApplyChanges(wreckMaterial);
         
-        wreckMaterial.Id = Id;
         wreckMaterial.DroitId = DroitId;
         wreckMaterial.Name = Name;
         wreckMaterial.Description = Description;

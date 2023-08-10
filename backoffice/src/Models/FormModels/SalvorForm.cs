@@ -14,7 +14,6 @@ public class SalvorForm : BaseEntityForm
 
     public SalvorForm(Salvor salvor) : base(salvor)
     {
-        Id = salvor.Id;
         Name = salvor.Name;
         Email = salvor.Email;
         TelephoneNumber = salvor.TelephoneNumber;
@@ -22,8 +21,6 @@ public class SalvorForm : BaseEntityForm
         Address = new AddressForm(salvor.Address);
     }
 
-
-    public Guid Id { get; set; }
 
     [Required(ErrorMessage = "Name is required")]
     public string Name { get; set; } = string.Empty;
@@ -52,7 +49,6 @@ public class SalvorForm : BaseEntityForm
     {
         base.ApplyChanges(salvor);
         
-        salvor.Id = Id;
         salvor.Name = Name;
         salvor.Email = Email;
         salvor.TelephoneNumber = TelephoneNumber;

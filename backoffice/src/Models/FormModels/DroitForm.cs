@@ -15,7 +15,6 @@ public class DroitForm : BaseEntityForm
 
     public DroitForm(Droit droit) : base(droit)
     {
-        Id = droit.Id;
         WreckId = droit.WreckId;
         SalvorId = droit.SalvorId;
 
@@ -67,8 +66,6 @@ public class DroitForm : BaseEntityForm
 
 
     // Base fields...
-
-    public Guid Id { get; set; }
 
     public WreckForm WreckForm { get; set; } = new();
 
@@ -180,7 +177,6 @@ public class DroitForm : BaseEntityForm
         
         base.ApplyChanges(droit);
         
-        droit.Id = Id;
         droit.WreckId = IsIsolatedFind ? default : WreckId;
         droit.SalvorId = SalvorId;
         droit.Status = Status;

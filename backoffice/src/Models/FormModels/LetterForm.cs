@@ -14,15 +14,12 @@ public class LetterForm : BaseEntityForm
 
     public LetterForm(Letter letter) : base(letter)
     {
-        Id = letter.Id;
         DroitId = letter.DroitId;
         Recipient = letter.Recipient;
         Subject = letter.Subject;
         Body = letter.Body;
     }
 
-
-    public Guid Id { get; set; }
     public Guid DroitId { get; set; }
     public LetterType Type { get; set; }
 
@@ -42,7 +39,6 @@ public class LetterForm : BaseEntityForm
         
         base.ApplyChanges(letter);
         
-        letter.Id = Id;
         letter.DroitId = DroitId;
         letter.Recipient = Recipient;
         letter.Subject = Subject;
