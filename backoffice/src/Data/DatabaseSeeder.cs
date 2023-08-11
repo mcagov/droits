@@ -59,7 +59,7 @@ public static class DatabaseSeeder
 
     private static IEnumerable<Letter> GetLetters(IEnumerable<Droit> droits, ApplicationUser user)
     {
-        return Enumerable.Range(0, 50)
+        return Enumerable.Range(0, 1)
             .Select(i => new Letter
             {
                 Id = new Guid(),

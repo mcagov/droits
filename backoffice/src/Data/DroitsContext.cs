@@ -100,11 +100,13 @@ public partial class DroitsContext : DbContext
             
             entity.HasOne(d => d.LastModifiedByUser)
                 .WithMany()
-                .HasForeignKey(d => d.LastModifiedByUserId);
+                .HasForeignKey(d => d.LastModifiedByUserId)
+                .IsRequired(false);
             
             entity.HasOne(d => d.AssignedToUser)
                 .WithMany()
-                .HasForeignKey(d => d.AssignedToUserId);
+                .HasForeignKey(d => d.AssignedToUserId)
+                .IsRequired(false);
         });
 
 
@@ -139,7 +141,8 @@ public partial class DroitsContext : DbContext
             
             entity.HasOne(w => w.LastModifiedByUser)
                 .WithMany()
-                .HasForeignKey(w => w.LastModifiedByUserId);
+                .HasForeignKey(w => w.LastModifiedByUserId)
+                .IsRequired(false);
         });
 
 
@@ -174,7 +177,8 @@ public partial class DroitsContext : DbContext
             
             entity.HasOne(w => w.LastModifiedByUser)
                 .WithMany()
-                .HasForeignKey(w => w.LastModifiedByUserId);
+                .HasForeignKey(w => w.LastModifiedByUserId)
+                .IsRequired(false);
         });
 
         modelBuilder.Entity<Letter>(entity =>
@@ -199,7 +203,8 @@ public partial class DroitsContext : DbContext
             
             entity.HasOne(l => l.LastModifiedByUser)
                 .WithMany()
-                .HasForeignKey(l => l.LastModifiedByUserId);
+                .HasForeignKey(l => l.LastModifiedByUserId)
+                .IsRequired(false);
         });
 
         modelBuilder.Entity<Salvor>(entity =>
@@ -223,7 +228,8 @@ public partial class DroitsContext : DbContext
             
             entity.HasOne(s => s.LastModifiedByUser)
                 .WithMany()
-                .HasForeignKey(s => s.LastModifiedByUserId);
+                .HasForeignKey(s => s.LastModifiedByUserId)
+                .IsRequired(false);
         });
 
         base.OnModelCreating(modelBuilder);

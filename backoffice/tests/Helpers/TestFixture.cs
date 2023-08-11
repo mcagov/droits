@@ -1,20 +1,18 @@
 using Microsoft.Extensions.Configuration;
 
-namespace Droits.Tests.Helpers;
-
-public class TestFixture
+namespace Droits.Tests.Helpers
 {
-
-    public IConfiguration Configuration {get;}
-
-
-    protected TestFixture()
+    public class TestFixture
     {
-        var builder = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+        public IConfiguration Configuration { get; }
 
-        Configuration = builder.Build();
+        public TestFixture()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+            Configuration = builder.Build();
+        }
     }
-
 }

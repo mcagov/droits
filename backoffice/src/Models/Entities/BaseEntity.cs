@@ -10,5 +10,5 @@ public class BaseEntity
     
     public Guid LastModifiedByUserId { get; set; }
     [ForeignKey("LastModifiedByUserId")]
-    public virtual ApplicationUser LastModifiedByUser { get; set; } = null!;
+    public virtual ApplicationUser? LastModifiedByUser { get; set; } = null!;
 }
