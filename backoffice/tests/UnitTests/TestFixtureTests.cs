@@ -1,5 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Droits.Tests;
+using Droits.Tests.Helpers;
+
 namespace Droits.Tests.UnitTests;
 public class TestFixtureUnitTests : IClassFixture<TestFixture>
 {

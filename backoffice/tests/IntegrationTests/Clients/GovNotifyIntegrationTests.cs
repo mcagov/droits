@@ -1,22 +1,20 @@
 using Droits.Clients;
 using Droits.Models.Entities;
-using Droits.Models.FormModels;
-using Droits.Tests;
-using Microsoft.Extensions.Configuration;
+using Droits.Tests.Helpers;
 using Microsoft.Extensions.Logging;
-namespace Droits.IntegrationTests.Clients;
-public class GovNotifyTests : IClassFixture<TestFixture>
+
+namespace Droits.Tests.IntegrationTests.Clients;
+public class GovNotifyIntegrationTests : IClassFixture<TestFixture>
 {
     private readonly IGovNotifyClient _client;
-    private readonly IConfiguration _configuration;
 
-    public GovNotifyTests(TestFixture fixture){
 
+    public GovNotifyIntegrationTests(TestFixture fixture){
         var logger = new Mock<ILogger<GovNotifyClient>>();
 
-        _configuration = fixture.Configuration;
+        var configuration = fixture.Configuration;
 
-        _client = new GovNotifyClient(logger.Object, _configuration);
+        _client = new GovNotifyClient(logger.Object, configuration);
     }
 
     [Fact]

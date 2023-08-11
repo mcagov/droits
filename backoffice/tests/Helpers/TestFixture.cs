@@ -1,13 +1,14 @@
 using Microsoft.Extensions.Configuration;
 
-namespace Droits.Tests;
+namespace Droits.Tests.Helpers;
 
 public class TestFixture
 {
 
     public IConfiguration Configuration {get;}
 
-    public TestFixture()
+
+    protected TestFixture()
     {
         var builder = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
