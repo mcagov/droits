@@ -70,7 +70,16 @@
             @Html.DisplayFor(m => m.Status)
         </div>
     </div>
-
+    
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.AssignedUser, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.AssignedUser)
+        </div>
+    </div>
+    
     <div class="form-group row m-1">
         <div class="col-md-3">
             @Html.LabelFor(m => m.ReportedDate, new { @class = "font-weight-bold" })
@@ -104,6 +113,15 @@
         </div>
         <div class="col-md-7">
             @Html.DisplayFor(m => m.LastModified)
+        </div>
+    </div>
+    
+    <div class="form-group row m-1">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.LastModifiedBy, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.LastModifiedBy)
         </div>
     </div>
 
@@ -150,7 +168,7 @@
 </div>
 
 <div class="tab-pane fade" id="wreck-materials-content" role="tabpanel" aria-labelledby="wreck-materials-tab">
-    <div class="row">
+    <div class="row row-cols-1 row-cols-lg-2 g-4">
         @for (var i = 0; i < Model.WreckMaterials.Count; i++)
         {
             <partial name="WreckMaterial/_WreckMaterialViewFields"

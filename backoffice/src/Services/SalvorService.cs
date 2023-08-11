@@ -33,7 +33,7 @@ public class SalvorService : ISalvorService
         var query = searchOptions.IncludeAssociations
             ? _repo.GetSalvorsWithAssociations()
             : _repo.GetSalvors();
-        var pagedItems = await ServiceHelpers.GetPagedResult(
+        var pagedItems = await ServiceHelper.GetPagedResult(
             query.Select(s => new SalvorView(s, searchOptions.IncludeAssociations)), searchOptions);
 
         return new SalvorListView(pagedItems.Items)
@@ -65,13 +65,13 @@ public class SalvorService : ISalvorService
 
     private async Task<Salvor> AddSalvorAsync(Salvor salvor)
     {
-        return await _repo.AddSalvorAsync(salvor);
+        return await _repo.AddAsync(salvor);
     }
 
 
     private async Task<Salvor> UpdateSalvorAsync(Salvor salvor)
     {
-        return await _repo.UpdateSalvorAsync(salvor);
+        return await _repo.UpdateAsync(salvor);
     }
 
 

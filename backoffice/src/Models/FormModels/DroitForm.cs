@@ -6,16 +6,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Droits.Models.FormModels;
 
-public class DroitForm : FormModel
+public class DroitForm : BaseEntityForm
 {
     public DroitForm()
     {
     }
 
 
-    public DroitForm(Droit droit)
+    public DroitForm(Droit droit) : base(droit)
     {
-        Id = droit.Id;
+        AssignedToUserId = droit.AssignedToUserId;
         WreckId = droit.WreckId;
         SalvorId = droit.SalvorId;
 
@@ -24,9 +24,7 @@ public class DroitForm : FormModel
         DateFound = droit.DateFound;
 
         IsIsolatedFind = droit.WreckId == default;
-
-        Created = droit.Created;
-        Modified = droit.LastModified;
+        
         Reference = droit.Reference;
         IsHazardousFind = droit.IsHazardousFind;
         IsDredge = droit.IsDredge;
@@ -69,9 +67,6 @@ public class DroitForm : FormModel
 
 
     // Base fields...
-
-    public Guid Id { get; set; }
-
     public WreckForm WreckForm { get; set; } = new();
 
     [DisplayName("Is Isolated Find")]
@@ -84,7 +79,10 @@ public class DroitForm : FormModel
     public string Reference { get; set; } = string.Empty;
 
     public DroitStatus Status { get; set; } = DroitStatus.Received;
-
+    
+    [DisplayName("Assigned To")]
+    public Guid? AssignedToUserId { get; set; }
+    
     [DisplayName("Reported Date")]
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -95,13 +93,6 @@ public class DroitForm : FormModel
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime DateFound { get; set; } = DateTime.Now;
 
-    [DataType(DataType.Date)]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime Created { get; set; } = DateTime.Now;
-
-    [DataType(DataType.Date)]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime Modified { get; set; } = DateTime.Now;
 
 
     // Wreck
@@ -180,20 +171,21 @@ public class DroitForm : FormModel
     [DisplayName("Imported From Legacy")]
     public bool ImportedFromLegacy { get; set; }
 
+    public List<SelectListItem> AllUsers { get; set; } = new();
     public List<SelectListItem> AllWrecks { get; set; } = new();
     public List<SelectListItem> AllSalvors { get; set; } = new();
 
 
     public Droit ApplyChanges(Droit droit)
     {
-        droit.Id = Id;
+        
+        base.ApplyChanges(droit);
+        droit.AssignedToUserId = AssignedToUserId;
         droit.WreckId = IsIsolatedFind ? default : WreckId;
         droit.SalvorId = SalvorId;
         droit.Status = Status;
         droit.ReportedDate = ReportedDate;
         droit.DateFound = DateFound;
-        droit.Created = Created;
-        droit.LastModified = Modified;
         droit.Reference = Reference;
         droit.IsHazardousFind = IsHazardousFind;
         droit.IsDredge = IsDredge;

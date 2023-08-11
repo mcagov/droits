@@ -25,21 +25,21 @@
 
 <div class="form-group">
     @Html.LabelFor(m => m.InUkWaters, new { @class = "col-form-label" })
-    @Html.DropDownListFor(m => m.InUkWaters, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.InUkWaters, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.InUkWaters, "", new { @class = "text-danger" })
 
 </div>
 
 <div class="form-group">
     @Html.LabelFor(m => m.IsWarWreck, new { @class = "col-form-label" })
-    @Html.DropDownListFor(m => m.IsWarWreck, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.IsWarWreck, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.IsWarWreck, "", new { @class = "text-danger" })
 
 </div>
 
 <div class="form-group">
     @Html.LabelFor(m => m.IsAnAircraft, new { @class = "col-form-label" })
-    @Html.DropDownListFor(m => m.IsAnAircraft, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.IsAnAircraft, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.IsAnAircraft, "", new { @class = "text-danger" })
 </div>
 
@@ -57,7 +57,7 @@
 
 <div class="form-group">
     @Html.LabelFor(m => m.IsProtectedSite, new { @class = "col-form-label" })
-    @Html.DropDownListFor(m => m.IsProtectedSite, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.IsProtectedSite, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.IsProtectedSite, "", new { @class = "text-danger" })
 </div>
 

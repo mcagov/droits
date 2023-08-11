@@ -1,17 +1,16 @@
-﻿import $ from 'jquery';
-import 'bootstrap/dist/js/bootstrap.bundle';
-import 'select2';
+﻿import 'bootstrap/dist/js/bootstrap.bundle';
+import 'bootstrap/dist/js/bootstrap';
 
 import {confirmDialog} from './confirmDialog.js';
 import {initializeDroitForm} from './droitForm.js';
 
-$(function () {
-
+document.addEventListener('DOMContentLoaded', function() {
     window.confirm = function (message, callback) {
         confirmDialog(message, callback);
     };
-
-    if ($('.js-droit-form').length > 0) {
+    
+    const droitFormElements = document.querySelectorAll('.js-droit-form');
+    if (droitFormElements.length > 0) {
         initializeDroitForm();
     }
 });

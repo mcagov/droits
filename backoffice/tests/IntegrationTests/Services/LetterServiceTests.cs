@@ -55,7 +55,7 @@ public class LetterServiceTests : IClassFixture<TestFixture>
 
         _mockLetterRepository.Setup(m => m.GetLetterAsync(_letterId))
             .Returns(Task.FromResult(testLetter));
-        _mockLetterRepository.Setup(m => m.UpdateLetterAsync(testLetter));
+        _mockLetterRepository.Setup(m => m.UpdateAsync(testLetter));
 
         // Act
         var response = await _service.SendLetterAsync(_letterId);
@@ -83,7 +83,7 @@ public class LetterServiceTests : IClassFixture<TestFixture>
 
         _mockLetterRepository.Setup(m => m.GetLetterAsync(_letterId))
             .Returns(Task.FromResult(testLetter));
-        _mockLetterRepository.Setup(m => m.UpdateLetterAsync(testLetter));
+        _mockLetterRepository.Setup(m => m.UpdateAsync(testLetter));
 
         // Act
         var response = await _service.SendLetterAsync(_letterId);
@@ -111,7 +111,7 @@ public class LetterServiceTests : IClassFixture<TestFixture>
 
         _mockLetterRepository.Setup(m => m.GetLetterAsync(_letterId))
             .Returns(Task.FromResult(testLetter));
-        _mockLetterRepository.Setup(m => m.UpdateLetterAsync(testLetter));
+        _mockLetterRepository.Setup(m => m.UpdateAsync(testLetter));
 
         // Act
         var response = await _service.SendLetterAsync(_letterId);
@@ -139,13 +139,13 @@ public class LetterServiceTests : IClassFixture<TestFixture>
 
         _mockLetterRepository.Setup(m => m.GetLetterAsync(_letterId))
             .Returns(Task.FromResult(testLetter));
-        _mockLetterRepository.Setup(m => m.UpdateLetterAsync(testLetter));
+        _mockLetterRepository.Setup(m => m.UpdateAsync(testLetter));
 
         // Act
         await _service.SendLetterAsync(_letterId);
 
         // Assert
-        _mockLetterRepository.Verify(m => m.UpdateLetterAsync(testLetter), Times.Once);
+        _mockLetterRepository.Verify(m => m.UpdateAsync(testLetter), Times.Once);
     }
 
 

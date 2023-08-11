@@ -1,5 +1,5 @@
 @model WreckMaterialForm
-<div class="js-wreck-material-form col-md-6 mb-2">
+<div class="js-wreck-material-form col mb-2">
     <div class="card">
         <div class="card-header">
             <div class="row">
@@ -72,7 +72,7 @@
                     @Html.LabelFor(m => m.ValueConfirmed, new { @class = "col-form-label font-weight-bold" })
                 </div>
                 <div class="col-md-8">
-                    @Html.DropDownListFor(m => m.ValueConfirmed, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.ValueConfirmed, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.ValueConfirmed, "", new { @class = "text-danger" })
                 </div>
             </div>

@@ -5,22 +5,20 @@ using Droits.Models.ViewModels.ListViews;
 
 namespace Droits.Models.ViewModels;
 
-public class SalvorView
+public class SalvorView : BaseEntityView
 {
     public SalvorView()
     {
     }
 
 
-    public SalvorView(Salvor salvor, bool includeAssociations = false)
+    public SalvorView(Salvor salvor, bool includeAssociations = false) : base(salvor)
     {
         Id = salvor.Id;
         Email = salvor.Email;
         Name = salvor.Name;
         TelephoneNumber = salvor.TelephoneNumber;
         DateOfBirth = salvor.DateOfBirth;
-        Created = salvor.Created;
-        LastModified = salvor.LastModified;
         Address = new AddressView(salvor.Address);
 
         if ( includeAssociations )
@@ -43,13 +41,5 @@ public class SalvorView
     public DateTime DateOfBirth { get; }
 
     public AddressView Address { get; } = new();
-
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime Created { get; }
-
-    [DisplayName("Last Modified")]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime LastModified { get; }
-
     public DroitListView Droits { get; } = new();
 }

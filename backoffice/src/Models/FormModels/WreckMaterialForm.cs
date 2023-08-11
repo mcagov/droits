@@ -3,16 +3,15 @@ using Droits.Models.Entities;
 
 namespace Droits.Models.FormModels;
 
-public class WreckMaterialForm : FormModel
+public class WreckMaterialForm : BaseEntityForm
 {
     public WreckMaterialForm()
     {
     }
 
 
-    public WreckMaterialForm(WreckMaterial wreckMaterial)
+    public WreckMaterialForm(WreckMaterial wreckMaterial) : base(wreckMaterial)
     {
-        Id = wreckMaterial.Id;
         DroitId = wreckMaterial.DroitId;
         Name = wreckMaterial.Name;
         Description = wreckMaterial.Description;
@@ -28,8 +27,6 @@ public class WreckMaterialForm : FormModel
         StorageAddress = new AddressForm(wreckMaterial.StorageAddress);
     }
 
-
-    public Guid Id { get; set; }
 
     [Required]
     public Guid DroitId { get; set; }
@@ -74,7 +71,9 @@ public class WreckMaterialForm : FormModel
 
     public WreckMaterial ApplyChanges(WreckMaterial wreckMaterial)
     {
-        wreckMaterial.Id = Id;
+        
+        base.ApplyChanges(wreckMaterial);
+        
         wreckMaterial.DroitId = DroitId;
         wreckMaterial.Name = Name;
         wreckMaterial.Description = Description;

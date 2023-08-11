@@ -5,16 +5,15 @@ using Droits.Models.Enums;
 
 namespace Droits.Models.FormModels;
 
-public class WreckForm : FormModel
+public class WreckForm : BaseEntityForm
 {
     public WreckForm()
     {
     }
 
 
-    public WreckForm(Wreck wreck)
+    public WreckForm(Wreck wreck) : base(wreck)
     {
-        Id = wreck.Id;
         Name = wreck.Name;
 
         VesselConstructionDetails = wreck.VesselConstructionDetails;
@@ -37,10 +36,6 @@ public class WreckForm : FormModel
         OwnerNumber = wreck.OwnerNumber;
     }
 
-
-    // Base fields...
-
-    public Guid Id { get; set; }
 
     [Required]
     public string Name { get; set; } = string.Empty;
@@ -90,7 +85,9 @@ public class WreckForm : FormModel
 
     public Wreck ApplyChanges(Wreck wreck)
     {
-        wreck.Id = Id;
+        
+        base.ApplyChanges(wreck);
+        
         wreck.Name = Name;
 
         wreck.VesselConstructionDetails = VesselConstructionDetails;

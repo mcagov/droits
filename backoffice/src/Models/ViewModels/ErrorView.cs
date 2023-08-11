@@ -1,6 +1,6 @@
 namespace Droits.Models.ViewModels;
 
-public class ErrorViewModel
+public class ErrorView
 {
     public string? RequestId { get; set; }
 

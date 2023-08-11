@@ -49,7 +49,7 @@ public class LetterService : ILetterService
             ? _repo.GetLettersWithAssociations()
             : _repo.GetLetters();
         var pagedItems =
-            await ServiceHelpers.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.IncludeAssociations)),
+            await ServiceHelper.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.IncludeAssociations)),
                 searchOptions);
 
         return new LetterListView(pagedItems.Items)
@@ -130,7 +130,7 @@ public class LetterService : ILetterService
         var sentLetter = await GetLetterByIdAsync(id);
 
         sentLetter.DateSent = DateTime.UtcNow;
-        await _repo.UpdateLetterAsync(sentLetter);
+        await _repo.UpdateAsync(sentLetter);
     }
 
 
@@ -169,11 +169,11 @@ public class LetterService : ILetterService
         {
             if ( form.Id == default )
             {
-                letter = await _repo.AddLetterAsync(letter);
+                letter = await _repo.AddAsync(letter);
             }
             else
             {
-                letter = await _repo.UpdateLetterAsync(letter);
+                letter = await _repo.UpdateAsync(letter);
             }
         }
         catch ( Exception e )

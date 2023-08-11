@@ -2,9 +2,8 @@ using Droits.Models.Enums;
 
 namespace Droits.Models.Entities;
 
-public class Wreck
+public class Wreck : BaseEntity
 {
-    public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string? VesselConstructionDetails { get; set; } = string.Empty;
     public int? VesselYearConstructed { get; set; }
@@ -23,9 +22,6 @@ public class Wreck
     public string? OwnerNumber { get; set; }
 
     public string? AdditionalInformation { get; set; } = string.Empty;
-
-    public DateTime Created { get; set; }
-    public DateTime LastModified { get; set; }
 
     public List<Droit> Droits { get; set; } = new();
 }

@@ -1,27 +1,25 @@
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
+using Droits.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Models.FormModels;
 
-public class LetterForm
+public class LetterForm : BaseEntityForm
 {
     public LetterForm()
     {
     }
 
-    public LetterForm(Letter letter)
+    public LetterForm(Letter letter) : base(letter)
     {
-        Id = letter.Id;
         DroitId = letter.DroitId;
         Recipient = letter.Recipient;
         Subject = letter.Subject;
         Body = letter.Body;
     }
 
-
-    public Guid Id { get; set; }
     public Guid DroitId { get; set; }
     public LetterType Type { get; set; }
 
@@ -38,7 +36,9 @@ public class LetterForm
     public string Body { get; set; } = string.Empty;
     public Letter ApplyChanges(Letter letter)
     {
-        letter.Id = Id;
+        
+        base.ApplyChanges(letter);
+        
         letter.DroitId = DroitId;
         letter.Recipient = Recipient;
         letter.Subject = Subject;

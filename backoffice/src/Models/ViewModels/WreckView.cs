@@ -5,23 +5,20 @@ using Droits.Models.ViewModels.ListViews;
 
 namespace Droits.Models.ViewModels;
 
-public class WreckView
+public class WreckView : BaseEntityView
 {
     public WreckView()
     {
     }
 
 
-    public WreckView(Wreck wreck, bool includeAssociations = false)
+    public WreckView(Wreck wreck, bool includeAssociations = false) : base(wreck)
     {
         Id = wreck.Id;
         Name = wreck.Name;
 
         VesselConstructionDetails = wreck.VesselConstructionDetails;
         VesselYearConstructed = wreck.VesselYearConstructed;
-        Created = wreck.Created;
-        LastModified = wreck.LastModified;
-
 
         DateOfLoss = wreck.DateOfLoss;
         InUkWaters = wreck.InUkWaters;
@@ -47,13 +44,6 @@ public class WreckView
 
     public Guid Id { get; }
     public string Name { get; } = string.Empty;
-
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime Created { get; }
-
-    [DisplayName("Last Modified")]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime LastModified { get; }
 
     [DisplayName("Vessel Construction Details")]
     public string? VesselConstructionDetails { get; } = string.Empty;

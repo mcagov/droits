@@ -49,6 +49,14 @@
     </div>
 </div>
 <div class="form-group row m-1">
+    <div class="col-md-2">
+        @Html.LabelFor(m => m.LastModifiedBy, new { @class = "font-weight-bold" })
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(m => m.LastModifiedBy)
+    </div>
+</div>
+<div class="form-group row m-1">
     <h5> Address </h5>
     <partial name="Address/_AddressViewFields" for="Address"/>
 </div>

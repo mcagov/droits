@@ -1,6 +1,14 @@
 @import 'variables';
-@import 'bootstrap/scss/bootstrap';
-@import 'select2/dist/css/select2.css';
+@import "~bootstrap/scss/bootstrap";
+@import '~choices.js/public/assets/styles/choices.min.css';
+
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+
 
 html {
   font-size: 14px;

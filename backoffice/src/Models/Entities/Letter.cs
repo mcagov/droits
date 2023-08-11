@@ -3,10 +3,8 @@ using Droits.Models.Enums;
 
 namespace Droits.Models.Entities;
 
-public class Letter
+public class Letter : BaseEntity
 {
-    public Guid Id { get; set; }
-
     [ForeignKey("Droit")]
     public Guid DroitId { get; set; }
 
@@ -17,6 +15,4 @@ public class Letter
     public LetterType Type { get; set; } = LetterType.CustomLetter;
     public Guid SenderUserId { get; set; }
     public DateTime? DateSent { get; set; }
-    public DateTime Created { get; set; }
-    public DateTime LastModified { get; set; }
 }

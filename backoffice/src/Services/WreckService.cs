@@ -33,7 +33,7 @@ public class WreckService : IWreckService
         var query = searchOptions.IncludeAssociations
             ? _repo.GetWrecksWithAssociations()
             : _repo.GetWrecks();
-        var pagedItems = await ServiceHelpers.GetPagedResult(
+        var pagedItems = await ServiceHelper.GetPagedResult(
             query.Select(w => new WreckView(w, searchOptions.IncludeAssociations)), searchOptions);
 
         return new WreckListView(pagedItems.Items)
@@ -65,13 +65,13 @@ public class WreckService : IWreckService
 
     private async Task<Wreck> AddWreckAsync(Wreck wreck)
     {
-        return await _repo.AddWreckAsync(wreck);
+        return await _repo.AddAsync(wreck);
     }
 
 
     private async Task<Wreck> UpdateWreckAsync(Wreck wreck)
     {
-        return await _repo.UpdateWreckAsync(wreck);
+        return await _repo.UpdateAsync(wreck);
     }
 
 

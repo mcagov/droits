@@ -15,14 +15,13 @@ public partial class DroitsContext : DbContext
     {
     }
 
-
+    public virtual DbSet<ApplicationUser> Users { get; set; } = null!;
     public virtual DbSet<Droit> Droits { get; set; } = null!;
     public virtual DbSet<WreckMaterial> WreckMaterials { get; set; } = null!;
     public virtual DbSet<Wreck> Wrecks { get; set; } = null!;
     public virtual DbSet<Letter> Letters { get; set; } = null!;
     public virtual DbSet<Salvor> Salvors { get; set; } = null!;
-
-
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
     }
@@ -30,19 +29,35 @@ public partial class DroitsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<ApplicationUser>(entity =>
+        {
+            entity.ToTable("users");
+            entity.Property(u => u.Id);
+            entity.Property(u => u.AuthId);
+            entity.Property(u => u.Name);
+            entity.Property(u => u.Email);
+            entity.Property(u => u.Created);
+            entity.Property(u => u.LastModified);
+        });
+        
         modelBuilder.Entity<Droit>(entity =>
         {
             entity.ToTable("droits");
 
             entity.Property(d => d.Id);
+            entity.Property(d => d.AssignedToUserId);
             entity.Property(d => d.Status);
             entity.Property(d => d.ReportedDate);
             entity.Property(d => d.DateFound);
-            entity.Property(d => d.Created);
-            entity.Property(d => d.LastModified);
+
             entity.Property(d => d.Reference);
             entity.Property(d => d.IsHazardousFind);
             entity.Property(d => d.IsDredge);
+            
+            entity.Property(d => d.Created);
+            entity.Property(d => d.LastModified);
+            entity.Property(d => d.LastModifiedByUserId);
+            
 
             // Location
             entity.Property(d => d.Latitude);
@@ -82,6 +97,14 @@ public partial class DroitsContext : DbContext
                 .WithMany(s => s.Droits)
                 .HasForeignKey(d => d.SalvorId)
                 .IsRequired(false);
+            
+            entity.HasOne(d => d.LastModifiedByUser)
+                .WithMany()
+                .HasForeignKey(d => d.LastModifiedByUserId);
+            
+            entity.HasOne(d => d.AssignedToUser)
+                .WithMany()
+                .HasForeignKey(d => d.AssignedToUserId);
         });
 
 
@@ -98,12 +121,14 @@ public partial class DroitsContext : DbContext
             entity.Property(w => w.ReceiverValuation);
             entity.Property(w => w.ValueConfirmed);
             // entity.Property(w => w.Images);
-            entity.Property(w => w.Created);
-            entity.Property(w => w.LastModified);
             entity.Property(w => w.WreckMaterialOwner);
             entity.Property(w => w.Purchaser);
             entity.Property(w => w.Outcome);
             entity.Property(w => w.WhereSecured);
+            
+            entity.Property(w => w.Created);
+            entity.Property(w => w.LastModified);
+            entity.Property(w => w.LastModifiedByUserId);
 
             entity.OwnsOne(w => w.StorageAddress);
 
@@ -111,6 +136,10 @@ public partial class DroitsContext : DbContext
                 .WithMany(d => d.WreckMaterials)
                 .HasForeignKey(w => w.DroitId)
                 .IsRequired();
+            
+            entity.HasOne(w => w.LastModifiedByUser)
+                .WithMany()
+                .HasForeignKey(w => w.LastModifiedByUserId);
         });
 
 
@@ -133,12 +162,19 @@ public partial class DroitsContext : DbContext
             entity.Property(w => w.OwnerName);
             entity.Property(w => w.OwnerEmail);
             entity.Property(w => w.OwnerNumber);
+            entity.Property(w => w.AdditionalInformation);
+            
             entity.Property(w => w.Created);
             entity.Property(w => w.LastModified);
-            entity.Property(w => w.AdditionalInformation);
+            entity.Property(w => w.LastModifiedByUserId);
+            
             entity.HasMany(w => w.Droits)
                 .WithOne(d => d.Wreck)
                 .HasForeignKey(d => d.WreckId);
+            
+            entity.HasOne(w => w.LastModifiedByUser)
+                .WithMany()
+                .HasForeignKey(w => w.LastModifiedByUserId);
         });
 
         modelBuilder.Entity<Letter>(entity =>
@@ -150,13 +186,20 @@ public partial class DroitsContext : DbContext
             entity.Property(l => l.Body);
             entity.Property(l => l.DateSent);
             entity.Property(l => l.Recipient);
+            entity.Property(l => l.Type);
+            
             entity.Property(l => l.Created);
             entity.Property(l => l.LastModified);
-            entity.Property(l => l.Type);
+            entity.Property(l => l.LastModifiedByUserId);
+            
             entity.HasOne(l => l.Droit)
                 .WithMany(d => d.Letters)
                 .HasForeignKey(l => l.DroitId)
                 .IsRequired(false);
+            
+            entity.HasOne(l => l.LastModifiedByUser)
+                .WithMany()
+                .HasForeignKey(l => l.LastModifiedByUserId);
         });
 
         modelBuilder.Entity<Salvor>(entity =>
@@ -168,12 +211,19 @@ public partial class DroitsContext : DbContext
             entity.Property(s => s.Name);
             entity.Property(s => s.TelephoneNumber);
             entity.Property(s => s.DateOfBirth);
+
             entity.Property(s => s.Created);
             entity.Property(s => s.LastModified);
+            entity.Property(s => s.LastModifiedByUserId);
+            
             entity.OwnsOne(s => s.Address);
             entity.HasMany(s => s.Droits)
                 .WithOne(d => d.Salvor)
                 .HasForeignKey(d => d.SalvorId);
+            
+            entity.HasOne(s => s.LastModifiedByUser)
+                .WithMany()
+                .HasForeignKey(s => s.LastModifiedByUserId);
         });
 
         base.OnModelCreating(modelBuilder);

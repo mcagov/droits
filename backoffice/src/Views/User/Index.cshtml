@@ -1,0 +1,44 @@
+@model UserListView
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+@{
+    await Html.RenderPartialAsync("_MessageBanner");
+}
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (UserView user in Model.Items)
+        {
+            <tr>
+                <td class="p-3 text-uppercase">
+                    <a asp-action="View" asp-route-id="@user.Id">@user.Name</a>
+                </td>
+                <td class="p-3">@user.Email</td>
+                <td class="p-3">
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="View" asp-route-id="@user.Id" class="btn btn-primary">View</a>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<div class="row mt-4">
+    <div class="col">
+        @await Html.PartialAsync("_PaginationPartial", Model)
+    </div>
+</div>

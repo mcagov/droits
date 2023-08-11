@@ -1,11 +1,31 @@
-﻿@{
+﻿@model DroitListView
+@{
     ViewData["Title"] = "Droits V2";
 }
 
-<div class="jumbotron">
+@{
+    await Html.RenderPartialAsync("_MessageBanner");
+}
+
+
+
+<div class="jumbotron d-block">
     <h3 class="display-6">@ViewData["Title"]</h3>
     <p class="lead">This is the droits replacement system to replace the PowerApps current system.</p>
-    <p class="lead">
-        <a class="btn btn-primary btn-lg float-end" asp-controller="Droit" asp-action="Index" role="button">Manage Droits</a>
-    </p>
+    
+    <a class="btn btn-primary btn-lg float-end" asp-controller="Droit" asp-action="Index" role="button">Manage Droits</a>
+    <div class="clearfix"></div>
+
+</div>
+
+<h3 class="display-8">My Assigned Droits</h3>
+
+<div class="row mt-4">
+    <partial name="Droit/_DroitListTable" model="@Model"/>
+</div>
+
+<div class="row mt-4">
+    <div class="col">
+        @await Html.PartialAsync("_PaginationPartial", Model)
+    </div>
 </div>

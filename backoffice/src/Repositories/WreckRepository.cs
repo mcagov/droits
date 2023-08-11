@@ -1,6 +1,7 @@
 using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
+using Droits.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Repositories;
@@ -10,24 +11,20 @@ public interface IWreckRepository
     IQueryable<Wreck> GetWrecks();
     IQueryable<Wreck> GetWrecksWithAssociations();
     Task<Wreck> GetWreckAsync(Guid id);
-    Task<Wreck> AddWreckAsync(Wreck wreck);
-    Task<Wreck> UpdateWreckAsync(Wreck wreck);
+    Task<Wreck> AddAsync(Wreck wreck);
+    Task<Wreck> UpdateAsync(Wreck wreck);
 }
 
-public class WreckRepository : IWreckRepository
+public class WreckRepository : BaseEntityRepository<Wreck>, IWreckRepository
 {
-    private readonly DroitsContext _context;
-
-
-    public WreckRepository(DroitsContext dbContext)
+    public WreckRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
     {
-        _context = dbContext;
     }
 
 
     public IQueryable<Wreck> GetWrecks()
     {
-        return _context.Wrecks.OrderByDescending(l => l.LastModified);
+        return Context.Wrecks.OrderByDescending(l => l.LastModified);
     }
 
 
@@ -39,8 +36,9 @@ public class WreckRepository : IWreckRepository
 
     public async Task<Wreck> GetWreckAsync(Guid id)
     {
-        var wreck = await _context.Wrecks
+        var wreck = await Context.Wrecks
             .Include(w => w.Droits)
+            .Include(w => w.LastModifiedByUser)
             .FirstOrDefaultAsync(w => w.Id == id);
         if ( wreck == null )
         {
@@ -48,28 +46,5 @@ public class WreckRepository : IWreckRepository
         }
 
         return wreck;
-    }
-
-
-    public async Task<Wreck> AddWreckAsync(Wreck wreck)
-    {
-        wreck.Created = DateTime.UtcNow;
-        wreck.LastModified = DateTime.UtcNow;
-
-        var savedWreck = _context.Wrecks.Add(wreck).Entity;
-        await _context.SaveChangesAsync();
-
-        return savedWreck;
-    }
-
-
-    public async Task<Wreck> UpdateWreckAsync(Wreck wreck)
-    {
-        wreck.LastModified = DateTime.UtcNow;
-
-        var savedWreck = _context.Wrecks.Update(wreck).Entity;
-        await _context.SaveChangesAsync();
-
-        return savedWreck;
     }
 }

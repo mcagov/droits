@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Helpers;
 
-public static class ServiceHelpers
+public static class ServiceHelper
 {
     public static async Task<ListView<TView>> GetPagedResult<TView>(
         IQueryable<TView> query,

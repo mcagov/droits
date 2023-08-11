@@ -16,16 +16,19 @@ public class DroitController : BaseController
     private readonly IDroitService _service;
     private readonly IWreckService _wreckService;
     private readonly ISalvorService _salvorService;
+    private readonly IUserService _userService;
 
 
     public DroitController(ILogger<DroitController> logger, IDroitService service,
         IWreckService wreckService,
-        ISalvorService salvorService)
+        ISalvorService salvorService,
+        IUserService userService)
     {
         _logger = logger;
         _service = service;
         _wreckService = wreckService;
         _salvorService = salvorService;
+        _userService = userService;
     }
 
 
@@ -194,9 +197,12 @@ public class DroitController : BaseController
 
     private async Task<DroitForm> PopulateDroitFormAsync(DroitForm form)
     {
+        var allUsers = await _userService.GetUsersAsync();
         var allWrecks = await _wreckService.GetWrecksAsync();
         var allSalvors = await _salvorService.GetSalvorsAsync();
 
+        form.AllUsers = allUsers
+            .Select(u => new SelectListItem($"{u.Name} ({u.Email})", u.Id.ToString())).ToList();
         form.AllWrecks =
             allWrecks.Select(w => new SelectListItem(w.Name, w.Id.ToString())).ToList();
         form.AllSalvors = allSalvors

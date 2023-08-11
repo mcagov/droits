@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 
 module.exports = {
+    mode: 'development',
     entry: {
         bundle: [
             './wwwroot/js/site.js',
@@ -10,19 +11,23 @@ module.exports = {
         ]
     },
     output: {
-        filename: '[name].js',
+        filename: 'bundle.js',
         path: path.resolve(__dirname, 'wwwroot/dist')
     },
     module: {
         rules: [
             {
-                test: /\.s[ac]ss$/i,
+                test: /\.scss$/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     'css-loader',
                     'postcss-loader',
                     'sass-loader'
                 ]
+            },
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
             },
             {
                 test: /bootstrap[/\\]dist[/\\]js[/\\]bootstrap\.bundle\.js$/,
@@ -40,23 +45,24 @@ module.exports = {
                 type: 'asset/resource'
             },
             {
-                test: /\.(woff|woff2|eot|ttf|otf)$/i,
-                type: 'asset/resource'
+                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'webfonts/[name][ext]'
+                },
+                include: [
+                    path.resolve(__dirname, 'node_modules/@fortawesome/fontawesome-free'),
+                ]
             }
         ]
     },
     plugins: [
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
-            'window.jQuery': 'jquery',
-            bootstrap: 'bootstrap/dist/js/bootstrap.bundle'
-        }),
         new MiniCssExtractPlugin({
-            filename: '[name].css'
+            filename: '[name].css',
         })
     ],
     resolve: {
-        modules: [path.resolve(__dirname, 'node_modules')],
-    }
+        modules: [path.resolve(__dirname, 'node_modules')]
+    },
+    devtool: 'source-map'
 };

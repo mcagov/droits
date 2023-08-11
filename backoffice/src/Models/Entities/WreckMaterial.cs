@@ -2,10 +2,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Droits.Models.Entities;
 
-public class WreckMaterial
+public class WreckMaterial : BaseEntity
 {
-    public Guid Id { get; set; }
-
     [ForeignKey("Droit")]
     public Guid DroitId { get; set; }
 
@@ -22,8 +20,6 @@ public class WreckMaterial
 
 
     // public string StorageAddress {get;set;} = string.Empty;
-    public DateTime Created { get; set; } = DateTime.UtcNow;
-    public DateTime LastModified { get; set; } = DateTime.UtcNow;
 
     // Legacy fields ..
 
