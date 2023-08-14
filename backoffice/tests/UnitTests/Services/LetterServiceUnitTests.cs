@@ -52,7 +52,7 @@ namespace Droits.Tests.UnitTests.Services
             var droit = new Droit();
             _mockDroitService.Setup(d => d.GetDroitAsync(It.IsAny<Guid>())).ReturnsAsync(droit);
             var templatePath = Path.Combine(Environment.CurrentDirectory, "Views/LetterTemplates", $"{letterType.ToString()}.Subject.txt");
-            var templateContent = "Droit {{ Name }} has been confirmed";
+            var templateContent = "Droit ((reference)) has been confirmed";
             await File.WriteAllTextAsync(templatePath, templateContent);
 
             // When
@@ -60,7 +60,27 @@ namespace Droits.Tests.UnitTests.Services
 
             // Then
             Assert.Contains(droit.Reference, result);
-            Assert.DoesNotContain("{{ Reference }}", result);
+            Assert.DoesNotContain("((reference))", result);
+        }
+        
+        
+        [Fact]
+        public async Task GetTemplateSubjectAsync_WithDroit_UppercaseReturnsSubstitutedContent()
+        {
+            // Given
+            const LetterType letterType = LetterType.ReportConfirmed;
+            var droit = new Droit();
+            _mockDroitService.Setup(d => d.GetDroitAsync(It.IsAny<Guid>())).ReturnsAsync(droit);
+            var templatePath = Path.Combine(Environment.CurrentDirectory, "Views/LetterTemplates", $"{letterType.ToString()}.Subject.txt");
+            var templateContent = "Droit ((REFERENCE)) has been confirmed";
+            await File.WriteAllTextAsync(templatePath, templateContent);
+
+            // When
+            var result = await _service.GetTemplateSubjectAsync(letterType, droit);
+
+            // Then
+            Assert.Contains(droit.Reference, result);
+            Assert.DoesNotContain("((REFERENCE))", result);
         }
 
         [Fact]
