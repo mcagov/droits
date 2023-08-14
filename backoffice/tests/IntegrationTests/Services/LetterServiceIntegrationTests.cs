@@ -91,7 +91,7 @@ namespace Droits.Tests.IntegrationTests.Services
             // Given
             const LetterType letterType = LetterType.ReportConfirmed;
             var droit = new Droit();
-            var templateContent = "Hello {{ Name }}!";
+            var templateContent = "Ref: ((reference))!";
             _templatePath = Path.Combine(_templatePath, $"{letterType.ToString()}.Body.txt");
             await File.WriteAllTextAsync(_templatePath, templateContent);
 
@@ -100,7 +100,7 @@ namespace Droits.Tests.IntegrationTests.Services
 
             // Then
             Assert.Contains(droit.Reference, result);
-            Assert.DoesNotContain("{{ Reference }}", result);
+            Assert.DoesNotContain("((reference))", result);
 
             // Clean up after the test
             File.Delete(_templatePath);
