@@ -42,15 +42,18 @@ public class DroitView : BaseEntityView
 
         if ( droit.WreckMaterials.Any() )
         {
-            WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).ToList();
+            WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).OrderByDescending(w => w.LastModified).ToList();
         }
 
         if ( droit.Letters.Any() )
         {
-            var letters = droit.Letters.Select(l => new LetterView(l)).OrderBy(l => l.LastModified)
-                .ToList();
+            Letters = new LetterListView(droit.Letters.Select(l => new LetterView(l)).OrderByDescending(l => l.LastModified)
+                .ToList());
+        }
 
-            Letters = new LetterListView(letters);
+        if ( droit.Notes.Any() )
+        {
+            Notes = new NoteListView(droit.Notes.Select(n => new NoteView(n)).OrderByDescending(l => l.LastModified).ToList());
         }
 
         // Location
@@ -111,6 +114,9 @@ public class DroitView : BaseEntityView
     // Letters
 
     public LetterListView Letters { get; } = new();
+    
+    //Notes
+    public NoteListView Notes { get; } = new();
 
     // Wreck
 

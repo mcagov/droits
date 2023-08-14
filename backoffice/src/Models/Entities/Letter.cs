@@ -5,9 +5,9 @@ namespace Droits.Models.Entities;
 
 public class Letter : BaseEntity
 {
-    [ForeignKey("Droit")]
     public Guid DroitId { get; set; }
-
+    
+    [ForeignKey("DroitId")]
     public virtual Droit? Droit { get; set; }
     public string Subject { get; set; } = string.Empty;
     public string Body { get; set; } = string.Empty;
@@ -15,4 +15,7 @@ public class Letter : BaseEntity
     public LetterType Type { get; set; } = LetterType.CustomLetter;
     public Guid SenderUserId { get; set; }
     public DateTime? DateSent { get; set; }
+
+    public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
+
 }

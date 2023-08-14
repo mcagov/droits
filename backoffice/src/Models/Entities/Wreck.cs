@@ -23,5 +23,6 @@ public class Wreck : BaseEntity
 
     public string? AdditionalInformation { get; set; } = string.Empty;
 
-    public List<Droit> Droits { get; set; } = new();
+    public virtual ICollection<Droit> Droits { get; set; } = new List<Droit>();
+    public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 }

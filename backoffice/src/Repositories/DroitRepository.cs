@@ -50,6 +50,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
             .Include(d => d.Wreck)
             .Include(d => d.Salvor)
             .Include(d => d.WreckMaterials)
+            .Include(d => d.Notes).ThenInclude(n => n.LastModifiedByUser)
             .Include(d => d.LastModifiedByUser)
             .FirstOrDefaultAsync(d => d.Id == id);
         if ( droit == null )
