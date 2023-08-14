@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Droits.Models.Entities;
 
 namespace Droits.Models.ViewModels;
@@ -32,7 +33,7 @@ public class LetterPersonalisationView
     {
         foreach ( var param in GetAsPersonalisation() )
         {
-            content = content.Replace($"(({param.Key}))", param.Value);
+            content = Regex.Replace(content, $@"\(\({param.Key}\)\)", param.Value.ToString(), RegexOptions.IgnoreCase);
         }
 
         return content;
