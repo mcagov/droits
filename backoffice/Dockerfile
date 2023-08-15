@@ -1,7 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 as base
-ENV ASPNETCORE_URLS="https://+:5001;http://+:5000"
+ENV ASPNETCORE_URLS="http://+:5000"
 EXPOSE 5000
-EXPOSE 5001
 
 # Timezone setup
 RUN ln -snf /usr/share/zoneinfo/Europe/London /etc/localtime && echo "Europe/London" > /etc/timezone
