@@ -57,6 +57,12 @@ public static class DatabaseSeeder
             SeedNotes(dbContext);
             dbContext.SaveChanges();
         }
+        
+        if ( !dbContext.Images.Any() )
+        {
+            dbContext.Images.AddRange(GetImages());
+            dbContext.SaveChanges();
+        }
 
     }
 

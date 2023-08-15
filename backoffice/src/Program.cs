@@ -1,3 +1,4 @@
+using Amazon.S3;
 using Droits.Clients;
 using Droits.Data;
 using Droits.Middleware;
@@ -38,6 +39,8 @@ builder.Services
     })
     .AddRazorRuntimeCompilation().AddMicrosoftIdentityUI().AddSessionStateTempDataProvider();
 
+builder.Services.AddAWSService<IAmazonS3>();
+
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     options.DefaultRequestCulture = new RequestCulture("en-GB");
@@ -73,6 +76,9 @@ builder.Services.AddScoped<IWreckService, WreckService>();
 
 builder.Services.AddScoped<ISalvorRepository, SalvorRepository>();
 builder.Services.AddScoped<ISalvorService, SalvorService>();
+
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 
 builder.Services.AddScoped<ITokenValidationService, TokenValidationService>();

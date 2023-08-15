@@ -8,7 +8,10 @@ namespace Droits.Repositories;
 
 public interface IImageRepository
 {
+    Task<Image> AddAsync(Image image);
+    Task<Image> UpdateAsync(Image image);
     Task<Image> GetImageAsync(Guid Id);
+    Image GetRandomImage();
 }
 
 public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
@@ -22,6 +25,19 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
     {
         var image = await Context.Images
             .FirstOrDefaultAsync(i => i.Id == Id);
+
+        if ( image == null )
+        {
+            throw new ImageNotFoundException();
+        }
+
+        return image;
+    }
+    
+    public Image GetRandomImage()
+    {
+        var image = Context.Images
+            .First();
 
         if ( image == null )
         {

@@ -33,4 +33,24 @@ public class ImageController : BaseController
             }
         }
     }
+    
+    public async Task<IActionResult> DisplayRandomImage()
+    {
+        var imageUrl = _service.GetRandomImageUrl();
+
+        using (var httpClient = _httpClientFactory.CreateClient())
+        {
+            var response = await httpClient.GetAsync(imageUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var imageStream = await response.Content.ReadAsStreamAsync();
+                return File(imageStream, "image/jpeg"); // Adjust content type as needed
+            }
+            else
+            {
+                return NotFound(); // Image not found or other error
+            }
+        }
+    }
 }
