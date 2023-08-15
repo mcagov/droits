@@ -10,6 +10,7 @@ public class WreckMaterial : BaseEntity
     public virtual Droit? Droit { get; set; }
     public string Name { get; set; } = string.Empty;
     public Address StorageAddress { get; set; } = new();
+    public virtual ICollection<Image> Images { get; set; } = new List<Image>();
     public string? Description { get; set; } = string.Empty;
     public int Quantity { get; set; } = 1;
     public float? Value { get; set; } = 0;

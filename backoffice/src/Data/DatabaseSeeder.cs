@@ -229,15 +229,16 @@ public static class DatabaseSeeder
     }
 
 
-    private static IEnumerable<Note> GenerateNotesForEntities<T>(DroitsContext dbContext, IEnumerable<T> entities, string propertyName) where T : BaseEntity
+    private static IEnumerable<Note> GenerateNotesForEntities<T>(DroitsContext dbContext,
+        IEnumerable<T> entities, string propertyName) where T : BaseEntity
     {
         var notes = new List<Note>();
         var randomUser = Faker.Random.ArrayElement(dbContext.Users.ToArray());
 
-        foreach (var entity in entities)
+        foreach ( var entity in entities )
         {
             var numberOfNotes = Faker.Random.Int(1, 5);
-            for(var i = 0; i < numberOfNotes; i++)
+            for ( var i = 0; i < numberOfNotes; i++ )
             {
                 var note = new Note
                 {
@@ -254,5 +255,19 @@ public static class DatabaseSeeder
         }
 
         return notes;
+    }
+
+
+    private static IEnumerable<Image> GetImages()
+    {
+        return Enumerable.Range(0, 1)
+            .Select(i => new Image()
+            {
+                Id = Guid.NewGuid(),
+                Url="https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_272x92dp.png",
+                Created = DateTime.UtcNow,
+                LastModified = DateTime.UtcNow,
+            })
+            .ToList();
     }
 }
