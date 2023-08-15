@@ -26,8 +26,9 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(options =>
     {
         builder.Configuration.Bind("AzureAd", options);
-    })
-    .AddControllersWithViews(options =>
+    });
+
+builder.Services.AddControllersWithViews(options =>
     {
         options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
 
