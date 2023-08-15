@@ -59,6 +59,7 @@ module "backoffice-alb" {
   ssl_certificate_arn = var.ssl_certificate_arn
 
   port             = var.backoffice_port
+  protocol         = "HTTPS"
   security_groups  = [module.security-groups.backoffice-lb-security-group-id]
   lb_log_bucket    = module.backoffice-logs-s3.alb-log-bucket
   application_name = "backoffice"
@@ -77,6 +78,7 @@ module "webapp-alb" {
   ssl_certificate_arn = var.ssl_certificate_arn
 
   port             = var.webapp_port
+  protocol         = "HTTP"
   security_groups  = [module.security-groups.webapp-lb-security-group-id]
   lb_log_bucket    = module.webapp-logs-s3.alb-log-bucket
   application_name = "webapp"
