@@ -59,7 +59,7 @@ module "backoffice-alb" {
   ssl_certificate_arn = var.ssl_certificate_arn
 
   port             = var.backoffice_port
-  protocol         = "HTTPS"
+  protocol         = "HTTP"
   security_groups  = [module.security-groups.backoffice-lb-security-group-id]
   lb_log_bucket    = module.backoffice-logs-s3.alb-log-bucket
   application_name = "backoffice"
@@ -94,7 +94,7 @@ module "droits-ecs-cluster" {
 module "backoffice-ecs" {
   source             = "./modules/ecs"
   service_name       = "backoffice"
-  health_check_url   = "https://localhost:5001/healthz"
+  health_check_url   = "http://localhost:5000/healthz"
   aws_region         = var.aws_region
   vpc_id             = module.vpc.vpc_id
   public_subnets     = module.vpc.public_subnets
