@@ -4,6 +4,10 @@
     ViewData["Title"] = Model.Name == "" ? "User View" : Model.Name;
 }
 
+@{
+    await Html.RenderPartialAsync("_MessageBanner");
+}
+
 <div class="card">
     <div class="card-header">
         <h2 class="card-title">@ViewData["Title"]</h2>

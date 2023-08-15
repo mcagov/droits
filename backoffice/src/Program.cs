@@ -32,9 +32,10 @@ builder.Services
         var policy = new AuthorizationPolicyBuilder()
             .RequireAuthenticatedUser()
             .Build();
+        
         options.Filters.Add(new AuthorizeFilter(policy));
     })
-    .AddRazorRuntimeCompilation().AddMicrosoftIdentityUI();
+    .AddRazorRuntimeCompilation().AddMicrosoftIdentityUI().AddSessionStateTempDataProvider();
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -44,13 +45,15 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
 builder.Services.AddDbContext<DroitsContext>(opt => opt.UseInMemoryDatabase("droits"));
 
-
+builder.Services.AddSession();
 builder.Services.AddHealthChecks();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+builder.Services.AddScoped<INoteRepository, NoteRepository>();
+builder.Services.AddScoped<INoteService, NoteService>();
 
 builder.Services.AddScoped<ILetterRepository, LetterRepository>();
 builder.Services.AddScoped<ILetterService, LetterService>();
@@ -87,7 +90,7 @@ builder.Services.AddLogging(loggingBuilder =>
 
 var app = builder.Build();
 
-app.MapHealthChecks("/healthz");
+app.MapHealthChecks("/healthz").AllowAnonymous();
 
 // Configure the HTTP request pipeline.
 if ( !app.Environment.IsDevelopment() )
@@ -103,7 +106,7 @@ using ( var scope = app.Services.CreateScope() )
     DatabaseSeeder.SeedData(dbContext);
 }
 app.UseRequestLocalization();
-
+app.UseSession();
 
 app.UseStaticFiles();
 app.UseRouting();

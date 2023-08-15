@@ -15,7 +15,6 @@ public interface IDroitRepository
     Task<Droit> GetDroitAsync(Guid id);
     Task<Droit> AddAsync(Droit droit);
     Task<Droit> UpdateAsync(Droit droit);
-    Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
 }
 
 public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
@@ -51,6 +50,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
             .Include(d => d.Wreck)
             .Include(d => d.Salvor)
             .Include(d => d.WreckMaterials)
+            .Include(d => d.Notes).ThenInclude(n => n.LastModifiedByUser)
             .Include(d => d.LastModifiedByUser)
             .FirstOrDefaultAsync(d => d.Id == id);
         if ( droit == null )
@@ -75,13 +75,5 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
         }
 
         return droit;
-    }
-    
-    public async Task UpdateDroitStatusAsync(Guid id, DroitStatus status)
-    {
-        var droit = await GetDroitAsync(id);
-        droit.Status = status;
-
-        await UpdateAsync(droit);
     }
 }

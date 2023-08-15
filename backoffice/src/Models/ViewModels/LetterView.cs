@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
+using Droits.Models.ViewModels.ListViews;
 
 namespace Droits.Models.ViewModels;
 
@@ -18,6 +19,8 @@ public class LetterView : BaseEntityView
         if ( includeAssociations && letter.Droit != null)
         {
             Droit = new DroitView(letter.Droit);
+            Notes = new NoteListView(letter.Notes.Select(n => new NoteView(n)).OrderByDescending(n => n.LastModified).ToList());
+
         }
     }
 
@@ -31,5 +34,5 @@ public class LetterView : BaseEntityView
     public string Body { get; }
     private DateTime? SentDate { get; }
     public bool IsSent => SentDate.HasValue;
-
+    public NoteListView Notes { get; } = new();
 }

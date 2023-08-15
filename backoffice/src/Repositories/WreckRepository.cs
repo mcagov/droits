@@ -39,6 +39,7 @@ public class WreckRepository : BaseEntityRepository<Wreck>, IWreckRepository
         var wreck = await Context.Wrecks
             .Include(w => w.Droits)
             .Include(w => w.LastModifiedByUser)
+            .Include(d => d.Notes).ThenInclude(n => n.LastModifiedByUser)
             .FirstOrDefaultAsync(w => w.Id == id);
         if ( wreck == null )
         {

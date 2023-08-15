@@ -24,6 +24,8 @@ public class SalvorView : BaseEntityView
         if ( includeAssociations )
         {
             Droits = new DroitListView(salvor.Droits.Select(d => new DroitView(d)).ToList());
+            Notes = new NoteListView(salvor.Notes.Select(n => new NoteView(n)).OrderByDescending(n => n.LastModified).ToList());
+
         }
     }
 
@@ -42,4 +44,6 @@ public class SalvorView : BaseEntityView
 
     public AddressView Address { get; } = new();
     public DroitListView Droits { get; } = new();
+    public NoteListView Notes { get; } = new();
+
 }

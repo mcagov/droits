@@ -14,9 +14,9 @@ public class Droit : BaseEntity
     public DroitStatus Status { get; set; } = DroitStatus.Received;
     public DateTime ReportedDate { get; set; } = DateTime.UtcNow;
     public DateTime DateFound { get; set; } = DateTime.UtcNow;
-
-    public ICollection<WreckMaterial> WreckMaterials { get; set; } = new List<WreckMaterial>();
-    public ICollection<Letter> Letters { get; set; } = new List<Letter>();
+    public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
+    public virtual ICollection<WreckMaterial> WreckMaterials { get; set; } = new List<WreckMaterial>();
+    public virtual ICollection<Letter> Letters { get; set; } = new List<Letter>();
  
 
     // Wreck

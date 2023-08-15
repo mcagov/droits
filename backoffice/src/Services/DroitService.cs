@@ -146,6 +146,10 @@ public class DroitService : IDroitService
 
     public async Task UpdateDroitStatusAsync(Guid id, DroitStatus status)
     {
-        await _repo.UpdateDroitStatusAsync(id, status);
+        var droit = await GetDroitAsync(id);
+        
+        droit.Status = status;
+
+        await _repo.UpdateAsync(droit);
     }
 }

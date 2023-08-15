@@ -1,7 +1,7 @@
 using Droits.Models.Entities;
 using Droits.Models.ViewModels;
 
-namespace Droits.Tests.UnitTests.Letter;
+namespace Droits.Tests.UnitTests.Model.ViewModels;
 
 public class LetterPersonalisationViewUnitTests
 {
