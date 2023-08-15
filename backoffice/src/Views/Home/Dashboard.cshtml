@@ -1,0 +1,40 @@
+﻿@model DroitListView
+
+@{
+    var usersName = @User.FindFirst("name")?.Value ?? "Unknown";
+    ViewData["Title"] = $"{usersName}'s Dashboard";
+}
+
+<div class="container mt-5">
+
+    <div class="row">
+        <div class="col">
+            @{
+                await Html.RenderPartialAsync("_MessageBanner");
+            }
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col">
+            <h3 class="display-4 text-center">@ViewData["Title"]</h3>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">My Assigned Droits</h4>
+                </div>
+                <div class="card-body">
+                    <partial name="Droit/_DroitListTable" model="@Model"/>
+                    <div class="mt-4">
+                        @await Html.PartialAsync("_PaginationPartial", Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
