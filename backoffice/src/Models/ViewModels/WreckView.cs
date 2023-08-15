@@ -36,6 +36,8 @@ public class WreckView : BaseEntityView
         if ( includeAssociations )
         {
             Droits = new DroitListView(wreck.Droits.Select(d => new DroitView(d)).ToList());
+            Notes = new NoteListView(wreck.Notes.Select(n => new NoteView(n)).OrderByDescending(n => n.LastModified).ToList());
+
         }
     }
 
@@ -88,4 +90,6 @@ public class WreckView : BaseEntityView
     public string? AdditionalInformation { get; } = string.Empty;
 
     public DroitListView Droits { get; } = new();
+    public NoteListView Notes { get; } = new();
+
 }

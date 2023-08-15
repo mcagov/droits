@@ -39,6 +39,7 @@ public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
         var salvor = await Context.Salvors
             .Include(s => s.Droits)
             .Include(s => s.LastModifiedByUser)
+            .Include(d => d.Notes).ThenInclude(n => n.LastModifiedByUser)
             .FirstOrDefaultAsync(s => s.Id == id);
         if ( salvor == null )
         {

@@ -50,7 +50,7 @@
 </div>
 
 <script src="~/dist/bundle.js" asp-append-version="true"></script>
-@await RenderSectionAsync("Scripts", false)
 @await Html.PartialAsync("_ConfirmDialog")
+@await RenderSectionAsync("Scripts", false)
 </body>
 </html>

@@ -51,8 +51,12 @@ public static class DatabaseSeeder
             dbContext.Letters.AddRange(GetLetters(dbContext.Droits, Faker.Random.ArrayElement(dbContext.Users.ToArray())));
             dbContext.SaveChanges();
         }
-        
-        
+
+        if ( !dbContext.Notes.Any() )
+        {
+            SeedNotes(dbContext);
+            dbContext.SaveChanges();
+        }
 
     }
 
@@ -210,5 +214,45 @@ public static class DatabaseSeeder
                 LastModified = DateTime.UtcNow,
             })
             .ToList();
+    }
+    
+    private static void SeedNotes(DroitsContext dbContext)
+    {
+        var notes = new List<Note>();
+
+        notes.AddRange(GenerateNotesForEntities(dbContext, dbContext.Droits, nameof(Note.DroitId)));
+        notes.AddRange(GenerateNotesForEntities(dbContext, dbContext.Wrecks, nameof(Note.WreckId)));
+        notes.AddRange(GenerateNotesForEntities(dbContext, dbContext.Salvors, nameof(Note.SalvorId)));
+        notes.AddRange(GenerateNotesForEntities(dbContext, dbContext.Letters, nameof(Note.LetterId)));
+    
+        dbContext.Notes.AddRange(notes);
+    }
+
+
+    private static IEnumerable<Note> GenerateNotesForEntities<T>(DroitsContext dbContext, IEnumerable<T> entities, string propertyName) where T : BaseEntity
+    {
+        var notes = new List<Note>();
+        var randomUser = Faker.Random.ArrayElement(dbContext.Users.ToArray());
+
+        foreach (var entity in entities)
+        {
+            var numberOfNotes = Faker.Random.Int(1, 5);
+            for(var i = 0; i < numberOfNotes; i++)
+            {
+                var note = new Note
+                {
+                    Text = Faker.Lorem.Paragraph(),
+                    Type = NoteType.General,
+                    Created = DateTime.UtcNow,
+                    LastModified = DateTime.UtcNow,
+                    LastModifiedByUserId = randomUser.Id,
+                };
+
+                typeof(Note).GetProperty(propertyName)?.SetValue(note, entity.Id);
+                notes.Add(note);
+            }
+        }
+
+        return notes;
     }
 }

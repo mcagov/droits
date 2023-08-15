@@ -17,9 +17,8 @@ public interface ILetterService
     Task<string> GetTemplateBodyAsync(LetterType letterType, Droit? droit);
     Task<string> GetTemplateSubjectAsync(LetterType letterType, Droit? droit);
     Task<EmailNotificationResponse> SendLetterAsync(Guid id);
-    Task<Letter> GetLetterByIdAsync(Guid id);
+    Task<Letter> GetLetterAsync(Guid id);
     Task<Letter> SaveLetterAsync(LetterForm form);
-    Task<List<Letter>> GetLettersAsync();
 }
 
 public class LetterService : ILetterService
@@ -110,7 +109,7 @@ public class LetterService : ILetterService
     {
         try
         {
-            var letter = await GetLetterByIdAsync(id);
+            var letter = await GetLetterAsync(id);
             var govNotifyResponse = await _client.SendLetterAsync(letter);
 
             await MarkAsSentAsync(id);
@@ -127,18 +126,11 @@ public class LetterService : ILetterService
 
     private async Task MarkAsSentAsync(Guid id)
     {
-        var sentLetter = await GetLetterByIdAsync(id);
+        var sentLetter = await GetLetterAsync(id);
 
         sentLetter.DateSent = DateTime.UtcNow;
         await _repo.UpdateAsync(sentLetter);
     }
-
-
-    public async Task<List<Letter>> GetLettersAsync()
-    {
-        return await _repo.GetLetters().ToListAsync();
-    }
-
 
     public async Task<Letter> SaveLetterAsync(LetterForm form)
     {
@@ -156,7 +148,7 @@ public class LetterService : ILetterService
         }
         else
         {
-            letter = await GetLetterByIdAsync(form.Id);
+            letter = await GetLetterAsync(form.Id);
             letter = form.ApplyChanges(letter);
         }
 
@@ -198,7 +190,7 @@ public class LetterService : ILetterService
     }
 
 
-    public async Task<Letter> GetLetterByIdAsync(Guid id)
+    public async Task<Letter> GetLetterAsync(Guid id)
     {
         return await _repo.GetLetterAsync(id);
     }

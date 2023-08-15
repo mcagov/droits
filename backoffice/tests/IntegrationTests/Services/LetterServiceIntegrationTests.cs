@@ -64,7 +64,7 @@ namespace Droits.Tests.IntegrationTests.Services
             
             // When
             var response = await _service.SendLetterAsync(sampleLetter.Id);
-            var sentLetter = await _service.GetLetterByIdAsync(sampleLetter.Id);
+            var sentLetter = await _service.GetLetterAsync(sampleLetter.Id);
 
             // Then
             Assert.NotNull(response);

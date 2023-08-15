@@ -80,7 +80,6 @@ public class WreckService : IWreckService
         return await _repo.GetWreckAsync(id);
     }
 
-
     public async Task<Guid> SaveWreckFormAsync(WreckForm wreckForm)
     {
         var wreck = wreckForm.ApplyChanges(new Wreck());

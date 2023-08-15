@@ -41,7 +41,7 @@ public class LetterController : BaseController
         {
             try
             {
-                var letter = await _service.GetLetterByIdAsync(id);
+                var letter = await _service.GetLetterAsync(id);
                 return View(new LetterForm(letter));
             }
             catch ( LetterNotFoundException e )
@@ -141,16 +141,16 @@ public class LetterController : BaseController
             return View(nameof(Edit), form);
         }
 
-        return RedirectToAction(nameof(Preview), new { id = letter.Id });
+        return RedirectToAction(nameof(View), new { id = letter.Id });
     }
 
 
     [HttpGet]
-    public async Task<IActionResult> Preview(Guid id)
+    public async Task<IActionResult> View(Guid id)
     {
         try
         {
-            var letter = await _service.GetLetterByIdAsync(id);
+            var letter = await _service.GetLetterAsync(id);
 
             var model = new LetterView(letter, true);
 

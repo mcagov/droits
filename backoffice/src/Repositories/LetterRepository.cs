@@ -30,7 +30,9 @@ public class LetterRepository : BaseEntityRepository<Letter>, ILetterRepository
 
     public IQueryable<Letter> GetLettersWithAssociations()
     {
-        return GetLetters().Include(l => l.Droit);
+        return GetLetters()
+            .Include(l => l.Droit);
+        
     }
 
 
@@ -38,6 +40,8 @@ public class LetterRepository : BaseEntityRepository<Letter>, ILetterRepository
     {
         var letter = await Context.Letters
                                   .Include(l => l.LastModifiedByUser)
+                                  .Include(l => l.Droit)
+                                  .Include(l => l.Notes).ThenInclude(n => n.LastModifiedByUser)
                                   .FirstOrDefaultAsync(l => l.Id == id);
 
         if ( letter == null )

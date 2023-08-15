@@ -16,6 +16,7 @@ public partial class DroitsContext : DbContext
     }
 
     public virtual DbSet<ApplicationUser> Users { get; set; } = null!;
+    public virtual DbSet<Note> Notes { get; set; } = null!;
     public virtual DbSet<Droit> Droits { get; set; } = null!;
     public virtual DbSet<WreckMaterial> WreckMaterials { get; set; } = null!;
     public virtual DbSet<Wreck> Wrecks { get; set; } = null!;
@@ -40,6 +41,44 @@ public partial class DroitsContext : DbContext
             entity.Property(u => u.LastModified);
         });
         
+        modelBuilder.Entity<Note>(entity =>
+        {
+            entity.ToTable("notes");
+
+            entity.Property(n => n.Id);
+            entity.Property(n => n.Text);
+            entity.Property(n => n.Type);
+            entity.Property(n => n.Created);
+            entity.Property(n => n.LastModified);
+            entity.Property(n => n.LastModifiedByUserId);
+
+            // Relationships
+            entity.HasOne(n => n.Droit)
+                .WithMany(d => d.Notes)
+                .HasForeignKey(n => n.DroitId)
+                .IsRequired(false);
+
+            entity.HasOne(n => n.Wreck)
+                .WithMany(w => w.Notes)
+                .HasForeignKey(n => n.WreckId)
+                .IsRequired(false);
+
+            entity.HasOne(n => n.Salvor)
+                .WithMany(s => s.Notes)
+                .HasForeignKey(n => n.SalvorId)
+                .IsRequired(false);
+            
+            entity.HasOne(n => n.Letter)
+                .WithMany(s => s.Notes)
+                .HasForeignKey(n => n.LetterId)
+                .IsRequired(false);
+
+            entity.HasOne(n => n.LastModifiedByUser)
+                .WithMany()
+                .HasForeignKey(n => n.LastModifiedByUserId)
+                .IsRequired(false);
+        });
+
         modelBuilder.Entity<Droit>(entity =>
         {
             entity.ToTable("droits");
@@ -107,6 +146,11 @@ public partial class DroitsContext : DbContext
                 .WithMany()
                 .HasForeignKey(d => d.AssignedToUserId)
                 .IsRequired(false);
+            
+            entity.HasMany(d => d.Notes)
+                .WithOne(n => n.Droit)
+                .HasForeignKey(n => n.DroitId)
+                .IsRequired(false);
         });
 
 
@@ -143,6 +187,8 @@ public partial class DroitsContext : DbContext
                 .WithMany()
                 .HasForeignKey(w => w.LastModifiedByUserId)
                 .IsRequired(false);
+            
+            
         });
 
 
@@ -179,6 +225,11 @@ public partial class DroitsContext : DbContext
                 .WithMany()
                 .HasForeignKey(w => w.LastModifiedByUserId)
                 .IsRequired(false);
+            
+            entity.HasMany(w => w.Notes)
+                .WithOne(n => n.Wreck)
+                .HasForeignKey(n => n.WreckId)
+                .IsRequired(false);
         });
 
         modelBuilder.Entity<Letter>(entity =>
@@ -205,6 +256,11 @@ public partial class DroitsContext : DbContext
                 .WithMany()
                 .HasForeignKey(l => l.LastModifiedByUserId)
                 .IsRequired(false);
+            
+            entity.HasMany(l => l.Notes)
+                .WithOne(n => n.Letter)
+                .HasForeignKey(n => n.LetterId)
+                .IsRequired(false);
         });
 
         modelBuilder.Entity<Salvor>(entity =>
@@ -230,6 +286,12 @@ public partial class DroitsContext : DbContext
                 .WithMany()
                 .HasForeignKey(s => s.LastModifiedByUserId)
                 .IsRequired(false);
+
+            entity.HasMany(s => s.Notes)
+                .WithOne(n => n.Salvor)
+                .HasForeignKey(n => n.SalvorId)
+                .IsRequired(false);
+
         });
 
         base.OnModelCreating(modelBuilder);
