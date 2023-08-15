@@ -134,12 +134,16 @@ app.UseRequestLocalization();
 app.UseSession();
 app.UseCookiePolicy();
 app.UseStaticFiles();
+
+app.MapHealthChecks("/healthz").AllowAnonymous();
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseMiddleware<TokenValidationMiddleware>();
 app.UseAuthorization();
 
 // Routing
+
 app.MapControllerRoute(
     "default",
     "{controller=Home}/{action=Index}/{id?}");
