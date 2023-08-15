@@ -3,8 +3,15 @@
         <i class="fas fa-user" aria-hidden="true" role="presentation"></i> @User.FindFirst("name")?.Value
     </button>
     <div class="dropdown-menu dropdown-menu-end w-100" aria-labelledby="userDropdown">
-        <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Index">Manage Users</a>
-        <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Profile">My Profile</a>
-        <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="LogOut">Sign Out</a>
+        @if (User.Identity is { IsAuthenticated: true })
+        {
+            <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Index">Manage Users</a>
+            <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Profile">My Profile</a>
+            <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="LogOut">Sign Out</a>
+        }
+        else
+        {
+            <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Dashboard">Sign In</a>
+        }
     </div>
 </div>

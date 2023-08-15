@@ -32,6 +32,7 @@ builder.Services
         var policy = new AuthorizationPolicyBuilder()
             .RequireAuthenticatedUser()
             .Build();
+        
         options.Filters.Add(new AuthorizeFilter(policy));
     })
     .AddRazorRuntimeCompilation().AddMicrosoftIdentityUI();
@@ -84,7 +85,7 @@ builder.Services.AddLogging(loggingBuilder =>
 
 var app = builder.Build();
 
-app.MapHealthChecks("/healthz");
+app.MapHealthChecks("/healthz").AllowAnonymous();
 
 // Configure the HTTP request pipeline.
 if ( !app.Environment.IsDevelopment() )

@@ -129,7 +129,7 @@ public class UserController : BaseController
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction("Index","Home");
     }
 
 }
