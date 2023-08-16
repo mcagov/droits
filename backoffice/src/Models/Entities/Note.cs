@@ -6,7 +6,7 @@ namespace Droits.Models.Entities;
 public class Note : BaseEntity
 {
     public NoteType Type { get; set; } = NoteType.General;
-
+    public string Title { get; set; } = string.Empty;
     public string Text { get; set; } = string.Empty;
     public Guid? DroitId { get; set; }
     [ForeignKey("DroitId")]

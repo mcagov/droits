@@ -21,7 +21,13 @@
                 @Html.HiddenFor(m => m.SalvorId)
                 @Html.HiddenFor(m => m.LetterId)
                 
-               <div class="form-group">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Title, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.Title, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+                </div>
+                
+                <div class="form-group">
                    @Html.LabelFor(m => m.Text, new { @class = "col-form-label" })
                    @Html.EditorFor(m => m.Text, new { htmlAttributes = new { @class = "form-control" } })
                    @Html.ValidationMessageFor(m => m.Text, "", new { @class = "text-danger" })

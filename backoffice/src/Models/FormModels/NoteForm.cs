@@ -12,6 +12,7 @@ namespace Droits.Models.FormModels
 
         public NoteForm(Note note) : base(note)
         {
+            Title = note.Title;
             Type = note.Type;
             Text = note.Text;
             DroitId = note.DroitId;
@@ -23,6 +24,9 @@ namespace Droits.Models.FormModels
         [Required(ErrorMessage = "Type is required")]
         public NoteType Type { get; set; } = NoteType.General;
 
+        [Required(ErrorMessage = "Title is required")]
+        public string Title { get; set; } = string.Empty;
+        
         [Required(ErrorMessage = "Text is required")]
         [DataType(DataType.MultilineText)]
         public string Text { get; set; } = string.Empty;
@@ -50,6 +54,7 @@ namespace Droits.Models.FormModels
             base.ApplyChanges(note);
 
             note.Type = Type;
+            note.Title = Title;
             note.Text = Text;
             note.DroitId = DroitId;
             note.WreckId = WreckId;

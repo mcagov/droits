@@ -4,6 +4,7 @@
     <table class="table table-striped">
         <thead>
         <tr>
+            <th scope="col">Title</th>
             <th scope="col">Text</th>
             <th scope="col">Type</th>
             <th scope="col">Last Modified</th>
@@ -14,19 +15,22 @@
         <tbody>
         @foreach (NoteView note in Model.Notes)
         {
-                <tr>
-                    <td class="p-3">
-                        @Html.DisplayFor(m => note.Text)
-                    </td>
-                    <td class="p-3">@Html.DisplayFor(m => note.Type)</td>
-                    <td class="p-3">@note.LastModified.ToString("dd/MM/yyyy")</td>
-                    <td class="p-3">@Html.DisplayFor(m => note.LastModifiedBy)</td>
-                    <td class="p-3">
-                        <div class="btn-group">
-                            <a asp-controller="Note" asp-action="Edit" asp-route-id="@note.Id" class="btn btn-primary">Edit</a>
-                        </div>
-                    </td>
-                </tr>
+            <tr>
+                <td class="p-3">
+                    @Html.DisplayFor(m => note.Title)
+                </td>
+                <td class="p-3">
+                    @Html.DisplayFor(m => note.Text)
+                </td>
+                <td class="p-3">@Html.DisplayFor(m => note.Type)</td>
+                <td class="p-3">@note.LastModified.ToString("dd/MM/yyyy")</td>
+                <td class="p-3">@Html.DisplayFor(m => note.LastModifiedBy)</td>
+                <td class="p-3">
+                    <div class="btn-group">
+                        <a asp-controller="Note" asp-action="Edit" asp-route-id="@note.Id" class="btn btn-primary">Edit</a>
+                    </div>
+                </td>
+            </tr>
         }
         </tbody>
     </table>
