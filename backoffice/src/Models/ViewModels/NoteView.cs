@@ -16,6 +16,7 @@ namespace Droits.Models.ViewModels
         {
             Id = note.Id;
             Type = note.Type;
+            Title = note.Title;
             Text = note.Text;
             DroitId = note.DroitId;
             WreckId = note.WreckId;
@@ -32,6 +33,9 @@ namespace Droits.Models.ViewModels
         [DisplayName("Type")]
         public NoteType Type { get; } = NoteType.General;
 
+        [DisplayName("Title")]
+        public string Title { get; } = string.Empty;
+        
         [DisplayName("Note")]
         [DataType(DataType.MultilineText)]
         public string Text { get; } = string.Empty;

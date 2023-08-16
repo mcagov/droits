@@ -4,6 +4,7 @@ using Droits.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 using Droits.Models.FormModels;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
@@ -32,7 +33,7 @@ namespace Droits.Tests.UnitTests.Controllers
         {
             // Given
             var noteId = Guid.NewGuid();
-            var expectedNote = new Note { Id = noteId, Text = "Test" };
+            var expectedNote = new Note { Id = noteId, Text = "Test" , Title = "Test Title", Type = NoteType.ExternalReference};
             _mockService.Setup(service => service.GetNoteAsync(noteId)).ReturnsAsync(expectedNote);
 
             // When
@@ -42,6 +43,8 @@ namespace Droits.Tests.UnitTests.Controllers
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<NoteForm>(viewResult.ViewData.Model);
             Assert.Equal(expectedNote.Text, model.Text);
+            Assert.Equal(expectedNote.Title, model.Title);
+            Assert.Equal(expectedNote.Type, model.Type);
         }
 
         [Fact]
