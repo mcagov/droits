@@ -117,6 +117,20 @@
                 </div>
             </div>
             
+            <div class="js-images mt-2">
+                <div class="js-images-form-container row">
+                    @for (var i = 0; i < Model.ImageForms.Count; i++)
+                    {
+                        <partial name="Image/_ImageFormFields" for="ImageForms[i]"/>
+                    }
+                </div>
+                <div class="col-12 mt-4">
+                    <button type="button" class="js-add-image-form mt-2 btn btn-primary">Add Image</button>
+                </div>
+            </div>
+            
+           
+            
             <div class="form-group row mt-2">
                 <h5>Storage Address</h5>
                 <div class="row align-items-center">

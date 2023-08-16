@@ -7,6 +7,8 @@ public class WreckMaterialForm : BaseEntityForm
 {
     public WreckMaterialForm()
     {
+        ImageForms = new List<ImageForm>()
+            { new ImageForm() { Url = "foo" }, new ImageForm() { Url = "bar" } };
     }
 
 
@@ -25,6 +27,17 @@ public class WreckMaterialForm : BaseEntityForm
         Outcome = wreckMaterial.Outcome;
         WhereSecured = wreckMaterial.WhereSecured;
         StorageAddress = new AddressForm(wreckMaterial.StorageAddress);
+        // if ( wreckMaterial.Images.Any() )
+        // {
+        //     ImageForms = 
+        //         wreckMaterial.Images.Select(i => new ImageForm(i)).ToList();
+        // }
+        // else
+        // {
+        //     ImageForms.Add(new ImageForm());
+        // }
+        ImageForms = new List<ImageForm>()
+            { new ImageForm() { Url = "foo" }, new ImageForm() { Url = "bar" } };
     }
 
 
@@ -52,9 +65,7 @@ public class WreckMaterialForm : BaseEntityForm
 
     [Display(Name = "Value Confirmed")]
     public bool ValueConfirmed { get; set; } = false;
-
-    // public List<string> Images { get; set; } = new List<string>();
-
+    
     [Display(Name = "Wreck Material Owner")]
     [DataType(DataType.MultilineText)]
     public string? WreckMaterialOwner { get; set; } = string.Empty;
@@ -67,6 +78,8 @@ public class WreckMaterialForm : BaseEntityForm
     [Display(Name = "Where Secured")]
     [DataType(DataType.MultilineText)]
     public string? WhereSecured { get; set; } = string.Empty;
+
+    public List<ImageForm> ImageForms { get; set; } = new();
 
 
     public WreckMaterial ApplyChanges(WreckMaterial wreckMaterial)

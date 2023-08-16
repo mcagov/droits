@@ -193,6 +193,12 @@ public class DroitController : BaseController
     {
         return PartialView("WreckMaterial/_WreckMaterialFormFields", new WreckMaterialForm());
     }
+    
+    [HttpGet]
+    public ActionResult ImageFormPartial()
+    {
+        return PartialView("Image/_ImageFormFields", new ImageForm());
+    }
 
 
     private async Task<DroitForm> PopulateDroitFormAsync(DroitForm form)
