@@ -48,6 +48,7 @@ public partial class DroitsContext : DbContext
             entity.ToTable("notes");
 
             entity.Property(n => n.Id);
+            entity.Property(n => n.Title);
             entity.Property(n => n.Text);
             entity.Property(n => n.Type);
             entity.Property(n => n.Created);

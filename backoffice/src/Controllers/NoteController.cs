@@ -35,6 +35,7 @@ public class NoteController : BaseController
     [HttpGet]
     public IActionResult Add(NoteForm noteForm)
     {
+        ModelState.Remove("Title");
         ModelState.Remove("Text");
         return View("Edit", noteForm);
     }

@@ -248,8 +248,11 @@ public static class DatabaseSeeder
             {
                 var note = new Note
                 {
-                    Text = Faker.Lorem.Paragraph(),
-                    Type = NoteType.General,
+                    Title = Faker.Lorem.Sentence(),
+                    Text = Faker.Lorem.Paragraphs(),
+                    Type = Enum.GetValues(typeof(NoteType))
+                        .OfType<NoteType>()
+                        .MinBy(x => Guid.NewGuid()),
                     Created = DateTime.UtcNow,
                     LastModified = DateTime.UtcNow,
                     LastModifiedByUserId = randomUser.Id,
