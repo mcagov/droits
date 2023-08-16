@@ -17,11 +17,7 @@ public class WreckMaterial : BaseEntity
     public float? ReceiverValuation { get; set; } = 0;
 
     public bool ValueConfirmed { get; set; } = false;
-    // public List<string> Images { get; set; } = new List<string>();
-
-
-    // public string StorageAddress {get;set;} = string.Empty;
-
+    
     // Legacy fields ..
 
     public string? WreckMaterialOwner { get; set; } = string.Empty;

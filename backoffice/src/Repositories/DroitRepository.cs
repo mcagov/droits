@@ -49,7 +49,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
             .Include(d => d.Letters)
             .Include(d => d.Wreck)
             .Include(d => d.Salvor)
-            .Include(d => d.WreckMaterials)
+            .Include(d => d.WreckMaterials).ThenInclude(wm => wm.Images)
             .Include(d => d.Notes).ThenInclude(n => n.LastModifiedByUser)
             .Include(d => d.LastModifiedByUser)
             .FirstOrDefaultAsync(d => d.Id == id);

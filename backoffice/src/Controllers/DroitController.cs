@@ -93,7 +93,7 @@ public class DroitController : BaseController
 
         try
         {
-            var droit = await _service.GetDroitAsync(id);
+            var droit = await _service.GetDroitWithAssociationsAsync(id);
             var form = await PopulateDroitFormAsync(new DroitForm(droit));
             return View(form);
         }
@@ -181,6 +181,7 @@ public class DroitController : BaseController
             form = await PopulateDroitFormAsync(form);
             return View(nameof(Edit), form);
         }
+        
 
         AddSuccessMessage("Droit saved successfully");
 

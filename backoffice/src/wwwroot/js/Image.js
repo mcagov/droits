@@ -1,4 +1,7 @@
 export function initializeImage() {
+    
+    refreshImageFormIndexes();
+
     document.body.addEventListener('click', function(e) {
         if (e.target.matches('.js-remove-image-form')) {
             removeImageForm.call(e.target);
@@ -37,20 +40,29 @@ export function addImageForm(button) {
             refreshImageFormIndexes();
         });
 }
+function refreshImageFormIndexes() {
+    const imageFormContainers = document.querySelectorAll('.js-images-form-container');
 
-
-function refreshImageFormIndexes(containerClass) {
-    const imageFormContainers = document.querySelectorAll(`.js-images-form-container`);
-    
     imageFormContainers.forEach((imageFormContainer) => {
+        const wmForm = imageFormContainer.closest('.js-wreck-material-form');
+        
+        if (!wmForm){
+            console.error("Wreck Material Form not found");
+            return;
+        }
+        
+        const wmFormId = wmForm.getAttribute("js-data-wm-id");
+        const wmFormName = wmForm.getAttribute("js-data-wm-name");
+        
         imageFormContainer.querySelectorAll('.js-image-form').forEach((form, index) => {
-            form.querySelectorAll('input, select').forEach(elem => {
-                elem.setAttribute('name', elem.getAttribute('name').replace(/ImageForms\[\d+]/, `ImageForms[${index}]`));
-                elem.setAttribute('id', elem.getAttribute('id').replace(/ImageForms_\[\d+]/, `ImageForms_[${index}]`));
+             form.querySelectorAll('input, select').forEach(elem => {
+                elem.setAttribute('name', elem.getAttribute('name').replace(/.*?ImageForms\[\d+]/, `${wmFormName}.ImageForms[${index}]`));
+                elem.setAttribute('id', elem.getAttribute('id').replace(/.*?ImageForms_\[\d+]/, `${wmFormId}__ImageForms_[${index}]`));
             });
         });
     });
 }
+
 
 
 export function removeImageForm() {

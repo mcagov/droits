@@ -1,7 +1,7 @@
 import {initializeImage} from "./Image";
 
 export function initializeWreckMaterial() {
-                    
+    refreshWmFormIndexes();
     initializeImage();
 
     document.body.addEventListener("change", function (e) {
@@ -73,6 +73,8 @@ export function addWreckMaterialForm() {
 function refreshWmFormIndexes() {
     const wmFormContainer = document.querySelector('#js-wreck-materials-form-container');
     wmFormContainer.querySelectorAll('.js-wreck-material-form').forEach((form, index) => {
+        form.setAttribute("js-data-wm-name", `WreckMaterialForms[${index}]`);
+        form.setAttribute("js-data-wm-id", `WreckMaterialForms_[${index}]`);
         form.querySelectorAll('input, select').forEach(elem => {
             elem.setAttribute('name', elem.getAttribute('name').replace(/WreckMaterialForms\[\d+]/, `WreckMaterialForms[${index}]`));
             elem.setAttribute('id', elem.getAttribute('id').replace(/WreckMaterialForms_\[\d+]/, `WreckMaterialForms_[${index}]`));

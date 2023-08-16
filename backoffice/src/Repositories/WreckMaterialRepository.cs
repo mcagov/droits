@@ -13,7 +13,7 @@ public interface IWreckMaterialRepository
 
     Task<WreckMaterial> AddAsync(WreckMaterial wreckMaterial);
     Task<WreckMaterial> UpdateAsync(WreckMaterial wreckMaterial);
-    Task<WreckMaterial> GetWreckMaterialAsync(Guid id, Guid droitId);
+    Task<WreckMaterial> GetWreckMaterialAsync(Guid id);
     Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep);
 }
 
@@ -23,11 +23,11 @@ public class WreckMaterialRepository : BaseEntityRepository<WreckMaterial>, IWre
     {
 
     }
-    public async Task<WreckMaterial> GetWreckMaterialAsync(Guid id, Guid droitId)
+    public async Task<WreckMaterial> GetWreckMaterialAsync(Guid id)
     {
         var wreckMaterial =
-            await Context.WreckMaterials.FirstOrDefaultAsync(wm =>
-                wm.Id == id && wm.DroitId == droitId);
+            await Context.WreckMaterials.Include(wm => wm.Images).FirstOrDefaultAsync(wm =>
+                wm.Id == id);
         if ( wreckMaterial == null )
         {
             throw new WreckMaterialNotFoundException();

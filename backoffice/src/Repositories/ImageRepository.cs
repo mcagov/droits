@@ -21,10 +21,10 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
         
     }
     
-    public async Task<Image> GetImageAsync(Guid Id)
+    public async Task<Image> GetImageAsync(Guid id)
     {
         var image = await Context.Images
-            .FirstOrDefaultAsync(i => i.Id == Id);
+            .FirstOrDefaultAsync(i => i.Id == id);
 
         if ( image == null )
         {

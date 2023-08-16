@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using Droits.Clients;
 using Droits.Exceptions;
 using Droits.Models.Entities;
@@ -8,45 +9,25 @@ namespace Droits.Services;
 
 public interface IWreckMaterialService
 {
-    Task UploadImageAsync(string key, Stream imageStream);
-    Task<Stream> GetImageAsync(string key);
-    Task<String> GetImageTypeAsync(string key);
     Task<WreckMaterial> SaveWreckMaterialAsync(WreckMaterialForm wmForm);
-    Task<WreckMaterial>  UpdateWreckMaterialAsync(WreckMaterial wm);
+    Task<WreckMaterial>  GetWreckMaterialAsync(Guid id);
     Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep);
 
 }
 
 public class WreckMaterialService : IWreckMaterialService
 {
-    
-    private readonly IS3Client _client;
+
+    private readonly IImageService _imageService;
     private readonly ILogger<WreckMaterialService> _logger;
     private readonly IWreckMaterialRepository _repository;
 
 
-    public WreckMaterialService(IS3Client client, ILogger<WreckMaterialService> logger, IWreckMaterialRepository repository)
+    public WreckMaterialService(IImageService imageService, ILogger<WreckMaterialService> logger, IWreckMaterialRepository repository)
     {
-        _client = client;
+        _imageService = imageService;
         _logger = logger;
         _repository = repository;
-    }
-     
-    public async Task UploadImageAsync(string key, Stream imageStream)
-    {
-        await _client.UploadImageAsync(key, imageStream);
-    }
-
-
-    public async Task<Stream> GetImageAsync(string key)
-    {
-        return await _client.GetImageAsync(key);
-    }
-
-
-    public async Task<string> GetImageTypeAsync(string key)
-    {
-        return await _client.GetImageTypeAsync(key);
     }
     
     public async Task<WreckMaterial> SaveWreckMaterialAsync(WreckMaterialForm wreckMaterialForm)
@@ -58,11 +39,15 @@ public class WreckMaterialService : IWreckMaterialService
         }
 
         var wreckMaterial =
-            await _repository.GetWreckMaterialAsync(wreckMaterialForm.Id, wreckMaterialForm.DroitId);
+            await GetWreckMaterialAsync(wreckMaterialForm.Id);
 
         wreckMaterial = wreckMaterialForm.ApplyChanges(wreckMaterial);
 
-        return await UpdateWreckMaterialAsync(wreckMaterial);
+        wreckMaterial = await UpdateWreckMaterialAsync(wreckMaterial);
+
+        await SaveImagesAsync(wreckMaterial.Id, wreckMaterialForm.ImageForms);
+
+        return wreckMaterial;
     }
 
 
@@ -75,6 +60,36 @@ public class WreckMaterialService : IWreckMaterialService
     public async Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep)
     {
         await _repository.DeleteWreckMaterialForDroitAsync(droitId, wmToKeep);
+    }
+
+
+    public async Task<WreckMaterial> GetWreckMaterialAsync(Guid id)
+    {
+        return await _repository.GetWreckMaterialAsync(id);
+    }
+    
+     public async Task SaveImagesAsync(Guid wmId,
+        List<ImageForm> imageForms)
+    {
+        // var wreckMaterialIdsToKeep = imageForms.Select(wm => wm.Id);
+        //
+        // await _imageService.DeleteWreckMaterialForDroitAsync(droitId, imageIdsToKeep);
+
+        try
+        {
+            var wreckMaterial = await GetWreckMaterialAsync(wmId);
+            
+            foreach ( var imageForm in imageForms )
+            {
+                imageForm.WreckMaterialId = wmId;
+
+                await _imageService.SaveImageFormAsync(imageForm);
+            }
+        }
+        catch ( WreckMaterialNotFoundException e )
+        {
+            _logger.LogError("Wreck Material not found", e);
+        }
     }
     
 }

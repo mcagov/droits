@@ -1,5 +1,6 @@
 using Droits.Repositories;
 using Droits.Models.Entities;
+using Droits.Models.FormModels;
 
 namespace Droits.Services;
 
@@ -7,6 +8,8 @@ public interface IImageService
 {
     Task<string> GetImageUrlAsync(Guid Id);
     string GetRandomImageUrl();
+    Task<Image> SaveImageAsync(Image image);
+    Task<Image> SaveImageFormAsync(ImageForm imageForm);
 }
 
 public class ImageService : IImageService
@@ -47,9 +50,28 @@ public class ImageService : IImageService
     {
         return _repo.GetRandomImage().Url;
     }
-    public async Task<string> GetImageUrlAsync(Guid Id)
+    public async Task<string> GetImageUrlAsync(Guid id)
     {
-        var image = await _repo.GetImageAsync(Id);
+        var image = await _repo.GetImageAsync(id);
         return image.Url;
+    }
+
+
+    public async Task<Image> SaveImageFormAsync(ImageForm imageForm)
+    {
+        if ( imageForm.Id == default )
+        {
+            return await _repo.AddAsync(
+                imageForm.ApplyChanges(new Image()));
+        }
+
+        var image =
+            await GetImageAsync(imageForm.Id);
+
+        image = imageForm.ApplyChanges(image);
+
+        image = await UpdateImageAsync(image);
+        
+        return image;
     }
 }
