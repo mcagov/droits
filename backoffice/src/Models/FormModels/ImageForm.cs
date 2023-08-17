@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 
 namespace Droits.Models.FormModels;
@@ -12,17 +13,21 @@ public class ImageForm : BaseEntityForm
 
     public ImageForm(Image image) : base(image)
     {
-        Url = image.Url;
+        Title = image.Title;
+        WreckMaterialId = image.WreckMaterialId;
     }
-    
-    public string Url { get; set; }
+
+
+    public string? Title { get; set; } = string.Empty;
     public Guid? WreckMaterialId { get; set; }
+    [Required]
+    public IFormFile ImageFile { get; set; }
 
 
     public Image ApplyChanges(Image image)
     {
         base.ApplyChanges(image);
-        image.Url = Url;
+        image.Title = Title;
         image.WreckMaterialId = WreckMaterialId;
 
         return image;

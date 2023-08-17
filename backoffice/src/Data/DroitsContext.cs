@@ -203,8 +203,12 @@ public partial class DroitsContext : DbContext
         modelBuilder.Entity<Image>(entity =>
         {
             entity.Property(i => i.Id);
-            entity.Property(i => i.Url);
-
+            entity.Property(i => i.Title);
+            
+            entity.Property(i => i.Key);
+            entity.Property(i => i.Filename);
+            entity.Property(i => i.FileContentType);
+            
             entity.Property(i => i.WreckMaterialId);
             
             entity.Property(i => i.Created);

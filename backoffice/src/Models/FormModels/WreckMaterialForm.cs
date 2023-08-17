@@ -71,7 +71,7 @@ public class WreckMaterialForm : BaseEntityForm
     [DataType(DataType.MultilineText)]
     public string? WhereSecured { get; set; } = string.Empty;
 
-    public List<ImageForm> ImageForms { get; set; } = new() {new ImageForm()};
+    public List<ImageForm> ImageForms { get; set; } = new();
 
 
     public WreckMaterial ApplyChanges(WreckMaterial wreckMaterial)
