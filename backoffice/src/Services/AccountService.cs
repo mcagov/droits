@@ -2,16 +2,16 @@ using System.Security.Claims;
 
 namespace Droits.Services;
 
-public interface ICurrentUserService
+public interface IAccountService
 {
     Guid GetCurrentUserId();
 }
 
-public class CurrentUserService : ICurrentUserService
+public class AccountService : IAccountService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CurrentUserService(IHttpContextAccessor httpContextAccessor)
+    public AccountService(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
     }

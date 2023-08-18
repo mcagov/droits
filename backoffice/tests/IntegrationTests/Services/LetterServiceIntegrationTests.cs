@@ -20,7 +20,7 @@ namespace Droits.Tests.IntegrationTests.Services
 {
     public class LetterServiceIntegrationTests : IClassFixture<TestFixture>
     {
-        private readonly Mock<ICurrentUserService> _mockCurrentUserService = new();
+        private readonly Mock<IAccountService> _mockCurrentUserService = new();
         private readonly Mock<ILogger<LetterService>> _mockLogger = new();
         private readonly Mock<IDroitService> _mockDroitService = new();
 

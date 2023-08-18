@@ -20,7 +20,7 @@ public class CurrentUserServiceTests
         var accessor = new Mock<IHttpContextAccessor>();
         accessor.Setup(a => a.HttpContext).Returns(context);
 
-        var service = new CurrentUserService(accessor.Object);
+        var service = new AccountService(accessor.Object);
 
         // When
         var result = service.GetCurrentUserId();
@@ -40,7 +40,7 @@ public class CurrentUserServiceTests
         var accessor = new Mock<IHttpContextAccessor>();
         accessor.Setup(a => a.HttpContext).Returns(context);
 
-        var service = new CurrentUserService(accessor.Object);
+        var service = new AccountService(accessor.Object);
 
         // When
         var result = service.GetCurrentUserId();
