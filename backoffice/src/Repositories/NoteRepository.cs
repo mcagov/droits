@@ -15,7 +15,7 @@ namespace Droits.Repositories
 
     public class NoteRepository : BaseEntityRepository<Note>, INoteRepository
     {
-        public NoteRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext, currentUserService)
+        public NoteRepository(DroitsContext dbContext, IAccountService accountService) : base(dbContext, accountService)
         {
 
         }

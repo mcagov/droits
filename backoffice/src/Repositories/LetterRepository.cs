@@ -17,7 +17,7 @@ public interface ILetterRepository
 
 public class LetterRepository : BaseEntityRepository<Letter>, ILetterRepository
 {
-    public LetterRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
+    public LetterRepository(DroitsContext dbContext, IAccountService accountService) : base(dbContext,accountService)
     {
     }
 
