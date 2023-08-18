@@ -112,18 +112,19 @@
                     @Html.DisplayFor(m => m.WhereSecured, "MultilineText")
                 </div>
             </div>
-            
+
+
+            <div class="form-group row mt-2">
+                <h5>Storage Address</h5>
+                <partial name="Address/_AddressViewFields" for="StorageAddress"/>
+            </div>
+
             <div class="form-group row mt-2">
                 <h5>Images</h5>
                 @for (var i = 0; i < Model.Images.Count; i++)
                 {
                     <partial name="Image/_ImageViewFields" for="Images[i]"/>
                 }
-            </div>
-            
-            <div class="form-group row mt-2">
-                <h5>Storage Address</h5>
-                <partial name="Address/_AddressViewFields" for="StorageAddress"/>
             </div>
 
         </div>

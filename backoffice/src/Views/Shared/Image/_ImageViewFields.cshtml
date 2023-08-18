@@ -1,25 +1,12 @@
 @model ImageView
 
-<div class="col mb-2">
+<div class="mb-2">
     <div class="card">
-        <h5 class="card-header">Image View</h5>
+        <h5 class="card-header">@Html.DisplayFor(m => m.Title)</h5>
         <div class="card-body">
-            <div class="form-group row mt-2">
-                <div class="col-md-4">
-                    @Html.LabelFor(m => m.Id, new { @class = "font-weight-bold" })
-                </div>
-                <div class="col-md-8">
-                    @Html.DisplayFor(m => m.Id)
-                </div>
-            </div>
 
             <div class="form-group row mt-2">
-                <div class="col-md-4">
-                    @Html.LabelFor(m => m.Key, new { @class = "font-weight-bold" })
-                </div>
-                <div class="col-md-8">
-                    @Html.DisplayFor(m => m.Key)
-                </div>
+                <img src="@Url.Action("DisplayImage","Image", new {id = Model.Id})" alt="Droit image"/>
             </div>
         </div>
     </div>

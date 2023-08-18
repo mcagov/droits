@@ -32,19 +32,22 @@ public class WreckMaterialService : IWreckMaterialService
     
     public async Task<WreckMaterial> SaveWreckMaterialAsync(WreckMaterialForm wreckMaterialForm)
     {
+        WreckMaterial wreckMaterial;
         if ( wreckMaterialForm.Id == default )
         {
-            return await _repository.AddAsync(
+            wreckMaterial = await _repository.AddAsync(
                 wreckMaterialForm.ApplyChanges(new WreckMaterial()));
         }
 
-        var wreckMaterial =
-            await GetWreckMaterialAsync(wreckMaterialForm.Id);
-
-        wreckMaterial = wreckMaterialForm.ApplyChanges(wreckMaterial);
-
-        wreckMaterial = await UpdateWreckMaterialAsync(wreckMaterial);
-
+        else
+        {
+            wreckMaterial = await GetWreckMaterialAsync(wreckMaterialForm.Id);
+    
+            wreckMaterial = wreckMaterialForm.ApplyChanges(wreckMaterial);
+    
+            wreckMaterial = await UpdateWreckMaterialAsync(wreckMaterial);
+        }
+        
         await SaveImagesAsync(wreckMaterial.Id, wreckMaterialForm.ImageForms);
 
         return wreckMaterial;
@@ -71,9 +74,10 @@ public class WreckMaterialService : IWreckMaterialService
      public async Task SaveImagesAsync(Guid wmId,
         List<ImageForm> imageForms)
     {
-        // var wreckMaterialIdsToKeep = imageForms.Select(wm => wm.Id);
+        // var imageIdsToKeep = imageForms.Select(i => i.Id);
         //
-        // await _imageService.DeleteWreckMaterialForDroitAsync(droitId, imageIdsToKeep);
+        // await _imageService.DeleteImagesForWreckMaterialAsync(wmId, imageIdsToKeep);
+        
 
         try
         {

@@ -13,9 +13,10 @@ public class ImageView : BaseEntityView
     public ImageView(Image image) : base(image)
     {
         Id = image.Id;
-        Key = image.Key;
+        Title = image.Title;
     }
     
     public Guid Id { get; }
-    public string Key { get; }
+    public string Title { get; }
+
 }

@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 
@@ -21,6 +22,7 @@ public class ImageForm : BaseEntityForm
     public string? Title { get; set; } = string.Empty;
     public Guid? WreckMaterialId { get; set; }
     [Required]
+    [DisplayName("Image Upload")]
     public IFormFile ImageFile { get; set; }
 
 
