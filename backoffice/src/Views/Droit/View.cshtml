@@ -176,6 +176,10 @@
             </div>
         </div>
     }
+    else
+    {
+        <h5 class="text-center">No Associated Wreck</h5>
+    }
 </div>
 
 
@@ -201,6 +205,11 @@
 </div>
 
 <div class="tab-pane fade" id="wreck-materials-content" role="tabpanel" aria-labelledby="wreck-materials-tab">
+    
+    @if (!Model.WreckMaterials.Any())
+    {
+        <h5 class="text-center">No Associated Wreck Materials</h5>
+    }
     <div class="row row-cols-1 row-cols-lg-2 g-4">
         @for (var i = 0; i < Model.WreckMaterials.Count; i++)
         {
