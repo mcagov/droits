@@ -7,19 +7,19 @@ namespace Droits.Repositories;
 public class BaseEntityRepository<TEntity> where TEntity : BaseEntity
 {
     protected readonly DroitsContext Context;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly IAccountService _accountService;
 
 
-    protected BaseEntityRepository(DroitsContext context, ICurrentUserService currentUserService)
+    protected BaseEntityRepository(DroitsContext context, IAccountService accountService)
     {
         Context = context;
-        _currentUserService = currentUserService;
+        _accountService = accountService;
     }
 
     public virtual async Task<TEntity> UpdateAsync(TEntity entity)
     {
         entity.LastModified = DateTime.UtcNow;
-        entity.LastModifiedByUserId = _currentUserService.GetCurrentUserId();
+        entity.LastModifiedByUserId = _accountService.GetCurrentUserId();
         
         var savedEntity = Context.Set<TEntity>().Update(entity).Entity;
         await Context.SaveChangesAsync();
@@ -31,7 +31,7 @@ public class BaseEntityRepository<TEntity> where TEntity : BaseEntity
     {
         entity.Created = DateTime.UtcNow;
         entity.LastModified = DateTime.UtcNow;
-        entity.LastModifiedByUserId = _currentUserService.GetCurrentUserId();
+        entity.LastModifiedByUserId = _accountService.GetCurrentUserId();
 
         var savedEntity = Context.Set<TEntity>().Add(entity).Entity;
         await Context.SaveChangesAsync();

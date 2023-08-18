@@ -16,7 +16,7 @@ namespace Droits.Tests.UnitTests.Services
         {
             _mockRepo = new Mock<IDroitRepository>();
             Mock<IWreckMaterialRepository> mockWreckMaterialRepo = new();
-            Mock<ICurrentUserService> mockCurrentUserService = new();
+            Mock<IAccountService> mockCurrentUserService = new();
             Mock<ILogger<DroitService>> mockLogger = new();
             _service = new DroitService(mockLogger.Object, _mockRepo.Object, mockWreckMaterialRepo.Object, mockCurrentUserService.Object);
         }

@@ -17,7 +17,7 @@ public interface ISalvorRepository
 
 public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
 {
-    public SalvorRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
+    public SalvorRepository(DroitsContext dbContext, IAccountService accountService) : base(dbContext,accountService)
     {
     }
 

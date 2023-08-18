@@ -14,13 +14,11 @@ public class UserController : BaseController
 {
     private readonly ILogger<UserController> _logger;
     private readonly IUserService _service;
-    private readonly ICurrentUserService _currentUserService;
 
-    public UserController(ILogger<UserController> logger, IUserService service, ICurrentUserService currentUserService)
+    public UserController(ILogger<UserController> logger, IUserService service)
     {
         _logger = logger;
         _service = service;
-        _currentUserService = currentUserService;
     }
 
 
@@ -30,14 +28,6 @@ public class UserController : BaseController
         var model = await _service.GetUserListViewAsync(searchOptions);
         return View(model);
     }
-
-
-    [Authorize]
-    public IActionResult Info()
-    {
-        return View();
-    }
-
 
     [HttpGet]
     public async Task<IActionResult> View(Guid id)
@@ -119,17 +109,5 @@ public class UserController : BaseController
         return RedirectToAction(nameof(Index));
     }
 
-    public IActionResult Profile()
-    {
-        var id = _currentUserService.GetCurrentUserId();
-        return RedirectToAction(nameof(View), new{id});
-    }
-    
-    public async Task<IActionResult> LogOut()
-    {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-        return RedirectToAction("Index","Home");
-    }
 
 }

@@ -31,14 +31,19 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 builder.Services.AddControllersWithViews(options =>
     {
         options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
-
+        
+        var adGroupId = builder.Configuration.GetSection("AzureAd:GroupId").Value ?? "";
+        
         var policy = new AuthorizationPolicyBuilder()
             .RequireAuthenticatedUser()
+            .RequireClaim("groups", adGroupId)
             .Build();
 
         options.Filters.Add(new AuthorizeFilter(policy));
     })
     .AddRazorRuntimeCompilation().AddMicrosoftIdentityUI().AddSessionStateTempDataProvider();
+
+builder.Services.AddRazorPages();
 
 // Localization
 builder.Services.Configure<RequestLocalizationOptions>(options =>
@@ -54,7 +59,7 @@ builder.Services.AddSession();
 builder.Services.AddHealthChecks();
 
 // Dependency Injections
-builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddScoped<ITokenValidationService, TokenValidationService>();
 
@@ -146,6 +151,8 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     "default",
-    "{controller=Home}/{action=Index}/{id?}");
+    "{controller=Home}/{action=Index}/{id?}"
+    );
+app.MapRazorPages();
 
 app.Run();
