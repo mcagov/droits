@@ -7,7 +7,6 @@ namespace Droits.Services;
 public interface IImageService
 {
     Task<Image> GetImageAsync(Guid id);
-    string GetRandomImageKey();
     Task<Image> SaveImageAsync(Image image);
     Task<Image> SaveImageFormAsync(ImageForm imageForm);
     Task<Stream> GetImageStreamAsync(string key);
@@ -43,10 +42,6 @@ public class ImageService : IImageService
         return await _repo.UpdateAsync(image);
     }
     
-    public string GetRandomImageKey()
-    {
-        return _repo.GetRandomImage().Key;
-    }
     public async Task<Image> GetImageAsync(Guid id) => await _repo.GetImageAsync(id);
 
 

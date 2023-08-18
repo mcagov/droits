@@ -85,7 +85,7 @@ public class WreckMaterialService : IWreckMaterialService
             
             foreach ( var imageForm in imageForms )
             {
-                imageForm.WreckMaterialId = wmId;
+                imageForm.WreckMaterialId = wreckMaterial.Id;
 
                 await _imageService.SaveImageFormAsync(imageForm);
             }

@@ -14,7 +14,6 @@ public interface IImageRepository
     Task<Image> AddAsync(Image image);
     Task<Image> UpdateAsync(Image image);
     Task<Image> GetImageAsync(Guid id);
-    Image GetRandomImage();
     Task UploadImageFileAsync(Guid id, IFormFile imageFile);
     Task<Stream> GetImageStreamAsync(string key);
     Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep);
@@ -23,7 +22,7 @@ public interface IImageRepository
 public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
 {
     private readonly IS3Client _client; 
-    public ImageRepository(DroitsContext dbContext, ICurrentUserService currentUserService, IS3Client client) : base(dbContext,currentUserService)
+    public ImageRepository(DroitsContext dbContext, IAccountService accountService, IS3Client client) : base(dbContext,accountService)
     {
         _client = client;
     }
@@ -32,19 +31,6 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
     {
         var image = await Context.Images
             .FirstOrDefaultAsync(i => i.Id == id);
-
-        if ( image == null )
-        {
-            throw new ImageNotFoundException();
-        }
-
-        return image;
-    }
-    
-    public Image GetRandomImage()
-    {
-        var image = Context.Images
-            .First();
 
         if ( image == null )
         {

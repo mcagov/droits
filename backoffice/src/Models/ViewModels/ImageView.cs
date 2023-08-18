@@ -14,9 +14,11 @@ public class ImageView : BaseEntityView
     {
         Id = image.Id;
         Title = image.Title;
+        UploadDate = image.Created;
     }
     
     public Guid Id { get; }
     public string Title { get; }
+    public DateTime UploadDate { get; }
 
 }
