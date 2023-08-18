@@ -153,26 +153,51 @@
 </div>
 
 <div class="tab-pane fade" id="wreck-content" role="tabpanel" aria-labelledby="wreck-tab">
-
     @if (Model.Wreck != null)
     {
-        <partial name="Wreck/_WreckViewFields" for="Wreck"/>
-
-        @if (Model.Wreck.Latitude.HasValue() && Model.Wreck.Longitude.HasValue())
-        {
-            <div class="row mt-3">
-                <iframe src="https://maps.google.com/maps?q=@Model.Wreck?.Latitude,@Model.Wreck?.Longitude&amp;output=embed"></iframe>
+        <div class="row">
+            <div class="row">
+                <partial name="Wreck/_WreckViewFields" for="Wreck"/>
+               
+                @if (Model.Wreck.Latitude.HasValue() && Model.Wreck.Longitude.HasValue())
+                {
+                    <div class="row mt-3">
+                        <iframe src="https://maps.google.com/maps?q=@Model.Wreck?.Latitude,@Model.Wreck?.Longitude&amp;output=embed"></iframe>
+                    </div>
+                }
+                <div class="col d-flex flex-row mt-4 justify-content-end">
+                        <a type="button" class="btn btn-primary" target="_blank" asp-action="View" asp-controller="Wreck" asp-route-id="@Model.Wreck?.Id">View Wreck</a>
+                </div>
             </div>
-        }
+            
+            <div class="row">
+                <h5>Wreck Notes</h5>
+                <partial name="_NoteListTable" model="@Model.Wreck?.Notes" />
+            </div>
+        </div>
     }
 </div>
 
 
 <div class="tab-pane fade" id="salvor-content" role="tabpanel" aria-labelledby="salvor-tab">
-    @if (Model.Salvor != null)
-    {
-        <partial name="Salvor/_SalvorViewFields" for="Salvor"/>
-    }
+@if (Model.Salvor != null)
+{
+    <div class="row">
+        <div class="row">
+            <partial name="Salvor/_SalvorViewFields" for="Salvor" />
+            
+            <div class="col d-flex flex-row mt-4 justify-content-end">
+                <a type="button" class="btn btn-primary" target="_blank" asp-action="View" asp-controller="Salvor" asp-route-id="@Model.Salvor.Id">View Salvor</a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <h5>Salvor Notes</h5>
+            <partial name="_NoteListTable" model="@Model.Salvor.Notes" />
+        </div>
+    </div>
+}
+
 </div>
 
 <div class="tab-pane fade" id="wreck-materials-content" role="tabpanel" aria-labelledby="wreck-materials-tab">

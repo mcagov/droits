@@ -31,13 +31,25 @@ public class DroitView : BaseEntityView
         //Wreck
         if ( droit.Wreck != null )
         {
-            Wreck = new WreckView(droit.Wreck);
+            Wreck = new WreckView(droit.Wreck)
+            {
+                Notes =
+                {
+                    Editable = false
+                }
+            };
         }
 
         //Salvor
         if ( droit.Salvor != null )
         {
-            Salvor = new SalvorView(droit.Salvor);
+            Salvor = new SalvorView(droit.Salvor)
+            {
+                Notes =
+                {
+                    Editable = false
+                }
+            };
         }
 
         if ( droit.WreckMaterials.Any() )
