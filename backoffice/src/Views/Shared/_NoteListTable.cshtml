@@ -9,7 +9,10 @@
             <th scope="col">Type</th>
             <th scope="col">Last Modified</th>
             <th scope="col">Author</th>
-            <th scope="col">Actions</th>
+            @if (Model.Editable)
+            {
+                <th scope="col">Actions</th>
+            }
         </tr>
         </thead>
         <tbody>
@@ -25,11 +28,14 @@
                 <td class="p-3">@Html.DisplayFor(m => note.Type)</td>
                 <td class="p-3">@note.LastModified.ToString("dd/MM/yyyy")</td>
                 <td class="p-3">@Html.DisplayFor(m => note.LastModifiedBy)</td>
-                <td class="p-3">
-                    <div class="btn-group">
-                        <a asp-controller="Note" asp-action="Edit" asp-route-id="@note.Id" class="btn btn-primary">Edit</a>
-                    </div>
-                </td>
+                @if (Model.Editable)
+                {
+                    <td class="p-3">
+                        <div class="btn-group">
+                            <a asp-controller="Note" asp-action="Edit" asp-route-id="@note.Id" class="btn btn-primary">Edit</a>
+                        </div>
+                    </td>
+                }
             </tr>
         }
         </tbody>
