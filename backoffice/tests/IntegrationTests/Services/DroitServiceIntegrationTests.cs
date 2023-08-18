@@ -11,7 +11,7 @@ namespace Droits.Tests.IntegrationTests.Services
 {
     public class DroitServiceIntegrationTests : IClassFixture<TestFixture>
     {
-        private readonly Mock<ICurrentUserService> _mockCurrentUserService = new();
+        private readonly Mock<IAccountService> _mockCurrentUserService = new();
         private readonly Mock<ILogger<DroitService>> _mockLogger = new();
         private readonly Mock<IWreckMaterialRepository> _mockWmRepo = new();
 

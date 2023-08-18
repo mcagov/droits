@@ -19,7 +19,7 @@ public interface IWreckMaterialRepository
 
 public class WreckMaterialRepository : BaseEntityRepository<WreckMaterial>, IWreckMaterialRepository
 {
-    public WreckMaterialRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
+    public WreckMaterialRepository(DroitsContext dbContext, IAccountService accountService) : base(dbContext,accountService)
     {
 
     }

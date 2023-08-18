@@ -19,7 +19,7 @@ public interface IDroitRepository
 
 public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
 {
-    public DroitRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
+    public DroitRepository(DroitsContext dbContext, IAccountService accountService) : base(dbContext,accountService)
     {
 
     }

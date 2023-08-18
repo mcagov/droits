@@ -26,16 +26,18 @@ public class DroitService : IDroitService
 {
     private readonly IDroitRepository _repo;
     private readonly IWreckMaterialService _wreckMaterialService;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly IAccountService _accountService;
     private readonly ILogger<DroitService> _logger;
 
+    
 
-    public DroitService(ILogger<DroitService> logger, IDroitRepository repo, IWreckMaterialService wmService, ICurrentUserService currentUserService)
+
+    public DroitService(ILogger<DroitService> logger, IDroitRepository repo, IWreckMaterialService wreckMaterialService, IAccountService accountService)
     {
         _logger = logger;
         _repo = repo;
-        _wreckMaterialService = wmService;
-        _currentUserService = currentUserService;
+        _accountService = accountService;
+        _wreckMaterialService = wreckMaterialService;
     }
 
 
@@ -47,7 +49,7 @@ public class DroitService : IDroitService
         
         if (searchOptions.FilterByAssignedUser)
         {
-            var currentUserId = _currentUserService.GetCurrentUserId();
+            var currentUserId = _accountService.GetCurrentUserId();
 
             query = query.Where(d => d.AssignedToUserId.HasValue && d.AssignedToUserId == currentUserId);
         }

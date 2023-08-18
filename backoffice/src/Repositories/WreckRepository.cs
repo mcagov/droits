@@ -17,7 +17,7 @@ public interface IWreckRepository
 
 public class WreckRepository : BaseEntityRepository<Wreck>, IWreckRepository
 {
-    public WreckRepository(DroitsContext dbContext, ICurrentUserService currentUserService) : base(dbContext,currentUserService)
+    public WreckRepository(DroitsContext dbContext, IAccountService accountService) : base(dbContext,accountService)
     {
     }
 
