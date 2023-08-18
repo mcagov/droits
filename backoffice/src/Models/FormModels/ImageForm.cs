@@ -21,9 +21,8 @@ public class ImageForm : BaseEntityForm
 
     public string? Title { get; set; } = string.Empty;
     public Guid? WreckMaterialId { get; set; }
-    [Required]
     [DisplayName("Image Upload")]
-    public IFormFile ImageFile { get; set; }
+    public IFormFile? ImageFile { get; set; }
 
 
     public Image ApplyChanges(Image image)

@@ -17,6 +17,7 @@ public interface IImageRepository
     Image GetRandomImage();
     Task UploadImageFileAsync(Guid id, IFormFile imageFile);
     Task<Stream> GetImageStreamAsync(string key);
+    Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep);
 }
 
 public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
@@ -77,5 +78,14 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
 
 
     public async Task<Stream> GetImageStreamAsync(string key) => await _client.GetImageAsync(key);
+    
+    public async Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep)
+    {
+        var images = await Context.Images
+            .Where(image => image.WreckMaterialId == wmId && !imagesToKeep.Contains(image.Id))
+            .ToListAsync();
 
+        Context.Images.RemoveRange(images);
+        await Context.SaveChangesAsync();
+    }
 }

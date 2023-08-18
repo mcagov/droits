@@ -74,9 +74,9 @@ public class WreckMaterialService : IWreckMaterialService
      public async Task SaveImagesAsync(Guid wmId,
         List<ImageForm> imageForms)
     {
-        // var imageIdsToKeep = imageForms.Select(i => i.Id);
-        //
-        // await _imageService.DeleteImagesForWreckMaterialAsync(wmId, imageIdsToKeep);
+        var imageIdsToKeep = imageForms.Select(i => i.Id);
+        
+        await _imageService.DeleteImagesForWreckMaterialAsync(wmId, imageIdsToKeep);
         
 
         try

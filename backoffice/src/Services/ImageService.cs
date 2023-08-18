@@ -11,6 +11,7 @@ public interface IImageService
     Task<Image> SaveImageAsync(Image image);
     Task<Image> SaveImageFormAsync(ImageForm imageForm);
     Task<Stream> GetImageStreamAsync(string key);
+    Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep);
 }
 
 public class ImageService : IImageService
@@ -59,8 +60,12 @@ public class ImageService : IImageService
              
             image = await _repo.AddAsync(
                 imageForm.ApplyChanges(new Image()));
-            
-           await _repo.UploadImageFileAsync(image.Id, imageForm.ImageFile);
+
+            if ( imageForm.ImageFile != null ) // Refactor to keep DRY
+            {
+                await _repo.UploadImageFileAsync(image.Id, imageForm.ImageFile);  
+            }
+           
 
             return image;
         }
@@ -73,7 +78,10 @@ public class ImageService : IImageService
 
         image = await UpdateImageAsync(image);
 
-        await _repo.UploadImageFileAsync(image.Id, imageForm.ImageFile);
+        if ( imageForm.ImageFile != null )
+        {
+            await _repo.UploadImageFileAsync(image.Id, imageForm.ImageFile);  
+        }
 
 
         return image;
@@ -81,5 +89,8 @@ public class ImageService : IImageService
 
 
     public async Task<Stream> GetImageStreamAsync(string key) =>  await _repo.GetImageStreamAsync(key);
-
+    public async Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep)
+    {
+        await _repo.DeleteImagesForWreckMaterialAsync(wmId, imagesToKeep);
+    }
 }
