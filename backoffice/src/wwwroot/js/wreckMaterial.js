@@ -10,6 +10,8 @@ export function initializeWreckMaterial() {
         }
     });
 
+    document.querySelectorAll('.js-stored-salvor').forEach(toggleWreckMaterialStorageAddress);
+    
     document.body.addEventListener('click', function(e) {
         if (e.target.matches('.js-remove-wreck-material-form')) {
             removeWreckMaterialForm.call(e.target);

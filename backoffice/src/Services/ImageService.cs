@@ -59,8 +59,7 @@ public class ImageService : IImageService
         if ( imageForm.Id == default )
         {
              
-            image = await _repo.AddAsync(
-                imageForm.ApplyChanges(new Image()));
+            image = await _repo.AddAsync(imageForm.ApplyChanges(new Image()));
             
             await _repo.UploadImageFileAsync(image, imageForm.ImageFile);
 

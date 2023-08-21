@@ -23,7 +23,7 @@ public class WreckMaterialForm : BaseEntityForm
         WreckMaterialOwner = wreckMaterial.WreckMaterialOwner;
         Purchaser = wreckMaterial.Purchaser;
         Outcome = wreckMaterial.Outcome;
-        WhereSecured = wreckMaterial.WhereSecured;
+        StoredAtSalvorAddress = wreckMaterial.StoredAtSalvorAddress;
         StorageAddress = new AddressForm(wreckMaterial.StorageAddress);
         if ( wreckMaterial.Images.Any() )
         {
@@ -39,7 +39,7 @@ public class WreckMaterialForm : BaseEntityForm
     public string Name { get; set; } = string.Empty;
     public AddressForm StorageAddress { get; set; } = new();
     [Display(Name = "Is Stored At Salvor's Address?")]
-    public bool StoredAtSalvor { get; set; }
+    public bool StoredAtSalvorAddress { get; set; }
 
     [DataType(DataType.MultilineText)]
     public string? Description { get; set; } = string.Empty;
@@ -72,8 +72,7 @@ public class WreckMaterialForm : BaseEntityForm
     public string? WhereSecured { get; set; } = string.Empty;
 
     public List<ImageForm> ImageForms { get; set; } = new();
-
-
+    
     public WreckMaterial ApplyChanges(WreckMaterial wreckMaterial)
     {
         
@@ -90,9 +89,10 @@ public class WreckMaterialForm : BaseEntityForm
         wreckMaterial.WreckMaterialOwner = WreckMaterialOwner;
         wreckMaterial.Purchaser = Purchaser;
         wreckMaterial.Outcome = Outcome;
-        wreckMaterial.WhereSecured = WhereSecured;
         
+        wreckMaterial.StoredAtSalvorAddress = StoredAtSalvorAddress;
         StorageAddress.ApplyChanges(wreckMaterial.StorageAddress);
+        
 
         return wreckMaterial;
     }

@@ -47,9 +47,11 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
         var droit = await Context.Droits
             .Include(d => d.AssignedToUser)
             .Include(d => d.Letters)
-            .Include(d => d.Wreck)
-            .Include(d => d.Salvor)
+
+            .Include(d => d.Wreck).ThenInclude(w => w!.Notes).ThenInclude(n => n.LastModifiedByUser)
+            .Include(d => d.Salvor).ThenInclude(s => s!.Notes).ThenInclude(n => n.LastModifiedByUser)
             .Include(d => d.WreckMaterials).ThenInclude(wm => wm.Images)
+
             .Include(d => d.Notes).ThenInclude(n => n.LastModifiedByUser)
             .Include(d => d.LastModifiedByUser)
             .FirstOrDefaultAsync(d => d.Id == id);

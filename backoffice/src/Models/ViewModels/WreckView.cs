@@ -32,12 +32,11 @@ public class WreckView : BaseEntityView
         OwnerName = wreck.OwnerName;
         OwnerEmail = wreck.OwnerEmail;
         OwnerNumber = wreck.OwnerNumber;
+        Notes = new NoteListView(wreck.Notes.Select(n => new NoteView(n)).OrderByDescending(n => n.LastModified).ToList());
 
         if ( includeAssociations )
         {
             Droits = new DroitListView(wreck.Droits.Select(d => new DroitView(d)).ToList());
-            Notes = new NoteListView(wreck.Notes.Select(n => new NoteView(n)).OrderByDescending(n => n.LastModified).ToList());
-
         }
     }
 

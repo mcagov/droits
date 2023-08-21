@@ -20,12 +20,11 @@ public class SalvorView : BaseEntityView
         TelephoneNumber = salvor.TelephoneNumber;
         DateOfBirth = salvor.DateOfBirth;
         Address = new AddressView(salvor.Address);
+        Notes = new NoteListView(salvor.Notes.Select(n => new NoteView(n)).OrderByDescending(n => n.LastModified).ToList());
 
         if ( includeAssociations )
         {
             Droits = new DroitListView(salvor.Droits.Select(d => new DroitView(d)).ToList());
-            Notes = new NoteListView(salvor.Notes.Select(n => new NoteView(n)).OrderByDescending(n => n.LastModified).ToList());
-
         }
     }
 
