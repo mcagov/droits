@@ -62,7 +62,7 @@ public class ImageService : IImageService
             image = await _repo.AddAsync(
                 imageForm.ApplyChanges(new Image()));
             
-            await _repo.UploadImageFileAsync(image.Id, imageForm.ImageFile);
+            await _repo.UploadImageFileAsync(image, imageForm.ImageFile);
 
             return image;
         }
@@ -75,7 +75,7 @@ public class ImageService : IImageService
 
         image = await UpdateImageAsync(image);
 
-        await _repo.UploadImageFileAsync(image.Id, imageForm.ImageFile);
+        await _repo.UploadImageFileAsync(image, imageForm.ImageFile);
 
         return image;
     }

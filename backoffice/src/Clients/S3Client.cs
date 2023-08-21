@@ -8,6 +8,7 @@ public interface IS3Client
     Task UploadImageAsync(string key, Stream imageStream);
     Task<Stream> GetImageAsync(string key);
     Task<String> GetImageTypeAsync(string key);
+    Task DeleteImageAsync(string key);
 }
 
 public class S3Client : IS3Client
@@ -54,5 +55,16 @@ public class S3Client : IS3Client
 
         var response = await _s3Client.GetObjectAsync(getRequest);
         return response.Headers.ContentType;
+    }
+    
+    public async Task DeleteImageAsync(string key)
+    {
+        var deleteRequest = new DeleteObjectRequest
+        {
+            BucketName = _bucketName,
+            Key = key
+        };
+
+        await _s3Client.DeleteObjectAsync(deleteRequest);
     }
 }

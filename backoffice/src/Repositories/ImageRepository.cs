@@ -14,7 +14,7 @@ public interface IImageRepository
     Task<Image> AddAsync(Image image);
     Task<Image> UpdateAsync(Image image);
     Task<Image> GetImageAsync(Guid id);
-    Task UploadImageFileAsync(Guid id, IFormFile imageFile);
+    Task UploadImageFileAsync(Image image, IFormFile imageFile);
     Task<Stream> GetImageStreamAsync(string key);
     Task ImagesToDeleteForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep);
 }
@@ -41,18 +41,17 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
     }
 
 
-    public async Task UploadImageFileAsync(Guid id, IFormFile imageFile)
+    public async Task UploadImageFileAsync(Image image, IFormFile imageFile)
     {
-        var key = $"{id}_{Guid.NewGuid()}.{imageFile.FileName}";
+        var key = $"Droits/{image.WreckMaterial.DroitId}/WreckMaterials/{image.WreckMaterialId}/Images/{image.Id}_{imageFile.FileName}";
       
         try
         {
             await using var stream = imageFile.OpenReadStream();
             await _client.UploadImageAsync(key,stream);
-            var image = await GetImageAsync(id);
             image.Filename = imageFile.FileName;
             image.FileContentType = imageFile.ContentType;
-            image.Key =  key;
+            image.Key = key;
             await UpdateAsync(image);
         }
         catch ( Exception e )
@@ -70,6 +69,12 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
         var images = await Context.Images
             .Where(image => image.WreckMaterialId == wmId && !imagesToKeep.Contains(image.Id))
             .ToListAsync();
+        
+        //Remove images from s3 bucket
+        foreach ( var image in images )
+        {
+            await _client.DeleteImageAsync(image.Key);
+        }
 
         Context.Images.RemoveRange(images);
         await Context.SaveChangesAsync();
