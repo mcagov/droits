@@ -86,6 +86,6 @@ public class ImageService : IImageService
     public async Task<Stream> GetImageStreamAsync(string key) =>  await _repo.GetImageStreamAsync(key);
     public async Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep)
     {
-        await _repo.DeleteImagesForWreckMaterialAsync(wmId, imagesToKeep);
+        await _repo.ImagesToDeleteForWreckMaterialAsync(wmId, imagesToKeep);
     }
 }

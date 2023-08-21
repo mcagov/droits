@@ -16,7 +16,7 @@ public interface IImageRepository
     Task<Image> GetImageAsync(Guid id);
     Task UploadImageFileAsync(Guid id, IFormFile imageFile);
     Task<Stream> GetImageStreamAsync(string key);
-    Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep);
+    Task ImagesToDeleteForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep);
 }
 
 public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
@@ -65,7 +65,7 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
 
     public async Task<Stream> GetImageStreamAsync(string key) => await _client.GetImageAsync(key);
     
-    public async Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep)
+    public async Task ImagesToDeleteForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep)
     {
         var images = await Context.Images
             .Where(image => image.WreckMaterialId == wmId && !imagesToKeep.Contains(image.Id))
