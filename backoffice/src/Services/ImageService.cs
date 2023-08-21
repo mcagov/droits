@@ -1,3 +1,4 @@
+using Droits.Exceptions;
 using Droits.Repositories;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
@@ -49,18 +50,19 @@ public class ImageService : IImageService
     {
 
         Image image;
+
+        if ( imageForm.ImageFile == null )
+        {
+            throw new NoFileUploadedException();
+        }
         
         if ( imageForm.Id == default )
         {
              
             image = await _repo.AddAsync(
                 imageForm.ApplyChanges(new Image()));
-
-            if ( imageForm.ImageFile != null ) // Refactor to keep DRY
-            {
-                await _repo.UploadImageFileAsync(image.Id, imageForm.ImageFile);  
-            }
-           
+            
+            await _repo.UploadImageFileAsync(image.Id, imageForm.ImageFile);
 
             return image;
         }
@@ -73,11 +75,7 @@ public class ImageService : IImageService
 
         image = await UpdateImageAsync(image);
 
-        if ( imageForm.ImageFile != null )
-        {
-            await _repo.UploadImageFileAsync(image.Id, imageForm.ImageFile);  
-        }
-
+        await _repo.UploadImageFileAsync(image.Id, imageForm.ImageFile);
 
         return image;
     }
