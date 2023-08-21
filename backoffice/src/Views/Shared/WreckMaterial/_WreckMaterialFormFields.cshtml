@@ -106,25 +106,15 @@
                     @Html.ValidationMessageFor(m => m.Outcome, "", new { @class = "text-danger" })
                 </div>
             </div>
-
-            <div class="form-group row mt-2">
-                <div class="col-md-4">
-                    @Html.LabelFor(m => m.WhereSecured, new { @class = "col-form-label font-weight-bold" })
-                </div>
-                <div class="col-md-8">
-                    @Html.EditorFor(m => m.WhereSecured, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(m => m.WhereSecured, "", new { @class = "text-danger" })
-                </div>
-            </div>
             
             <div class="form-group row mt-2">
                 <h5>Storage Address</h5>
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        @Html.LabelFor(m => m.StoredAtSalvor, new { @class = "col-form-label font-weight-bold" })
+                        @Html.LabelFor(m => m.StoredAtSalvorAddress, new { @class = "col-form-label font-weight-bold" })
                     </div>
                     <div class="col-md-6 form-switch">
-                        @Html.CheckBoxFor(m => m.StoredAtSalvor, new { @class = "js-stored-salvor form-check-input font-weight-bold" } )
+                        @Html.CheckBoxFor(m => m.StoredAtSalvorAddress, new { @class = "js-stored-salvor form-check-input font-weight-bold" } )
                     </div>
                 </div>
             </div>

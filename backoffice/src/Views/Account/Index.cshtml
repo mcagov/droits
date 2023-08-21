@@ -1,8 +1,7 @@
 ﻿@model DroitListView
 
 @{
-    var usersName = @User.FindFirst("name")?.Value ?? "Unknown";
-    ViewData["Title"] = $"{usersName}'s Dashboard";
+    ViewData["Title"] = "My Dashboard";
 }
 
 <div class="container mt-5">

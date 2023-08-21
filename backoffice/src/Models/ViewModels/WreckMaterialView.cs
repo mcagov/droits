@@ -24,7 +24,6 @@ public class WreckMaterialView : BaseEntityView
         WreckMaterialOwner = wreckMaterial.WreckMaterialOwner;
         Purchaser = wreckMaterial.Purchaser;
         Outcome = wreckMaterial.Outcome;
-        WhereSecured = wreckMaterial.WhereSecured;
         StorageAddress = new AddressView(wreckMaterial.StorageAddress);
     }
 
@@ -55,8 +54,5 @@ public class WreckMaterialView : BaseEntityView
 
     [DataType(DataType.MultilineText)]
     public string? Outcome { get; } = string.Empty;
-
-    [Display(Name = "Where Secured")]
-    [DataType(DataType.MultilineText)]
-    public string? WhereSecured { get; } = string.Empty;
+    
 }
