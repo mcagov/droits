@@ -157,7 +157,7 @@ public class DroitService : IDroitService
             foreach ( var wmForm in wreckMaterialForms )
             {
                 wmForm.DroitId = droitId;
-                if ( salvorAddress != null && wmForm.StoredAtSalvor )
+                if ( salvorAddress != null && wmForm.StoredAtSalvorAddress )
                 {
                     wmForm.StorageAddress = new AddressForm(salvorAddress);
                 }

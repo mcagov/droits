@@ -120,7 +120,7 @@ public class DroitController : BaseController
 
         form.WreckMaterialForms
             .Select((wmForm, i) => new { Form = wmForm, Index = i })
-            .Where(item => item.Form.StoredAtSalvor)
+            .Where(item => item.Form.StoredAtSalvorAddress)
             .ToList()
             .ForEach(item =>
                 ModelState.RemoveStartingWith($"WreckMaterialForms[{item.Index}].StorageAddress"));
