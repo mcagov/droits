@@ -272,8 +272,8 @@ public static class DatabaseSeeder
         return Enumerable.Range(0, 1)
             .Select(i => new Image()
             {
-                Id = new Guid("d37319ba-5b77-45c1-87ee-551dc92fb8c4"),
-                Key="d37319ba-5b77-45c1-87ee-551dc92fb8c4_725c8a14-7291-4fa3-9604-b93105722498",
+                Id = new Guid(),
+                Key="test-image",
                 FileContentType = "image/png",
                 Filename = "MaritimeAgency.svg.png",
                 Created = DateTime.UtcNow,
