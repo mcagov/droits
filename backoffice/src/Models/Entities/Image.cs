@@ -5,7 +5,7 @@ namespace Droits.Models.Entities;
 public class Image : BaseEntity
 {
     
-    public string Title { get; set; } = string.Empty;
+    public string? Title { get; set; } = string.Empty;
     
     
     //Managed by the system

@@ -51,14 +51,14 @@ public class ImageService : IImageService
 
         Image image;
 
-        if ( imageForm.ImageFile == null )
-        {
-            throw new InvalidOperationException();
-        }
-        
         if ( imageForm.Id == default )
         {
-             
+        
+            if ( imageForm.ImageFile == null )
+            {
+                throw new InvalidOperationException();
+            }
+            
             image = await _repo.AddAsync(imageForm.ApplyChanges(new Image()));
             
             await _repo.UploadImageFileAsync(image, imageForm.ImageFile);
@@ -74,7 +74,10 @@ public class ImageService : IImageService
 
         image = await UpdateImageAsync(image);
 
-        await _repo.UploadImageFileAsync(image, imageForm.ImageFile);
+        if ( imageForm?.ImageFile != null )
+        {
+            await _repo.UploadImageFileAsync(image, imageForm.ImageFile);
+        }
 
         return image;
     }
@@ -83,6 +86,6 @@ public class ImageService : IImageService
     public async Task<Stream> GetImageStreamAsync(string key) =>  await _repo.GetImageStreamAsync(key);
     public async Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep)
     {
-        await _repo.ImagesToDeleteForWreckMaterialAsync(wmId, imagesToKeep);
+        await _repo.DeleteImagesForWreckMaterialAsync(wmId, imagesToKeep);
     }
 }
