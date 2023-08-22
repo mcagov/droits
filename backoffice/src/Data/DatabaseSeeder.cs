@@ -69,14 +69,14 @@ public static class DatabaseSeeder
 
     private static IEnumerable<Letter> GetLetters(IEnumerable<Droit> droits, ApplicationUser user)
     {
-        return Enumerable.Range(0, 1)
+        return Enumerable.Range(0, 5)
             .Select(i => new Letter
             {
                 Id = new Guid(),
                 DroitId = Faker.Random.ArrayElement(droits.ToArray()).Id,
                 Recipient = Faker.Internet.Email(),
-                Subject = Faker.Lorem.Sentence(),
-                Body = Faker.Lorem.Paragraph(),
+                Subject = $"{Faker.Vehicle.Manufacturer()} Subject",
+                Body = Faker.Lorem.Paragraphs(),
                 Type = Enum.GetValues(typeof(LetterType))
                     .OfType<LetterType>()
                     .MinBy(x => Guid.NewGuid()),
@@ -182,7 +182,7 @@ public static class DatabaseSeeder
             {
                 Id = Guid.NewGuid(),
                 Name = Faker.Name.FullName(),
-                VesselConstructionDetails = Faker.Lorem.Sentence(),
+                VesselConstructionDetails = Faker.Lorem.Word(),
                 VesselYearConstructed = Faker.Random.Int(1500, DateTime.UtcNow.Year),
                 DateOfLoss = Faker.Date.Past(500, DateTime.UtcNow),
                 InUkWaters = Faker.Random.Bool(),
@@ -192,7 +192,7 @@ public static class DatabaseSeeder
                 Longitude = Faker.Address.Longitude().ToString(CultureInfo.CurrentCulture),
 
                 IsProtectedSite = Faker.Random.Bool(),
-                ProtectionLegislation = Faker.Lorem.Sentence(),
+                ProtectionLegislation = Faker.Lorem.Word(),
                 AdditionalInformation = Faker.Lorem.Sentence(),
 
                 OwnerName = Faker.Name.FullName(),
@@ -248,7 +248,7 @@ public static class DatabaseSeeder
             {
                 var note = new Note
                 {
-                    Title = Faker.Lorem.Sentence(),
+                    Title = $"{Faker.Music.Genre()} Note",
                     Text = Faker.Lorem.Paragraphs(),
                     Type = Enum.GetValues(typeof(NoteType))
                         .OfType<NoteType>()
