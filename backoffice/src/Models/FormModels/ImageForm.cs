@@ -12,13 +12,14 @@ public class ImageForm : BaseEntityForm
     {
         Title = image.Title;
         WreckMaterialId = image.WreckMaterialId;
+
     }
 
 
     public string? Title { get; set; }
     public Guid? WreckMaterialId { get; set; }
 
-    [Required]
+    [Required(ErrorMessage= "Please select a file to upload.")]
     [DisplayName("Image Upload")]
     public IFormFile ImageFile { get; set; } = null!;
 
