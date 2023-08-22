@@ -4,9 +4,15 @@
     <div class="card">
         <h5 class="card-header">@Html.DisplayFor(m => m.Title)</h5>
         <div class="card-body">
-
             <div class="form-group row mt-2">
                 <img src="@Url.Action("DisplayImage","Image", new {id = Model.Id})" alt="Droit image"/>
+                
+                @if (ViewData["ImageError"] != null)
+                {
+                    <div class="alert alert-danger">
+                        @ViewData["ImageError"]
+                    </div>
+                }
             </div>
         </div>
     </div>

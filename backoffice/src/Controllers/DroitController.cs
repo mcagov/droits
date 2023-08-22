@@ -118,13 +118,22 @@ public class DroitController : BaseController
             ModelState.RemoveStartingWith("SalvorForm");
         }
 
-        form.WreckMaterialForms
+        var wmForms = form.WreckMaterialForms;
+        
+        wmForms
             .Select((wmForm, i) => new { Form = wmForm, Index = i })
             .Where(item => item.Form.StoredAtSalvorAddress)
             .ToList()
             .ForEach(item =>
                 ModelState.RemoveStartingWith($"WreckMaterialForms[{item.Index}].StorageAddress"));
 
+        wmForms
+            .SelectMany((wmForm, i) => wmForm.ImageForms.Select((imgForm, j) => new { WmFormIndex = i, ImgForm = imgForm, ImgIndex = j }))
+            .Where(item => item.ImgForm.Id != default)
+            .ToList()
+            .ForEach(item =>
+                ModelState.RemoveStartingWith($"WreckMaterialForms[{item.WmFormIndex}].ImageForms[{item.ImgIndex}].ImageFile"));
+        
         if ( !ModelState.IsValid )
         {
             AddErrorMessage("Could not save Droit");

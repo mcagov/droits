@@ -27,7 +27,7 @@
                     @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
                 </div>
             </div> 
-            @if (Model.Title.IsNullOrEmpty())
+            @if (Model.Id == default || Model.ImageFile?.FileName == null)
             {
                 <div class="form-group row mt-2">
                     <div class="col-md-3">

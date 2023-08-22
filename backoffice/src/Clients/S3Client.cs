@@ -5,9 +5,8 @@ namespace Droits.Clients;
 
 public interface IS3Client
 {
-    Task UploadImageAsync(string key, Stream imageStream);
+    Task UploadImageAsync(string key, Stream imageStream, string contentType);
     Task<Stream> GetImageAsync(string key);
-    Task<String> GetImageTypeAsync(string key);
     Task DeleteImageAsync(string key);
 }
 
@@ -22,12 +21,13 @@ public class S3Client : IS3Client
         _bucketName = configuration["S3:BucketName"];
     }
 
-    public async Task UploadImageAsync(string key, Stream imageStream)
+    public async Task UploadImageAsync(string key, Stream imageStream, string contentType)
     {
         var putRequest = new PutObjectRequest
         {
             BucketName = _bucketName,
             Key = key,
+            ContentType = contentType,
             InputStream = imageStream
         };
 
@@ -44,17 +44,6 @@ public class S3Client : IS3Client
 
         var response = await _s3Client.GetObjectAsync(getRequest);
         return response.ResponseStream;
-    }
-    public async Task<String> GetImageTypeAsync(string key)
-    {
-        var getRequest = new GetObjectRequest
-        {
-            BucketName = _bucketName,
-            Key = key
-        };
-
-        var response = await _s3Client.GetObjectAsync(getRequest);
-        return response.Headers.ContentType;
     }
     
     public async Task DeleteImageAsync(string key)

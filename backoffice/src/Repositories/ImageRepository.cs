@@ -48,7 +48,7 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
         try
         {
             await using var stream = imageFile.OpenReadStream();
-            await _client.UploadImageAsync(key,stream);
+            await _client.UploadImageAsync(key,stream,imageFile.ContentType);
             image.Filename = imageFile.FileName;
             image.FileContentType = imageFile.ContentType;
             image.Key = key;
@@ -66,17 +66,16 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
     
     public async Task ImagesToDeleteForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep)
     {
-        var images = await Context.Images
+        var imagesToDelete = await Context.Images
             .Where(image => image.WreckMaterialId == wmId && !imagesToKeep.Contains(image.Id))
             .ToListAsync();
+
+        Context.Images.RemoveRange(imagesToDelete);
+        await Context.SaveChangesAsync();
         
-        //Remove images from s3 bucket
-        foreach ( var image in images )
+        foreach ( var image in imagesToDelete )
         {
             await _client.DeleteImageAsync(image.Key);
         }
-
-        Context.Images.RemoveRange(images);
-        await Context.SaveChangesAsync();
     }
 }
