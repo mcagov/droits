@@ -56,3 +56,8 @@ resource "aws_ecs_service" "service" {
     container_port   = var.port
   }
 }
+
+resource "aws_iam_role_policy_attachment" "attach_s3_access" {
+  policy_arn = module.s3-images.s3_bucket_access_policy_arn
+  role       = var.iam_role_name
+}
