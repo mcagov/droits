@@ -16,7 +16,7 @@ public interface IImageRepository
     Task<Image> GetImageAsync(Guid id);
     Task UploadImageFileAsync(Image image, IFormFile imageFile);
     Task<Stream> GetImageStreamAsync(string key);
-    Task ImagesToDeleteForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep);
+    Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep);
 }
 
 public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
@@ -78,18 +78,31 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
 
     public async Task<Stream> GetImageStreamAsync(string key) => await _storageClient.GetImageAsync(key);
     
-    public async Task ImagesToDeleteForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep)
+    public async Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep)
     {
-        var imagesToDelete = await Context.Images
+        var imagesToDelete = await GetImagesToDeleteAsync(wmId, imagesToKeep);
+    
+        await RemoveImagesFromDatabaseAsync(imagesToDelete);
+    
+        await DeleteImagesFromStorageAsync(imagesToDelete);
+    }
+
+    private async Task<List<Image>> GetImagesToDeleteAsync(Guid wmId, IEnumerable<Guid> imagesToKeep)
+    {
+        return await Context.Images
             .Where(image => image.WreckMaterialId == wmId && !imagesToKeep.Contains(image.Id))
             .ToListAsync();
+    }
 
+    private async Task RemoveImagesFromDatabaseAsync(IEnumerable<Image> imagesToDelete)
+    {
         Context.Images.RemoveRange(imagesToDelete);
         await Context.SaveChangesAsync();
-        
-        foreach ( var image in imagesToDelete )
-        {
-            await _storageClient.DeleteImageAsync(image.Key);
-        }
+    }
+
+    private async Task DeleteImagesFromStorageAsync(IEnumerable<Image> imagesToDelete)
+    {
+        var deletionTasks = imagesToDelete.Select(image => _storageClient.DeleteImageAsync(image.Key));
+        await Task.WhenAll(deletionTasks);
     }
 }
