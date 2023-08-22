@@ -53,7 +53,7 @@ public class ImageService : IImageService
 
         if ( imageForm.ImageFile == null )
         {
-            throw new NoFileUploadedException();
+            throw new InvalidOperationException();
         }
         
         if ( imageForm.Id == default )
