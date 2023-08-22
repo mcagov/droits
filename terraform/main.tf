@@ -99,7 +99,7 @@ module "backoffice-ecs" {
   vpc_id             = module.vpc.vpc_id
   public_subnets     = module.vpc.public_subnets
   private_subnets    = module.vpc.private_subnets
-  iam_role_arn       = module.iam.iam-role-arn
+  iam_role_arn       = module.iam.iam_role_arn
   security_groups    = [module.security-groups.backoffice-id]
   tg_arn             = module.backoffice-alb.target-group-arn
   droits_ecs_cluster = module.droits-ecs-cluster.ecs_cluster_id
@@ -120,7 +120,7 @@ module "webapp-ecs" {
   vpc_id             = module.vpc.vpc_id
   public_subnets     = module.vpc.public_subnets
   private_subnets    = module.vpc.private_subnets
-  iam_role_arn       = module.iam.iam-role-arn
+  iam_role_arn       = module.iam.iam_role_arn
   security_groups    = [module.security-groups.webapp-security-group-id]
   tg_arn             = module.webapp-alb.target-group-arn
   droits_ecs_cluster = module.droits-ecs-cluster.ecs_cluster_id

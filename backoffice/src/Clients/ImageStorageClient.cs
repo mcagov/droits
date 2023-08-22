@@ -1,24 +1,34 @@
 using Amazon.S3;
 using Amazon.S3.Model;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Droits.Clients;
 
-public interface IS3Client
+public interface IImageStorageClient
 {
     Task UploadImageAsync(string key, Stream imageStream, string contentType);
     Task<Stream> GetImageAsync(string key);
     Task DeleteImageAsync(string key);
 }
 
-public class S3Client : IS3Client
+public class ImageStorageClient : IImageStorageClient
 {
     private readonly IAmazonS3 _s3Client;
-    private readonly string _bucketName;
+    private readonly ILogger<ImageStorageClient> _logger;
+
+    private readonly string? _bucketName;
     
-    public S3Client(IAmazonS3 s3Client, IConfiguration configuration)
+    public ImageStorageClient(IAmazonS3 s3Client, ILogger<ImageStorageClient> logger, IConfiguration configuration)
     {
         _s3Client = s3Client;
-        _bucketName = configuration["S3:BucketName"];
+        _logger = logger;
+        _bucketName = configuration["AWS:S3Config:BucketName"];
+
+        if ( _bucketName.IsNullOrEmpty() )
+        {
+            logger.LogError("Bucket Name cannot be null");
+            throw new Exception("Bucket Name cannot be null");
+        }
     }
 
     public async Task UploadImageAsync(string key, Stream imageStream, string contentType)

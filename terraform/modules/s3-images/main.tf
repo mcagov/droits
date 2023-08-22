@@ -8,11 +8,6 @@ resource "aws_s3_bucket" "droits-wreck-images" {
   }
 }
 
-#resource "aws_s3_bucket_acl" "droits-wreck-images-acl" {
-#  bucket = "droits-wreck-images-${terraform.workspace}"
-#  acl    = "private"
-#}
-
 resource "aws_s3_bucket_versioning" "droits-wreck-images-versioning" {
   bucket = aws_s3_bucket.droits-wreck-images.bucket
   versioning_configuration {

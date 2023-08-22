@@ -37,12 +37,23 @@ public class WreckMaterialRepository : BaseEntityRepository<WreckMaterial>, IWre
     }
     public async Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep)
     {
-        var wreckMaterials = await Context.WreckMaterials
+        var wreckMaterialsToDelete = await GetWreckMaterialsToDeleteAsync(droitId, wmToKeep);
+    
+        await RemoveWreckMaterialsFromDatabaseAsync(wreckMaterialsToDelete);
+    }
+
+    private async Task<List<WreckMaterial>> GetWreckMaterialsToDeleteAsync(Guid droitId, IEnumerable<Guid> wmToKeep)
+    {
+        return await Context.WreckMaterials
             .Where(wm => wm.DroitId == droitId && !wmToKeep.Contains(wm.Id))
             .ToListAsync();
+    }
 
-        Context.WreckMaterials.RemoveRange(wreckMaterials);
+    private async Task RemoveWreckMaterialsFromDatabaseAsync(IEnumerable<WreckMaterial> wreckMaterialsToDelete)
+    {
+        Context.WreckMaterials.RemoveRange(wreckMaterialsToDelete);
         await Context.SaveChangesAsync();
     }
+
     
 }
