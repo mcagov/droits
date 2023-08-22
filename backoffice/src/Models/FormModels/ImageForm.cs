@@ -6,12 +6,8 @@ namespace Droits.Models.FormModels;
 
 public class ImageForm : BaseEntityForm
 {
-    public ImageForm()
-    {
-        
-    }
-
-
+    
+    public ImageForm(){}
     public ImageForm(Image image) : base(image)
     {
         Title = image.Title;
@@ -19,12 +15,12 @@ public class ImageForm : BaseEntityForm
     }
 
 
-    public string? Title { get; set; } = string.Empty;
+    public string? Title { get; set; }
     public Guid? WreckMaterialId { get; set; }
 
     [Required]
     [DisplayName("Image Upload")]
-    public IFormFile ImageFile { get; set; } 
+    public IFormFile ImageFile { get; set; } = null!;
 
 
     public Image ApplyChanges(Image image)
