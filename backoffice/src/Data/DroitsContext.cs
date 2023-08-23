@@ -22,6 +22,8 @@ public partial class DroitsContext : DbContext
     public virtual DbSet<Wreck> Wrecks { get; set; } = null!;
     public virtual DbSet<Letter> Letters { get; set; } = null!;
     public virtual DbSet<Salvor> Salvors { get; set; } = null!;
+    public virtual DbSet<Image> Images { get; set; } = null!;
+
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -183,10 +185,39 @@ public partial class DroitsContext : DbContext
                 .WithMany(d => d.WreckMaterials)
                 .HasForeignKey(w => w.DroitId)
                 .IsRequired();
+
+            entity.HasMany(w => w.Images)
+                .WithOne(i => i.WreckMaterial)
+                .HasForeignKey(i => i.WreckMaterialId)
+                .IsRequired(false);
+
             
             entity.HasOne(w => w.LastModifiedByUser)
                 .WithMany()
                 .HasForeignKey(w => w.LastModifiedByUserId)
+                .IsRequired(false);
+            
+            
+        });
+
+        modelBuilder.Entity<Image>(entity =>
+        {
+            entity.Property(i => i.Id);
+            entity.Property(i => i.Title);
+            
+            entity.Property(i => i.Key);
+            entity.Property(i => i.Filename);
+            entity.Property(i => i.FileContentType);
+            
+            entity.Property(i => i.WreckMaterialId);
+            
+            entity.Property(i => i.Created);
+            entity.Property(i => i.LastModified);
+            entity.Property(i => i.LastModifiedByUserId);
+            
+            entity.HasOne(i => i.WreckMaterial)
+                .WithMany(w => w.Images)
+                .HasForeignKey(i => i.WreckMaterialId)
                 .IsRequired(false);
             
             

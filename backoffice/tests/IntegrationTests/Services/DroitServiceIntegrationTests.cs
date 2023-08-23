@@ -13,7 +13,7 @@ namespace Droits.Tests.IntegrationTests.Services
     {
         private readonly Mock<IAccountService> _mockCurrentUserService = new();
         private readonly Mock<ILogger<DroitService>> _mockLogger = new();
-        private readonly Mock<IWreckMaterialRepository> _mockWmRepo = new();
+        private readonly Mock<IWreckMaterialService> _mockWmService = new();
 
 
         private readonly DroitService _service;
@@ -25,7 +25,7 @@ namespace Droits.Tests.IntegrationTests.Services
             DatabaseSeeder.SeedData(_dbContext); // Seed the test data
 
             var droitRepository = new DroitRepository(_dbContext, _mockCurrentUserService.Object);
-            _service = new DroitService(_mockLogger.Object, droitRepository, _mockWmRepo.Object, _mockCurrentUserService.Object);
+            _service = new DroitService(_mockLogger.Object, droitRepository, _mockWmService.Object, _mockCurrentUserService.Object);
 
         }
         [Fact]

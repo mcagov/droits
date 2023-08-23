@@ -1,3 +1,4 @@
+using Amazon.S3;
 using Droits.Clients;
 using Droits.Data;
 using Droits.Middleware;
@@ -43,6 +44,7 @@ builder.Services.AddControllersWithViews(options =>
     })
     .AddRazorRuntimeCompilation().AddMicrosoftIdentityUI().AddSessionStateTempDataProvider();
 
+builder.Services.AddAWSService<IAmazonS3>();
 builder.Services.AddRazorPages();
 
 // Localization
@@ -74,8 +76,14 @@ builder.Services.AddScoped<INoteService, NoteService>();
 builder.Services.AddScoped<ILetterRepository, LetterRepository>();
 builder.Services.AddScoped<ILetterService, LetterService>();
 
-builder.Services.AddScoped<IDroitRepository, DroitRepository>();
+builder.Services.AddScoped<IGovNotifyClient, GovNotifyClient>();
+
+builder.Services.AddScoped<IImageStorageClient, ImageStorageClient>();
+
 builder.Services.AddScoped<IWreckMaterialRepository, WreckMaterialRepository>();
+builder.Services.AddScoped<IWreckMaterialService, WreckMaterialService>();
+
+builder.Services.AddScoped<IDroitRepository, DroitRepository>();
 builder.Services.AddScoped<IDroitService, DroitService>();
 
 builder.Services.AddScoped<IWreckRepository, WreckRepository>();
@@ -83,6 +91,10 @@ builder.Services.AddScoped<IWreckService, WreckService>();
 
 builder.Services.AddScoped<ISalvorRepository, SalvorRepository>();
 builder.Services.AddScoped<ISalvorService, SalvorService>();
+
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IImageService, ImageService>();
+
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();

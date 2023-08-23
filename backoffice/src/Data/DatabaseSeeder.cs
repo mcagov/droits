@@ -57,6 +57,12 @@ public static class DatabaseSeeder
             SeedNotes(dbContext);
             dbContext.SaveChanges();
         }
+        
+        if ( !dbContext.Images.Any() )
+        {
+            dbContext.Images.AddRange(GetImages());
+            dbContext.SaveChanges();
+        }
 
     }
 
@@ -229,15 +235,16 @@ public static class DatabaseSeeder
     }
 
 
-    private static IEnumerable<Note> GenerateNotesForEntities<T>(DroitsContext dbContext, IEnumerable<T> entities, string propertyName) where T : BaseEntity
+    private static IEnumerable<Note> GenerateNotesForEntities<T>(DroitsContext dbContext,
+        IEnumerable<T> entities, string propertyName) where T : BaseEntity
     {
         var notes = new List<Note>();
         var randomUser = Faker.Random.ArrayElement(dbContext.Users.ToArray());
 
-        foreach (var entity in entities)
+        foreach ( var entity in entities )
         {
             var numberOfNotes = Faker.Random.Int(1, 5);
-            for(var i = 0; i < numberOfNotes; i++)
+            for ( var i = 0; i < numberOfNotes; i++ )
             {
                 var note = new Note
                 {
@@ -257,5 +264,21 @@ public static class DatabaseSeeder
         }
 
         return notes;
+    }
+
+
+    private static IEnumerable<Image> GetImages()
+    {
+        return Enumerable.Range(0, 1)
+            .Select(i => new Image()
+            {
+                Id = new Guid(),
+                Key="test-image",
+                FileContentType = "image/png",
+                Filename = "MaritimeAgency.svg.png",
+                Created = DateTime.UtcNow,
+                LastModified = DateTime.UtcNow,
+            })
+            .ToList();
     }
 }

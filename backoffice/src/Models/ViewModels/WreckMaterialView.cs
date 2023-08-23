@@ -25,6 +25,11 @@ public class WreckMaterialView : BaseEntityView
         Purchaser = wreckMaterial.Purchaser;
         Outcome = wreckMaterial.Outcome;
         StorageAddress = new AddressView(wreckMaterial.StorageAddress);
+        
+        if ( wreckMaterial.Images.Any() )
+        {
+            Images = wreckMaterial.Images.Select(i => new ImageView(i)).OrderByDescending(i => i.LastModified).ToList();
+        }
     }
 
 
@@ -37,7 +42,9 @@ public class WreckMaterialView : BaseEntityView
     public string? Description { get; } = string.Empty;
     public int Quantity { get; } = 1;
     public float? Value { get; } = 0;
-
+    
+    // Images
+    public List<ImageView> Images { get; } = new();
 
     [Display(Name = "Receiver Valuation")]
     public float? ReceiverValuation { get; }

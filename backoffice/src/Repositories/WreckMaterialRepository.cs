@@ -13,7 +13,7 @@ public interface IWreckMaterialRepository
 
     Task<WreckMaterial> AddAsync(WreckMaterial wreckMaterial);
     Task<WreckMaterial> UpdateAsync(WreckMaterial wreckMaterial);
-    Task<WreckMaterial> GetWreckMaterialAsync(Guid id, Guid droitId);
+    Task<WreckMaterial> GetWreckMaterialAsync(Guid id);
     Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep);
 }
 
@@ -23,11 +23,11 @@ public class WreckMaterialRepository : BaseEntityRepository<WreckMaterial>, IWre
     {
 
     }
-    public async Task<WreckMaterial> GetWreckMaterialAsync(Guid id, Guid droitId)
+    public async Task<WreckMaterial> GetWreckMaterialAsync(Guid id)
     {
         var wreckMaterial =
-            await Context.WreckMaterials.FirstOrDefaultAsync(wm =>
-                wm.Id == id && wm.DroitId == droitId);
+            await Context.WreckMaterials.Include(wm => wm.Images).FirstOrDefaultAsync(wm =>
+                wm.Id == id);
         if ( wreckMaterial == null )
         {
             throw new WreckMaterialNotFoundException();
@@ -37,12 +37,23 @@ public class WreckMaterialRepository : BaseEntityRepository<WreckMaterial>, IWre
     }
     public async Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep)
     {
-        var wreckMaterials = await Context.WreckMaterials
+        var wreckMaterialsToDelete = await GetWreckMaterialsToDeleteAsync(droitId, wmToKeep);
+    
+        await RemoveWreckMaterialsFromDatabaseAsync(wreckMaterialsToDelete);
+    }
+
+    private async Task<List<WreckMaterial>> GetWreckMaterialsToDeleteAsync(Guid droitId, IEnumerable<Guid> wmToKeep)
+    {
+        return await Context.WreckMaterials
             .Where(wm => wm.DroitId == droitId && !wmToKeep.Contains(wm.Id))
             .ToListAsync();
+    }
 
-        Context.WreckMaterials.RemoveRange(wreckMaterials);
+    private async Task RemoveWreckMaterialsFromDatabaseAsync(IEnumerable<WreckMaterial> wreckMaterialsToDelete)
+    {
+        Context.WreckMaterials.RemoveRange(wreckMaterialsToDelete);
         await Context.SaveChangesAsync();
     }
+
     
 }

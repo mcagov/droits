@@ -7,6 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AWSSDK.S3" Version="3.7.201.13" />
+        <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.7" />
         <PackageReference Include="Bogus" Version="34.0.2" />
         <PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.0.1" />
         <PackageReference Include="GovukNotify" Version="6.1.0" />
@@ -25,6 +27,7 @@
         </Content>
         <Content Remove="wwwroot/css/**/*" />
     </ItemGroup>
+
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
         <Exec Command="npx webpack --config webpack.config.js" />

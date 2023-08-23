@@ -93,7 +93,7 @@ public class DroitController : BaseController
 
         try
         {
-            var droit = await _service.GetDroitAsync(id);
+            var droit = await _service.GetDroitWithAssociationsAsync(id);
             var form = await PopulateDroitFormAsync(new DroitForm(droit));
             return View(form);
         }
@@ -118,13 +118,22 @@ public class DroitController : BaseController
             ModelState.RemoveStartingWith("SalvorForm");
         }
 
-        form.WreckMaterialForms
+        var wmForms = form.WreckMaterialForms;
+        
+        wmForms
             .Select((wmForm, i) => new { Form = wmForm, Index = i })
             .Where(item => item.Form.StoredAtSalvorAddress)
             .ToList()
             .ForEach(item =>
                 ModelState.RemoveStartingWith($"WreckMaterialForms[{item.Index}].StorageAddress"));
 
+        wmForms
+            .SelectMany((wmForm, i) => wmForm.ImageForms.Select((imgForm, j) => new { WmFormIndex = i, ImgForm = imgForm, ImgIndex = j }))
+            .Where(item => item.ImgForm.Id != default)
+            .ToList()
+            .ForEach(item =>
+                ModelState.RemoveStartingWith($"WreckMaterialForms[{item.WmFormIndex}].ImageForms[{item.ImgIndex}].ImageFile"));
+        
         if ( !ModelState.IsValid )
         {
             AddErrorMessage("Could not save Droit");
@@ -181,6 +190,7 @@ public class DroitController : BaseController
             form = await PopulateDroitFormAsync(form);
             return View(nameof(Edit), form);
         }
+        
 
         AddSuccessMessage("Droit saved successfully");
 
@@ -192,6 +202,12 @@ public class DroitController : BaseController
     public ActionResult WreckMaterialFormPartial()
     {
         return PartialView("WreckMaterial/_WreckMaterialFormFields", new WreckMaterialForm());
+    }
+    
+    [HttpGet]
+    public ActionResult ImageFormPartial()
+    {
+        return PartialView("Image/_ImageFormFields", new ImageForm());
     }
 
 

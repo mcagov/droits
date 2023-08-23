@@ -25,17 +25,19 @@ public interface IDroitService
 public class DroitService : IDroitService
 {
     private readonly IDroitRepository _repo;
-    private readonly IWreckMaterialRepository _wreckMaterialRepo;
+    private readonly IWreckMaterialService _wreckMaterialService;
     private readonly IAccountService _accountService;
     private readonly ILogger<DroitService> _logger;
 
+    
 
-    public DroitService(ILogger<DroitService> logger, IDroitRepository repo, IWreckMaterialRepository wmRepo, IAccountService accountService)
+
+    public DroitService(ILogger<DroitService> logger, IDroitRepository repo, IWreckMaterialService wreckMaterialService, IAccountService accountService)
     {
         _logger = logger;
         _repo = repo;
-        _wreckMaterialRepo = wmRepo;
         _accountService = accountService;
+        _wreckMaterialService = wreckMaterialService;
     }
 
 
@@ -111,42 +113,14 @@ public class DroitService : IDroitService
         return await _repo.GetDroitAsync(id);
     }
 
-
-    private async Task<WreckMaterial> SaveWreckMaterialAsync(WreckMaterialForm wreckMaterialForm)
-    {
-        if ( wreckMaterialForm.Id == default )
-        {
-            return await _wreckMaterialRepo.AddAsync(
-                wreckMaterialForm.ApplyChanges(new WreckMaterial()));
-        }
-
-        var wreckMaterial =
-            await _wreckMaterialRepo.GetWreckMaterialAsync(wreckMaterialForm.Id, wreckMaterialForm.DroitId);
-
-        wreckMaterial = wreckMaterialForm.ApplyChanges(wreckMaterial);
-
-        return await UpdateWreckMaterialAsync(wreckMaterial);
-    }
-
-
-    private async Task<WreckMaterial> UpdateWreckMaterialAsync(WreckMaterial wreckMaterial)
-    {
-        return await _wreckMaterialRepo.UpdateAsync(wreckMaterial);
-    }
-
-
-    private async Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep)
-    {
-        await _wreckMaterialRepo.DeleteWreckMaterialForDroitAsync(droitId, wmToKeep);
-    }
-
+    
 
     public async Task SaveWreckMaterialsAsync(Guid droitId,
         List<WreckMaterialForm> wreckMaterialForms)
     {
         var wreckMaterialIdsToKeep = wreckMaterialForms.Select(wm => wm.Id);
 
-        await DeleteWreckMaterialForDroitAsync(droitId, wreckMaterialIdsToKeep);
+        await _wreckMaterialService.DeleteWreckMaterialForDroitAsync(droitId, wreckMaterialIdsToKeep);
 
         try
         {
@@ -162,7 +136,7 @@ public class DroitService : IDroitService
                     wmForm.StorageAddress = new AddressForm(salvorAddress);
                 }
 
-                await SaveWreckMaterialAsync(wmForm);
+                await _wreckMaterialService.SaveWreckMaterialAsync(wmForm);
             }
         }
         catch ( DroitNotFoundException e )

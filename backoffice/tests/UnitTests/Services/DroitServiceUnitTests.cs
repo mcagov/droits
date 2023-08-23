@@ -15,10 +15,10 @@ namespace Droits.Tests.UnitTests.Services
         public DroitServiceUnitTests()
         {
             _mockRepo = new Mock<IDroitRepository>();
-            Mock<IWreckMaterialRepository> mockWreckMaterialRepo = new();
+            Mock<IWreckMaterialService> mockWreckMaterialService = new();
             Mock<IAccountService> mockCurrentUserService = new();
             Mock<ILogger<DroitService>> mockLogger = new();
-            _service = new DroitService(mockLogger.Object, _mockRepo.Object, mockWreckMaterialRepo.Object, mockCurrentUserService.Object);
+            _service = new DroitService(mockLogger.Object, _mockRepo.Object, mockWreckMaterialService.Object, mockCurrentUserService.Object);
         }
 
 
