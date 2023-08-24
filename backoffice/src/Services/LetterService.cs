@@ -95,13 +95,12 @@ public class LetterService : ILetterService
 
     private async Task<string> ReadFileContentAsync(string path)
     {
-        if ( !File.Exists(path) )
-        {
-            _logger.LogError($"File could not be found at: {path}");
-            throw new FileNotFoundException("File could not be found");
-        }
-
-        return await File.ReadAllTextAsync(path);
+        if ( File.Exists(path) ) return await File.ReadAllTextAsync(path);
+        
+        
+        _logger.LogError($"File could not be found at: {path}");
+        return "";
+        
     }
 
 

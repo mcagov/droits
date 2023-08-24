@@ -53,7 +53,7 @@ public class LetterController : BaseController
 
 
         //This should be done elsewhere.
-        var letterType = LetterType.TestingDroitsv2;
+        var letterType = LetterType.CustomLetter;
 
         try
         {
