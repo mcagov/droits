@@ -60,5 +60,37 @@ public class ImageServiceUnitTests
         
         // Then
         Assert.Equal(image,response);
+        _mockRepo.Verify(r => r.AddAsync(It.IsAny<Image>()), Times.Once);
+
+    }
+    
+    [Fact]
+    public async Task SaveImageForm_ForAnExistingImage_ReturnsAnImage()
+    {
+        // Given
+        var existingImage = new Image()
+        {
+            Id = Guid.NewGuid(),
+            Title = "Test2"
+        };
+        var mockFormFile = new Mock<IFormFile>();
+        mockFormFile.Setup(f => f.FileName).Returns("test2.jpg");
+        mockFormFile.Setup(f => f.Length).Returns(1024);
+        var imageForm = new ImageForm(existingImage)
+        {
+            WreckMaterialId = new Guid(),
+            ImageFile = mockFormFile.Object
+        };
+
+        _mockRepo.Setup(r => r.GetImageAsync(It.IsAny<Guid>())).ReturnsAsync(existingImage);
+        _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Image>())).ReturnsAsync(existingImage);
+        _mockRepo.Setup(r => r.UploadImageFileAsync(existingImage, imageForm.ImageFile)).Callback<Image, IFormFile>((image, imageFile) => {});
+        
+        // When
+        var response = await _service.SaveImageFormAsync(imageForm);
+        
+        // Then
+        Assert.Equal(existingImage,response);
+        _mockRepo.Verify(r => r.UpdateAsync(It.IsAny<Image>()), Times.Once);
     }
 }
