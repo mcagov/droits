@@ -21,3 +21,25 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_rules" {
   role       = aws_iam_role.ecs_task_execution.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
+
+resource "aws_iam_policy" "ecs_instance_metadata" {
+  name        = "ECSInstanceMetadataAccess"
+  description = "Allow access to EC2 instance metadata"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = "ec2:Metadata",
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy_attachment" "ecs_instance_metadata_attachment" {
+  name       = "ECSTaskExecutionMetadataAttachment"
+  policy_arn = aws_iam_policy.ecs_instance_metadata.arn
+  roles      = [aws_iam_role.ecs_task_execution.name]
+}
