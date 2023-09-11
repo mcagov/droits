@@ -28,11 +28,20 @@ resource "aws_iam_policy" "ecs_instance_metadata" {
 
   policy = jsonencode({
     Version = "2012-10-17",
-    Statement = [
+    "Statement" : [
       {
-        Effect   = "Allow",
-        Action   = "ec2:Metadata",
-        Resource = "*"
+        "Effect" : "Allow",
+        "Action" : [
+          "ec2:RunInstances",
+          "ec2:AssociateIamInstanceProfile",
+          "ec2:ReplaceIamInstanceProfileAssociation"
+        ],
+        "Resource" : "*"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : "iam:PassRole",
+        "Resource" : "*"
       }
     ]
   })
