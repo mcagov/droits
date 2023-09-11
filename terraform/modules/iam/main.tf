@@ -30,8 +30,8 @@ resource "aws_iam_policy" "ecs_instance_metadata" {
     Version = "2012-10-17",
     Statement = [
       {
-        Effect = "Allow",
-        Action = "ec2:Metadata",
+        Effect   = "Allow",
+        Action   = "ec2:Metadata",
         Resource = "*"
       }
     ]
