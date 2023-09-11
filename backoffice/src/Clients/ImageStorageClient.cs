@@ -26,7 +26,7 @@ public class ImageStorageClient : IImageStorageClient
 
         if ( _bucketName.IsNullOrEmpty() )
         {
-            logger.LogError("Bucket Name cannot be null");
+            _logger.LogError("Bucket Name cannot be null");
             throw new Exception("Bucket Name cannot be null");
         }
     }
@@ -41,18 +41,23 @@ public class ImageStorageClient : IImageStorageClient
             InputStream = imageStream
         };
 
+        
+        _logger.LogInformation($"key: {key}");
+        _logger.LogInformation($"bucket: {_bucketName}");
+        _logger.LogInformation($"Content type: {contentType}");
+        
         try
         {
             await _s3Client.PutObjectAsync(putRequest);
         }
         catch ( AmazonS3Exception e )
         {
-            _logger.LogError("aws service error",e);
+            _logger.LogError("AWS S3 Exception Putting Image - {e.Message} ",e);
             throw;
         }
         catch ( Exception e )
         {
-            _logger.LogError("unknown service error",e);
+            _logger.LogError("Exception Putting Image - {e.Message} ",e);
             throw;
         }
         
