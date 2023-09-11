@@ -42,5 +42,6 @@ namespace Droits.Services
         {
             return await _repo.GetNoteAsync(id);
         }
+
     }
 }

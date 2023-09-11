@@ -3,6 +3,7 @@ using Droits.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Droits.Services;
 using Droits.Models.FormModels;
+using Droits.Models.ViewModels;
 
 namespace Droits.Controllers;
 
@@ -26,10 +27,18 @@ public class NoteController : BaseController
     
     
     [HttpGet]
-    public new IActionResult View()
+    public async Task<IActionResult> View(Guid id)
     {
-        //For the Edit screen to work, but never used.
-        throw new NotImplementedException();
+        try
+        {
+            var note = await _service.GetNoteAsync(id);
+            return View(new NoteForm(note));
+        }
+        catch ( NoteNotFoundException e )
+        {
+            HandleError(_logger, "Note not found", e);
+            return RedirectToAction(nameof(Index));
+        }
     }
     
     [HttpGet]
@@ -44,12 +53,14 @@ public class NoteController : BaseController
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
+
+        var noteForm = new NoteForm();
         if ( id != default )
         {
             try
             {
                 var note = await _service.GetNoteAsync(id);
-                return View(new NoteForm(note));
+                noteForm = new NoteForm(note);
             }
             catch ( NoteNotFoundException e )
             {
@@ -57,8 +68,9 @@ public class NoteController : BaseController
                 return RedirectToAction(nameof(Index));
             }
         }
-
-        return View(new NoteForm());
+        
+        
+        return View(noteForm);
     }
 
     [HttpPost]

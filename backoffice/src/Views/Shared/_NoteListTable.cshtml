@@ -5,7 +5,6 @@
         <thead>
         <tr>
             <th scope="col">Title</th>
-            <th scope="col">Text</th>
             <th scope="col">Type</th>
             <th scope="col">Last Modified</th>
             <th scope="col">Author</th>
@@ -22,20 +21,18 @@
                 <td class="p-3">
                     @Html.DisplayFor(m => note.Title)
                 </td>
-                <td class="p-3">
-                    @Html.DisplayFor(m => note.Text)
-                </td>
                 <td class="p-3">@Html.DisplayFor(m => note.Type)</td>
                 <td class="p-3">@note.LastModified.ToString("dd/MM/yyyy")</td>
                 <td class="p-3">@Html.DisplayFor(m => note.LastModifiedBy)</td>
-                @if (Model.Editable)
-                {
-                    <td class="p-3">
-                        <div class="btn-group">
+                <td class="p-3">
+                    <div class="btn-group">
+                        <a asp-controller="Note" asp-action="View" asp-route-id="@note.Id" class="btn btn-primary">View</a> 
+                        @if (Model.Editable)
+                        {
                             <a asp-controller="Note" asp-action="Edit" asp-route-id="@note.Id" class="btn btn-primary">Edit</a>
-                        </div>
-                    </td>
-                }
+                        }
+                    </div>
+                </td>
             </tr>
         }
         </tbody>
