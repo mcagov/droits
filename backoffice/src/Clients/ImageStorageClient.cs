@@ -1,3 +1,4 @@
+using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.IdentityModel.Tokens;
@@ -41,7 +42,21 @@ public class ImageStorageClient : IImageStorageClient
             InputStream = imageStream
         };
 
-        await _s3Client.PutObjectAsync(putRequest);
+        try
+        {
+            await _s3Client.PutObjectAsync(putRequest);
+        }
+        catch ( AmazonS3Exception e )
+        {
+            _logger.LogError("aws service error",e);
+            throw;
+        }
+        catch ( Exception e )
+        {
+            _logger.LogError("unknown service error",e);
+            throw;
+        }
+        
     }
 
     public async Task<Stream> GetImageAsync(string key)
