@@ -50,6 +50,8 @@ var awsOptions = builder.Configuration.GetAWSOptions();
 if ( !builder.Environment.IsDevelopment() )
 {
     awsOptions.Credentials = new EnvironmentVariablesAWSCredentials();
+    Console.Write("Getting credentials from Env");
+    Console.Write(awsOptions);
 }
 
 builder.Services.AddDefaultAWSOptions(awsOptions);
