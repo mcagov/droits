@@ -22,12 +22,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_rules" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-resource "aws_iam_policy_attachment" "ecs_task_execution_ec2_readonly" {
+resource "aws_iam_role_policy_attachment" "ecs_task_execution_ec2_readonly_rules" {
+  role       = aws_iam_role.ecs_task_execution.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
-  role       = aws_iam_role.ecs_task_execution.name
-}
-
-resource "aws_iam_role_policy_attachment" "ecs_task_execution_rules" {
-  role       = aws_iam_role.ecs_task_execution.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
