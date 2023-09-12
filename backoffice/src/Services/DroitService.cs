@@ -20,6 +20,7 @@ public interface IDroitService
     Task<Droit> GetDroitWithAssociationsAsync(Guid id);
     Task SaveWreckMaterialsAsync(Guid id, List<WreckMaterialForm> wreckMaterialForms);
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
+    Task<string> GetNextDroitReference();
 }
 
 public class DroitService : IDroitService
@@ -41,6 +42,14 @@ public class DroitService : IDroitService
     }
 
 
+    public async Task<string> GetNextDroitReference()
+    {
+        var droits = await GetDroitsAsync();
+        
+        var yearCount = droits.Count(d => d.Created.Year == DateTime.UtcNow.Year);
+        
+        return  $"{(yearCount+1):D3}/{DateTime.UtcNow:yy}";
+    }
     public async Task<DroitListView> GetDroitsListViewAsync(SearchOptions searchOptions)
     {
         var query = searchOptions.IncludeAssociations
@@ -83,6 +92,7 @@ public class DroitService : IDroitService
     {
         if ( droit.Id == default )
         {
+            droit.Reference = await GetNextDroitReference();
             return await AddDroitAsync(droit);
         }
 
@@ -92,6 +102,7 @@ public class DroitService : IDroitService
 
     private async Task<Droit> AddDroitAsync(Droit droit)
     {
+        droit.Reference = await GetNextDroitReference();
         return await _repo.AddAsync(droit);
     }
 

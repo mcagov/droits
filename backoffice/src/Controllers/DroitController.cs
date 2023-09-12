@@ -63,6 +63,8 @@ public class DroitController : BaseController
     public async Task<IActionResult> Add()
     {
         var form = await PopulateDroitFormAsync(new DroitForm());
+        form.Reference = await _service.GetNextDroitReference();
+
         return View(nameof(Edit), form);
     }
 
@@ -88,6 +90,7 @@ public class DroitController : BaseController
         if ( id == default )
         {
             var form = await PopulateDroitFormAsync(new DroitForm());
+            form.Reference = await _service.GetNextDroitReference();
             return View(form);
         }
 

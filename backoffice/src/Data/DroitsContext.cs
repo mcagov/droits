@@ -92,7 +92,9 @@ public partial class DroitsContext : DbContext
             entity.Property(d => d.ReportedDate);
             entity.Property(d => d.DateFound);
 
-            entity.Property(d => d.Reference);
+            entity.Property(d => d.Reference).IsRequired();
+            entity.HasIndex(d => d.Reference).IsUnique();
+
             entity.Property(d => d.IsHazardousFind);
             entity.Property(d => d.IsDredge);
             
