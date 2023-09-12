@@ -46,7 +46,12 @@ builder.Services.AddControllersWithViews(options =>
     .AddRazorRuntimeCompilation().AddMicrosoftIdentityUI().AddSessionStateTempDataProvider();
 
 var awsOptions = builder.Configuration.GetAWSOptions();
-awsOptions.Credentials = new EnvironmentVariablesAWSCredentials();
+
+if ( !builder.Environment.IsDevelopment() )
+{
+    awsOptions.Credentials = new EnvironmentVariablesAWSCredentials();
+}
+
 builder.Services.AddDefaultAWSOptions(awsOptions);
 builder.Services.AddAWSService<IAmazonS3>();
 

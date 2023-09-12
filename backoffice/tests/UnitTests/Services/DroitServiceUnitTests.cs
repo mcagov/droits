@@ -105,6 +105,7 @@ namespace Droits.Tests.UnitTests.Services
             var existingDroit = new Droit { Id = existingDroitId, Reference = "ExistingRef" };
             _mockRepo.Setup(r => r.GetDroitAsync(existingDroitId)).ReturnsAsync(existingDroit);
             _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Droit>())).ReturnsAsync(existingDroit);
+            _mockRepo.Setup(r => r.IsReferenceUnique(It.IsAny<Droit>())).ReturnsAsync(true);
 
             // When
             var result = await _service.SaveDroitAsync(existingDroit);
@@ -120,6 +121,8 @@ namespace Droits.Tests.UnitTests.Services
             // Given
             var nonExistingDroitId = Guid.NewGuid();
             _mockRepo.Setup(r => r.GetDroitAsync(nonExistingDroitId)).ThrowsAsync(new DroitNotFoundException());
+            _mockRepo.Setup(r => r.IsReferenceUnique(It.IsAny<Droit>())).ReturnsAsync(true);
+
 
             // When & Assert
             await Assert.ThrowsAsync<DroitNotFoundException>(() => _service.UpdateDroitStatusAsync(nonExistingDroitId, DroitStatus.Research));
