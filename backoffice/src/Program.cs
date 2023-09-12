@@ -111,6 +111,7 @@ builder.Services.AddScoped<ISalvorService, SalvorService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
 
+builder.Services.AddHttpClient();
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();

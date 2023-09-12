@@ -9,10 +9,13 @@ namespace Droits.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IHttpClientFactory _httpClientFactory;
+
     
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory)
     {
         _logger = logger;
+        _httpClientFactory = httpClientFactory;
     }
 
     public IActionResult Index()
@@ -28,6 +31,36 @@ public class HomeController : Controller
     {
         return View();
     }
+    
+    public async Task<IActionResult> FetchMetadata()
+    {
+        try
+        {
+            // Create an HttpClient using the factory
+            var httpClient = _httpClientFactory.CreateClient();
+
+            // Make an HTTP GET request to http://169.254.169.254
+            var response = await httpClient.GetAsync("http://169.254.169.254");
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Read the response content as a string
+                var content = await response.Content.ReadAsStringAsync();
+                return Content(content, "text/plain");
+            }
+            else
+            {
+                // Handle non-success status codes
+                return Content($"Error: {response.StatusCode} - {response.ReasonPhrase}", "text/plain");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions
+            return Content($"An error occurred: {ex.Message}", "text/plain");
+        }
+    }
+
     
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
