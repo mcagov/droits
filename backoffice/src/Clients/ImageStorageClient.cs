@@ -21,9 +21,24 @@ public class ImageStorageClient : IImageStorageClient
     
     public ImageStorageClient(IAmazonS3 s3Client, ILogger<ImageStorageClient> logger, IConfiguration configuration)
     {
-        var awsCredentials = FallbackCredentialsFactory.GetCredentials();
-        _s3Client = new AmazonS3Client(awsCredentials, Amazon.RegionEndpoint.EUWest2); 
-        
+
+        try
+        {
+            var awsCredentials = FallbackCredentialsFactory.GetCredentials();
+
+            logger.LogInformation(awsCredentials.ToString());
+            //For testing, remove.
+            var creds = awsCredentials.GetCredentials();
+            logger.LogInformation(
+                $"Access Key: {creds.AccessKey}, SC: {creds.SecretKey}, Token: {creds.Token}");
+            _s3Client = new AmazonS3Client(awsCredentials, Amazon.RegionEndpoint.EUWest2);
+
+        }
+        catch ( Exception e )
+        {
+            logger.LogError($"{e.Message} - {e.GetBaseException()}");
+        }
+
         _logger = logger;
         _bucketName = configuration["AWS:S3Config:BucketName"];
 
@@ -55,12 +70,13 @@ public class ImageStorageClient : IImageStorageClient
         }
         catch ( AmazonS3Exception e )
         {
-            _logger.LogError("AWS S3 Exception Putting Image - {e.Message} ",e);
+            
+            _logger.LogError($"AWS S3 Exception Putting Image - {e.Message} , {e.StackTrace}");
             throw;
         }
         catch ( Exception e )
         {
-            _logger.LogError("Exception Putting Image - {e.Message} ",e);
+            _logger.LogError($"Exception Putting Image - {e.Message} , {e.StackTrace}");
             throw;
         }
         
