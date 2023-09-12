@@ -20,6 +20,7 @@ public interface IDroitService
     Task<Droit> GetDroitWithAssociationsAsync(Guid id);
     Task SaveWreckMaterialsAsync(Guid id, List<WreckMaterialForm> wreckMaterialForms);
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
+    Task<string> GetNextDroitReference();
 }
 
 public class DroitService : IDroitService
@@ -41,6 +42,12 @@ public class DroitService : IDroitService
     }
 
 
+    public async Task<string> GetNextDroitReference()
+    {
+        var yearCount = await _repo.GetYearDroitCount();
+        
+        return  $"{(yearCount+1):D3}/{DateTime.UtcNow:yy}";
+    }
     public async Task<DroitListView> GetDroitsListViewAsync(SearchOptions searchOptions)
     {
         var query = searchOptions.IncludeAssociations
@@ -83,6 +90,7 @@ public class DroitService : IDroitService
     {
         if ( droit.Id == default )
         {
+            droit.Reference = await GetNextDroitReference();
             return await AddDroitAsync(droit);
         }
 
@@ -92,15 +100,23 @@ public class DroitService : IDroitService
 
     private async Task<Droit> AddDroitAsync(Droit droit)
     {
+        droit.Reference = await GetNextDroitReference();
         return await _repo.AddAsync(droit);
     }
 
 
     private async Task<Droit> UpdateDroitAsync(Droit droit)
     {
+        if (!await IsReferenceUnique(droit))
+        {
+            throw new DuplicateDroitReferenceException($"Droit Reference {droit.Reference} already exists");
+        }
+        
         return await _repo.UpdateAsync(droit);
     }
 
+
+    private async Task<bool> IsReferenceUnique(Droit droit) => await _repo.IsReferenceUnique(droit);
 
     public async Task<Droit> GetDroitWithAssociationsAsync(Guid id)
     {

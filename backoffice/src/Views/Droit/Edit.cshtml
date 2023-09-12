@@ -48,7 +48,16 @@
 <div class="tab-pane fade show active" id="droit" role="tabpanel" aria-labelledby="droit-tab">
     <div class="form-group">
         @Html.LabelFor(m => m.Reference, new { @class = "col-form-label" })
-        @Html.EditorFor(m => m.Reference, new { htmlAttributes = new { @class = "form-control" } })
+
+        @if (Model.Id == default)
+        {
+            @Html.EditorFor(m => m.Reference, new { htmlAttributes = new { @class = "form-control", @readonly = true} })
+        }
+        else
+        {
+            @Html.EditorFor(m => m.Reference, new { htmlAttributes = new { @class = "form-control" } })    
+        }
+        
         @Html.ValidationMessageFor(m => m.Reference, "", new { @class = "text-danger" })
 
     </div>
