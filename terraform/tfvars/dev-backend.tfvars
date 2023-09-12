@@ -1,1 +1,1 @@
-bucket  = "droits-statefile-dev"
+bucket = "droits-statefile-dev"
