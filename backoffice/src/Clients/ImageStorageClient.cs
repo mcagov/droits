@@ -1,3 +1,4 @@
+using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.IdentityModel.Tokens;
@@ -20,7 +21,9 @@ public class ImageStorageClient : IImageStorageClient
     
     public ImageStorageClient(IAmazonS3 s3Client, ILogger<ImageStorageClient> logger, IConfiguration configuration)
     {
-        _s3Client = s3Client;
+        var awsCredentials = FallbackCredentialsFactory.GetCredentials();
+        _s3Client = new AmazonS3Client(awsCredentials, Amazon.RegionEndpoint.EUWest2); 
+        
         _logger = logger;
         _bucketName = configuration["AWS:S3Config:BucketName"];
 
