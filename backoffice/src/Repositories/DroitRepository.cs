@@ -15,6 +15,10 @@ public interface IDroitRepository
     Task<Droit> GetDroitAsync(Guid id);
     Task<Droit> AddAsync(Droit droit);
     Task<Droit> UpdateAsync(Droit droit);
+
+    Task<bool> IsReferenceUnique(Droit droit);
+
+    Task<int> GetYearDroitCount();
 }
 
 public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
@@ -77,5 +81,30 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
         }
 
         return droit;
+    }
+
+
+    public async Task<int> GetYearDroitCount()
+    {
+        return await Context.Droits.CountAsync(d => d.Created.Year == DateTime.UtcNow.Year);
+    }
+    public async Task<bool> IsReferenceUnique(Droit droit)
+    {
+
+        var foundDroits = await Context.Droits.Where(d => d.Reference == droit.Reference).ToListAsync();
+
+        if ( !foundDroits.Any() )
+        {
+            return true;
+        }
+        
+        if ( foundDroits.Count() > 1 )
+        {
+            return false;
+        }
+
+        var foundDroit = foundDroits.FirstOrDefault();
+        
+        return foundDroit == null || foundDroit.Id == droit.Id;
     }
 }

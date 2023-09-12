@@ -44,9 +44,7 @@ public class DroitService : IDroitService
 
     public async Task<string> GetNextDroitReference()
     {
-        var droits = await GetDroitsAsync();
-        
-        var yearCount = droits.Count(d => d.Created.Year == DateTime.UtcNow.Year);
+        var yearCount = await _repo.GetYearDroitCount();
         
         return  $"{(yearCount+1):D3}/{DateTime.UtcNow:yy}";
     }
@@ -109,9 +107,16 @@ public class DroitService : IDroitService
 
     private async Task<Droit> UpdateDroitAsync(Droit droit)
     {
+        if (!await IsReferenceUnique(droit))
+        {
+            throw new DuplicateDroitReferenceException($"Droit Reference {droit.Reference} already exists");
+        }
+        
         return await _repo.UpdateAsync(droit);
     }
 
+
+    private async Task<bool> IsReferenceUnique(Droit droit) => await _repo.IsReferenceUnique(droit);
 
     public async Task<Droit> GetDroitWithAssociationsAsync(Guid id)
     {

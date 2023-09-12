@@ -175,6 +175,12 @@ public class DroitController : BaseController
         {
             droit = await _service.SaveDroitAsync(droit);
         }
+        catch ( DuplicateDroitReferenceException e )
+        {
+            HandleError(_logger, e.Message, e);
+            form = await PopulateDroitFormAsync(form);
+            return View(nameof(Edit), form);
+        }
         catch ( Exception e )
         {
             HandleError(_logger, "Could not save Droit.", e);
