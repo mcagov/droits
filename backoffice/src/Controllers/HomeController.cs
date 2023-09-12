@@ -32,7 +32,7 @@ public class HomeController : Controller
         return View();
     }
     
-    public async Task<IActionResult> FetchMetadata()
+    public async Task<IActionResult> FetchMetadata(string endpoint="http://169.254.169.254")
     {
         try
         {
@@ -40,7 +40,7 @@ public class HomeController : Controller
             var httpClient = _httpClientFactory.CreateClient();
 
             // Make an HTTP GET request to http://169.254.169.254
-            var response = await httpClient.GetAsync("http://169.254.169.254");
+            var response = await httpClient.GetAsync(endpoint);
 
             if (response.IsSuccessStatusCode)
             {
