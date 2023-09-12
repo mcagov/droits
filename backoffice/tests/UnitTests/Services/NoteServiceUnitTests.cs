@@ -12,7 +12,8 @@ namespace Droits.Tests.UnitTests.Services
         public NoteServiceUnitTests()
         {
             _mockRepo = new Mock<INoteRepository>();
-            _service = new NoteService(_mockRepo.Object);
+            var mockDroitService = new Mock<IDroitService>();
+            _service = new NoteService(_mockRepo.Object, mockDroitService.Object);
         }
 
         [Fact]
