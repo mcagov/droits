@@ -1,3 +1,4 @@
+using Amazon.Runtime;
 using Amazon.S3;
 using Droits.Clients;
 using Droits.Data;
@@ -44,7 +45,15 @@ builder.Services.AddControllersWithViews(options =>
     })
     .AddRazorRuntimeCompilation().AddMicrosoftIdentityUI().AddSessionStateTempDataProvider();
 
+var awsOptions = builder.Configuration.GetAWSOptions();
+awsOptions.Credentials = new EnvironmentVariablesAWSCredentials();
+builder.Services.AddDefaultAWSOptions(awsOptions);
 builder.Services.AddAWSService<IAmazonS3>();
+
+// var creds = awsCredentials.GetCredentials();
+// logger.LogInformation(
+//     $"Access Key: {creds.AccessKey}, SC: {creds.SecretKey}, Token: {creds.Token}");
+
 builder.Services.AddRazorPages();
 
 // Localization

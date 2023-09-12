@@ -21,24 +21,7 @@ public class ImageStorageClient : IImageStorageClient
     
     public ImageStorageClient(IAmazonS3 s3Client, ILogger<ImageStorageClient> logger, IConfiguration configuration)
     {
-
-        try
-        {
-            var awsCredentials = FallbackCredentialsFactory.GetCredentials();
-
-            logger.LogInformation(awsCredentials.ToString());
-            //For testing, remove.
-            var creds = awsCredentials.GetCredentials();
-            logger.LogInformation(
-                $"Access Key: {creds.AccessKey}, SC: {creds.SecretKey}, Token: {creds.Token}");
-            _s3Client = new AmazonS3Client(awsCredentials, Amazon.RegionEndpoint.EUWest2);
-
-        }
-        catch ( Exception e )
-        {
-            logger.LogError($"{e.Message} - {e.GetBaseException()}");
-        }
-
+        _s3Client = s3Client;
         _logger = logger;
         _bucketName = configuration["AWS:S3Config:BucketName"];
 
