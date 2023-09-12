@@ -47,19 +47,16 @@ builder.Services.AddControllersWithViews(options =>
 
 var awsOptions = builder.Configuration.GetAWSOptions();
 
-if ( !builder.Environment.IsDevelopment() )
-{
-    awsOptions.Credentials = new EnvironmentVariablesAWSCredentials();
-    Console.Write("Getting credentials from Env");
-    Console.Write(awsOptions);
-}
+// if ( !builder.Environment.IsDevelopment() )
+// {
+//     // Unhandled exception. System.InvalidOperationException: The environment variables AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY/AWS_SESSION_TOKEN were not set with AWS credentials.
+//     awsOptions.Credentials = new EnvironmentVariablesAWSCredentials();
+//     Console.Write("Getting credentials from Env");
+//     Console.Write(awsOptions);
+// }
 
 builder.Services.AddDefaultAWSOptions(awsOptions);
 builder.Services.AddAWSService<IAmazonS3>();
-
-// var creds = awsCredentials.GetCredentials();
-// logger.LogInformation(
-//     $"Access Key: {creds.AccessKey}, SC: {creds.SecretKey}, Token: {creds.Token}");
 
 builder.Services.AddRazorPages();
 
