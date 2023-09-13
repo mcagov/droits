@@ -154,6 +154,9 @@ public static class DatabaseSeeder
             InUkWaters = Faker.Random.Bool(),
             LocationRadius = Faker.Random.Int(1, 500),
             Depth = Faker.Random.Int(1, 5000),
+            RecoveredFrom = Enum.GetValues(typeof(RecoveredFrom))
+                .OfType<RecoveredFrom>()
+                .MinBy(x => Guid.NewGuid()),
             LocationDescription = Faker.Lorem.Sentence(),
 
             SalvageAwardClaimed = Faker.Random.Bool(),
@@ -169,9 +172,7 @@ public static class DatabaseSeeder
             GoodsDischargedBy = Faker.Name.FullName(),
             DateDelivered = Faker.Date.Between(reportedDate, DateTime.UtcNow).ToShortDateString(),
             Agent = Faker.Name.FullName(),
-            RecoveredFrom = Enum.GetValues(typeof(RecoveredFrom))
-                .OfType<RecoveredFrom>()
-                .MinBy(x => Guid.NewGuid()),
+            RecoveredFromLegacy = Faker.Random.ArrayElement(new[] { "Afloat", "Ashore", "Seabed" }),
             ImportedFromLegacy = Faker.Random.Bool()
         };
     }
