@@ -46,6 +46,9 @@
         <button class="nav-link" id="wreck-materials-tab" data-bs-toggle="tab" data-bs-target="#wreck-materials-content" type="button" role="tab" aria-controls="wreck-materials-content" aria-selected="false">Wreck Materials</button>
     </li>
     <li class="nav-item" role="presentation">
+        <button class="nav-link" id="location-tab" data-bs-toggle="tab" data-bs-target="#location-content" type="button" role="tab" aria-controls="location-content" aria-selected="false">Location</button>
+    </li>
+    <li class="nav-item" role="presentation">
         <button class="nav-link" id="salvage-tab" data-bs-toggle="tab" data-bs-target="#salvage-content" type="button" role="tab" aria-controls="salvage-content" aria-selected="false">Salvage</button>
     </li>
     <li class="nav-item" role="presentation">
@@ -217,6 +220,12 @@
                      for="WreckMaterials[i]"/>
         }
     </div>
+</div>
+
+<div class="tab-pane fade" id="location-content" role="tabpanel" aria-labelledby="location-tab">
+    
+    <partial name="_LocationViewFields"/>
+    
 </div>
 
 <div class="tab-pane fade" id="letters-content" role="tabpanel" aria-labelledby="letters-tab">

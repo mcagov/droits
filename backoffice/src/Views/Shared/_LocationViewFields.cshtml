@@ -1,0 +1,73 @@
+@model DroitView
+
+<div class="col mb-2">
+    <div class="card">
+        <h5 class="card-header">Location</h5>
+        <div class="card-body">
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Latitude, new { @class = "font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.DisplayFor(m => m.Latitude)
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Longitude, new { @class = "font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.DisplayFor(m => m.Longitude)
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.InUkWaters, new { @class = "font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.DisplayFor(m => m.InUkWaters)
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.LocationRadius, new { @class = "font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.DisplayFor(m => m.LocationRadius)
+                </div>
+            </div>
+
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.Depth, new { @class = "font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.DisplayFor(m => m.Depth)
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.RecoveredFrom, new { @class = "font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.DisplayFor(m => m.RecoveredFrom)
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.LocationDescription, new { @class = "font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.DisplayFor(m => m.LocationDescription)
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

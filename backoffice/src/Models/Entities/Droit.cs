@@ -41,6 +41,7 @@ public class Droit : BaseEntity
     public bool InUkWaters { get; set; } = false;
     public int? LocationRadius { get; set; } //Units? Unknown.
     public int? Depth { get; set; } //Units? Unknown. //metres from frontend
+    public RecoveredFrom? RecoveredFrom { get; set; } 
     public string? LocationDescription { get; set; } = string.Empty;
 
 
@@ -60,6 +61,6 @@ public class Droit : BaseEntity
     public string? GoodsDischargedBy { get; set; } //Initals of RoW member.
     public string? DateDelivered { get; set; } //Unsure of date format.
     public string? Agent { get; set; }
-    public string? RecoveredFrom { get; set; }
+    public string? RecoveredFromLegacy { get; set; }
     public bool ImportedFromLegacy { get; set; } = false;
 }
