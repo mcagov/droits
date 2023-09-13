@@ -4,9 +4,7 @@ data "aws_iam_policy_document" "ecs_task_execution_agent" {
     sid    = ""
     effect = "Allow"
     actions = [
-      "sts:AssumeRole",
-      "ec2:DescribeInstances",
-      "ec2:Metadata"
+      "sts:AssumeRole"
     ]
 
     principals {
