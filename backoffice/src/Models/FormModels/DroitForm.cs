@@ -122,6 +122,9 @@ public class DroitForm : BaseEntityForm
 
     [DisplayName("Depth (Metres)")]
     public int? Depth { get; set; }
+    
+    [DisplayName("Recovered From")]
+    public RecoveredFrom? RecoveredFrom { get; set; }
 
     [DisplayName("Location Description")]
     public string? LocationDescription { get; set; } = string.Empty;
@@ -166,7 +169,7 @@ public class DroitForm : BaseEntityForm
     public string? Agent { get; set; }
 
     [DisplayName("Recovered From")]
-    public string? RecoveredFrom { get; set; }
+    public string? RecoveredFromLegacy { get; set; }
 
     [DisplayName("Imported From Legacy")]
     public bool ImportedFromLegacy { get; set; }
@@ -184,6 +187,7 @@ public class DroitForm : BaseEntityForm
         droit.WreckId = IsIsolatedFind ? default : WreckId;
         droit.SalvorId = SalvorId;
         droit.Status = Status;
+        droit.RecoveredFrom = RecoveredFrom;
         droit.ReportedDate = ReportedDate;
         droit.DateFound = DateFound;
         droit.Reference = Reference;
@@ -215,7 +219,7 @@ public class DroitForm : BaseEntityForm
         droit.GoodsDischargedBy = GoodsDischargedBy;
         droit.DateDelivered = DateDelivered;
         droit.Agent = Agent;
-        droit.RecoveredFrom = RecoveredFrom;
+        droit.RecoveredFromLegacy = RecoveredFromLegacy;
         droit.ImportedFromLegacy = ImportedFromLegacy;
 
         return droit;

@@ -106,7 +106,7 @@ public class DroitView : BaseEntityView
     public string? Reference { get; } // This is the current reference.
 
     public DroitStatus Status { get; } = DroitStatus.Received;
-
+    
     [DisplayName("Reported Date")]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime ReportedDate { get; }
@@ -159,6 +159,9 @@ public class DroitView : BaseEntityView
 
     [DisplayName("Depth (Metres)")]
     public int? Depth { get; }
+    
+    [DisplayName("Recovered From")]
+    public RecoveredFrom? RecoveredFrom { get; }
 
     [DisplayName("Location Description")]
     public string? LocationDescription { get; } = string.Empty;
@@ -203,7 +206,7 @@ public class DroitView : BaseEntityView
     public string? Agent { get; }
 
     [DisplayName("Recovered From")]
-    public string? RecoveredFrom { get; }
+    public string? RecoveredFromLegacy { get; }
 
     [DisplayName("Imported From Legacy")]
     public bool ImportedFromLegacy { get; }

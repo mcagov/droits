@@ -169,7 +169,9 @@ public static class DatabaseSeeder
             GoodsDischargedBy = Faker.Name.FullName(),
             DateDelivered = Faker.Date.Between(reportedDate, DateTime.UtcNow).ToShortDateString(),
             Agent = Faker.Name.FullName(),
-            RecoveredFrom = Faker.Random.ArrayElement(new[] { "Afloat", "Ashore", "Seabed" }),
+            RecoveredFrom = Enum.GetValues(typeof(RecoveredFrom))
+                .OfType<RecoveredFrom>()
+                .MinBy(x => Guid.NewGuid()),
             ImportedFromLegacy = Faker.Random.Bool()
         };
     }
