@@ -132,7 +132,7 @@ public static class DatabaseSeeder
         {
             Id = Guid.NewGuid(),
             AssignedToUserId = user.Id,
-            Reference = $"{Faker.Random.Int(0, 999):000}/" +
+            Reference = $"{Faker.Random.Int(0, 99999):000}/" +
                         $"{reportedDate:yy}",
             Status = Enum.GetValues(typeof(DroitStatus))
                 .OfType<DroitStatus>()

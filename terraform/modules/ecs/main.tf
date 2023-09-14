@@ -1,6 +1,7 @@
 resource "aws_ecs_task_definition" "task-definition" {
   family                   = var.service_name
-  execution_role_arn       = var.iam_role_arn
+  execution_role_arn       = var.execution_role_arn
+  task_role_arn            = var.task_role_arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = var.fargate_cpu

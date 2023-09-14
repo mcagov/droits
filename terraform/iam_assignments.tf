@@ -21,7 +21,7 @@ resource "aws_iam_policy" "ecs_s3_access" {
 
 
 resource "aws_iam_role_policy_attachment" "ecs_s3_access_attach" {
-  role       = module.iam.iam_role_name
+  role       = module.iam.iam_task_role_name
   policy_arn = aws_iam_policy.ecs_s3_access.arn
 }
 
