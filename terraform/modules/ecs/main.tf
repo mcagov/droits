@@ -10,7 +10,7 @@ resource "aws_ecs_task_definition" "task-definition" {
     image : var.image_url,
     cpu : var.fargate_cpu,
     memory : var.fargate_memory,
-    environment : [{ "name" : "ENV_FILE", "value" : "${var.environment_file}" }],
+    environment : [{ "name" : "ENV_FILE", "value" : "${var.environment_file}" }, { "name" : "ECS_ENABLE_CONTAINER_METADATA", "value" : "true" }],
     portMappings : [
       {
         containerPort : var.port
