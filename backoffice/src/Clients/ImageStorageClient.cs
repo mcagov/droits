@@ -67,14 +67,23 @@ public class ImageStorageClient : IImageStorageClient
 
     public async Task<Stream> GetImageAsync(string key)
     {
+        
         var getRequest = new GetObjectRequest
         {
             BucketName = _bucketName,
             Key = key
         };
 
-        var response = await _s3Client.GetObjectAsync(getRequest);
-        return response.ResponseStream;
+        try
+        {
+            var response = await _s3Client.GetObjectAsync(getRequest);
+            return response.ResponseStream;
+        }
+        catch ( Exception e )
+        {
+            _logger.LogError($"Exception getting image - {e.Message} , {e.StackTrace}");
+            throw;
+        }
     }
     
     public async Task DeleteImageAsync(string key)

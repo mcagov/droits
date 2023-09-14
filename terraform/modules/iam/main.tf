@@ -37,8 +37,7 @@ resource "aws_iam_policy" "ecs_task_execution_ec2_policy" {
       {
         Effect = "Allow",
         Action = [
-          "ec2:DescribeInstances",
-          "ec2:Metadata"
+          "ec2:DescribeInstances"
         ],
         Resource = "*"
       }

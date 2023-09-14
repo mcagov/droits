@@ -32,4 +32,21 @@ public class ImageController : BaseController
         }
         
     }
+    
+    
+    public async Task<IActionResult> DisplayTestImage()
+    {
+        const string key = "test-image";
+        var stream = await _service.GetImageStreamAsync(key);
+        try
+        {
+            return File(stream, "image/png");
+        }
+        catch ( ImageNotFoundException e )
+        {
+            _logger.LogError(e,"Could not retrieve Image");
+            return NotFound();
+        }
+        
+    }
 }
