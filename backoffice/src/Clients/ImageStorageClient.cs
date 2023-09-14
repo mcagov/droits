@@ -41,12 +41,7 @@ public class ImageStorageClient : IImageStorageClient
             ContentType = contentType,
             InputStream = imageStream
         };
-
-        
-        _logger.LogInformation($"key: {key}");
-        _logger.LogInformation($"bucket: {_bucketName}");
-        _logger.LogInformation($"Content type: {contentType}");
-        
+       
         try
         {
             await _s3Client.PutObjectAsync(putRequest);

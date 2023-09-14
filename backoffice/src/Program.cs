@@ -50,8 +50,6 @@ var awsOptions = builder.Configuration.GetAWSOptions();
 if ( !builder.Environment.IsDevelopment() )
 {
     awsOptions.Credentials = new ECSTaskCredentials();
-    Console.Write("Getting credentials from Env");
-    Console.Write(awsOptions);
 }
 
 builder.Services.AddDefaultAWSOptions(awsOptions);
@@ -106,8 +104,6 @@ builder.Services.AddScoped<ISalvorService, SalvorService>();
 
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
-
-builder.Services.AddHttpClient();
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();

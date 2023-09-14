@@ -31,7 +31,10 @@ module "security-groups" {
 
 
 module "iam" {
-  source = "./modules/iam"
+  source               = "./modules/iam"
+  s3_images_bucket_arn = module.s3-images.bucket_arn
+
+  depends_on = [module.s3-images]
 }
 
 module "rds" {

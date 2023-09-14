@@ -7,13 +7,11 @@ namespace Droits.Controllers;
 public class ImageController : BaseController
 {
     private readonly IImageService _service;
-    private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<ImageController> _logger;
 
-    public ImageController(IImageService service, IHttpClientFactory httpClientFactory, ILogger<ImageController> logger )
+    public ImageController(IImageService service, ILogger<ImageController> logger )
     {
         _service = service;
-        _httpClientFactory = httpClientFactory;
         _logger = logger;
     }
     
@@ -24,23 +22,6 @@ public class ImageController : BaseController
         try
         {
             return File(stream, image.FileContentType);
-        }
-        catch ( ImageNotFoundException e )
-        {
-            _logger.LogError(e,"Could not retrieve Image");
-            return NotFound();
-        }
-        
-    }
-    
-    
-    public async Task<IActionResult> DisplayTestImage()
-    {
-        const string key = "test-image";
-        var stream = await _service.GetImageStreamAsync(key);
-        try
-        {
-            return File(stream, "image/png");
         }
         catch ( ImageNotFoundException e )
         {
