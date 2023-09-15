@@ -1,5 +1,6 @@
 using Droits.Data;
 using Droits.Exceptions;
+using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Services;
@@ -19,6 +20,8 @@ public interface IDroitRepository
     Task<bool> IsReferenceUnique(Droit droit);
 
     Task<int> GetYearDroitCount();
+    
+    Task<List<DroitDto>> SearchDroitsAsync(string query);
 }
 
 public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
@@ -106,5 +109,32 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
         var foundDroit = foundDroits.FirstOrDefault();
         
         return foundDroit == null || foundDroit.Id == droit.Id;
+    }
+
+
+    public async Task<List<DroitDto>> SearchDroitsAsync(string query)
+    {
+        
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return new List<DroitDto>();
+        }
+
+        query = query.Trim().ToLower();
+
+        var droits = await Context.Droits
+            .Include(d => d.Wreck)
+            .Include(d => d.Salvor)
+            .Include(d => d.AssignedToUser)
+            .Where(d =>
+                d.Reference.ToLower().Contains(query) ||
+                (d.Wreck != null && d.Wreck.Name.ToLower().Contains(query)) ||
+                (d.Salvor != null && d.Salvor.Name.ToLower().Contains(query))
+            )
+            .ToListAsync();
+
+        var results = droits.Select(d => new DroitDto(d)).ToList();
+
+        return results;
     }
 }

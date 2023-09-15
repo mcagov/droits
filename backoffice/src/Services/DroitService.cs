@@ -1,5 +1,6 @@
 using Droits.Exceptions;
 using Droits.Helpers;
+using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Models.Enums;
@@ -21,6 +22,7 @@ public interface IDroitService
     Task SaveWreckMaterialsAsync(Guid id, List<WreckMaterialForm> wreckMaterialForms);
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
     Task<string> GetNextDroitReference();
+    Task<List<DroitDto>> SearchDroitsAsync(string query);
 }
 
 public class DroitService : IDroitService
@@ -170,4 +172,6 @@ public class DroitService : IDroitService
 
         await _repo.UpdateAsync(droit);
     }
+    
+    public async Task<List<DroitDto>> SearchDroitsAsync(string query) => await _repo.SearchDroitsAsync(query);
 }

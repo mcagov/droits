@@ -33,11 +33,16 @@
                         <a class="nav-link text-light" asp-area="" asp-controller="Salvor" asp-action="Index">Salvors</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        
-                    </li>
-                </ul>
+                
+                <div class="dropdown flex-grow-1">
+                    <form class="form-inline my-2 mx-4 my-lg-0">
+                        <input class="form-control w-100" type="text" id="searchInput" placeholder="Search">
+                    </form>
+                    <div class="dropdown-menu w-100" id="searchResults">
+                        <!-- Search results will appear here -->
+                    </div>
+                </div>
+                
                 <partial name="_userDropdown"/>
             </div>
         </div>
