@@ -1,13 +1,6 @@
-﻿using Droits.Exceptions;
-using Droits.Helpers.Extensions;
-using Droits.Models.DTOs;
-using Droits.Models.Entities;
-using Droits.Models.Enums;
-using Droits.Models.FormModels;
-using Droits.Models.ViewModels;
+﻿using Droits.Models.DTOs;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Droits.Controllers;
 
