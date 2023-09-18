@@ -42,7 +42,7 @@ function highlightMatch(text, query) {
     const parts = text.split(regex);
 
     const highlightedParts = parts.map(part =>
-        regex.test(part) ? `<span class="text-secondary">${part}</span>` : part
+        regex.test(part) ? `<span class="text-secondary font-weight-bold">${part}</span>` : part
     );
 
     return new Handlebars.SafeString(highlightedParts.join(''));
