@@ -129,7 +129,8 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
             .Where(d =>
                 d.Reference.ToLower().Contains(query) ||
                 (d.Wreck != null && d.Wreck.Name.ToLower().Contains(query)) ||
-                (d.Salvor != null && d.Salvor.Name.ToLower().Contains(query))
+                (d.Salvor != null && d.Salvor.Name.ToLower().Contains(query)) ||
+                (d.AssignedToUser != null && d.AssignedToUser.Name.ToLower().Contains(query))
             )
             .ToListAsync();
 

@@ -22,19 +22,19 @@ function createElement(tag, classes = [], textContent = '') {
 }
 
 function createSearchResultContainer(item, query) {
-    const { reference, wreckName, salvorName, assignedTo, id, lastModified, created } = item;
+    const { reference, wreckId, wreckName, salvorId, salvorName, assignedTo, id, lastModified, created } = item;
 
     const resultContainer = createElement('div', ['container', 'search-result', 'p-2', 'border-bottom']);
     resultContainer.setAttribute('data-href', `/Droit/View/${id}`);
 
     const row = createElement('div', ['row', 'd-flex', 'flex-column', 'flex-lg-row']);
 
-    const leftColumn = createElement('div', ['col-12', 'col-xl-6']);
-    const rightColumn = createElement('div', ['col-12', 'col-xl-6']);
+    const leftColumn = createElement('div', ['col-12', 'col-xl-5']);
+    const rightColumn = createElement('div', ['col-12', 'col-xl-7']);
 
     const referenceElement = createElement('strong', ['text-primary'], 'Reference: ');
     const createdElement = createElement('strong', ['text-primary'], 'Created: ');
-    const lastModifiedElement = createElement('strong', ['text-primary'], 'Last Modified: ');
+    const lastModifiedElement = createElement('strong', ['text-primary'], 'Modified: ');
 
     leftColumn.appendChild(referenceElement);
 
@@ -76,7 +76,13 @@ function createSearchResultContainer(item, query) {
     rightColumn.appendChild(document.createElement('br'));
 
     rightColumn.appendChild(assignedToElement);
-    rightColumn.appendChild(document.createTextNode(assignedTo));
+    
+    const highlightedAssignedTo = highlightMatch(assignedTo, query);
+    highlightedAssignedTo.forEach(element => {
+        rightColumn.appendChild(element);
+    });
+
+
 
     row.appendChild(leftColumn);
     row.appendChild(rightColumn);
@@ -122,9 +128,7 @@ function fetchSearchResults(query, searchResults) {
 
 function showSearchResults(data, query, searchResults) {
     const resultsContainer = document.createElement('div');
-    resultsContainer.style.maxHeight="75vh";
-    resultsContainer.style.overflowY="scroll";
-    resultsContainer.style.overflowX="hidden";
+    resultsContainer.classList.add("search-bar-results-container")
 
     data.forEach((item, index) => {
         const resultContainer = createSearchResultContainer(item, query);
