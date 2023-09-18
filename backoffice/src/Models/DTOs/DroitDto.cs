@@ -1,50 +1,37 @@
+using Droits.Helpers.Extensions;
 using Droits.Models.Entities;
 
-namespace Droits.Models.DTOs;
-
-public class DroitDto
+namespace Droits.Models.DTOs
 {
-   
-    public DroitDto(Droit droit)
+    public class DroitDto
     {
-
-        if ( droit == null )
+        public DroitDto(Droit droit)
         {
-            throw new ArgumentNullException();
-        }
-        
-        Id = droit.Id;
-        Reference = droit.Reference;
+            Id = droit.Id;
+            Reference = droit.Reference;
+            Created = droit.Created.ToString("dd/MM/yyyy");
+            LastModified = droit.LastModified.ToString("dd/MM/yyyy");
 
-        Created = droit.Created.ToString("dd/MM/yyyy");;
-        LastModified = droit.LastModified.ToString("dd/MM/yyyy");;
+            WreckId = droit.WreckId?.ToString() ?? string.Empty;
+            WreckName = droit.Wreck?.Name ?? "No Wreck";
 
-        if ( droit.WreckId.HasValue && droit.WreckId != default )
-        {
-            WreckId = droit.WreckId?.ToString() ?? string.Empty;    
-        }
-        
-        WreckName = droit?.Wreck?.Name ?? "No Wreck";
-        
-        if ( droit.SalvorId.HasValue && droit.SalvorId != default )
-        {
-            SalvorId = droit.SalvorId?.ToString() ?? string.Empty;    
+            SalvorId = droit.SalvorId?.ToString() ?? string.Empty;
+            SalvorName = droit.Salvor?.Name ?? "Unknown";
+
+            AssignedTo = droit.AssignedToUser?.Name ?? "Unassigned";
+
+            Status = droit.Status.GetDisplayName();
         }
 
-        
-        SalvorName = droit?.Salvor?.Name ?? "Unknown";
-        AssignedTo = droit?.AssignedToUser?.Name ?? "Unassigned";
-
+        public Guid Id { get; set; }
+        public string Reference { get; set; }
+        public string Created { get; set; }
+        public string LastModified { get; set; }
+        public string WreckName { get; set; }
+        public string WreckId { get; set; }
+        public string SalvorName { get; set; }
+        public string SalvorId { get; set; }
+        public string AssignedTo { get; set; }
+        public string Status { get; set; }
     }
-    public Guid Id { get; set; }
-    public string Reference { get; set; }
-    public string Created { get; set; }
-    public string LastModified { get; set; }
-    public string WreckName { get; set; }
-    public string WreckId { get; set; }
-    public string SalvorName { get; set; }
-    public string SalvorId { get; set; }
-    public string AssignedTo { get; set; }
-    
-    
 }
