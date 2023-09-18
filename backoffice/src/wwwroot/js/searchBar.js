@@ -24,17 +24,13 @@ function createElement(tag, classes = [], textContent = '') {
 function createSearchResultContainer(item, query) {
     const { reference, wreckName, salvorName, assignedTo, id, lastModified, created } = item;
 
-    const referenceMatch = reference.toLowerCase().includes(query);
-    const wreckNameMatch = wreckName.toLowerCase().includes(query);
-    const salvorNameMatch = salvorName.toLowerCase().includes(query);
-
     const resultContainer = createElement('div', ['container', 'search-result', 'p-2', 'border-bottom']);
     resultContainer.setAttribute('data-href', `/Droit/View/${id}`);
 
-    const row = createElement('div', ['row']);
+    const row = createElement('div', ['row', 'd-flex', 'flex-column', 'flex-lg-row']);
 
-    const leftColumn = createElement('div', ['col-md-6']);
-    const rightColumn = createElement('div', ['col-md-6']);
+    const leftColumn = createElement('div', ['col-12', 'col-xl-6']);
+    const rightColumn = createElement('div', ['col-12', 'col-xl-6']);
 
     const referenceElement = createElement('strong', ['text-primary'], 'Reference: ');
     const createdElement = createElement('strong', ['text-primary'], 'Created: ');
@@ -50,11 +46,11 @@ function createSearchResultContainer(item, query) {
     leftColumn.appendChild(document.createElement('br'));
 
     leftColumn.appendChild(createdElement);
-    leftColumn.appendChild(document.createTextNode(created)); 
+    leftColumn.appendChild(document.createTextNode(created));
     leftColumn.appendChild(document.createElement('br'));
 
     leftColumn.appendChild(lastModifiedElement);
-    leftColumn.appendChild(document.createTextNode(lastModified)); 
+    leftColumn.appendChild(document.createTextNode(lastModified));
 
     // Right Column Content
     const wreckNameElement = createElement('strong', ['text-primary'], 'Wreck Name: ');
@@ -119,7 +115,6 @@ function fetchSearchResults(query, searchResults) {
     fetch(`/Search/SearchDroits?query=${query}`)
         .then((response) => response.json())
         .then((data) => {
-            // Pass both data and query to showSearchResults
             showSearchResults(data, query, searchResults);
         })
         .catch((error) => console.error('Error fetching search results:', error));
@@ -127,6 +122,9 @@ function fetchSearchResults(query, searchResults) {
 
 function showSearchResults(data, query, searchResults) {
     const resultsContainer = document.createElement('div');
+    resultsContainer.style.maxHeight="75vh";
+    resultsContainer.style.overflowY="scroll";
+    resultsContainer.style.overflowX="hidden";
 
     data.forEach((item, index) => {
         const resultContainer = createSearchResultContainer(item, query);
