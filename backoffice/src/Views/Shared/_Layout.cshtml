@@ -37,7 +37,10 @@
                 </ul>
 
 
-                <partial name="_searchBar"/>
+                @if (@User.Identity?.IsAuthenticated??false)
+                {
+                    <partial name="_searchBar"/>
+                }
                 <partial name="_userDropdown"/>
             </div>
         </div>
@@ -48,6 +51,7 @@
         @RenderBody()
     </main>
 </div>
+
 
 <script src="~/dist/bundle.js" asp-append-version="true"></script>
 @await Html.PartialAsync("_ConfirmDialog")

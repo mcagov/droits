@@ -86,4 +86,13 @@ div.form-sections {
   max-height: 75vh;
   overflow-y: auto;
   overflow-x: hidden;
+ 
+}
+
+.search-bar-result {
+  text-decoration: none;
+  color: inherit;
+  &:hover {
+    @extend .bg-light;
+  }
 }
