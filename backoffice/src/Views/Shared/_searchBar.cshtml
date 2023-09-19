@@ -1,0 +1,35 @@
+<div class="dropdown flex-grow-1">
+    <form class="form-inline mx-4">
+        <input class="form-control w-100" type="text" id="searchInput" placeholder="Search" aria-controls="searchResults">
+    </form>
+    <div class="dropdown-menu w-100 search-bar-results-container" id="searchResults" role="listbox" aria-labelledby="searchInput">
+        <!-- Search results will appear here -->
+    </div>
+</div>
+
+<script id="search-result-template" type="text/x-handlebars-template">
+    <a class="container row search-bar-result p-2 border-bottom" href="/Droit/View/{{id}}">
+        <div class="col-12 col-xl-5">
+            <div class="clearfix">
+                <span class="text-primary font-weight-bold">Reference:</span> {{#highlightMatch reference query}}{{/highlightMatch}}
+            </div>
+            <div class="clearfix">
+                <span class="text-primary font-weight-bold">Status:</span> <span class="badge bg-primary">{{status}}</span>
+            </div>
+            <div class="clearfix">
+                <span class="text-primary font-weight-bold">Modified:</span> {{lastModified}}
+            </div>
+        </div>
+        <div class="col-12 col-xl-7">
+            <div class="clearfix">
+                <span class="text-primary font-weight-bold">Wreck:</span> {{#highlightMatch wreckName query}}{{/highlightMatch}}
+            </div>
+            <div class="clearfix">
+                <span class="text-primary font-weight-bold">Salvor:</span> {{#highlightMatch salvorName query}}{{/highlightMatch}}
+            </div>
+            <div class="clearfix">
+                <span class="text-primary font-weight-bold">RoW:</span> {{#highlightMatch assignedTo query}}{{/highlightMatch}}
+            </div>
+        </div>
+    </a>
+</script>

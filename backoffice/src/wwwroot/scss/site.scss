@@ -81,3 +81,18 @@ div.form-sections {
 .multi-line-text {
   white-space: pre-wrap;
 }
+
+.search-bar-results-container{
+  max-height: 75vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+ 
+}
+
+.search-bar-result {
+  text-decoration: none;
+  color: inherit;
+  &:hover {
+    @extend .bg-light;
+  }
+}
