@@ -31,7 +31,10 @@ module "security-groups" {
 
 
 module "iam" {
-  source = "./modules/iam"
+  source               = "./modules/iam"
+  s3_images_bucket_arn = module.s3-images.bucket_arn
+
+  depends_on = [module.s3-images]
 }
 
 module "rds" {
@@ -99,7 +102,8 @@ module "backoffice-ecs" {
   vpc_id             = module.vpc.vpc_id
   public_subnets     = module.vpc.public_subnets
   private_subnets    = module.vpc.private_subnets
-  iam_role_arn       = module.iam.iam_role_arn
+  execution_role_arn = module.iam.iam_execution_role_arn
+  task_role_arn      = module.iam.iam_task_role_arn
   security_groups    = [module.security-groups.backoffice-id]
   tg_arn             = module.backoffice-alb.target-group-arn
   droits_ecs_cluster = module.droits-ecs-cluster.ecs_cluster_id
@@ -120,7 +124,8 @@ module "webapp-ecs" {
   vpc_id             = module.vpc.vpc_id
   public_subnets     = module.vpc.public_subnets
   private_subnets    = module.vpc.private_subnets
-  iam_role_arn       = module.iam.iam_role_arn
+  execution_role_arn = module.iam.iam_execution_role_arn
+  task_role_arn      = module.iam.iam_task_role_arn
   security_groups    = [module.security-groups.webapp-security-group-id]
   tg_arn             = module.webapp-alb.target-group-arn
   droits_ecs_cluster = module.droits-ecs-cluster.ecs_cluster_id

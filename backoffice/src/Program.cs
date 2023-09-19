@@ -47,13 +47,10 @@ builder.Services.AddControllersWithViews(options =>
 
 var awsOptions = builder.Configuration.GetAWSOptions();
 
-// if ( !builder.Environment.IsDevelopment() )
-// {
-//     // Unhandled exception. System.InvalidOperationException: The environment variables AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY/AWS_SESSION_TOKEN were not set with AWS credentials.
-//     awsOptions.Credentials = new EnvironmentVariablesAWSCredentials();
-//     Console.Write("Getting credentials from Env");
-//     Console.Write(awsOptions);
-// }
+if ( !builder.Environment.IsDevelopment() )
+{
+    awsOptions.Credentials = new ECSTaskCredentials();
+}
 
 builder.Services.AddDefaultAWSOptions(awsOptions);
 builder.Services.AddAWSService<IAmazonS3>();
@@ -107,8 +104,6 @@ builder.Services.AddScoped<ISalvorService, SalvorService>();
 
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
-
-builder.Services.AddHttpClient();
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();
