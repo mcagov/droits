@@ -1,4 +1,5 @@
 using Droits.Models.ViewModels;
+using Droits.Models.ViewModels.ListViews;
 using Microsoft.AspNetCore.Mvc;
 using Droits.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -12,12 +13,14 @@ public class AccountController : BaseController
     private readonly ILogger<AccountController> _logger;
     private readonly IDroitService _droitService;
     private readonly IAccountService _accountService;
+    private readonly ILetterService _letterService;
 
-    public AccountController(ILogger<AccountController> logger, IDroitService droitService, IAccountService accountService)
+    public AccountController(ILogger<AccountController> logger, IDroitService droitService, IAccountService accountService, ILetterService letterService)
     {
         _logger = logger;
         _droitService = droitService;
         _accountService = accountService;
+        _letterService = letterService;
     }
 
     
@@ -26,8 +29,9 @@ public class AccountController : BaseController
         searchOptions.IncludeAssociations = true;
         searchOptions.FilterByAssignedUser = true;
         
-        var model = await _droitService.GetDroitsListViewAsync(searchOptions);
-        return View(model);
+        // var droits = await _droitService.GetDroitsListViewAsync(searchOptions);
+        // var letters = await _letterService
+        return View(new DroitListView());
     }
 
     public IActionResult Info()

@@ -10,6 +10,7 @@ public interface ILetterRepository
 {
     IQueryable<Letter> GetLetters();
     IQueryable<Letter> GetLettersWithAssociations();
+    IQueryable<Letter> GetLettersForCurrentUser(Guid currentUserId);
     Task<Letter> GetLetterAsync(Guid id);
     Task<Letter> AddAsync(Letter letter);
     Task<Letter> UpdateAsync(Letter letter);
@@ -32,7 +33,17 @@ public class LetterRepository : BaseEntityRepository<Letter>, ILetterRepository
     {
         return GetLetters()
             .Include(l => l.Droit);
-        
+    }
+
+
+    public IQueryable<Letter> GetLettersForCurrentUser(Guid currentUserId)
+    {
+        return GetLetters()
+            .Where(l =>
+                l.DateSent == null &&
+                l.IsQualityAssured &&
+                l.Droit.AssignedToUserId == currentUserId
+            );
     }
 
 

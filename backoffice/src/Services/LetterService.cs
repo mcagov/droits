@@ -27,18 +27,21 @@ public class LetterService : ILetterService
     private readonly ILogger<LetterService> _logger;
     private readonly ILetterRepository _repo;
     private readonly IDroitService _droitService;
+    private readonly IAccountService _accountService;
     private const string TemplateDirectory = "Views/LetterTemplates";
 
 
     public LetterService(ILogger<LetterService> logger,
         IGovNotifyClient client,
         ILetterRepository repo,
-        IDroitService droitService)
+        IDroitService droitService,
+        IAccountService accountService)
     {
         _logger = logger;
         _client = client;
         _repo = repo;
         _droitService = droitService;
+        _accountService = accountService;
     }
 
 
@@ -59,6 +62,13 @@ public class LetterService : ILetterService
             TotalCount = pagedItems.TotalCount
         };
     }
+
+
+    // public Task<LetterListView> GetLettersListViewForCurrentUserAsync(Guid currentUserId)
+    // {
+    //     var pagedItems =
+    //         await ServiceHelper.GetPagedResult(_repo.GetLettersForCurrentUser(currentUserId));
+    // }
 
 
     public async Task<string> GetTemplateBodyAsync(LetterType letterType, Droit? droit)
@@ -134,6 +144,8 @@ public class LetterService : ILetterService
     public async Task<Letter> SaveLetterAsync(LetterForm form)
     {
         Letter letter;
+        var isQualityAssured = false;
+        
         if ( form.Id == default )
         {
             letter = new Letter
@@ -142,13 +154,23 @@ public class LetterService : ILetterService
                 Subject = form.Subject,
                 Body = form.Body,
                 Recipient = form.Recipient,
-                Type = form.Type
+                Type = form.Type,
+                IsQualityAssured = form.IsQualityAssured
             };
         }
         else
         {
             letter = await GetLetterAsync(form.Id);
+            isQualityAssured = letter.IsQualityAssured;
+                
             letter = form.ApplyChanges(letter);
+        }
+        
+        
+        if ( !isQualityAssured && form.IsQualityAssured )
+        {
+            var currentUserId = _accountService.GetCurrentUserId();
+            letter.QualityAssuredUserId = currentUserId;
         }
 
         if ( letter.DroitId != default )

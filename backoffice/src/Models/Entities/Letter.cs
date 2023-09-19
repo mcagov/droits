@@ -9,9 +9,13 @@ public class Letter : BaseEntity
     
     [ForeignKey("DroitId")]
     public virtual Droit? Droit { get; set; }
+    public Guid QualityAssuredUserId { get; set; }
+    [ForeignKey("QualityAssuredUserId")]
+    public virtual ApplicationUser? QualityAssuredUser { get; set; }
     public string Subject { get; set; } = string.Empty;
     public string Body { get; set; } = string.Empty;
     public string Recipient { get; set; } = string.Empty;
+    public bool IsQualityAssured { get; set; } = false;
     public LetterType Type { get; set; } = LetterType.CustomLetter;
     public Guid SenderUserId { get; set; }
     public DateTime? DateSent { get; set; }

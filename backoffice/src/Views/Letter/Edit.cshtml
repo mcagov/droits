@@ -35,6 +35,13 @@
                 @Html.LabelFor(m => m.Body, new { @class = "form-label" })
                 @Html.EditorFor(m => m.Body, new { htmlAttributes = new { rows = 10, @class = "form-control email-body" } })
             </div>
+            
+            <div class="row form-group">
+                    @Html.LabelFor(m => m.IsQualityAssured, new { @class = "col-form-label font-weight-bold d-inline" })
+                    <div class="form-switch d-inline">
+                        @Html.CheckBoxFor(m => m.IsQualityAssured, new { @class = "form-check-input font-weight-bold" })
+                    </div>
+            </div>
 
             <div class="row">
                 <div class="col">
