@@ -2,7 +2,16 @@
 
 <div class="mb-2">
     <div class="card">
-        <h5 class="card-header">@Html.DisplayFor(m => m.Title)</h5>
+        <div class="card-header">
+            <div class="row">
+                <div class="col">
+                    <h5>@Html.DisplayFor(m => m.Title)</h5>
+                </div>
+                <div class="col">
+                    <a type="button" asp-controller="Image" asp-action="DisplayImage" asp-route-id="@Model.Id" target="_blank" class="btn btn-primary float-end">View</a>
+                </div>
+            </div>
+        </div>
         <div class="card-body">
             <div class="form-group row mt-2">
                 <img src="@Url.Action("DisplayImage","Image", new {id = Model.Id})" alt="Droit image"/>
