@@ -1,4 +1,4 @@
-﻿@model DroitListView
+﻿@model DashboardView
 
 @{
     ViewData["Title"] = "My Dashboard";
@@ -38,9 +38,9 @@
                             <h4 class="mb-0">My Assigned Droits</h4>
                         </div>
                         <div class="card-body">
-                            <partial name="Droit/_DroitListTable" model="@Model"/>
+                            <partial name="Droit/_DroitListTable" model="@Model.Droits"/>
                             <div class="mt-4">
-                                @await Html.PartialAsync("_PaginationPartial", Model)
+                                @await Html.PartialAsync("_PaginationPartial", Model.Droits)
                             </div>
                         </div>
                     </div>
@@ -49,7 +49,21 @@
         </div>
         
         <div class="tab-pane fade" id="letters-content" role="tabpanel" aria-labelledby="letters-tab">
-            <h1>Letters go here</h1>
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="mb-0">My Letters</h4>
+                        </div>
+                        <div class="card-body">
+                            <partial name="_LetterListTable" model="@Model.Letters"/>
+                            <div class="mt-4">
+                                @await Html.PartialAsync("_PaginationPartial", Model.Letters)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     

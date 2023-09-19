@@ -43,7 +43,8 @@ public class LetterRepository : BaseEntityRepository<Letter>, ILetterRepository
                 l.DateSent == null &&
                 l.IsQualityAssured &&
                 l.Droit.AssignedToUserId == currentUserId
-            );
+            )
+            .Include(l => l.Droit);
     }
 
 

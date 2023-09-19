@@ -19,6 +19,8 @@ public interface ILetterService
     Task<EmailNotificationResponse> SendLetterAsync(Guid id);
     Task<Letter> GetLetterAsync(Guid id);
     Task<Letter> SaveLetterAsync(LetterForm form);
+    Task<LetterListView> GetLettersListViewForCurrentUserAsync(Guid currentUserId,
+        SearchOptions searchOptions);
 }
 
 public class LetterService : ILetterService
@@ -64,11 +66,23 @@ public class LetterService : ILetterService
     }
 
 
-    // public Task<LetterListView> GetLettersListViewForCurrentUserAsync(Guid currentUserId)
-    // {
-    //     var pagedItems =
-    //         await ServiceHelper.GetPagedResult(_repo.GetLettersForCurrentUser(currentUserId));
-    // }
+    public async Task<LetterListView> GetLettersListViewForCurrentUserAsync(Guid currentUserId, SearchOptions searchOptions)
+    {
+        var query = searchOptions.FilterByAssignedUser
+            ? _repo.GetLettersForCurrentUser(currentUserId)
+            : _repo.GetLetters();
+        var pagedItems =
+            await ServiceHelper.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.FilterByAssignedUser)),
+                searchOptions);
+        
+        return new LetterListView(pagedItems.Items)
+        {
+            PageNumber = pagedItems.PageNumber,
+            PageSize = pagedItems.PageSize,
+            IncludeAssociations = pagedItems.IncludeAssociations,
+            TotalCount = pagedItems.TotalCount
+        };
+    }
 
 
     public async Task<string> GetTemplateBodyAsync(LetterType letterType, Droit? droit)
