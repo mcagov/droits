@@ -69,7 +69,7 @@ public class LetterService : ILetterService
     {
         var currentUserId = _accountService.GetCurrentUserId();
         var query = searchOptions.FilterByAssignedUser
-            ? _repo.GetLettersForCurrentUser(currentUserId)
+            ? _repo.GetApprovedUnsentLettersForCurrentUser(currentUserId)
             : _repo.GetLetters();
         var pagedItems =
             await ServiceHelper.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.FilterByAssignedUser)),

@@ -11,7 +11,7 @@ public interface ILetterRepository
 {
     IQueryable<Letter> GetLetters();
     IQueryable<Letter> GetLettersWithAssociations();
-    IQueryable<Letter> GetLettersForCurrentUser(Guid currentUserId);
+    IQueryable<Letter> GetApprovedUnsentLettersForCurrentUser(Guid currentUserId);
     Task<Letter> GetLetterAsync(Guid id);
     Task<Letter> AddAsync(Letter letter);
     Task<Letter> UpdateAsync(Letter letter);
@@ -37,7 +37,7 @@ public class LetterRepository : BaseEntityRepository<Letter>, ILetterRepository
     }
 
 
-    public IQueryable<Letter> GetLettersForCurrentUser(Guid currentUserId)
+    public IQueryable<Letter> GetApprovedUnsentLettersForCurrentUser(Guid currentUserId)
     {
         return GetLetters()
             .Where(l =>
