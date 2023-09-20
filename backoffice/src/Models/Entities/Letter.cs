@@ -15,7 +15,7 @@ public class Letter : BaseEntity
     public string Subject { get; set; } = string.Empty;
     public string Body { get; set; } = string.Empty;
     public string Recipient { get; set; } = string.Empty;
-    public LetterStatus QCStatus { get; set; } = LetterStatus.Draft;
+    public LetterStatus Status { get; set; } = LetterStatus.Draft;
     public LetterType Type { get; set; } = LetterType.CustomLetter;
     public Guid SenderUserId { get; set; }
     public DateTime? DateSent { get; set; }

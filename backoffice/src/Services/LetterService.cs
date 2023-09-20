@@ -16,7 +16,7 @@ public interface ILetterService
     Task<LetterListView> GetLettersListViewAsync(SearchOptions searchOptions);
     Task<string> GetTemplateBodyAsync(LetterType letterType, Droit? droit);
     Task<string> GetTemplateSubjectAsync(LetterType letterType, Droit? droit);
-    Task<EmailNotificationResponse> SendLetterAsync(Guid id);
+    Task<Letter> SendLetterAsync(Guid id);
     Task<Letter> GetLetterAsync(Guid id);
     Task<Letter> SaveLetterAsync(LetterForm form);
     Task<LetterListView> GetApprovedUnsentLettersListViewForCurrentUserAsync(SearchOptions searchOptions);
@@ -48,9 +48,9 @@ public class LetterService : ILetterService
 
     public async Task<LetterListView> GetLettersListViewAsync(SearchOptions searchOptions)
     {
-        var query = searchOptions.IncludeAssociations
-            ? _repo.GetLettersWithAssociations()
-            : _repo.GetLetters();
+        var query = GetLetterQuery(searchOptions);
+
+        query = query.Where(l => l.DateSent == null);
         var pagedItems =
             await ServiceHelper.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.IncludeAssociations)),
                 searchOptions);
@@ -65,12 +65,23 @@ public class LetterService : ILetterService
     }
 
 
+    private IQueryable<Letter> GetLetterQuery(SearchOptions searchOptions)
+    {
+        return searchOptions.IncludeAssociations
+            ? _repo.GetLettersWithAssociations()
+            : _repo.GetLetters();
+    }
     public async Task<LetterListView> GetApprovedUnsentLettersListViewForCurrentUserAsync(SearchOptions searchOptions)
     {
         var currentUserId = _accountService.GetCurrentUserId();
-        var query = searchOptions.FilterByAssignedUser
-            ? _repo.GetApprovedUnsentLettersForCurrentUser(currentUserId)
-            : _repo.GetLetters();
+        var query = GetLetterQuery(searchOptions);
+
+        query = query.Where(l =>
+            l.DateSent == null &&
+            l.Status == LetterStatus.QCApproved &&
+            (l.Droit != null && l.Droit.AssignedToUserId == currentUserId )
+        );
+        
         var pagedItems =
             await ServiceHelper.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.FilterByAssignedUser)),
                 searchOptions);
@@ -128,16 +139,16 @@ public class LetterService : ILetterService
     }
 
 
-    public async Task<EmailNotificationResponse> SendLetterAsync(Guid id)
+    public async Task<Letter> SendLetterAsync(Guid id)
     {
         try
         {
             var letter = await GetLetterAsync(id);
-            var govNotifyResponse = await _client.SendLetterAsync(letter);
+            await _client.SendLetterAsync(letter);
 
             await MarkAsSentAsync(id);
 
-            return govNotifyResponse;
+            return letter;
         }
         catch ( Exception e )
         {
@@ -152,13 +163,14 @@ public class LetterService : ILetterService
         var sentLetter = await GetLetterAsync(id);
 
         sentLetter.DateSent = DateTime.UtcNow;
+        sentLetter.Status = LetterStatus.Sent;
         await _repo.UpdateAsync(sentLetter);
     }
 
     public async Task<Letter> SaveLetterAsync(LetterForm form)
     {
         Letter letter;
-        var QCStatus = LetterStatus.Draft;
+        var status = LetterStatus.Draft;
         
         if ( form.Id == default )
         {
@@ -169,19 +181,19 @@ public class LetterService : ILetterService
                 Body = form.Body,
                 Recipient = form.Recipient,
                 Type = form.Type,
-                QCStatus = form.QCStatus
+                Status = form.Status
             };
         }
         else
         {
             letter = await GetLetterAsync(form.Id);
-            QCStatus = letter.QCStatus;
+            status = letter.Status;
                 
             letter = form.ApplyChanges(letter);
         }
         
         
-        if ( QCStatus == LetterStatus.QCApproved && form.QCStatus == LetterStatus.QCApproved )
+        if ( status != LetterStatus.QCApproved && form.Status == LetterStatus.QCApproved )
         {
             var currentUserId = _accountService.GetCurrentUserId();
             letter.QualityAssuredUserId = currentUserId;

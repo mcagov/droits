@@ -37,9 +37,9 @@
             </div>
             
             <div class="row form-group">
-                @Html.LabelFor(m => m.QCStatus, new { @class = "col-form-label" })
-                @Html.DropDownListFor(m => m.QCStatus, Html.GetEnumSelectList(typeof(LetterStatus)), "Select.....", new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.QCStatus, "", new { @class = "text-danger" })
+                @Html.LabelFor(m => m.Status, new { @class = "col-form-label" })
+                @Html.DropDownListFor(m => m.Status, Html.GetEnumSelectList(typeof(LetterStatus)), "Select.....", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
             </div>
 
             <div class="row">

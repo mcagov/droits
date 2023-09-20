@@ -11,7 +11,6 @@ public interface ILetterRepository
 {
     IQueryable<Letter> GetLetters();
     IQueryable<Letter> GetLettersWithAssociations();
-    IQueryable<Letter> GetApprovedUnsentLettersForCurrentUser(Guid currentUserId);
     Task<Letter> GetLetterAsync(Guid id);
     Task<Letter> AddAsync(Letter letter);
     Task<Letter> UpdateAsync(Letter letter);
@@ -35,19 +34,6 @@ public class LetterRepository : BaseEntityRepository<Letter>, ILetterRepository
         return GetLetters()
             .Include(l => l.Droit);
     }
-
-
-    public IQueryable<Letter> GetApprovedUnsentLettersForCurrentUser(Guid currentUserId)
-    {
-        return GetLetters()
-            .Where(l =>
-                l.DateSent == null &&
-                l.QCStatus == LetterStatus.QCApproved &&
-                l.Droit.AssignedToUserId == currentUserId
-            )
-            .Include(l => l.Droit);
-    }
-
 
     public async Task<Letter> GetLetterAsync(Guid id)
     {

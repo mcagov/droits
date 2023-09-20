@@ -8,8 +8,11 @@ public enum LetterStatus
     Draft,
     [Display(Name = "Ready for QC")]
     ReadyForQC,
-    [Display(Name = "Further Action Required")]
-    FurtherActionRequired,
+    [Display(Name = "Action Required")]
+    ActionRequired,
     [Display(Name = "QC Approved")]
-    QCApproved
+    QCApproved,
+    [Display(Name = "Sent")]
+    Sent
+    
 }

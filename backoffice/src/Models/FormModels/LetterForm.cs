@@ -19,7 +19,7 @@ public class LetterForm : BaseEntityForm
         Recipient = letter.Recipient;
         Subject = letter.Subject;
         Body = letter.Body;
-        QCStatus = letter.QCStatus;
+        Status = letter.Status;
     }
 
     public Guid DroitId { get; set; }
@@ -38,7 +38,7 @@ public class LetterForm : BaseEntityForm
     public string Body { get; set; } = string.Empty;
 
     [DisplayName("Is Quality Assured")]
-    public LetterStatus QCStatus { get; set; }
+    public LetterStatus Status { get; set; }
     public Letter ApplyChanges(Letter letter)
     {
         
@@ -49,7 +49,7 @@ public class LetterForm : BaseEntityForm
         letter.Subject = Subject;
         letter.Body = Body;
         letter.Type = Type;
-        letter.QCStatus = QCStatus;
+        letter.Status = Status;
 
         return letter;
     }
