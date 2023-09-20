@@ -20,52 +20,28 @@
         </div>
     </div>
     
-    <ul class="nav nav-tabs" id="droitTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="droits-tab" data-bs-toggle="tab" data-bs-target="#droits-content" type="button" role="tab" aria-controls="droits-content" aria-selected="true">My Assigned Droits</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="letters-tab" data-bs-toggle="tab" data-bs-target="#letters-content" type="button" role="tab" aria-controls="letters-content" aria-selected="false">My Letters</button>
-        </li>
-    </ul>
-    
-    <div class="tab-content mt-3" id="droitListView">
-        <div class="tab-pane fade show active" id="droits-content" role="tabpanel" aria-labelledby="droits-tab">
-            <div class="row mt-4">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="mb-0">My Assigned Droits</h4>
-                        </div>
-                        <div class="card-body">
-                            <partial name="Droit/_DroitListTable" model="@Model.Droits"/>
-                            <div class="mt-4">
-                                @await Html.PartialAsync("_PaginationPartial", Model.Droits)
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">My Assigned Droits</h4>
         </div>
-        
-        <div class="tab-pane fade" id="letters-content" role="tabpanel" aria-labelledby="letters-tab">
-            <div class="row mt-4">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="mb-0">My Letters</h4>
-                        </div>
-                        <div class="card-body">
-                            <partial name="_LetterListTable" model="@Model.Letters"/>
-                            <div class="mt-4">
-                                @await Html.PartialAsync("_PaginationPartial", Model.Letters)
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="card-body">
+            <partial name="Droit/_DroitListTable" model="@Model.Droits"/>
+            <div class="mt-4">
+                @await Html.PartialAsync("_PaginationPartial", Model.Droits)
             </div>
         </div>
     </div>
     
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">My Letters</h4>
+        </div>
+        <div class="card-body">
+            <partial name="_LetterListTable" model="@Model.Letters"/>
+            <div class="mt-4">
+                @await Html.PartialAsync("_PaginationPartial", Model.Letters)
+            </div>
+        </div>
+    </div>
 
 </div>
