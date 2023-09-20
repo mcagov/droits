@@ -37,10 +37,9 @@
             </div>
             
             <div class="row form-group">
-                    @Html.LabelFor(m => m.IsQualityAssured, new { @class = "col-form-label font-weight-bold d-inline" })
-                    <div class="form-switch d-inline">
-                        @Html.CheckBoxFor(m => m.IsQualityAssured, new { @class = "form-check-input font-weight-bold" })
-                    </div>
+                @Html.LabelFor(m => m.QCStatus, new { @class = "col-form-label" })
+                @Html.DropDownListFor(m => m.QCStatus, Html.GetEnumSelectList(typeof(LetterStatus)), "Select.....", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.QCStatus, "", new { @class = "text-danger" })
             </div>
 
             <div class="row">

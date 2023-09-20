@@ -158,7 +158,7 @@ public class LetterService : ILetterService
     public async Task<Letter> SaveLetterAsync(LetterForm form)
     {
         Letter letter;
-        var isQualityAssured = false;
+        var QCStatus = LetterStatus.Draft;
         
         if ( form.Id == default )
         {
@@ -169,19 +169,19 @@ public class LetterService : ILetterService
                 Body = form.Body,
                 Recipient = form.Recipient,
                 Type = form.Type,
-                IsQualityAssured = form.IsQualityAssured
+                QCStatus = form.QCStatus
             };
         }
         else
         {
             letter = await GetLetterAsync(form.Id);
-            isQualityAssured = letter.IsQualityAssured;
+            QCStatus = letter.QCStatus;
                 
             letter = form.ApplyChanges(letter);
         }
         
         
-        if ( !isQualityAssured && form.IsQualityAssured )
+        if ( QCStatus == LetterStatus.QCApproved && form.QCStatus == LetterStatus.QCApproved )
         {
             var currentUserId = _accountService.GetCurrentUserId();
             letter.QualityAssuredUserId = currentUserId;

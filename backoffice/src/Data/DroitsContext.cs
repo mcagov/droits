@@ -276,7 +276,7 @@ public partial class DroitsContext : DbContext
             entity.Property(l => l.DateSent);
             entity.Property(l => l.Recipient);
             entity.Property(l => l.Type);
-            entity.Property(l => l.IsQualityAssured);
+            entity.Property(l => l.QCStatus);
             
             entity.Property(l => l.Created);
             entity.Property(l => l.LastModified);

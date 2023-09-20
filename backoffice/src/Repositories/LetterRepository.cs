@@ -1,6 +1,7 @@
 using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 using Droits.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,7 +42,7 @@ public class LetterRepository : BaseEntityRepository<Letter>, ILetterRepository
         return GetLetters()
             .Where(l =>
                 l.DateSent == null &&
-                l.IsQualityAssured &&
+                l.QCStatus == LetterStatus.QCApproved &&
                 l.Droit.AssignedToUserId == currentUserId
             )
             .Include(l => l.Droit);
