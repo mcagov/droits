@@ -19,8 +19,7 @@ public interface ILetterService
     Task<EmailNotificationResponse> SendLetterAsync(Guid id);
     Task<Letter> GetLetterAsync(Guid id);
     Task<Letter> SaveLetterAsync(LetterForm form);
-    Task<LetterListView> GetLettersListViewForCurrentUserAsync(Guid currentUserId,
-        SearchOptions searchOptions);
+    Task<LetterListView> GetLettersListViewForCurrentUserAsync(SearchOptions searchOptions);
 }
 
 public class LetterService : ILetterService
@@ -66,8 +65,9 @@ public class LetterService : ILetterService
     }
 
 
-    public async Task<LetterListView> GetLettersListViewForCurrentUserAsync(Guid currentUserId, SearchOptions searchOptions)
+    public async Task<LetterListView> GetLettersListViewForCurrentUserAsync(SearchOptions searchOptions)
     {
+        var currentUserId = _accountService.GetCurrentUserId();
         var query = searchOptions.FilterByAssignedUser
             ? _repo.GetLettersForCurrentUser(currentUserId)
             : _repo.GetLetters();

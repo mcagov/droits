@@ -28,10 +28,9 @@ public class AccountController : BaseController
     {
         searchOptions.IncludeAssociations = true;
         searchOptions.FilterByAssignedUser = true;
-        var currentUserId = _accountService.GetCurrentUserId();
         
         var droits = await _droitService.GetDroitsListViewAsync(searchOptions);
-        var letters = await _letterService.GetLettersListViewForCurrentUserAsync(currentUserId,searchOptions);
+        var letters = await _letterService.GetLettersListViewForCurrentUserAsync(searchOptions);
         return View(new DashboardView(droits,letters));
     }
 
