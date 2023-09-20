@@ -19,7 +19,7 @@ public interface ILetterService
     Task<EmailNotificationResponse> SendLetterAsync(Guid id);
     Task<Letter> GetLetterAsync(Guid id);
     Task<Letter> SaveLetterAsync(LetterForm form);
-    Task<LetterListView> GetLettersListViewForCurrentUserAsync(SearchOptions searchOptions);
+    Task<LetterListView> GetApprovedUnsentLettersListViewForCurrentUserAsync(SearchOptions searchOptions);
 }
 
 public class LetterService : ILetterService
@@ -65,7 +65,7 @@ public class LetterService : ILetterService
     }
 
 
-    public async Task<LetterListView> GetLettersListViewForCurrentUserAsync(SearchOptions searchOptions)
+    public async Task<LetterListView> GetApprovedUnsentLettersListViewForCurrentUserAsync(SearchOptions searchOptions)
     {
         var currentUserId = _accountService.GetCurrentUserId();
         var query = searchOptions.FilterByAssignedUser

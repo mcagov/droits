@@ -30,7 +30,7 @@ public class AccountController : BaseController
         searchOptions.FilterByAssignedUser = true;
         
         var droits = await _droitService.GetDroitsListViewAsync(searchOptions);
-        var letters = await _letterService.GetLettersListViewForCurrentUserAsync(searchOptions);
+        var letters = await _letterService.GetApprovedUnsentLettersListViewForCurrentUserAsync(searchOptions);
         return View(new DashboardView(droits,letters));
     }
 
