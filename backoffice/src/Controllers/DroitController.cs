@@ -1,5 +1,7 @@
-﻿using Droits.Exceptions;
+﻿using System.Text;
+using Droits.Exceptions;
 using Droits.Helpers.Extensions;
+using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
@@ -234,5 +236,35 @@ public class DroitController : BaseController
             .Select(s => new SelectListItem($"{s.Name} ({s.Email})", s.Id.ToString())).ToList();
 
         return form;
+    }
+
+
+
+
+    public async Task<IActionResult> Search()
+    {
+        var droits = await _service.GetDroitsWithAssociationsAsync();
+
+        var model = droits.Select(d => new DroitDto(d)).ToList();
+
+        return View(model);
+    }
+    
+    public async Task<IActionResult> FormSearch(SearchOptions searchOptions)
+    {
+        searchOptions.IncludeAssociations = true;
+        var model = await _service.GetDroitsListViewAsync(searchOptions);
+        return View(model);
+    }
+
+    public async Task<IActionResult> SearchDroits(DroitSearchForm form)
+    {
+       
+        var searchOptions = new SearchOptions();
+        searchOptions.IncludeAssociations = true;
+
+        var model = await _service.AdvancedSearchDroitsAsync(form, searchOptions);
+        
+        return View(nameof(FormSearch), model);
     }
 }

@@ -1,0 +1,35 @@
+﻿@model DroitListView
+@{
+    ViewData["Title"] = "Droit Reports";
+}
+
+@{
+    await Html.RenderPartialAsync("_MessageBanner");
+}
+
+<div class="row form-search">
+    <partial name="Droit/_DroitSearchForm" model="@Model.SearchForm"/>
+</div>
+
+<div class="row">
+    <div class="col">
+        <h4>@ViewData["Title"]</h4>
+    </div>
+    <div class="col">
+        <a class="btn btn-primary float-end" asp-action="Add">Add Droit</a>
+    </div>
+</div>
+
+<partial name="Droit/_DroitListTable" model="@Model"/>
+
+<div class="row">
+    <div class="col">
+        <a class="btn btn-primary float-end" asp-action="Add">Add Droit</a>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col">
+        @await Html.PartialAsync("_PaginationPartial", Model)
+    </div>
+</div>
