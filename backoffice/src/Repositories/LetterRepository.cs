@@ -1,6 +1,7 @@
 using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 using Droits.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,9 +33,7 @@ public class LetterRepository : BaseEntityRepository<Letter>, ILetterRepository
     {
         return GetLetters()
             .Include(l => l.Droit);
-        
     }
-
 
     public async Task<Letter> GetLetterAsync(Guid id)
     {

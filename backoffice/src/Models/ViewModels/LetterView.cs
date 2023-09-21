@@ -15,6 +15,8 @@ public class LetterView : BaseEntityView
         Subject = letter.Subject;
         Body = letter.Body;
         SentDate = letter.DateSent;
+        Status = letter.Status;
+        QualityApprovedUser = letter.QualityApprovedUser?.Name;
         
         if ( includeAssociations && letter.Droit != null)
         {
@@ -29,9 +31,12 @@ public class LetterView : BaseEntityView
     public DroitView? Droit { get; }
     public string Recipient { get; }
     public LetterType LetterType { get; }
+    public string? QualityApprovedUser { get; }
 
     public string Subject { get; } 
     public string Body { get; }
+    
+    public LetterStatus Status { get; set; }
     private DateTime? SentDate { get; }
     public bool IsSent => SentDate.HasValue;
     public NoteListView Notes { get; } = new();

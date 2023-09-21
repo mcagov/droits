@@ -23,6 +23,7 @@ namespace Droits.Tests.IntegrationTests.Services
         private readonly Mock<IAccountService> _mockCurrentUserService = new();
         private readonly Mock<ILogger<LetterService>> _mockLogger = new();
         private readonly Mock<IDroitService> _mockDroitService = new();
+        private readonly Mock<IAccountService> _mockAccountService = new();
 
         private readonly LetterService _service;
         private readonly Mock<IGovNotifyClient> _mockClient;
@@ -38,7 +39,7 @@ namespace Droits.Tests.IntegrationTests.Services
 
             var repo = new LetterRepository(_dbContext, _mockCurrentUserService.Object);
             _service = new LetterService(_mockLogger.Object, _mockClient.Object,
-                repo, _mockDroitService.Object);
+                repo, _mockDroitService.Object,_mockAccountService.Object);
 
             _templatePath = Path.Combine(Environment.CurrentDirectory, "Views/LetterTemplates");
         }

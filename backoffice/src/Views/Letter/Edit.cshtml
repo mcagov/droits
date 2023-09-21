@@ -35,6 +35,12 @@
                 @Html.LabelFor(m => m.Body, new { @class = "form-label" })
                 @Html.EditorFor(m => m.Body, new { htmlAttributes = new { rows = 10, @class = "form-control email-body" } })
             </div>
+            
+            <div class="row form-group">
+                @Html.LabelFor(m => m.Status, new { @class = "col-form-label" })
+                @Html.DropDownListFor(m => m.Status, Html.GetEnumSelectList(typeof(LetterStatus)), "Select.....", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
+            </div>
 
             <div class="row">
                 <div class="col">

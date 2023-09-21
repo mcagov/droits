@@ -69,7 +69,7 @@ public static class DatabaseSeeder
 
     private static IEnumerable<Letter> GetLetters(IEnumerable<Droit> droits, ApplicationUser user)
     {
-        return Enumerable.Range(0, 5)
+        return Enumerable.Range(0, 15)
             .Select(i => new Letter
             {
                 Id = new Guid(),
@@ -79,6 +79,10 @@ public static class DatabaseSeeder
                 Body = Faker.Lorem.Paragraphs(),
                 Type = Enum.GetValues(typeof(LetterType))
                     .OfType<LetterType>()
+                    .MinBy(x => Guid.NewGuid()),
+                Status = Enum.GetValues(typeof(LetterStatus))
+                    .OfType<LetterStatus>()
+                    .Where(s => s != LetterStatus.Sent) 
                     .MinBy(x => Guid.NewGuid()),
                 SenderUserId = new Guid(),
                 Created = DateTime.Now,
