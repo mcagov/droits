@@ -196,7 +196,7 @@ public class LetterService : ILetterService
         if ( status != LetterStatus.QCApproved && form.Status == LetterStatus.QCApproved )
         {
             var currentUserId = _accountService.GetCurrentUserId();
-            letter.QualityAssuredUserId = currentUserId;
+            letter.QualityApprovedUserId = currentUserId;
         }
 
         if ( letter.DroitId != default )

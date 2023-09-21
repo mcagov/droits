@@ -14,18 +14,21 @@ namespace Droits.Tests.UnitTests.Services
         private readonly Mock<ILetterRepository> _mockRepo;
         private readonly Mock<IDroitService> _mockDroitService;
         private readonly LetterService _service;
+        private readonly Mock<IAccountService> _mockAccountService;
 
         public LetterServiceUnitTests()
         {
             _mockGovNotifyClient = new Mock<IGovNotifyClient>();
             _mockRepo = new Mock<ILetterRepository>();
             _mockDroitService = new Mock<IDroitService>();
+            _mockAccountService = new Mock<IAccountService>();
             Mock<ILogger<LetterService>> mockLogger = new();
             _service = new LetterService(
                 mockLogger.Object,
                 _mockGovNotifyClient.Object,
                 _mockRepo.Object,
-                _mockDroitService.Object);
+                _mockDroitService.Object,
+                _mockAccountService.Object);
         }
 
         [Fact]
