@@ -16,7 +16,7 @@ public class LetterView : BaseEntityView
         Body = letter.Body;
         SentDate = letter.DateSent;
         Status = letter.Status;
-        QualityAssuredUser = letter.QualityAssuredUser?.Name;
+        QualityApprovedUser = letter.QualityApprovedUser?.Name;
         
         if ( includeAssociations && letter.Droit != null)
         {
@@ -31,7 +31,7 @@ public class LetterView : BaseEntityView
     public DroitView? Droit { get; }
     public string Recipient { get; }
     public LetterType LetterType { get; }
-    public string? QualityAssuredUser { get; }
+    public string? QualityApprovedUser { get; }
 
     public string Subject { get; } 
     public string Body { get; }

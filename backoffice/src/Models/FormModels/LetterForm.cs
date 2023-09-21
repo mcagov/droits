@@ -37,7 +37,7 @@ public class LetterForm : BaseEntityForm
     [DataType(DataType.MultilineText)]
     public string Body { get; set; } = string.Empty;
 
-    [DisplayName("Is Quality Assured")]
+    [DisplayName("Status")]
     public LetterStatus Status { get; set; }
     public Letter ApplyChanges(Letter letter)
     {

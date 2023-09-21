@@ -10,8 +10,8 @@ public class Letter : BaseEntity
     [ForeignKey("DroitId")]
     public virtual Droit? Droit { get; set; }
     public Guid QualityAssuredUserId { get; set; }
-    [ForeignKey("QualityAssuredUserId")]
-    public virtual ApplicationUser? QualityAssuredUser { get; set; }
+    [ForeignKey("QualityApprovedUserId")]
+    public virtual ApplicationUser? QualityApprovedUser { get; set; }
     public string Subject { get; set; } = string.Empty;
     public string Body { get; set; } = string.Empty;
     public string Recipient { get; set; } = string.Empty;
