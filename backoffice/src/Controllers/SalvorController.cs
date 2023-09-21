@@ -114,7 +114,7 @@ public class SalvorController : BaseController
         }
 
         AddSuccessMessage("Salvor saved successfully.");
-        return RedirectToAction(nameof(Index));
+        return salvor.Id == default ? RedirectToAction(nameof(Index)) : RedirectToAction(nameof(View),new {id = salvor.Id});
     }
 
 

@@ -9,6 +9,12 @@ export function initializeImage() {
             addImageForm(e.target);
         }
     });
+    
+    document.body.addEventListener('change', function(e) {
+        if (e.target.matches('.js-image-file-input')) {
+            previewImage(e.target);
+        }
+    });
 }
 
 export function addImageForm(button) {
@@ -75,4 +81,20 @@ export function removeImageForm() {
         modalInstance.hide();
     };
     window.confirm(confirmMessage, removeAction.bind(this));
+}
+
+function previewImage(input) {
+    const file = input.files[0];
+    const imagePreview = input.closest('.form-group').querySelector('.js-image-preview');
+
+    if (file && imagePreview) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            imagePreview.classList.remove("d-none")
+        };
+
+        reader.readAsDataURL(file);
+    }
 }

@@ -113,7 +113,7 @@ public class WreckController : BaseController
         }
 
         AddSuccessMessage("Wreck saved successfully.");
-        return RedirectToAction(nameof(Index));
+        return wreck.Id == default ? RedirectToAction(nameof(Index)) : RedirectToAction(nameof(View),new {id = wreck.Id});
     }
 
 
