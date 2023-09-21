@@ -92,7 +92,7 @@ function previewImage(input) {
 
         reader.onload = function(e) {
             imagePreview.src = e.target.result;
-            imagePreview.style.display = 'block';
+            imagePreview.classList.remove("d-none")
         };
 
         reader.readAsDataURL(file);

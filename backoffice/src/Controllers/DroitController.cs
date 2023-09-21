@@ -203,7 +203,7 @@ public class DroitController : BaseController
 
         AddSuccessMessage("Droit saved successfully");
 
-        return RedirectToAction(nameof(Index));
+        return droit.Id == default ? RedirectToAction(nameof(Index)) : RedirectToAction(nameof(View),new {id = droit.Id});
     }
 
 

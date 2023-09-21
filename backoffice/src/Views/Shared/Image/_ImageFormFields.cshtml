@@ -43,7 +43,7 @@
                         @Html.EditorFor(m => m.ImageFile, new { htmlAttributes = new { @class = "form-control js-image-file-input", accept = "image/*" } })
                         @Html.ValidationMessageFor(m => m.ImageFile, "", new { @class = "text-danger" })
                     </div>
-                    <img class="js-image-preview mt-2" id="imagePreview" src="" alt="Image Preview" style="display: none" />
+                    <img class="js-image-preview mt-2 p-4 d-none" id="imagePreview" src="" alt="Image Preview" />
                 </div>
             }
         </div>
