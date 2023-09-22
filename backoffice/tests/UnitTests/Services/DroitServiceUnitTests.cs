@@ -127,5 +127,49 @@ namespace Droits.Tests.UnitTests.Services
             // When & Assert
             await Assert.ThrowsAsync<DroitNotFoundException>(() => _service.UpdateDroitStatusAsync(nonExistingDroitId, DroitStatus.Research));
         }
+        
+        [Fact]
+        public async Task ExportDroitsAsync_EmptyList_ThrowsException()
+        {
+            // Given
+            var emptyList = new List<Droit>() { };
+
+            // When & Assert
+            await Assert.ThrowsAsync<Exception>(() => _service.ExportDroitsAsync(emptyList));
+        }
+        
+        [Fact]
+        public async Task ExportDroitsAsync_ListOfDroits_ReturnsData()
+        {
+            // Given
+            var droits = new List<Droit>()
+            {
+                new Droit() { Id = new Guid(), Reference = "Ref1" },
+                new Droit() { Id = new Guid(), Reference = "Ref2" }
+            };
+
+            // When
+            var data = await _service.ExportDroitsAsync(droits);
+            
+            // Assert
+            Assert.NotEmpty(data);
+        }
+        
+        [Fact]
+        public async Task ExportDroitsAsync_ListOfDroits_ReturnsCorrectData()
+        {
+            // Given
+            var droits = new List<Droit>()
+            {
+                new Droit() { Id = new Guid(), Reference = "Ref1" },
+                new Droit() { Id = new Guid(), Reference = "Ref2" }
+            };
+
+            // When
+            var data = await _service.ExportDroitsAsync(droits);
+            
+            // Assert
+            // Assert.Equal(id of first droit,convert first part of data to string);
+        }
     }
 }

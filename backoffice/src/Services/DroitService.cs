@@ -1,3 +1,4 @@
+using System.Text;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Models.DTOs;
@@ -8,6 +9,8 @@ using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace Droits.Services;
 
@@ -23,6 +26,7 @@ public interface IDroitService
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
     Task<string> GetNextDroitReference();
     Task<List<DroitDto>> SearchDroitsAsync(string query);
+    Task<byte[]> ExportDroitsAsync(List<Droit> droits); //return type might be wrong. 
 }
 
 public class DroitService : IDroitService
@@ -174,4 +178,21 @@ public class DroitService : IDroitService
     }
     
     public async Task<List<DroitDto>> SearchDroitsAsync(string query) => await _repo.SearchDroitsAsync(query);
+
+
+    public async Task<byte[]> ExportDroitsAsync(List<Droit> droits)
+    {
+        if ( droits.IsNullOrEmpty() )
+        {
+            throw new Exception("No Droits to export");
+        }
+
+        var droitsData = droits.Select(d => new DroitDto(d)).ToList();
+
+        string json = JsonConvert.SerializeObject(droitsData);
+
+        byte[] fileContents = Encoding.UTF8.GetBytes(json);
+    
+        return fileContents;
+    }
 }

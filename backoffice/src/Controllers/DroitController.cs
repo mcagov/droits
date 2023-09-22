@@ -235,4 +235,15 @@ public class DroitController : BaseController
 
         return form;
     }
+
+
+    public async Task<IActionResult> Export()
+    {
+        var droits = await _service.GetDroitsWithAssociationsAsync();
+        
+        var csvExport = await _service.ExportDroitsAsync(droits);
+        
+        //currently returns csv on one line
+        return File(csvExport, "text/csv");
+    }
 }
