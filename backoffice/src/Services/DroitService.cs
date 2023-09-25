@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 using Droits.Exceptions;
 using Droits.Helpers;
@@ -11,6 +12,8 @@ using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using CsvHelper;
+using CsvHelper.Configuration;
 
 namespace Droits.Services;
 
@@ -179,20 +182,25 @@ public class DroitService : IDroitService
     
     public async Task<List<DroitDto>> SearchDroitsAsync(string query) => await _repo.SearchDroitsAsync(query);
 
-
     public async Task<byte[]> ExportDroitsAsync(List<Droit> droits)
     {
-        if ( droits.IsNullOrEmpty() )
+        if (droits.IsNullOrEmpty())
         {
             throw new Exception("No Droits to export");
         }
-
+    
         var droitsData = droits.Select(d => new DroitDto(d)).ToList();
 
-        string json = JsonConvert.SerializeObject(droitsData);
-
-        byte[] fileContents = Encoding.UTF8.GetBytes(json);
+        var csvData = new StringWriter();
+        var csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture);
+        var csv = new CsvWriter(csvData, csvConfiguration);
+    
+        await csv.WriteRecordsAsync(droitsData);
+    
+        byte[] fileContents = Encoding.UTF8.GetBytes(csvData.ToString());
     
         return fileContents;
     }
+
+
 }

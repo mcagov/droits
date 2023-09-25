@@ -1,3 +1,4 @@
+using System.Text;
 using Droits.Exceptions;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
@@ -161,15 +162,15 @@ namespace Droits.Tests.UnitTests.Services
             // Given
             var droits = new List<Droit>()
             {
-                new Droit() { Id = new Guid(), Reference = "Ref1" },
-                new Droit() { Id = new Guid(), Reference = "Ref2" }
+                new Droit() { Id = new Guid(), Reference = "Ref3" },
+                new Droit() { Id = new Guid(), Reference = "Ref4" }
             };
 
             // When
             var data = await _service.ExportDroitsAsync(droits);
-            
+            var dataString = Encoding.Default.GetString(data);
             // Assert
-            // Assert.Equal(id of first droit,convert first part of data to string);
+            Assert.Contains("Ref3",dataString);
         }
     }
 }
