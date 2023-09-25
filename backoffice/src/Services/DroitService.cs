@@ -1,5 +1,3 @@
-using System.Globalization;
-using System.Text;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Models.DTOs;
@@ -11,9 +9,7 @@ using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using CsvHelper;
-using CsvHelper.Configuration;
+
 
 namespace Droits.Services;
 
@@ -191,15 +187,7 @@ public class DroitService : IDroitService
     
         var droitsData = droits.Select(d => new DroitDto(d)).ToList();
 
-        var csvData = new StringWriter();
-        var csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture);
-        var csv = new CsvWriter(csvData, csvConfiguration);
-    
-        await csv.WriteRecordsAsync(droitsData);
-    
-        byte[] fileContents = Encoding.UTF8.GetBytes(csvData.ToString());
-    
-        return fileContents;
+        return await ExportHelper.ExportRecordsAsync(droitsData);
     }
 
 
