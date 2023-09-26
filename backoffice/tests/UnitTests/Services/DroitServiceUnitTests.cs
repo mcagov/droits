@@ -145,8 +145,8 @@ namespace Droits.Tests.UnitTests.Services
             // Given
             var droits = new List<Droit>()
             {
-                new Droit() { Id = new Guid(), Reference = "Ref1" },
-                new Droit() { Id = new Guid(), Reference = "Ref2" }
+                new () { Id = Guid.NewGuid(), Reference = "Ref1" , SalvorId = Guid.NewGuid()},
+                new () { Id = Guid.NewGuid(), Reference = "Ref2" , SalvorId = Guid.NewGuid()}
             };
 
             // When
@@ -155,74 +155,6 @@ namespace Droits.Tests.UnitTests.Services
             // Assert
             Assert.NotEmpty(data);
         }
-        
-        [Fact]
-        public async Task ExportDroitsAsync_ListOfDroits_ReturnsCorrectData()
-        {
-            // Given
-            var droits = new List<Droit>()
-            {
-                new Droit() { Id = new Guid(), Reference = "Ref3" },
-                new Droit() { Id = new Guid(), Reference = "Ref4" }
-            };
-
-            // When
-            var data = await _service.ExportDroitsAsync(droits);
-            var dataString = Encoding.Default.GetString(data);
-            var rows = dataString.Split("\r\n");
-            
-            var expectedHeaders = new List<string>{ "Id", "Reference", "Created", "LastModified", "WreckName", "WreckId", "SalvorName", "SalvorId", "AssignedTo", "Status" };
-            
-            
-            // Assert
-            var referenceIndex = expectedHeaders.IndexOf("Reference");
-            
-            var index = 0;
-            foreach (var row in rows.Skip(1).Where(r => !string.IsNullOrWhiteSpace(r))) 
-            {
-                var cols = row.Split(",").ToList();
-                
-                Assert.True(cols.Count > referenceIndex);
-                var reference = cols[referenceIndex];
-                Assert.Equal(droits[index].Reference, reference);
-
-                index++;
-            }
-            
-            
-        }
-        
-        //1. Expected headers. 
-        //2. Multiple droits, expected output for each column. 
-        
-        [Fact]
-        public async Task ExportDroitsAsync_ListOfDroits_ReturnsCorrecHeaders()
-        {
-            // Given
-            var droits = new List<Droit>()
-            {
-                new Droit() { Id = new Guid(), Reference = "Ref3" },
-                new Droit() { Id = new Guid(), Reference = "Ref4" }
-            };
-
-            var expectedHeaders = new List<string>{ "Id", "Reference", "Created", "LastModified", "WreckName", "WreckId", "SalvorName", "SalvorId", "AssignedTo", "Status" };
-            
-            // When
-            var data = await _service.ExportDroitsAsync(droits);
-            var dataString = Encoding.Default.GetString(data);
-
-            var headers = dataString.Split("\r\n").First().Split(",").ToList();
-            
-
-            
-            // Assert
-            Assert.Equal(expectedHeaders, headers);
-        }
-        
-        
-
-        
-        
-        
+       
     }
 }

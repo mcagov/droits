@@ -5,6 +5,11 @@ namespace Droits.Models.DTOs
 {
     public class DroitDto
     {
+
+        public DroitDto()
+        {
+            
+        }
         public DroitDto(Droit droit)
         {
             Id = droit.Id;

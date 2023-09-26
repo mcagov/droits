@@ -243,7 +243,6 @@ public class DroitController : BaseController
         
         var csvExport = await _service.ExportDroitsAsync(droits);
         
-        //currently returns csv on one line
-        return File(csvExport, "text/csv");
+        return File(csvExport, "text/csv",$"droit-export-{DateTime.UtcNow.ToShortDateString()}.csv");
     }
 }
