@@ -29,13 +29,11 @@ public class SalvorForm : BaseEntityForm
     [EmailAddress(ErrorMessage = "Invalid email address")]
     public string Email { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Phone number is required")]
     [Phone()]
     [DisplayName("Telephone Number")]
 
     public string TelephoneNumber { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Date of Birth is required")]
     [BindProperty]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     [DataType(DataType.Date)]

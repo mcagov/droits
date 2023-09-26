@@ -34,7 +34,6 @@ public class AddressForm
     [DisplayName("City/Town")]
     public string Town { get; set; } = string.Empty;
 
-    [Required]
     public string County { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Postcode is required")]
