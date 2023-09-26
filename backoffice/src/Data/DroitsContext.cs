@@ -306,7 +306,6 @@ public partial class DroitsContext : DbContext
             entity.Property(s => s.Email);
             entity.Property(s => s.Name);
             entity.Property(s => s.TelephoneNumber);
-            entity.Property(s => s.DateOfBirth);
 
             entity.Property(s => s.Created);
             entity.Property(s => s.LastModified);

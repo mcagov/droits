@@ -17,7 +17,6 @@ public class SalvorForm : BaseEntityForm
         Name = salvor.Name;
         Email = salvor.Email;
         TelephoneNumber = salvor.TelephoneNumber;
-        DateOfBirth = salvor.DateOfBirth;
         Address = new AddressForm(salvor.Address);
     }
 
@@ -32,13 +31,7 @@ public class SalvorForm : BaseEntityForm
     [Phone()]
     [DisplayName("Telephone Number")]
 
-    public string TelephoneNumber { get; set; } = string.Empty;
-
-    [BindProperty]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    [DataType(DataType.Date)]
-    [DisplayName("Date of Birth")]
-    public DateTime DateOfBirth { get; set; }
+    public string? TelephoneNumber { get; set; } = string.Empty;
 
     public AddressForm Address { get; set; } = new();
 
@@ -50,7 +43,6 @@ public class SalvorForm : BaseEntityForm
         salvor.Name = Name;
         salvor.Email = Email;
         salvor.TelephoneNumber = TelephoneNumber;
-        salvor.DateOfBirth = DateOfBirth;
 
         Address.ApplyChanges(salvor.Address);
 
