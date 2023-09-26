@@ -110,7 +110,6 @@ public static class DatabaseSeeder
                     County = Faker.Address.County(),
                     Postcode = Faker.Address.ZipCode()
                 },
-                DateOfBirth = Faker.Date.Past(40, DateTime.UtcNow),
                 Created = DateTime.UtcNow,
                 LastModified = DateTime.UtcNow,
                 LastModifiedByUserId = user.Id,
