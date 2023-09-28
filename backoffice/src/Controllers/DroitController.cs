@@ -85,12 +85,13 @@ public class DroitController : BaseController
 
 
     [HttpGet]
-    public async Task<IActionResult> Edit(Guid id)
+    public async Task<IActionResult> Edit(Guid id, string? selectedTab)
     {
         if ( id == default )
         {
             var form = await PopulateDroitFormAsync(new DroitForm());
             form.Reference = await _service.GetNextDroitReference();
+
             return View(form);
         }
 
@@ -98,6 +99,13 @@ public class DroitController : BaseController
         {
             var droit = await _service.GetDroitWithAssociationsAsync(id);
             var form = await PopulateDroitFormAsync(new DroitForm(droit));
+            
+            if ( !string.IsNullOrEmpty(selectedTab) )
+            {
+                ViewBag.SelectedTab = selectedTab;
+            }
+
+            
             return View(form);
         }
         catch ( DroitNotFoundException e )

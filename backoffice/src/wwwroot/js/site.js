@@ -2,7 +2,7 @@
 import 'bootstrap/dist/js/bootstrap';
 
 import {confirmDialog} from './confirmDialog.js';
-import {initializeDroitForm} from './droitForm.js';
+import {initializeDroitForm, initializeDroitView} from './droitForm.js';
 import {initializeMessageBanner} from "./messageBanner";
 import {initializeSearchBar} from "./searchBar";
 
@@ -15,10 +15,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (droitFormElements.length > 0) {
         initializeDroitForm();
     }
-    
+
+    const droitViewElements = document.querySelectorAll('.js-droit-view-tabs');
+    if (droitViewElements.length > 0) {
+        initializeDroitView();
+    }
     
     initializeSearchBar();
     initializeMessageBanner();
+    
 });
 
 
