@@ -1,9 +1,9 @@
-﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
-@model DroitForm
+﻿@model DroitForm
 @{
     ViewData["Title"] = Model.Id == default ? "New Droit" : $"Droit: {Model.Reference}";
-
+    
     var tabs = new List<string> { "droit", "salvor", "wreck", "wreck-materials", "location", "salvage", "legacy" };
+    
     if (string.IsNullOrEmpty(ViewBag.SelectedTab) || !tabs.Contains(ViewBag.SelectedTab.Trim().ToLower()))
     {
         ViewBag.SelectedTab = "droit";
