@@ -103,3 +103,20 @@ function toggleIsolatedFind() {
         knownWreck.classList.remove("d-none");
     }
 }
+
+export function initializeDroitView()
+{
+    document.querySelectorAll('.nav-link').forEach(function(tabButton) {
+        tabButton.addEventListener('click', function() {
+
+            const selectedTab = document.querySelector('.tab-pane.active').id;
+
+            const editButton = document.querySelector('.js-edit-droit-button');
+
+            const href = editButton.getAttribute('href').replace(/selectedTab=[^&]*/, 'selectedTab=' + selectedTab);
+
+            editButton.setAttribute('href', href);
+        });
+    });
+}
+
