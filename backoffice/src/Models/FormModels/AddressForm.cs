@@ -47,7 +47,7 @@ public class AddressForm
         address.Line1 = Line1;
         address.Line2 = Line2;
         address.Town = Town;
-        address.County = County;
+        address.County = County ?? "";
         address.Postcode = Postcode;
 
         return address;

@@ -42,7 +42,7 @@ public class SalvorForm : BaseEntityForm
         
         salvor.Name = Name;
         salvor.Email = Email;
-        salvor.TelephoneNumber = TelephoneNumber;
+        salvor.TelephoneNumber = TelephoneNumber ?? "";
 
         Address.ApplyChanges(salvor.Address);
 

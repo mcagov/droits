@@ -4,8 +4,10 @@ namespace Droits.Models.ViewModels;
 
 public class DashboardView
 {
-    public DashboardView() {
-        
+    public DashboardView()
+    {
+        Droits = new DroitListView();
+        Letters = new LetterListView();
     }
 
 
