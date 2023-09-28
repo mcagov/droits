@@ -51,6 +51,12 @@ public class LetterService : ILetterService
         var query = GetLetterQuery(searchOptions);
 
         query = query.Where(l => l.DateSent == null);
+        query = query.OrderBy(l =>
+                l.Status == LetterStatus.ReadyForQC ? 0 :
+                l.Status == LetterStatus.ActionRequired ? 1 :
+                l.Status == LetterStatus.QCApproved ? 2 :
+                3 // Draft
+        ).ThenBy(l => l.LastModified);
         var pagedItems =
             await ServiceHelper.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.IncludeAssociations)),
                 searchOptions);

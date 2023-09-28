@@ -20,6 +20,7 @@ public class LetterForm : BaseEntityForm
         Subject = letter.Subject;
         Body = letter.Body;
         Status = letter.Status;
+        Type = letter.Type;
     }
 
     public Guid DroitId { get; set; }
