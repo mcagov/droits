@@ -25,7 +25,7 @@ public interface IDroitService
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
     Task<string> GetNextDroitReference();
     Task<List<DroitDto>> SearchDroitsAsync(string query);
-    Task<byte[]> ExportDroitsAsync(List<Droit> droits); //return type might be wrong. 
+    Task<byte[]> ExportDroitsAsync(List<DroitDto> droits); //return type might be wrong. 
 }
 
 public class DroitService : IDroitService
@@ -178,16 +178,14 @@ public class DroitService : IDroitService
     
     public async Task<List<DroitDto>> SearchDroitsAsync(string query) => await _repo.SearchDroitsAsync(query);
 
-    public async Task<byte[]> ExportDroitsAsync(List<Droit> droits)
+    public async Task<byte[]> ExportDroitsAsync(List<DroitDto> droits)
     {
         if (droits.IsNullOrEmpty())
         {
             throw new Exception("No Droits to export");
         }
-    
-        var droitsData = droits.Select(d => new DroitDto(d)).ToList();
 
-        return await ExportHelper.ExportRecordsAsync(droitsData);
+        return await ExportHelper.ExportRecordsAsync(droits);
     }
 
 

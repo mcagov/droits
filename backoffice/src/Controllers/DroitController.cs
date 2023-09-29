@@ -245,9 +245,9 @@ public class DroitController : BaseController
     }
 
 
-    public async Task<IActionResult> Export()
+    public async Task<IActionResult> Export(string query)
     {
-        var droits = await _service.GetDroitsWithAssociationsAsync();
+        var droits = await _service.SearchDroitsAsync(query);
         
         var csvExport = await _service.ExportDroitsAsync(droits);
         
