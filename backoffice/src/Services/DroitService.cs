@@ -1,5 +1,6 @@
 using Droits.Exceptions;
 using Droits.Helpers;
+using Droits.Helpers.Extensions;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
@@ -9,7 +10,6 @@ using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-
 
 namespace Droits.Services;
 
@@ -26,6 +26,7 @@ public interface IDroitService
     Task<string> GetNextDroitReference();
     Task<List<DroitDto>> SearchDroitsAsync(string query);
     Task<byte[]> ExportDroitsAsync(List<DroitDto> droits); //return type might be wrong. 
+    Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form, SearchOptions searchOptions);
 }
 
 public class DroitService : IDroitService
@@ -189,4 +190,34 @@ public class DroitService : IDroitService
     }
 
 
+    public async Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form, SearchOptions searchOptions)
+    {
+
+        var query = _repo.GetDroitsWithAssociations();
+
+        query = query.Where(d =>
+            (form.Reference == null || string.IsNullOrEmpty(form.Reference) ||
+             d.Reference.ToLower().Contains(form.Reference.ToLower())) &&
+            ((!form.ReportedDateFrom.HasValue || d.ReportedDate > form.ReportedDateFrom) ||
+            (!form.ReportedDateTo.HasValue || d.ReportedDate <= form.ReportedDateTo)) && 
+            (form.StatusList.IsNullOrEmpty() || form.StatusList.Contains(d.Status))
+        );
+
+
+        var pagedDroits =
+            await ServiceHelper.GetPagedResult(query.Select(d => new DroitView(d)), searchOptions);
+
+        return new DroitListView(pagedDroits.Items)
+        {
+            PageNumber = pagedDroits.PageNumber,
+            PageSize = pagedDroits.PageSize,
+            IncludeAssociations = pagedDroits.IncludeAssociations,
+            TotalCount = pagedDroits.TotalCount,
+            SearchForm = form
+        };
+        
+        
+      
+            
+    }
 }
