@@ -1,6 +1,15 @@
 ﻿@model DroitForm
 @{
     ViewData["Title"] = Model.Id == default ? "New Droit" : $"Droit: {Model.Reference}";
+    
+    var tabs = new List<string> { "droit", "salvor", "wreck", "wreck-materials", "location", "salvage", "legacy" };
+    
+    if (string.IsNullOrEmpty(ViewBag.SelectedTab) || !tabs.Contains(ViewBag.SelectedTab.Trim().ToLower()))
+    {
+        ViewBag.SelectedTab = "droit";
+    }
+
+    var selectedTab = ViewBag.SelectedTab.Trim().ToLower();
 }
 
 @{
@@ -19,25 +28,25 @@
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="droit-tab" data-bs-toggle="tab" data-bs-target="#droit" type="button" role="tab" aria-controls="droit" aria-selected="true">Droit Report</button>
+        <button class="nav-link @(selectedTab.Equals("droit") ? "active" : "")" id="droit-tab" data-bs-toggle="tab" data-bs-target="#droit" type="button" role="tab" aria-controls="droit" aria-selected="true">Droit Report</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="salvor-tab" data-bs-toggle="tab" data-bs-target="#salvor" type="button" role="tab" aria-controls="salvor" aria-selected="false">Salvor</button>
+        <button class="nav-link @(selectedTab.Equals("salvor") ? "active" : "")" id="salvor-tab" data-bs-toggle="tab" data-bs-target="#salvor" type="button" role="tab" aria-controls="salvor" aria-selected="false">Salvor</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="wreck-tab" data-bs-toggle="tab" data-bs-target="#wreck" type="button" role="tab" aria-controls="wreck" aria-selected="false">Wreck</button>
+        <button class="nav-link @(selectedTab.Equals("wreck") ? "active" : "")" id="wreck-tab" data-bs-toggle="tab" data-bs-target="#wreck" type="button" role="tab" aria-controls="wreck" aria-selected="false">Wreck</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="wreck-materials-tab" data-bs-toggle="tab" data-bs-target="#wreck-materials" type="button" role="tab" aria-controls="wreck-materials" aria-selected="false">Wreck Materials</button>
+        <button class="nav-link @(selectedTab.Equals("wreck-materials") ? "active" : "")" id="wreck-materials-tab" data-bs-toggle="tab" data-bs-target="#wreck-materials" type="button" role="tab" aria-controls="wreck-materials" aria-selected="false">Wreck Materials</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="location-tab" data-bs-toggle="tab" data-bs-target="#location" type="button" role="tab" aria-controls="location" aria-selected="false">Location</button>
+        <button class="nav-link @(selectedTab.Equals("location") ? "active" : "")" id="location-tab" data-bs-toggle="tab" data-bs-target="#location" type="button" role="tab" aria-controls="location" aria-selected="false">Location</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="salvage-tab" data-bs-toggle="tab" data-bs-target="#salvage" type="button" role="tab" aria-controls="salvage" aria-selected="false">Salvage</button>
+        <button class="nav-link @(selectedTab.Equals("salvage") ? "active" : "")" id="salvage-tab" data-bs-toggle="tab" data-bs-target="#salvage" type="button" role="tab" aria-controls="salvage" aria-selected="false">Salvage</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="legacy-tab" data-bs-toggle="tab" data-bs-target="#legacy" type="button" role="tab" aria-controls="legacy" aria-selected="false">Legacy</button>
+        <button class="nav-link @(selectedTab.Equals("legacy") ? "active" : "")" id="legacy-tab" data-bs-toggle="tab" data-bs-target="#legacy" type="button" role="tab" aria-controls="legacy" aria-selected="false">Legacy</button>
     </li>
 </ul>
 
@@ -45,7 +54,7 @@
 @Html.HiddenFor(m => m.Id)
 
 <div class="tab-content mt-4" id="droitForm">
-<div class="tab-pane fade show active" id="droit" role="tabpanel" aria-labelledby="droit-tab">
+<div class="tab-pane fade @(selectedTab.Equals("droit") ? "show active" : "")" id="droit" role="tabpanel" aria-labelledby="droit-tab">
     <div class="form-group">
         @Html.LabelFor(m => m.Reference, new { @class = "col-form-label" })
 
@@ -99,7 +108,7 @@
     </div>
 </div>
 
-<div class="tab-pane fade" id="salvor" role="tabpanel" aria-labelledby="salvor-tab">
+<div class="tab-pane fade @(selectedTab.Equals("salvor") ? "show active" : "")" id="salvor" role="tabpanel" aria-labelledby="salvor-tab">
     <div class="form-group">
         @Html.LabelFor(m => m.SalvorId, "Select Salvor", new { @class = "col-form-label" })
         @Html.DropDownListFor(m => m.SalvorId, Model.AllSalvors, "New Salvor..", new { @id = "js-select-salvor", @class = "form-control" })
@@ -114,7 +123,7 @@
 
     </div>
 </div>
-<div class="tab-pane fade" id="wreck" role="tabpanel" aria-labelledby="wreck-tab">
+<div class="tab-pane fade @(selectedTab.Equals("wreck") ? "show active" : "")" id="wreck" role="tabpanel" aria-labelledby="wreck-tab">
     <div class="form-group">
         @Html.LabelFor(m => m.IsIsolatedFind, new { @class = "col-form-label" })
         @Html.DropDownListFor(m => m.IsIsolatedFind, FormModelHelper.BooleanSelectList, "Select.....", new { @id = "js-select-isolated-find", @class = "form-control" })
@@ -138,7 +147,7 @@
 </div>
 
 
-<div class="tab-pane fade" id="wreck-materials" role="tabpanel" aria-labelledby="wreck-materials-tab">
+<div class="tab-pane fade @(selectedTab.Equals("wreck-materials") ? "show active" : "")" id="wreck-materials" role="tabpanel" aria-labelledby="wreck-materials-tab">
     <div id="js-wreck-materials-form-container" class="row row-cols-1 row-cols-lg-2 g-4">
         @for (var i = 0; i < Model.WreckMaterialForms.Count; i++)
         {
@@ -151,7 +160,7 @@
     </div>
 </div>
 
-<div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="location-tab">
+<div class="tab-pane fade @(selectedTab.Equals("location") ? "show active" : "")" id="location" role="tabpanel" aria-labelledby="location-tab">
     <div class="form-group">
         @Html.LabelFor(m => m.Latitude, new { @class = "col-form-label" })
         @Html.EditorFor(m => m.Latitude, new { htmlAttributes = new { @class = "form-control" } })
@@ -190,7 +199,7 @@
 </div>
 
 
-<div class="tab-pane fade" id="salvage" role="tabpanel" aria-labelledby="salvage-tab">
+<div class="tab-pane fade @(selectedTab.Equals("salvage") ? "show active" : "")" id="salvage" role="tabpanel" aria-labelledby="salvage-tab">
     <div class="form-group">
         @Html.LabelFor(m => m.SalvageAwardClaimed, new { @class = "col-form-label" })
         @Html.DropDownListFor(m => m.SalvageAwardClaimed, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
@@ -229,7 +238,7 @@
 </div>
 
 
-<div class="tab-pane fade" id="legacy" role="tabpanel" aria-labelledby="legacy-tab">
+<div class="tab-pane fade @(selectedTab.Equals("legacy") ? "show active" : "")" id="legacy" role="tabpanel" aria-labelledby="legacy-tab">
     <div class="form-group">
         @Html.LabelFor(m => m.District, new { @class = "col-form-label" })
         @Html.EditorFor(m => m.District, new { htmlAttributes = new { @class = "form-control" } })
