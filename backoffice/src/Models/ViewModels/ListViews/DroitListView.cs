@@ -1,3 +1,5 @@
+using Droits.Models.FormModels;
+
 namespace Droits.Models.ViewModels.ListViews;
 
 public class DroitListView : ListView<object>
@@ -11,4 +13,7 @@ public class DroitListView : ListView<object>
     {
         Items = droits.Cast<object>().ToList();
     }
+    
+    public DroitSearchForm SearchForm = new DroitSearchForm();
+    
 }
