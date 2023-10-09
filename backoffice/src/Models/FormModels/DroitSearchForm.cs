@@ -25,6 +25,28 @@ public class DroitSearchForm
 
     public string? Reference { get; set; }
 
+    [DisplayName("Created From")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    public DateTime? CreatedFrom { get; set; }
+
+    [DisplayName("Created To")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    public DateTime? CreatedTo{ get; set; }
+    
+    
+    [DisplayName("Last Modified From")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    public DateTime? LastModifiedFrom { get; set; }
+
+    [DisplayName("Last Modified To")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    public DateTime? LastModifiedTo{ get; set; }
+    
+    
     public List<DroitStatus> StatusList { get; set; } = new();
     
     // [DisplayName("Assigned To")]
@@ -57,10 +79,10 @@ public class DroitSearchForm
     // public Guid? WreckId { get; set; }
     //
     [DisplayName("Is Hazardous Find")]
-    public bool IsHazardousFind { get; set; }
+    public bool? IsHazardousFind { get; set; } 
     
     [DisplayName("Is Dredge")]
-    public bool IsDredge { get; set; }
+    public bool? IsDredge { get; set; }
 
     // Salvor
 

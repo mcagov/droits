@@ -183,11 +183,14 @@ public class DroitService : IDroitService
         var query = _repo.GetDroitsWithAssociations();
 
         query = query.Where(d =>
-            (form.Reference == null || string.IsNullOrEmpty(form.Reference) ||
-             d.Reference.ToLower().Contains(form.Reference.ToLower())) &&
-            ((!form.ReportedDateFrom.HasValue || d.ReportedDate > form.ReportedDateFrom) ||
-            (!form.ReportedDateTo.HasValue || d.ReportedDate <= form.ReportedDateTo)) && 
-            (form.StatusList.IsNullOrEmpty() || form.StatusList.Contains(d.Status))
+            SearchHelper.Matches(form.Reference, d.Reference) && 
+            d.Created.IsBetween(form.CreatedFrom, form.CreatedTo) &&
+            d.LastModified.IsBetween(form.LastModifiedFrom, form.LastModifiedTo) &&
+            (form.StatusList.IsNullOrEmpty() || form.StatusList.Contains(d.Status)) && 
+            d.ReportedDate.IsBetween(form.ReportedDateFrom, form.ReportedDateTo) &&
+            d.DateFound.IsBetween(form.DateFoundFrom, form.DateFoundTo) && 
+            SearchHelper.Matches(form.IsHazardousFind, d.IsHazardousFind) &&
+            SearchHelper.Matches(form.IsDredge, d.IsDredge) 
         );
 
 

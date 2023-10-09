@@ -1,3 +1,5 @@
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model DroitSearchForm
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -25,6 +27,40 @@
         @Html.EditorFor(m => m.Reference, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })    
         @Html.LabelFor(m => m.Reference)
     </div>
+    
+    
+    
+    <div class="row form-row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    @Html.EditorFor(m => m.CreatedFrom, new { htmlAttributes = new { @type = "date", @class = "form-control",  @placeholder=""} })
+                    @Html.LabelFor(m => m.CreatedFrom)
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    @Html.EditorFor(m => m.CreatedTo, new { htmlAttributes = new { @type = "date", @class = "form-control",  @placeholder=""} })
+                    @Html.LabelFor(m => m.CreatedTo)
+                </div>
+            </div>
+        </div>
+        
+    
+    <div class="row form-row">
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.LastModifiedFrom, new { htmlAttributes = new { @type = "date", @class = "form-control",  @placeholder=""} })
+                @Html.LabelFor(m => m.LastModifiedFrom)
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.LastModifiedTo, new { htmlAttributes = new { @type = "date", @class = "form-control",  @placeholder=""} })
+                @Html.LabelFor(m => m.LastModifiedTo)
+            </div>
+        </div>
+    </div>
+    
 
     <div class="form-floating mb-3">
         @Html.DropDownListFor(m => m.StatusList, Html.GetEnumSelectList(typeof(DroitStatus)), null, new { @class = "form-control js-search-droit-status", @placeholder="", @multiple="true"})
