@@ -43,4 +43,33 @@ public class DateTimeExtensionsTests
         
         Assert.False(date.IsBetween(from,to));
     }
+    [Fact]
+    public void IsBetween_WithADateBetweenNullAndAToDate_ShouldReturnTrue()
+    {
+        var date = new DateTime(2023,10,05);
+        DateTime? from = null;
+        var to = new DateTime(2023,10,09);
+        
+        Assert.True(date.IsBetween(from,to));
+    }
+    [Fact]
+    public void IsBetween_WithADateBetweenAFromDateAndNull_ShouldReturnTrue()
+    {
+        var date = new DateTime(2023,10,09);
+        var from = new DateTime(2023,10,08);
+        DateTime? to = null;
+        
+        Assert.True(date.IsBetween(from,to));
+    }
+    
+    [Fact]
+    public void IsBetween_WithADateBetweenNullAndNull_ShouldReturnTrue()
+    {
+        var date = new DateTime(2023,10,09);
+        DateTime? from = null;
+        DateTime? to = null;
+        
+        Assert.True(date.IsBetween(from,to));
+    }
+    
 }
