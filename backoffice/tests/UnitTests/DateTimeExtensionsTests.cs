@@ -13,7 +13,6 @@ public class DateTimeExtensionsTests
         
         Assert.True(date.IsBetween(from,to));
     }
-    
     [Fact]
     public void IsBetween_WithADateBetweenTwoDatesInclusiveOfFromDate_ShouldReturnTrue()
     {
@@ -23,7 +22,6 @@ public class DateTimeExtensionsTests
         
         Assert.True(date.IsBetween(from,to));
     }
-    
     [Fact]
     public void IsBetween_WithADateBetweenTwoDatesInclusiveOfToDate_ShouldReturnTrue()
     {
@@ -33,7 +31,6 @@ public class DateTimeExtensionsTests
         
         Assert.True(date.IsBetween(from,to));
     }
-    
     [Fact]
     public void IsBetween_WithADateNotBetweenTwoDates_ShouldReturnFalse()
     {
@@ -61,13 +58,30 @@ public class DateTimeExtensionsTests
         
         Assert.True(date.IsBetween(from,to));
     }
-    
     [Fact]
     public void IsBetween_WithADateBetweenNullAndNull_ShouldReturnTrue()
     {
         var date = new DateTime(2023,10,09);
         DateTime? from = null;
         DateTime? to = null;
+        
+        Assert.True(date.IsBetween(from,to));
+    }
+    [Fact]
+    public void IsBetween_WithADateTimeBetweenTwoDatesInclusiveOfFrom_ShouldReturnTrue()
+    {
+        var date = new DateTime(2023,10,09,3,3,3);
+        var from = new DateTime(2023,10,09);
+        var to = new DateTime(2023,10,10);
+        
+        Assert.True(date.IsBetween(from,to));
+    }
+    [Fact]
+    public void IsBetween_WithADateTimeBetweenTwoDatesInclusiveOfTo_ShouldReturnTrue()
+    {
+        var date = new DateTime(2023,10,09,3,3,3);
+        var from = new DateTime(2023,10,08);
+        var to = new DateTime(2023,10,9);
         
         Assert.True(date.IsBetween(from,to));
     }
