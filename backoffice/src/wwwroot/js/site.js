@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (droitViewElements.length > 0) {
         initializeDroitView();
     }
+    
+    const droitSearchFormButton = document.querySelector('.js-toggle-droit-search');
+    droitSearchFormButton.addEventListener('click', function (){
+        const droitSearchForm = document.querySelector('.js-droit-search');
+        droitSearchForm.classList.toggle('d-none');
+    });
 
     initializeSearchBar();
     initializeMessageBanner();
