@@ -206,8 +206,5 @@ public class DroitService : IDroitService
             SearchForm = form
         };
         
-        
-      
-            
     }
 }

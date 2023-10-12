@@ -48,6 +48,7 @@ public class DroitSearchForm
     
     
     public List<DroitStatus> StatusList { get; set; } = new();
+    public List<int> SelectedStatusList => StatusList.Select(s => (int)s).ToList();
     
     // [DisplayName("Assigned To")]
     // public Guid? AssignedToUserId { get; set; }

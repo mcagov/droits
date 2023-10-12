@@ -1,5 +1,6 @@
 @using System.Linq.Expressions
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.EntityFrameworkCore
 @model DroitSearchForm
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -21,14 +22,10 @@
 
 <div class="tab-content mt-4" id="droitForm">
 <div class="tab-pane fade show active" id="droit" role="tabpanel" aria-labelledby="droit-tab">
-
-
     <div class="form-floating mb-3">
         @Html.EditorFor(m => m.Reference, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })    
         @Html.LabelFor(m => m.Reference)
     </div>
-    
-    
     
     <div class="row form-row">
             <div class="col">
@@ -60,10 +57,22 @@
             </div>
         </div>
     </div>
-    
 
     <div class="form-floating mb-3">
-        @Html.DropDownListFor(m => m.StatusList, Html.GetEnumSelectList(typeof(DroitStatus)), null, new { @class = "form-control js-search-droit-status", @placeholder="", @multiple="true"})
+        <select class="form-control js-search-droit-status" id="StatusList" multiple="multiple" name="StatusList" placeholder="">
+            @foreach (var o in Html.GetEnumSelectList(typeof(DroitStatus)))
+            {
+                if (@Model.SelectedStatusList.Contains(int.Parse(o.Value)))
+                {
+                    <option value="@o.Value" selected="selected">@o.Text</option>
+                }
+                else
+                {
+                    <option value="@o.Value">@o.Text</option>
+    
+                }
+            }
+        </select>
     </div>
     
     @* <div class="form-group"> *@
