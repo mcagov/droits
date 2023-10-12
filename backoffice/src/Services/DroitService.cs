@@ -25,7 +25,10 @@ public interface IDroitService
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
     Task<string> GetNextDroitReference();
     Task<List<DroitDto>> SearchDroitsAsync(string query);
-    Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form, SearchOptions searchOptions);
+
+
+    Task<DroitListView>
+        AdvancedSearchDroitsAsync(DroitSearchForm form, SearchOptions searchOptions);
 }
 
 public class DroitService : IDroitService
@@ -35,10 +38,9 @@ public class DroitService : IDroitService
     private readonly IAccountService _accountService;
     private readonly ILogger<DroitService> _logger;
 
-    
 
-
-    public DroitService(ILogger<DroitService> logger, IDroitRepository repo, IWreckMaterialService wreckMaterialService, IAccountService accountService)
+    public DroitService(ILogger<DroitService> logger, IDroitRepository repo,
+        IWreckMaterialService wreckMaterialService, IAccountService accountService)
     {
         _logger = logger;
         _repo = repo;
@@ -50,22 +52,25 @@ public class DroitService : IDroitService
     public async Task<string> GetNextDroitReference()
     {
         var yearCount = await _repo.GetYearDroitCount();
-        
-        return  $"{(yearCount+1):D3}/{DateTime.UtcNow:yy}";
+
+        return $"{( yearCount + 1 ):D3}/{DateTime.UtcNow:yy}";
     }
+
+
     public async Task<DroitListView> GetDroitsListViewAsync(SearchOptions searchOptions)
     {
         var query = searchOptions.IncludeAssociations
             ? _repo.GetDroitsWithAssociations()
             : _repo.GetDroits();
-        
-        if (searchOptions.FilterByAssignedUser)
+
+        if ( searchOptions.FilterByAssignedUser )
         {
             var currentUserId = _accountService.GetCurrentUserId();
 
-            query = query.Where(d => d.AssignedToUserId.HasValue && d.AssignedToUserId == currentUserId);
+            query = query.Where(d =>
+                d.AssignedToUserId.HasValue && d.AssignedToUserId == currentUserId);
         }
-        
+
         var pagedDroits =
             await ServiceHelper.GetPagedResult(query.Select(d => new DroitView(d)), searchOptions);
 
@@ -112,16 +117,18 @@ public class DroitService : IDroitService
 
     private async Task<Droit> UpdateDroitAsync(Droit droit)
     {
-        if (!await IsReferenceUnique(droit))
+        if ( !await IsReferenceUnique(droit) )
         {
-            throw new DuplicateDroitReferenceException($"Droit Reference {droit.Reference} already exists");
+            throw new DuplicateDroitReferenceException(
+                $"Droit Reference {droit.Reference} already exists");
         }
-        
+
         return await _repo.UpdateAsync(droit);
     }
 
 
     private async Task<bool> IsReferenceUnique(Droit droit) => await _repo.IsReferenceUnique(droit);
+
 
     public async Task<Droit> GetDroitWithAssociationsAsync(Guid id)
     {
@@ -134,14 +141,14 @@ public class DroitService : IDroitService
         return await _repo.GetDroitAsync(id);
     }
 
-    
 
     public async Task SaveWreckMaterialsAsync(Guid droitId,
         List<WreckMaterialForm> wreckMaterialForms)
     {
         var wreckMaterialIdsToKeep = wreckMaterialForms.Select(wm => wm.Id);
 
-        await _wreckMaterialService.DeleteWreckMaterialForDroitAsync(droitId, wreckMaterialIdsToKeep);
+        await _wreckMaterialService.DeleteWreckMaterialForDroitAsync(droitId,
+            wreckMaterialIdsToKeep);
 
         try
         {
@@ -170,32 +177,60 @@ public class DroitService : IDroitService
     public async Task UpdateDroitStatusAsync(Guid id, DroitStatus status)
     {
         var droit = await GetDroitAsync(id);
-        
+
         droit.Status = status;
 
         await _repo.UpdateAsync(droit);
     }
-    
-    public async Task<List<DroitDto>> SearchDroitsAsync(string query) => await _repo.SearchDroitsAsync(query);
-    public async Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form, SearchOptions searchOptions)
+
+
+    public async Task<List<DroitDto>> SearchDroitsAsync(string query) =>
+        await _repo.SearchDroitsAsync(query);
+
+
+    public async Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form,
+        SearchOptions searchOptions)
     {
-
-        var query = _repo.GetDroitsWithAssociations();
-
-        query = query.Where(d =>
-            SearchHelper.Matches(form.Reference, d.Reference) && 
-            d.Created.IsBetween(form.CreatedFrom, form.CreatedTo) &&
-            d.LastModified.IsBetween(form.LastModifiedFrom, form.LastModifiedTo) &&
-            (form.StatusList.IsNullOrEmpty() || form.StatusList.Contains(d.Status)) && 
-            d.ReportedDate.IsBetween(form.ReportedDateFrom, form.ReportedDateTo) &&
-            d.DateFound.IsBetween(form.DateFoundFrom, form.DateFoundTo) && 
-            SearchHelper.Matches(form.IsHazardousFind, d.IsHazardousFind) &&
-            SearchHelper.Matches(form.IsDredge, d.IsDredge) 
-        );
+        var query = _repo.GetDroitsWithAssociations()
+            .OrderByDescending(d => d.LastModified)
+            //Droit Report Filters
+            .Where(d =>
+                SearchHelper.Matches(form.Reference, d.Reference) &&
+                d.Created.IsBetween(form.CreatedFrom, form.CreatedTo) &&
+                d.LastModified.IsBetween(form.LastModifiedFrom,
+                    form.LastModifiedTo) &&
+                ( form.StatusList.IsNullOrEmpty() ||
+                  form.StatusList.Contains(d.Status) ) &&
+                d.ReportedDate.IsBetween(form.ReportedDateFrom,
+                    form.ReportedDateTo) &&
+                d.DateFound.IsBetween(form.DateFoundFrom, form.DateFoundTo) &&
+                SearchHelper.Matches(form.IsHazardousFind,
+                    d.IsHazardousFind) &&
+                SearchHelper.Matches(form.IsDredge, d.IsDredge))
+            //Salvage Filters
+            .Where(d =>
+                    SearchHelper.Matches(form.SalvageAwardClaimed, d.SalvageAwardClaimed) &&
+                    SearchHelper.Matches(form.ServicesDescription, d.ServicesDescription) &&
+                    SearchHelper.Matches(form.ServicesDuration, d.ServicesDuration) &&
+                    // SearchHelper.Matches(form.ServicesEstimatedCost, d.ServicesEstimatedCost) &&//float, between x, y? 
+                    SearchHelper.Matches(form.MMOLicenceRequired, d.MMOLicenceRequired) &&
+                    SearchHelper.Matches(form.MMOLicenceProvided, d.MMOLicenceProvided)
+                    // SearchHelper.Matches(form.SalvageClaimAwarded, d.SalvageClaimAwarded) &&//float, between x, y?)
+            )
+            //Legacy Filters
+            .Where(d =>
+                SearchHelper.Matches(form.District, d.District) &&
+                SearchHelper.Matches(form.LegacyFileReference, d.LegacyFileReference) &&
+                SearchHelper.Matches(form.GoodsDischargedBy, d.GoodsDischargedBy) &&
+                SearchHelper.Matches(form.DateDelivered, d.DateDelivered) &&
+                SearchHelper.Matches(form.Agent, d.Agent) &&
+                SearchHelper.Matches(form.RecoveredFromLegacy, d.RecoveredFromLegacy) &&
+                SearchHelper.Matches(form.ImportedFromLegacy, d.ImportedFromLegacy))
+            .Select(d => new DroitView(d));
 
 
         var pagedDroits =
-            await ServiceHelper.GetPagedResult(query.Select(d => new DroitView(d)), searchOptions);
+            await ServiceHelper.GetPagedResult(query, searchOptions);
 
         return new DroitListView(pagedDroits.Items)
         {
@@ -205,6 +240,5 @@ public class DroitService : IDroitService
             TotalCount = pagedDroits.TotalCount,
             SearchForm = form
         };
-        
     }
 }
