@@ -1,3 +1,5 @@
+using Droits.Helpers.Extensions;
+
 namespace Droits.Helpers;
 
 public static class SearchHelper
@@ -13,4 +15,16 @@ public static class SearchHelper
     {
         return !term.HasValue || value == term;
     }
+    
+    
+    // public static bool IsBetween(DateTime term, DateTime? from, DateTime to)
+    // {
+    //     return !=term.IsBetween(from, to);
+    // }
+    //
+    //
+    // public static bool IsBetween(float? term, float? from, float? to)
+    // {
+    //     return !term.HasValue || value == term;
+    // }
 }

@@ -17,8 +17,6 @@ public class DroitSearchForm
     // Base fields...
     // public WreckForm WreckForm { get; set; } = new();
 
-    [DisplayName("Is Isolated Find")]
-    public bool IsIsolatedFind { get; set; } = true;
 
     // public List<WreckMaterialForm> WreckMaterialForms { get; set; } = new();
     // public SalvorForm SalvorForm { get; set; } = new();
@@ -77,6 +75,13 @@ public class DroitSearchForm
 
     // Wreck
 
+
+    [DisplayName("Wreck Name")]
+    public string? WreckName { get; set;  }
+
+    [DisplayName("Is Isolated Find")]
+    public bool? IsIsolatedFind { get; set; }
+
     // public Guid? WreckId { get; set; }
     //
     [DisplayName("Is Hazardous Find")]
@@ -87,6 +92,8 @@ public class DroitSearchForm
 
     // Salvor
 
+    [DisplayName("Salvor Name")]
+    public string? SalvorName { get; set;  }
     // public Guid? SalvorId { get; set; }
 
 
@@ -95,7 +102,7 @@ public class DroitSearchForm
      public string? Longitude { get; set; }
 
     [DisplayName("In UK Waters")]
-    public bool InUkWaters { get; set; }
+    public bool? InUkWaters { get; set; }
 
     [DisplayName("Location Radius")]
     public int? LocationRadius { get; set; }
@@ -113,7 +120,7 @@ public class DroitSearchForm
     // Salvage
 
     [DisplayName("Salvage Award Claimed")]
-    public bool SalvageAwardClaimed { get; set; }
+    public bool? SalvageAwardClaimed { get; set; }
 
     [DisplayName("Services Description")]
     public string? ServicesDescription { get; set; }
@@ -126,10 +133,10 @@ public class DroitSearchForm
     public float? ServicesEstimatedCost { get; set; }
 
     [DisplayName("MMO Licence Required")]
-    public bool MMOLicenceRequired { get; set; }
+    public bool? MMOLicenceRequired { get; set; }
 
     [DisplayName("MMO Licence Provided")]
-    public bool MMOLicenceProvided { get; set; }
+    public bool? MMOLicenceProvided { get; set; }
 
     [DisplayName("Salvage Claim Awarded")]
     public float SalvageClaimAwarded { get; set; }
@@ -152,6 +159,6 @@ public class DroitSearchForm
     public string? RecoveredFromLegacy { get; set; }
 
     [DisplayName("Imported From Legacy")]
-    public bool ImportedFromLegacy { get; set; }
+    public bool? ImportedFromLegacy { get; set; }
 
 }

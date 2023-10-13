@@ -207,6 +207,21 @@ public class DroitService : IDroitService
                 SearchHelper.Matches(form.IsHazardousFind,
                     d.IsHazardousFind) &&
                 SearchHelper.Matches(form.IsDredge, d.IsDredge))
+            //Wreck Filters
+            .Where(d =>
+                (!form.WreckName.HasValue() ||
+                         (d.Wreck != null &&
+                                        d.Wreck.Name.HasValue() && 
+                                        SearchHelper.Matches(form.WreckName, d.Wreck.Name))) && 
+                SearchHelper.Matches(form.IsIsolatedFind, d.WreckId == null)
+            )
+            //Salvor Filters
+            .Where(d =>
+                !form.SalvorName.HasValue() ||
+                (d.Salvor != null &&
+                 d.Salvor.Name.HasValue() && 
+                 SearchHelper.Matches(form.SalvorName, d.Salvor.Name))
+            )
             //Salvage Filters
             .Where(d =>
                     SearchHelper.Matches(form.SalvageAwardClaimed, d.SalvageAwardClaimed) &&

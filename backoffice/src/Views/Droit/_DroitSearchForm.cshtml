@@ -11,6 +11,12 @@
     @*     <button class="nav-link" id="location-tab" data-bs-toggle="tab" data-bs-target="#location" type="button" role="tab" aria-controls="location" aria-selected="false">Location</button> *@
     @* </li> *@
     <li class="nav-item" role="presentation">
+        <button class="nav-link" id="wreck-tab" data-bs-toggle="tab" data-bs-target="#wreck" type="button" role="tab" aria-controls="wreck" aria-selected="false">Wreck</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="salvor-tab" data-bs-toggle="tab" data-bs-target="#salvor" type="button" role="tab" aria-controls="salvor" aria-selected="false">Salvor</button>
+    </li>
+    <li class="nav-item" role="presentation">
         <button class="nav-link" id="salvage-tab" data-bs-toggle="tab" data-bs-target="#salvage" type="button" role="tab" aria-controls="salvage" aria-selected="false">Salvage</button>
     </li>
     <li class="nav-item" role="presentation">
@@ -161,6 +167,29 @@
         @Html.LabelFor(m => m.LocationDescription, new { @class = "col-form-label" })
         @Html.EditorFor(m => m.LocationDescription, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(m => m.LocationDescription, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="tab-pane fade" id="wreck" role="tabpanel" aria-labelledby="wreck-tab">
+    <div class="form-group">
+        @Html.LabelFor(m => m.IsIsolatedFind, new { @class = "col-form-label" })
+        @Html.DropDownListFor(m => m.IsIsolatedFind, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.IsIsolatedFind, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.WreckName, new { @class = "col-form-label" })
+        @Html.EditorFor(m => m.WreckName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.WreckName, "", new { @class = "text-danger" })
+    </div>
+  
+</div>
+
+
+<div class="tab-pane fade" id="salvor" role="tabpanel" aria-labelledby="salvor-tab">
+    <div class="form-group">
+        @Html.LabelFor(m => m.SalvorName, new { @class = "col-form-label" })
+        @Html.EditorFor(m => m.SalvorName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.SalvorName, "", new { @class = "text-danger" })
     </div>
 </div>
 
