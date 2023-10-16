@@ -48,8 +48,10 @@ public class DroitSearchForm
     public List<DroitStatus> StatusList { get; set; } = new();
     public List<int> SelectedStatusList => StatusList.Select(s => (int)s).ToList();
     
-    // [DisplayName("Assigned To")]
-    // public Guid? AssignedToUserId { get; set; }
+    [DisplayName("Assigned To")]
+    public Guid? AssignedToUserId { get; set; }
+
+    public List<SelectListItem> AssignedToUsers { get; set; } = new();
     
     [DisplayName("Reported Date From")]
     [DataType(DataType.Date)]

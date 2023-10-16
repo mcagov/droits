@@ -16,6 +16,11 @@ public static class SearchHelper
         return !term.HasValue || value == term;
     }
     
+    public static bool Matches(Guid? term, Guid? value)
+    {
+        return !term.HasValue || value == term;
+    }
+    
     
     // public static bool IsBetween(DateTime term, DateTime? from, DateTime to)
     // {

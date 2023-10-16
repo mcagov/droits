@@ -206,7 +206,8 @@ public class DroitService : IDroitService
                 d.DateFound.IsBetween(form.DateFoundFrom, form.DateFoundTo) &&
                 SearchHelper.Matches(form.IsHazardousFind,
                     d.IsHazardousFind) &&
-                SearchHelper.Matches(form.IsDredge, d.IsDredge))
+                SearchHelper.Matches(form.IsDredge, d.IsDredge) &&
+                SearchHelper.Matches(form.AssignedToUserId, d.AssignedToUserId))
             //Wreck Filters
             .Where(d =>
                 (!form.WreckName.HasValue() ||

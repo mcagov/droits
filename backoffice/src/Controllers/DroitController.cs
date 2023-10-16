@@ -245,11 +245,23 @@ public class DroitController : BaseController
 
         return form;
     }
+    
+    private async Task<List<SelectListItem>> GetAllUsers()
+    {
+        var allUsers = await _userService.GetUsersAsync();
+
+        return allUsers
+            .Select(u => new SelectListItem($"{u.Name} ({u.Email})", u.Id.ToString())).ToList();;
+    }
 
     public async Task<IActionResult> Search(SearchOptions searchOptions)
     {
         searchOptions.IncludeAssociations = true;
+        
         var model = await _service.GetDroitsListViewAsync(searchOptions);
+
+        model.SearchForm.AssignedToUsers = await GetAllUsers();
+        
         return View(model);
     }
 
@@ -262,6 +274,8 @@ public class DroitController : BaseController
         };
         
         var model = await _service.AdvancedSearchDroitsAsync(form, searchOptions);
+        
+        model.SearchForm.AssignedToUsers = await GetAllUsers();
         
         return View(nameof(Search), model);
     }
