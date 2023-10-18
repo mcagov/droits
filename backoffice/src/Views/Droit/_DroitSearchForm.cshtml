@@ -7,14 +7,17 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link active" id="droit-tab" data-bs-toggle="tab" data-bs-target="#droit" type="button" role="tab" aria-controls="droit" aria-selected="true">Droit Report</button>
     </li>
-    @* <li class="nav-item" role="presentation"> *@
-    @*     <button class="nav-link" id="location-tab" data-bs-toggle="tab" data-bs-target="#location" type="button" role="tab" aria-controls="location" aria-selected="false">Location</button> *@
-    @* </li> *@
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="salvor-tab" data-bs-toggle="tab" data-bs-target="#salvor" type="button" role="tab" aria-controls="salvor" aria-selected="false">Salvor</button>
+    </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="wreck-tab" data-bs-toggle="tab" data-bs-target="#wreck" type="button" role="tab" aria-controls="wreck" aria-selected="false">Wreck</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="salvor-tab" data-bs-toggle="tab" data-bs-target="#salvor" type="button" role="tab" aria-controls="salvor" aria-selected="false">Salvor</button>
+        <button class="nav-link" id="location-tab" data-bs-toggle="tab" data-bs-target="#location" type="button" role="tab" aria-controls="location" aria-selected="false">Location</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="wreck-materials-tab" data-bs-toggle="tab" data-bs-target="#wreck-materials" type="button" role="tab" aria-controls="wreck materials" aria-selected="false">Wreck Materials</button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="salvage-tab" data-bs-toggle="tab" data-bs-target="#salvage" type="button" role="tab" aria-controls="salvage" aria-selected="false">Salvage</button>
@@ -132,15 +135,33 @@
 </div>
 
 <div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="location-tab">
-    <div class="form-group">
-        @Html.LabelFor(m => m.Latitude, new { @class = "col-form-label" })
-        @Html.EditorFor(m => m.Latitude, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(m => m.Latitude, "", new { @class = "text-danger" })
+    <div class="row form-row">
+        <div class="col">
+            <div class="form-group">
+                @Html.EditorFor(m => m.LatitudeFrom, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.LatitudeFrom, new { @class = "col-form-label" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                @Html.EditorFor(m => m.LatitudeTo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.LatitudeTo, new { @class = "col-form-label" })
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Longitude, new { @class = "col-form-label" })
-        @Html.EditorFor(m => m.Longitude, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(m => m.Longitude, "", new { @class = "text-danger" })
+    <div class="row form-row">
+        <div class="col">
+            <div class="form-group">
+                @Html.EditorFor(m => m.LongitudeFrom, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.LongitudeFrom, new { @class = "col-form-label" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                @Html.EditorFor(m => m.LongitudeTo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.LongitudeTo, new { @class = "col-form-label" })
+            </div>
+        </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.InUkWaters, new { @class = "col-form-label" })
@@ -189,6 +210,14 @@
         @Html.LabelFor(m => m.SalvorName, new { @class = "col-form-label" })
         @Html.EditorFor(m => m.SalvorName, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(m => m.SalvorName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="tab-pane fade" id="wreck-materials" role="tabpanel" aria-labelledby="wreck-materials-tab">
+    <div class="form-group">
+        @Html.LabelFor(m => m.WreckMaterialName, new { @class = "col-form-label" })
+        @Html.EditorFor(m => m.WreckMaterialName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.WreckMaterialName, "", new { @class = "text-danger" })
     </div>
 </div>
 

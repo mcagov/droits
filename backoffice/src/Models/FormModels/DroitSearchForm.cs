@@ -100,8 +100,17 @@ public class DroitSearchForm
 
 
     // Location
-     public string? Latitude { get; set; }
-     public string? Longitude { get; set; }
+    
+    [DisplayName("Latitude From")]
+    public float? LatitudeFrom { get; set; }
+    
+    [DisplayName("Latitude To")]
+    public float? LatitudeTo { get; set; }
+    [DisplayName("Longitude From")]
+    public float? LongitudeFrom { get; set; }
+    
+    [DisplayName("Longitude To")]
+    public float? LongitudeTo { get; set; }
 
     [DisplayName("In UK Waters")]
     public bool? InUkWaters { get; set; }
@@ -117,8 +126,12 @@ public class DroitSearchForm
 
     [DisplayName("Location Description")]
     public string? LocationDescription { get; set; } = string.Empty;
+    
+    // Wreck Material
 
-
+    [DisplayName("Wreck Material Name")]
+    public string? WreckMaterialName { get; set; } = string.Empty;
+    
     // Salvage
 
     [DisplayName("Salvage Award Claimed")]

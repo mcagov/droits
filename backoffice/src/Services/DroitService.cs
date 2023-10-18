@@ -223,6 +223,15 @@ public class DroitService : IDroitService
                  d.Salvor.Name.HasValue() && 
                  SearchHelper.Matches(form.SalvorName, d.Salvor.Name))
             )
+            //Location Filters
+            .Where(d =>
+                SearchHelper.IsBetween(float.Parse(d.Latitude),form.LatitudeFrom,form.LatitudeTo) &&
+                SearchHelper.IsBetween(float.Parse(d.Longitude),form.LongitudeFrom,form.LongitudeTo) &&
+                SearchHelper.Matches(form.InUkWaters,d.InUkWaters) &&
+                SearchHelper.Matches(form.RecoveredFrom,d.RecoveredFrom) &&
+                SearchHelper.Matches(form.LocationDescription,d.LocationDescription)
+                )
+            //Wreck Material Filters
             //Salvage Filters
             .Where(d =>
                     SearchHelper.Matches(form.SalvageAwardClaimed, d.SalvageAwardClaimed) &&
