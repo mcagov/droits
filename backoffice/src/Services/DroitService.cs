@@ -225,22 +225,36 @@ public class DroitService : IDroitService
             )
             //Location Filters
             .Where(d =>
-                SearchHelper.IsBetween(float.Parse(d.Latitude),form.LatitudeFrom,form.LatitudeTo) &&
-                SearchHelper.IsBetween(float.Parse(d.Longitude),form.LongitudeFrom,form.LongitudeTo) &&
-                SearchHelper.Matches(form.InUkWaters,d.InUkWaters) &&
-                SearchHelper.Matches(form.RecoveredFrom,d.RecoveredFrom) &&
-                SearchHelper.Matches(form.LocationDescription,d.LocationDescription)
-                )
+                // long and lat to use location radius in calculation (method on droit data)
+            SearchHelper.IsBetween(float.Parse(d.Latitude),form.LatitudeFrom,form.LatitudeTo) &&
+            SearchHelper.IsBetween(float.Parse(d.Longitude),form.LongitudeFrom,form.LongitudeTo) &&
+            SearchHelper.IsBetween(d.Depth,form.DepthFrom,form.DepthTo) &&
+            SearchHelper.Matches(form.InUkWaters,d.InUkWaters) &&
+            SearchHelper.Matches(form.RecoveredFrom,d.RecoveredFrom) &&
+            SearchHelper.Matches(form.LocationDescription,d.LocationDescription)
+            )
             //Wreck Material Filters
+            .Where(d =>
+                (form.WreckMaterial.IsNullOrEmpty() && form.QuantityFrom == null && form.QuantityTo == null &&
+                 form.ValueFrom == null && form.ValueTo == null &&
+                 form.ReceiverValuationFrom == null && form.ReceiverValuationTo == null) ||
+                (d.WreckMaterials.Any(wm => SearchHelper.Matches(form.WreckMaterial,wm.Name)) ||
+                 d.WreckMaterials.Any(wm => SearchHelper.Matches(form.WreckMaterial,wm.Description))) &&
+                d.WreckMaterials.Any(wm => SearchHelper.IsBetween(wm.Quantity,form.QuantityFrom,form.QuantityTo)) &&
+                d.WreckMaterials.Any(wm => SearchHelper.IsBetween(wm.Value,form.ValueFrom,form.ValueTo)) &&
+                d.WreckMaterials.Any(wm => SearchHelper.IsBetween(wm.ReceiverValuation,form.ReceiverValuationFrom,
+                    form.ReceiverValuationTo))
+            
+            )
             //Salvage Filters
             .Where(d =>
                     SearchHelper.Matches(form.SalvageAwardClaimed, d.SalvageAwardClaimed) &&
                     SearchHelper.Matches(form.ServicesDescription, d.ServicesDescription) &&
                     SearchHelper.Matches(form.ServicesDuration, d.ServicesDuration) &&
-                    // SearchHelper.Matches(form.ServicesEstimatedCost, d.ServicesEstimatedCost) &&//float, between x, y? 
+                    SearchHelper.IsBetween(d.ServicesEstimatedCost,form.ServicesEstimatedCostFrom,form.ServicesEstimatedCostTo) &&
                     SearchHelper.Matches(form.MMOLicenceRequired, d.MMOLicenceRequired) &&
-                    SearchHelper.Matches(form.MMOLicenceProvided, d.MMOLicenceProvided)
-                    // SearchHelper.Matches(form.SalvageClaimAwarded, d.SalvageClaimAwarded) &&//float, between x, y?)
+                    SearchHelper.Matches(form.MMOLicenceProvided, d.MMOLicenceProvided) &&
+                    SearchHelper.IsBetween(d.SalvageClaimAwarded,form.SalvageClaimAwardedFrom,form.SalvageClaimAwardedTo)
             )
             //Legacy Filters
             .Where(d =>

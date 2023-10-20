@@ -260,7 +260,11 @@ public class DroitController : BaseController
         
         var model = await _service.GetDroitsListViewAsync(searchOptions);
 
+        var unassigned = new SelectListItem("Unassigned", new Guid().ToString());
+
         model.SearchForm.AssignedToUsers = await GetAllUsers();
+        
+        model.SearchForm.AssignedToUsers.Add(unassigned);
         
         return View(model);
     }
@@ -275,7 +279,11 @@ public class DroitController : BaseController
         
         var model = await _service.AdvancedSearchDroitsAsync(form, searchOptions);
         
+        var unassigned = new SelectListItem("Unassigned", new Guid().ToString());
+
         model.SearchForm.AssignedToUsers = await GetAllUsers();
+        
+        model.SearchForm.AssignedToUsers.Add(unassigned);
         
         return View(nameof(Search), model);
     }

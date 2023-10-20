@@ -35,6 +35,11 @@ public class SearchHelperTests
     {
         Assert.True(SearchHelper.Matches(null,"foo"));
     }
+     [Fact]
+    public void Matches_WithAnEmptyStringAndNull_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.Matches("",null));
+    }
     [Fact]
     public void Matches_WithIdenticalBooleans_ShouldReturnTrue()
     {
@@ -49,5 +54,26 @@ public class SearchHelperTests
     public void Matches_WithANullAndBoolean_ShouldReturnTrue()
     {
         Assert.True(SearchHelper.Matches(null,true));
+    }
+    [Fact]
+    public void IsBetween_WithValueBetweenTwoFloats_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.IsBetween((float)0.2,(float)0.1,(float)0.3));
+    }
+    [Fact]
+    public void IsBetween_WithValueNotBetweenTwoFloats_ShouldReturnFalse()
+    {
+        Assert.False(SearchHelper.IsBetween((float)0.5,(float)0.1,(float)0.3));
+    }
+    [Fact]
+    public void IsBetween_WithValueBetweenAFloatAndNull_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.IsBetween((float)0.2,(float)0.1,null));
+        Assert.True(SearchHelper.IsBetween((float)0.2,null,(float)0.3));
+    }
+    [Fact]
+    public void IsBetween_WithTwoNulls_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.IsBetween((float)0.2,null,null));
     }
 }
