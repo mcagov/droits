@@ -135,6 +135,9 @@ public class DroitSearchForm
 
     [DisplayName("Wreck Material")]
     public string? WreckMaterial { get; set; } = string.Empty;
+
+    [DisplayName("Wreck Material Owner")]
+    public string? WreckMaterialOwner { get; set; } = string.Empty;
     
     [DisplayName("Stored at Salvor Address")]
     public bool? StoredAtSalvorAddress { get; set; }

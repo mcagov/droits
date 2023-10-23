@@ -223,6 +223,16 @@
         @Html.EditorFor(m => m.WreckMaterial, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(m => m.WreckMaterial, "", new { @class = "text-danger" })
     </div>
+    <div class="form-group mb-3">
+        @Html.LabelFor(m => m.WreckMaterialOwner, new { @class = "col-form-label" })
+        @Html.EditorFor(m => m.WreckMaterialOwner, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.WreckMaterialOwner, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group mb-3">
+        @Html.LabelFor(m => m.ValueConfirmed, new { @class = "col-form-label" })
+        @Html.EditorFor(m => m.ValueConfirmed, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.ValueConfirmed, "", new { @class = "text-danger" })
+    </div>
     <div class="row form-row">
         <div class="col">
             <div class="form-floating mb-3">

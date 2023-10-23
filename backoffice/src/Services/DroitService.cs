@@ -237,9 +237,12 @@ public class DroitService : IDroitService
             .Where(d =>
                 (form.WreckMaterial.IsNullOrEmpty() && form.QuantityFrom == null && form.QuantityTo == null &&
                  form.ValueFrom == null && form.ValueTo == null &&
-                 form.ReceiverValuationFrom == null && form.ReceiverValuationTo == null) ||
+                 form.ReceiverValuationFrom == null && form.ReceiverValuationTo == null && form.WreckMaterialOwner.IsNullOrEmpty() &&
+                 form.ValueConfirmed == null) ||
                 (d.WreckMaterials.Any(wm => SearchHelper.Matches(form.WreckMaterial,wm.Name)) ||
                  d.WreckMaterials.Any(wm => SearchHelper.Matches(form.WreckMaterial,wm.Description))) &&
+                d.WreckMaterials.Any(wm => SearchHelper.Matches(form.WreckMaterialOwner,wm.WreckMaterialOwner)) &&
+                d.WreckMaterials.Any(wm => SearchHelper.Matches(form.ValueConfirmed,wm.ValueConfirmed)) &&
                 d.WreckMaterials.Any(wm => SearchHelper.IsBetween(wm.Quantity,form.QuantityFrom,form.QuantityTo)) &&
                 d.WreckMaterials.Any(wm => SearchHelper.IsBetween(wm.Value,form.ValueFrom,form.ValueTo)) &&
                 d.WreckMaterials.Any(wm => SearchHelper.IsBetween(wm.ReceiverValuation,form.ReceiverValuationFrom,
