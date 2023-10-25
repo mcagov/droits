@@ -10,10 +10,19 @@
 
 <div class="row">
     <div class="col">
-        <h4>@ViewData["Title"]</h4>
+        <h4 class="d-inline">@ViewData["Title"]</h4>
+        <a class="js-toggle-salvor-search d-inline ms-2">Search</a>
     </div>
     <div class="col">
         <a class="btn btn-primary float-end" asp-action="Add">Add Salvor</a>
+    </div>
+</div>
+
+<div class="form-search js-salvor-search">
+    <div class="card mt-2">
+        <div class="card-body">
+            <partial name="_SalvorSearchForm" model="@Model.SearchForm"/>
+        </div>
     </div>
 </div>
 

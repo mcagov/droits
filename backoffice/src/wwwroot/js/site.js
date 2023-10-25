@@ -23,11 +23,17 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeDroitView();
     }
     
-    const droitSearchFormButton = document.querySelector('.js-toggle-droit-search');
-    droitSearchFormButton.addEventListener('click', function (){
-        const droitSearchForm = document.querySelector('.js-droit-search');
-        droitSearchForm.classList.toggle('d-none');
-    });
+    // const droitSearchFormButton = document.querySelector('.js-toggle-droit-search');
+    // droitSearchFormButton.addEventListener('click', function (){
+    //     const droitSearchForm = document.querySelector('.js-droit-search');
+    //     droitSearchForm.classList.toggle('d-none');
+    // });
+    //
+    // const salvorSearchFormButton = document.querySelector('.js-toggle-salvor-search');
+    // salvorSearchFormButton.addEventListener('click', function (){
+    //     const salvorSearchForm = document.querySelector('.js-salvor-search');
+    //     salvorSearchForm.classList.toggle('d-none');
+    // });
 
     initializeSearchBar();
     initializeMessageBanner();
