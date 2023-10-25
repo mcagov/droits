@@ -182,11 +182,24 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.RecoveredFrom, new { @class = "col-form-label" })
-        @Html.DropDownListFor(m => m.RecoveredFrom, Html.GetEnumSelectList(typeof(RecoveredFrom)), "Select.....", new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.RecoveredFrom, "", new { @class = "text-danger" })
+    
+    <div class="form-floating mb-3 status-select">
+        <select class="form-control js-search-droit-recovered-from" id="RecoveredFromList" multiple="multiple" name="RecoveredFromList" placeholder="">
+            @foreach (var o in Html.GetEnumSelectList(typeof(RecoveredFrom)))
+            {
+                if (@Model.SelectedRecoveredFromList.Contains(int.Parse(o.Value)))
+                {
+                    <option value="@o.Value" selected="selected">@o.Text</option>
+                }
+                else
+                {
+                    <option value="@o.Value">@o.Text</option>
+        
+                }
+            }
+        </select>
     </div>
+
     <div class="form-group">
         @Html.LabelFor(m => m.LocationDescription, new { @class = "col-form-label" })
         @Html.EditorFor(m => m.LocationDescription, new { htmlAttributes = new { @class = "form-control" } })

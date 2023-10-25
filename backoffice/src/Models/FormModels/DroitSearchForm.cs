@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Droits.Models.FormModels;
 
@@ -45,7 +46,7 @@ public class DroitSearchForm
     public DateTime? LastModifiedTo { get; set; }
 
 
-    public List<DroitStatus> StatusList { get; set; } = new();
+    public List<DroitStatus> StatusList { get; set; }
     public List<int> SelectedStatusList => StatusList.Select(s => ( int )s).ToList();
 
     [DisplayName("Assigned To")]
@@ -126,7 +127,9 @@ public class DroitSearchForm
     public float? DepthTo { get; set; }
 
     [DisplayName("Recovered From")]
-    public RecoveredFrom? RecoveredFrom { get; set; }
+    public List<RecoveredFrom> RecoveredFromList { get; set; }
+    public List<int> SelectedRecoveredFromList => RecoveredFromList.Select(r => ( int )r).ToList();
+
 
     [DisplayName("Location Description")]
     public string? LocationDescription { get; set; } = string.Empty;
@@ -215,5 +218,18 @@ public class DroitSearchForm
 
     [DisplayName("Imported From Legacy")]
     public bool? ImportedFromLegacy { get; set; }
+
+    public bool IgnoreWreckMaterialSearch => new List<bool>
+    {
+        WreckMaterial.IsNullOrEmpty(),
+        QuantityFrom == null,
+        QuantityTo == null,
+        ValueFrom == null,
+        ValueTo == null,
+        ReceiverValuationFrom == null,
+        ReceiverValuationTo == null,
+        WreckMaterialOwner.IsNullOrEmpty(),
+        ValueConfirmed == null
+    }.All(result => result);
 }
     

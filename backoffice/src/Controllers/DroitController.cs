@@ -232,12 +232,11 @@ public class DroitController : BaseController
 
     private async Task<DroitForm> PopulateDroitFormAsync(DroitForm form)
     {
-        var allUsers = await _userService.GetUsersAsync();
+        var allUsers = await _userService.GetUserSelectListAsync();
         var allWrecks = await _wreckService.GetWrecksAsync();
         var allSalvors = await _salvorService.GetSalvorsAsync();
 
-        form.AllUsers = allUsers
-            .Select(u => new SelectListItem($"{u.Name} ({u.Email})", u.Id.ToString())).ToList();
+        form.AllUsers = allUsers;
         form.AllWrecks =
             allWrecks.Select(w => new SelectListItem(w.Name, w.Id.ToString())).ToList();
         form.AllSalvors = allSalvors
@@ -246,13 +245,16 @@ public class DroitController : BaseController
         return form;
     }
     
-    private async Task<List<SelectListItem>> GetAllUsers()
+    private async Task<DroitSearchForm> PopulateDroitSearchFormAsync(DroitSearchForm form)
     {
-        var allUsers = await _userService.GetUsersAsync();
+        var allUsers = await _userService.GetUserSelectListAsync();
+        allUsers.Add(new SelectListItem("Unassigned", default(Guid).ToString()));
+        
+        form.AssignedToUsers = allUsers;
 
-        return allUsers
-            .Select(u => new SelectListItem($"{u.Name} ({u.Email})", u.Id.ToString())).ToList();;
+        return form;
     }
+
 
     public async Task<IActionResult> Search(SearchOptions searchOptions)
     {
@@ -260,11 +262,7 @@ public class DroitController : BaseController
         
         var model = await _service.GetDroitsListViewAsync(searchOptions);
 
-        var unassigned = new SelectListItem("Unassigned", new Guid().ToString());
-
-        model.SearchForm.AssignedToUsers = await GetAllUsers();
-        
-        model.SearchForm.AssignedToUsers.Add(unassigned);
+        model.SearchForm = await PopulateDroitSearchFormAsync(model.SearchForm);
         
         return View(model);
     }
@@ -279,12 +277,8 @@ public class DroitController : BaseController
         
         var model = await _service.AdvancedSearchDroitsAsync(form, searchOptions);
         
-        var unassigned = new SelectListItem("Unassigned", new Guid().ToString());
+        model.SearchForm = await PopulateDroitSearchFormAsync(model.SearchForm);
 
-        model.SearchForm.AssignedToUsers = await GetAllUsers();
-        
-        model.SearchForm.AssignedToUsers.Add(unassigned);
-        
         return View(nameof(Search), model);
     }
 }

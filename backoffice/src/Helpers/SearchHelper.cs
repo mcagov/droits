@@ -19,7 +19,7 @@ public static class SearchHelper
     public static bool Matches(Guid? term, Guid? value)
     {
         return !term.HasValue || value == term ||
-               ( term == new Guid() && value == null );
+               ( term == default(Guid) && value == null );
     }
     
     public static bool Matches(Enum? term, Enum value)

@@ -196,18 +196,18 @@ public class DroitService : IDroitService
             //Droit Report Filters
             .Where(d =>
                 SearchHelper.Matches(form.Reference, d.Reference) &&
-                d.Created.IsBetween(form.CreatedFrom, form.CreatedTo) &&
-                d.LastModified.IsBetween(form.LastModifiedFrom,
-                    form.LastModifiedTo) &&
-                ( form.StatusList.IsNullOrEmpty() ||
-                  form.StatusList.Contains(d.Status) ) &&
-                d.ReportedDate.IsBetween(form.ReportedDateFrom,
-                    form.ReportedDateTo) &&
-                d.DateFound.IsBetween(form.DateFoundFrom, form.DateFoundTo) &&
-                SearchHelper.Matches(form.IsHazardousFind,
-                    d.IsHazardousFind) &&
-                SearchHelper.Matches(form.IsDredge, d.IsDredge) &&
-                SearchHelper.Matches(form.AssignedToUserId, d.AssignedToUserId))
+                SearchHelper.IsBetween(d.Created,form.CreatedFrom, form.CreatedTo) &&
+                                       SearchHelper.IsBetween(d.LastModified,form.LastModifiedFrom,
+                                           form.LastModifiedTo) &&
+                                       ( form.StatusList.IsNullOrEmpty() ||
+                                         form.StatusList.Contains(d.Status) ) &&
+                                       SearchHelper.IsBetween(d.ReportedDate,form.ReportedDateFrom,
+                                           form.ReportedDateTo) &&
+                                       SearchHelper.IsBetween(d.DateFound,form.DateFoundFrom, form.DateFoundTo) &&
+                                       SearchHelper.Matches(form.IsHazardousFind,
+                                           d.IsHazardousFind) &&
+                                       SearchHelper.Matches(form.IsDredge, d.IsDredge) &&
+                                       SearchHelper.Matches(form.AssignedToUserId, d.AssignedToUserId))
             //Wreck Filters
             .Where(d =>
                 (!form.WreckName.HasValue() ||
@@ -230,17 +230,14 @@ public class DroitService : IDroitService
             SearchHelper.IsBetween(float.Parse(d.Longitude),form.LongitudeFrom,form.LongitudeTo) &&
             SearchHelper.IsBetween(d.Depth,form.DepthFrom,form.DepthTo) &&
             SearchHelper.Matches(form.InUkWaters,d.InUkWaters) &&
-            SearchHelper.Matches(form.RecoveredFrom,d.RecoveredFrom) &&
+            ( form.RecoveredFromList.IsNullOrEmpty() ||
+              (d.RecoveredFrom.HasValue && form.RecoveredFromList.Contains(d.RecoveredFrom.Value) )) &&
             SearchHelper.Matches(form.LocationDescription,d.LocationDescription)
             )
             //Wreck Material Filters
             .Where(d =>
-                (form.WreckMaterial.IsNullOrEmpty() && form.QuantityFrom == null && form.QuantityTo == null &&
-                 form.ValueFrom == null && form.ValueTo == null &&
-                 form.ReceiverValuationFrom == null && form.ReceiverValuationTo == null && form.WreckMaterialOwner.IsNullOrEmpty() &&
-                 form.ValueConfirmed == null) ||
-                (d.WreckMaterials.Any(wm => SearchHelper.Matches(form.WreckMaterial,wm.Name)) ||
-                 d.WreckMaterials.Any(wm => SearchHelper.Matches(form.WreckMaterial,wm.Description))) &&
+                form.IgnoreWreckMaterialSearch ||
+                d.WreckMaterials.Any(wm => SearchHelper.Matches(form.WreckMaterial,$"{wm.Name} {wm.Description}")) &&
                 d.WreckMaterials.Any(wm => SearchHelper.Matches(form.WreckMaterialOwner,wm.WreckMaterialOwner)) &&
                 d.WreckMaterials.Any(wm => SearchHelper.Matches(form.ValueConfirmed,wm.ValueConfirmed)) &&
                 d.WreckMaterials.Any(wm => SearchHelper.IsBetween(wm.Quantity,form.QuantityFrom,form.QuantityTo)) &&
