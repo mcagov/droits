@@ -46,7 +46,7 @@ public class DroitSearchForm
     public DateTime? LastModifiedTo { get; set; }
 
 
-    public List<DroitStatus> StatusList { get; set; }
+    public List<DroitStatus> StatusList { get; set; } = new();
     public List<int> SelectedStatusList => StatusList.Select(s => ( int )s).ToList();
 
     [DisplayName("Assigned To")]
@@ -127,7 +127,7 @@ public class DroitSearchForm
     public float? DepthTo { get; set; }
 
     [DisplayName("Recovered From")]
-    public List<RecoveredFrom> RecoveredFromList { get; set; }
+    public List<RecoveredFrom> RecoveredFromList { get; set; } = new();
     public List<int> SelectedRecoveredFromList => RecoveredFromList.Select(r => ( int )r).ToList();
 
 

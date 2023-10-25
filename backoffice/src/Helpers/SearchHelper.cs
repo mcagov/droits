@@ -24,7 +24,7 @@ public static class SearchHelper
     
     public static bool Matches(Enum? term, Enum value)
     {
-        return term == null ||value.Equals(term);
+        return term == null || value.Equals(term);
     }
     
     
@@ -34,8 +34,8 @@ public static class SearchHelper
     }
     
     
-    public static bool IsBetween(float? value, float? from, float? to)
+    public static bool IsBetween(float? term, float? from, float? to)
     {
-        return value.HasValue && ( value >= from || from == null ) && ( value <= to || to == null );
+        return !term.HasValue || (( term >= from || from == null ) && ( term <= to || to == null ));
     }
 }

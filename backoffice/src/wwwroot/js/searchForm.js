@@ -16,15 +16,19 @@ export function initializeSearchForm() {
    
 }
 
-
-
-
 function initializeDroitSearchForm(){
      new Choices('.js-search-droit-status', {
         removeItems: true,
         removeItemButton: true,
         placeholder: true,
-        placeholderValue: 'Select status',
+        placeholderValue: 'Select Status',
+    });
+
+    new Choices('.js-search-droit-recovered-from', {
+        removeItems: true,
+        removeItemButton: true,
+        placeholder: true,
+        placeholderValue: 'Select Recovered From',
     });
 
     new Choices('.js-select-assigned-user', {
@@ -37,14 +41,9 @@ function initializeDroitSearchForm(){
     
 
     droitSearchFormButton.addEventListener('click', function (){
-        console.log("droit search button clicked")
         const droitSearchForm = document.querySelector('.js-droit-search');
         droitSearchForm.classList.toggle('d-none');
     });
-    
-
-
-    // js-search-droit-recovered-from
 }
 
 
@@ -54,7 +53,6 @@ function initializeSalvorSearchForm(){
     
     
     salvorSearchFormButton.addEventListener('click', function (){
-        console.log("salvor search button clicked")
         const salvorSearchForm = document.querySelector('.js-salvor-search');
         salvorSearchForm.classList.toggle('d-none');
     });

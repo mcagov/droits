@@ -148,8 +148,8 @@ public class DroitView : BaseEntityView
 
 
     // Location
-    public string? Latitude { get; }
-    public string? Longitude { get; }
+    public float? Latitude { get; }
+    public float? Longitude { get; }
 
     [DisplayName("In UK Waters")]
     public bool InUkWaters { get; }

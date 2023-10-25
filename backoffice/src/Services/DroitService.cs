@@ -226,13 +226,13 @@ public class DroitService : IDroitService
             //Location Filters
             .Where(d =>
                 // long and lat to use location radius in calculation (method on droit data)
-            SearchHelper.IsBetween(float.Parse(d.Latitude),form.LatitudeFrom,form.LatitudeTo) &&
-            SearchHelper.IsBetween(float.Parse(d.Longitude),form.LongitudeFrom,form.LongitudeTo) &&
-            SearchHelper.IsBetween(d.Depth,form.DepthFrom,form.DepthTo) &&
-            SearchHelper.Matches(form.InUkWaters,d.InUkWaters) &&
-            ( form.RecoveredFromList.IsNullOrEmpty() ||
-              (d.RecoveredFrom.HasValue && form.RecoveredFromList.Contains(d.RecoveredFrom.Value) )) &&
-            SearchHelper.Matches(form.LocationDescription,d.LocationDescription)
+                SearchHelper.IsBetween(d.Latitude,form.LatitudeFrom,form.LatitudeTo) &&
+                SearchHelper.IsBetween(d.Longitude,form.LongitudeFrom,form.LongitudeTo) &&
+                SearchHelper.IsBetween(d.Depth,form.DepthFrom,form.DepthTo) &&
+                SearchHelper.Matches(form.InUkWaters,d.InUkWaters) &&
+                ( form.RecoveredFromList.IsNullOrEmpty() ||
+                  (d.RecoveredFrom.HasValue && form.RecoveredFromList.Contains(d.RecoveredFrom.Value) )) &&
+                SearchHelper.Matches(form.LocationDescription,d.LocationDescription)
             )
             //Wreck Material Filters
             .Where(d =>

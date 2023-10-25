@@ -37,9 +37,14 @@ public class DroitController : BaseController
     public async Task<IActionResult> Index(SearchOptions searchOptions)
     {
         searchOptions.IncludeAssociations = true;
+        
         var model = await _service.GetDroitsListViewAsync(searchOptions);
+
+        model.SearchForm = await PopulateDroitSearchFormAsync(model.SearchForm);
+        
         return View(model);
     }
+
 
 
     [HttpGet]
@@ -256,16 +261,6 @@ public class DroitController : BaseController
     }
 
 
-    public async Task<IActionResult> Search(SearchOptions searchOptions)
-    {
-        searchOptions.IncludeAssociations = true;
-        
-        var model = await _service.GetDroitsListViewAsync(searchOptions);
-
-        model.SearchForm = await PopulateDroitSearchFormAsync(model.SearchForm);
-        
-        return View(model);
-    }
 
     public async Task<IActionResult> SearchDroits(DroitSearchForm form)
     {
@@ -279,6 +274,6 @@ public class DroitController : BaseController
         
         model.SearchForm = await PopulateDroitSearchFormAsync(model.SearchForm);
 
-        return View(nameof(Search), model);
+        return View(nameof(Index), model);
     }
 }
