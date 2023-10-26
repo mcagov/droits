@@ -1,7 +1,7 @@
 import Choices from "choices.js";
 
 
-export function initializeSearchForm() {
+export function initializeSearchForms() {
 
     
     const droitSearchFormElements = document.querySelectorAll('.js-droit-search');

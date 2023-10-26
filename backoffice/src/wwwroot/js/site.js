@@ -5,7 +5,7 @@ import {confirmDialog} from './confirmDialog.js';
 import {initializeDroitForm, initializeDroitView} from './droitForm.js';
 import {initializeMessageBanner} from "./messageBanner";
 import {initializeSearchBar} from "./searchBar";
-import {initializeSearchForm} from "./searchForm";
+import {initializeSearchForm} from "./searchForms";
 import Choices from "choices.js";
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -22,22 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (droitViewElements.length > 0) {
         initializeDroitView();
     }
-    
-    // const droitSearchFormButton = document.querySelector('.js-toggle-droit-search');
-    // droitSearchFormButton.addEventListener('click', function (){
-    //     const droitSearchForm = document.querySelector('.js-droit-search');
-    //     droitSearchForm.classList.toggle('d-none');
-    // });
-    //
-    // const salvorSearchFormButton = document.querySelector('.js-toggle-salvor-search');
-    // salvorSearchFormButton.addEventListener('click', function (){
-    //     const salvorSearchForm = document.querySelector('.js-salvor-search');
-    //     salvorSearchForm.classList.toggle('d-none');
-    // });
 
     initializeSearchBar();
     initializeMessageBanner();
-    initializeSearchForm();
+    initializeSearchForms();
     
 });
 

@@ -22,14 +22,24 @@ public static class SearchHelper
                ( term == default(Guid) && value == null );
     }
     
-    public static bool IsBetween(DateTime? term, DateTime? from, DateTime? to)
+    public static bool IsBetween(DateTime? value, DateTime? from, DateTime? to)
     {
-        return !term.HasValue || term.Value.IsBetween(from, to);
+        if ( from == null && to == null )
+        {
+            return true;
+        }
+        
+        return value.HasValue && value.Value.IsBetween(from, to);
     }
     
     
-    public static bool IsBetween(float? term, float? from, float? to)
+    public static bool IsBetween(float? value, float? from, float? to)
     {
-        return !term.HasValue || (( term >= from || from == null ) && ( term <= to || to == null ));
+        if ( from == null && to == null )
+        {
+            return true;
+        }
+        
+        return value.HasValue && ( value.Value >= from || from == null ) && ( value.Value <= to || to == null );
     }
 }
