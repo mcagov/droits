@@ -28,9 +28,9 @@ public static class SearchHelper
     }
     
     
-    public static bool IsBetween(DateTime term, DateTime? from, DateTime? to)
+    public static bool IsBetween(DateTime? term, DateTime? from, DateTime? to)
     {
-        return term.IsBetween(from, to);
+        return (term >= from || from == null) && (term <= to || to == null);
     }
     
     
