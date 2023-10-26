@@ -35,6 +35,11 @@ public class SearchHelperTests
     {
         Assert.True(SearchHelper.Matches(null,"foo"));
     }
+     [Fact]
+    public void Matches_WithAnEmptyStringAndNull_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.Matches("",null));
+    }
     [Fact]
     public void Matches_WithIdenticalBooleans_ShouldReturnTrue()
     {
@@ -49,5 +54,64 @@ public class SearchHelperTests
     public void Matches_WithANullAndBoolean_ShouldReturnTrue()
     {
         Assert.True(SearchHelper.Matches(null,true));
+    }
+    [Fact]
+    public void IsBetween_WithValueBetweenTwoFloats_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.IsBetween((float)0.2,(float)0.1,(float)0.3));
+    }
+    [Fact]
+    public void IsBetween_WithValueNotBetweenTwoFloats_ShouldReturnFalse()
+    {
+        Assert.False(SearchHelper.IsBetween((float)0.5,(float)0.1,(float)0.3));
+    }
+    [Fact]
+    public void IsBetween_WithValueBetweenAFloatAndNull_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.IsBetween((float)0.2,(float)0.1,null));
+        Assert.True(SearchHelper.IsBetween((float)0.2,null,(float)0.3));
+    }
+    [Fact]
+    public void IsBetween_WithTwoNulls_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.IsBetween((float)0.2,null,null));
+    }
+    [Fact]
+    public void IsBetween_WithADateBetweenTwoDates_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.IsBetween(new DateTime(2023,10,25),new DateTime(2023,10,24),
+            new DateTime(2023,10,26)));
+    }
+    [Fact]
+    public void IsBetween_WithADateBetweenNullAndADate_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.IsBetween(new DateTime(2023,10,25),null,
+            new DateTime(2023,10,26)));
+    }
+    [Fact]
+    public void IsBetween_WithADateBetweenADateAndNull_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.IsBetween(new DateTime(2023,10,25),new DateTime(2023,10,24),
+            null));
+    }
+    [Fact]
+    public void IsBetween_WithADateAndTwoNulls_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.IsBetween(new DateTime(2023,10,25),null, null));
+    }
+    [Fact]
+    public void IsBetween_WithNullAndTwoDates_ShouldReturnFalse()
+    {
+        Assert.False(SearchHelper.IsBetween(null,new DateTime(2023,10,25), new DateTime(2023,10,26)));
+    }
+    [Fact]
+    public void IsBetween_WithAllDateTimeNulls_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.IsBetween((DateTime?)null,null, null));
+    }
+    [Fact]
+    public void IsBetween_WithAllFloatNulls_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.IsBetween((float?)null,null, null));
     }
 }

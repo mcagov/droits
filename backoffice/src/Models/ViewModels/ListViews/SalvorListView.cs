@@ -1,3 +1,5 @@
+using Droits.Models.FormModels;
+
 namespace Droits.Models.ViewModels.ListViews;
 
 public class SalvorListView : ListView<object>
@@ -11,4 +13,7 @@ public class SalvorListView : ListView<object>
     {
         Items = salvors.Cast<object>().ToList();
     }
+
+
+    public SalvorSearchForm SearchForm = new();
 }

@@ -7,14 +7,17 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link active" id="droit-tab" data-bs-toggle="tab" data-bs-target="#droit" type="button" role="tab" aria-controls="droit" aria-selected="true">Droit Report</button>
     </li>
-    @* <li class="nav-item" role="presentation"> *@
-    @*     <button class="nav-link" id="location-tab" data-bs-toggle="tab" data-bs-target="#location" type="button" role="tab" aria-controls="location" aria-selected="false">Location</button> *@
-    @* </li> *@
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="salvor-tab" data-bs-toggle="tab" data-bs-target="#salvor" type="button" role="tab" aria-controls="salvor" aria-selected="false">Salvor</button>
+    </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="wreck-tab" data-bs-toggle="tab" data-bs-target="#wreck" type="button" role="tab" aria-controls="wreck" aria-selected="false">Wreck</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="salvor-tab" data-bs-toggle="tab" data-bs-target="#salvor" type="button" role="tab" aria-controls="salvor" aria-selected="false">Salvor</button>
+        <button class="nav-link" id="location-tab" data-bs-toggle="tab" data-bs-target="#location" type="button" role="tab" aria-controls="location" aria-selected="false">Location</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="wreck-materials-tab" data-bs-toggle="tab" data-bs-target="#wreck-materials" type="button" role="tab" aria-controls="wreck materials" aria-selected="false">Wreck Materials</button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="salvage-tab" data-bs-toggle="tab" data-bs-target="#salvage" type="button" role="tab" aria-controls="salvage" aria-selected="false">Salvage</button>
@@ -64,7 +67,7 @@
         </div>
     </div>
 
-    <div class="form-floating mb-3">
+    <div class="form-floating mb-3 status-select">
         <select class="form-control js-search-droit-status" id="StatusList" multiple="multiple" name="StatusList" placeholder="">
             @foreach (var o in Html.GetEnumSelectList(typeof(DroitStatus)))
             {
@@ -81,11 +84,10 @@
         </select>
     </div>
     
-    @* <div class="form-group"> *@
-    @*     @Html.LabelFor(m => m.AssignedToUserId, "Select RoW", new { @class = "col-form-label" }) *@
-    @*     @Html.DropDownListFor(m => m.AssignedToUserId, Model.AllUsers, "Unassigned", new { @id = "js-select-user", @class = "form-control" }) *@
-    @*     @Html.ValidationMessageFor(m => m.AssignedToUserId, "", new { @class = "text-danger" }) *@
-    @* </div> *@
+    <div class="form-floating mb-3 assigned-users-select">
+        @Html.DropDownListFor(m => m.AssignedToUserId, Model.AssignedToUsers,"Select RoW", new { @id = "select-user", @class = "form-control js-select-assigned-user" })
+        @Html.ValidationMessageFor(m => m.AssignedToUserId, "", new { @class = "text-danger" })
+    </div>
     
 
     <div class="row form-row">
@@ -133,36 +135,71 @@
 </div>
 
 <div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="location-tab">
-    <div class="form-group">
-        @Html.LabelFor(m => m.Latitude, new { @class = "col-form-label" })
-        @Html.EditorFor(m => m.Latitude, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(m => m.Latitude, "", new { @class = "text-danger" })
+    <div class="row form-row">
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.LatitudeFrom, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.LatitudeFrom, new { @class = "col-form-label" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.LatitudeTo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.LatitudeTo, new { @class = "col-form-label" })
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Longitude, new { @class = "col-form-label" })
-        @Html.EditorFor(m => m.Longitude, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(m => m.Longitude, "", new { @class = "text-danger" })
+    <div class="row form-row">
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.LongitudeFrom, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.LongitudeFrom, new { @class = "col-form-label" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.LongitudeTo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.LongitudeTo, new { @class = "col-form-label" })
+            </div>
+        </div>
     </div>
-    <div class="form-group">
+    <div class="form-group mb-3">
         @Html.LabelFor(m => m.InUkWaters, new { @class = "col-form-label" })
         @Html.DropDownListFor(m => m.InUkWaters, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.InUkWaters, "", new { @class = "text-danger" })
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.LocationRadius, new { @class = "col-form-label" })
-        @Html.EditorFor(m => m.LocationRadius, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(m => m.LocationRadius, "", new { @class = "text-danger" })
+    <div class="row form-row">
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.DepthFrom, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.DepthFrom, new { @class = "col-form-label" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.DepthTo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.DepthTo, new { @class = "col-form-label" })
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Depth, new { @class = "col-form-label" })
-        @Html.EditorFor(m => m.Depth, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(m => m.Depth, "", new { @class = "text-danger" })
+    
+    <div class="form-floating mb-3 status-select">
+        <select class="form-control js-search-droit-recovered-from" id="RecoveredFromList" multiple="multiple" name="RecoveredFromList" placeholder="">
+            @foreach (var o in Html.GetEnumSelectList(typeof(RecoveredFrom)))
+            {
+                if (@Model.SelectedRecoveredFromList.Contains(int.Parse(o.Value)))
+                {
+                    <option value="@o.Value" selected="selected">@o.Text</option>
+                }
+                else
+                {
+                    <option value="@o.Value">@o.Text</option>
+        
+                }
+            }
+        </select>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.RecoveredFrom, new { @class = "col-form-label" })
-        @Html.DropDownListFor(m => m.RecoveredFrom, Html.GetEnumSelectList(typeof(RecoveredFrom)), "Select.....", new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.RecoveredFrom, "", new { @class = "text-danger" })
-    </div>
+
     <div class="form-group">
         @Html.LabelFor(m => m.LocationDescription, new { @class = "col-form-label" })
         @Html.EditorFor(m => m.LocationDescription, new { htmlAttributes = new { @class = "form-control" } })
@@ -193,6 +230,66 @@
     </div>
 </div>
 
+<div class="tab-pane fade" id="wreck-materials" role="tabpanel" aria-labelledby="wreck-materials-tab">
+    <div class="form-group mb-3">
+        @Html.LabelFor(m => m.WreckMaterial, new { @class = "col-form-label" })
+        @Html.EditorFor(m => m.WreckMaterial, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.WreckMaterial, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group mb-3">
+        @Html.LabelFor(m => m.WreckMaterialOwner, new { @class = "col-form-label" })
+        @Html.EditorFor(m => m.WreckMaterialOwner, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.WreckMaterialOwner, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group mb-3">
+        @Html.LabelFor(m => m.ValueConfirmed, new { @class = "col-form-label" })
+        @Html.EditorFor(m => m.ValueConfirmed, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.ValueConfirmed, "", new { @class = "text-danger" })
+    </div>
+    <div class="row form-row">
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.QuantityFrom, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.QuantityFrom, new { @class = "col-form-label" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.QuantityTo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.QuantityTo, new { @class = "col-form-label" })
+            </div>
+        </div>
+    </div>
+    <div class="row form-row">
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.ValueFrom, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.ValueFrom, new { @class = "col-form-label" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.ValueTo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.ValueTo, new { @class = "col-form-label" })
+            </div>
+        </div>
+    </div>
+    <div class="row form-row">
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.ReceiverValuationFrom, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.ReceiverValuationFrom, new { @class = "col-form-label" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.ReceiverValuationTo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.ReceiverValuationTo, new { @class = "col-form-label" })
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="tab-pane fade" id="salvage" role="tabpanel" aria-labelledby="salvage-tab">
     <div class="form-group">
@@ -205,30 +302,48 @@
         @Html.EditorFor(m => m.ServicesDescription, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(m => m.ServicesDescription, "", new { @class = "text-danger" })
     </div>
-    <div class="form-group">
+    <div class="form-group mb-3">
         @Html.LabelFor(m => m.ServicesDuration, new { @class = "col-form-label" })
         @Html.EditorFor(m => m.ServicesDuration, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(m => m.ServicesDuration, "", new { @class = "text-danger" })
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ServicesEstimatedCost, new { @class = "col-form-label" })
-        @Html.EditorFor(m => m.ServicesEstimatedCost, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(m => m.ServicesEstimatedCost, "", new { @class = "text-danger" })
+    <div class="row form-row">
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.ServicesEstimatedCostFrom, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.ServicesEstimatedCostFrom, new { @class = "col-form-label" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.ServicesEstimatedCostTo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.ServicesEstimatedCostTo, new { @class = "col-form-label" })
+            </div>
+        </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.MMOLicenceRequired, new { @class = "col-form-label" })
         @Html.DropDownListFor(m => m.MMOLicenceRequired, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.MMOLicenceRequired, "", new { @class = "text-danger" })
     </div>
-    <div class="form-group">
+    <div class="form-group mb-3">
         @Html.LabelFor(m => m.MMOLicenceProvided, new { @class = "col-form-label" })
         @Html.DropDownListFor(m => m.MMOLicenceProvided, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.MMOLicenceProvided, "", new { @class = "text-danger" })
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.SalvageClaimAwarded, new { @class = "col-form-label" })
-        @Html.EditorFor(m => m.SalvageClaimAwarded, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(m => m.SalvageClaimAwarded, "", new { @class = "text-danger" })
+    <div class="row form-row">
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.SalvageClaimAwardedFrom, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.SalvageClaimAwardedFrom, new { @class = "col-form-label" })
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.SalvageClaimAwardedTo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(m => m.SalvageClaimAwardedTo, new { @class = "col-form-label" })
+            </div>
+        </div>
     </div>
 </div>
 

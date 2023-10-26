@@ -132,4 +132,17 @@ public class SalvorController : BaseController
             return NotFound();
         }
     }
+
+
+    public async Task<IActionResult> SearchSalvors(SalvorSearchForm form)
+    {
+        var searchOptions = new SearchOptions()
+        {
+            IncludeAssociations = true
+        };
+        
+        var model = await _service.SearchSalvorsAsync(form, searchOptions);
+        
+        return View(nameof(Index), model);
+    }
 }
