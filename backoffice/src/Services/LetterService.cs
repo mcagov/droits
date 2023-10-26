@@ -56,7 +56,7 @@ public class LetterService : ILetterService
                 l.Status == LetterStatus.ActionRequired ? 1 :
                 l.Status == LetterStatus.QCApproved ? 2 :
                 3 // Draft
-        ).ThenBy(l => l.LastModified);
+        ).ThenByDescending(l => l.Created);
         var pagedItems =
             await ServiceHelper.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.IncludeAssociations)),
                 searchOptions);

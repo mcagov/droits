@@ -194,7 +194,6 @@ public class DroitService : IDroitService
         
         //To-do - move somewhere better/ more generic with other searches. 
         var query = _repo.GetDroitsWithAssociations()
-            .OrderByDescending(d => d.LastModified)
             //Droit Report Filters
             .Where(d => 
                 SearchHelper.Matches(form.Reference, d.Reference) &&

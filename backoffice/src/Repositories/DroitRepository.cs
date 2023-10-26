@@ -35,7 +35,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
 
     public IQueryable<Droit> GetDroits()
     {
-        return Context.Droits.Include(d => d.AssignedToUser).OrderByDescending(d => d.LastModified);;
+        return Context.Droits.Include(d => d.AssignedToUser).OrderByDescending(d => d.Created);
     }
 
 

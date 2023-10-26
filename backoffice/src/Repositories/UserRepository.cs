@@ -26,7 +26,7 @@ public class UserRepository : IUserRepository
 
     public IQueryable<ApplicationUser> GetUsers()
     {
-        return _context.Users.OrderByDescending(u => u.LastModified); 
+        return _context.Users.OrderByDescending(u => u.Created); 
     }
 
     public IQueryable<ApplicationUser> GetUsersWithAssociations()
