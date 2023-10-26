@@ -191,10 +191,12 @@ public class DroitService : IDroitService
     public async Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form,
         SearchOptions searchOptions)
     {
+        
+        //To-do - move somewhere better/ more generic with other searches. 
         var query = _repo.GetDroitsWithAssociations()
             .OrderByDescending(d => d.LastModified)
             //Droit Report Filters
-            .Where(d =>
+            .Where(d => 
                 SearchHelper.Matches(form.Reference, d.Reference) &&
                 SearchHelper.IsBetween(d.Created,form.CreatedFrom, form.CreatedTo) &&
                                        SearchHelper.IsBetween(d.LastModified,form.LastModifiedFrom,

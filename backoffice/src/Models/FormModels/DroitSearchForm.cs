@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Droits.Helpers;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -230,6 +231,6 @@ public class DroitSearchForm
         ReceiverValuationTo == null,
         WreckMaterialOwner.IsNullOrEmpty(),
         ValueConfirmed == null
-    }.All(result => result);
+    }.All(result => result); 
 }
     
