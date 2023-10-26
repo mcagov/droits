@@ -93,7 +93,7 @@ public class SalvorService : ISalvorService
     public async Task<SalvorListView> SearchSalvorsAsync(SalvorSearchForm form, SearchOptions searchOptions)
     {
         var query = _repo.GetSalvorsWithAssociations()
-            .OrderByDescending(s => s.LastModified)
+            .OrderByDescending(s => s.Created)
             .Where(s =>
                 SearchHelper.Matches(form.Name, s.Name)
             )
