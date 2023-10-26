@@ -1,4 +1,5 @@
 using Droits.Helpers.Extensions;
+using FuzzySharp;
 
 namespace Droits.Helpers;
 
@@ -10,6 +11,23 @@ public static class SearchHelper
         value != null  && value.ToLower().Contains(term.ToLower()) );
     }
     
+    public static bool FuzzyMatches(string? term, string? value, int threshold = 70)
+    {
+        if ( string.IsNullOrEmpty(term) )
+        {
+            return true;
+        }
+
+        if ( string.IsNullOrEmpty(value) )
+        {
+            return false;
+        }
+        
+        var ratio = Fuzz.PartialRatio(term.ToLower(), value.ToLower());
+        
+        Console.WriteLine($"{term.ToLower()} // {value.ToLower()} // {ratio}");
+        return ratio >= threshold;
+    }
     
     public static bool Matches(bool? term, bool? value)
     {
@@ -42,4 +60,7 @@ public static class SearchHelper
         
         return value.HasValue && ( value.Value >= from || from == null ) && ( value.Value <= to || to == null );
     }
+
+
+
 }

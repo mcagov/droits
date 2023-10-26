@@ -95,7 +95,7 @@ public static class DatabaseSeeder
 
     private static IEnumerable<Salvor> GetSalvors(ApplicationUser user)
     {
-        return Enumerable.Range(0, 3)
+        return Enumerable.Range(0, 50)
             .Select(i => new Salvor
             {
                 Id = Guid.NewGuid(),
