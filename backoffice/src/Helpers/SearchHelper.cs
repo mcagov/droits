@@ -22,15 +22,9 @@ public static class SearchHelper
                ( term == default(Guid) && value == null );
     }
     
-    public static bool Matches(Enum? term, Enum value)
-    {
-        return term == null || value.Equals(term);
-    }
-    
-    
     public static bool IsBetween(DateTime? term, DateTime? from, DateTime? to)
     {
-        return (term >= from || from == null) && (term <= to || to == null);
+        return !term.HasValue || term.Value.IsBetween(from, to);
     }
     
     
