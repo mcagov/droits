@@ -95,7 +95,8 @@ public class SalvorService : ISalvorService
         var query = _repo.GetSalvorsWithAssociations()
             .OrderByDescending(s => s.Created)
             .Where(s =>
-                SearchHelper.Matches(form.Name, s.Name)
+                SearchHelper.FuzzyMatches(form.Name, s.Name, 70) && 
+                SearchHelper.Matches(form.Email, s.Email)
             )
             .Select(s => new SalvorView(s, true));
         

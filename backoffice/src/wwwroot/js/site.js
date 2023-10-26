@@ -5,8 +5,7 @@ import {confirmDialog} from './confirmDialog.js';
 import {initializeDroitForm, initializeDroitView} from './droitForm.js';
 import {initializeMessageBanner} from "./messageBanner";
 import {initializeSearchBar} from "./searchBar";
-import {initializeSearchForm} from "./searchForms";
-import Choices from "choices.js";
+import {initializeSearchForms} from "./searchForms";
 
 document.addEventListener('DOMContentLoaded', function() {
     window.confirm = function (message, callback) {
