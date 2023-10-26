@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Droits.Exceptions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Droits.Services;
 
@@ -14,6 +15,7 @@ public interface IUserService
 {
     Task<UserListView> GetUserListViewAsync(SearchOptions searchOptions);
     Task<List<ApplicationUser>> GetUsersAsync();
+    Task<List<SelectListItem>> GetUserSelectListAsync();
     Task<ApplicationUser> SaveUserAsync(ApplicationUser user);
     Task<ApplicationUser> GetUserAsync(Guid id);
     Task<ApplicationUser> GetOrCreateUserAsync(string authId, string name, string email);
@@ -49,6 +51,10 @@ public class UserService : IUserService
     {
         return await _repo.GetUsers().ToListAsync();
     }
+
+    public async Task<List<SelectListItem>> GetUserSelectListAsync()
+    => (await GetUsersAsync())
+            .Select(u => new SelectListItem($"{u.Name} ({u.Email})", u.Id.ToString())).ToList();
 
     public async Task<ApplicationUser> SaveUserAsync(ApplicationUser user)
     {

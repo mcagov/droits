@@ -65,8 +65,8 @@ public class WreckView : BaseEntityView
     [DisplayName("Is An Aircraft")]
     public bool IsAnAircraft { get; } = false;
 
-    public string? Latitude { get; }
-    public string? Longitude { get; }
+    public float? Latitude { get; }
+    public float? Longitude { get; }
 
     [DisplayName("Is A Protected Site")]
     public bool IsProtectedSite { get; } = false;

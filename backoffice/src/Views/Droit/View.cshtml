@@ -162,7 +162,7 @@
             <div class="row">
                 <partial name="Wreck/_WreckViewFields" for="Wreck"/>
                
-                @if (Model.Wreck.Latitude.HasValue() && Model.Wreck.Longitude.HasValue())
+                @if (Model.Wreck.Latitude != null   && Model.Wreck.Longitude != null)
                 {
                     <div class="row mt-3">
                         <iframe src="https://maps.google.com/maps?q=@Model.Wreck?.Latitude,@Model.Wreck?.Longitude&amp;output=embed"></iframe>
