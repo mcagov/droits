@@ -1,3 +1,4 @@
+using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.IdentityModel.Tokens;
@@ -26,7 +27,7 @@ public class ImageStorageClient : IImageStorageClient
 
         if ( _bucketName.IsNullOrEmpty() )
         {
-            logger.LogError("Bucket Name cannot be null");
+            _logger.LogError("Bucket Name cannot be null");
             throw new Exception("Bucket Name cannot be null");
         }
     }
@@ -40,20 +41,44 @@ public class ImageStorageClient : IImageStorageClient
             ContentType = contentType,
             InputStream = imageStream
         };
-
-        await _s3Client.PutObjectAsync(putRequest);
+       
+        try
+        {
+            await _s3Client.PutObjectAsync(putRequest);
+        }
+        catch ( AmazonS3Exception e )
+        {
+            
+            _logger.LogError($"AWS S3 Exception Putting Image - {e.Message} , {e.StackTrace}");
+            throw;
+        }
+        catch ( Exception e )
+        {
+            _logger.LogError($"Exception Putting Image - {e.Message} , {e.StackTrace}");
+            throw;
+        }
+        
     }
 
     public async Task<Stream> GetImageAsync(string key)
     {
+        
         var getRequest = new GetObjectRequest
         {
             BucketName = _bucketName,
             Key = key
         };
 
-        var response = await _s3Client.GetObjectAsync(getRequest);
-        return response.ResponseStream;
+        try
+        {
+            var response = await _s3Client.GetObjectAsync(getRequest);
+            return response.ResponseStream;
+        }
+        catch ( Exception e )
+        {
+            _logger.LogError($"Exception getting image - {e.Message} , {e.StackTrace}");
+            throw;
+        }
     }
     
     public async Task DeleteImageAsync(string key)

@@ -17,7 +17,6 @@ public class SalvorForm : BaseEntityForm
         Name = salvor.Name;
         Email = salvor.Email;
         TelephoneNumber = salvor.TelephoneNumber;
-        DateOfBirth = salvor.DateOfBirth;
         Address = new AddressForm(salvor.Address);
     }
 
@@ -29,18 +28,10 @@ public class SalvorForm : BaseEntityForm
     [EmailAddress(ErrorMessage = "Invalid email address")]
     public string Email { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Phone number is required")]
     [Phone()]
     [DisplayName("Telephone Number")]
 
-    public string TelephoneNumber { get; set; } = string.Empty;
-
-    [Required(ErrorMessage = "Date of Birth is required")]
-    [BindProperty]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    [DataType(DataType.Date)]
-    [DisplayName("Date of Birth")]
-    public DateTime DateOfBirth { get; set; }
+    public string? TelephoneNumber { get; set; } = string.Empty;
 
     public AddressForm Address { get; set; } = new();
 
@@ -51,8 +42,7 @@ public class SalvorForm : BaseEntityForm
         
         salvor.Name = Name;
         salvor.Email = Email;
-        salvor.TelephoneNumber = TelephoneNumber;
-        salvor.DateOfBirth = DateOfBirth;
+        salvor.TelephoneNumber = TelephoneNumber ?? "";
 
         Address.ApplyChanges(salvor.Address);
 

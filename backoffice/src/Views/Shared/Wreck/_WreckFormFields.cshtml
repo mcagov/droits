@@ -63,9 +63,16 @@
 
 <div class="form-group">
     @Html.LabelFor(m => m.ProtectionLegislation, new { @class = "col-form-label" })
-    @Html.EditorFor(m => m.ProtectionLegislation, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.EditorFor(m => m.ProtectionLegislation, new { htmlAttributes = new { @class = "form-control", @list="protection-legislations" } })
     @Html.ValidationMessageFor(m => m.ProtectionLegislation, "", new { @class = "text-danger" })
 </div>
+
+<datalist id="protection-legislations">
+    @foreach (var legislation in Model.ProtectionLegislationList)
+    {
+        <option>@legislation</option>
+    }
+</datalist>
 
 <div class="form-group">
     @Html.LabelFor(m => m.OwnerName, new { @class = "col-form-label" })

@@ -5,6 +5,8 @@ using Droits.Services;
 using Droits.Tests.Helpers;
 using Microsoft.Extensions.Logging;
 using Droits.Data;
+using Droits.Models.FormModels;
+using Droits.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Tests.IntegrationTests.Services
@@ -64,6 +66,39 @@ namespace Droits.Tests.IntegrationTests.Services
             Assert.NotNull(retrievedDroit);
             Assert.Equal(updatedStatus, retrievedDroit.Status);
         }
+        
+        //Search tests
+        //
+        // [Fact]
+        // public async Task AdvancedSearchDroitsAsync_ShouldReturnCorrectMatches()
+        // {
+        //     // Arrange
+        //     await _service.SaveDroitAsync(new Droit
+        //     {
+        //         Reference = "NewDroit",
+        //         Status = DroitStatus.Received
+        //     });
+        //     
+        //     await _service.SaveDroitAsync(new Droit
+        //     {
+        //         Reference = "NoMatch",
+        //         Status = DroitStatus.Received
+        //     });
+        //
+        //     var droitSearchForm = new DroitSearchForm()
+        //     {
+        //         Reference = "NewDroit"
+        //     };
+        //
+        //     // Act
+        //
+        //     var results =
+        //         await _service.AdvancedSearchDroitsAsync(droitSearchForm, new SearchOptions());
+        //
+        //     // Assert
+        //     Assert.NotEmpty(results.Items);
+        //     Assert.Equal(1, results.TotalCount);
+        // }
         
     }
 }

@@ -92,7 +92,9 @@ public partial class DroitsContext : DbContext
             entity.Property(d => d.ReportedDate);
             entity.Property(d => d.DateFound);
 
-            entity.Property(d => d.Reference);
+            entity.Property(d => d.Reference).IsRequired();
+            entity.HasIndex(d => d.Reference).IsUnique();
+
             entity.Property(d => d.IsHazardousFind);
             entity.Property(d => d.IsDredge);
             
@@ -274,6 +276,7 @@ public partial class DroitsContext : DbContext
             entity.Property(l => l.DateSent);
             entity.Property(l => l.Recipient);
             entity.Property(l => l.Type);
+            entity.Property(l => l.Status);
             
             entity.Property(l => l.Created);
             entity.Property(l => l.LastModified);
@@ -303,7 +306,6 @@ public partial class DroitsContext : DbContext
             entity.Property(s => s.Email);
             entity.Property(s => s.Name);
             entity.Property(s => s.TelephoneNumber);
-            entity.Property(s => s.DateOfBirth);
 
             entity.Property(s => s.Created);
             entity.Property(s => s.LastModified);

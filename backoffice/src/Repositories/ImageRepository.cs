@@ -71,7 +71,7 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
         }
         catch ( Exception e )
         {
-            _logger.LogError($"Image {image.Id} could not be saved ",e);
+            _logger.LogError($"Image {image.Id} could not be saved - {e.Message} ");
         }
     }
 

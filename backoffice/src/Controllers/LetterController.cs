@@ -106,9 +106,11 @@ public class LetterController : BaseController
         try
         {
             var letter = await _service.SendLetterAsync(id);
-            if ( letter != null )
+
+            AddSuccessMessage("Letter sent successfully");
+            if ( letter.DroitId != default )
             {
-                AddSuccessMessage("Letter sent successfully");
+                return RedirectToAction("View", "Droit", new { id = letter.DroitId });
             }
         }
         catch ( LetterNotFoundException e )
@@ -116,6 +118,7 @@ public class LetterController : BaseController
             HandleError(_logger, "Letter not found", e);
         }
 
+        
         return RedirectToAction(nameof(Index));
     }
 

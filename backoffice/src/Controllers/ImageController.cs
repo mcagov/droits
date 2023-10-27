@@ -7,13 +7,11 @@ namespace Droits.Controllers;
 public class ImageController : BaseController
 {
     private readonly IImageService _service;
-    private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<ImageController> _logger;
 
-    public ImageController(IImageService service, IHttpClientFactory httpClientFactory, ILogger<ImageController> logger )
+    public ImageController(IImageService service, ILogger<ImageController> logger )
     {
         _service = service;
-        _httpClientFactory = httpClientFactory;
         _logger = logger;
     }
     

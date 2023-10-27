@@ -1,5 +1,7 @@
-﻿using Droits.Exceptions;
+﻿using System.Text;
+using Droits.Exceptions;
 using Droits.Helpers.Extensions;
+using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
@@ -35,9 +37,14 @@ public class DroitController : BaseController
     public async Task<IActionResult> Index(SearchOptions searchOptions)
     {
         searchOptions.IncludeAssociations = true;
+        
         var model = await _service.GetDroitsListViewAsync(searchOptions);
+
+        model.SearchForm = await PopulateDroitSearchFormAsync(model.SearchForm);
+        
         return View(model);
     }
+
 
 
     [HttpGet]
@@ -63,6 +70,8 @@ public class DroitController : BaseController
     public async Task<IActionResult> Add()
     {
         var form = await PopulateDroitFormAsync(new DroitForm());
+        form.Reference = await _service.GetNextDroitReference();
+
         return View(nameof(Edit), form);
     }
 
@@ -83,11 +92,13 @@ public class DroitController : BaseController
 
 
     [HttpGet]
-    public async Task<IActionResult> Edit(Guid id)
+    public async Task<IActionResult> Edit(Guid id, string? selectedTab)
     {
         if ( id == default )
         {
             var form = await PopulateDroitFormAsync(new DroitForm());
+            form.Reference = await _service.GetNextDroitReference();
+
             return View(form);
         }
 
@@ -95,6 +106,13 @@ public class DroitController : BaseController
         {
             var droit = await _service.GetDroitWithAssociationsAsync(id);
             var form = await PopulateDroitFormAsync(new DroitForm(droit));
+            
+            if ( !string.IsNullOrEmpty(selectedTab) )
+            {
+                ViewBag.SelectedTab = selectedTab;
+            }
+
+            
             return View(form);
         }
         catch ( DroitNotFoundException e )
@@ -172,6 +190,12 @@ public class DroitController : BaseController
         {
             droit = await _service.SaveDroitAsync(droit);
         }
+        catch ( DuplicateDroitReferenceException e )
+        {
+            HandleError(_logger, e.Message, e);
+            form = await PopulateDroitFormAsync(form);
+            return View(nameof(Edit), form);
+        }
         catch ( Exception e )
         {
             HandleError(_logger, "Could not save Droit.", e);
@@ -194,7 +218,7 @@ public class DroitController : BaseController
 
         AddSuccessMessage("Droit saved successfully");
 
-        return RedirectToAction(nameof(Index));
+        return droit.Id == default ? RedirectToAction(nameof(Index)) : RedirectToAction(nameof(View),new {id = droit.Id});
     }
 
 
@@ -213,17 +237,43 @@ public class DroitController : BaseController
 
     private async Task<DroitForm> PopulateDroitFormAsync(DroitForm form)
     {
-        var allUsers = await _userService.GetUsersAsync();
+        var allUsers = await _userService.GetUserSelectListAsync();
         var allWrecks = await _wreckService.GetWrecksAsync();
         var allSalvors = await _salvorService.GetSalvorsAsync();
 
-        form.AllUsers = allUsers
-            .Select(u => new SelectListItem($"{u.Name} ({u.Email})", u.Id.ToString())).ToList();
+        form.AllUsers = allUsers;
         form.AllWrecks =
             allWrecks.Select(w => new SelectListItem(w.Name, w.Id.ToString())).ToList();
         form.AllSalvors = allSalvors
             .Select(s => new SelectListItem($"{s.Name} ({s.Email})", s.Id.ToString())).ToList();
 
         return form;
+    }
+    
+    private async Task<DroitSearchForm> PopulateDroitSearchFormAsync(DroitSearchForm form)
+    {
+        var allUsers = await _userService.GetUserSelectListAsync();
+        allUsers.Add(new SelectListItem("Unassigned", default(Guid).ToString()));
+        
+        form.AssignedToUsers = allUsers;
+
+        return form;
+    }
+
+
+
+    public async Task<IActionResult> SearchDroits(DroitSearchForm form)
+    {
+
+        var searchOptions = new SearchOptions()
+        {
+            IncludeAssociations = true
+        };
+        
+        var model = await _service.AdvancedSearchDroitsAsync(form, searchOptions);
+        
+        model.SearchForm = await PopulateDroitSearchFormAsync(model.SearchForm);
+
+        return View(nameof(Index), model);
     }
 }

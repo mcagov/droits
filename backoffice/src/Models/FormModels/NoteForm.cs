@@ -31,6 +31,8 @@ namespace Droits.Models.FormModels
         [DataType(DataType.MultilineText)]
         public string Text { get; set; } = string.Empty;
 
+        public string ObjectReference { get; set; } = string.Empty;
+
         public Guid? DroitId { get; set; }
 
         public Guid? WreckId { get; set; }

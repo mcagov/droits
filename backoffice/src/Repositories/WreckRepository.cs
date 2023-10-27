@@ -24,7 +24,7 @@ public class WreckRepository : BaseEntityRepository<Wreck>, IWreckRepository
 
     public IQueryable<Wreck> GetWrecks()
     {
-        return Context.Wrecks.OrderByDescending(l => l.LastModified);
+        return Context.Wrecks.OrderByDescending(l => l.Created);
     }
 
 

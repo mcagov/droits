@@ -1,6 +1,11 @@
 ﻿@model NoteForm
 @{
     ViewData["Title"] = Model.Id == default ? "New Note" : $"Edit Note";
+
+    if (Model.ObjectReference.HasValue())
+    {
+        ViewData["Title"] += $" For {Model.GetAssociatedEntityInfo().EntityController} ({Model.ObjectReference})";
+    }
 }
 
 @{

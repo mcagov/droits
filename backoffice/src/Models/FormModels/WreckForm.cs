@@ -61,12 +61,13 @@ public class WreckForm : BaseEntityForm
     [DisplayName("Is An Aircraft")]
     public bool IsAnAircraft { get; set; } = false;
 
-    public string? Latitude { get; set; }
-    public string? Longitude { get; set; }
+    public float? Latitude { get; set; }
+    public float? Longitude { get; set; }
 
     [DisplayName("Is A Protected Site")]
     public bool IsProtectedSite { get; set; } = false;
 
+    
     [DisplayName("Protection Legislation")]
     public string? ProtectionLegislation { get; set; }
     [DisplayName("Owner Name")]
@@ -82,6 +83,8 @@ public class WreckForm : BaseEntityForm
     [DataType(DataType.MultilineText)]
     public string? AdditionalInformation { get; set; } = string.Empty;
 
+    
+    public IEnumerable<string> ProtectionLegislationList => new List<string>() { "Protected Wreck Act 1973", "AMAAA 1979", "Protection of Military Remains Act 1986", "Scotland Historic Marine Protected Areas"};
 
     public Wreck ApplyChanges(Wreck wreck)
     {

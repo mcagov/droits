@@ -1,3 +1,4 @@
+using Amazon.Runtime;
 using Amazon.S3;
 using Droits.Clients;
 using Droits.Data;
@@ -44,7 +45,16 @@ builder.Services.AddControllersWithViews(options =>
     })
     .AddRazorRuntimeCompilation().AddMicrosoftIdentityUI().AddSessionStateTempDataProvider();
 
+var awsOptions = builder.Configuration.GetAWSOptions();
+
+if ( !builder.Environment.IsDevelopment() )
+{
+    awsOptions.Credentials = new ECSTaskCredentials();
+}
+
+builder.Services.AddDefaultAWSOptions(awsOptions);
 builder.Services.AddAWSService<IAmazonS3>();
+
 builder.Services.AddRazorPages();
 
 // Localization
@@ -94,7 +104,6 @@ builder.Services.AddScoped<ISalvorService, SalvorService>();
 
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
-
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();

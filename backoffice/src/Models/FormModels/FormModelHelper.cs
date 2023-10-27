@@ -9,5 +9,7 @@ namespace Droits.Models.FormModels
             new SelectListItem { Text = "Yes", Value = "True" },
             new SelectListItem { Text = "No", Value = "False" }
         };
+
+
     }
 }

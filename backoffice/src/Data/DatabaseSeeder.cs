@@ -69,7 +69,7 @@ public static class DatabaseSeeder
 
     private static IEnumerable<Letter> GetLetters(IEnumerable<Droit> droits, ApplicationUser user)
     {
-        return Enumerable.Range(0, 5)
+        return Enumerable.Range(0, 15)
             .Select(i => new Letter
             {
                 Id = new Guid(),
@@ -79,6 +79,10 @@ public static class DatabaseSeeder
                 Body = Faker.Lorem.Paragraphs(),
                 Type = Enum.GetValues(typeof(LetterType))
                     .OfType<LetterType>()
+                    .MinBy(x => Guid.NewGuid()),
+                Status = Enum.GetValues(typeof(LetterStatus))
+                    .OfType<LetterStatus>()
+                    .Where(s => s != LetterStatus.Sent) 
                     .MinBy(x => Guid.NewGuid()),
                 SenderUserId = new Guid(),
                 Created = DateTime.Now,
@@ -91,7 +95,7 @@ public static class DatabaseSeeder
 
     private static IEnumerable<Salvor> GetSalvors(ApplicationUser user)
     {
-        return Enumerable.Range(0, 3)
+        return Enumerable.Range(0, 50)
             .Select(i => new Salvor
             {
                 Id = Guid.NewGuid(),
@@ -106,7 +110,6 @@ public static class DatabaseSeeder
                     County = Faker.Address.County(),
                     Postcode = Faker.Address.ZipCode()
                 },
-                DateOfBirth = Faker.Date.Past(40, DateTime.UtcNow),
                 Created = DateTime.UtcNow,
                 LastModified = DateTime.UtcNow,
                 LastModifiedByUserId = user.Id,
@@ -132,7 +135,7 @@ public static class DatabaseSeeder
         {
             Id = Guid.NewGuid(),
             AssignedToUserId = user.Id,
-            Reference = $"{Faker.Random.Int(0, 999):000}/" +
+            Reference = $"{Faker.Random.Int(0, 99999):000}/" +
                         $"{reportedDate:yy}",
             Status = Enum.GetValues(typeof(DroitStatus))
                 .OfType<DroitStatus>()
@@ -154,6 +157,9 @@ public static class DatabaseSeeder
             InUkWaters = Faker.Random.Bool(),
             LocationRadius = Faker.Random.Int(1, 500),
             Depth = Faker.Random.Int(1, 5000),
+            RecoveredFrom = Enum.GetValues(typeof(RecoveredFrom))
+                .OfType<RecoveredFrom>()
+                .MinBy(x => Guid.NewGuid()),
             LocationDescription = Faker.Lorem.Sentence(),
 
             SalvageAwardClaimed = Faker.Random.Bool(),
@@ -169,7 +175,7 @@ public static class DatabaseSeeder
             GoodsDischargedBy = Faker.Name.FullName(),
             DateDelivered = Faker.Date.Between(reportedDate, DateTime.UtcNow).ToShortDateString(),
             Agent = Faker.Name.FullName(),
-            RecoveredFrom = Faker.Random.ArrayElement(new[] { "Afloat", "Ashore", "Seabed" }),
+            RecoveredFromLegacy = Faker.Random.ArrayElement(new[] { "Afloat", "Ashore", "Seabed" }),
             ImportedFromLegacy = Faker.Random.Bool()
         };
     }
@@ -188,8 +194,8 @@ public static class DatabaseSeeder
                 InUkWaters = Faker.Random.Bool(),
                 IsWarWreck = Faker.Random.Bool(),
                 IsAnAircraft = Faker.Random.Bool(),
-                Latitude = Faker.Address.Latitude().ToString(CultureInfo.CurrentCulture),
-                Longitude = Faker.Address.Longitude().ToString(CultureInfo.CurrentCulture),
+                Latitude = (float) Faker.Address.Latitude(),
+                Longitude = (float) Faker.Address.Longitude(),
 
                 IsProtectedSite = Faker.Random.Bool(),
                 ProtectionLegislation = Faker.Lorem.Word(),

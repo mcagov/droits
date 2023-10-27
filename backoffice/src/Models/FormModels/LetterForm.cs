@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
@@ -18,6 +19,8 @@ public class LetterForm : BaseEntityForm
         Recipient = letter.Recipient;
         Subject = letter.Subject;
         Body = letter.Body;
+        Status = letter.Status;
+        Type = letter.Type;
     }
 
     public Guid DroitId { get; set; }
@@ -34,6 +37,9 @@ public class LetterForm : BaseEntityForm
     [Required]
     [DataType(DataType.MultilineText)]
     public string Body { get; set; } = string.Empty;
+
+    [DisplayName("Status")]
+    public LetterStatus Status { get; set; }
     public Letter ApplyChanges(Letter letter)
     {
         
@@ -44,6 +50,7 @@ public class LetterForm : BaseEntityForm
         letter.Subject = Subject;
         letter.Body = Body;
         letter.Type = Type;
+        letter.Status = Status;
 
         return letter;
     }

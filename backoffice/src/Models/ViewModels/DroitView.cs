@@ -54,18 +54,18 @@ public class DroitView : BaseEntityView
 
         if ( droit.WreckMaterials.Any() )
         {
-            WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).OrderByDescending(w => w.LastModified).ToList();
+            WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).OrderByDescending(w => w.Created).ToList();
         }
 
         if ( droit.Letters.Any() )
         {
-            Letters = new LetterListView(droit.Letters.Select(l => new LetterView(l)).OrderByDescending(l => l.LastModified)
+            Letters = new LetterListView(droit.Letters.Select(l => new LetterView(l)).OrderByDescending(l => l.Created)
                 .ToList());
         }
 
         if ( droit.Notes.Any() )
         {
-            Notes = new NoteListView(droit.Notes.Select(n => new NoteView(n)).OrderByDescending(l => l.LastModified).ToList());
+            Notes = new NoteListView(droit.Notes.Select(n => new NoteView(n)).OrderByDescending(l => l.Created).ToList());
         }
 
         // Location
@@ -106,7 +106,7 @@ public class DroitView : BaseEntityView
     public string? Reference { get; } // This is the current reference.
 
     public DroitStatus Status { get; } = DroitStatus.Received;
-
+    
     [DisplayName("Reported Date")]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime ReportedDate { get; }
@@ -148,8 +148,8 @@ public class DroitView : BaseEntityView
 
 
     // Location
-    public string? Latitude { get; }
-    public string? Longitude { get; }
+    public float? Latitude { get; }
+    public float? Longitude { get; }
 
     [DisplayName("In UK Waters")]
     public bool InUkWaters { get; }
@@ -159,6 +159,9 @@ public class DroitView : BaseEntityView
 
     [DisplayName("Depth (Metres)")]
     public int? Depth { get; }
+    
+    [DisplayName("Recovered From")]
+    public RecoveredFrom? RecoveredFrom { get; }
 
     [DisplayName("Location Description")]
     public string? LocationDescription { get; } = string.Empty;
@@ -203,7 +206,7 @@ public class DroitView : BaseEntityView
     public string? Agent { get; }
 
     [DisplayName("Recovered From")]
-    public string? RecoveredFrom { get; }
+    public string? RecoveredFromLegacy { get; }
 
     [DisplayName("Imported From Legacy")]
     public bool ImportedFromLegacy { get; }

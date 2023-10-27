@@ -34,8 +34,7 @@ public class AddressForm
     [DisplayName("City/Town")]
     public string Town { get; set; } = string.Empty;
 
-    [Required]
-    public string County { get; set; } = string.Empty;
+    public string? County { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Postcode is required")]
     [RegularExpression(Constants.PostcodeRegex,
@@ -48,7 +47,7 @@ public class AddressForm
         address.Line1 = Line1;
         address.Line2 = Line2;
         address.Town = Town;
-        address.County = County;
+        address.County = County ?? "";
         address.Postcode = Postcode;
 
         return address;

@@ -13,19 +13,32 @@ namespace Droits.Services
     public class NoteService : INoteService
     {
         private readonly INoteRepository _repo;
+        private readonly IDroitService _droitService;
 
-        public NoteService(INoteRepository repo)
+        public NoteService(INoteRepository repo, IDroitService droitService)
         {
             _repo = repo;
+            _droitService = droitService;
         }
 
         public async Task<Note> SaveNoteAsync(Note note)
         {
             if (note.Id == default)
             {
-                return await AddNoteAsync(note);
+                note = await AddNoteAsync(note);
             }
-            return await UpdateNoteAsync(note);
+            else
+            {
+                note = await UpdateNoteAsync(note);    
+            }
+
+            if ( note.DroitId.HasValue && note.DroitId != default )
+            {
+                var droit = await _droitService.GetDroitAsync(note.DroitId.Value);
+                await _droitService.SaveDroitAsync(droit);
+            }
+            
+            return note;
         }
 
         private async Task<Note> AddNoteAsync(Note note)
@@ -42,5 +55,6 @@ namespace Droits.Services
         {
             return await _repo.GetNoteAsync(id);
         }
+
     }
 }
