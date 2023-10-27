@@ -1,11 +1,12 @@
-﻿using System.Text;
 using Droits.Exceptions;
 using Droits.Helpers.Extensions;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
+using Droits.Models.ViewModels.ListViews;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -40,7 +41,7 @@ public class DroitController : BaseController
         
         var model = await _service.GetDroitsListViewAsync(searchOptions);
 
-        model.SearchForm = await PopulateDroitSearchFormAsync(model.SearchForm);
+        model.SearchForm = await PopulateDroitSearchFormAsync((DroitSearchForm)model.SearchForm!);
         
         return View(model);
     }
@@ -249,7 +250,28 @@ public class DroitController : BaseController
 
         return form;
     }
-    
+
+
+    public async Task<IActionResult> Export(string query)
+    {
+        //This needs to use the search form
+        // var droits = await _service.AdvancedSearchDroitsAsync(new DroitSearchForm(), new SearchOptions()
+        // {
+        //     IncludeAssociations = true,
+        //     PageNumber = 0,
+        //     PageSize = int.MaxValue
+        // });
+        //
+        // var csvExport = await _service.ExportDroitsAsync(droits.Items.Select(dv => new DroitDto(dv)));
+
+        
+        var droits = await _service.SearchDroitsAsync(query);
+
+        var csvExport = await _service.ExportDroitsAsync(droits);
+
+        return File(csvExport, "text/csv", $"droit-export-{DateTime.UtcNow.ToShortDateString()}.csv");
+    }
+
     private async Task<DroitSearchForm> PopulateDroitSearchFormAsync(DroitSearchForm form)
     {
         var allUsers = await _userService.GetUserSelectListAsync();
@@ -262,17 +284,14 @@ public class DroitController : BaseController
 
 
 
-    public async Task<IActionResult> SearchDroits(DroitSearchForm form)
+    public async Task<IActionResult> Search(DroitSearchForm form)
     {
 
-        var searchOptions = new SearchOptions()
-        {
-            IncludeAssociations = true
-        };
+        form.IncludeAssociations = true;
         
-        var model = await _service.AdvancedSearchDroitsAsync(form, searchOptions);
+        var model = await _service.AdvancedSearchDroitsAsync(form);
         
-        model.SearchForm = await PopulateDroitSearchFormAsync(model.SearchForm);
+        model.SearchForm = await PopulateDroitSearchFormAsync((DroitSearchForm)model.SearchForm!);
 
         return View(nameof(Index), model);
     }

@@ -7,6 +7,7 @@ using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
 using Droits.Models.ViewModels;
+using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Droits.Services;
 using Droits.Tests.Helpers;

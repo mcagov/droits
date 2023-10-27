@@ -76,7 +76,7 @@ public static class DatabaseSeeder
                 DroitId = Faker.Random.ArrayElement(droits.ToArray()).Id,
                 Recipient = Faker.Internet.Email(),
                 Subject = $"{Faker.Vehicle.Manufacturer()} Subject",
-                Body = Faker.Lorem.Paragraphs(),
+                Body = Faker.Random.Words(300),
                 Type = Enum.GetValues(typeof(LetterType))
                     .OfType<LetterType>()
                     .MinBy(x => Guid.NewGuid()),

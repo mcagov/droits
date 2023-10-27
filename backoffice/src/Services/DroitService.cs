@@ -5,6 +5,7 @@ using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Models.Enums;
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
@@ -25,10 +26,9 @@ public interface IDroitService
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
     Task<string> GetNextDroitReference();
     Task<List<DroitDto>> SearchDroitsAsync(string query);
-
-
     Task<DroitListView>
-        AdvancedSearchDroitsAsync(DroitSearchForm form, SearchOptions searchOptions);
+        AdvancedSearchDroitsAsync(DroitSearchForm form);
+    Task<byte[]> ExportDroitsAsync(List<DroitDto> droits); //return type might be wrong. 
 }
 
 public class DroitService : IDroitService
@@ -182,14 +182,20 @@ public class DroitService : IDroitService
 
         await _repo.UpdateAsync(droit);
     }
+    
+    public async Task<List<DroitDto>> SearchDroitsAsync(string query) => await _repo.SearchDroitsAsync(query);
 
+    public async Task<byte[]> ExportDroitsAsync(List<DroitDto> droits)
+    {
+        if (droits.IsNullOrEmpty())
+        {
+            throw new Exception("No Droits to export");
+        }
 
-    public async Task<List<DroitDto>> SearchDroitsAsync(string query) =>
-        await _repo.SearchDroitsAsync(query);
+        return await ExportHelper.ExportRecordsAsync(droits);
+    }
 
-
-    public async Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form,
-        SearchOptions searchOptions)
+    public async Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form)
     {
         
         //To-do - move somewhere better/ more generic with other searches. 
@@ -270,7 +276,7 @@ public class DroitService : IDroitService
 
 
         var pagedDroits =
-            await ServiceHelper.GetPagedResult(query, searchOptions);
+            await ServiceHelper.GetPagedResult(query, form);
 
         return new DroitListView(pagedDroits.Items)
         {

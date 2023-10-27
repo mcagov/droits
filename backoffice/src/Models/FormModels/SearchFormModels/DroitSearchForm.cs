@@ -1,14 +1,12 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Droits.Helpers;
-using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Droits.Models.FormModels;
+namespace Droits.Models.FormModels.SearchFormModels;
 
-public class DroitSearchForm
+public class DroitSearchForm : SearchForm
 {
     public DroitSearchForm()
     {
