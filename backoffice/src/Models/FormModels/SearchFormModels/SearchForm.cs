@@ -1,4 +1,4 @@
-using Droits.Models.ViewModels;
+using Droits.Models.ViewModels.ListViews;
 
 namespace Droits.Models.FormModels.SearchFormModels;
 

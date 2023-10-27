@@ -5,6 +5,7 @@ using Droits.Models.ViewModels;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Models.FormModels.SearchFormModels;
+using Droits.Models.ViewModels.ListViews;
 
 namespace Droits.Controllers;
 

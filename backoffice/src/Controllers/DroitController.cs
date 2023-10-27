@@ -7,6 +7,7 @@ using Droits.Models.Enums;
 using Droits.Models.FormModels;
 using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
+using Droits.Models.ViewModels.ListViews;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
