@@ -29,7 +29,7 @@ public interface IDroitService
 
 
     Task<DroitListView>
-        AdvancedSearchDroitsAsync(DroitSearchForm form, SearchOptions searchOptions);
+        AdvancedSearchDroitsAsync(DroitSearchForm form);
 }
 
 public class DroitService : IDroitService
@@ -189,8 +189,7 @@ public class DroitService : IDroitService
         await _repo.SearchDroitsAsync(query);
 
 
-    public async Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form,
-        SearchOptions searchOptions)
+    public async Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form)
     {
         
         //To-do - move somewhere better/ more generic with other searches. 
@@ -271,7 +270,7 @@ public class DroitService : IDroitService
 
 
         var pagedDroits =
-            await ServiceHelper.GetPagedResult(query, searchOptions);
+            await ServiceHelper.GetPagedResult(query, form);
 
         return new DroitListView(pagedDroits.Items)
         {

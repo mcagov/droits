@@ -137,12 +137,9 @@ public class SalvorController : BaseController
 
     public async Task<IActionResult> Search(SalvorSearchForm form)
     {
-        var searchOptions = new SearchOptions()
-        {
-            IncludeAssociations = true
-        };
+        form.IncludeAssociations = true;
         
-        var model = await _service.AdvancedSearchAsync(form, searchOptions);
+        var model = await _service.AdvancedSearchAsync(form);
         
         return View(nameof(Index), model);
     }

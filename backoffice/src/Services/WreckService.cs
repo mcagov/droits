@@ -16,7 +16,7 @@ public interface IWreckService
     Task<Wreck> GetWreckAsync(Guid id);
     Task<Guid> SaveWreckFormAsync(WreckForm wreckForm);
     Task<WreckListView> GetWrecksListViewAsync(SearchOptions searchOptions);
-    Task<WreckListView> AdvancedSearchAsync(WreckSearchForm form, SearchOptions searchOptions);
+    Task<WreckListView> AdvancedSearchAsync(WreckSearchForm form);
 
 }
 
@@ -90,7 +90,7 @@ public class WreckService : IWreckService
         return ( await SaveWreckAsync(wreck) ).Id;
     }
     
-    public async Task<WreckListView> AdvancedSearchAsync(WreckSearchForm form, SearchOptions searchOptions)
+    public async Task<WreckListView> AdvancedSearchAsync(WreckSearchForm form)
     {
         var query = _repo.GetWrecksWithAssociations()
             .OrderByDescending(w => w.Created)
@@ -100,7 +100,7 @@ public class WreckService : IWreckService
             .Select(w => new WreckView(w, true));
         
         var pagedResults =
-            await ServiceHelper.GetPagedResult(query, searchOptions);
+            await ServiceHelper.GetPagedResult(query, form);
 
         return new WreckListView(pagedResults.Items)
         {

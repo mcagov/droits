@@ -21,7 +21,7 @@ public interface ILetterService
     Task<Letter> SaveLetterAsync(LetterForm form);
     Task<LetterListView> GetApprovedUnsentLettersListViewForCurrentUserAsync(SearchOptions searchOptions);
     
-    Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form, SearchOptions searchOptions);
+    Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form);
 
 }
 
@@ -251,10 +251,15 @@ public class LetterService : ILetterService
         return await _repo.GetLetterAsync(id);
     }
     
-    public async Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form, SearchOptions searchOptions)
+    public async Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form)
     {
         var query = _repo.GetLettersWithAssociations()
-            .OrderByDescending(w => w.Created)
+            .OrderBy(l =>
+                    l.Status == LetterStatus.ReadyForQC ? 0 :
+                    l.Status == LetterStatus.ActionRequired ? 1 :
+                    l.Status == LetterStatus.QCApproved ? 2 :
+                    3 // Draft
+            ).ThenByDescending(l => l.Created)
             .Where(l =>
                 SearchHelper.FuzzyMatches(form.Recipient, l.Recipient, 70) && 
                 ( form.StatusList.IsNullOrEmpty() ||
@@ -265,7 +270,7 @@ public class LetterService : ILetterService
             .Select(l => new LetterView(l, true));
         
         var pagedResults =
-            await ServiceHelper.GetPagedResult(query, searchOptions);
+            await ServiceHelper.GetPagedResult(query, form);
 
         return new LetterListView(pagedResults.Items)
         {

@@ -135,12 +135,9 @@ public class WreckController : BaseController
     
     public async Task<IActionResult> Search(WreckSearchForm form)
     {
-        var searchOptions = new SearchOptions()
-        {
-            IncludeAssociations = true
-        };
+        form.IncludeAssociations = true;
         
-        var model = await _service.AdvancedSearchAsync(form, searchOptions);
+        var model = await _service.AdvancedSearchAsync(form);
         
         return View(nameof(Index), model);
     }

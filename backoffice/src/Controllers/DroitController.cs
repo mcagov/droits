@@ -263,15 +263,12 @@ public class DroitController : BaseController
 
 
 
-    public async Task<IActionResult> SearchDroits(DroitSearchForm form)
+    public async Task<IActionResult> Search(DroitSearchForm form)
     {
 
-        var searchOptions = new SearchOptions()
-        {
-            IncludeAssociations = true
-        };
+        form.IncludeAssociations = true;
         
-        var model = await _service.AdvancedSearchDroitsAsync(form, searchOptions);
+        var model = await _service.AdvancedSearchDroitsAsync(form);
         
         model.SearchForm = await PopulateDroitSearchFormAsync((DroitSearchForm)model.SearchForm!);
 
