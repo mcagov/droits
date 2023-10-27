@@ -89,6 +89,7 @@ public class LetterController : BaseController
         var model = new LetterForm
         {
             DroitId = droit.Id,
+            DroitReference = droit.Reference,
             Recipient = droit?.Salvor?.Email ?? "",
             Type = type
         };
