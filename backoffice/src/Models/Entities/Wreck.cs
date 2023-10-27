@@ -11,8 +11,8 @@ public class Wreck : BaseEntity
     public bool InUkWaters { get; set; } = false;
     public bool IsWarWreck { get; set; } = false;
     public bool IsAnAircraft { get; set; } = false;
-    public string? Latitude { get; set; }
-    public string? Longitude { get; set; }
+    public float? Latitude { get; set; }
+    public float? Longitude { get; set; }
 
     public bool IsProtectedSite { get; set; } = false;
     public string? ProtectionLegislation { get; set; }

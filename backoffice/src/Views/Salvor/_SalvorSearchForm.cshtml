@@ -1,0 +1,22 @@
+@using Microsoft.CodeAnalysis.CSharp.Syntax
+@model SalvorSearchForm
+
+<form class="form-horizontal" asp-action="SearchSalvors" enctype="multipart/form-data" method="POST">
+
+    <div class="form-floating mb-3">
+        @Html.EditorFor(s => s.Name, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })    
+        @Html.LabelFor(s => s.Name)
+    </div>
+    
+        <div class="form-floating mb-3">
+            @Html.EditorFor(s => s.Email, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })    
+            @Html.LabelFor(s => s.Email)
+        </div>
+    
+    <div class="col d-flex flex-row mt-4">
+        <div class="align-self-end">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </div>
+
+</form>

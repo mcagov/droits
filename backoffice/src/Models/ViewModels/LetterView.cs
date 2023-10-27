@@ -21,7 +21,7 @@ public class LetterView : BaseEntityView
         if ( includeAssociations && letter.Droit != null)
         {
             Droit = new DroitView(letter.Droit);
-            Notes = new NoteListView(letter.Notes.Select(n => new NoteView(n)).OrderByDescending(n => n.LastModified).ToList());
+            Notes = new NoteListView(letter.Notes.Select(n => new NoteView(n)).OrderByDescending(n => n.Created).ToList());
 
         }
     }

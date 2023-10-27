@@ -15,6 +15,7 @@ public interface ISalvorService
     Task<Salvor> SaveSalvorAsync(Salvor salvor);
     Task<Salvor> GetSalvorAsync(Guid id);
     Task<Guid> SaveSalvorFormAsync(SalvorForm form);
+    Task<SalvorListView> SearchSalvorsAsync(SalvorSearchForm form, SearchOptions searchOptions);
 }
 
 public class SalvorService : ISalvorService
@@ -86,5 +87,29 @@ public class SalvorService : ISalvorService
         var salvor = form.ApplyChanges(new Salvor());
 
         return ( await SaveSalvorAsync(salvor) ).Id;
+    }
+
+
+    public async Task<SalvorListView> SearchSalvorsAsync(SalvorSearchForm form, SearchOptions searchOptions)
+    {
+        var query = _repo.GetSalvorsWithAssociations()
+            .OrderByDescending(s => s.Created)
+            .Where(s =>
+                SearchHelper.FuzzyMatches(form.Name, s.Name, 70) && 
+                SearchHelper.Matches(form.Email, s.Email)
+            )
+            .Select(s => new SalvorView(s, true));
+        
+        var pagedSalvors =
+            await ServiceHelper.GetPagedResult(query, searchOptions);
+
+        return new SalvorListView(pagedSalvors.Items)
+        {
+            PageNumber = pagedSalvors.PageNumber,
+            PageSize = pagedSalvors.PageSize,
+            IncludeAssociations = pagedSalvors.IncludeAssociations,
+            TotalCount = pagedSalvors.TotalCount,
+            SearchForm = form
+        };
     }
 }

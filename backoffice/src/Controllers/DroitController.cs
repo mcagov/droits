@@ -37,9 +37,14 @@ public class DroitController : BaseController
     public async Task<IActionResult> Index(SearchOptions searchOptions)
     {
         searchOptions.IncludeAssociations = true;
+        
         var model = await _service.GetDroitsListViewAsync(searchOptions);
+
+        model.SearchForm = await PopulateDroitSearchFormAsync(model.SearchForm);
+        
         return View(model);
     }
+
 
 
     [HttpGet]
@@ -232,12 +237,11 @@ public class DroitController : BaseController
 
     private async Task<DroitForm> PopulateDroitFormAsync(DroitForm form)
     {
-        var allUsers = await _userService.GetUsersAsync();
+        var allUsers = await _userService.GetUserSelectListAsync();
         var allWrecks = await _wreckService.GetWrecksAsync();
         var allSalvors = await _salvorService.GetSalvorsAsync();
 
-        form.AllUsers = allUsers
-            .Select(u => new SelectListItem($"{u.Name} ({u.Email})", u.Id.ToString())).ToList();
+        form.AllUsers = allUsers;
         form.AllWrecks =
             allWrecks.Select(w => new SelectListItem(w.Name, w.Id.ToString())).ToList();
         form.AllSalvors = allSalvors
@@ -245,6 +249,7 @@ public class DroitController : BaseController
 
         return form;
     }
+<<<<<<< HEAD
 
 
     public async Task<IActionResult> Export(string query)
@@ -273,14 +278,32 @@ public class DroitController : BaseController
         return View(model);
     }
 
+   
+    
+    private async Task<DroitSearchForm> PopulateDroitSearchFormAsync(DroitSearchForm form)
+    {
+        var allUsers = await _userService.GetUserSelectListAsync();
+        allUsers.Add(new SelectListItem("Unassigned", default(Guid).ToString()));
+        
+        form.AssignedToUsers = allUsers;
+
+        return form;
+    }
+
+
+
     public async Task<IActionResult> SearchDroits(DroitSearchForm form)
     {
-       
-        var searchOptions = new SearchOptions();
-        searchOptions.IncludeAssociations = true;
 
+        var searchOptions = new SearchOptions()
+        {
+            IncludeAssociations = true
+        };
+        
         var model = await _service.AdvancedSearchDroitsAsync(form, searchOptions);
         
-        return View(nameof(FormSearch), model);
+        model.SearchForm = await PopulateDroitSearchFormAsync(model.SearchForm);
+
+        return View(nameof(Index), model);
     }
 }

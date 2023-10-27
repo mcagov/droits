@@ -1,5 +1,6 @@
 using Droits.Data;
 using Droits.Exceptions;
+using Droits.Helpers;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
@@ -34,7 +35,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
 
     public IQueryable<Droit> GetDroits()
     {
-        return Context.Droits.Include(d => d.AssignedToUser).OrderByDescending(d => d.LastModified);;
+        return Context.Droits.Include(d => d.AssignedToUser).OrderByDescending(d => d.ReportedDate);
     }
 
 
@@ -127,10 +128,10 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
             .Include(d => d.Salvor)
             .Include(d => d.AssignedToUser)
             .Where(d =>
-                d.Reference.ToLower().Contains(query) ||
-                (d.Wreck != null && d.Wreck.Name.ToLower().Contains(query)) ||
-                (d.Salvor != null && d.Salvor.Name.ToLower().Contains(query)) ||
-                (d.AssignedToUser != null && d.AssignedToUser.Name.ToLower().Contains(query))
+                SearchHelper.Matches(query, d.Reference) ||
+                (d.Wreck != null && SearchHelper.Matches(query, d.Wreck.Name)) ||
+                (d.Salvor != null && SearchHelper.Matches(query, d.Salvor.Name)) ||
+                (d.AssignedToUser != null && SearchHelper.Matches(query, d.AssignedToUser.Name))
             )
             .ToListAsync();
 

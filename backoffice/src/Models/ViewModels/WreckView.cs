@@ -32,7 +32,7 @@ public class WreckView : BaseEntityView
         OwnerName = wreck.OwnerName;
         OwnerEmail = wreck.OwnerEmail;
         OwnerNumber = wreck.OwnerNumber;
-        Notes = new NoteListView(wreck.Notes.Select(n => new NoteView(n)).OrderByDescending(n => n.LastModified).ToList());
+        Notes = new NoteListView(wreck.Notes.Select(n => new NoteView(n)).OrderByDescending(n => n.Created).ToList());
 
         if ( includeAssociations )
         {
@@ -65,8 +65,8 @@ public class WreckView : BaseEntityView
     [DisplayName("Is An Aircraft")]
     public bool IsAnAircraft { get; } = false;
 
-    public string? Latitude { get; }
-    public string? Longitude { get; }
+    public float? Latitude { get; }
+    public float? Longitude { get; }
 
     [DisplayName("Is A Protected Site")]
     public bool IsProtectedSite { get; } = false;

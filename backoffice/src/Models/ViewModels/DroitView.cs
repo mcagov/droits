@@ -54,18 +54,18 @@ public class DroitView : BaseEntityView
 
         if ( droit.WreckMaterials.Any() )
         {
-            WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).OrderByDescending(w => w.LastModified).ToList();
+            WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).OrderByDescending(w => w.Created).ToList();
         }
 
         if ( droit.Letters.Any() )
         {
-            Letters = new LetterListView(droit.Letters.Select(l => new LetterView(l)).OrderByDescending(l => l.LastModified)
+            Letters = new LetterListView(droit.Letters.Select(l => new LetterView(l)).OrderByDescending(l => l.Created)
                 .ToList());
         }
 
         if ( droit.Notes.Any() )
         {
-            Notes = new NoteListView(droit.Notes.Select(n => new NoteView(n)).OrderByDescending(l => l.LastModified).ToList());
+            Notes = new NoteListView(droit.Notes.Select(n => new NoteView(n)).OrderByDescending(l => l.Created).ToList());
         }
 
         // Location
@@ -148,8 +148,8 @@ public class DroitView : BaseEntityView
 
 
     // Location
-    public string? Latitude { get; }
-    public string? Longitude { get; }
+    public float? Latitude { get; }
+    public float? Longitude { get; }
 
     [DisplayName("In UK Waters")]
     public bool InUkWaters { get; }

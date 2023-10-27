@@ -36,8 +36,8 @@ public class Droit : BaseEntity
     public Guid? SalvorId { get; set; }
 
     // Location
-    public string? Latitude { get; set; }
-    public string? Longitude { get; set; }
+    public float? Latitude { get; set; }
+    public float? Longitude { get; set; }
     public bool InUkWaters { get; set; } = false;
     public int? LocationRadius { get; set; } //Units? Unknown.
     public int? Depth { get; set; } //Units? Unknown. //metres from frontend

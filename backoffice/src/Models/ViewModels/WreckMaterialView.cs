@@ -28,7 +28,7 @@ public class WreckMaterialView : BaseEntityView
         
         if ( wreckMaterial.Images.Any() )
         {
-            Images = wreckMaterial.Images.Select(i => new ImageView(i)).OrderByDescending(i => i.LastModified).ToList();
+            Images = wreckMaterial.Images.Select(i => new ImageView(i)).OrderByDescending(i => i.Created).ToList();
         }
     }
 

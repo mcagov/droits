@@ -24,7 +24,7 @@ public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
 
     public IQueryable<Salvor> GetSalvors()
     {
-        return Context.Salvors.OrderByDescending(l => l.LastModified);
+        return Context.Salvors.OrderByDescending(l => l.Created);
     }
 
 

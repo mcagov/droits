@@ -95,7 +95,7 @@ public static class DatabaseSeeder
 
     private static IEnumerable<Salvor> GetSalvors(ApplicationUser user)
     {
-        return Enumerable.Range(0, 3)
+        return Enumerable.Range(0, 50)
             .Select(i => new Salvor
             {
                 Id = Guid.NewGuid(),
@@ -194,8 +194,8 @@ public static class DatabaseSeeder
                 InUkWaters = Faker.Random.Bool(),
                 IsWarWreck = Faker.Random.Bool(),
                 IsAnAircraft = Faker.Random.Bool(),
-                Latitude = Faker.Address.Latitude().ToString(CultureInfo.CurrentCulture),
-                Longitude = Faker.Address.Longitude().ToString(CultureInfo.CurrentCulture),
+                Latitude = (float) Faker.Address.Latitude(),
+                Longitude = (float) Faker.Address.Longitude(),
 
                 IsProtectedSite = Faker.Random.Bool(),
                 ProtectionLegislation = Faker.Lorem.Word(),

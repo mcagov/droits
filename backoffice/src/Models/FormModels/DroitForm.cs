@@ -111,8 +111,8 @@ public class DroitForm : BaseEntityForm
 
 
     // Location
-    public string? Latitude { get; set; }
-    public string? Longitude { get; set; }
+    public float? Latitude { get; set; }
+    public float? Longitude { get; set; }
 
     [DisplayName("In UK Waters")]
     public bool InUkWaters { get; set; }
