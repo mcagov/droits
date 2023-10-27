@@ -1,62 +1,45 @@
 import Choices from "choices.js";
 
+function initializeSearchForm(formClass, toggleButtonClass) {
+    const searchFormElements = document.querySelectorAll(formClass);
+
+    if (searchFormElements.length === 0) return;
+
+    const searchFormButton = document.querySelector(toggleButtonClass);
+
+    searchFormButton.addEventListener('click', function () {
+        const searchForm = document.querySelector(formClass);
+        searchForm.classList.toggle('d-none');
+    });
+
+    switch (formClass) {
+        case '.js-droit-search':
+            initializeChoices('.js-search-droit-status', 'Select Status');
+            initializeChoices('.js-search-droit-recovered-from', 'Select Recovered From');
+            initializeChoices('.js-select-assigned-user', 'Select Assigned To');
+            break;
+        case '.js-letter-search':
+            initializeChoices('.js-search-letter-status', 'Select Status');
+            initializeChoices('.js-search-letter-type', 'Select Type');
+            break;
+    }
+}
+
+function initializeChoices(selector, placeholder, searchEnabled = true, itemSelectText = 'Select') {
+    new Choices(selector, {
+        removeItems: true,
+        removeItemButton: true,
+        placeholder: true,
+        placeholderValue: placeholder,
+        allowHTML: false,
+        searchEnabled: searchEnabled,
+        itemSelectText: itemSelectText,
+    });
+}
 
 export function initializeSearchForms() {
-
-    
-    const droitSearchFormElements = document.querySelectorAll('.js-droit-search');
-    if (droitSearchFormElements.length > 0) {
-        initializeDroitSearchForm();
-    }
-    
-    const salvorSearchFormElements = document.querySelectorAll('.js-salvor-search');
-    if (salvorSearchFormElements.length > 0) {
-        initializeSalvorSearchForm();
-    }
-   
-}
-
-function initializeDroitSearchForm(){
-     new Choices('.js-search-droit-status', {
-        removeItems: true,
-        removeItemButton: true,
-        placeholder: true,
-        placeholderValue: 'Select Status',
-    });
-
-    new Choices('.js-search-droit-recovered-from', {
-        removeItems: true,
-        removeItemButton: true,
-        placeholder: true,
-        placeholderValue: 'Select Recovered From',
-    });
-
-    new Choices('.js-select-assigned-user', {
-        allowHTML: false,
-        searchEnabled: true,
-        itemSelectText: 'Select',
-    });
-    
-    const droitSearchFormButton = document.querySelector('.js-toggle-droit-search');
-    
-
-    droitSearchFormButton.addEventListener('click', function (){
-        const droitSearchForm = document.querySelector('.js-droit-search');
-        droitSearchForm.classList.toggle('d-none');
-    });
-}
-
-
-function initializeSalvorSearchForm(){
-    
-    const salvorSearchFormButton = document.querySelector('.js-toggle-salvor-search');
-    
-    
-    salvorSearchFormButton.addEventListener('click', function (){
-        const salvorSearchForm = document.querySelector('.js-salvor-search');
-        salvorSearchForm.classList.toggle('d-none');
-    });
-    
-
-
+    initializeSearchForm('.js-droit-search', '.js-toggle-droit-search');
+    initializeSearchForm('.js-salvor-search', '.js-toggle-salvor-search');
+    initializeSearchForm('.js-wreck-search', '.js-toggle-wreck-search');
+    initializeSearchForm('.js-letter-search', '.js-toggle-letter-search');
 }

@@ -1,3 +1,6 @@
+using Droits.Models.FormModels;
+using Droits.Models.FormModels.SearchFormModels;
+
 namespace Droits.Models.ViewModels.ListViews;
 
 public class ListView<T> : SearchOptions
@@ -14,4 +17,7 @@ public class ListView<T> : SearchOptions
     {
         Items = items.ToList();
     }
+    
+    public SearchForm? SearchForm { get; set; }
+    
 }

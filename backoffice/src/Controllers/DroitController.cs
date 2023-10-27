@@ -5,7 +5,9 @@ using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
+using Droits.Models.ViewModels.ListViews;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -40,7 +42,7 @@ public class DroitController : BaseController
         
         var model = await _service.GetDroitsListViewAsync(searchOptions);
 
-        model.SearchForm = await PopulateDroitSearchFormAsync(model.SearchForm);
+        model.SearchForm = await PopulateDroitSearchFormAsync((DroitSearchForm)model.SearchForm!);
         
         return View(model);
     }
@@ -250,7 +252,7 @@ public class DroitController : BaseController
         return form;
     }
     
-    private async Task<DroitSearchForm> PopulateDroitSearchFormAsync(DroitSearchForm form)
+    private async Task<SearchForm> PopulateDroitSearchFormAsync(DroitSearchForm form)
     {
         var allUsers = await _userService.GetUserSelectListAsync();
         allUsers.Add(new SelectListItem("Unassigned", default(Guid).ToString()));
@@ -262,17 +264,14 @@ public class DroitController : BaseController
 
 
 
-    public async Task<IActionResult> SearchDroits(DroitSearchForm form)
+    public async Task<IActionResult> Search(DroitSearchForm form)
     {
 
-        var searchOptions = new SearchOptions()
-        {
-            IncludeAssociations = true
-        };
+        form.IncludeAssociations = true;
         
-        var model = await _service.AdvancedSearchDroitsAsync(form, searchOptions);
+        var model = await _service.AdvancedSearchDroitsAsync(form);
         
-        model.SearchForm = await PopulateDroitSearchFormAsync(model.SearchForm);
+        model.SearchForm = await PopulateDroitSearchFormAsync((DroitSearchForm)model.SearchForm!);
 
         return View(nameof(Index), model);
     }

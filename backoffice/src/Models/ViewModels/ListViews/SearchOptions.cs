@@ -1,4 +1,4 @@
-namespace Droits.Models.ViewModels;
+namespace Droits.Models.ViewModels.ListViews;
 
 public class SearchOptions
 {

@@ -1,6 +1,7 @@
 using Droits.Helpers;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
@@ -15,7 +16,7 @@ public interface ISalvorService
     Task<Salvor> SaveSalvorAsync(Salvor salvor);
     Task<Salvor> GetSalvorAsync(Guid id);
     Task<Guid> SaveSalvorFormAsync(SalvorForm form);
-    Task<SalvorListView> SearchSalvorsAsync(SalvorSearchForm form, SearchOptions searchOptions);
+    Task<SalvorListView> AdvancedSearchAsync(SalvorSearchForm form);
 }
 
 public class SalvorService : ISalvorService
@@ -90,7 +91,7 @@ public class SalvorService : ISalvorService
     }
 
 
-    public async Task<SalvorListView> SearchSalvorsAsync(SalvorSearchForm form, SearchOptions searchOptions)
+    public async Task<SalvorListView> AdvancedSearchAsync(SalvorSearchForm form)
     {
         var query = _repo.GetSalvorsWithAssociations()
             .OrderByDescending(s => s.Created)
@@ -101,7 +102,7 @@ public class SalvorService : ISalvorService
             .Select(s => new SalvorView(s, true));
         
         var pagedSalvors =
-            await ServiceHelper.GetPagedResult(query, searchOptions);
+            await ServiceHelper.GetPagedResult(query, form);
 
         return new SalvorListView(pagedSalvors.Items)
         {
