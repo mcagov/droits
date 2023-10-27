@@ -114,4 +114,24 @@ public class SearchHelperTests
     {
         Assert.True(SearchHelper.IsBetween((float?)null,null, null));
     }
+    [Fact]
+    public void FuzzyMatches_WithASimilarTerm_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.FuzzyMatches("alix","alex"));
+    }
+    [Fact]
+    public void FuzzyMatches_WithASimilarTermForTheFirstPart_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.FuzzyMatches("alix","alex withASurname"));
+    }
+    [Fact]
+    public void FuzzyMatches_WithAVaguelyCloseTerm_ShouldReturnTrue()
+    {
+        Assert.True(SearchHelper.FuzzyMatches("halax","alex"));
+    }
+    [Fact]
+    public void FuzzyMatches_WithAFarAwayTerm_ShouldReturnFalse()
+    {
+        Assert.False(SearchHelper.FuzzyMatches("salad","alex"));
+    }
 }
