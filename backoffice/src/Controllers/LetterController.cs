@@ -5,6 +5,7 @@ using Droits.Services;
 using Droits.Models.ViewModels;
 using Droits.Models.FormModels;
 using Droits.Models.Enums;
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels.ListViews;
 
 namespace Droits.Controllers;
@@ -89,6 +90,7 @@ public class LetterController : BaseController
         var model = new LetterForm
         {
             DroitId = droit.Id,
+            DroitReference = droit.Reference,
             Recipient = droit?.Salvor?.Email ?? "",
             Type = type
         };
@@ -164,5 +166,16 @@ public class LetterController : BaseController
             HandleError(_logger, "Letter not found", e);
             return RedirectToAction(nameof(Index));
         }
+    }
+    
+    
+    public async Task<IActionResult> Search(LetterSearchForm form)
+    {
+
+        form.IncludeAssociations = true;
+        
+        var model = await _service.AdvancedSearchAsync(form);
+        
+        return View(nameof(Index), model);
     }
 }

@@ -1,6 +1,7 @@
 using Droits.Helpers;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
@@ -15,6 +16,8 @@ public interface IWreckService
     Task<Wreck> GetWreckAsync(Guid id);
     Task<Guid> SaveWreckFormAsync(WreckForm wreckForm);
     Task<WreckListView> GetWrecksListViewAsync(SearchOptions searchOptions);
+    Task<WreckListView> AdvancedSearchAsync(WreckSearchForm form);
+
 }
 
 public class WreckService : IWreckService
@@ -85,5 +88,27 @@ public class WreckService : IWreckService
         var wreck = wreckForm.ApplyChanges(new Wreck());
 
         return ( await SaveWreckAsync(wreck) ).Id;
+    }
+    
+    public async Task<WreckListView> AdvancedSearchAsync(WreckSearchForm form)
+    {
+        var query = _repo.GetWrecksWithAssociations()
+            .OrderByDescending(w => w.Created)
+            .Where(w =>
+                SearchHelper.FuzzyMatches(form.Name, w.Name, 70) 
+            )
+            .Select(w => new WreckView(w, true));
+        
+        var pagedResults =
+            await ServiceHelper.GetPagedResult(query, form);
+
+        return new WreckListView(pagedResults.Items)
+        {
+            PageNumber = pagedResults.PageNumber,
+            PageSize = pagedResults.PageSize,
+            IncludeAssociations = pagedResults.IncludeAssociations,
+            TotalCount = pagedResults.TotalCount,
+            SearchForm = form
+        };
     }
 }

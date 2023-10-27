@@ -1,6 +1,7 @@
 using Droits.Exceptions;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Microsoft.AspNetCore.Mvc;
@@ -134,14 +135,11 @@ public class SalvorController : BaseController
     }
 
 
-    public async Task<IActionResult> SearchSalvors(SalvorSearchForm form)
+    public async Task<IActionResult> Search(SalvorSearchForm form)
     {
-        var searchOptions = new SearchOptions()
-        {
-            IncludeAssociations = true
-        };
+        form.IncludeAssociations = true;
         
-        var model = await _service.SearchSalvorsAsync(form, searchOptions);
+        var model = await _service.AdvancedSearchAsync(form);
         
         return View(nameof(Index), model);
     }

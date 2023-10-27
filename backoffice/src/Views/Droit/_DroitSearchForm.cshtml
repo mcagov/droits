@@ -1,6 +1,3 @@
-@using System.Linq.Expressions
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Microsoft.EntityFrameworkCore
 @model DroitSearchForm
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -27,7 +24,7 @@
     </li>
 </ul>
 
-<form class="form-horizontal" asp-action="SearchDroits" enctype="multipart/form-data" method="POST">
+<form class="form-horizontal" asp-action="Search" enctype="multipart/form-data" method="POST">
 
 <div class="tab-content mt-4" id="droitForm">
 <div class="tab-pane fade show active" id="droit" role="tabpanel" aria-labelledby="droit-tab">

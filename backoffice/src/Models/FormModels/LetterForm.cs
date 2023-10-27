@@ -16,12 +16,20 @@ public class LetterForm : BaseEntityForm
     public LetterForm(Letter letter) : base(letter)
     {
         DroitId = letter.DroitId;
+        if ( letter.Droit != null )
+        {
+            DroitReference = letter.Droit.Reference;
+        }
         Recipient = letter.Recipient;
         Subject = letter.Subject;
         Body = letter.Body;
         Status = letter.Status;
         Type = letter.Type;
     }
+
+
+    [DisplayName("Droit Reference")]
+    public string? DroitReference { get; set; }
 
     public Guid DroitId { get; set; }
     public LetterType Type { get; set; }
