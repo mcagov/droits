@@ -3,11 +3,11 @@ using Droits.Helpers;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Notify.Models.Responses;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Droits.Services;
 
@@ -20,6 +20,9 @@ public interface ILetterService
     Task<Letter> GetLetterAsync(Guid id);
     Task<Letter> SaveLetterAsync(LetterForm form);
     Task<LetterListView> GetApprovedUnsentLettersListViewForCurrentUserAsync(SearchOptions searchOptions);
+    
+    Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form, SearchOptions searchOptions);
+
 }
 
 public class LetterService : ILetterService
@@ -246,5 +249,31 @@ public class LetterService : ILetterService
     public async Task<Letter> GetLetterAsync(Guid id)
     {
         return await _repo.GetLetterAsync(id);
+    }
+    
+    public async Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form, SearchOptions searchOptions)
+    {
+        var query = _repo.GetLettersWithAssociations()
+            .OrderByDescending(w => w.Created)
+            .Where(l =>
+                SearchHelper.FuzzyMatches(form.Recipient, l.Recipient, 70) && 
+                ( form.StatusList.IsNullOrEmpty() ||
+                  form.StatusList.Contains(l.Status) ) &&
+                ( form.TypeList.IsNullOrEmpty() ||
+                  form.TypeList.Contains(l.Type) ) 
+            )
+            .Select(l => new LetterView(l, true));
+        
+        var pagedResults =
+            await ServiceHelper.GetPagedResult(query, searchOptions);
+
+        return new LetterListView(pagedResults.Items)
+        {
+            PageNumber = pagedResults.PageNumber,
+            PageSize = pagedResults.PageSize,
+            IncludeAssociations = pagedResults.IncludeAssociations,
+            TotalCount = pagedResults.TotalCount,
+            SearchForm = form
+        };
     }
 }

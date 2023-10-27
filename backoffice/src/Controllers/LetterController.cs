@@ -5,6 +5,7 @@ using Droits.Services;
 using Droits.Models.ViewModels;
 using Droits.Models.FormModels;
 using Droits.Models.Enums;
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels.ListViews;
 
 namespace Droits.Controllers;
@@ -164,5 +165,18 @@ public class LetterController : BaseController
             HandleError(_logger, "Letter not found", e);
             return RedirectToAction(nameof(Index));
         }
+    }
+    
+    
+    public async Task<IActionResult> Search(LetterSearchForm form)
+    {
+        var searchOptions = new SearchOptions()
+        {
+            IncludeAssociations = true
+        };
+        
+        var model = await _service.AdvancedSearchAsync(form, searchOptions);
+        
+        return View(nameof(Index), model);
     }
 }

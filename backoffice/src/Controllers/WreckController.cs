@@ -4,6 +4,7 @@ using Droits.Services;
 using Droits.Models.ViewModels;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Models.FormModels.SearchFormModels;
 
 namespace Droits.Controllers;
 
@@ -130,5 +131,17 @@ public class WreckController : BaseController
             _logger.LogError("Wreck not found for partial", e);
             return NotFound();
         }
+    }
+    
+    public async Task<IActionResult> Search(WreckSearchForm form)
+    {
+        var searchOptions = new SearchOptions()
+        {
+            IncludeAssociations = true
+        };
+        
+        var model = await _service.AdvancedSearchAsync(form, searchOptions);
+        
+        return View(nameof(Index), model);
     }
 }

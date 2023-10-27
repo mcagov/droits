@@ -1,4 +1,4 @@
-@model Droits.Models.FormModels.SearchFormModels.SalvorSearchForm
+@model Droits.Models.FormModels.SearchFormModels.WreckSearchForm
 
 <form class="form-horizontal" asp-action="Search" enctype="multipart/form-data" method="POST">
 
@@ -6,12 +6,7 @@
         @Html.EditorFor(s => s.Name, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })    
         @Html.LabelFor(s => s.Name)
     </div>
-    
-        <div class="form-floating mb-3">
-            @Html.EditorFor(s => s.Email, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })    
-            @Html.LabelFor(s => s.Email)
-        </div>
-    
+
     <div class="col d-flex flex-row mt-4">
         <div class="align-self-end">
             <button class="btn btn-primary" type="submit">Search</button>

@@ -1,0 +1,51 @@
+@model Droits.Models.FormModels.SearchFormModels.LetterSearchForm
+
+<form class="form-horizontal" asp-action="Search" enctype="multipart/form-data" method="POST">
+
+    <div class="form-floating mb-3">
+        @Html.EditorFor(l => l.Recipient, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })    
+        @Html.LabelFor(l => l.Recipient)
+    </div>
+    
+    <div class="form-floating mb-3 status-select">
+        <select class="form-control js-search-letter-status" id="StatusList" multiple="multiple" name="StatusList" placeholder="">
+            @foreach (var o in Html.GetEnumSelectList(typeof(LetterStatus)))
+            {
+                if (@Model.SelectedStatusList.Contains(int.Parse(o.Value)))
+                {
+                    <option value="@o.Value" selected="selected">@o.Text</option>
+                }
+                else
+                {
+                    <option value="@o.Value">@o.Text</option>
+        
+                }
+            }
+        </select>
+    </div>
+    
+    <div class="form-floating mb-3 type-select">
+        <select class="form-control js-search-letter-type" id="TypeList" multiple="multiple" name="TypeList" placeholder="">
+            @foreach (var o in Html.GetEnumSelectList(typeof(LetterType)))
+            {
+                if (@Model.SelectedTypeList.Contains(int.Parse(o.Value)))
+                {
+                    <option value="@o.Value" selected="selected">@o.Text</option>
+                }
+                else
+                {
+                    <option value="@o.Value">@o.Text</option>
+        
+                }
+            }
+        </select>
+    </div>
+    
+
+    <div class="col d-flex flex-row mt-4">
+        <div class="align-self-end">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </div>
+
+</form>
