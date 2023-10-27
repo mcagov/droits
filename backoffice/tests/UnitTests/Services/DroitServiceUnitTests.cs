@@ -1,5 +1,5 @@
-using System.Text;
 using Droits.Exceptions;
+using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Repositories;
@@ -133,7 +133,7 @@ namespace Droits.Tests.UnitTests.Services
         public async Task ExportDroitsAsync_EmptyList_ThrowsException()
         {
             // Given
-            var emptyList = new List<Droit>() { };
+            var emptyList = new List<DroitDto>();
 
             // When & Assert
             await Assert.ThrowsAsync<Exception>(() => _service.ExportDroitsAsync(emptyList));
@@ -143,10 +143,10 @@ namespace Droits.Tests.UnitTests.Services
         public async Task ExportDroitsAsync_ListOfDroits_ReturnsData()
         {
             // Given
-            var droits = new List<Droit>()
+            var droits = new List<DroitDto>()
             {
-                new () { Id = Guid.NewGuid(), Reference = "Ref1" , SalvorId = Guid.NewGuid()},
-                new () { Id = Guid.NewGuid(), Reference = "Ref2" , SalvorId = Guid.NewGuid()}
+                new () { Id = Guid.NewGuid(), Reference = "Ref1" , SalvorId = Guid.NewGuid().ToString()},
+                new () { Id = Guid.NewGuid(), Reference = "Ref2" , SalvorId = Guid.NewGuid().ToString()}
             };
 
             // When

@@ -28,15 +28,15 @@ namespace Droits.Models.DTOs
             Status = droit.Status.GetDisplayName();
         }
 
-        public Guid Id { get; set; }
-        public string Reference { get; set; }
-        public string Created { get; set; }
-        public string LastModified { get; set; }
-        public string WreckName { get; set; }
-        public string WreckId { get; set; }
-        public string SalvorName { get; set; }
-        public string SalvorId { get; set; }
-        public string AssignedTo { get; set; }
-        public string Status { get; set; }
+        public Guid? Id { get; set; }
+        public string? Reference { get; set; }
+        public string? Created { get; set; }
+        public string? LastModified { get; set; }
+        public string? WreckName { get; set; }
+        public string? WreckId { get; set; }
+        public string? SalvorName { get; set; }
+        public string? SalvorId { get; set; }
+        public string? AssignedTo { get; set; }
+        public string? Status { get; set; }
     }
 }
