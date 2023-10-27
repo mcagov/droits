@@ -1,4 +1,5 @@
 using Droits.Exceptions;
+using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Repositories;
@@ -127,5 +128,33 @@ namespace Droits.Tests.UnitTests.Services
             // When & Assert
             await Assert.ThrowsAsync<DroitNotFoundException>(() => _service.UpdateDroitStatusAsync(nonExistingDroitId, DroitStatus.Research));
         }
+        
+        [Fact]
+        public async Task ExportDroitsAsync_EmptyList_ThrowsException()
+        {
+            // Given
+            var emptyList = new List<DroitDto>();
+
+            // When & Assert
+            await Assert.ThrowsAsync<Exception>(() => _service.ExportDroitsAsync(emptyList));
+        }
+        
+        [Fact]
+        public async Task ExportDroitsAsync_ListOfDroits_ReturnsData()
+        {
+            // Given
+            var droits = new List<DroitDto>()
+            {
+                new () { Id = Guid.NewGuid(), Reference = "Ref1" , SalvorId = Guid.NewGuid().ToString()},
+                new () { Id = Guid.NewGuid(), Reference = "Ref2" , SalvorId = Guid.NewGuid().ToString()}
+            };
+
+            // When
+            var data = await _service.ExportDroitsAsync(droits);
+            
+            // Assert
+            Assert.NotEmpty(data);
+        }
+       
     }
 }
