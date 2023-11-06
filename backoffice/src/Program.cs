@@ -72,6 +72,7 @@ builder.Services.AddHealthChecks();
 
 // Dependency Injections
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IApiService, ApiService>();
 
 builder.Services.AddScoped<ITokenValidationService, TokenValidationService>();
 
@@ -169,7 +170,6 @@ app.UseMiddleware<TokenValidationMiddleware>();
 app.UseAuthorization();
 
 // Routing
-
 app.MapControllerRoute(
     "default",
     "{controller=Home}/{action=Index}/{id?}"

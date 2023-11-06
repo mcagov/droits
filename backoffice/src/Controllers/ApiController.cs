@@ -1,50 +1,51 @@
-﻿using Droits.Models;
+﻿using Droits.Models.DTOs;
+using Droits.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace Droits.Controllers;
-
 public class ApiController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly Random _random;
+    private readonly ILogger<ApiController> _logger;
 
+    private readonly IApiService _service;
 
-    public ApiController(ILogger<HomeController> logger)
+    public ApiController(ILogger<ApiController> logger, IApiService apiService)
     {
         _logger = logger;
-        _random = new Random();
+        _service = apiService;
     }
-
 
     public IActionResult Index()
     {
         return Json(new { status = "Got here..." });
     }
 
-
     [HttpPost]
-    public async Task<IActionResult> Send()
+    [AllowAnonymous]
+    public async Task<IActionResult> Send([FromBody] SubmittedReportDto report)
     {
-        using ( var reader = new StreamReader(Request.Body) )
+ 
+
+        try
         {
-            var body = await reader.ReadToEndAsync();
-            var report = JsonConvert.DeserializeObject<WreckReport>(body);
-
-            if ( report == null ) return NotFound();
-
-            // Generate reference for report:
-            report.Reference = $"{_random.NextInt64(1, 100)}/{DateTime.UtcNow.ToString("yy")}";
-
+            var savedReport = await _service.SaveDroitReportAsync(report);
+            
             return Json
             (
                 new
                 {
-                    reference = report.Reference,
-                    report,
+                    reference = savedReport.Reference,
+                    savedReport,
                     status = "Accepted"
                 }
             );
         }
+        catch ( Exception e )
+        {
+            _logger.LogError("Droit could not be saved" + e);
+            return NotFound();
+        }
+
     }
 }
