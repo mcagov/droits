@@ -6,6 +6,7 @@ using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Droits.Services;
 
@@ -17,6 +18,10 @@ public interface ISalvorService
     Task<Salvor> GetSalvorAsync(Guid id);
     Task<Guid> SaveSalvorFormAsync(SalvorForm form);
     Task<SalvorListView> AdvancedSearchAsync(SalvorSearchForm form);
+    Task<byte[]> ExportSalvorsAsync(SalvorListView salvors);
+    IQueryable<SalvorView> QueryFromForm(SalvorSearchForm form);
+    List<SalvorView> SearchSalvors(IQueryable<SalvorView> query);
+    Task<byte[]> ExportSalvorsTwoAsync(List<SalvorView> salvors);
 }
 
 public class SalvorService : ISalvorService
@@ -112,5 +117,46 @@ public class SalvorService : ISalvorService
             TotalCount = pagedSalvors.TotalCount,
             SearchForm = form
         };
+    }
+    
+    public async Task<byte[]> ExportSalvorsAsync(SalvorListView salvors)
+    {
+        if (salvors.Items.IsNullOrEmpty())
+        {
+            throw new Exception("No Droits to export");
+        }
+
+        return await ExportHelper.ExportRecordsAsync(salvors.Items);
+    }
+
+
+    public IQueryable<SalvorView> QueryFromForm(SalvorSearchForm form)
+    {
+        var query = _repo.GetSalvorsWithAssociations()
+            .OrderByDescending(s => s.Created)
+            .Where(s =>
+                SearchHelper.FuzzyMatches(form.Name, s.Name, 70) && 
+                SearchHelper.Matches(form.Email, s.Email)
+            )
+            .Select(s => new SalvorView(s, true));
+
+        return query;
+    }
+
+
+    public List<SalvorView> SearchSalvors(IQueryable<SalvorView> query)
+    {
+        return query.ToList();
+    }
+
+
+    public async Task<byte[]> ExportSalvorsTwoAsync(List<SalvorView> salvors)
+    {
+        if (salvors.IsNullOrEmpty())
+        {
+            throw new Exception("No Droits to export");
+        }
+
+        return await ExportHelper.ExportRecordsAsync(salvors);
     }
 }

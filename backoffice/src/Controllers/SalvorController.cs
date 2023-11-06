@@ -135,12 +135,45 @@ public class SalvorController : BaseController
     }
 
 
-    public async Task<IActionResult> Search(SalvorSearchForm form)
+    public async Task<IActionResult> Search(SalvorSearchForm form, string command)
     {
+        switch (command)
+        {
+            case "exportOne":
+                return RedirectToAction("Export",form);
+            case "exportTwo":
+                return RedirectToAction("ExportTwo",form);
+        }
+        
         form.IncludeAssociations = true;
-        
+                    
         var model = await _service.AdvancedSearchAsync(form);
-        
+                    
         return View(nameof(Index), model);
+        
+    }
+
+
+    public async Task<IActionResult> Export(SalvorSearchForm form)
+    {
+        
+        form.PageSize = Int32.MaxValue;
+        var salvorViews = await _service.AdvancedSearchAsync(form);
+        
+        var csvExport = await _service.ExportSalvorsAsync(salvorViews);
+
+        return File(csvExport, "text/csv", $"salvor-export-{DateTime.UtcNow.ToShortDateString()}.csv");
+    }
+    
+    public async Task<IActionResult> ExportTwo(SalvorSearchForm form)
+    {
+        
+        var query = _service.QueryFromForm(form);
+
+        var salvors = _service.SearchSalvors(query);
+        
+        var csvExport = await _service.ExportSalvorsTwoAsync(salvors);
+
+        return File(csvExport, "text/csv", $"salvor-export-{DateTime.UtcNow.ToShortDateString()}.csv");
     }
 }
