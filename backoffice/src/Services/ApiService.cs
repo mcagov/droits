@@ -31,7 +31,7 @@ public class ApiService : IApiService
     }
 
 
-    public Task<SubmittedReportDto> SaveDroitReportAsync(SubmittedReportDto report)
+    public async Task<SubmittedReportDto> SaveDroitReportAsync(SubmittedReportDto report)
     {
 
         if ( report == null )
@@ -40,9 +40,24 @@ public class ApiService : IApiService
             throw new DroitNotFoundException();
         }
         
-        // Generate reference for reporåt:
-        report.Reference = $"{_random.NextInt64(1, 100)}/{DateTime.UtcNow:yy}";
+        // Map submitted data into Droit etc entities
+        // DroitMapper.map()
+        
+        
+        // Store the original submitted data against the droit
+        // droit.OriginalSubmission = xxx;
+        
+        // Upload WM images
+        // _droitService.SaveWreckMaterialsAsync()
+        
+        //Set Droit reference:
+        report.Reference = await _droitService.GetNextDroitReference();
 
-        return Task.FromResult(report);
+        
+        //Save entities
+        
+        // Send submission confirmed email 
+        // _letterService.SendSubmissionConfirmationEmailAsync(droit);
+        return report;
     }
 }

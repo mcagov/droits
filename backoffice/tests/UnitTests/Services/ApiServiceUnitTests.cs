@@ -1,111 +1,93 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Droits.Exceptions;
-using Droits.Helpers;
-using Droits.Models.Entities;
-using Droits.Models.ViewModels;
-using Droits.Models.ViewModels.ListViews;
-using Droits.Repositories;
+using Droits.Models.DTOs;
 using Droits.Services;
-using Microsoft.EntityFrameworkCore;
-using Moq;
-using Xunit;
+using Microsoft.Extensions.Logging;
 
 namespace Droits.Tests.UnitTests.Services
 {
-    public class UserServiceUnitTests
+    public class ApiServiceUnitTests
     {
-        private readonly Mock<IUserRepository> _mockRepo;
-        private readonly UserService _service;
+        
+        private readonly ApiService _service;
 
-        public UserServiceUnitTests()
+        public ApiServiceUnitTests()
+        {            
+            var loggerMock = new Mock<ILogger<ApiService>>();
+            var droitServiceMock = new Mock<IDroitService>();
+            var salvorServiceMock = new Mock<ISalvorService>();
+            var letterServiceMock = new Mock<ILetterService>();
+
+            _service = new ApiService(loggerMock.Object, droitServiceMock.Object, salvorServiceMock.Object, letterServiceMock.Object);
+        }
+        
+        [Fact]
+        public async Task SaveDroitReportAsync_NullReport_ThrowsDroitNotFoundException()
         {
-            _mockRepo = new Mock<IUserRepository>();
-            _service = new UserService(_mockRepo.Object);
+            // Act and Assert
+            await Assert.ThrowsAsync<DroitNotFoundException>(() => _service.SaveDroitReportAsync(null!));
         }
 
         [Fact]
-        public async Task SaveUserAsync_NewUser_AddsUser()
+        public async Task SaveDroitReportAsync_ValidReport_GeneratesReference()
         {
-            // Given
-            var newUser = new ApplicationUser { Id = Guid.Empty };
-            _mockRepo.Setup(r => r.AddUserAsync(newUser)).ReturnsAsync(newUser);
+            // Arrange
 
-            // When
-            var result = await _service.SaveUserAsync(newUser);
+            var report = new SubmittedReportDto
+            {
+                ReportDate = "2023-03-20",
+                WreckFindDate = "2022-01-01",
+                Latitude = 51.45399,
+                Longitude = -3.17463,
+                LocationRadius = 492,
+                LocationDescription = "No additional info",
+                VesselName = "",
+                VesselConstructionYear = "",
+                VesselSunkYear = "",
+                VesselDepth = null,
+                RemovedFrom = "afloat",
+                WreckDescription = "",
+                ClaimSalvage = "no",
+                SalvageServices = "",
+                Personal = new SubmittedPersonalDto
+                {
+                    FullName = "Test Salvor",
+                    Email = "test.salvor@madetech.com",
+                    TelephoneNumber = "07791351955",
+                    AddressLine1 = "19 Test Close",
+                    AddressLine2 = "Testing",
+                    AddressTown = "Testington",
+                    AddressCounty = "South Testington",
+                    AddressPostcode = "TE571NG"
+                },
+                WreckMaterials = new List<SubmittedWreckMaterialDto>
+                {
+                    new SubmittedWreckMaterialDto
+                    {
+                        Description = "empty bag",
+                        Quantity = "1",
+                        Value = 0.10m, // Use decimal type for value
+                        ValueKnown = "yes",
+                        Image = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Test-Logo.svg/783px-Test-Logo.svg.png",
+                        OriginalFilename = "test.png",
+                        AddressDetails = new SubmittedAddressDetailsDto
+                        {
+                            AddressLine1 = "19 Test Close",
+                            AddressLine2 = "Testing",
+                            AddressTown = "Testington",
+                            AddressCounty = "South Testington",
+                            AddressPostcode = "TE571NG"
+                        },
+                        StorageAddress = "personal"
+                    }
+                }
+            };
 
-            // Then
-            Assert.Equal(newUser, result);
-            _mockRepo.Verify(r => r.AddUserAsync(newUser), Times.Once);
-            _mockRepo.Verify(r => r.UpdateUserAsync(newUser), Times.Never);
-        }
+            // Act
+            var result = await _service.SaveDroitReportAsync(report);
 
-        [Fact]
-        public async Task SaveUserAsync_ExistingUser_UpdatesUser()
-        {
-            // Given
-            var existingUser = new ApplicationUser { Id = Guid.NewGuid() };
-            _mockRepo.Setup(r => r.UpdateUserAsync(existingUser)).ReturnsAsync(existingUser);
-
-            // When
-            var result = await _service.SaveUserAsync(existingUser);
-
-            // Then
-            Assert.Equal(existingUser, result);
-            _mockRepo.Verify(r => r.UpdateUserAsync(existingUser), Times.Once);
-            _mockRepo.Verify(r => r.AddUserAsync(existingUser), Times.Never);
-        }
-
-        [Fact]
-        public async Task GetUserAsync_ExistingId_ReturnsUser()
-        {
-            // Given
-            var userId = Guid.NewGuid();
-            var expectedUser = new ApplicationUser { Id = userId };
-            _mockRepo.Setup(r => r.GetUserAsync(userId)).ReturnsAsync(expectedUser);
-
-            // When
-            var result = await _service.GetUserAsync(userId);
-
-            // Then
-            Assert.Equal(expectedUser, result);
-        }
-
-        [Fact]
-        public async Task GetOrCreateUserAsync_UserExists_ReturnsExistingUser()
-        {
-            // Given
-            var authId = "auth123";
-            var existingUser = new ApplicationUser { Id = Guid.NewGuid(), AuthId = authId };
-            _mockRepo.Setup(r => r.GetUserByAuthIdAsync(authId)).ReturnsAsync(existingUser);
-
-            // When
-            var result = await _service.GetOrCreateUserAsync(authId, "John Doe", "john@example.com");
-
-            // Then
-            Assert.Equal(existingUser, result);
-            _mockRepo.Verify(r => r.GetUserByAuthIdAsync(authId), Times.Once);
-            _mockRepo.Verify(r => r.AddUserAsync(It.IsAny<ApplicationUser>()), Times.Never);
-        }
-
-        [Fact]
-        public async Task GetOrCreateUserAsync_UserDoesNotExist_AddsNewUser()
-        {
-            // Given
-            var authId = "auth123";
-            var newUser = new ApplicationUser { Id = Guid.NewGuid(), AuthId = authId };
-            _mockRepo.Setup(r => r.GetUserByAuthIdAsync(authId)).Throws<UserNotFoundException>();
-            _mockRepo.Setup(r => r.AddUserAsync(It.IsAny<ApplicationUser>())).ReturnsAsync(newUser);
-
-            // When
-            var result = await _service.GetOrCreateUserAsync(authId, "Jane Doe", "jane@example.com");
-
-            // Then
-            Assert.Equal(newUser, result);
-            _mockRepo.Verify(r => r.GetUserByAuthIdAsync(authId), Times.Once);
-            _mockRepo.Verify(r => r.AddUserAsync(It.IsAny<ApplicationUser>()), Times.Once);
+            // Assert
+            Assert.NotNull(result.Reference);
+            
         }
     }
 }
