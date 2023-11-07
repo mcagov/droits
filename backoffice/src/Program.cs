@@ -2,6 +2,7 @@ using Amazon.Runtime;
 using Amazon.S3;
 using Droits.Clients;
 using Droits.Data;
+using Droits.Data.Mappings;
 using Droits.Middleware;
 using Droits.ModelBinders;
 using Droits.Repositories;
@@ -105,6 +106,9 @@ builder.Services.AddScoped<ISalvorService, SalvorService>();
 
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
+
+// Mappers
+builder.Services.AddAutoMapper(typeof(SalvorMappingProfile));
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();

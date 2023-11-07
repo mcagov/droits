@@ -18,7 +18,7 @@ public class ApiController : Controller
 
     public IActionResult Index()
     {
-        return Json(new { status = "Got here..." });
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpPost]
@@ -29,15 +29,14 @@ public class ApiController : Controller
 
         try
         {
-            var savedReport = await _service.SaveDroitReportAsync(report);
+            var savedDroit = await _service.SaveDroitReportAsync(report);
             
             return Json
             (
                 new
                 {
-                    reference = savedReport.Reference,
-                    savedReport,
-                    status = "Accepted"
+                    reference = savedDroit.Reference,
+                    salvorId = savedDroit.SalvorId
                 }
             );
         }

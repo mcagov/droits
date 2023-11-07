@@ -1,13 +1,14 @@
 using Droits.Exceptions;
 using Droits.Models;
 using Droits.Models.DTOs;
+using Droits.Models.Entities;
 
 namespace Droits.Services;
 
 public interface IApiService
 {
 
-    Task<SubmittedReportDto> SaveDroitReportAsync(SubmittedReportDto report);
+    Task<Droit> SaveDroitReportAsync(SubmittedReportDto report);
 }
 
 public class ApiService : IApiService
@@ -31,7 +32,7 @@ public class ApiService : IApiService
     }
 
 
-    public async Task<SubmittedReportDto> SaveDroitReportAsync(SubmittedReportDto report)
+    public async Task<Droit> SaveDroitReportAsync(SubmittedReportDto report)
     {
 
         if ( report == null )
@@ -41,7 +42,8 @@ public class ApiService : IApiService
         }
         
         // Map submitted data into Droit etc entities
-        // DroitMapper.map()
+
+        var droit = await MapSubmittedData(report);
         
         
         // Store the original submitted data against the droit
@@ -50,14 +52,33 @@ public class ApiService : IApiService
         // Upload WM images
         // _droitService.SaveWreckMaterialsAsync()
         
-        //Set Droit reference:
-        report.Reference = await _droitService.GetNextDroitReference();
-
         
         //Save entities
         
         // Send submission confirmed email 
         // _letterService.SendSubmissionConfirmationEmailAsync(droit);
-        return report;
+        return droit;
+    }
+
+
+    private async Task<Droit> MapSubmittedData(SubmittedReportDto report)
+    {
+
+        
+        var salvor = await _salvorService.GetOrCreateAsync(report);
+
+        // var wreckMaterials = _droitService.CreateWreckMaterials(report);
+        
+        
+        var droit = new Droit()
+        {
+            SalvorId = salvor.Id,
+            ReportedDate = DateTime.UtcNow,
+        };
+
+
+        await _droitService.SaveDroitAsync(droit);
+        
+        return droit;
     }
 }
