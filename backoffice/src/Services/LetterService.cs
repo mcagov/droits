@@ -53,12 +53,12 @@ public class LetterService : ILetterService
     {
         var query = GetLetterQuery(searchOptions);
 
-        query = query.Where(l => l.DateSent == null);
         query = query.OrderBy(l =>
                 l.Status == LetterStatus.ReadyForQC ? 0 :
                 l.Status == LetterStatus.ActionRequired ? 1 :
                 l.Status == LetterStatus.QCApproved ? 2 :
-                3 // Draft
+                l.Status == LetterStatus.Draft ? 3 :
+                4 // Sent
         ).ThenByDescending(l => l.Created);
         var pagedItems =
             await ServiceHelper.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.IncludeAssociations)),
@@ -258,7 +258,8 @@ public class LetterService : ILetterService
                     l.Status == LetterStatus.ReadyForQC ? 0 :
                     l.Status == LetterStatus.ActionRequired ? 1 :
                     l.Status == LetterStatus.QCApproved ? 2 :
-                    3 // Draft
+                    l.Status == LetterStatus.Draft ? 3 :
+                    4 // Sent
             ).ThenByDescending(l => l.Created)
             .Where(l =>
                 SearchHelper.FuzzyMatches(form.Recipient, l.Recipient, 70) && 
