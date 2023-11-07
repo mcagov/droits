@@ -250,27 +250,7 @@ public class DroitController : BaseController
 
         return form;
     }
-
-
-    public async Task<IActionResult> Export(string query)
-    {
-        //This needs to use the search form
-        // var droits = await _service.AdvancedSearchDroitsAsync(new DroitSearchForm(), new SearchOptions()
-        // {
-        //     IncludeAssociations = true,
-        //     PageNumber = 0,
-        //     PageSize = int.MaxValue
-        // });
-        //
-        // var csvExport = await _service.ExportDroitsAsync(droits.Items.Select(dv => new DroitDto(dv)));
-
-        
-        var droits = await _service.SearchDroitsAsync(query);
-
-        var csvExport = await _service.ExportDroitsAsync(droits);
-
-        return File(csvExport, "text/csv", $"droit-export-{DateTime.UtcNow.ToShortDateString()}.csv");
-    }
+    
 
     private async Task<DroitSearchForm> PopulateDroitSearchFormAsync(DroitSearchForm form)
     {
@@ -286,6 +266,11 @@ public class DroitController : BaseController
 
     public async Task<IActionResult> Search(DroitSearchForm form)
     {
+        
+        if (form.SubmitAction != "Search")
+        {
+                return RedirectToAction(form.SubmitAction,form);
+        }
 
         form.IncludeAssociations = true;
         
@@ -294,5 +279,12 @@ public class DroitController : BaseController
         model.SearchForm = await PopulateDroitSearchFormAsync((DroitSearchForm)model.SearchForm!);
 
         return View(nameof(Index), model);
+    }
+    
+    public async Task<IActionResult> Export(DroitSearchForm form)
+    {
+        var csvExport = await _service.ExportAsync(form);
+
+        return File(csvExport, "text/csv", $"droit-export-{DateTime.UtcNow.ToShortDateString()}.csv");
     }
 }
