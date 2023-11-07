@@ -1,4 +1,5 @@
 using Droits.Helpers;
+using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Models.FormModels.SearchFormModels;
@@ -18,10 +19,7 @@ public interface ISalvorService
     Task<Salvor> GetSalvorAsync(Guid id);
     Task<Guid> SaveSalvorFormAsync(SalvorForm form);
     Task<SalvorListView> AdvancedSearchAsync(SalvorSearchForm form);
-    Task<byte[]> ExportSalvorsAsync(SalvorListView salvors);
-    IQueryable<SalvorView> QueryFromForm(SalvorSearchForm form);
-    List<SalvorView> SearchSalvors(IQueryable<SalvorView> query);
-    Task<byte[]> ExportSalvorsTwoAsync(List<SalvorView> salvors);
+    Task<byte[]> ExportAsync(SalvorSearchForm form);
 }
 
 public class SalvorService : ISalvorService
@@ -118,45 +116,44 @@ public class SalvorService : ISalvorService
             SearchForm = form
         };
     }
-    
-    public async Task<byte[]> ExportSalvorsAsync(SalvorListView salvors)
-    {
-        if (salvors.Items.IsNullOrEmpty())
-        {
-            throw new Exception("No Droits to export");
-        }
-
-        return await ExportHelper.ExportRecordsAsync(salvors.Items);
-    }
 
 
-    public IQueryable<SalvorView> QueryFromForm(SalvorSearchForm form)
+    private IQueryable<Salvor> QueryFromForm(SalvorSearchForm form)
     {
         var query = _repo.GetSalvorsWithAssociations()
             .OrderByDescending(s => s.Created)
             .Where(s =>
-                SearchHelper.FuzzyMatches(form.Name, s.Name, 70) && 
+                SearchHelper.FuzzyMatches(form.Name, s.Name, 70) &&
                 SearchHelper.Matches(form.Email, s.Email)
-            )
-            .Select(s => new SalvorView(s, true));
+            );
 
         return query;
     }
 
 
-    public List<SalvorView> SearchSalvors(IQueryable<SalvorView> query)
+    private List<Salvor> SearchSalvors(IQueryable<Salvor> query)
     {
         return query.ToList();
     }
-
-
-    public async Task<byte[]> ExportSalvorsTwoAsync(List<SalvorView> salvors)
+    
+    
+    public async Task<byte[]> ExportAsync(SalvorSearchForm form)
     {
+        
+        var query = QueryFromForm(form);
+
+        var salvors = SearchSalvors(query);
+        
+        var salvorsData = salvors.Select(s => new SalvorDto(s)).ToList();
+
+        
+        // add select here to convert to dto
+        
         if (salvors.IsNullOrEmpty())
         {
-            throw new Exception("No Droits to export");
+            throw new Exception("No Salvors to export");
         }
 
-        return await ExportHelper.ExportRecordsAsync(salvors);
+        return await ExportHelper.ExportRecordsAsync(salvorsData);
     }
 }
