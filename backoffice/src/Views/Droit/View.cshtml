@@ -1,4 +1,7 @@
-﻿@model DroitView
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Text.Json
+@model DroitView
 @{
     ViewData["Title"] = "View Droit";
 }
@@ -60,6 +63,12 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes" type="button" role="tab" aria-controls="notes" aria-selected="false">Notes</button>
     </li>
+    @if (!string.IsNullOrEmpty(Model.OriginalSubmission))
+    {
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="submission-tab" data-bs-toggle="tab" data-bs-target="#submission" type="button" role="tab" aria-controls="submission" aria-selected="false">Original Submission</button>
+        </li>
+    }
 </ul>
 
 <div class="tab-content mt-3" id="droitView">
@@ -370,7 +379,27 @@
     </div>
 </div>
 
-    <div class="col d-flex flex-row mt-4 justify-content-end">
+@if (!string.IsNullOrEmpty(Model.OriginalSubmission))
+{
+    <div class="tab-pane fade" id="submission" role="tabpanel" aria-labelledby="submission-tab">
+        <div>
+            @* //This needs tidying up to be outputted nicer, also + is being displayed as \u002 *@
+            <p>@Model.OriginalSubmission</p>
+            @{
+
+                // Deserialize the JSON string to an object
+                var deserializedObject = JsonSerializer.Deserialize<object>(Model.OriginalSubmission, new JsonSerializerOptions { WriteIndented = true });
+
+                // Serialize the object back to JSON for rendering
+                string formattedJson = JsonSerializer.Serialize(deserializedObject, new JsonSerializerOptions { WriteIndented = true });
+            }
+            <pre>@formattedJson</pre>
+        </div>
+    </div>
+
+}
+
+<div class="col d-flex flex-row mt-4 justify-content-end">
         <div class="align-self-end">
             <a type="button" class="js-edit-droit-button btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id" asp-route-selectedTab="droit">Edit</a>
             <a type="button" class="btn btn-primary" asp-action="Index">View Droits</a>

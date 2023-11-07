@@ -36,7 +36,8 @@ public class ApiController : Controller
                 new
                 {
                     reference = savedDroit.Reference,
-                    salvorId = savedDroit.SalvorId
+                    salvorId = savedDroit.SalvorId,
+                    originalSubmission = savedDroit.OriginalSubmission
                 }
             );
         }

@@ -28,6 +28,8 @@ public class DroitView : BaseEntityView
         IsHazardousFind = droit.IsHazardousFind;
         IsDredge = droit.IsDredge;
 
+        OriginalSubmission = droit.OriginalSubmission;
+
         //Wreck
         if ( droit.Wreck != null )
         {
@@ -118,6 +120,7 @@ public class DroitView : BaseEntityView
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime DateFound { get; }
 
+    public string? OriginalSubmission { get; set; } = string.Empty;
 
     // Wreck Material
 

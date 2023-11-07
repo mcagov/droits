@@ -17,4 +17,14 @@ public static class StringExtensions
 
         return string.Empty;
     }
+
+
+    public static bool AsBoolean(this string? value)
+    {
+        if ( value == null || value.HasValue() )
+        {
+            return false;
+        }
+        return value.ToLower().StartsWith("y") || value.ToLower().StartsWith("t");
+    }
 }

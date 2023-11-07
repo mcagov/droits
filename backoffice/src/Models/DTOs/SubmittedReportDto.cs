@@ -4,14 +4,6 @@ namespace Droits.Models.DTOs;
 
 public class SubmittedReportDto
 {
-    public SubmittedReportDto()
-    {
-
-    }
-
-
-    public string? Reference { get; set; }
-
     [JsonPropertyName("report-date")]
     public string? ReportDate { get; set; }
 

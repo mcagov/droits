@@ -1,7 +1,7 @@
 using Droits.Exceptions;
-using Droits.Models;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
+using Newtonsoft.Json;
 
 namespace Droits.Services;
 
@@ -18,8 +18,6 @@ public class ApiService : IApiService
     private readonly ISalvorService _salvorService;
     private readonly ILetterService _letterService;
 
-
-    private readonly Random _random;
     
     public ApiService(ILogger<ApiService> logger,  IDroitService droitService, ISalvorService salvorService, ILetterService letterService)
     {
@@ -27,8 +25,6 @@ public class ApiService : IApiService
         _droitService = droitService;
         _salvorService = salvorService;
         _letterService = letterService;
-
-        _random = new Random();
     }
 
 
@@ -43,41 +39,41 @@ public class ApiService : IApiService
         
         // Map submitted data into Droit etc entities
 
-        var droit = await MapSubmittedData(report);
-        
-        
-        // Store the original submitted data against the droit
-        // droit.OriginalSubmission = xxx;
-        
+        var droit = await MapSubmittedDataAsync(report);
+
         // Upload WM images
         // _droitService.SaveWreckMaterialsAsync()
         
         
         //Save entities
-        
+
         // Send submission confirmed email 
-        // _letterService.SendSubmissionConfirmationEmailAsync(droit);
+        await _letterService.SendSubmissionConfirmationEmailAsync(droit);
+        
         return droit;
     }
 
 
-    private async Task<Droit> MapSubmittedData(SubmittedReportDto report)
+    private async Task<Droit> MapSubmittedDataAsync(SubmittedReportDto report)
     {
 
         
         var salvor = await _salvorService.GetOrCreateAsync(report);
 
-        // var wreckMaterials = _droitService.CreateWreckMaterials(report);
         
         
         var droit = new Droit()
         {
             SalvorId = salvor.Id,
+            Salvor = salvor,
             ReportedDate = DateTime.UtcNow,
+            OriginalSubmission = JsonConvert.SerializeObject(report),
         };
+        
+        droit = await _droitService.SaveDroitAsync(droit);
 
+        await _droitService.CreateWreckMaterials(report, droit.Id);
 
-        await _droitService.SaveDroitAsync(droit);
         
         return droit;
     }

@@ -141,7 +141,7 @@ public static class DatabaseSeeder
                 .OfType<DroitStatus>()
                 .MinBy(x => Guid.NewGuid()),
             ReportedDate = reportedDate,
-            OriginalSubmission = Faker.Lorem.Sentences(),
+            OriginalSubmission = $"{{ \"fakeData\": \"Some data xyz\" }}", // This needs improving..
             DateFound = Faker.Date.Past(2, reportedDate),
             Created = DateTime.UtcNow,
             LastModified = DateTime.UtcNow,

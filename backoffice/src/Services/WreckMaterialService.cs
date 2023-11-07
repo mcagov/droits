@@ -11,6 +11,8 @@ public interface IWreckMaterialService
     Task<WreckMaterial>  GetWreckMaterialAsync(Guid id);
     Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep);
 
+    Task<WreckMaterial> AddWreckMaterialAsync(WreckMaterial wreckMaterial);
+
 }
 
 public class WreckMaterialService : IWreckMaterialService
@@ -47,6 +49,19 @@ public class WreckMaterialService : IWreckMaterialService
         }
         
         await SaveImagesAsync(wreckMaterial.Id, wreckMaterialForm.ImageForms);
+
+        return wreckMaterial;
+    }
+
+    
+    public async Task<WreckMaterial> AddWreckMaterialAsync(WreckMaterial wreckMaterial)
+    {
+        if ( wreckMaterial.Id == default )
+        {
+            wreckMaterial = await _repository.AddAsync(wreckMaterial);
+        }
+
+        // await SaveImagesAsync(wreckMaterial.Id, wreckMaterialForm.ImageForms);
 
         return wreckMaterial;
     }

@@ -29,6 +29,7 @@ public interface IDroitService
     Task<DroitListView>
         AdvancedSearchDroitsAsync(DroitSearchForm form);
     Task<byte[]> ExportDroitsAsync(List<DroitDto> droits); //return type might be wrong. 
+    Task CreateWreckMaterials(SubmittedReportDto report, Guid droitId);
 }
 
 public class DroitService : IDroitService
@@ -174,6 +175,34 @@ public class DroitService : IDroitService
     }
 
 
+    public async Task CreateWreckMaterials(SubmittedReportDto report, Guid droitId)
+    {
+        if ( report.WreckMaterials == null || !report.WreckMaterials.Any() )
+        {
+            _logger.LogError("No Wreck Materials for Submitted report");
+            return;
+        }
+// This is poor, needs moving to mapper, and image upload done too.
+        foreach (var wreckMaterial in report.WreckMaterials.Select(wmSubmission => new WreckMaterial()
+                 {
+                     DroitId = droitId,
+                     Name = wmSubmission.Description.ValueOrEmpty(),
+                     Quantity = int.Parse(wmSubmission.Quantity), // unsure.
+                     Value = ( float )wmSubmission.Value,
+                     ValueKnown = wmSubmission.ValueKnown.AsBoolean(), // unsure.
+                     StorageAddress = new Address()
+                     {
+                         Line1 = wmSubmission.AddressDetails?.AddressLine1.ValueOrEmpty(),
+                         Line2 = wmSubmission.AddressDetails?.AddressLine2.ValueOrEmpty(),
+                         Town = wmSubmission.AddressDetails?.AddressTown.ValueOrEmpty(),
+                         County = wmSubmission.AddressDetails.AddressCounty.ValueOrEmpty(),
+                         Postcode = wmSubmission.AddressDetails.AddressPostcode.ValueOrEmpty()
+                     }
+                 }))
+        {
+            await _wreckMaterialService.AddWreckMaterialAsync(wreckMaterial);
+        }
+    }
     public async Task UpdateDroitStatusAsync(Guid id, DroitStatus status)
     {
         var droit = await GetDroitAsync(id);

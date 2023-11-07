@@ -23,6 +23,7 @@ public interface ILetterService
     
     Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form);
 
+    Task SendSubmissionConfirmationEmailAsync(Droit droit);
 }
 
 public class LetterService : ILetterService
@@ -280,5 +281,30 @@ public class LetterService : ILetterService
             TotalCount = pagedResults.TotalCount,
             SearchForm = form
         };
+    }
+
+
+    public async Task SendSubmissionConfirmationEmailAsync(Droit droit)
+    {
+        var salvor = droit.Salvor;
+        
+        var confirmationLetter = new Letter
+        {
+            DroitId = droit.Id,
+            Recipient = droit?.Salvor?.Email ?? "",
+            Type = LetterType.ReportConfirmed
+        };
+
+        confirmationLetter.Subject = await GetTemplateSubjectAsync(confirmationLetter.Type, droit);
+        confirmationLetter.Body = await GetTemplateBodyAsync(confirmationLetter.Type, droit);
+        
+        confirmationLetter = await _repo.AddAsync(confirmationLetter);
+        // await SendLetterAsync(confirmationLetter.Id); // Don't actually send it at the moment 
+        
+        
+        
+        _logger.LogInformation($"Sending confirmation email to {salvor?.Email} for Droit {droit?.Reference}");
+
+        
     }
 }

@@ -15,6 +15,8 @@ public class WreckMaterial : BaseEntity
     public string? Description { get; set; } = string.Empty;
     public int Quantity { get; set; } = 1;
     public float? Value { get; set; } = 0;
+    
+    public bool ValueKnown { get; set; } = false;
     public float? ReceiverValuation { get; set; } = 0;
     public bool ValueConfirmed { get; set; } = false;
 
