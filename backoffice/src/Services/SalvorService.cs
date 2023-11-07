@@ -145,9 +145,6 @@ public class SalvorService : ISalvorService
         var salvors = SearchSalvors(query);
         
         var salvorsData = salvors.Select(s => new SalvorDto(s)).ToList();
-
-        
-        // add select here to convert to dto
         
         if (salvors.IsNullOrEmpty())
         {

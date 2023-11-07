@@ -1,4 +1,5 @@
 using Droits.Helpers;
+using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Models.FormModels.SearchFormModels;
@@ -6,6 +7,7 @@ using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Droits.Services;
 
@@ -17,7 +19,7 @@ public interface IWreckService
     Task<Guid> SaveWreckFormAsync(WreckForm wreckForm);
     Task<WreckListView> GetWrecksListViewAsync(SearchOptions searchOptions);
     Task<WreckListView> AdvancedSearchAsync(WreckSearchForm form);
-
+    Task<byte[]> ExportAsync(WreckSearchForm form);
 }
 
 public class WreckService : IWreckService
@@ -110,5 +112,37 @@ public class WreckService : IWreckService
             TotalCount = pagedResults.TotalCount,
             SearchForm = form
         };
+    }
+
+    private IQueryable<Wreck> QueryFromForm(WreckSearchForm form)
+    {
+        var query = _repo.GetWrecksWithAssociations()
+            .OrderByDescending(w => w.Created)
+            .Where(w =>
+                SearchHelper.FuzzyMatches(form.Name, w.Name, 70) 
+            );
+
+        return query;
+    }
+
+
+    private List<Wreck> SearchWrecks(IQueryable<Wreck> query)
+    {
+        return query.ToList();
+    }
+    public async Task<byte[]> ExportAsync(WreckSearchForm form)
+    {
+        var query = QueryFromForm(form);
+
+        var wrecks = SearchWrecks(query);
+        
+        var wrecksData = wrecks.Select(s => new WreckDto(s)).ToList();
+        
+        if (wrecks.IsNullOrEmpty())
+        {
+            throw new Exception("No Wrecks to export");
+        }
+
+        return await ExportHelper.ExportRecordsAsync(wrecksData);
     }
 }
