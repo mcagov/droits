@@ -145,6 +145,8 @@ public class WreckController : BaseController
         
         var model = await _service.AdvancedSearchAsync(form);
         
+        model.SearchOpen = true;
+        
         return View(nameof(Index), model);
     }
     

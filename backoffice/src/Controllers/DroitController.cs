@@ -278,6 +278,7 @@ public class DroitController : BaseController
         
         model.SearchForm = await PopulateDroitSearchFormAsync((DroitSearchForm)model.SearchForm!);
 
+        model.SearchOpen = true;
         return View(nameof(Index), model);
     }
     

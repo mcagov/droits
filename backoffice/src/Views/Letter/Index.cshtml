@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<div class="form-search js-letter-search d-none">
+<div class="form-search js-letter-search @( Model.SearchOpen ? "" : "d-none")">
     <div class="card mt-2">
         <div class="card-body">
             <partial name="_LetterSearchForm" model="@Model.SearchForm"/>
