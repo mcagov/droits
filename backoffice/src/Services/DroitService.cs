@@ -27,7 +27,7 @@ public interface IDroitService
     Task<string> GetNextDroitReference();
     Task<List<DroitDto>> SearchDroitsAsync(string query);
     Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form);
-    Task<byte[]> ExportAsync(DroitSearchForm form); //return type might be wrong. 
+    Task<byte[]> ExportAsync(DroitSearchForm form); 
 }
 
 public class DroitService : IDroitService
