@@ -96,12 +96,7 @@ public class SalvorService : ISalvorService
 
     public async Task<SalvorListView> AdvancedSearchAsync(SalvorSearchForm form)
     {
-        var query = _repo.GetSalvorsWithAssociations()
-            .OrderByDescending(s => s.Created)
-            .Where(s =>
-                SearchHelper.FuzzyMatches(form.Name, s.Name, 70) && 
-                SearchHelper.Matches(form.Email, s.Email)
-            )
+        var query = QueryFromForm(form)
             .Select(s => new SalvorView(s, true));
         
         var pagedSalvors =

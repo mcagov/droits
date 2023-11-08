@@ -94,11 +94,7 @@ public class WreckService : IWreckService
     
     public async Task<WreckListView> AdvancedSearchAsync(WreckSearchForm form)
     {
-        var query = _repo.GetWrecksWithAssociations()
-            .OrderByDescending(w => w.Created)
-            .Where(w =>
-                SearchHelper.FuzzyMatches(form.Name, w.Name, 70) 
-            )
+        var query = QueryFromForm(form)
             .Select(w => new WreckView(w, true));
         
         var pagedResults =
