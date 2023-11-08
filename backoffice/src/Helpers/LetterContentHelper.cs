@@ -17,7 +17,7 @@ public static class LetterContentHelper
 
         templateBody = Regex.Replace(templateBody, @"\(\(items_reported_section\)\)", itemsReportedSection);
 
-        var isLateSubmission = true || droit.ReportedDate.Subtract(droit.DateFound).Days > 28;
+        var isLateSubmission = droit.ReportedDate.Subtract(droit.DateFound).Days > 28;
         var lateReportSection = BuildLateReportSection(isLateSubmission);
 
         templateBody = Regex.Replace(templateBody, @"\(\(late_report_section\)\)", lateReportSection);
