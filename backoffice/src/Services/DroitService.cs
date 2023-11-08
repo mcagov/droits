@@ -11,6 +11,7 @@ using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace Droits.Services;
 
@@ -26,10 +27,9 @@ public interface IDroitService
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
     Task<string> GetNextDroitReference();
     Task<List<DroitDto>> SearchDroitsAsync(string query);
-    Task<DroitListView>
-        AdvancedSearchDroitsAsync(DroitSearchForm form);
+    Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form);
     Task<byte[]> ExportDroitsAsync(List<DroitDto> droits); //return type might be wrong. 
-    Task CreateWreckMaterials(SubmittedReportDto report, Guid droitId);
+    Task<Droit> CreateDroitAsync(SubmittedReportDto report, Salvor salvor);
 }
 
 public class DroitService : IDroitService
@@ -155,7 +155,7 @@ public class DroitService : IDroitService
         {
             var droit = await GetDroitWithAssociationsAsync(droitId);
 
-            var salvorAddress = droit?.Salvor?.Address;
+            var salvorAddress = droit.Salvor?.Address;
 
             foreach ( var wmForm in wreckMaterialForms )
             {
@@ -170,39 +170,10 @@ public class DroitService : IDroitService
         }
         catch ( DroitNotFoundException e )
         {
-            _logger.LogError("Droit not found", e);
+            _logger.LogError($"Droit not found - {e}");
         }
     }
-
-
-    public async Task CreateWreckMaterials(SubmittedReportDto report, Guid droitId)
-    {
-        if ( report.WreckMaterials == null || !report.WreckMaterials.Any() )
-        {
-            _logger.LogError("No Wreck Materials for Submitted report");
-            return;
-        }
-// This is poor, needs moving to mapper, and image upload done too.
-        foreach (var wreckMaterial in report.WreckMaterials.Select(wmSubmission => new WreckMaterial()
-                 {
-                     DroitId = droitId,
-                     Name = wmSubmission.Description.ValueOrEmpty(),
-                     Quantity = int.Parse(wmSubmission.Quantity), // unsure.
-                     Value = ( float )wmSubmission.Value,
-                     ValueKnown = wmSubmission.ValueKnown.AsBoolean(), // unsure.
-                     StorageAddress = new Address()
-                     {
-                         Line1 = wmSubmission.AddressDetails?.AddressLine1.ValueOrEmpty(),
-                         Line2 = wmSubmission.AddressDetails?.AddressLine2.ValueOrEmpty(),
-                         Town = wmSubmission.AddressDetails?.AddressTown.ValueOrEmpty(),
-                         County = wmSubmission.AddressDetails.AddressCounty.ValueOrEmpty(),
-                         Postcode = wmSubmission.AddressDetails.AddressPostcode.ValueOrEmpty()
-                     }
-                 }))
-        {
-            await _wreckMaterialService.AddWreckMaterialAsync(wreckMaterial);
-        }
-    }
+    
     public async Task UpdateDroitStatusAsync(Guid id, DroitStatus status)
     {
         var droit = await GetDroitAsync(id);
@@ -315,5 +286,21 @@ public class DroitService : IDroitService
             TotalCount = pagedDroits.TotalCount,
             SearchForm = form
         };
+    }
+
+
+    public async Task<Droit> CreateDroitAsync(SubmittedReportDto report, Salvor salvor)
+    {
+        var droit = new Droit()
+        {
+            // lots more fields missing... 
+            SalvorId = salvor.Id,
+            Salvor = salvor,
+            ReportedDate = DateTime.UtcNow,
+            OriginalSubmission = JsonConvert.SerializeObject(report),
+        };
+        
+        
+        return await SaveDroitAsync(droit);
     }
 }

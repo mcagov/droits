@@ -14,10 +14,12 @@ namespace Droits.Tests.UnitTests.Services
         {            
             var loggerMock = new Mock<ILogger<ApiService>>();
             var droitServiceMock = new Mock<IDroitService>();
+            var wreckMaterialServiceMock = new Mock<IWreckMaterialService>();
+
             var salvorServiceMock = new Mock<ISalvorService>();
             var letterServiceMock = new Mock<ILetterService>();
 
-            _service = new ApiService(loggerMock.Object, droitServiceMock.Object, salvorServiceMock.Object, letterServiceMock.Object);
+            _service = new ApiService(loggerMock.Object, droitServiceMock.Object, wreckMaterialServiceMock.Object, salvorServiceMock.Object, letterServiceMock.Object);
         }
         
         [Fact]
