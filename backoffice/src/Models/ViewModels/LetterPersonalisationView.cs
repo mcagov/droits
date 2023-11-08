@@ -10,7 +10,6 @@ public class LetterPersonalisationView
         Reference = droit.Reference;
         Date = droit.ReportedDate.ToString("dd/MM/yyyy");
         Wreck = droit?.Wreck?.Name ?? "No Wreck";
-        WreckMaterials = droit?.WreckMaterials?.Select(wm => wm.Name).ToList();
         
     }
 
@@ -18,8 +17,6 @@ public class LetterPersonalisationView
     private string Reference { get; }
     private string Date { get; }
     private string Wreck { get; }
-    private List<string>? WreckMaterials { get; }
-
 
     public Dictionary<string, dynamic> GetAsPersonalisation()
     {
