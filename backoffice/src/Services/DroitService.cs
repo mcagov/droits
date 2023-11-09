@@ -284,7 +284,7 @@ public class DroitService : IDroitService
 
         var droits = SearchDroits(query);
         
-        var droitsData = droits.Select(s => new DroitDto(s)).ToList();
+        var droitsData = droits.Select(d => new DroitDto(d)).ToList();
         
         if (droits.IsNullOrEmpty())
         {
