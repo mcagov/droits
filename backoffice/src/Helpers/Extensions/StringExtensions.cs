@@ -12,26 +12,28 @@ public static class StringExtensions
 
     public static string? ValueOrEmpty(this string? value)
     {
-        if ( value != null && value.HasValue() )
-        {
-            return value;
-        }
-
-        return string.Empty;
+        return string.IsNullOrEmpty(value) ? string.Empty : value;
     }
 
 
     public static bool AsBoolean(this string? value)
     {
-        if ( value == null || value.HasValue() )
+        if ( string.IsNullOrEmpty(value) )
         {
             return false;
         }
-        return value.ToLower().StartsWith("y") || value.ToLower().StartsWith("t");
+
+        value = value.ToLower().Trim();
+        
+        return value.StartsWith("y") || value.StartsWith("t");
     }
     
-    public static string Pluralize(this string word, int count, string? pluralForm = null)
+    public static string Pluralize(this string? word, int count, string? pluralForm = null)
     {
+        if ( string.IsNullOrEmpty(word) )
+        {
+            return string.Empty;
+        }
         return count == 1
             ? word
             : pluralForm ?? (word.EndsWith("y", StringComparison.OrdinalIgnoreCase) ? string.Concat(word.AsSpan(0, word.Length - 1), "ies") : word + "s");

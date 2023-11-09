@@ -4,7 +4,7 @@ using Bogus;
 using Droits.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
-namespace Droits.Data;
+namespace Droits.Data.Mappers;
 
 public static class DatabaseSeeder
 {

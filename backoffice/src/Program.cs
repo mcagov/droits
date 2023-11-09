@@ -1,8 +1,7 @@
 using Amazon.Runtime;
 using Amazon.S3;
 using Droits.Clients;
-using Droits.Data;
-using Droits.Data.Mappings;
+using Droits.Data.Mappers;
 using Droits.Middleware;
 using Droits.ModelBinders;
 using Droits.Repositories;

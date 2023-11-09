@@ -5,7 +5,7 @@ using Droits.Repositories;
 using Droits.Services;
 using Droits.Tests.Helpers;
 using Microsoft.Extensions.Logging;
-using Droits.Data;
+using Droits.Data.Mappers;
 using Droits.Models.FormModels;
 using Droits.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;

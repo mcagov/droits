@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Droits.Data;
+using Droits.Data.Mappers;
 using Droits.Models.Entities;
 using Droits.Services;
 using Droits.Exceptions;

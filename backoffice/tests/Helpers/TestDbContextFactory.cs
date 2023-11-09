@@ -1,4 +1,4 @@
-using Droits.Data;
+using Droits.Data.Mappers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Tests.Helpers
