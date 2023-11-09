@@ -14,8 +14,8 @@ public enum DroitStatus
     [Display(Name = "Acknowledged")]
     AcknowledgementLetterSent,
 
-    [Display(Name = "Requesting Info")]
-    RequestingInformation,
+    [Display(Name = "Initial Research")]
+    InitialResearch,
 
     [Display(Name = "Research")]
     Research,
