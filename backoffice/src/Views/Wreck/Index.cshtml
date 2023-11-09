@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<div class="form-search js-wreck-search d-none">
+<div class="form-search js-wreck-search @( Model.SearchOpen ? "" : "d-none")">
     <div class="card mt-2">
         <div class="card-body">
             <partial name="_WreckSearchForm" model="@Model.SearchForm"/>

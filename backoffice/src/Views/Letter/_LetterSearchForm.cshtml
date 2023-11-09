@@ -43,8 +43,15 @@
     
 
     <div class="col d-flex flex-row mt-4">
-        <div class="align-self-end">
-            <button class="btn btn-primary" type="submit">Search</button>
+        <div class="col">
+            <button class="btn btn-primary" name="SubmitAction" value="Search" type="submit">Search</button>
+            <button class="btn btn-primary" name="SubmitAction" value="Export" type="submit">Export</button> 
+        </div>
+        <div class="col ms-auto">
+            <div class="float-end">
+                <a class="btn btn-primary" asp-action="Index">Reset</a>
+                <button class="btn btn-primary js-toggle-letter-search" type="button">Close</button>
+            </div>
         </div>
     </div>
 

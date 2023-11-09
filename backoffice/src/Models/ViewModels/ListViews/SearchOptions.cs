@@ -7,5 +7,6 @@ public class SearchOptions
     public bool IncludeAssociations { get; set; } = false;
     public int TotalCount { get; set; }
     public bool FilterByAssignedUser { get; set; }
+    public bool SearchOpen { get; set; } = false;
 }
 

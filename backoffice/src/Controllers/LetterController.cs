@@ -171,11 +171,24 @@ public class LetterController : BaseController
     
     public async Task<IActionResult> Search(LetterSearchForm form)
     {
+        if (form.SubmitAction != "Search")
+        {
+                return RedirectToAction(form.SubmitAction,form);
+        }
 
         form.IncludeAssociations = true;
         
         var model = await _service.AdvancedSearchAsync(form);
         
+        model.SearchOpen = true;
+        
         return View(nameof(Index), model);
+    }
+    
+    public async Task<IActionResult> Export(LetterSearchForm form)
+    {
+        var csvExport = await _service.ExportAsync(form);
+
+        return File(csvExport, "text/csv", $"letter-export-{DateTime.UtcNow.ToShortDateString()}.csv");
     }
 }
