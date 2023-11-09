@@ -184,8 +184,8 @@ public class LetterController : BaseController
         
         var model = await _service.AdvancedSearchAsync(form);
         
-        model.SearchOpen = true;
-        
+        model.SearchOpen = model.PageNumber == 1;
+
         return View(nameof(Index), model);
     }
     

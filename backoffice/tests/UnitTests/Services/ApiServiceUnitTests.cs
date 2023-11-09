@@ -30,7 +30,7 @@ namespace Droits.Tests.UnitTests.Services
         }
 
         [Fact]
-        public async Task SaveDroitReportAsync_ValidReport_GeneratesReference()
+        public void SaveDroitReportAsync_ValidReport_GeneratesReference()
         {
             // Arrange
 

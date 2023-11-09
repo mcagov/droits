@@ -327,12 +327,13 @@ public class DroitService : IDroitService
 
     public async Task<Droit> CreateDroitAsync(SubmittedReportDto report, Salvor salvor)
     {
-        var droit = _mapper.Map<Droit>(report);
-
-        droit.Reference = await GetNextDroitReference();
-        droit.Salvor = salvor;
-        droit.SalvorId = salvor.Id;
-        droit.OriginalSubmission = JsonConvert.SerializeObject(report);
+        var droit = new Droit
+        {
+            Reference = await GetNextDroitReference(),
+            Salvor = salvor,
+            SalvorId = salvor.Id,
+            OriginalSubmission = JsonConvert.SerializeObject(report)
+        };
 
         return await SaveDroitAsync(droit);
     }
