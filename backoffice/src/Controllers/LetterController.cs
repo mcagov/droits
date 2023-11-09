@@ -191,7 +191,16 @@ public class LetterController : BaseController
     
     public async Task<IActionResult> Export(LetterSearchForm form)
     {
-        var csvExport = await _service.ExportAsync(form);
+        byte[] csvExport;
+        try
+        {
+            csvExport = await _service.ExportAsync(form);
+        }
+        catch ( Exception e )
+        {
+            HandleError(_logger, "No Letters to export", e);
+            return RedirectToAction("Index");
+        }
 
         return File(csvExport, "text/csv", $"letter-export-{DateTime.UtcNow.ToShortDateString()}.csv");
     }
