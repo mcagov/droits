@@ -136,7 +136,7 @@ namespace Droits.Tests.UnitTests.Services
             var emptyList = new List<DroitDto>();
 
             // When & Assert
-            await Assert.ThrowsAsync<Exception>(() => _service.ExportDroitsAsync(emptyList));
+            await Assert.ThrowsAsync<Exception>(() => _service.ExportAsync(emptyList));
         }
         
         [Fact]
@@ -150,7 +150,7 @@ namespace Droits.Tests.UnitTests.Services
             };
 
             // When
-            var data = await _service.ExportDroitsAsync(droits);
+            var data = await _service.ExportAsync(droits);
             
             // Assert
             Assert.NotEmpty(data);

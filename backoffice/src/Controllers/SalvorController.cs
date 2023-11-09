@@ -137,10 +137,25 @@ public class SalvorController : BaseController
 
     public async Task<IActionResult> Search(SalvorSearchForm form)
     {
-        form.IncludeAssociations = true;
+        if (form.SubmitAction != "Search")
+        {
+                return RedirectToAction(form.SubmitAction,form);
+        }
         
+        form.IncludeAssociations = true;
+                    
         var model = await _service.AdvancedSearchAsync(form);
         
+        model.SearchOpen = true;
+                    
         return View(nameof(Index), model);
+        
+    }
+    
+    public async Task<IActionResult> Export(SalvorSearchForm form)
+    {
+        var csvExport = await _service.ExportAsync(form);
+
+        return File(csvExport, "text/csv", $"salvor-export-{DateTime.UtcNow.ToShortDateString()}.csv");
     }
 }

@@ -136,10 +136,24 @@ public class WreckController : BaseController
     
     public async Task<IActionResult> Search(WreckSearchForm form)
     {
+        if (form.SubmitAction != "Search")
+        {
+                return RedirectToAction(form.SubmitAction,form);
+        }
+        
         form.IncludeAssociations = true;
         
         var model = await _service.AdvancedSearchAsync(form);
         
+        model.SearchOpen = true;
+        
         return View(nameof(Index), model);
+    }
+    
+    public async Task<IActionResult> Export(WreckSearchForm form)
+    {
+        var csvExport = await _service.ExportAsync(form);
+
+        return File(csvExport, "text/csv", $"wreck-export-{DateTime.UtcNow.ToShortDateString()}.csv");
     }
 }

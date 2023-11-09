@@ -1,8 +1,6 @@
-using System.Text.RegularExpressions;
 using Droits.Clients;
 using Droits.Exceptions;
 using Droits.Helpers;
-using Droits.Helpers.Extensions;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
@@ -24,10 +22,9 @@ public interface ILetterService
     Task<Letter> GetLetterAsync(Guid id);
     Task<Letter> SaveLetterAsync(LetterForm form);
     Task<LetterListView> GetApprovedUnsentLettersListViewForCurrentUserAsync(SearchOptions searchOptions);
-    
     Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form);
-
     Task SendSubmissionConfirmationEmailAsync(Droit droit, SubmittedReportDto report);
+    Task<byte[]> ExportAsync(LetterSearchForm form);
 }
 
 public class LetterService : ILetterService
@@ -58,12 +55,12 @@ public class LetterService : ILetterService
     {
         var query = GetLetterQuery(searchOptions);
 
-        query = query.Where(l => l.DateSent == null);
         query = query.OrderBy(l =>
                 l.Status == LetterStatus.ReadyForQC ? 0 :
                 l.Status == LetterStatus.ActionRequired ? 1 :
                 l.Status == LetterStatus.QCApproved ? 2 :
-                3 // Draft
+                l.Status == LetterStatus.Draft ? 3 :
+                4 // Sent
         ).ThenByDescending(l => l.Created);
         var pagedItems =
             await ServiceHelper.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.IncludeAssociations)),
@@ -263,7 +260,8 @@ public class LetterService : ILetterService
                     l.Status == LetterStatus.ReadyForQC ? 0 :
                     l.Status == LetterStatus.ActionRequired ? 1 :
                     l.Status == LetterStatus.QCApproved ? 2 :
-                    3 // Draft
+                    l.Status == LetterStatus.Draft ? 3 :
+                    4 // Sent
             ).ThenByDescending(l => l.Created)
             .Where(l =>
                 SearchHelper.FuzzyMatches(form.Recipient, l.Recipient, 70) && 
@@ -311,10 +309,11 @@ public class LetterService : ILetterService
         {
             throw new DroitNotFoundException();
         }
-        
+
         var templateBody = await GetTemplateBodyAsync(LetterType.ReportConfirmed, droit);
 
-        confirmationLetter.Body = LetterContentHelper.GetReportConfirmedEmailBodyAsync(droit, report, templateBody);
+        confirmationLetter.Body =
+            LetterContentHelper.GetReportConfirmedEmailBodyAsync(droit, report, templateBody);
 
         confirmationLetter = await _repo.AddAsync(confirmationLetter);
         await SendLetterAsync(confirmationLetter.Id); // Don't actually send it at the moment 
@@ -322,5 +321,44 @@ public class LetterService : ILetterService
 
         _logger.LogInformation(
             $"Sending confirmation email to {salvor?.Email} for Droit {droit?.Reference}");
+    }
+
+
+    private IQueryable<Letter> QueryFromForm(LetterSearchForm form)
+    {
+        var query = _repo.GetLettersWithAssociations()
+            .OrderByDescending(l => l.Created)
+            .Where(l =>
+                ( form.StatusList.IsNullOrEmpty() ||
+                  form.StatusList.Contains(l.Status) ) &&
+                ( form.TypeList.IsNullOrEmpty() ||
+                  form.TypeList.Contains(l.Type) )
+            );
+
+        return query;
+    }
+
+
+    private static List<Letter> SearchLetters(IEnumerable<Letter> query)
+    {
+        return query.ToList();
+    }
+    
+    
+    public async Task<byte[]> ExportAsync(LetterSearchForm form)
+    {
+        
+        var query = QueryFromForm(form);
+
+        var letters = SearchLetters(query);
+        
+        var lettersData = letters.Select(s => new LetterDto(s)).ToList();
+        
+        if (letters.IsNullOrEmpty())
+        {
+            throw new Exception("No Salvors to export");
+        }
+
+        return await ExportHelper.ExportRecordsAsync(lettersData);
     }
 }

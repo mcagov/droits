@@ -23,6 +23,7 @@ public interface ISalvorService
     Task<Guid> SaveSalvorFormAsync(SalvorForm form);
     Task<SalvorListView> AdvancedSearchAsync(SalvorSearchForm form);
     Task<Salvor> GetOrCreateAsync(SubmittedReportDto report);
+    Task<byte[]> ExportAsync(SalvorSearchForm form);
 }
 
 public class SalvorService : ISalvorService
@@ -102,12 +103,7 @@ public class SalvorService : ISalvorService
 
     public async Task<SalvorListView> AdvancedSearchAsync(SalvorSearchForm form)
     {
-        var query = _repo.GetSalvorsWithAssociations()
-            .OrderByDescending(s => s.Created)
-            .Where(s =>
-                SearchHelper.FuzzyMatches(form.Name, s.Name, 70) && 
-                SearchHelper.Matches(form.Email, s.Email)
-            )
+        var query = QueryFromForm(form)
             .Select(s => new SalvorView(s, true));
         
         var pagedSalvors =
@@ -148,4 +144,39 @@ public class SalvorService : ISalvorService
         return salvor;
     }
 
+    private IQueryable<Salvor> QueryFromForm(SalvorSearchForm form)
+    {
+        var query = _repo.GetSalvorsWithAssociations()
+            .OrderByDescending(s => s.Created)
+            .Where(s =>
+                SearchHelper.FuzzyMatches(form.Name, s.Name, 70) &&
+                SearchHelper.Matches(form.Email, s.Email)
+            );
+
+        return query;
+    }
+
+
+    private List<Salvor> SearchSalvors(IQueryable<Salvor> query)
+    {
+        return query.ToList();
+    }
+    
+    
+    public async Task<byte[]> ExportAsync(SalvorSearchForm form)
+    {
+        
+        var query = QueryFromForm(form);
+
+        var salvors = SearchSalvors(query);
+        
+        var salvorsData = salvors.Select(s => new SalvorDto(s)).ToList();
+        
+        if (salvors.IsNullOrEmpty())
+        {
+            throw new Exception("No Salvors to export");
+        }
+
+        return await ExportHelper.ExportRecordsAsync(salvorsData);
+    }
 }

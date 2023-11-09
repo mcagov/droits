@@ -5,13 +5,13 @@ function initializeSearchForm(formClass, toggleButtonClass) {
 
     if (searchFormElements.length === 0) return;
 
-    const searchFormButton = document.querySelector(toggleButtonClass);
+    const searchFormButton = document.querySelectorAll(toggleButtonClass);
 
-    searchFormButton.addEventListener('click', function () {
+    searchFormButton.forEach((button) => {button.addEventListener('click', function () {
         const searchForm = document.querySelector(formClass);
         searchForm.classList.toggle('d-none');
-    });
-
+    })});
+    
     switch (formClass) {
         case '.js-droit-search':
             initializeChoices('.js-search-droit-status', 'Select Status');
