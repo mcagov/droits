@@ -1,6 +1,5 @@
 using Droits.Exceptions;
 using Droits.Helpers.Extensions;
-using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;

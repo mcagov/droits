@@ -1,10 +1,8 @@
-using System.Globalization;
-using Droits.Models.Entities;
 using Bogus;
+using Droits.Models.Entities;
 using Droits.Models.Enums;
-using Microsoft.EntityFrameworkCore;
 
-namespace Droits.Data.Mappers;
+namespace Droits.Data;
 
 public static class DatabaseSeeder
 {

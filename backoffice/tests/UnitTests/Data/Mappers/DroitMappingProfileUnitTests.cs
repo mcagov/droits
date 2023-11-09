@@ -2,6 +2,7 @@ using AutoMapper;
 using Droits.Data.Mappers;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
+
 // Update the namespace to match your project structure
 
 namespace Droits.Tests.UnitTests.Data.Mappers

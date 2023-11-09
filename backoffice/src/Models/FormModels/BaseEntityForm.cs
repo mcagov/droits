@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 
 namespace Droits.Models.FormModels

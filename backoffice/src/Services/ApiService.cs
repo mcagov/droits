@@ -1,7 +1,6 @@
 using Droits.Exceptions;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
-using Newtonsoft.Json;
 
 namespace Droits.Services;
 

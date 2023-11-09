@@ -1,5 +1,3 @@
-using System;
-
 namespace Droits.Helpers.Extensions;
 
 public static class StringExtensions

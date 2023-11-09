@@ -1,4 +1,3 @@
-using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Microsoft.EntityFrameworkCore;
 

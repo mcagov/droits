@@ -1,21 +1,15 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Droits.Clients;
-using Droits.Data.Mappers;
+using Droits.Data;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
-using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Droits.Services;
 using Droits.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Moq;
 using Notify.Models.Responses;
-using Xunit;
 
 namespace Droits.Tests.IntegrationTests.Services
 {

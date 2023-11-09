@@ -1,17 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Droits.Exceptions;
-using Droits.Helpers;
 using Droits.Models.Entities;
-using Droits.Models.ViewModels;
-using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Droits.Services;
-using Microsoft.EntityFrameworkCore;
-using Moq;
-using Xunit;
 
 namespace Droits.Tests.UnitTests.Services
 {

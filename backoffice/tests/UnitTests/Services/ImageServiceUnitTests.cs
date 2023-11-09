@@ -1,4 +1,3 @@
-using Droits.Clients;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Repositories;

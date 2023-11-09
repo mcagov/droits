@@ -1,9 +1,8 @@
 using Droits.Exceptions;
 using Droits.Models.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Droits.Services;
 using Droits.Models.FormModels;
-using Droits.Models.ViewModels;
+using Droits.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Controllers;
 

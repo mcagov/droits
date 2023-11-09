@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Models.FormModels;
 

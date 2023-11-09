@@ -1,6 +1,7 @@
 using Amazon.Runtime;
 using Amazon.S3;
 using Droits.Clients;
+using Droits.Data;
 using Droits.Data.Mappers;
 using Droits.Middleware;
 using Droits.ModelBinders;
@@ -16,7 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 
-  var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 // ** CONFIGURATION **
 

@@ -2,7 +2,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
-using Droits.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Models.FormModels;

@@ -1,8 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-using Droits.Data.Mappers;
+using Droits.Data;
+using Droits.Exceptions;
 using Droits.Models.Entities;
 using Droits.Services;
-using Droits.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Repositories
 {

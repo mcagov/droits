@@ -1,5 +1,5 @@
-@model ListView<object>
 @using X.PagedList
+@model ListView<object>
 @{
     var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? "DefaultController";
     var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? "DefaultAction";

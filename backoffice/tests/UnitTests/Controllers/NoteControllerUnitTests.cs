@@ -1,12 +1,12 @@
 using Droits.Controllers;
 using Droits.Exceptions;
-using Droits.Services;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Mvc;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
+using Droits.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Logging;
 
 namespace Droits.Tests.UnitTests.Controllers
 {

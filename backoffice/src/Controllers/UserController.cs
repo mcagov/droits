@@ -3,11 +3,8 @@ using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
-using Microsoft.AspNetCore.Mvc;
 using Droits.Services;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Controllers;
 

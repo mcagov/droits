@@ -1,7 +1,7 @@
 ﻿using Droits.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Droits.Data.Mappers;
+namespace Droits.Data;
 
 public partial class DroitsContext : DbContext
 {
