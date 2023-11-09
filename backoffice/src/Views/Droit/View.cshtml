@@ -382,22 +382,10 @@
 @if (!string.IsNullOrEmpty(Model.OriginalSubmission))
 {
     <div class="tab-pane fade" id="submission" role="tabpanel" aria-labelledby="submission-tab">
-        <div>
-            @* //This needs tidying up to be outputted nicer, also + is being displayed as \u002 *@
-            <p>@Model.OriginalSubmission</p>
-            @{
-
-                // Deserialize the JSON string to an object
-                var deserializedObject = JsonSerializer.Deserialize<object>(Model.OriginalSubmission, new JsonSerializerOptions { WriteIndented = true });
-
-                // Serialize the object back to JSON for rendering
-                string formattedJson = JsonSerializer.Serialize(deserializedObject, new JsonSerializerOptions { WriteIndented = true });
-            }
-            <pre>@formattedJson</pre>
-        </div>
+        <pre>@JsonSerializer.Serialize(JsonSerializer.Deserialize<object>(Model.OriginalSubmission, new JsonSerializerOptions { WriteIndented = true }), new JsonSerializerOptions { WriteIndented = true })</pre>
     </div>
-
 }
+
 
 <div class="col d-flex flex-row mt-4 justify-content-end">
         <div class="align-self-end">

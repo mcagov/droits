@@ -14,14 +14,14 @@ public class LetterDto
     public LetterDto(Letter letter)
     {
         Recipient = letter.Recipient;
-        DroitReference = letter.Droit.Reference;
+        DroitReference = letter.Droit?.Reference ?? string.Empty;
         Status = letter.Status;
         Type = letter.Type;
     }
     
     // leave out id?
-    public string Recipient { get; set; }
-    public string DroitReference { get; set; }
+    public string Recipient { get; set; } = string.Empty;
+    public string DroitReference { get; set; } = string.Empty;
     public LetterStatus Status { get; set; }
     public LetterType Type { get; set; }
 }

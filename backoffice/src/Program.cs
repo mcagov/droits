@@ -17,7 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 
-var builder = WebApplication.CreateBuilder(args);
+  var builder = WebApplication.CreateBuilder(args);
 
 // ** CONFIGURATION **
 
@@ -108,7 +108,7 @@ builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
 
 // Mappers
-builder.Services.AddAutoMapper(typeof(SalvorMappingProfile));
+builder.Services.AddAutoMapper(typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile));
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();

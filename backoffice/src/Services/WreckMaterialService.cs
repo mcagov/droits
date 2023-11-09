@@ -1,5 +1,5 @@
+using AutoMapper;
 using Droits.Exceptions;
-using Droits.Helpers.Extensions;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
@@ -21,13 +21,16 @@ public class WreckMaterialService : IWreckMaterialService
     private readonly IImageService _imageService;
     private readonly ILogger<WreckMaterialService> _logger;
     private readonly IWreckMaterialRepository _repository;
+    private readonly IMapper _mapper;
 
 
-    public WreckMaterialService(IImageService imageService, ILogger<WreckMaterialService> logger, IWreckMaterialRepository repository)
+
+    public WreckMaterialService(IImageService imageService, ILogger<WreckMaterialService> logger, IWreckMaterialRepository repository, IMapper mapper)
     {
         _imageService = imageService;
         _logger = logger;
         _repository = repository;
+        _mapper = mapper;
     }
     
     public async Task<WreckMaterial> SaveWreckMaterialAsync(WreckMaterialForm wreckMaterialForm)
@@ -92,7 +95,7 @@ public class WreckMaterialService : IWreckMaterialService
         }
         catch ( WreckMaterialNotFoundException e )
         {
-            _logger.LogError("Wreck Material not found", e);
+            _logger.LogError($"Wreck Material not found - {e}");
         }
     }
      
@@ -103,24 +106,11 @@ public class WreckMaterialService : IWreckMaterialService
              _logger.LogError("No Wreck Materials for Submitted report");
              return;
          }
-// This is poor, needs moving to mapper, and image upload done too.
-         foreach (var wreckMaterial in report.WreckMaterials.Select(wmSubmission => new WreckMaterial()
-                  {
-                      DroitId = droitId,
-                      Name = wmSubmission.Description.ValueOrEmpty(),
-                      Quantity = int.Parse(wmSubmission.Quantity.ValueOrEmpty()), // unsure.
-                      Value = (float)wmSubmission.Value,
-                      ValueKnown = wmSubmission.ValueKnown.AsBoolean(), // unsure.
-                      StorageAddress = new Address()
-                      {
-                          Line1 = wmSubmission.AddressDetails?.AddressLine1.ValueOrEmpty(),
-                          Line2 = wmSubmission.AddressDetails?.AddressLine2.ValueOrEmpty(),
-                          Town = wmSubmission.AddressDetails?.AddressTown.ValueOrEmpty(),
-                          County = wmSubmission.AddressDetails.AddressCounty.ValueOrEmpty(),
-                          Postcode = wmSubmission.AddressDetails.AddressPostcode.ValueOrEmpty()
-                      }
-                  }))
+
+         foreach (var wreckMaterial in report.WreckMaterials.Select(wmSubmission => _mapper.Map<WreckMaterial>(wmSubmission)))
          {
+             wreckMaterial.DroitId = droitId;
+
              await _repository.AddAsync(wreckMaterial);
              //Upload image...
              // await SaveImagesAsync(wreckMaterial.Id, wreckMaterialForm.ImageForms);

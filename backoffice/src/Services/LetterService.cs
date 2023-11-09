@@ -299,7 +299,7 @@ public class LetterService : ILetterService
         var confirmationLetter = new Letter
         {
             DroitId = droit.Id,
-            Recipient = salvor.Email ?? "",
+            Recipient = salvor.Email,
             Type = LetterType.ReportConfirmed
         };
 
@@ -316,11 +316,7 @@ public class LetterService : ILetterService
             LetterContentHelper.GetReportConfirmedEmailBodyAsync(droit, report, templateBody);
 
         confirmationLetter = await _repo.AddAsync(confirmationLetter);
-        await SendLetterAsync(confirmationLetter.Id); // Don't actually send it at the moment 
-
-
-        _logger.LogInformation(
-            $"Sending confirmation email to {salvor?.Email} for Droit {droit?.Reference}");
+        await SendLetterAsync(confirmationLetter.Id);
     }
 
 
