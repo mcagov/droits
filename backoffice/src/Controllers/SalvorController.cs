@@ -158,7 +158,16 @@ public class SalvorController : BaseController
     
     public async Task<IActionResult> Export(SalvorSearchForm form)
     {
-        var csvExport = await _service.ExportAsync(form);
+        byte[] csvExport;
+        try
+        {
+            csvExport = await _service.ExportAsync(form);
+        }
+        catch ( Exception e )
+        {
+            HandleError(_logger, "No Droits to export", e);
+            return RedirectToAction("Index");
+        }
 
         return File(csvExport, "text/csv", $"salvor-export-{DateTime.UtcNow.ToShortDateString()}.csv");
     }

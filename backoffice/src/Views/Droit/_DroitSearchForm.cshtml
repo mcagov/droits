@@ -26,39 +26,43 @@
 
 <form class="form-horizontal" asp-action="Search" enctype="multipart/form-data" method="POST">
 
+    <div class="d-none">
+        @Html.EditorFor(f => f.PageNumber, new { htmlAttributes = new { @class = "js-page-number-field"} })
+    </div>
+
 <div class="tab-content mt-4" id="droitForm">
 <div class="tab-pane fade show active" id="droit" role="tabpanel" aria-labelledby="droit-tab">
     <div class="form-floating mb-3">
-        @Html.EditorFor(m => m.Reference, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })    
+        @Html.EditorFor(m => m.Reference, new { htmlAttributes = new { @class = "form-control", @placeholder = "" } })
         @Html.LabelFor(m => m.Reference)
     </div>
-    
-    <div class="row form-row">
-            <div class="col">
-                <div class="form-floating mb-3">
-                    @Html.EditorFor(m => m.CreatedFrom, new { htmlAttributes = new { @type = "date", @class = "form-control",  @placeholder=""} })
-                    @Html.LabelFor(m => m.CreatedFrom)
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-floating mb-3">
-                    @Html.EditorFor(m => m.CreatedTo, new { htmlAttributes = new { @type = "date", @class = "form-control",  @placeholder=""} })
-                    @Html.LabelFor(m => m.CreatedTo)
-                </div>
-            </div>
-        </div>
-        
-    
+
     <div class="row form-row">
         <div class="col">
             <div class="form-floating mb-3">
-                @Html.EditorFor(m => m.LastModifiedFrom, new { htmlAttributes = new { @type = "date", @class = "form-control",  @placeholder=""} })
+                @Html.EditorFor(m => m.CreatedFrom, new { htmlAttributes = new { @type = "date", @class = "form-control", @placeholder = "" } })
+                @Html.LabelFor(m => m.CreatedFrom)
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.CreatedTo, new { htmlAttributes = new { @type = "date", @class = "form-control", @placeholder = "" } })
+                @Html.LabelFor(m => m.CreatedTo)
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row form-row">
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.LastModifiedFrom, new { htmlAttributes = new { @type = "date", @class = "form-control", @placeholder = "" } })
                 @Html.LabelFor(m => m.LastModifiedFrom)
             </div>
         </div>
         <div class="col">
             <div class="form-floating mb-3">
-                @Html.EditorFor(m => m.LastModifiedTo, new { htmlAttributes = new { @type = "date", @class = "form-control",  @placeholder=""} })
+                @Html.EditorFor(m => m.LastModifiedTo, new { htmlAttributes = new { @type = "date", @class = "form-control", @placeholder = "" } })
                 @Html.LabelFor(m => m.LastModifiedTo)
             </div>
         </div>
@@ -75,48 +79,48 @@
                 else
                 {
                     <option value="@o.Value">@o.Text</option>
-    
+
                 }
             }
         </select>
     </div>
-    
+
     <div class="form-floating mb-3 assigned-users-select">
-        @Html.DropDownListFor(m => m.AssignedToUserId, Model.AssignedToUsers,"Select RoW", new { @id = "select-user", @class = "form-control js-select-assigned-user" })
+        @Html.DropDownListFor(m => m.AssignedToUserId, Model.AssignedToUsers, "Select RoW", new { @id = "select-user", @class = "form-control js-select-assigned-user" })
         @Html.ValidationMessageFor(m => m.AssignedToUserId, "", new { @class = "text-danger" })
     </div>
-    
+
 
     <div class="row form-row">
         <div class="col">
             <div class="form-floating mb-3">
-                 @Html.EditorFor(m => m.ReportedDateFrom, new { htmlAttributes = new { @type = "date", @class = "form-control",  @placeholder=""} })
-                 @Html.LabelFor(m => m.ReportedDateFrom)
+                @Html.EditorFor(m => m.ReportedDateFrom, new { htmlAttributes = new { @type = "date", @class = "form-control", @placeholder = "" } })
+                @Html.LabelFor(m => m.ReportedDateFrom)
             </div>
         </div>
         <div class="col">
-           <div class="form-floating mb-3">
-                @Html.EditorFor(m => m.ReportedDateTo, new { htmlAttributes = new { @type = "date", @class = "form-control",  @placeholder=""} })
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.ReportedDateTo, new { htmlAttributes = new { @type = "date", @class = "form-control", @placeholder = "" } })
                 @Html.LabelFor(m => m.ReportedDateTo)
-           </div>
+            </div>
         </div>
     </div>
-    
+
     <div class="row form-row">
         <div class="col">
             <div class="form-floating mb-3">
-                 @Html.EditorFor(m => m.DateFoundFrom, new { htmlAttributes = new { @type = "date", @class = "form-control",  @placeholder=""} })
-                 @Html.LabelFor(m => m.DateFoundFrom)
+                @Html.EditorFor(m => m.DateFoundFrom, new { htmlAttributes = new { @type = "date", @class = "form-control", @placeholder = "" } })
+                @Html.LabelFor(m => m.DateFoundFrom)
             </div>
         </div>
         <div class="col">
-           <div class="form-floating mb-3">
-                @Html.EditorFor(m => m.DateFoundTo, new { htmlAttributes = new { @type = "date", @class = "form-control",  @placeholder=""} })
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.DateFoundTo, new { htmlAttributes = new { @type = "date", @class = "form-control", @placeholder = "" } })
                 @Html.LabelFor(m => m.DateFoundTo)
-           </div>
+            </div>
         </div>
     </div>
-    
+
 
     <div class="form-group">
         @Html.LabelFor(m => m.IsHazardousFind, new { @class = "col-form-label" })
@@ -179,7 +183,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="form-floating mb-3 status-select">
         <select class="form-control js-search-droit-recovered-from" id="RecoveredFromList" multiple="multiple" name="RecoveredFromList" placeholder="">
             @foreach (var o in Html.GetEnumSelectList(typeof(RecoveredFrom)))
@@ -191,7 +195,7 @@
                 else
                 {
                     <option value="@o.Value">@o.Text</option>
-        
+
                 }
             }
         </select>
@@ -215,7 +219,7 @@
         @Html.EditorFor(m => m.WreckName, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(m => m.WreckName, "", new { @class = "text-danger" })
     </div>
-  
+
 </div>
 
 
@@ -386,7 +390,7 @@
 <div class="col d-flex flex-row mt-4">
     <div class="col">
         <button class="btn btn-primary" name="SubmitAction" value="Search" type="submit">Search</button>
-        <button class="btn btn-primary" name="SubmitAction" value="Export" type="submit">Export</button> 
+        <button class="btn btn-primary" name="SubmitAction" value="Export" type="submit">Export</button>
     </div>
     <div class="col ms-auto">
         <div class="float-end">
