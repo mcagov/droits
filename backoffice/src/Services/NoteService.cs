@@ -1,5 +1,9 @@
+#region
+
 using Droits.Models.Entities;
 using Droits.Repositories;
+
+#endregion
 
 namespace Droits.Services
 {

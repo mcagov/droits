@@ -1,8 +1,12 @@
+#region
+
 using System.Globalization;
 using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.IdentityModel.Tokens;
+
+#endregion
 
 namespace Droits.Helpers;
 

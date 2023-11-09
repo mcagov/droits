@@ -1,5 +1,9 @@
+#region
+
 using System.ComponentModel.DataAnnotations.Schema;
 using Droits.Models.Enums;
+
+#endregion
 
 namespace Droits.Models.Entities;
 

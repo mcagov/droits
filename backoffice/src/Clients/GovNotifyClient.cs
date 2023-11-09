@@ -1,6 +1,10 @@
+#region
+
 using Droits.Models.Entities;
 using Notify.Client;
 using Notify.Models.Responses;
+
+#endregion
 
 namespace Droits.Clients;
 

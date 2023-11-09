@@ -1,5 +1,9 @@
-﻿using Droits.Models.Entities;
+﻿#region
+
+using Droits.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Droits.Data;
 

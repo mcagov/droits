@@ -1,4 +1,8 @@
+#region
+
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+
+#endregion
 
 namespace Droits.Helpers.Extensions;
 

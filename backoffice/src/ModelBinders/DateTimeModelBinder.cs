@@ -1,5 +1,9 @@
+#region
+
 using Droits.Helpers.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+#endregion
 
 namespace Droits.ModelBinders;
 

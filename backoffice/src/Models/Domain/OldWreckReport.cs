@@ -1,5 +1,9 @@
+#region
+
 using Droits.Models.Entities;
 using Newtonsoft.Json;
+
+#endregion
 
 namespace Droits.Models;
 

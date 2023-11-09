@@ -1,3 +1,6 @@
+
+#region
+
 using AutoMapper;
 using Droits.Exceptions;
 using Droits.Helpers;
@@ -11,6 +14,8 @@ using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+
+#endregion
 
 namespace Droits.Services;
 

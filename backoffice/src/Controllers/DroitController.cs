@@ -1,3 +1,5 @@
+#region
+
 using Droits.Exceptions;
 using Droits.Helpers.Extensions;
 using Droits.Models.Entities;
@@ -9,6 +11,8 @@ using Droits.Models.ViewModels.ListViews;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
+#endregion
 
 namespace Droits.Controllers;
 

@@ -1,9 +1,13 @@
+#region
+
 using AutoMapper;
 using Droits.Exceptions;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Repositories;
+
+#endregion
 
 namespace Droits.Services;
 

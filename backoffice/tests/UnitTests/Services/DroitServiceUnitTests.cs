@@ -137,7 +137,8 @@ namespace Droits.Tests.UnitTests.Services
             // Given
             var emptyList = new List<DroitDto>();
 
-            
+            // When & Assert
+            // await Assert.ThrowsAsync<Exception>(() => _service.ExportAsync(emptyList));
         }
         
         [Fact]

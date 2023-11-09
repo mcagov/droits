@@ -1,3 +1,6 @@
+
+#region
+
 using AutoMapper;
 using Droits.Exceptions;
 using Droits.Helpers;
@@ -13,6 +16,8 @@ using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+
+#endregion
 
 namespace Droits.Services;
 

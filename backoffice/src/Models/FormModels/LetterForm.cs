@@ -1,8 +1,12 @@
+#region
+
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
+
+#endregion
 
 namespace Droits.Models.FormModels;
 

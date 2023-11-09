@@ -1,6 +1,11 @@
+
+#region
+
 using Bogus;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
+
+#endregion
 
 namespace Droits.Data;
 

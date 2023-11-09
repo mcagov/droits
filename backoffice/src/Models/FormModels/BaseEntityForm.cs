@@ -1,4 +1,9 @@
+
+#region
+
 using Droits.Models.Entities;
+
+#endregion
 
 namespace Droits.Models.FormModels
 {

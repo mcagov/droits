@@ -1,4 +1,8 @@
+#region
+
 using Microsoft.AspNetCore.Mvc.Rendering;
+
+#endregion
 
 namespace Droits.Models.FormModels
 {

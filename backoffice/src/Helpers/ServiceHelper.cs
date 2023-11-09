@@ -1,5 +1,9 @@
+#region
+
 using Droits.Models.ViewModels.ListViews;
 using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Droits.Helpers;
 

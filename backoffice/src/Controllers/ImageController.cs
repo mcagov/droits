@@ -1,6 +1,10 @@
+#region
+
 using Droits.Exceptions;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
+
+#endregion
 
 namespace Droits.Controllers;
 
