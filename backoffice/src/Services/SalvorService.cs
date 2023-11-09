@@ -1,6 +1,10 @@
+
 #region
 
+using AutoMapper;
+using Droits.Exceptions;
 using Droits.Helpers;
+using Droits.Helpers.Extensions;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
@@ -23,17 +27,21 @@ public interface ISalvorService
     Task<Salvor> GetSalvorAsync(Guid id);
     Task<Guid> SaveSalvorFormAsync(SalvorForm form);
     Task<SalvorListView> AdvancedSearchAsync(SalvorSearchForm form);
+    Task<Salvor> GetOrCreateAsync(SubmittedReportDto report);
     Task<byte[]> ExportAsync(SalvorSearchForm form);
 }
 
 public class SalvorService : ISalvorService
 {
     private readonly ISalvorRepository _repo;
+    private readonly IMapper _mapper;
 
 
-    public SalvorService(ISalvorRepository repo)
+    public SalvorService(ISalvorRepository repo, IMapper mapper)
     {
         _repo = repo;
+        _mapper = mapper;
+
     }
 
 
@@ -116,6 +124,30 @@ public class SalvorService : ISalvorService
         };
     }
 
+
+    public async Task<Salvor> GetOrCreateAsync(SubmittedReportDto report)
+    {
+        var salvor = _mapper.Map<Salvor>(report);
+
+        if ( !salvor.Email.HasValue() )
+        {
+            throw new SalvorNotFoundException("No email address supplied for Salvor");
+        }
+        
+        var existingSalvor = await _repo.GetSalvorByEmailAddressAsync(salvor.Email.Trim().ToLower());
+
+        if (existingSalvor != null)
+        {
+            return existingSalvor;
+        }
+
+        salvor.Created = DateTime.UtcNow;
+        salvor.LastModified = DateTime.UtcNow;
+
+        salvor = await SaveSalvorAsync(salvor);
+
+        return salvor;
+    }
 
     private IQueryable<Salvor> QueryFromForm(SalvorSearchForm form)
     {

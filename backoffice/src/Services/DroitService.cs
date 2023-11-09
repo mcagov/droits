@@ -1,5 +1,7 @@
+
 #region
 
+using AutoMapper;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Helpers.Extensions;
@@ -13,6 +15,7 @@ using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 #endregion
 
@@ -31,7 +34,8 @@ public interface IDroitService
     Task<string> GetNextDroitReference();
     Task<List<DroitDto>> SearchDroitsAsync(string query);
     Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form);
-    Task<byte[]> ExportAsync(DroitSearchForm form); 
+    Task<Droit> CreateDroitAsync(SubmittedReportDto report, Salvor salvor);
+    Task<byte[]> ExportAsync(DroitSearchForm form);
 }
 
 public class DroitService : IDroitService
@@ -40,15 +44,17 @@ public class DroitService : IDroitService
     private readonly IWreckMaterialService _wreckMaterialService;
     private readonly IAccountService _accountService;
     private readonly ILogger<DroitService> _logger;
+    private readonly IMapper _mapper;
 
 
     public DroitService(ILogger<DroitService> logger, IDroitRepository repo,
-        IWreckMaterialService wreckMaterialService, IAccountService accountService)
+        IWreckMaterialService wreckMaterialService, IAccountService accountService, IMapper mapper)
     {
         _logger = logger;
         _repo = repo;
         _accountService = accountService;
         _wreckMaterialService = wreckMaterialService;
+        _mapper = mapper;
     }
 
 
@@ -157,7 +163,7 @@ public class DroitService : IDroitService
         {
             var droit = await GetDroitWithAssociationsAsync(droitId);
 
-            var salvorAddress = droit?.Salvor?.Address;
+            var salvorAddress = droit.Salvor?.Address;
 
             foreach ( var wmForm in wreckMaterialForms )
             {
@@ -172,11 +178,10 @@ public class DroitService : IDroitService
         }
         catch ( DroitNotFoundException e )
         {
-            _logger.LogError("Droit not found", e);
+            _logger.LogError($"Droit not found - {e}");
         }
     }
-
-
+    
     public async Task UpdateDroitStatusAsync(Guid id, DroitStatus status)
     {
         var droit = await GetDroitAsync(id);
@@ -317,5 +322,18 @@ public class DroitService : IDroitService
             TotalCount = pagedDroits.TotalCount,
             SearchForm = form
         };
+    }
+
+
+    public async Task<Droit> CreateDroitAsync(SubmittedReportDto report, Salvor salvor)
+    {
+        var droit = _mapper.Map<Droit>(report);
+
+        droit.Reference = await GetNextDroitReference();
+        droit.Salvor = salvor;
+        droit.SalvorId = salvor.Id;
+        droit.OriginalSubmission = JsonConvert.SerializeObject(report);
+
+        return await SaveDroitAsync(droit);
     }
 }

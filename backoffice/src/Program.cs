@@ -1,9 +1,9 @@
-#region
 
 using Amazon.Runtime;
 using Amazon.S3;
 using Droits.Clients;
 using Droits.Data;
+using Droits.Data.Mappers;
 using Droits.Middleware;
 using Droits.ModelBinders;
 using Droits.Repositories;
@@ -18,7 +18,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 
-#endregion
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,6 +75,7 @@ builder.Services.AddHealthChecks();
 
 // Dependency Injections
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IApiService, ApiService>();
 
 builder.Services.AddScoped<ITokenValidationService, TokenValidationService>();
 
@@ -108,6 +108,9 @@ builder.Services.AddScoped<ISalvorService, SalvorService>();
 
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
+
+// Mappers
+builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile));
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();
@@ -173,7 +176,6 @@ app.UseMiddleware<TokenValidationMiddleware>();
 app.UseAuthorization();
 
 // Routing
-
 app.MapControllerRoute(
     "default",
     "{controller=Home}/{action=Index}/{id?}"

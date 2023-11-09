@@ -91,7 +91,7 @@ namespace Droits.Tests.UnitTests.Services
         {
             // Given
             var letterId = Guid.NewGuid();
-            var letter = new Models.Entities.Letter { Id = letterId };
+            var letter = new Letter { Id = letterId };
             _mockRepo.Setup(r => r.GetLetterAsync(letterId)).ReturnsAsync(letter);
             _mockGovNotifyClient.Setup(c => c.SendLetterAsync(letter)).ReturnsAsync(new EmailNotificationResponse());
 

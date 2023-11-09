@@ -64,8 +64,8 @@ public class WreckForm : BaseEntityForm
     [DisplayName("Is An Aircraft")]
     public bool IsAnAircraft { get; set; } = false;
 
-    public float? Latitude { get; set; }
-    public float? Longitude { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
 
     [DisplayName("Is A Protected Site")]
     public bool IsProtectedSite { get; set; } = false;

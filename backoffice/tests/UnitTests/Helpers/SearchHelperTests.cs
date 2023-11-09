@@ -56,25 +56,25 @@ public class SearchHelperTests
         Assert.True(SearchHelper.Matches(null,true));
     }
     [Fact]
-    public void IsBetween_WithValueBetweenTwoFloats_ShouldReturnTrue()
+    public void IsBetween_WithValueBetweenTwoDoubles_ShouldReturnTrue()
     {
-        Assert.True(SearchHelper.IsBetween((float)0.2,(float)0.1,(float)0.3));
+        Assert.True(SearchHelper.IsBetween(0.2d,0.1d,0.3d));
     }
     [Fact]
-    public void IsBetween_WithValueNotBetweenTwoFloats_ShouldReturnFalse()
+    public void IsBetween_WithValueNotBetweenTwoDoubles_ShouldReturnFalse()
     {
-        Assert.False(SearchHelper.IsBetween((float)0.5,(float)0.1,(float)0.3));
+        Assert.False(SearchHelper.IsBetween(0.5d,0.1d,0.3d));
     }
     [Fact]
-    public void IsBetween_WithValueBetweenAFloatAndNull_ShouldReturnTrue()
+    public void IsBetween_WithValueBetweenADoubleAndNull_ShouldReturnTrue()
     {
-        Assert.True(SearchHelper.IsBetween((float)0.2,(float)0.1,null));
-        Assert.True(SearchHelper.IsBetween((float)0.2,null,(float)0.3));
+        Assert.True(SearchHelper.IsBetween(0.2d,0.1d,null));
+        Assert.True(SearchHelper.IsBetween(0.2,null,0.3d));
     }
     [Fact]
     public void IsBetween_WithTwoNulls_ShouldReturnTrue()
     {
-        Assert.True(SearchHelper.IsBetween((float)0.2,null,null));
+        Assert.True(SearchHelper.IsBetween(0.2d,null,null));
     }
     [Fact]
     public void IsBetween_WithADateBetweenTwoDates_ShouldReturnTrue()
@@ -110,9 +110,9 @@ public class SearchHelperTests
         Assert.True(SearchHelper.IsBetween((DateTime?)null,null, null));
     }
     [Fact]
-    public void IsBetween_WithAllFloatNulls_ShouldReturnTrue()
+    public void IsBetween_WithAllDoubleNulls_ShouldReturnTrue()
     {
-        Assert.True(SearchHelper.IsBetween((float?)null,null, null));
+        Assert.True(SearchHelper.IsBetween((double?)null,null, null));
     }
     [Fact]
     public void FuzzyMatches_WithASimilarTerm_ShouldReturnTrue()

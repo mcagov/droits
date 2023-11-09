@@ -115,8 +115,8 @@ public class DroitForm : BaseEntityForm
 
 
     // Location
-    public float? Latitude { get; set; }
-    public float? Longitude { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
 
     [DisplayName("In UK Waters")]
     public bool InUkWaters { get; set; }
@@ -147,7 +147,7 @@ public class DroitForm : BaseEntityForm
 
     [DisplayName("Services Estimated Cost")]
 
-    public float? ServicesEstimatedCost { get; set; }
+    public double? ServicesEstimatedCost { get; set; }
 
     [DisplayName("MMO Licence Required")]
     public bool MMOLicenceRequired { get; set; }
@@ -156,7 +156,7 @@ public class DroitForm : BaseEntityForm
     public bool MMOLicenceProvided { get; set; }
 
     [DisplayName("Salvage Claim Awarded")]
-    public float SalvageClaimAwarded { get; set; }
+    public double SalvageClaimAwarded { get; set; }
 
     // Legacy fields
     public string? District { get; set; }

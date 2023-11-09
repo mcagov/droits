@@ -1,6 +1,7 @@
 #region
 
 using Droits.Clients;
+using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
@@ -25,9 +26,8 @@ public interface ILetterService
     Task<Letter> GetLetterAsync(Guid id);
     Task<Letter> SaveLetterAsync(LetterForm form);
     Task<LetterListView> GetApprovedUnsentLettersListViewForCurrentUserAsync(SearchOptions searchOptions);
-    
     Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form);
-
+    Task SendSubmissionConfirmationEmailAsync(Droit droit, SubmittedReportDto report);
     Task<byte[]> ExportAsync(LetterSearchForm form);
 }
 
@@ -290,6 +290,40 @@ public class LetterService : ILetterService
     }
 
 
+    public async Task SendSubmissionConfirmationEmailAsync(Droit droit, SubmittedReportDto report)
+    {
+
+        var salvor = droit.Salvor;
+
+        if ( salvor == null )
+        {
+            throw new SalvorNotFoundException();
+        }
+
+        var confirmationLetter = new Letter
+        {
+            DroitId = droit.Id,
+            Recipient = salvor.Email,
+            Type = LetterType.ReportConfirmed
+        };
+
+        confirmationLetter.Subject = await GetTemplateSubjectAsync(confirmationLetter.Type, droit);
+
+        if ( droit == null )
+        {
+            throw new DroitNotFoundException();
+        }
+
+        var templateBody = await GetTemplateBodyAsync(LetterType.ReportConfirmed, droit);
+
+        confirmationLetter.Body =
+            LetterContentHelper.GetReportConfirmedEmailBodyAsync(droit, report, templateBody);
+
+        confirmationLetter = await _repo.AddAsync(confirmationLetter);
+        await SendLetterAsync(confirmationLetter.Id);
+    }
+
+
     private IQueryable<Letter> QueryFromForm(LetterSearchForm form)
     {
         var query = _repo.GetLettersWithAssociations()
@@ -305,7 +339,7 @@ public class LetterService : ILetterService
     }
 
 
-    private List<Letter> SearchLetters(IQueryable<Letter> query)
+    private static List<Letter> SearchLetters(IEnumerable<Letter> query)
     {
         return query.ToList();
     }

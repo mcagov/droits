@@ -106,16 +106,16 @@ public class DroitSearchForm : SearchForm
     // Location
 
     [DisplayName("Latitude From")]
-    public float? LatitudeFrom { get; set; }
+    public double? LatitudeFrom { get; set; }
 
     [DisplayName("Latitude To")]
-    public float? LatitudeTo { get; set; }
+    public double? LatitudeTo { get; set; }
 
     [DisplayName("Longitude From")]
-    public float? LongitudeFrom { get; set; }
+    public double? LongitudeFrom { get; set; }
 
     [DisplayName("Longitude To")]
-    public float? LongitudeTo { get; set; }
+    public double? LongitudeTo { get; set; }
 
     [DisplayName("In UK Waters")]
     public bool? InUkWaters { get; set; }
@@ -124,10 +124,10 @@ public class DroitSearchForm : SearchForm
     public int? LocationRadius { get; set; }
 
     [DisplayName("Depth From (metres)")]
-    public float? DepthFrom { get; set; }
+    public double? DepthFrom { get; set; }
     
     [DisplayName("Depth To (metres)")]
-    public float? DepthTo { get; set; }
+    public double? DepthTo { get; set; }
 
     [DisplayName("Recovered From")]
     public List<RecoveredFrom> RecoveredFromList { get; set; } = new();
@@ -158,16 +158,16 @@ public class DroitSearchForm : SearchForm
     public int? QuantityTo { get; set; } 
     
     [DisplayName("Value From")]
-    public float? ValueFrom { get; set; } 
+    public double? ValueFrom { get; set; } 
     
     [DisplayName("Value To")]
-    public float? ValueTo { get; set; } 
+    public double? ValueTo { get; set; } 
     
     [DisplayName("Receiver Valuation From")]
-    public float? ReceiverValuationFrom { get; set; } 
+    public double? ReceiverValuationFrom { get; set; } 
     
     [DisplayName("Receiver Valuation To")]
-    public float? ReceiverValuationTo { get; set; } 
+    public double? ReceiverValuationTo { get; set; } 
 
     // Salvage
 
@@ -182,19 +182,19 @@ public class DroitSearchForm : SearchForm
 
     [DisplayName("Services Estimated Cost")]
 
-    public float? ServicesEstimatedCost { get; set; }
+    public double? ServicesEstimatedCost { get; set; }
 
     [DisplayName("Services Estimate Cost To")]
-    public float? ServicesEstimatedCostTo { get; set; }
+    public double? ServicesEstimatedCostTo { get; set; }
     
     [DisplayName("Services Estimate Cost From")]
-    public float? ServicesEstimatedCostFrom { get; set; }
+    public double? ServicesEstimatedCostFrom { get; set; }
     
     [DisplayName("Salvage Claim Awarded From")]
-    public float? SalvageClaimAwardedFrom { get; set; }
+    public double? SalvageClaimAwardedFrom { get; set; }
     
     [DisplayName("Salvage Claim Awarded To")]
-    public float? SalvageClaimAwardedTo { get; set; }
+    public double? SalvageClaimAwardedTo { get; set; }
 
     [DisplayName("MMO Licence Required")]
     public bool? MMOLicenceRequired { get; set; }

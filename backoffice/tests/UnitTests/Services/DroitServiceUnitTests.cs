@@ -1,3 +1,4 @@
+using AutoMapper;
 using Droits.Exceptions;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
@@ -19,7 +20,8 @@ namespace Droits.Tests.UnitTests.Services
             Mock<IWreckMaterialService> mockWreckMaterialService = new();
             Mock<IAccountService> mockCurrentUserService = new();
             Mock<ILogger<DroitService>> mockLogger = new();
-            _service = new DroitService(mockLogger.Object, _mockRepo.Object, mockWreckMaterialService.Object, mockCurrentUserService.Object);
+            var mockMapper = new Mock<IMapper>();
+            _service = new DroitService(mockLogger.Object, _mockRepo.Object, mockWreckMaterialService.Object, mockCurrentUserService.Object, mockMapper.Object);
         }
 
 

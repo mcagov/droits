@@ -14,13 +14,13 @@ public class LetterPersonalisationView
         Reference = droit.Reference;
         Date = droit.ReportedDate.ToString("dd/MM/yyyy");
         Wreck = droit?.Wreck?.Name ?? "No Wreck";
+        
     }
 
 
     private string Reference { get; }
     private string Date { get; }
     private string Wreck { get; }
-
 
     public Dictionary<string, dynamic> GetAsPersonalisation()
     {

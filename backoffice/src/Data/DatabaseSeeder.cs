@@ -1,3 +1,4 @@
+
 #region
 
 using Bogus;
@@ -143,6 +144,7 @@ public static class DatabaseSeeder
                 .OfType<DroitStatus>()
                 .MinBy(x => Guid.NewGuid()),
             ReportedDate = reportedDate,
+            OriginalSubmission = $"{{ \"fakeData\": \"Some data xyz\" }}", // This needs improving..
             DateFound = Faker.Date.Past(2, reportedDate),
             Created = DateTime.UtcNow,
             LastModified = DateTime.UtcNow,
@@ -196,8 +198,8 @@ public static class DatabaseSeeder
                 InUkWaters = Faker.Random.Bool(),
                 IsWarWreck = Faker.Random.Bool(),
                 IsAnAircraft = Faker.Random.Bool(),
-                Latitude = (float) Faker.Address.Latitude(),
-                Longitude = (float) Faker.Address.Longitude(),
+                Latitude = Faker.Address.Latitude(),
+                Longitude = Faker.Address.Longitude(),
 
                 IsProtectedSite = Faker.Random.Bool(),
                 ProtectionLegislation = Faker.Lorem.Word(),
