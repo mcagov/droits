@@ -38,8 +38,8 @@ public class Droit : BaseEntity
     public Guid? SalvorId { get; set; }
 
     // Location
-    public float? Latitude { get; set; }
-    public float? Longitude { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
     public bool InUkWaters { get; set; } = false;
     public int? LocationRadius { get; set; } //Units? Unknown.
     public int? Depth { get; set; } //Units? Unknown. //metres from frontend
@@ -52,10 +52,10 @@ public class Droit : BaseEntity
     public bool SalvageAwardClaimed { get; set; } = false;
     public string? ServicesDescription { get; set; }
     public string? ServicesDuration { get; set; } //Units? Unknown.
-    public float? ServicesEstimatedCost { get; set; }
+    public double? ServicesEstimatedCost { get; set; }
     public bool MMOLicenceRequired { get; set; } = false;
     public bool MMOLicenceProvided { get; set; } = false;
-    public float SalvageClaimAwarded { get; set; } = 0f;
+    public double SalvageClaimAwarded { get; set; } = 0d;
 
     // Legacy fields
     public string? District { get; set; }

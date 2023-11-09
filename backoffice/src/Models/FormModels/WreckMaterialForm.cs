@@ -47,13 +47,13 @@ public class WreckMaterialForm : BaseEntityForm
     [Range(1, int.MaxValue, ErrorMessage = "Quantity must be a positive number.")]
     public int Quantity { get; set; } = 1;
 
-    [Range(0, float.MaxValue, ErrorMessage = "Value must be a non-negative number.")]
-    public float? Value { get; set; } = 0;
+    [Range(0, double.MaxValue, ErrorMessage = "Value must be a non-negative number.")]
+    public double? Value { get; set; } = 0;
 
-    [Range(0, float.MaxValue, ErrorMessage = "Receiver valuation must be a non-negative number.")]
+    [Range(0, double.MaxValue, ErrorMessage = "Receiver valuation must be a non-negative number.")]
     [Display(Name = "Receiver Valuation")]
 
-    public float? ReceiverValuation { get; set; } = 0;
+    public double? ReceiverValuation { get; set; } = 0;
 
     [Display(Name = "Value Confirmed")]
     public bool ValueConfirmed { get; set; } = false;

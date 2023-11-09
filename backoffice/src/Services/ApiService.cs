@@ -54,8 +54,11 @@ public class ApiService : IApiService
         
         var droit = await _droitService.CreateDroitAsync(report, salvor);
 
-        await _wreckMaterialService.CreateWreckMaterialsAsync(report, droit.Id);
-        
+        if ( droit.Id != default )
+        {
+            await _wreckMaterialService.CreateWreckMaterialsAsync(report, droit.Id);
+        }
+
         return droit;
     }
 }

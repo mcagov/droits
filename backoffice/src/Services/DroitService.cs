@@ -1,3 +1,4 @@
+using AutoMapper;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Helpers.Extensions;
@@ -38,15 +39,17 @@ public class DroitService : IDroitService
     private readonly IWreckMaterialService _wreckMaterialService;
     private readonly IAccountService _accountService;
     private readonly ILogger<DroitService> _logger;
+    private readonly IMapper _mapper;
 
 
     public DroitService(ILogger<DroitService> logger, IDroitRepository repo,
-        IWreckMaterialService wreckMaterialService, IAccountService accountService)
+        IWreckMaterialService wreckMaterialService, IAccountService accountService, IMapper mapper)
     {
         _logger = logger;
         _repo = repo;
         _accountService = accountService;
         _wreckMaterialService = wreckMaterialService;
+        _mapper = mapper;
     }
 
 
@@ -319,16 +322,13 @@ public class DroitService : IDroitService
 
     public async Task<Droit> CreateDroitAsync(SubmittedReportDto report, Salvor salvor)
     {
-        var droit = new Droit()
-        {
-            // lots more fields missing... 
-            SalvorId = salvor.Id,
-            Salvor = salvor,
-            ReportedDate = DateTime.UtcNow,
-            OriginalSubmission = JsonConvert.SerializeObject(report),
-        };
-        
-        
+        var droit = _mapper.Map<Droit>(report);
+
+        droit.Reference = await GetNextDroitReference();
+        droit.Salvor = salvor;
+        droit.SalvorId = salvor.Id;
+        droit.OriginalSubmission = JsonConvert.SerializeObject(report);
+
         return await SaveDroitAsync(droit);
     }
 }

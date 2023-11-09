@@ -195,8 +195,8 @@ public static class DatabaseSeeder
                 InUkWaters = Faker.Random.Bool(),
                 IsWarWreck = Faker.Random.Bool(),
                 IsAnAircraft = Faker.Random.Bool(),
-                Latitude = (float) Faker.Address.Latitude(),
-                Longitude = (float) Faker.Address.Longitude(),
+                Latitude = Faker.Address.Latitude(),
+                Longitude = Faker.Address.Longitude(),
 
                 IsProtectedSite = Faker.Random.Bool(),
                 ProtectionLegislation = Faker.Lorem.Word(),

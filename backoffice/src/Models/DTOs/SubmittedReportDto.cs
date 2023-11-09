@@ -88,7 +88,7 @@ public class SubmittedWreckMaterialDto
     public string? Quantity { get; set; }
     
     [JsonPropertyName("value")]
-    public decimal? Value { get; set; }
+    public double? Value { get; set; }
     
     [JsonPropertyName("value-known")]
     public string? ValueKnown { get; set; }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Repositories;
@@ -26,8 +27,9 @@ namespace Droits.Tests.IntegrationTests.Services
             _dbContext = TestDbContextFactory.CreateDbContext();
             DatabaseSeeder.SeedData(_dbContext); // Seed the test data
 
+            var mockMapper = new Mock<IMapper>();
             var droitRepository = new DroitRepository(_dbContext, _mockCurrentUserService.Object);
-            _service = new DroitService(_mockLogger.Object, droitRepository, _mockWmService.Object, _mockCurrentUserService.Object);
+            _service = new DroitService(_mockLogger.Object, droitRepository, _mockWmService.Object, _mockCurrentUserService.Object, mockMapper.Object);
 
         }
         [Fact]
