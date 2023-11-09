@@ -1,5 +1,6 @@
 using Droits.Clients;
 using Droits.Helpers;
+using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
@@ -23,6 +24,7 @@ public interface ILetterService
     
     Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form);
 
+    Task<byte[]> ExportAsync(LetterSearchForm form);
 }
 
 public class LetterService : ILetterService
@@ -281,5 +283,44 @@ public class LetterService : ILetterService
             TotalCount = pagedResults.TotalCount,
             SearchForm = form
         };
+    }
+
+
+    private IQueryable<Letter> QueryFromForm(LetterSearchForm form)
+    {
+        var query = _repo.GetLettersWithAssociations()
+            .OrderByDescending(l => l.Created)
+            .Where(l =>
+                ( form.StatusList.IsNullOrEmpty() ||
+                  form.StatusList.Contains(l.Status) ) &&
+                ( form.TypeList.IsNullOrEmpty() ||
+                  form.TypeList.Contains(l.Type) )
+            );
+
+        return query;
+    }
+
+
+    private List<Letter> SearchLetters(IQueryable<Letter> query)
+    {
+        return query.ToList();
+    }
+    
+    
+    public async Task<byte[]> ExportAsync(LetterSearchForm form)
+    {
+        
+        var query = QueryFromForm(form);
+
+        var letters = SearchLetters(query);
+        
+        var lettersData = letters.Select(s => new LetterDto(s)).ToList();
+        
+        if (letters.IsNullOrEmpty())
+        {
+            throw new Exception("No Salvors to export");
+        }
+
+        return await ExportHelper.ExportRecordsAsync(lettersData);
     }
 }
