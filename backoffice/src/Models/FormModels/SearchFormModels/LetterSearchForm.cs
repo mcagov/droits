@@ -1,4 +1,8 @@
+#region
+
 using Droits.Models.Enums;
+
+#endregion
 
 namespace Droits.Models.FormModels.SearchFormModels;
 

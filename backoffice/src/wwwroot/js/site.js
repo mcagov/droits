@@ -1,11 +1,11 @@
 ﻿import 'bootstrap/dist/js/bootstrap.bundle';
 import 'bootstrap/dist/js/bootstrap';
 
-import { confirmDialog } from './confirmDialog.js';
-import { initializeDroitForm, initializeDroitView } from './droitForm.js';
-import { initializeMessageBanner } from './messageBanner';
-import { initializeSearchBar } from './searchBar';
-import { initializeSearchForms } from './searchForms';
+import {confirmDialog} from './confirmDialog.js';
+import {initializeDroitForm, initializeDroitView} from './droitForm.js';
+import {initializeMessageBanner} from './messageBanner';
+import {initializeSearchBar} from './searchBar';
+import {initializeSearchForms} from './searchForms';
 
 document.addEventListener('DOMContentLoaded', function () {
     window.confirm = function (message, callback) {

@@ -1,3 +1,5 @@
+#region
+
 using Amazon.Runtime;
 using Amazon.S3;
 using Droits.Clients;
@@ -15,6 +17,8 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+
+#endregion
 
 var builder = WebApplication.CreateBuilder(args);
 

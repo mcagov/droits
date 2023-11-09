@@ -1,6 +1,10 @@
-﻿using Droits.Models.DTOs;
+﻿#region
+
+using Droits.Models.DTOs;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
+
+#endregion
 
 namespace Droits.Controllers;
 

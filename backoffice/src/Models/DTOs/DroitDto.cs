@@ -1,5 +1,9 @@
+#region
+
 using Droits.Helpers.Extensions;
 using Droits.Models.Entities;
+
+#endregion
 
 namespace Droits.Models.DTOs
 {

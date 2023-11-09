@@ -1,5 +1,9 @@
+#region
+
 using Droits.Helpers.Extensions;
 using FuzzySharp;
+
+#endregion
 
 namespace Droits.Helpers;
 

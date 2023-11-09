@@ -1,5 +1,8 @@
+#region
+
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Components;
+
+#endregion
 
 namespace Droits.Models.Enums;
 

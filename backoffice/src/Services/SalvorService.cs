@@ -1,3 +1,5 @@
+#region
+
 using Droits.Helpers;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
@@ -8,6 +10,8 @@ using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+
+#endregion
 
 namespace Droits.Services;
 

@@ -1,5 +1,8 @@
-using System.ComponentModel.DataAnnotations;
+#region
+
 using Droits.Models.Entities;
+
+#endregion
 
 namespace Droits.Models.FormModels
 {

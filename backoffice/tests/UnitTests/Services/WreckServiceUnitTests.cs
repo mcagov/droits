@@ -2,6 +2,7 @@ using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Repositories;
 using Droits.Services;
+using Droits.Data;
 
 namespace Droits.Tests.UnitTests.Services
 {

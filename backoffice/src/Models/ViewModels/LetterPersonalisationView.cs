@@ -1,5 +1,9 @@
+#region
+
 using System.Text.RegularExpressions;
 using Droits.Models.Entities;
+
+#endregion
 
 namespace Droits.Models.ViewModels;
 

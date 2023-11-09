@@ -1,3 +1,5 @@
+#region
+
 using Droits.Clients;
 using Droits.Helpers;
 using Droits.Models.DTOs;
@@ -9,6 +11,8 @@ using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Microsoft.IdentityModel.Tokens;
+
+#endregion
 
 namespace Droits.Services;
 

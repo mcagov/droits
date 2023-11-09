@@ -1,8 +1,11 @@
-using System;
+#region
+
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
+
+#endregion
 
 namespace Droits.Models.ViewModels
 {

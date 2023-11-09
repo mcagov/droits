@@ -1,4 +1,8 @@
+#region
+
 using System.Security.Claims;
+
+#endregion
 
 namespace Droits.Services;
 

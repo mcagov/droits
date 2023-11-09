@@ -1,16 +1,20 @@
+#region
+
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Helpers.Extensions;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
-using Droits.Models.FormModels;
 using Droits.Models.Enums;
+using Droits.Models.FormModels;
 using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+
+#endregion
 
 namespace Droits.Services;
 

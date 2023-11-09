@@ -1,8 +1,10 @@
-using System.Globalization;
-using Droits.Models.Entities;
+#region
+
 using Bogus;
+using Droits.Models.Entities;
 using Droits.Models.Enums;
-using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Droits.Data;
 

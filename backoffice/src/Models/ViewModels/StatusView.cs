@@ -1,5 +1,3 @@
-using System;
-
 namespace Droits.Models.ViewModels;
 
 public class StatusView

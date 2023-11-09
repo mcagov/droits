@@ -1,6 +1,10 @@
+#region
+
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
+
+#endregion
 
 namespace Droits.Models.FormModels
 {

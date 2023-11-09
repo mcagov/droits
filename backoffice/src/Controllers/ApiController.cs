@@ -1,6 +1,10 @@
-﻿using Droits.Models;
+﻿#region
+
+using Droits.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+
+#endregion
 
 namespace Droits.Controllers;
 

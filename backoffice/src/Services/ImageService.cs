@@ -1,7 +1,10 @@
-using Droits.Exceptions;
-using Droits.Repositories;
+#region
+
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Repositories;
+
+#endregion
 
 namespace Droits.Services;
 

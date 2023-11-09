@@ -1,7 +1,11 @@
+#region
+
 using System.Security.Claims;
 using Droits.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+
+#endregion
 
 namespace Droits.Middleware
 {

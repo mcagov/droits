@@ -1,7 +1,6 @@
 import {validateFormTab} from "./validation";
 import {initializeWreckMaterial} from './wreckMaterial.js';
 import Choices from "choices.js";
-import {initializeImage} from "./Image";
 
 export function initializeDroitForm() {
 

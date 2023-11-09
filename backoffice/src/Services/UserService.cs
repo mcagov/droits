@@ -1,13 +1,15 @@
+#region
+
+using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Models.Entities;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Droits.Exceptions;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Droits.Services;
 
