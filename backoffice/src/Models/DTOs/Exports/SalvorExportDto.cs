@@ -1,5 +1,6 @@
 #region
 
+using System.ComponentModel;
 using Droits.Models.Entities;
 
 #endregion
@@ -30,14 +31,22 @@ public class SalvorExportDto
     }
 
     public DateTime? Created { get; set; }
+    [DisplayName("Last Modified")]
     public DateTime? LastModified { get; set; }
     public string? Name { get; set; }
     public string? Email { get; set; }
-    public string? TelephoneNumber { get; set; }
+    [DisplayName("Telephone Number")]
+    public string? TelephoneNumber { get; set; } 
+    [DisplayName("Address Postcode")]
     public string AddressPostcode { get; set; }
+    [DisplayName("Address County")]
     public string AddressCounty { get; set; }
+    [DisplayName("Address Town")]
     public string AddressTown { get; set; }
-    public string? AddressLine2 { get; set; }
+    [DisplayName("Address Line One")]
     public string AddressLine1 { get; set; }
+    [DisplayName("Address Line Two")]
+    public string? AddressLine2 { get; set; }
+        
 
 }

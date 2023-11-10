@@ -1,5 +1,6 @@
 #region
 
+using System.ComponentModel;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 
@@ -26,8 +27,12 @@ public class LetterExportDto
     
     // leave out id?
     public string Recipient { get; set; } = string.Empty;
+    [DisplayName("Droit Reference")]
     public string DroitReference { get; set; } = string.Empty;
+    [DisplayName("Quality Approved User")]
     public string QualityApprovedUser { get; set; } = string.Empty;
+    [DisplayName("Letter Statusr")]
     public LetterStatus Status { get; set; }
+    [DisplayName("Letter Type")]
     public LetterType Type { get; set; }
 }
