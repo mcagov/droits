@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace Droits.Helpers.Extensions;
 
 public static class StringExtensions
@@ -26,6 +28,16 @@ public static class StringExtensions
         return value.StartsWith("y") || value.StartsWith("t");
     }
     
+    public static DateTime AsDateTime(this string? dateString)
+    {
+        if (DateTime.TryParseExact(dateString, "yyyy-MM-dd", null, DateTimeStyles.None, out var result))
+        {
+            return result;
+        }
+
+        throw new ArgumentException("Invalid date string", nameof(dateString));
+    }
+
     public static string Pluralize(this string? word, int count, string? pluralForm = null)
     {
         if ( string.IsNullOrEmpty(word) )
