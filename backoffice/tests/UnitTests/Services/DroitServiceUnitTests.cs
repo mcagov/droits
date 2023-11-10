@@ -1,8 +1,10 @@
 using AutoMapper;
 using Droits.Exceptions;
+using Droits.Helpers;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Repositories;
 using Droits.Services;
 using Microsoft.Extensions.Logging;
@@ -130,6 +132,37 @@ namespace Droits.Tests.UnitTests.Services
             // When & Assert
             await Assert.ThrowsAsync<DroitNotFoundException>(() => _service.UpdateDroitStatusAsync(nonExistingDroitId, DroitStatus.Research));
         }
+        
+        [Fact]
+        public async Task ExportDroitsAsync_EmptyList_ThrowsException()
+        {
+            // Given
+            var emptySearchform = new DroitSearchForm();
+            _mockRepo.Setup(r => r.GetDroitsWithAssociations())
+                .Returns(new List<Droit>().AsQueryable);
 
+            // When & Assert
+            await Assert.ThrowsAsync<Exception>(() => _service.ExportAsync(emptySearchform));
+        }
+        
+        [Fact]
+        public async Task ExportDroitsAsync_ListOfDroits_ReturnsData()
+        {
+            // Given
+            var droitSearchForm = new DroitSearchForm();
+            var droitsQueryable = new List<Droit>()
+            {
+                new() {Id = Guid.NewGuid(), Reference = "Ref1"},
+                new() {Id = Guid.NewGuid(), Reference = "Ref2"},
+            }.AsQueryable();
+
+            _mockRepo.Setup(r => r.GetDroitsWithAssociations()).Returns(droitsQueryable);
+            
+            // When
+            var data = await _service.ExportAsync(droitSearchForm);
+            
+            // Assert
+            Assert.NotEmpty(data);
+        }
     }
 }
