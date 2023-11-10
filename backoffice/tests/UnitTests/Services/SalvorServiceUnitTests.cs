@@ -1,3 +1,4 @@
+using AutoMapper;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Repositories;
@@ -8,12 +9,14 @@ namespace Droits.Tests.UnitTests.Services
     public class SalvorServiceUnitTests
     {
         private readonly Mock<ISalvorRepository> _mockRepo;
+        private readonly Mock<IMapper> _mockMapper;
         private readonly SalvorService _service;
 
         public SalvorServiceUnitTests()
         {
             _mockRepo = new Mock<ISalvorRepository>();
-            _service = new SalvorService(_mockRepo.Object);
+            _mockMapper = new Mock<IMapper>();
+            _service = new SalvorService(_mockRepo.Object, _mockMapper.Object);
         }
 
         [Fact]

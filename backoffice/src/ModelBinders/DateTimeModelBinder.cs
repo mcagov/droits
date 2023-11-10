@@ -1,9 +1,11 @@
-namespace Droits.ModelBinders;
+#region
 
-using Helpers.Extensions;
+using Droits.Helpers.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
-using System.Threading.Tasks;
+
+#endregion
+
+namespace Droits.ModelBinders;
 
 public class DateTimeModelBinderProvider : IModelBinderProvider
 {

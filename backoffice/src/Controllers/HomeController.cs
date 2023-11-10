@@ -1,7 +1,11 @@
-﻿using System.Diagnostics;
+﻿#region
+
+using System.Diagnostics;
 using Droits.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+#endregion
 
 namespace Droits.Controllers;
 

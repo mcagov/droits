@@ -1,5 +1,9 @@
+#region
+
 using System.ComponentModel;
 using Droits.Models.Entities;
+
+#endregion
 
 namespace Droits.Models.ViewModels;
 

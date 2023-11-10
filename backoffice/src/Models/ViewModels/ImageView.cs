@@ -1,4 +1,8 @@
+#region
+
 using Droits.Models.Entities;
+
+#endregion
 
 namespace Droits.Models.ViewModels;
 

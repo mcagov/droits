@@ -1,8 +1,14 @@
-using Microsoft.EntityFrameworkCore;
+
+#region
+
 using Droits.Data;
+using Droits.Exceptions;
 using Droits.Models.Entities;
 using Droits.Services;
-using Droits.Exceptions;
+using Microsoft.EntityFrameworkCore;
+
+
+#endregion
 
 namespace Droits.Repositories
 {

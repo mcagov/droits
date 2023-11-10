@@ -1,6 +1,7 @@
+#region
+
 using Droits.Exceptions;
 using Droits.Helpers.Extensions;
-using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
@@ -10,6 +11,8 @@ using Droits.Models.ViewModels.ListViews;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
+#endregion
 
 namespace Droits.Controllers;
 
@@ -278,13 +281,23 @@ public class DroitController : BaseController
         
         model.SearchForm = await PopulateDroitSearchFormAsync((DroitSearchForm)model.SearchForm!);
 
-        model.SearchOpen = true;
+        model.SearchOpen = model.PageNumber == 1;
+        
         return View(nameof(Index), model);
     }
     
     public async Task<IActionResult> Export(DroitSearchForm form)
     {
-        var csvExport = await _service.ExportAsync(form);
+        byte[] csvExport;
+        try
+        {
+            csvExport = await _service.ExportAsync(form);
+        }
+        catch ( Exception e )
+        {
+            HandleError(_logger, "No Droits to export", e);
+            return RedirectToAction("Index");
+        }
 
         return File(csvExport, "text/csv", $"droit-export-{DateTime.UtcNow.ToShortDateString()}.csv");
     }

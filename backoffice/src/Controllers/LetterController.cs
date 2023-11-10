@@ -1,12 +1,16 @@
+#region
+
 using Droits.Exceptions;
 using Droits.Models.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Droits.Services;
-using Droits.Models.ViewModels;
-using Droits.Models.FormModels;
 using Droits.Models.Enums;
+using Droits.Models.FormModels;
 using Droits.Models.FormModels.SearchFormModels;
+using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
+using Droits.Services;
+using Microsoft.AspNetCore.Mvc;
+
+#endregion
 
 namespace Droits.Controllers;
 
@@ -180,14 +184,23 @@ public class LetterController : BaseController
         
         var model = await _service.AdvancedSearchAsync(form);
         
-        model.SearchOpen = true;
-        
+        model.SearchOpen = model.PageNumber == 1;
+
         return View(nameof(Index), model);
     }
     
     public async Task<IActionResult> Export(LetterSearchForm form)
     {
-        var csvExport = await _service.ExportAsync(form);
+        byte[] csvExport;
+        try
+        {
+            csvExport = await _service.ExportAsync(form);
+        }
+        catch ( Exception e )
+        {
+            HandleError(_logger, "No Letters to export", e);
+            return RedirectToAction("Index");
+        }
 
         return File(csvExport, "text/csv", $"letter-export-{DateTime.UtcNow.ToShortDateString()}.csv");
     }

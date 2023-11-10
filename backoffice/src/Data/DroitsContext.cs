@@ -1,5 +1,9 @@
-﻿using Droits.Models.Entities;
+﻿#region
+
+using Droits.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Droits.Data;
 
@@ -91,7 +95,8 @@ public partial class DroitsContext : DbContext
             entity.Property(d => d.Status);
             entity.Property(d => d.ReportedDate);
             entity.Property(d => d.DateFound);
-
+            entity.Property(d => d.OriginalSubmission);
+            
             entity.Property(d => d.Reference).IsRequired();
             entity.HasIndex(d => d.Reference).IsUnique();
 
@@ -303,13 +308,17 @@ public partial class DroitsContext : DbContext
             entity.ToTable("salvors");
 
             entity.Property(s => s.Id);
-            entity.Property(s => s.Email);
+            entity.Property(s => s.Email).IsRequired();
+            
             entity.Property(s => s.Name);
             entity.Property(s => s.TelephoneNumber);
 
             entity.Property(s => s.Created);
             entity.Property(s => s.LastModified);
             entity.Property(s => s.LastModifiedByUserId);
+
+            entity.HasIndex(s => s.Email)
+                .IsUnique();
             
             entity.OwnsOne(s => s.Address);
             entity.HasMany(s => s.Droits)

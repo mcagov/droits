@@ -1,7 +1,11 @@
+#region
+
 using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Droits.Repositories;
 

@@ -1,4 +1,8 @@
+#region
+
 using System.ComponentModel.DataAnnotations.Schema;
+
+#endregion
 
 namespace Droits.Models.Entities;
 

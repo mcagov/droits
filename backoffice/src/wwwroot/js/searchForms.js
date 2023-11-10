@@ -11,6 +11,19 @@ function initializeSearchForm(formClass, toggleButtonClass) {
         const searchForm = document.querySelector(formClass);
         searchForm.classList.toggle('d-none');
     })});
+
+    const paginationButtons = document.querySelectorAll(".js-page-link");
+    paginationButtons.forEach((button) => {
+        button.addEventListener('click', function (ev) {
+            ev.preventDefault();
+
+            const pageNumberField = document.querySelector(".js-page-number-field");
+            pageNumberField.value = button.getAttribute("data-page-number");
+
+            pageNumberField.closest("form").submit();
+        });
+    });
+
     
     switch (formClass) {
         case '.js-droit-search':

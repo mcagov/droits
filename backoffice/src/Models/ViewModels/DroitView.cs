@@ -1,8 +1,12 @@
+#region
+
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.ViewModels.ListViews;
+
+#endregion
 
 namespace Droits.Models.ViewModels;
 
@@ -27,6 +31,8 @@ public class DroitView : BaseEntityView
 
         IsHazardousFind = droit.IsHazardousFind;
         IsDredge = droit.IsDredge;
+
+        OriginalSubmission = droit.OriginalSubmission;
 
         //Wreck
         if ( droit.Wreck != null )
@@ -118,6 +124,7 @@ public class DroitView : BaseEntityView
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime DateFound { get; }
 
+    public string? OriginalSubmission { get; set; } = string.Empty;
 
     // Wreck Material
 
@@ -148,8 +155,8 @@ public class DroitView : BaseEntityView
 
 
     // Location
-    public float? Latitude { get; }
-    public float? Longitude { get; }
+    public double? Latitude { get; }
+    public double? Longitude { get; }
 
     [DisplayName("In UK Waters")]
     public bool InUkWaters { get; }
@@ -180,7 +187,7 @@ public class DroitView : BaseEntityView
 
     [DisplayName("Services Estimated Cost")]
 
-    public float? ServicesEstimatedCost { get; }
+    public double? ServicesEstimatedCost { get; }
 
     [DisplayName("MMO Licence Required")]
     public bool MMOLicenceRequired { get; }
@@ -189,7 +196,7 @@ public class DroitView : BaseEntityView
     public bool MMOLicenceProvided { get; }
 
     [DisplayName("Salvage Claim Awarded")]
-    public float SalvageClaimAwarded { get; }
+    public double SalvageClaimAwarded { get; }
 
     // Legacy fields
     public string? District { get; }

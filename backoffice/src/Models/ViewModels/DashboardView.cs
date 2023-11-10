@@ -1,4 +1,8 @@
+#region
+
 using Droits.Models.ViewModels.ListViews;
+
+#endregion
 
 namespace Droits.Models.ViewModels;
 

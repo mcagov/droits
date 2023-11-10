@@ -1,7 +1,14 @@
 @model LetterView
 
 @{
-    ViewData["Title"] = "Preview Letter";
+    var title = "Preview Letter";
+
+    if (!string.IsNullOrEmpty(Model.Droit?.Reference))
+    {
+        title += $" - Droit {Model.Droit.Reference}";
+    }
+        
+    ViewData["Title"] = title;
 }
 
 @{

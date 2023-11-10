@@ -1,8 +1,11 @@
-using System.Globalization;
-using Droits.Models.Entities;
+
+#region
+
 using Bogus;
+using Droits.Models.Entities;
 using Droits.Models.Enums;
-using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Droits.Data;
 
@@ -141,6 +144,7 @@ public static class DatabaseSeeder
                 .OfType<DroitStatus>()
                 .MinBy(x => Guid.NewGuid()),
             ReportedDate = reportedDate,
+            OriginalSubmission = $"{{ \"fakeData\": \"Some data xyz\" }}", // This needs improving..
             DateFound = Faker.Date.Past(2, reportedDate),
             Created = DateTime.UtcNow,
             LastModified = DateTime.UtcNow,
@@ -194,8 +198,8 @@ public static class DatabaseSeeder
                 InUkWaters = Faker.Random.Bool(),
                 IsWarWreck = Faker.Random.Bool(),
                 IsAnAircraft = Faker.Random.Bool(),
-                Latitude = (float) Faker.Address.Latitude(),
-                Longitude = (float) Faker.Address.Longitude(),
+                Latitude = Faker.Address.Latitude(),
+                Longitude = Faker.Address.Longitude(),
 
                 IsProtectedSite = Faker.Random.Bool(),
                 ProtectionLegislation = Faker.Lorem.Word(),

@@ -1,5 +1,9 @@
+#region
+
 using Droits.Helpers.Extensions;
 using FuzzySharp;
+
+#endregion
 
 namespace Droits.Helpers;
 
@@ -25,7 +29,7 @@ public static class SearchHelper
         
         var ratio = Fuzz.PartialRatio(term.ToLower(), value.ToLower());
         
-        Console.WriteLine($"{term.ToLower()} // {value.ToLower()} // {ratio}");
+        // Console.WriteLine($"{term.ToLower()} // {value.ToLower()} // {ratio}");
         return ratio >= threshold;
     }
     
@@ -52,6 +56,17 @@ public static class SearchHelper
     
     
     public static bool IsBetween(float? value, float? from, float? to)
+    {
+        if ( from == null && to == null )
+        {
+            return true;
+        }
+        
+        return value.HasValue && ( value.Value >= from || from == null ) && ( value.Value <= to || to == null );
+    }
+
+    
+    public static bool IsBetween(double? value, double? from, double? to)
     {
         if ( from == null && to == null )
         {

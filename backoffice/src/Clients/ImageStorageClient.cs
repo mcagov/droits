@@ -1,7 +1,11 @@
-using Amazon.Runtime;
+
+#region
+
 using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.IdentityModel.Tokens;
+
+#endregion
 
 namespace Droits.Clients;
 

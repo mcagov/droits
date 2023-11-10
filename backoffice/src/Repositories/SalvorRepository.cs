@@ -1,8 +1,12 @@
+#region
+
 using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
 using Droits.Services;
 using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Droits.Repositories;
 
@@ -13,6 +17,7 @@ public interface ISalvorRepository
     Task<Salvor> GetSalvorAsync(Guid id);
     Task<Salvor> AddAsync(Salvor salvor);
     Task<Salvor> UpdateAsync(Salvor salvor);
+    Task<Salvor?> GetSalvorByEmailAddressAsync(string? salvorInfoEmail);
 }
 
 public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
@@ -48,4 +53,7 @@ public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
 
         return salvor;
     }
+    
+    public async Task<Salvor?> GetSalvorByEmailAddressAsync(string? emailAddress) => await Context.Salvors
+                .FirstOrDefaultAsync(s => s.Email.Trim().ToLower().Equals(emailAddress));
 }

@@ -1,5 +1,9 @@
+#region
+
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
+
+#endregion
 
 namespace Droits.Models.ViewModels;
 
@@ -41,13 +45,13 @@ public class WreckMaterialView : BaseEntityView
     [DataType(DataType.MultilineText)]
     public string? Description { get; } = string.Empty;
     public int Quantity { get; } = 1;
-    public float? Value { get; } = 0;
+    public double? Value { get; } = 0;
     
     // Images
     public List<ImageView> Images { get; } = new();
 
     [Display(Name = "Receiver Valuation")]
-    public float? ReceiverValuation { get; }
+    public double? ReceiverValuation { get; }
 
     [Display(Name = "Value Confirmed")]
     public bool ValueConfirmed { get; }

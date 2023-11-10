@@ -1,6 +1,9 @@
-using Droits.Models.ViewModels;
+#region
+
 using Droits.Models.ViewModels.ListViews;
 using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Droits.Helpers;
 
@@ -11,6 +14,14 @@ public static class ServiceHelper
         SearchOptions searchOptions) where TView : class
     {
         var totalCount = await query.CountAsync();
+
+        var totalPageCount = (int)Math.Ceiling((double)totalCount / searchOptions.PageSize);
+
+        if (searchOptions.PageNumber > totalPageCount || searchOptions.PageNumber <= 0)
+        {
+            searchOptions.PageNumber = 1;
+        }
+        
         var pagedItems = await query.Skip(( searchOptions.PageNumber - 1 ) * searchOptions.PageSize)
             .Take(searchOptions.PageSize)
             .ToListAsync();

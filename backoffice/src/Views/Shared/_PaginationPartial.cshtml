@@ -1,8 +1,6 @@
-@model ListView<object>
 @using X.PagedList
+@model ListView<object>
 @{
-    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString() ?? "DefaultController";
-    var actionName = ViewContext.RouteData.Values["action"]?.ToString() ?? "DefaultAction";
     IPagedList<object> pagedItems = new StaticPagedList<object>(Model.Items, Model.PageNumber, Model.PageSize, Model.TotalCount);
 }
 
@@ -10,7 +8,7 @@
     @if (pagedItems.HasPreviousPage)
     {
         <li class="page-item">
-            <a class="page-link" href="@Url.Action(actionName, controllerName, new { PageNumber = pagedItems.PageNumber - 1, PageSize = Model.PageSize })">Previous</a>
+            <a class="page-link js-page-link" data-page-number="@(pagedItems.PageNumber - 1)">Previous</a>
         </li>
     }
 
@@ -19,7 +17,7 @@
         @if (pagedItems.PageCount <= 10 || i <= 3 || i > pagedItems.PageCount - 3 || (i >= pagedItems.PageNumber - 1 && i <= pagedItems.PageNumber + 1))
         {
             <li class="page-item @(i == pagedItems.PageNumber ? "active" : "")">
-                <a class="page-link" href="@Url.Action(actionName, controllerName, new { PageNumber = i, PageSize = Model.PageSize })">@i</a>
+                <a class="page-link js-page-link" data-page-number="@(i)">@i</a>
             </li>
         }
         else if (i == 4 || i == pagedItems.PageCount - 3)
@@ -33,7 +31,7 @@
     @if (pagedItems.HasNextPage)
     {
         <li class="page-item">
-            <a class="page-link" href="@Url.Action(actionName, controllerName, new { PageNumber = pagedItems.PageNumber + 1, PageSize = Model.PageSize })">Next</a>
+            <a class="page-link js-page-link" data-page-number="@(pagedItems.PageNumber + 1)">Next</a>
         </li>
     }
 </ul>

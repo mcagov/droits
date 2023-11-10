@@ -1,5 +1,3 @@
-using Droits.Models.Enums;
-
 namespace Droits.Models.Entities;
 
 public class Wreck : BaseEntity
@@ -11,8 +9,8 @@ public class Wreck : BaseEntity
     public bool InUkWaters { get; set; } = false;
     public bool IsWarWreck { get; set; } = false;
     public bool IsAnAircraft { get; set; } = false;
-    public float? Latitude { get; set; }
-    public float? Longitude { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
 
     public bool IsProtectedSite { get; set; } = false;
     public string? ProtectionLegislation { get; set; }
