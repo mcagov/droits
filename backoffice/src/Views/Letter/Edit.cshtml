@@ -1,8 +1,15 @@
 @model LetterForm
-@{
-    ViewData["Title"] = "Compose Letter";
-}
 
+@{
+    var title = "Compose Letter";
+
+    if (!string.IsNullOrEmpty(Model.DroitReference))
+    {
+        title += $" - Droit {Model.DroitReference}";
+    }
+    
+    ViewData["Title"] = title;
+}
 
 <div class="row align-items-start">
 
