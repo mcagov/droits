@@ -7,18 +7,19 @@ using Droits.Models.Enums;
 
 namespace Droits.Models.DTOs;
 
-public class LetterDto
+public class LetterExportDto
 {
-    public LetterDto()
+    public LetterExportDto()
     {
         
     }
 
 
-    public LetterDto(Letter letter)
+    public LetterExportDto(Letter letter)
     {
         Recipient = letter.Recipient;
         DroitReference = letter.Droit?.Reference ?? string.Empty;
+        QualityApprovedUser = letter.QualityApprovedUser?.Name;
         Status = letter.Status;
         Type = letter.Type;
     }
@@ -26,6 +27,7 @@ public class LetterDto
     // leave out id?
     public string Recipient { get; set; } = string.Empty;
     public string DroitReference { get; set; } = string.Empty;
+    public string QualityApprovedUser { get; set; } = string.Empty;
     public LetterStatus Status { get; set; }
     public LetterType Type { get; set; }
 }

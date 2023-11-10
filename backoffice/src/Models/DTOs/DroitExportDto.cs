@@ -7,14 +7,14 @@ using Droits.Models.Entities;
 
 namespace Droits.Models.DTOs
 {
-    public class DroitDto
+    public class DroitExportDto
     {
 
-        public DroitDto()
+        public DroitExportDto()
         {
             
         }
-        public DroitDto(Droit droit)
+        public DroitExportDto(Droit droit)
         {
             Id = droit.Id;
             Reference = droit.Reference;
