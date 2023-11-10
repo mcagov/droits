@@ -22,10 +22,10 @@ public class DroitView : BaseEntityView
         Id = droit.Id;
         Status = droit.Status;
         ReportedDate = droit.ReportedDate;
-        
+        DateFound = droit.DateFound;
+
         AssignedUser = droit.AssignedToUser?.Name ?? "Unassigned";
         
-        DateFound = droit.DateFound;
         
         Reference = droit.Reference;
 

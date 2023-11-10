@@ -38,7 +38,7 @@ namespace Droits.Data.Mappers
                         src.RemovedFrom))
                 .ForMember(dest => dest.SalvageAwardClaimed,
                     opt => opt.MapFrom(src =>
-                        src.ClaimSalvage))
+                        src.ClaimSalvage.AsBoolean()))
                 .ForMember(dest => dest.ServicesDescription,
                     opt => opt.MapFrom(src =>
                         src.SalvageServices))
