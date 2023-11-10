@@ -164,5 +164,27 @@ namespace Droits.Tests.UnitTests.Services
             // Assert
             Assert.NotEmpty(data);
         }
+        
+        [Fact]
+        public async Task ExportDroitsAsync_ListOfDroits_ReturnsCorrectData()
+        {
+            // Given
+            var droitSearchForm = new DroitSearchForm();
+            var droitsQueryable = new List<Droit>()
+            {
+                new() {Id = Guid.NewGuid(), Reference = "Ref1"},
+                new() {Id = Guid.NewGuid(), Reference = "Ref2"},
+            }.AsQueryable();
+
+            _mockRepo.Setup(r => r.GetDroitsWithAssociations()).Returns(droitsQueryable);
+            
+            // When
+            var data = await _service.ExportAsync(droitSearchForm);
+            
+            // Assert
+            Assert.Contains("Ref1", System.Text.Encoding.UTF8.GetString(data));
+            Assert.Contains("Ref2", System.Text.Encoding.UTF8.GetString(data));
+            Assert.DoesNotContain("magna carta", System.Text.Encoding.UTF8.GetString(data));
+        }
     }
 }
