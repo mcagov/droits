@@ -152,8 +152,8 @@ namespace Droits.Tests.UnitTests.Services
             var droitSearchForm = new DroitSearchForm();
             var droitsQueryable = new List<Droit>()
             {
-                new() {Id = new Guid(), Reference = "Ref1"},
-                new() {Id = new Guid(), Reference = "Ref2"},
+                new() {Id = Guid.NewGuid(), Reference = "Ref1"},
+                new() {Id = Guid.NewGuid(), Reference = "Ref2"},
             }.AsQueryable();
 
             _mockRepo.Setup(r => r.GetDroitsWithAssociations()).Returns(droitsQueryable);
