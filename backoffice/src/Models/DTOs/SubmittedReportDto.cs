@@ -93,11 +93,9 @@ public class SubmittedWreckMaterialDto
     [JsonPropertyName("value-known")]
     public string? ValueKnown { get; set; }
     
-    [JsonPropertyName("image")]
-    public string? Image { get; set; }
     
-    [JsonPropertyName("originalFilename")]
-    public string? OriginalFilename { get; set; }
+    [JsonPropertyName("image")]
+    public SubmittedImageDto? Image { get; set; }
     
     [JsonPropertyName("address-details")]
     public SubmittedAddressDetailsDto? AddressDetails { get; set; }
@@ -106,6 +104,14 @@ public class SubmittedWreckMaterialDto
     public string? StorageAddress { get; set; }
 }
 
+public class SubmittedImageDto
+{
+    [JsonPropertyName("filename")]
+    public string? Filename { get; set; }
+    
+    [JsonPropertyName("data")]
+    public string? Data { get; set; }
+}
 public class SubmittedAddressDetailsDto
 {
     [JsonPropertyName("address-line-1")]

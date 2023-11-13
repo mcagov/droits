@@ -92,4 +92,6 @@ public class ImageService : IImageService
     {
         await _repo.DeleteImagesForWreckMaterialAsync(wmId, imagesToKeep);
     }
+
+    
 }

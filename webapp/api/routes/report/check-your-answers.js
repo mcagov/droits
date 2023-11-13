@@ -1,15 +1,15 @@
 import axios from 'axios';
-const { body, validationResult } = require('express-validator');
 import fs from 'fs';
 import path from 'path';
+import {formatValidationErrors} from '../../../utilities';
+
+const { body, validationResult } = require('express-validator');
 var cloneDeep = require('lodash.clonedeep');
-import { azureUpload } from '../../../services';
-import { formatValidationErrors } from '../../../utilities';
 
 export default function (app) {
   // If user clicks back button on confirmation page it will redirect to start page
   app.get('/report/check-your-answers', function (req, res, next) {
-    if (Object.keys(req.session.data['report-date']).length == 0) {
+    if (Object.keys(req.session.data['report-date']).length === 0) {
       return res.redirect('/report/start');
     }
     next();
@@ -78,17 +78,27 @@ export default function (app) {
           'wreck-materials': [],
         };
 
-        // adding properties to wreck materials array
         for (const prop in sd['property']) {
           if (sd['property'].hasOwnProperty(prop)) {
-            let innerObj = {};
-            innerObj = sd['property'][prop];
+            const innerObj = sd['property'][prop];
+            const filePath = path.resolve(__dirname, '../../../../uploads/', innerObj.image);
 
-            // Prepend azure blob container url path
-            innerObj.image = `${process.env.AZURE_BLOB_IMAGE_URL}${innerObj.image}`;
-            data['wreck-materials'].push(innerObj);
+            try {
+              const imageData = await fs.promises.readFile(filePath, 'base64');
+              const fileName = innerObj.image;
+
+              innerObj.image = {
+                filename: fileName,
+                data: imageData
+              };
+
+              data['wreck-materials'].push(innerObj);
+            } catch (error) {
+              console.error('Error reading file:', error);
+            }
           }
         }
+
 
         try {
           const response = await axios.post(
@@ -102,16 +112,6 @@ export default function (app) {
           if (response.status === 200) {
 
             let reference = response.data.reference;
-
-            // Push image(s) to Azure
-            Object.values(req.session.data.property).forEach((item) => {
-              const imageData = fs.createReadStream(
-                `${path.resolve(__dirname + '../../../../uploads/')}/${item.image
-                }`
-              );
-
-              azureUpload(imageData, item.image);
-            });
 
             // Clear session data
             req.session.data = {};
