@@ -32,7 +32,7 @@ public interface IDroitService
     Task SaveWreckMaterialsAsync(Guid id, List<WreckMaterialForm> wreckMaterialForms);
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
     Task<string> GetNextDroitReference();
-    Task<List<DroitDto>> SearchDroitsAsync(string query);
+    Task<List<DroitExportDto>> SearchDroitsAsync(string query);
     Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form);
     Task<Droit> CreateDroitAsync(SubmittedReportDto report, Salvor salvor);
     Task<byte[]> ExportAsync(DroitSearchForm form);
@@ -187,7 +187,7 @@ public class DroitService : IDroitService
         await _repo.UpdateAsync(droit);
     }
     
-    public async Task<List<DroitDto>> SearchDroitsAsync(string query) => await _repo.SearchDroitsAsync(query);
+    public async Task<List<DroitExportDto>> SearchDroitsAsync(string query) => await _repo.SearchDroitsAsync(query);
     
     private IQueryable<Droit> QueryFromForm(DroitSearchForm form)
     {
@@ -289,7 +289,7 @@ public class DroitService : IDroitService
 
         var droits = SearchDroits(query);
         
-        var droitsData = droits.Select(d => new DroitDto(d)).ToList();
+        var droitsData = droits.Select(d => new DroitExportDto(d)).ToList();
         
         if (droits.IsNullOrEmpty())
         {

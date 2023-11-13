@@ -352,7 +352,7 @@ public class LetterService : ILetterService
 
         var letters = SearchLetters(query);
         
-        var lettersData = letters.Select(s => new LetterDto(s)).ToList();
+        var lettersData = letters.Select(s => new LetterExportDto(s)).ToList();
         
         if (letters.IsNullOrEmpty())
         {

@@ -136,7 +136,7 @@ public class WreckService : IWreckService
 
         var wrecks = SearchWrecks(query);
         
-        var wrecksData = wrecks.Select(s => new WreckDto(s)).ToList();
+        var wrecksData = wrecks.Select(s => new WreckExportDto(s)).ToList();
         
         if (wrecks.IsNullOrEmpty())
         {

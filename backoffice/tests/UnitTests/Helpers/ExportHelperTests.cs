@@ -17,7 +17,7 @@ public class ExportHelperTests
     public async Task ExportDroitsAsync_ListOfDroits_ReturnsData()
     {
         // Given
-        var droits = new List<DroitDto>()
+        var droits = new List<DroitExportDto>()
         {
             new() { Id = Guid.NewGuid(), Reference = "Ref1", SalvorId = Guid.NewGuid().ToString() },
             new() { Id = Guid.NewGuid(), Reference = "Ref2", SalvorId = Guid.NewGuid().ToString() }
@@ -35,7 +35,7 @@ public class ExportHelperTests
     public async Task ExportDroitsAsync_ListOfDroits_ReturnsCorrectData()
     {
         // Given
-        var droits = new List<DroitDto>()
+        var droits = new List<DroitExportDto>()
         {
             new() { Id = new Guid(), Reference = "Ref3" },
             new() { Id = new Guid(), Reference = "Ref4" }
@@ -70,7 +70,7 @@ public class ExportHelperTests
     public async Task ExportDroitsAsync_ListOfDroits_ReturnsCorrectHeaders()
     {
         // Given
-        var droits = new List<DroitDto>()
+        var droits = new List<DroitExportDto>()
         {
             new() { Id = new Guid(), Reference = "Ref3" },
             new() { Id = new Guid(), Reference = "Ref4" }

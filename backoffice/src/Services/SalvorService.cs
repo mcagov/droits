@@ -175,7 +175,7 @@ public class SalvorService : ISalvorService
 
         var salvors = SearchSalvors(query);
         
-        var salvorsData = salvors.Select(s => new SalvorDto(s)).ToList();
+        var salvorsData = salvors.Select(s => new SalvorExportDto(s)).ToList();
         
         if (salvors.IsNullOrEmpty())
         {
