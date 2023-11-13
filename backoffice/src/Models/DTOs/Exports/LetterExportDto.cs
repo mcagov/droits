@@ -6,32 +6,26 @@ using Droits.Models.Enums;
 
 #endregion
 
-namespace Droits.Models.DTOs;
+namespace Droits.Models.DTOs.Exports;
 
 public class LetterExportDto
 {
-    public LetterExportDto()
-    {
-        
-    }
-
 
     public LetterExportDto(Letter letter)
     {
         Recipient = letter.Recipient;
         DroitReference = letter.Droit?.Reference ?? string.Empty;
-        QualityApprovedUser = letter.QualityApprovedUser?.Name;
+        QualityApprovedUser = letter.QualityApprovedUser?.Name ?? "N/A";
         Status = letter.Status;
         Type = letter.Type;
     }
     
-    // leave out id?
-    public string Recipient { get; set; } = string.Empty;
+    public string? Recipient { get; set; }
     [DisplayName("Droit Reference")]
-    public string DroitReference { get; set; } = string.Empty;
+    public string DroitReference { get; set; }
     [DisplayName("Quality Approved User")]
-    public string QualityApprovedUser { get; set; } = string.Empty;
-    [DisplayName("Letter Statusr")]
+    public string QualityApprovedUser { get; set; }
+    [DisplayName("Status")]
     public LetterStatus Status { get; set; }
     [DisplayName("Letter Type")]
     public LetterType Type { get; set; }

@@ -6,7 +6,7 @@ using Droits.Models.Entities;
 
 #endregion
 
-namespace Droits.Models.DTOs
+namespace Droits.Models.DTOs.Exports
 {
     public class DroitExportDto
     {

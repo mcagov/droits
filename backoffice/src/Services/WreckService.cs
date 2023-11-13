@@ -2,6 +2,7 @@
 
 using Droits.Helpers;
 using Droits.Models.DTOs;
+using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Models.FormModels.SearchFormModels;

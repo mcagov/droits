@@ -1,14 +1,10 @@
 using System.ComponentModel;
 using Droits.Models.Entities;
 
-namespace Droits.Models.DTOs
+namespace Droits.Models.DTOs.Exports
 {
     public class WreckExportDto
     {
-        public WreckExportDto()
-        {
-
-        }
 
         public WreckExportDto(Wreck wreck)
         {
@@ -34,7 +30,7 @@ namespace Droits.Models.DTOs
         public DateTime? Created { get; set; }
         [DisplayName("Last Modified")]
         public DateTime? LastModified { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [DisplayName("Vessel Construction Details")]
         public string? VesselConstructionDetails { get; set; }
         [DisplayName("Vessel Year Constructed")]

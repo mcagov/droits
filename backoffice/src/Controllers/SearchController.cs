@@ -1,6 +1,7 @@
 ﻿#region
 
 using Droits.Models.DTOs;
+using Droits.Models.DTOs.Exports;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
 

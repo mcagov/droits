@@ -5,16 +5,11 @@ using Droits.Models.Entities;
 
 #endregion
 
-namespace Droits.Models.DTOs;
+namespace Droits.Models.DTOs.Exports;
 
 public class SalvorExportDto
 {
-    public SalvorExportDto()
-    {
-        
-    }
-
-
+    
     public SalvorExportDto(Salvor salvor)
     {
         Created = salvor.Created;
@@ -38,13 +33,13 @@ public class SalvorExportDto
     [DisplayName("Telephone Number")]
     public string? TelephoneNumber { get; set; } 
     [DisplayName("Address Postcode")]
-    public string AddressPostcode { get; set; }
+    public string? AddressPostcode { get; set; }
     [DisplayName("Address County")]
-    public string AddressCounty { get; set; }
+    public string? AddressCounty { get; set; }
     [DisplayName("Address Town")]
-    public string AddressTown { get; set; }
+    public string? AddressTown { get; set; }
     [DisplayName("Address Line One")]
-    public string AddressLine1 { get; set; }
+    public string? AddressLine1 { get; set; }
     [DisplayName("Address Line Two")]
     public string? AddressLine2 { get; set; }
         

@@ -6,6 +6,7 @@ using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Helpers.Extensions;
 using Droits.Models.DTOs;
+using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Models.FormModels.SearchFormModels;
