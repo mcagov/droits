@@ -48,6 +48,8 @@ export default function (app) {
         let concatenatedText = formattedTextLocation + " " + locationDescription;
         const locationDetails = formattedTextLocation !== undefined ? concatenatedText : locationDescription;
 
+        console.dir(req.session.data);
+        console.dir(sd);
         // Data obj to send to db
         const data = {
           'report-date': `${sd['report-date']['year']}-${sd['report-date']['month']}-${sd['report-date']['day']}`,
@@ -81,28 +83,33 @@ export default function (app) {
         for (const prop in sd['property']) {
           if (sd['property'].hasOwnProperty(prop)) {
             const innerObj = sd['property'][prop];
-            const filePath = path.resolve(__dirname, '../../../../uploads/', innerObj.image);
+            const filePath = path.resolve(__dirname, '../../../uploads/', innerObj.image);
 
             try {
               const imageData = await fs.promises.readFile(filePath, 'base64');
-              const fileName = innerObj.image;
 
               innerObj.image = {
-                filename: fileName,
+                filename: innerObj.originalFilename,
                 data: imageData
               };
+              
+              if(innerObj.value === ""){
+                innerObj.value = null;
+              }
 
               data['wreck-materials'].push(innerObj);
             } catch (error) {
               console.error('Error reading file:', error);
+              data['wreck-materials'].push(innerObj);
             }
           }
         }
-
+        
 
         try {
+          console.dir(JSON.stringify(data));
           const response = await axios.post(
-            process.env.API_POST_ENDPOINT,
+              process.env.API_POST_ENDPOINT,
             JSON.stringify(data),
             {
               headers: { 'content-type': 'application/json' },
@@ -113,6 +120,7 @@ export default function (app) {
 
             let reference = response.data.reference;
 
+            console.dir(reference);
             // Clear session data
             req.session.data = {};
 
