@@ -95,4 +95,20 @@ public class StringExtensionsTests
         Assert.StartsWith("Invalid date string", exception.Message);
         Assert.Equal(nameof(dateString), exception.ParamName);
     }
+    
+    [Theory]
+    [InlineData("helloWorld", "Hello World")]
+    [InlineData("camelCaseString", "Camel Case String")]
+    [InlineData("thisIsAProperlyCasedString", "This Is A Properly Cased String")]
+    [InlineData("WreckMaterials", "Wreck Materials")]
+    [InlineData("", "")]
+    [InlineData(null, null)]
+    public void ConvertToProperCase_ShouldConvertStringToProperCase(string input, string expected)
+    {
+        // Act
+        var result = input.ConvertToProperCase();
+
+        // Assert
+        Assert.Equal(expected, result);
+    }
 }

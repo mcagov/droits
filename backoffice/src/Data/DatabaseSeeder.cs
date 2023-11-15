@@ -2,8 +2,10 @@
 #region
 
 using Bogus;
+using Droits.Models.DTOs;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
+using Newtonsoft.Json;
 
 #endregion
 
@@ -144,7 +146,7 @@ public static class DatabaseSeeder
                 .OfType<DroitStatus>()
                 .MinBy(x => Guid.NewGuid()),
             ReportedDate = reportedDate,
-            OriginalSubmission = $"{{ \"fakeData\": \"Some data xyz\" }}", // This needs improving..
+            OriginalSubmission = GenerateOriginalSubmission(),
             DateFound = Faker.Date.Past(2, reportedDate),
             Created = DateTime.UtcNow,
             LastModified = DateTime.UtcNow,
@@ -182,6 +184,41 @@ public static class DatabaseSeeder
             RecoveredFromLegacy = Faker.Random.ArrayElement(new[] { "Afloat", "Ashore", "Seabed" }),
             ImportedFromLegacy = Faker.Random.Bool()
         };
+    }
+
+
+    private static string GenerateOriginalSubmission()
+    {
+        var fakeData = new Faker<SubmittedReportDto>()
+            .RuleFor(o => o.ReportDate, f => f.Date.Past(2).ToString("yyyy-MM-dd"))
+            .RuleFor(o => o.WreckFindDate, f => f.Date.Past(3).ToString("yyyy-MM-dd"))
+            .RuleFor(o => o.Latitude, f => f.Address.Latitude().OrNull(f, 0.3f))
+            .RuleFor(o => o.Longitude, f => f.Address.Longitude().OrNull(f, 0.3f))
+            .RuleFor(o => o.LocationRadius, f => f.Random.Number(1, 100).OrNull(f, 0.4f))
+            .RuleFor(o => o.LocationDescription, f => f.Lorem.Sentence())
+            .RuleFor(o => o.VesselName, f => f.Random.Word())
+            .RuleFor(o => o.VesselConstructionYear, f => f.Date.Past(500).Year.ToString())
+            .RuleFor(o => o.VesselSunkYear, f => f.Date.Past(20).Year.ToString())
+            .RuleFor(o => o.VesselDepth, f => f.Random.Int(1, 100))
+            .RuleFor(o => o.RemovedFrom, f => f.Random.ListItem(new[] { "Afloat", "Shipwreck", "Seabed", "Sea Shore" }))
+            .RuleFor(o => o.WreckDescription, f => f.Lorem.Paragraph())
+            .RuleFor(o => o.ClaimSalvage, f => f.PickRandom("yes", "no"))
+            .RuleFor(o => o.SalvageServices, f => f.Random.Word())
+            .RuleFor(o => o.Personal, f => new SubmittedPersonalDto()
+            {
+                FullName = f.Name.FullName(),
+                Email = f.Internet.Email(),
+                TelephoneNumber = f.Phone.PhoneNumber(),
+                AddressLine1 = f.Address.StreetAddress(),
+                AddressLine2 = f.Random.Word(),
+                AddressTown = f.Address.City(),
+                AddressCounty = f.Address.County(),
+                AddressPostcode = f.Address.ZipCode()
+            });
+        
+        var originalSubmission = fakeData.Generate();
+        return JsonConvert.SerializeObject(originalSubmission, Formatting.Indented);
+
     }
 
 

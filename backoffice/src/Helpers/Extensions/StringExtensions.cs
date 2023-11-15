@@ -49,6 +49,8 @@ public static class StringExtensions
             : pluralForm ?? (word.EndsWith("y", StringComparison.OrdinalIgnoreCase) ? string.Concat(word.AsSpan(0, word.Length - 1), "ies") : word + "s");
     }
     
-    
-    
+    public static string ConvertToProperCase(this string input) =>
+        string.IsNullOrEmpty(input) ? input : char.ToUpper(input[0]) +
+                                              string.Concat(input.Skip(1).Select((x, i) => char.IsUpper(x) ? " " + x : x.ToString()));
+
 }

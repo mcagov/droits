@@ -381,7 +381,7 @@
 @if (!string.IsNullOrEmpty(Model.OriginalSubmission))
 {
     <div class="tab-pane fade" id="submission" role="tabpanel" aria-labelledby="submission-tab">
-        <pre>@JsonSerializer.Serialize(JsonSerializer.Deserialize<object>(Model.OriginalSubmission, new JsonSerializerOptions { WriteIndented = true }), new JsonSerializerOptions { WriteIndented = true })</pre>
+        <partial name="_SubmittedData" model="@Model.OriginalSubmission"/>
     </div>
 }
 
