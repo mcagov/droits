@@ -48,4 +48,7 @@ public static class StringExtensions
             ? word
             : pluralForm ?? (word.EndsWith("y", StringComparison.OrdinalIgnoreCase) ? string.Concat(word.AsSpan(0, word.Length - 1), "ies") : word + "s");
     }
+    
+    
+    
 }
