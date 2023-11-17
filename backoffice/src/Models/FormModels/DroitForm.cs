@@ -93,12 +93,12 @@ public class DroitForm : BaseEntityForm
     [DisplayName("Reported Date")]
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime ReportedDate { get; set; } = DateTime.Now;
+    public DateTime ReportedDate { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Date Found")]
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime DateFound { get; set; } = DateTime.Now;
+    public DateTime DateFound { get; set; } = DateTime.UtcNow;
 
     public string? OriginalSubmission { get; set; } = string.Empty;
 

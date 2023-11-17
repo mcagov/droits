@@ -12,7 +12,7 @@ public class BaseEntity
     public DateTime Created { get; set; } = DateTime.UtcNow;
     public DateTime LastModified { get; set; } = DateTime.UtcNow;
     
-    public Guid LastModifiedByUserId { get; set; }
+    public Guid? LastModifiedByUserId { get; set; }
     [ForeignKey("LastModifiedByUserId")]
     public virtual ApplicationUser? LastModifiedByUser { get; set; } = null!;
 }

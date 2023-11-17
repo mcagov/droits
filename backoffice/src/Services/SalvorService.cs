@@ -153,10 +153,10 @@ public class SalvorService : ISalvorService
     private IQueryable<Salvor> QueryFromForm(SalvorSearchForm form)
     {
         var query = _repo.GetSalvorsWithAssociations()
-            .OrderByDescending(s => s.Created)
             .Where(s =>
-                SearchHelper.FuzzyMatches(form.Name, s.Name, 70) &&
-                SearchHelper.Matches(form.Email, s.Email)
+                    EF.Functions.FuzzyStringMatchLevenshtein(form.Name.ToLower(), s.Name.ToLower()) < 5 // This allows 5 changes for the entire string, we need to find a way of 1 null checking, and 2 allow for partial matching. Maybe Levenshtein matching on each word then checking if the min distance is less than threshold. 
+                // SearchHelper.FuzzyMatches(form.Name, s.Name, 70) &&
+                // SearchHelper.Matches(form.Email, s.Email)
             );
 
         return query;

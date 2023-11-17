@@ -90,8 +90,8 @@ public static class DatabaseSeeder
                     .Where(s => s != LetterStatus.Sent) 
                     .MinBy(x => Guid.NewGuid()),
                 SenderUserId = new Guid(),
-                Created = DateTime.Now,
-                LastModified = DateTime.Now,
+                Created = DateTime.UtcNow,
+                LastModified = DateTime.UtcNow,
                 LastModifiedByUserId = user.Id,
             })
             .ToList();
