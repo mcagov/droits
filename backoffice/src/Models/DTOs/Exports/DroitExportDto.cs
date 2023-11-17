@@ -1,30 +1,29 @@
 #region
 
+using System.ComponentModel;
 using Droits.Helpers.Extensions;
 using Droits.Models.Entities;
 
 #endregion
 
-namespace Droits.Models.DTOs
+namespace Droits.Models.DTOs.Exports
 {
-    public class DroitDto
+    public class DroitExportDto
     {
 
-        public DroitDto()
+        public DroitExportDto()
         {
             
         }
-        public DroitDto(Droit droit)
+        public DroitExportDto(Droit droit)
         {
             Id = droit.Id;
             Reference = droit.Reference;
             Created = droit.Created.ToString("dd/MM/yyyy");
             LastModified = droit.LastModified.ToString("dd/MM/yyyy");
 
-            WreckId = droit.WreckId?.ToString() ?? string.Empty;
             WreckName = droit.Wreck?.Name ?? "No Wreck";
 
-            SalvorId = droit.SalvorId?.ToString() ?? string.Empty;
             SalvorName = droit.Salvor?.Name ?? "Unknown";
 
             AssignedTo = droit.AssignedToUser?.Name ?? "Unassigned";
@@ -35,11 +34,13 @@ namespace Droits.Models.DTOs
         public Guid? Id { get; set; }
         public string? Reference { get; set; }
         public string? Created { get; set; }
+        [DisplayName("Last Modified")]
         public string? LastModified { get; set; }
+        [DisplayName("Wreck Name")]
         public string? WreckName { get; set; }
-        public string? WreckId { get; set; }
+        [DisplayName("Salvor Name")]
         public string? SalvorName { get; set; }
-        public string? SalvorId { get; set; }
+        [DisplayName("Assigned To")]
         public string? AssignedTo { get; set; }
         public string? Status { get; set; }
     }

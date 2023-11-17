@@ -1,6 +1,7 @@
 ﻿#region
 
 using Droits.Models.DTOs;
+using Droits.Models.DTOs.Exports;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +27,7 @@ public class SearchController : BaseController
     {
         try
         {
-            List<DroitDto> searchResults = await _droitService.SearchDroitsAsync(query);
+            List<DroitExportDto> searchResults = await _droitService.SearchDroitsAsync(query);
             
             return Json(searchResults);
         }

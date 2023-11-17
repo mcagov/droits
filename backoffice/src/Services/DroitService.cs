@@ -6,6 +6,7 @@ using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Helpers.Extensions;
 using Droits.Models.DTOs;
+using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
@@ -32,7 +33,7 @@ public interface IDroitService
     Task SaveWreckMaterialsAsync(Guid id, List<WreckMaterialForm> wreckMaterialForms);
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
     Task<string> GetNextDroitReference();
-    Task<List<DroitDto>> SearchDroitsAsync(string query);
+    Task<List<DroitExportDto>> SearchDroitsAsync(string query);
     Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form);
     Task<Droit> CreateDroitAsync(SubmittedReportDto report, Salvor salvor);
     Task<byte[]> ExportAsync(DroitSearchForm form);
@@ -107,13 +108,9 @@ public class DroitService : IDroitService
 
     public async Task<Droit> SaveDroitAsync(Droit droit)
     {
-        if ( droit.Id == default )
-        {
-            droit.Reference = await GetNextDroitReference();
-            return await AddDroitAsync(droit);
-        }
-
-        return await UpdateDroitAsync(droit);
+        if ( droit.Id != default ) return await UpdateDroitAsync(droit);
+        
+        return await AddDroitAsync(droit);
     }
 
 
@@ -191,7 +188,7 @@ public class DroitService : IDroitService
         await _repo.UpdateAsync(droit);
     }
     
-    public async Task<List<DroitDto>> SearchDroitsAsync(string query) => await _repo.SearchDroitsAsync(query);
+    public async Task<List<DroitExportDto>> SearchDroitsAsync(string query) => await _repo.SearchDroitsAsync(query);
     
     private IQueryable<Droit> QueryFromForm(DroitSearchForm form)
     {
@@ -293,7 +290,7 @@ public class DroitService : IDroitService
 
         var droits = SearchDroits(query);
         
-        var droitsData = droits.Select(s => new DroitDto(s)).ToList();
+        var droitsData = droits.Select(d => new DroitExportDto(d)).ToList();
         
         if (droits.IsNullOrEmpty())
         {

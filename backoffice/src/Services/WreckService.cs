@@ -2,6 +2,7 @@
 
 using Droits.Helpers;
 using Droits.Models.DTOs;
+using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Models.FormModels.SearchFormModels;
@@ -136,7 +137,7 @@ public class WreckService : IWreckService
 
         var wrecks = SearchWrecks(query);
         
-        var wrecksData = wrecks.Select(s => new WreckDto(s)).ToList();
+        var wrecksData = wrecks.Select(s => new WreckExportDto(s)).ToList();
         
         if (wrecks.IsNullOrEmpty())
         {

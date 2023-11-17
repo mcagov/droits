@@ -4,6 +4,7 @@ using Droits.Data;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Models.DTOs;
+using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
 using Droits.Services;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ public interface IDroitRepository
 
     Task<int> GetYearDroitCount();
     
-    Task<List<DroitDto>> SearchDroitsAsync(string query);
+    Task<List<DroitExportDto>> SearchDroitsAsync(string query);
 }
 
 public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
@@ -116,12 +117,12 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
     }
 
 
-    public async Task<List<DroitDto>> SearchDroitsAsync(string query)
+    public async Task<List<DroitExportDto>> SearchDroitsAsync(string query)
     {
         
         if (string.IsNullOrWhiteSpace(query))
         {
-            return new List<DroitDto>();
+            return new List<DroitExportDto>();
         }
 
         query = query.Trim().ToLower();
@@ -138,7 +139,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
             )
             .ToListAsync();
 
-        var results = droits.Select(d => new DroitDto(d)).ToList();
+        var results = droits.Select(d => new DroitExportDto(d)).ToList();
 
         return results;
     }

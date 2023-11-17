@@ -1,6 +1,7 @@
 using System.Text;
 using Droits.Helpers;
 using Droits.Models.DTOs;
+using Droits.Models.DTOs.Exports;
 
 namespace Droits.Tests.UnitTests.Helpers;
 
@@ -9,18 +10,17 @@ public class ExportHelperTests
     
     private readonly List<string> _expectedDroitHeaders = new()
         {
-            "Id", "Reference", "Created", "LastModified", "WreckName", "WreckId", "SalvorName",
-            "SalvorId", "AssignedTo", "Status"
+            "Id", "Reference", "Created", "LastModified", "WreckName", "SalvorName", "AssignedTo", "Status"
         };
     
     [Fact]
     public async Task ExportDroitsAsync_ListOfDroits_ReturnsData()
     {
         // Given
-        var droits = new List<DroitDto>()
+        var droits = new List<DroitExportDto>()
         {
-            new() { Id = Guid.NewGuid(), Reference = "Ref1", SalvorId = Guid.NewGuid().ToString() },
-            new() { Id = Guid.NewGuid(), Reference = "Ref2", SalvorId = Guid.NewGuid().ToString() }
+            new() { Id = Guid.NewGuid(), Reference = "Ref1"},
+            new() { Id = Guid.NewGuid(), Reference = "Ref2" }
         };
 
         // When
@@ -35,7 +35,7 @@ public class ExportHelperTests
     public async Task ExportDroitsAsync_ListOfDroits_ReturnsCorrectData()
     {
         // Given
-        var droits = new List<DroitDto>()
+        var droits = new List<DroitExportDto>()
         {
             new() { Id = new Guid(), Reference = "Ref3" },
             new() { Id = new Guid(), Reference = "Ref4" }
@@ -70,7 +70,7 @@ public class ExportHelperTests
     public async Task ExportDroitsAsync_ListOfDroits_ReturnsCorrectHeaders()
     {
         // Given
-        var droits = new List<DroitDto>()
+        var droits = new List<DroitExportDto>()
         {
             new() { Id = new Guid(), Reference = "Ref3" },
             new() { Id = new Guid(), Reference = "Ref4" }

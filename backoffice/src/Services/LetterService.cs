@@ -4,6 +4,7 @@ using Droits.Clients;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Models.DTOs;
+using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
@@ -352,7 +353,7 @@ public class LetterService : ILetterService
 
         var letters = SearchLetters(query);
         
-        var lettersData = letters.Select(s => new LetterDto(s)).ToList();
+        var lettersData = letters.Select(s => new LetterExportDto(s)).ToList();
         
         if (letters.IsNullOrEmpty())
         {
