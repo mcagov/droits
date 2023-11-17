@@ -32,6 +32,9 @@ public class DroitForm : BaseEntityForm
         Reference = droit.Reference;
         IsHazardousFind = droit.IsHazardousFind;
         IsDredge = droit.IsDredge;
+        
+        OriginalSubmission = droit.OriginalSubmission;
+        
 
         // Location
         Latitude = droit.Latitude;
@@ -97,6 +100,7 @@ public class DroitForm : BaseEntityForm
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime DateFound { get; set; } = DateTime.Now;
 
+    public string? OriginalSubmission { get; set; } = string.Empty;
 
 
     // Wreck

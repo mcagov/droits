@@ -1,0 +1,66 @@
+@using Newtonsoft.Json.Linq
+@using Newtonsoft.Json
+@model string
+
+<div class="mb-2">
+    <p class="font-weight-bold">Information submitted by the Salvor:</p>
+</div>
+
+<div class="mt-2 p-2 border border-grey">
+    @Html.Raw(RenderData(JsonConvert.DeserializeObject(@Model) ?? throw new InvalidOperationException()))
+</div>
+
+@functions {
+    string RenderData(dynamic jsonData, string parentKey = "")
+    {
+        var result = "";
+
+        foreach (var item in jsonData)
+        {
+            if (item is not JProperty prop) continue;
+
+            var currentKey = parentKey != "" ? $"{parentKey}.{prop.Name}" : prop.Name;
+            var value = prop.Value;
+
+            switch (value)
+            {
+                case JArray array:
+                    for (var i = 0; i < array.Count; i++)
+                    {
+                        result += $"<h5 class='mt-2'>{prop.Name.ConvertToProperCase()} ({i + 1})</h5>";
+                        result += $"<div class='mx-4'>{RenderData(array[i], $"{currentKey}[{i}]")}</div>";
+                    }
+                    break;
+
+                case JObject obj:
+                    result += $"<h5 class='mt-2'>{prop.Name.ConvertToProperCase()}</h5>{RenderData(value, currentKey)}";
+                    break;
+
+                default:
+                    result += "<div class='form-group row m-1'>";
+                    result += $"<div class='col-md-5'><label class='font-weight-bold'>{currentKey.Split('.').Last().ConvertToProperCase()}</label></div>";
+                    result += "<div class='col-md-7'>";
+
+                    if (prop.Name == "Data" && parentKey.EndsWith("Image"))
+                    {
+                        var base64Data = value?.ToString();
+                        if (!string.IsNullOrEmpty(base64Data))
+                        {
+                            result += $"<img src='data:image;base64,{base64Data}' class='img-fluid w-25' alt='Base64 Image' />";
+                        }
+                    }
+                    else
+                    {
+                        result += Html.Raw(value?.ToString() ?? "---");
+                    }
+
+                    result += "</div></div>";
+                    break;
+            }
+        }
+
+        return result;
+    }
+
+
+}

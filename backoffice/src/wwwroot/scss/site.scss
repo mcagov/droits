@@ -99,3 +99,10 @@ div.form-sections {
 .is-open {
   z-index: 3;
 }
+
+.sticky-content {
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  max-height: calc(100vh - 20px);
+}

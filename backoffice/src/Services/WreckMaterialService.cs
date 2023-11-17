@@ -111,13 +111,40 @@ public class WreckMaterialService : IWreckMaterialService
              return;
          }
 
-         foreach (var wreckMaterial in report.WreckMaterials.Select(wmSubmission => _mapper.Map<WreckMaterial>(wmSubmission)))
+         foreach (var wreckMaterialSubmission in report.WreckMaterials)
          {
+             var wreckMaterial = _mapper.Map<WreckMaterial>(wreckMaterialSubmission);
              wreckMaterial.DroitId = droitId;
 
              await _repository.AddAsync(wreckMaterial);
-             //Upload image...
-             // await SaveImagesAsync(wreckMaterial.Id, wreckMaterialForm.ImageForms);
+
+             if ( wreckMaterialSubmission.Image != null )
+             {
+                 await SaveSubmittedImageAsync(wreckMaterial.Id, wreckMaterialSubmission.Image);
+             }
          }
      }
+
+
+     private async Task SaveSubmittedImageAsync(Guid wreckMaterialId, SubmittedImageDto image)
+     {
+         if ( string.IsNullOrEmpty(image.Data) || string.IsNullOrEmpty(image.Filename) )
+         {
+             throw new Exception("Unable to create image without data or filename");
+         }
+         
+         var fileBytes = Convert.FromBase64String(image.Data);
+         using var ms = new MemoryStream(fileBytes);
+         IFormFile formFile = new FormFile(ms, 0, ms.Length, image.Filename, image.Filename);
+         
+         var imageForm = new ImageForm()
+         {
+             ImageFile = formFile,
+             WreckMaterialId = wreckMaterialId
+         };
+
+         await _imageService.SaveImageFormAsync(imageForm);
+     }
+     
+     
 }

@@ -324,7 +324,6 @@ public class DroitService : IDroitService
 
     public async Task<Droit> CreateDroitAsync(SubmittedReportDto report, Salvor salvor)
     {
-
         var droit = _mapper.Map<Droit>(report);
 
         droit.Reference = await GetNextDroitReference();

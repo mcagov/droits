@@ -3,6 +3,7 @@
 using Droits.Clients;
 using Droits.Data;
 using Droits.Exceptions;
+using Droits.Helpers;
 using Droits.Models.Entities;
 using Droits.Services;
 using Microsoft.EntityFrameworkCore;
@@ -61,13 +62,14 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
         
         
         var key = $"Droits/{image.WreckMaterial.DroitId}/WreckMaterials/{image.WreckMaterialId}/Images/{image.Id}_{imageFile.FileName}";
-      
+        
         try
         {
+            var contentType = FileHelper.GetContentType(imageFile.FileName);
             await using var stream = imageFile.OpenReadStream();
-            await _storageClient.UploadImageAsync(key,stream,imageFile.ContentType);
+            await _storageClient.UploadImageAsync(key,stream,contentType);
             image.Filename = imageFile.FileName;
-            image.FileContentType = imageFile.ContentType;
+            image.FileContentType = contentType;
             image.Key = key;
             await UpdateAsync(image);
         }

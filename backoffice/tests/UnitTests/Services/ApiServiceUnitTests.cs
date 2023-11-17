@@ -69,8 +69,7 @@ namespace Droits.Tests.UnitTests.Services
                         Quantity = "1",
                         Value = 0.10d,
                         ValueKnown = "yes",
-                        Image = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Test-Logo.svg/783px-Test-Logo.svg.png",
-                        OriginalFilename = "test.png",
+                        Image = null,
                         AddressDetails = new SubmittedAddressDetailsDto
                         {
                             AddressLine1 = "19 Test Close",
