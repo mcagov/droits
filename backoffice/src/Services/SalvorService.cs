@@ -149,16 +149,26 @@ public class SalvorService : ISalvorService
 
         return salvor;
     }
-
     private IQueryable<Salvor> QueryFromForm(SalvorSearchForm form)
     {
-        var query = _repo.GetSalvorsWithAssociations()
-            .Where(s =>
-                    EF.Functions.FuzzyStringMatchLevenshtein(form.Name.ToLower(), s.Name.ToLower()) < 5 // This allows 5 changes for the entire string, we need to find a way of 1 null checking, and 2 allow for partial matching. Maybe Levenshtein matching on each word then checking if the min distance is less than threshold. 
-                // SearchHelper.FuzzyMatches(form.Name, s.Name, 70) &&
-                // SearchHelper.Matches(form.Email, s.Email)
-            );
 
+        var query = _repo.GetSalvorsWithAssociations();
+
+        if (!string.IsNullOrEmpty(form.Name))
+        {
+            query = query.Where(s =>
+                !string.IsNullOrEmpty(s.Name) &&
+                EF.Functions.FuzzyStringMatchLevenshtein(form.Name.ToLower(), s.Name.ToLower()) < 5 ||
+                EF.Functions.ILike(s.Name, $"%{form.Name}%")
+            );
+        }
+        
+        if ( !string.IsNullOrEmpty(form.Email) )
+        {
+            query = query.Where(s => !string.IsNullOrEmpty(s.Email) &&
+                                     EF.Functions.ILike(s.Email, $"%{form.Email}%"));
+        }
+        
         return query;
     }
 
