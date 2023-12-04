@@ -260,21 +260,7 @@ public class LetterService : ILetterService
     
     public async Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form)
     {
-        var query = _repo.GetLettersWithAssociations()
-            .OrderBy(l =>
-                    l.Status == LetterStatus.ReadyForQC ? 0 :
-                    l.Status == LetterStatus.ActionRequired ? 1 :
-                    l.Status == LetterStatus.QCApproved ? 2 :
-                    l.Status == LetterStatus.Draft ? 3 :
-                    4 // Sent
-            ).ThenByDescending(l => l.Created)
-            .Where(l =>
-                SearchHelper.FuzzyMatches(form.Recipient, l.Recipient, 70) && 
-                ( form.StatusList.IsNullOrEmpty() ||
-                  form.StatusList.Contains(l.Status) ) &&
-                ( form.TypeList.IsNullOrEmpty() ||
-                  form.TypeList.Contains(l.Type) ) 
-            )
+        var query = QueryFromForm(form)
             .Select(l => new LetterView(l, true));
         
         var pagedResults =
@@ -328,14 +314,21 @@ public class LetterService : ILetterService
     private IQueryable<Letter> QueryFromForm(LetterSearchForm form)
     {
         var query = _repo.GetLettersWithAssociations()
-            .OrderByDescending(l => l.Created)
+            .OrderBy(l =>
+                    l.Status == LetterStatus.ReadyForQC ? 0 :
+                    l.Status == LetterStatus.ActionRequired ? 1 :
+                    l.Status == LetterStatus.QCApproved ? 2 :
+                    l.Status == LetterStatus.Draft ? 3 :
+                    4 // Sent
+            ).ThenByDescending(l => l.Created)
             .Where(l =>
+                SearchHelper.FuzzyMatches(form.Recipient, l.Recipient, 70) &&
                 ( form.StatusList.IsNullOrEmpty() ||
                   form.StatusList.Contains(l.Status) ) &&
                 ( form.TypeList.IsNullOrEmpty() ||
                   form.TypeList.Contains(l.Type) )
             );
-
+        
         return query;
     }
 
