@@ -12,6 +12,7 @@ using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 #endregion
@@ -313,21 +314,32 @@ public class LetterService : ILetterService
 
     private IQueryable<Letter> QueryFromForm(LetterSearchForm form)
     {
-        var query = _repo.GetLettersWithAssociations()
-            .OrderBy(l =>
-                    l.Status == LetterStatus.ReadyForQC ? 0 :
-                    l.Status == LetterStatus.ActionRequired ? 1 :
-                    l.Status == LetterStatus.QCApproved ? 2 :
-                    l.Status == LetterStatus.Draft ? 3 :
-                    4 // Sent
-            ).ThenByDescending(l => l.Created)
-            .Where(l =>
-                SearchHelper.FuzzyMatches(form.Recipient, l.Recipient, 70) &&
+        var query = _repo.GetLettersWithAssociations();
+
+        if ( !string.IsNullOrEmpty(form.Recipient) )
+        {
+            query = query.Where(l =>
+            
+                !string.IsNullOrEmpty(l.Recipient) &&
+                    EF.Functions.FuzzyStringMatchLevenshtein(form.Recipient.ToLower(),
+                        l.Recipient.ToLower()) < 5
+            );
+        }
+        
+        query = query.Where(l =>
                 ( form.StatusList.IsNullOrEmpty() ||
                   form.StatusList.Contains(l.Status) ) &&
                 ( form.TypeList.IsNullOrEmpty() ||
                   form.TypeList.Contains(l.Type) )
             );
+
+        query.OrderBy(l =>
+                l.Status == LetterStatus.ReadyForQC ? 0 :
+                l.Status == LetterStatus.ActionRequired ? 1 :
+                l.Status == LetterStatus.QCApproved ? 2 :
+                l.Status == LetterStatus.Draft ? 3 :
+                4 // Sent
+        ).ThenByDescending(l => l.Created);
         
         return query;
     }
