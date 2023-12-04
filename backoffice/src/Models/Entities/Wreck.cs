@@ -1,10 +1,14 @@
+using Droits.Models.Enums;
+
 namespace Droits.Models.Entities;
 
 public class Wreck : BaseEntity
 {
+    public string? PowerappsWreckId { get; set; }
     public string Name { get; set; } = string.Empty;
-    public string? VesselConstructionDetails { get; set; } = string.Empty;
-    public int? VesselYearConstructed { get; set; }
+    public WreckType? Type { get; set; }
+    public string? ConstructionDetails { get; set; } = string.Empty;
+    public int? YearConstructed { get; set; }
     public DateTime? DateOfLoss { get; set; }
     public bool InUkWaters { get; set; } = false;
     public bool IsWarWreck { get; set; } = false;
@@ -18,6 +22,7 @@ public class Wreck : BaseEntity
     public string? OwnerName { get; set; }
     public string? OwnerEmail { get; set; }
     public string? OwnerNumber { get; set; }
+    public string? OwnerAddress { get; set; }
 
     public string? AdditionalInformation { get; set; } = string.Empty;
 

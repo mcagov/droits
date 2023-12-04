@@ -237,8 +237,8 @@ public partial class DroitsContext : DbContext
 
             entity.Property(w => w.Id);
             entity.Property(w => w.Name);
-            entity.Property(w => w.VesselYearConstructed);
-            entity.Property(w => w.VesselConstructionDetails);
+            entity.Property(w => w.YearConstructed);
+            entity.Property(w => w.ConstructionDetails);
             entity.Property(w => w.DateOfLoss);
             entity.Property(w => w.InUkWaters);
             entity.Property(w => w.IsWarWreck);
@@ -250,11 +250,14 @@ public partial class DroitsContext : DbContext
             entity.Property(w => w.OwnerName);
             entity.Property(w => w.OwnerEmail);
             entity.Property(w => w.OwnerNumber);
+            entity.Property(w => w.OwnerAddress);
             entity.Property(w => w.AdditionalInformation);
             
             entity.Property(w => w.Created);
             entity.Property(w => w.LastModified);
             entity.Property(w => w.LastModifiedByUserId);
+            entity.Property(w => w.PowerappsWreckId);
+            entity.Property(w => w.Type);
             
             entity.HasMany(w => w.Droits)
                 .WithOne(d => d.Wreck)

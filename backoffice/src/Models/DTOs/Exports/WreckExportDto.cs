@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 
 namespace Droits.Models.DTOs.Exports
 {
@@ -11,8 +12,9 @@ namespace Droits.Models.DTOs.Exports
             Created = wreck.Created;
             LastModified = wreck.LastModified;
             Name = wreck.Name;
-            VesselConstructionDetails = wreck.VesselConstructionDetails;
-            VesselYearConstructed = wreck.VesselYearConstructed;
+            Type = wreck.Type;
+            ConstructionDetails = wreck.ConstructionDetails;
+            YearConstructed = wreck.YearConstructed;
             DateOfLoss = wreck.DateOfLoss;
             InUkWaters = wreck.InUkWaters;
             IsWarWreck = wreck.IsWarWreck;
@@ -24,6 +26,7 @@ namespace Droits.Models.DTOs.Exports
             OwnerName = wreck.OwnerName;
             OwnerEmail = wreck.OwnerEmail;
             OwnerNumber = wreck.OwnerNumber;
+            OwnerAddress = wreck.OwnerAddress;
             AdditionalInformation = wreck.AdditionalInformation;
         }
 
@@ -31,10 +34,14 @@ namespace Droits.Models.DTOs.Exports
         [DisplayName("Last Modified")]
         public DateTime? LastModified { get; set; }
         public string? Name { get; set; }
-        [DisplayName("Vessel Construction Details")]
-        public string? VesselConstructionDetails { get; set; }
-        [DisplayName("Vessel Year Constructed")]
-        public int? VesselYearConstructed { get; set; }
+        
+        [DisplayName("Wreck Type")]
+        public WreckType? Type { get; set; }
+        
+        [DisplayName("Construction Details")]
+        public string? ConstructionDetails { get; set; }
+        [DisplayName("Year Constructed")]
+        public int? YearConstructed { get; set; }
         [DisplayName("Date of Loss")]
         public DateTime? DateOfLoss { get; set; }
         [DisplayName("In Uk Waters?")]
@@ -49,13 +56,17 @@ namespace Droits.Models.DTOs.Exports
         public bool IsProtectedSite { get; set; }
         [DisplayName("Protection Legislation")]
         public string? ProtectionLegislation { get; set; }
+
+        [DisplayName("Additional Information")]
+        public string? AdditionalInformation { get; set; }
         [DisplayName("Owner Name")]
         public string? OwnerName { get; set; }
         [DisplayName("Owner Email")]
         public string? OwnerEmail { get; set; }
         [DisplayName("Owner Number")]
         public string? OwnerNumber { get; set; }
-        [DisplayName("Additional Information")]
-        public string? AdditionalInformation { get; set; }
+        [DisplayName("Owner Address")]
+        public string? OwnerAddress { get; set; }
+        
     }
 }

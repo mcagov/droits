@@ -36,18 +36,18 @@
 
 <div class="form-group row m-1">
     <div class="col-md-3">
-        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.VesselConstructionDetails)</label>
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.ConstructionDetails)</label>
     </div>
     <div class="col-md-7">
-        @Html.DisplayFor(m => m.VesselConstructionDetails)
+        @Html.DisplayFor(m => m.ConstructionDetails)
     </div>
 </div>
 <div class="form-group row m-1">
     <div class="col-md-3">
-        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.VesselYearConstructed)</label>
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.YearConstructed)</label>
     </div>
     <div class="col-md-7">
-        @Html.DisplayFor(m => m.VesselYearConstructed)
+        @Html.DisplayFor(m => m.YearConstructed)
     </div>
 </div>
 <div class="form-group row m-1">
@@ -70,7 +70,7 @@
     <div class="col-md-3">
         <label class="font-weight-bold">@Html.DisplayNameFor(m => m.IsWarWreck)</label>
     </div>
-    <div class="col-md-7">
+    <div class="col-md-7"> 
         @Html.DisplayFor(m => m.IsWarWreck)
     </div>
 </div>
@@ -114,6 +114,17 @@
         @Html.DisplayFor(m => m.ProtectionLegislation)
     </div>
 </div>
+
+<div class="form-group row m-1">
+    <div class="col-md-3">
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.AdditionalInformation)</label>
+    </div>
+    <div class="col-md-7">
+        @Html.DisplayFor(m => m.AdditionalInformation, "MultilineText")
+    </div>
+</div>
+
+<h5 class="mt-4 mx-1">Owner Details</h5>
 <div class="form-group row m-1">
     <div class="col-md-3">
         <label class="font-weight-bold">@Html.DisplayNameFor(m => m.OwnerName)</label>
@@ -138,12 +149,11 @@
         @Html.DisplayFor(m => m.OwnerNumber)
     </div>
 </div>
-
 <div class="form-group row m-1">
     <div class="col-md-3">
-        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.AdditionalInformation)</label>
+        <label class="font-weight-bold">@Html.DisplayNameFor(m => m.OwnerAddress)</label>
     </div>
     <div class="col-md-7">
-        @Html.DisplayFor(m => m.AdditionalInformation, "MultilineText")
+        @Html.DisplayFor(m => m.OwnerAddress)
     </div>
 </div>

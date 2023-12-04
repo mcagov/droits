@@ -4,6 +4,7 @@ using Amazon.S3;
 using Droits.Clients;
 using Droits.Data;
 using Droits.Data.Mappers;
+using Droits.Data.Mappers.Powerapps;
 using Droits.Middleware;
 using Droits.ModelBinders;
 using Droits.Repositories;
@@ -110,7 +111,7 @@ builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
 
 // Mappers
-builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile));
+builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile));
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();

@@ -1,5 +1,7 @@
+using AutoMapper;
 using Droits.Exceptions;
 using Droits.Models.DTOs;
+using Droits.Models.DTOs.Powerapps;
 using Droits.Models.Entities;
 
 namespace Droits.Services;
@@ -8,6 +10,7 @@ public interface IApiService
 {
 
     Task<Droit> SaveDroitReportAsync(SubmittedReportDto report);
+    Task<List<Wreck>> SaveWrecksAsync(PowerappsWrecksDto request);
 }
 
 public class ApiService : IApiService
@@ -17,15 +20,21 @@ public class ApiService : IApiService
     private readonly IWreckMaterialService _wreckMaterialService;
     private readonly ISalvorService _salvorService;
     private readonly ILetterService _letterService;
+    private readonly IWreckService _wreckService;
+    
+    private readonly IMapper _mapper;
+
 
     
-    public ApiService(ILogger<ApiService> logger,  IDroitService droitService, IWreckMaterialService wreckMaterialService, ISalvorService salvorService, ILetterService letterService)
+    public ApiService(ILogger<ApiService> logger,  IDroitService droitService, IWreckMaterialService wreckMaterialService, ISalvorService salvorService, ILetterService letterService, IWreckService wreckService, IMapper mapper)
     {
         _logger = logger;
         _droitService = droitService;
         _wreckMaterialService = wreckMaterialService;
         _salvorService = salvorService;
         _letterService = letterService;
+        _wreckService = wreckService;
+        _mapper = mapper;
     }
 
 
@@ -44,6 +53,43 @@ public class ApiService : IApiService
         await _letterService.SendSubmissionConfirmationEmailAsync(droit, report);
         
         return droit;
+    }
+
+
+    public async Task<List<Wreck>> SaveWrecksAsync(PowerappsWrecksDto wrecksRequest)
+    {
+        if ( wrecksRequest == null )
+        {
+            _logger.LogError("Request is null");
+            throw new WreckNotFoundException();
+        }
+
+        var wrecks = new List<Wreck>();
+
+        if ( wrecksRequest.Value == null ) return wrecks;
+        
+        foreach ( var powerappsWreckDto in wrecksRequest.Value )
+        {
+            var wreck = _mapper.Map<Wreck>(powerappsWreckDto);
+
+            try
+            {
+                if ( string.IsNullOrEmpty(wreck.Name) )
+                {
+                    continue;
+                }
+                wreck = await _wreckService.SaveWreckAsync(wreck);
+
+                wrecks.Add(wreck);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unable to save wreck - {wreck.PowerappsWreckId} {wreck.Name} - {ex}");
+            }
+            
+        }
+
+        return wrecks;
     }
 
 

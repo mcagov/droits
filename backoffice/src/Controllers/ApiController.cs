@@ -1,4 +1,6 @@
-﻿using Droits.Models.DTOs;
+﻿using Bogus.DataSets;
+using Droits.Models.DTOs;
+using Droits.Models.DTOs.Powerapps;
 using Droits.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,4 +50,35 @@ public class ApiController : Controller
         }
 
     }
+    
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> MigrateWrecks([FromBody] PowerappsWrecksDto request)
+    {
+
+        try
+        {
+            var savedWrecks = await _service.SaveWrecksAsync(request);
+
+            var wreckIdsList = savedWrecks.Select(w => new
+            {
+                w.Id,
+                w.PowerappsWreckId,
+                w.Name
+            }).ToList();
+
+            return Json(new
+            {
+                wrecks = wreckIdsList
+            });
+        }
+        catch ( Exception e )
+        {
+            _logger.LogError("Wrecks could not be saved" + e);
+            return NotFound();
+        }
+
+    }
+    
+    
 }

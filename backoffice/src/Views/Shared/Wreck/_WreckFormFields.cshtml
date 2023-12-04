@@ -7,14 +7,14 @@
 </div>
 
 <div class="form-group">
-    @Html.LabelFor(m => m.VesselConstructionDetails, new { @class = "col-form-label" })
-    @Html.EditorFor(m => m.VesselConstructionDetails, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(m => m.VesselConstructionDetails, "", new { @class = "text-danger" })
+    @Html.LabelFor(m => m.ConstructionDetails, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.ConstructionDetails, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.ConstructionDetails, "", new { @class = "text-danger" })
 </div>
 <div class="form-group">
-    @Html.LabelFor(m => m.VesselYearConstructed, new { @class = "col-form-label" })
-    @Html.EditorFor(m => m.VesselYearConstructed, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(m => m.VesselYearConstructed, "", new { @class = "text-danger" })
+    @Html.LabelFor(m => m.YearConstructed, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.YearConstructed, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.YearConstructed, "", new { @class = "text-danger" })
 </div>
 
 <div class="form-group">
@@ -75,6 +75,14 @@
 </datalist>
 
 <div class="form-group">
+    @Html.LabelFor(m => m.AdditionalInformation, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.AdditionalInformation, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.AdditionalInformation, "", new { @class = "text-danger" })
+</div>
+
+<h5 class="mt-4">Owner Details</h5>
+
+<div class="form-group">
     @Html.LabelFor(m => m.OwnerName, new { @class = "col-form-label" })
     @Html.EditorFor(m => m.OwnerName, new { htmlAttributes = new { @class = "form-control" } })
     @Html.ValidationMessageFor(m => m.OwnerName, "", new { @class = "text-danger" })
@@ -93,7 +101,10 @@
 </div>
 
 <div class="form-group">
-    @Html.LabelFor(m => m.AdditionalInformation, new { @class = "col-form-label" })
-    @Html.EditorFor(m => m.AdditionalInformation, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(m => m.AdditionalInformation, "", new { @class = "text-danger" })
+    @Html.LabelFor(m => m.OwnerAddress, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.OwnerAddress, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.OwnerAddress, "", new { @class = "text-danger" })
 </div>
+
+
+
