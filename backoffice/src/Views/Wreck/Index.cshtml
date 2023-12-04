@@ -47,10 +47,23 @@
                     <a asp-action="View" asp-route-id="@wreck.Id">@wreck.Name</a>
                 </td>
                 <td class="p-3">
-                    @if (wreck.InUkWaters) { <span class="badge rounded-pill bg-primary">UK Waters</span> }
-                    @if (wreck.IsWarWreck) { <span class="badge rounded-pill bg-primary">War Wreck</span> }
-                    @if (wreck.IsAnAircraft) { <span class="badge rounded-pill bg-primary">Aircraft</span> }
-                    @if (wreck.IsProtectedSite) { <span class="badge rounded-pill bg-primary">Protected</span> }
+                    @if (wreck.WreckType != null) { <span class="badge rounded-pill bg-primary">@wreck.WreckType</span> }
+                    @if (wreck.InUkWaters)
+                    {
+                        <span class="badge rounded-pill bg-primary">UK Waters</span>
+                    }
+                    @if (wreck.IsWarWreck)
+                    {
+                        <span class="badge rounded-pill bg-primary">War Wreck</span>
+                    }
+                    @if (wreck.IsAnAircraft)
+                    {
+                        <span class="badge rounded-pill bg-primary">Aircraft</span>
+                    }
+                    @if (wreck.IsProtectedSite)
+                    {
+                        <span class="badge rounded-pill bg-primary">Protected</span>
+                    }
                 </td>
                 <td class="p-3"> @wreck.OwnerName</td>
                 <td class="p-3">@wreck.Created.ToString("dd/MM/yyyy")</td>

@@ -7,6 +7,13 @@
 </div>
 
 <div class="form-group">
+    @Html.LabelFor(m => m.WreckType, new { @class = "col-form-label" })
+    @Html.DropDownListFor(m => m.WreckType, Html.GetEnumSelectList(typeof(WreckType)), "Select.....", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.WreckType, "", new { @class = "text-danger" })
+
+</div>
+
+<div class="form-group">
     @Html.LabelFor(m => m.ConstructionDetails, new { @class = "col-form-label" })
     @Html.EditorFor(m => m.ConstructionDetails, new { htmlAttributes = new { @class = "form-control" } })
     @Html.ValidationMessageFor(m => m.ConstructionDetails, "", new { @class = "text-danger" })

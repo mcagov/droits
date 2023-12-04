@@ -12,7 +12,7 @@ namespace Droits.Models.DTOs.Exports
             Created = wreck.Created;
             LastModified = wreck.LastModified;
             Name = wreck.Name;
-            Type = wreck.Type;
+            Type = wreck.WreckType;
             ConstructionDetails = wreck.ConstructionDetails;
             YearConstructed = wreck.YearConstructed;
             DateOfLoss = wreck.DateOfLoss;

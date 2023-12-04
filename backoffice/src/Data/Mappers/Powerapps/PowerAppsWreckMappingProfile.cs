@@ -14,7 +14,7 @@ namespace Droits.Data.Mappers.Powerapps
                     opt => opt.MapFrom(src => src.Crf99Mcawrecksid))
                 .ForMember(dest => dest.Name,
                     opt => opt.MapFrom(src => src.Crf99Name))
-                .ForMember(dest => dest.Type,
+                .ForMember(dest => dest.WreckType,
                     opt => opt.MapFrom(src => src.GetWreckType()))
                 .ForMember(dest => dest.Created, opt => opt.MapFrom(src => src.CreatedOn))
 

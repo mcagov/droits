@@ -257,7 +257,7 @@ public partial class DroitsContext : DbContext
             entity.Property(w => w.LastModified);
             entity.Property(w => w.LastModifiedByUserId);
             entity.Property(w => w.PowerappsWreckId);
-            entity.Property(w => w.Type);
+            entity.Property(w => w.WreckType);
             
             entity.HasMany(w => w.Droits)
                 .WithOne(d => d.Wreck)

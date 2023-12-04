@@ -6,7 +6,7 @@ public class Wreck : BaseEntity
 {
     public string? PowerappsWreckId { get; set; }
     public string Name { get; set; } = string.Empty;
-    public WreckType? Type { get; set; }
+    public WreckType? WreckType { get; set; }
     public string? ConstructionDetails { get; set; } = string.Empty;
     public int? YearConstructed { get; set; }
     public DateTime? DateOfLoss { get; set; }

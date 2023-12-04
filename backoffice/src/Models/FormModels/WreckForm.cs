@@ -3,6 +3,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 
 #endregion
 
@@ -18,7 +19,8 @@ public class WreckForm : BaseEntityForm
     public WreckForm(Wreck wreck) : base(wreck)
     {
         Name = wreck.Name;
-
+        WreckType = wreck.WreckType;
+        
         ConstructionDetails = wreck.ConstructionDetails;
         YearConstructed = wreck.YearConstructed;
 
@@ -43,7 +45,9 @@ public class WreckForm : BaseEntityForm
 
     [Required]
     public string Name { get; set; } = string.Empty;
-
+    [DisplayName("Wreck Type")]
+    public WreckType? WreckType { get; set; }
+    
     [DisplayName("Construction Details")]
     public string? ConstructionDetails { get; set; } = string.Empty;
 
@@ -101,7 +105,7 @@ public class WreckForm : BaseEntityForm
         base.ApplyChanges(wreck);
         
         wreck.Name = Name;
-
+        wreck.WreckType = WreckType;
         wreck.ConstructionDetails = ConstructionDetails;
         wreck.YearConstructed = YearConstructed;
 
@@ -114,12 +118,14 @@ public class WreckForm : BaseEntityForm
         wreck.Longitude = Longitude;
         wreck.IsProtectedSite = IsProtectedSite;
         wreck.ProtectionLegislation = ProtectionLegislation;
+        wreck.AdditionalInformation = AdditionalInformation;
+
 
         wreck.OwnerName = OwnerName;
         wreck.OwnerEmail = OwnerEmail;
         wreck.OwnerNumber = OwnerNumber;
+        wreck.OwnerAddress = OwnerAddress;
 
-        wreck.AdditionalInformation = AdditionalInformation;
 
         return wreck;
     }

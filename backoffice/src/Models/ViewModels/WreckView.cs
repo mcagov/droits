@@ -3,6 +3,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 using Droits.Models.ViewModels.ListViews;
 
 #endregion
@@ -20,7 +21,8 @@ public class WreckView : BaseEntityView
     {
         Id = wreck.Id;
         Name = wreck.Name;
-
+        WreckType = wreck.WreckType;
+        
         ConstructionDetails = wreck.ConstructionDetails;
         YearConstructed = wreck.YearConstructed;
 
@@ -50,6 +52,9 @@ public class WreckView : BaseEntityView
 
     public Guid Id { get; }
     public string Name { get; } = string.Empty;
+    
+    [DisplayName("Wreck Type")]
+    public WreckType? WreckType { get; set; }
 
     [DisplayName("Construction Details")]
     public string? ConstructionDetails { get; } = string.Empty;
