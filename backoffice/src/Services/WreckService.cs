@@ -117,12 +117,18 @@ public class WreckService : IWreckService
 
     private IQueryable<Wreck> QueryFromForm(WreckSearchForm form)
     {
-        var query = _repo.GetWrecksWithAssociations()
-            .OrderByDescending(w => w.Created)
-            .Where(w =>
-                SearchHelper.FuzzyMatches(form.Name, w.Name, 70) 
-            );
+        var query = _repo.GetWrecksWithAssociations();
 
+        if ( !string.IsNullOrEmpty(form.Name) )
+        {
+            query = query.Where(w =>
+                 !string.IsNullOrEmpty(w.Name) &&
+                 EF.Functions.FuzzyStringMatchLevenshtein(form.Name.ToLower(), w.Name.ToLower()) < 5 ||
+                 EF.Functions.ILike(w.Name, $"%{form.Name}%")
+             );
+        }
+
+        query = query.OrderByDescending(w => w.Created);
         return query;
     }
 
