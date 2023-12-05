@@ -192,88 +192,252 @@ public class DroitService : IDroitService
     
     private IQueryable<Droit> QueryFromForm(DroitSearchForm form)
     {
-        var query = _repo.GetDroitsWithAssociations()
+        var query = _repo.GetDroitsWithAssociations();
             //Droit Report Filters
-            .Where(d =>
-                SearchHelper.Matches(form.Reference, d.Reference) &&
-                SearchHelper.IsBetween(d.Created, form.CreatedFrom, form.CreatedTo) &&
-                SearchHelper.IsBetween(d.LastModified, form.LastModifiedFrom,
-                    form.LastModifiedTo) &&
+            
+            if (!string.IsNullOrEmpty(form.Reference))
+            {
+                query = query.Where(d =>
+                    !string.IsNullOrEmpty(d.Reference) &&
+                    EF.Functions.ILike(d.Reference, $"%{form.Reference}%")
+                );
+            }
+            
+            if (form.CreatedFrom != null && form.CreatedTo != null)
+            {
+                query = query.Where(d =>
+                    d.Created >= form.CreatedFrom && d.Created <= form.CreatedTo
+                );
+            }
+            
+            if (form.LastModifiedFrom != null && form.LastModifiedTo != null)
+            {
+                query = query.Where(d =>
+                    d.LastModified >= form.LastModifiedFrom && d.LastModified <= form.LastModifiedTo
+                );
+            }
+            
+            if (form.ReportedDateFrom != null && form.ReportedDateTo != null)
+            {
+                query = query.Where(d =>
+                    d.ReportedDate >= form.ReportedDateFrom && d.ReportedDate <= form.ReportedDateTo
+                );
+            }
+            
+            if (form.DateFoundFrom != null && form.DateFoundTo != null)
+            {
+                query = query.Where(d =>
+                    d.DateFound >= form.DateFoundFrom && d.DateFound <= form.DateFoundTo
+                );
+            }
+            
+            query = query.Where(d =>
+                (form.IsHazardousFind == null || d.IsHazardousFind == form.IsHazardousFind) &&
+                (form.IsDredge == null || d.IsDredge == form.IsDredge) &&
+                (form.IsIsolatedFind == null || d.WreckId == null == form.IsIsolatedFind) &&
+                (form.AssignedToUserId == null || d.AssignedToUserId == form.AssignedToUserId)
+            );
+            query = query.Where(d =>
                 ( form.StatusList.IsNullOrEmpty() ||
-                  form.StatusList.Contains(d.Status) ) &&
-                SearchHelper.IsBetween(d.ReportedDate, form.ReportedDateFrom,
-                    form.ReportedDateTo) &&
-                SearchHelper.IsBetween(d.DateFound, form.DateFoundFrom, form.DateFoundTo) &&
-                SearchHelper.Matches(form.IsHazardousFind,
-                    d.IsHazardousFind) &&
-                SearchHelper.Matches(form.IsDredge, d.IsDredge) &&
-                SearchHelper.Matches(form.AssignedToUserId, d.AssignedToUserId))
+                  form.StatusList.Contains(d.Status) ));
             //Wreck Filters
-            .Where(d =>
-                ( !form.WreckName.HasValue() ||
-                  ( d.Wreck != null &&
-                    d.Wreck.Name.HasValue() &&
-                    SearchHelper.Matches(form.WreckName, d.Wreck.Name) ) ) &&
-                SearchHelper.Matches(form.IsIsolatedFind, d.WreckId == null)
-            )
+            
+            if (!string.IsNullOrEmpty(form.WreckName))
+            {
+                query = query.Where(d =>
+                    d.Wreck != null &&
+                    !string.IsNullOrEmpty(d.Wreck.Name) &&
+                    EF.Functions.ILike(d.Wreck.Name, $"%{form.WreckName}%")
+                );
+            }
+
+            query = query.Where(d =>
+                !form.WreckName.HasValue() ||
+                d.Wreck != null &&
+                d.Wreck.Name.HasValue()
+            );
             //Salvor Filters
-            .Where(d =>
+            
+            if (!string.IsNullOrEmpty(form.SalvorName))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null &&
+                    !string.IsNullOrEmpty(d.Salvor.Name) &&
+                    EF.Functions.ILike(d.Salvor.Name, $"%{form.SalvorName}%")
+                );
+            }
+
+            query = query.Where(d =>
                 !form.SalvorName.HasValue() ||
                 ( d.Salvor != null &&
-                  d.Salvor.Name.HasValue() &&
-                  SearchHelper.Matches(form.SalvorName, d.Salvor.Name) )
-            )
+                  d.Salvor.Name.HasValue() ));
             //Location Filters
-            .Where(d =>
-                // long and lat to use location radius in calculation (method on droit data)
-                SearchHelper.IsBetween(d.Latitude, form.LatitudeFrom, form.LatitudeTo) &&
-                SearchHelper.IsBetween(d.Longitude, form.LongitudeFrom, form.LongitudeTo) &&
-                SearchHelper.IsBetween(d.Depth, form.DepthFrom, form.DepthTo) &&
-                SearchHelper.Matches(form.InUkWaters, d.InUkWaters) &&
-                ( form.RecoveredFromList.IsNullOrEmpty() ||
-                  ( d.RecoveredFrom.HasValue &&
-                    form.RecoveredFromList.Contains(d.RecoveredFrom.Value) ) ) &&
-                SearchHelper.Matches(form.LocationDescription, d.LocationDescription)
-            )
-            //Wreck Material Filters
-            .Where(d =>
-                form.IgnoreWreckMaterialSearch ||
-                d.WreckMaterials.Any(wm =>
-                    SearchHelper.Matches(form.WreckMaterial, $"{wm.Name} {wm.Description}")) &&
-                d.WreckMaterials.Any(wm =>
-                    SearchHelper.Matches(form.WreckMaterialOwner, wm.WreckMaterialOwner)) &&
-                d.WreckMaterials.Any(wm =>
-                    SearchHelper.Matches(form.ValueConfirmed, wm.ValueConfirmed)) &&
-                d.WreckMaterials.Any(wm =>
-                    SearchHelper.IsBetween(wm.Quantity, form.QuantityFrom, form.QuantityTo)) &&
-                d.WreckMaterials.Any(wm =>
-                    SearchHelper.IsBetween(wm.Value, form.ValueFrom, form.ValueTo)) &&
-                d.WreckMaterials.Any(wm => SearchHelper.IsBetween(wm.ReceiverValuation,
-                    form.ReceiverValuationFrom,
-                    form.ReceiverValuationTo))
+            
+            if (form.LatitudeFrom != null && form.LatitudeTo != null)
+            {
+                query = query.Where(d =>
+                    d.Latitude >= form.LatitudeFrom && d.Latitude <= form.LatitudeTo
+                );
+            }
+            if (form.LongitudeFrom != null && form.LongitudeTo != null)
+            {
+                query = query.Where(d =>
+                    d.Longitude >= form.LongitudeFrom && d.Longitude <= form.LongitudeTo
+                );
+            }
+            if (form.DepthFrom != null && form.DepthTo != null)
+            {
+                query = query.Where(d =>
+                    d.Depth >= form.DepthFrom && d.Depth <= form.DepthTo
+                );
+            }
+            
+            if (!string.IsNullOrEmpty(form.LocationDescription))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null &&
+                    !string.IsNullOrEmpty(d.LocationDescription) &&
+                    EF.Functions.ILike(d.LocationDescription, $"%{form.LocationDescription}%")
+                );
+            }
 
-            )
+
+            query = query.Where(
+                    d => // long and lat to use location radius in calculation (method on droit data)
+                        ( form.InUkWaters == null || d.InUkWaters == form.InUkWaters ) &&
+                        ( form.RecoveredFromList.IsNullOrEmpty() ||
+                          ( d.RecoveredFrom.HasValue &&
+                            form.RecoveredFromList.Contains(d.RecoveredFrom.Value) ) )
+                )
+                //Wreck Material Filters
+                .Where(d =>
+                    form.IgnoreWreckMaterialSearch ||
+                    d.WreckMaterials.Any(wm =>
+                        form.WreckMaterial != null &&
+                        !string.IsNullOrEmpty($"{wm.Name} {wm.Description}") &&
+                        ( EF.Functions.ILike(wm.Name, $"%{form.WreckMaterial}%") ||
+                          EF.Functions.ILike(wm.Description, $"%{form.WreckMaterial}%") )) &&
+                    d.WreckMaterials.Any(wm =>
+                        form.WreckMaterialOwner != null &&
+                        !string.IsNullOrEmpty(wm.WreckMaterialOwner) &&
+                        EF.Functions.ILike(wm.WreckMaterialOwner,
+                            $"%{form.WreckMaterialOwner}%")) &&
+                    d.WreckMaterials.Any(wm =>
+                        form.ValueConfirmed == null || wm.ValueConfirmed == form.ValueConfirmed) &&
+                    // the "in between" values here may need to be pull put to an if statement using the first conditional
+                    d.WreckMaterials.Any(wm =>
+                        ( form.QuantityFrom != null && form.QuantityTo != null ) &&
+                        wm.Quantity >= form.QuantityFrom && wm.Quantity <= form.QuantityTo) &&
+                    d.WreckMaterials.Any(wm =>
+                        ( form.ValueFrom != null && form.ValueTo != null ) &&
+                        wm.Value >= form.ValueFrom && wm.Value <= form.ValueTo) &&
+                    d.WreckMaterials.Any(wm =>
+                        ( form.ReceiverValuationFrom != null &&
+                          form.ReceiverValuationTo != null ) &&
+                        wm.ReceiverValuation >= form.ReceiverValuationFrom &&
+                        wm.ReceiverValuation <= form.ReceiverValuationTo)
+                );
             //Salvage Filters
-            .Where(d =>
-                SearchHelper.Matches(form.SalvageAwardClaimed, d.SalvageAwardClaimed) &&
-                SearchHelper.Matches(form.ServicesDescription, d.ServicesDescription) &&
-                SearchHelper.Matches(form.ServicesDuration, d.ServicesDuration) &&
-                SearchHelper.IsBetween(d.ServicesEstimatedCost, form.ServicesEstimatedCostFrom,
-                    form.ServicesEstimatedCostTo) &&
-                SearchHelper.Matches(form.MMOLicenceRequired, d.MMOLicenceRequired) &&
-                SearchHelper.Matches(form.MMOLicenceProvided, d.MMOLicenceProvided) &&
-                SearchHelper.IsBetween(d.SalvageClaimAwarded, form.SalvageClaimAwardedFrom,
-                    form.SalvageClaimAwardedTo)
-            )
+            
+            if (!string.IsNullOrEmpty(form.ServicesDescription))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null &&
+                    !string.IsNullOrEmpty(d.ServicesDescription) &&
+                    EF.Functions.ILike(d.ServicesDescription, $"%{form.ServicesDescription}%")
+                );
+            }
+            
+            if (!string.IsNullOrEmpty(form.ServicesDuration))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null &&
+                    !string.IsNullOrEmpty(d.ServicesDuration) &&
+                    EF.Functions.ILike(d.ServicesDuration, $"%{form.ServicesDuration}%")
+                );
+            }
+            
+            if (form.ServicesEstimatedCostFrom != null && form.ServicesEstimatedCostTo != null)
+            {
+                query = query.Where(d =>
+                    d.ServicesEstimatedCost >= form.ServicesEstimatedCostFrom && d.ServicesEstimatedCost <= form.ServicesEstimatedCostTo
+                );
+            }
+            
+            if (form.SalvageClaimAwardedFrom != null && form.SalvageClaimAwardedTo != null)
+            {
+                query = query.Where(d =>
+                    d.SalvageClaimAwarded >= form.SalvageClaimAwardedFrom && d.SalvageClaimAwarded <= form.SalvageClaimAwardedTo
+                );
+            }
+
+            query = query.Where(d =>
+                ( form.SalvageAwardClaimed == null ||
+                  d.SalvageAwardClaimed == form.SalvageAwardClaimed ) &&
+                ( form.MMOLicenceRequired == null ||
+                  d.MMOLicenceRequired == form.MMOLicenceRequired ) &&
+                ( form.MMOLicenceProvided == null ||
+                  d.MMOLicenceProvided == form.MMOLicenceProvided )
+            );
             //Legacy Filters
-            .Where(d =>
-                SearchHelper.Matches(form.District, d.District) &&
-                SearchHelper.Matches(form.LegacyFileReference, d.LegacyFileReference) &&
-                SearchHelper.Matches(form.GoodsDischargedBy, d.GoodsDischargedBy) &&
-                SearchHelper.Matches(form.DateDelivered, d.DateDelivered) &&
-                SearchHelper.Matches(form.Agent, d.Agent) &&
-                SearchHelper.Matches(form.RecoveredFromLegacy, d.RecoveredFromLegacy) &&
-                SearchHelper.Matches(form.ImportedFromLegacy, d.ImportedFromLegacy));
+            
+            if (!string.IsNullOrEmpty(form.District))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null &&
+                    !string.IsNullOrEmpty(d.District) &&
+                    EF.Functions.ILike(d.District, $"%{form.District}%")
+                );
+            }
+            
+            if (!string.IsNullOrEmpty(form.LegacyFileReference))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null &&
+                    !string.IsNullOrEmpty(d.LegacyFileReference) &&
+                    EF.Functions.ILike(d.LegacyFileReference, $"%{form.LegacyFileReference}%")
+                );
+            }
+            
+            if (!string.IsNullOrEmpty(form.GoodsDischargedBy))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null &&
+                    !string.IsNullOrEmpty(d.GoodsDischargedBy) &&
+                    EF.Functions.ILike(d.GoodsDischargedBy, $"%{form.GoodsDischargedBy}%")
+                );
+            }
+            
+            if (!string.IsNullOrEmpty(form.DateDelivered))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null &&
+                    !string.IsNullOrEmpty(d.DateDelivered) &&
+                    EF.Functions.ILike(d.DateDelivered, $"%{form.DateDelivered}%")
+                );
+            }
+            
+            if (!string.IsNullOrEmpty(form.Agent))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null &&
+                    !string.IsNullOrEmpty(d.Agent) &&
+                    EF.Functions.ILike(d.Agent, $"%{form.Agent}%")
+                );
+            }
+            
+            if (!string.IsNullOrEmpty(form.RecoveredFromLegacy))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null &&
+                    !string.IsNullOrEmpty(d.RecoveredFromLegacy) &&
+                    EF.Functions.ILike(d.RecoveredFromLegacy, $"%{form.RecoveredFromLegacy}%")
+                );
+            }
+            
+            query = query.Where(d =>
+                (form.ImportedFromLegacy == null || d.ImportedFromLegacy == form.ImportedFromLegacy) 
+            );
         
         return query;
     }
