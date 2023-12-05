@@ -29,6 +29,7 @@ namespace Droits.Models.DTOs.Exports
             AssignedTo = droit.AssignedToUser?.Name ?? "Unassigned";
 
             Status = droit.Status.GetDisplayName();
+            TriageNumber = droit.TriageNumber;
         }
 
         public Guid? Id { get; set; }
@@ -43,5 +44,8 @@ namespace Droits.Models.DTOs.Exports
         [DisplayName("Assigned To")]
         public string? AssignedTo { get; set; }
         public string? Status { get; set; }
+        
+        [DisplayName("Triage Number")]
+        public int? TriageNumber { get; set; }
     }
 }

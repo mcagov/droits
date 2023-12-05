@@ -16,6 +16,8 @@ public class Droit : BaseEntity
     
     public string Reference { get; set; } = string.Empty;
     public DroitStatus Status { get; set; } = DroitStatus.Received;
+    
+    public int? TriageNumber { get; set; }
     public DateTime ReportedDate { get; set; } = DateTime.UtcNow;
     public DateTime DateFound { get; set; } = DateTime.UtcNow;
 

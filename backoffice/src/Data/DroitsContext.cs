@@ -93,6 +93,7 @@ public partial class DroitsContext : DbContext
             entity.Property(d => d.Id);
             entity.Property(d => d.AssignedToUserId);
             entity.Property(d => d.Status);
+            entity.Property(d => d.TriageNumber);
             entity.Property(d => d.ReportedDate);
             entity.Property(d => d.DateFound);
             entity.Property(d => d.OriginalSubmission);

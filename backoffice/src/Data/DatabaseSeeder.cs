@@ -145,6 +145,7 @@ public static class DatabaseSeeder
             Status = Enum.GetValues(typeof(DroitStatus))
                 .OfType<DroitStatus>()
                 .MinBy(x => Guid.NewGuid()),
+            TriageNumber = Faker.Random.Int(1, 5).OrNull(Faker, 0.3f),
             ReportedDate = reportedDate,
             OriginalSubmission = GenerateOriginalSubmission(),
             DateFound = Faker.Date.Past(2, reportedDate),

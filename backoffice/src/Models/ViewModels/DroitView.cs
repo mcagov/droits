@@ -21,6 +21,7 @@ public class DroitView : BaseEntityView
     {
         Id = droit.Id;
         Status = droit.Status;
+        TriageNumber = droit.TriageNumber;
         ReportedDate = droit.ReportedDate;
         DateFound = droit.DateFound;
 
@@ -112,6 +113,9 @@ public class DroitView : BaseEntityView
     public string? Reference { get; } // This is the current reference.
 
     public DroitStatus Status { get; } = DroitStatus.Received;
+    
+    [DisplayName("Triage Number")]
+    public int? TriageNumber { get; set; }
     
     [DisplayName("Reported Date")]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]

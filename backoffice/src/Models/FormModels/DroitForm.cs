@@ -24,6 +24,7 @@ public class DroitForm : BaseEntityForm
         SalvorId = droit.SalvorId;
 
         Status = droit.Status;
+        TriageNumber = droit.TriageNumber;
         ReportedDate = droit.ReportedDate;
         DateFound = droit.DateFound;
 
@@ -73,6 +74,8 @@ public class DroitForm : BaseEntityForm
     }
 
 
+
+
     // Base fields...
     public WreckForm WreckForm { get; set; } = new();
 
@@ -87,6 +90,9 @@ public class DroitForm : BaseEntityForm
 
     public DroitStatus Status { get; set; } = DroitStatus.Received;
     
+    [DisplayName("Triage Number")]
+    public int? TriageNumber { get; set; }
+
     [DisplayName("Assigned To")]
     public Guid? AssignedToUserId { get; set; }
     
@@ -195,6 +201,7 @@ public class DroitForm : BaseEntityForm
         droit.WreckId = IsIsolatedFind ? default : WreckId;
         droit.SalvorId = SalvorId;
         droit.Status = Status;
+        droit.TriageNumber = TriageNumber;
         droit.RecoveredFrom = RecoveredFrom;
         droit.ReportedDate = ReportedDate;
         droit.DateFound = DateFound;
