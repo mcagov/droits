@@ -312,10 +312,14 @@ public partial class DroitsContext : DbContext
             entity.ToTable("salvors");
 
             entity.Property(s => s.Id);
+            entity.Property(s => s.PowerappsContactId);
+
             entity.Property(s => s.Email).IsRequired();
             
             entity.Property(s => s.Name);
             entity.Property(s => s.TelephoneNumber);
+            entity.Property(s => s.MobileNumber);
+
 
             entity.Property(s => s.Created);
             entity.Property(s => s.LastModified);
