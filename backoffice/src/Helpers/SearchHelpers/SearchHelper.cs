@@ -1,7 +1,8 @@
 #region
 
 using Droits.Helpers.Extensions;
-using FuzzySharp;
+using FuzzyString;
+
 
 #endregion
 
@@ -15,22 +16,9 @@ public static class SearchHelper
         value != null  && value.ToLower().Contains(term.ToLower()) );
     }
     
-    public static bool FuzzyMatches(string? term, string? value, int threshold = 70)
+    public static int GetLevenshteinDistance(string term, string value)
     {
-        if ( string.IsNullOrEmpty(term) )
-        {
-            return true;
-        }
-
-        if ( string.IsNullOrEmpty(value) )
-        {
-            return false;
-        }
-        
-        var ratio = Fuzz.PartialRatio(term.ToLower(), value.ToLower());
-        
-        // Console.WriteLine($"{term.ToLower()} // {value.ToLower()} // {ratio}");
-        return ratio >= threshold;
+                return term.LevenshteinDistance(value);
     }
     
     public static bool Matches(bool? term, bool? value)

@@ -3,6 +3,7 @@
 using Droits.Clients;
 using Droits.Exceptions;
 using Droits.Helpers;
+using Droits.Helpers.SearchHelpers;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
@@ -316,32 +317,7 @@ public class LetterService : ILetterService
     {
         var query = _repo.GetLettersWithAssociations();
 
-        if ( !string.IsNullOrEmpty(form.Recipient) )
-        {
-            query = query.Where(l =>
-            
-                !string.IsNullOrEmpty(l.Recipient) &&
-                    EF.Functions.FuzzyStringMatchLevenshtein(form.Recipient.ToLower(),
-                        l.Recipient.ToLower()) < 5
-            );
-        }
-        
-        query = query.Where(l =>
-                ( form.StatusList.IsNullOrEmpty() ||
-                  form.StatusList.Contains(l.Status) ) &&
-                ( form.TypeList.IsNullOrEmpty() ||
-                  form.TypeList.Contains(l.Type) )
-            );
-
-        query.OrderBy(l =>
-                l.Status == LetterStatus.ReadyForQC ? 0 :
-                l.Status == LetterStatus.ActionRequired ? 1 :
-                l.Status == LetterStatus.QCApproved ? 2 :
-                l.Status == LetterStatus.Draft ? 3 :
-                4 // Sent
-        ).ThenByDescending(l => l.Created);
-        
-        return query;
+        return LetterQueryBuilder.BuildQuery(form, query);
     }
 
 

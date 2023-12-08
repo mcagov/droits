@@ -5,6 +5,7 @@ using AutoMapper;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Helpers.Extensions;
+using Droits.Helpers.SearchHelpers;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
@@ -154,22 +155,7 @@ public class SalvorService : ISalvorService
 
         var query = _repo.GetSalvorsWithAssociations();
 
-        if (!string.IsNullOrEmpty(form.Name))
-        {
-            query = query.Where(s =>
-                !string.IsNullOrEmpty(s.Name) &&
-                EF.Functions.FuzzyStringMatchLevenshtein(form.Name.ToLower(), s.Name.ToLower()) < 5 ||
-                EF.Functions.ILike(s.Name, $"%{form.Name}%")
-            );
-        }
-        
-        if ( !string.IsNullOrEmpty(form.Email) )
-        {
-            query = query.Where(s => !string.IsNullOrEmpty(s.Email) &&
-                                     EF.Functions.ILike(s.Email, $"%{form.Email}%"));
-        }
-        
-        return query;
+        return SalvorQueryBuilder.BuildQuery(form,query);
     }
 
 
