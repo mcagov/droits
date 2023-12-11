@@ -299,6 +299,52 @@ public class DroitQueryBuilderUnitTests
         Assert.False(result.Any(d => d.Reference == "OnlyPartiallyMatchingDroit"));
     }
     
+     [Fact]
+    public void BuildQuery_WithLocationSearchFieldsWhereSomeFieldsAreNull_ReturnsFilteredQuery()
+    {
+        // Arrange
+        var form = new DroitSearchForm { LatitudeFrom = 40, LongitudeTo = 60, DepthFrom = 100,
+            LocationDescription = "Test"};
+        var droits = new List<Droit>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "MatchingDroit",
+                Latitude = 50, Longitude = 50,
+                Depth = 150, LocationDescription = "Test"
+            },
+            new() {
+                Id = Guid.NewGuid(), Reference = "AnotherMatchingDroit",
+                Latitude = 40, Longitude = 60,
+                Depth = 100, LocationDescription = "AnotherTest"
+            },
+            new() {
+                Id = Guid.NewGuid(), Reference = "OnlyPartiallyMatchingDroit",
+                Latitude = 20, Longitude = 50,
+                Depth = 50, LocationDescription = "OnlyPartiallyMatching"
+            },
+            new() {
+                Id = Guid.NewGuid(), Reference = "NotMatchingDroit",
+                Latitude = 0, Longitude = 100,
+                Depth = 0, LocationDescription = "NotMatching"
+            },
+            new() {
+                Id = Guid.NewGuid(), Reference = "OnlyMatchingDescriptionDroit",
+                Latitude = 0, Longitude = 100,
+                Depth = 0, LocationDescription = "Test"
+            },
+        }.AsQueryable();
+    
+        // Act
+        var result = DroitQueryBuilder.BuildQuery(form, droits, false);
+    
+        // Assert
+        Assert.Equal(2, result.Count()); 
+        Assert.True(result.Any(d => d.Reference == "MatchingDroit"));
+        Assert.True(result.Any(d => d.Reference == "AnotherMatchingDroit"));
+        Assert.False(result.Any(d => d.Reference == "OnlyPartiallyMatchingDroit"));
+    }
+    
     [Fact]
     public void BuildQuery_WithOtherLocationSearchFields_ReturnsFilteredQuery()
     {
@@ -343,6 +389,89 @@ public class DroitQueryBuilderUnitTests
             ValueConfirmed = false};
         var anotherMatchingWreckMaterial = new WreckMaterial() { Description = "Test with extra", WreckMaterialOwner = "Same Owner", 
             ValueConfirmed = true};
+        var droits = new List<Droit>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "MatchingDroit",
+                WreckMaterials = new List<WreckMaterial>() {matchingWreckMaterial}
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "AnotherMatchingDroit",
+                WreckMaterials = new List<WreckMaterial>() {anotherMatchingWreckMaterial}
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "NotMatchingDroit",
+                WreckMaterials = new List<WreckMaterial>() {notMatchingWreckMaterial}
+            },
+        }.AsQueryable();
+    
+        // Act
+        var result = DroitQueryBuilder.BuildQuery(form, droits, false);
+    
+        // Assert
+        Assert.Equal(2, result.Count()); 
+        Assert.True(result.Any(d => d.Reference == "MatchingDroit"));
+        Assert.True(result.Any(d => d.Reference == "AnotherMatchingDroit"));
+        Assert.False(result.Any(d => d.Reference == "NotMatchingDroit"));
+    }
+    
+    [Fact]
+    public void BuildQuery_WithWreckMaterialDateSearchFields_ReturnsFilteredQuery()
+    {
+        // Arrange
+        var form = new DroitSearchForm
+        {
+            QuantityFrom = 2,QuantityTo = 5,
+            ValueFrom = 100,ValueTo = 1000,
+            ReceiverValuationFrom = 200,ReceiverValuationTo = 800
+        };
+        var matchingWreckMaterial = new WreckMaterial() { Quantity = 4, Value = 300, ReceiverValuation = 325};
+        var notMatchingWreckMaterial = new WreckMaterial() { Quantity = 10, Value = 300, ReceiverValuation = 325};
+        var anotherMatchingWreckMaterial = new WreckMaterial() { Quantity = 2, Value = 100, ReceiverValuation = 325};
+        var droits = new List<Droit>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "MatchingDroit",
+                WreckMaterials = new List<WreckMaterial>() {matchingWreckMaterial}
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "AnotherMatchingDroit",
+                WreckMaterials = new List<WreckMaterial>() {anotherMatchingWreckMaterial}
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "NotMatchingDroit",
+                WreckMaterials = new List<WreckMaterial>() {notMatchingWreckMaterial}
+            },
+        }.AsQueryable();
+    
+        // Act
+        var result = DroitQueryBuilder.BuildQuery(form, droits, false);
+    
+        // Assert
+        Assert.Equal(2, result.Count()); 
+        Assert.True(result.Any(d => d.Reference == "MatchingDroit"));
+        Assert.True(result.Any(d => d.Reference == "AnotherMatchingDroit"));
+        Assert.False(result.Any(d => d.Reference == "NotMatchingDroit"));
+    }
+    
+    [Fact]
+    public void BuildQuery_WithWreckMaterialDateSearchFieldsWhereSomeAreNull_ReturnsFilteredQuery()
+    {
+        // Arrange
+        var form = new DroitSearchForm
+        {
+            QuantityFrom = 2, ValueTo = 1000,
+            ReceiverValuationFrom = 200
+        };
+        var matchingWreckMaterial = new WreckMaterial() { Quantity = 4, Value = 300, ReceiverValuation = 325};
+        var notMatchingWreckMaterial = new WreckMaterial() { Quantity = 10, Value = 300, ReceiverValuation = 100};
+        var anotherMatchingWreckMaterial = new WreckMaterial() { Quantity = 2, Value = 100, ReceiverValuation = 325};
         var droits = new List<Droit>
         {
             new()
