@@ -240,108 +240,132 @@ public static class DroitQueryBuilder
                     d.WreckMaterials.Any(wm =>
                         wm.ReceiverValuation <= form.ReceiverValuationTo));
             }
-            // //Salvage Filters
-            //
-            // if (!string.IsNullOrEmpty(form.ServicesDescription))
-            // {
-            //     query = query.Where(d =>
-            //         d.Salvor != null &&
-            //         !string.IsNullOrEmpty(d.ServicesDescription) &&
-            //         EF.Functions.ILike(d.ServicesDescription, $"%{form.ServicesDescription}%")
-            //     );
-            // }
-            //
-            // if (!string.IsNullOrEmpty(form.ServicesDuration))
-            // {
-            //     query = query.Where(d =>
-            //         d.Salvor != null &&
-            //         !string.IsNullOrEmpty(d.ServicesDuration) &&
-            //         EF.Functions.ILike(d.ServicesDuration, $"%{form.ServicesDuration}%")
-            //     );
-            // }
-            //
-            // if (form.ServicesEstimatedCostFrom != null && form.ServicesEstimatedCostTo != null)
-            // {
-            //     query = query.Where(d =>
-            //         d.ServicesEstimatedCost >= form.ServicesEstimatedCostFrom && d.ServicesEstimatedCost <= form.ServicesEstimatedCostTo
-            //     );
-            // }
-            //
-            // if (form.SalvageClaimAwardedFrom != null && form.SalvageClaimAwardedTo != null)
-            // {
-            //     query = query.Where(d =>
-            //         d.SalvageClaimAwarded >= form.SalvageClaimAwardedFrom && d.SalvageClaimAwarded <= form.SalvageClaimAwardedTo
-            //     );
-            // }
-            //
-            // query = query.Where(d =>
-            //     ( form.SalvageAwardClaimed == null ||
-            //       d.SalvageAwardClaimed == form.SalvageAwardClaimed ) &&
-            //     ( form.MMOLicenceRequired == null ||
-            //       d.MMOLicenceRequired == form.MMOLicenceRequired ) &&
-            //     ( form.MMOLicenceProvided == null ||
-            //       d.MMOLicenceProvided == form.MMOLicenceProvided )
-            // );
-            // //Legacy Filters
-            //
-            // if (!string.IsNullOrEmpty(form.District))
-            // {
-            //     query = query.Where(d =>
-            //         d.Salvor != null &&
-            //         !string.IsNullOrEmpty(d.District) &&
-            //         EF.Functions.ILike(d.District, $"%{form.District}%")
-            //     );
-            // }
-            //
-            // if (!string.IsNullOrEmpty(form.LegacyFileReference))
-            // {
-            //     query = query.Where(d =>
-            //         d.Salvor != null &&
-            //         !string.IsNullOrEmpty(d.LegacyFileReference) &&
-            //         EF.Functions.ILike(d.LegacyFileReference, $"%{form.LegacyFileReference}%")
-            //     );
-            // }
-            //
-            // if (!string.IsNullOrEmpty(form.GoodsDischargedBy))
-            // {
-            //     query = query.Where(d =>
-            //         d.Salvor != null &&
-            //         !string.IsNullOrEmpty(d.GoodsDischargedBy) &&
-            //         EF.Functions.ILike(d.GoodsDischargedBy, $"%{form.GoodsDischargedBy}%")
-            //     );
-            // }
-            //
-            // if (!string.IsNullOrEmpty(form.DateDelivered))
-            // {
-            //     query = query.Where(d =>
-            //         d.Salvor != null &&
-            //         !string.IsNullOrEmpty(d.DateDelivered) &&
-            //         EF.Functions.ILike(d.DateDelivered, $"%{form.DateDelivered}%")
-            //     );
-            // }
-            //
-            // if (!string.IsNullOrEmpty(form.Agent))
-            // {
-            //     query = query.Where(d =>
-            //         d.Salvor != null &&
-            //         !string.IsNullOrEmpty(d.Agent) &&
-            //         EF.Functions.ILike(d.Agent, $"%{form.Agent}%")
-            //     );
-            // }
-            //
-            // if (!string.IsNullOrEmpty(form.RecoveredFromLegacy))
-            // {
-            //     query = query.Where(d =>
-            //         d.Salvor != null &&
-            //         !string.IsNullOrEmpty(d.RecoveredFromLegacy) &&
-            //         EF.Functions.ILike(d.RecoveredFromLegacy, $"%{form.RecoveredFromLegacy}%")
-            //     );
-            // }
-            //
-            // query = query.Where(d =>
-            //     (form.ImportedFromLegacy == null || d.ImportedFromLegacy == form.ImportedFromLegacy) 
-            // );
-            //
+            //Salvage Filters
+            
+            if (!string.IsNullOrEmpty(form.ServicesDescription))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null && d.ServicesDescription != null && 
+                    (!string.IsNullOrEmpty(d.ServicesDescription) &&
+                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.ServicesDescription.ToLower(), d.ServicesDescription.ToLower()) :
+                         SearchHelper.GetLevenshteinDistance(form.ServicesDescription.ToLower(), d.ServicesDescription.ToLower())) < MaxLevenshteinDistance ||
+                     d.ServicesDescription.ToLower().Contains(form.ServicesDescription.ToLower()))
+                );
+            }
+            
+            if (!string.IsNullOrEmpty(form.ServicesDuration))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null && d.ServicesDuration != null && 
+                    (!string.IsNullOrEmpty(d.ServicesDuration) &&
+                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.ServicesDuration.ToLower(), d.ServicesDuration.ToLower()) :
+                         SearchHelper.GetLevenshteinDistance(form.ServicesDuration.ToLower(), d.ServicesDuration.ToLower())) < MaxLevenshteinDistance ||
+                     d.ServicesDuration.ToLower().Contains(form.ServicesDuration.ToLower()))
+                );
+            }
+            
+            if (form.ServicesEstimatedCostFrom != null )
+            {
+                query = query.Where(d =>
+                    d.ServicesEstimatedCost >= form.ServicesEstimatedCostFrom
+                );
+            }
+            
+            if (form.ServicesEstimatedCostTo != null )
+            {
+                query = query.Where(d =>
+                    d.ServicesEstimatedCost <= form.ServicesEstimatedCostTo
+                );
+            }
+            
+            if (form.SalvageClaimAwardedFrom != null )
+            {
+                query = query.Where(d =>
+                    d.SalvageClaimAwarded >= form.SalvageClaimAwardedFrom
+                );
+            }
+            
+            if (form.SalvageClaimAwardedTo != null )
+            {
+                query = query.Where(d =>
+                    d.SalvageClaimAwarded <= form.SalvageClaimAwardedTo
+                );
+            }
+            
+            query = query.Where(d =>
+                ( form.SalvageAwardClaimed == null ||
+                  d.SalvageAwardClaimed == form.SalvageAwardClaimed ) &&
+                ( form.MMOLicenceRequired == null ||
+                  d.MMOLicenceRequired == form.MMOLicenceRequired ) &&
+                ( form.MMOLicenceProvided == null ||
+                  d.MMOLicenceProvided == form.MMOLicenceProvided )
+            );
+            //Legacy Filters
+            
+            if (!string.IsNullOrEmpty(form.District))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null && !string.IsNullOrEmpty(d.District) &&
+                    (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.District.ToLower(), d.District.ToLower()) :
+                        SearchHelper.GetLevenshteinDistance(form.District.ToLower(), d.District.ToLower())) < MaxLevenshteinDistance ||
+                    d.District.ToLower().Contains(form.District.ToLower())
+                );
+            }
+            
+            if (!string.IsNullOrEmpty(form.LegacyFileReference))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null && !string.IsNullOrEmpty(d.LegacyFileReference) &&
+                    (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.LegacyFileReference.ToLower(), d.LegacyFileReference.ToLower()) :
+                        SearchHelper.GetLevenshteinDistance(form.LegacyFileReference.ToLower(), d.LegacyFileReference.ToLower())) < MaxLevenshteinDistance ||
+                    d.LegacyFileReference.ToLower().Contains(form.LegacyFileReference.ToLower())
+                );
+            }
+            
+            if (!string.IsNullOrEmpty(form.GoodsDischargedBy))
+            {
+                query = query.Where(d =>
+                   d.Salvor != null && !string.IsNullOrEmpty(d.GoodsDischargedBy) &&
+                    (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.GoodsDischargedBy.ToLower(), d.GoodsDischargedBy.ToLower()) :
+                        SearchHelper.GetLevenshteinDistance(form.GoodsDischargedBy.ToLower(), d.GoodsDischargedBy.ToLower())) < MaxLevenshteinDistance ||
+                    d.GoodsDischargedBy.ToLower().Contains(form.GoodsDischargedBy.ToLower())
+                );
+            }
+            
+            if (!string.IsNullOrEmpty(form.DateDelivered))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null && !string.IsNullOrEmpty(d.DateDelivered) &&
+                    (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.DateDelivered.ToLower(), d.DateDelivered.ToLower()) :
+                        SearchHelper.GetLevenshteinDistance(form.DateDelivered.ToLower(), d.DateDelivered.ToLower())) < MaxLevenshteinDistance ||
+                    d.DateDelivered.ToLower().Contains(form.DateDelivered.ToLower())
+                );
+            }
+            
+            if (!string.IsNullOrEmpty(form.Agent))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null && !string.IsNullOrEmpty(d.Agent) &&
+                    (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.Agent.ToLower(), d.Agent.ToLower()) :
+                        SearchHelper.GetLevenshteinDistance(form.Agent.ToLower(), d.Agent.ToLower())) < MaxLevenshteinDistance ||
+                    d.Agent.ToLower().Contains(form.Agent.ToLower())
+                );
+            }
+            
+            if (!string.IsNullOrEmpty(form.RecoveredFromLegacy))
+            {
+                query = query.Where(d =>
+                    d.Salvor != null && !string.IsNullOrEmpty(d.RecoveredFromLegacy) &&
+                    (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.RecoveredFromLegacy.ToLower(), d.RecoveredFromLegacy.ToLower()) :
+                        SearchHelper.GetLevenshteinDistance(form.RecoveredFromLegacy.ToLower(), d.RecoveredFromLegacy.ToLower())) < MaxLevenshteinDistance ||
+                    d.RecoveredFromLegacy.ToLower().Contains(form.RecoveredFromLegacy.ToLower())
+                );
+            }
+            
+            query = query.Where(d =>
+                (form.ImportedFromLegacy == null || d.ImportedFromLegacy == form.ImportedFromLegacy) 
+            );
+            
         return query;
     }
 

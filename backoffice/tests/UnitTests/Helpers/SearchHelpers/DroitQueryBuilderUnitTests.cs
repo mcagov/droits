@@ -500,4 +500,174 @@ public class DroitQueryBuilderUnitTests
         Assert.True(result.Any(d => d.Reference == "AnotherMatchingDroit"));
         Assert.False(result.Any(d => d.Reference == "NotMatchingDroit"));
     }
+    
+    [Fact]
+    public void BuildQuery_WithSalvageSearchFields_ReturnsFilteredQuery()
+    {
+        // Arrange
+        var form = new DroitSearchForm
+        {
+            ServicesDescription = "Test", ServicesDuration = "Time",
+            ServicesEstimatedCostFrom = 2, ServicesEstimatedCostTo = 10,
+            SalvageClaimAwardedFrom = 2, SalvageClaimAwardedTo = 5
+        };
+        var salvor = new Salvor() {};
+        var droits = new List<Droit>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "MatchingDroit",
+                ServicesDescription = "Test",ServicesDuration = "Time",
+                ServicesEstimatedCost = 10, SalvageClaimAwarded = 4,
+                Salvor = salvor
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "AnotherMatchingDroit",
+                ServicesDescription = "AnotherTest", ServicesDuration = "AnotherTime",
+                ServicesEstimatedCost = 10,SalvageClaimAwarded = 5,
+                Salvor = salvor
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "NotMatchingDroit",
+                ServicesDescription = "NotMatching", ServicesDuration = "",
+                ServicesEstimatedCost = 11,SalvageClaimAwarded = 7,
+                Salvor = salvor
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "MatchingDroitWithNoSalvor",
+                ServicesDescription = "Test",ServicesDuration = "Time",
+                ServicesEstimatedCost = 10, SalvageClaimAwarded = 4,
+            },
+        }.AsQueryable();
+    
+        // Act
+        var result = DroitQueryBuilder.BuildQuery(form, droits, false);
+    
+        // Assert
+        Assert.Equal(2, result.Count()); 
+        Assert.True(result.Any(d => d.Reference == "MatchingDroit"));
+        Assert.True(result.Any(d => d.Reference == "AnotherMatchingDroit"));
+        Assert.False(result.Any(d => d.Reference == "NotMatchingDroit"));
+    }
+    
+    [Fact]
+    public void BuildQuery_WithSalvageSearchFieldsWhereSomeFieldsAreNull_ReturnsFilteredQuery()
+    {
+        // Arrange
+        var form = new DroitSearchForm
+        {
+            ServicesEstimatedCostFrom = 2, SalvageClaimAwardedTo = 5
+        };
+        var salvor = new Salvor() {};
+        var droits = new List<Droit>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "MatchingDroit",
+                ServicesEstimatedCost = 10, SalvageClaimAwarded = 4,
+                Salvor = salvor
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "NotMatchingDroit",
+                ServicesEstimatedCost = 1,SalvageClaimAwarded = 7,
+                Salvor = salvor
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "OnlyPartialMatchingDroit",
+                ServicesEstimatedCost = 10, SalvageClaimAwarded = 6,
+                Salvor = salvor
+            },
+        }.AsQueryable();
+    
+        // Act
+        var result = DroitQueryBuilder.BuildQuery(form, droits, false);
+    
+        // Assert
+        Assert.Equal(1, result.Count()); 
+        Assert.True(result.Any(d => d.Reference == "MatchingDroit"));
+        Assert.False(result.Any(d => d.Reference == "NotMatchingDroit"));
+        Assert.False(result.Any(d => d.Reference == "OnlyPartialMatchingDroit"));
+    }
+
+    [Fact]
+    public void BuildQuery_WithSalvageSearchBooleanFields_ReturnsFilteredQuery()
+    {
+        // Arrange
+        var form = new DroitSearchForm
+        {
+            SalvageAwardClaimed = true,MMOLicenceRequired = true, MMOLicenceProvided = false
+        };
+        var droits = new List<Droit>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "MatchingDroit",
+                SalvageAwardClaimed = true, MMOLicenceRequired = true, MMOLicenceProvided = false
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "NotMatchingDroit",
+                SalvageAwardClaimed = true, MMOLicenceRequired = true, MMOLicenceProvided = true
+            },
+        }.AsQueryable();
+    
+        // Act
+        var result = DroitQueryBuilder.BuildQuery(form, droits, false);
+    
+        // Assert
+        Assert.Equal(1, result.Count()); 
+        Assert.True(result.Any(d => d.Reference == "MatchingDroit"));
+        Assert.False(result.Any(d => d.Reference == "NotMatchingDroit"));
+    }
+    
+    [Fact]
+    public void BuildQuery_WithLegacySearchFields_ReturnsFilteredQuery()
+    {
+        // Arrange
+        var form = new DroitSearchForm
+        {
+            District = "Test" , LegacyFileReference = "Test", GoodsDischargedBy = "Test",
+            DateDelivered = "Test", Agent = "Test", RecoveredFromLegacy = "Test", ImportedFromLegacy = true
+        };
+        var salvor = new Salvor();
+        var droits = new List<Droit>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "MatchingDroit",
+                District = "Test" , LegacyFileReference = "Test", GoodsDischargedBy = "Test",
+                DateDelivered = "Test", Agent = "Test", RecoveredFromLegacy = "Test", ImportedFromLegacy = true,
+                Salvor = salvor
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "PartiallyMatchingDroit",
+                District = "TestAndStuff" , LegacyFileReference = "Test", GoodsDischargedBy = "Test",
+                DateDelivered = "Test", Agent = "TestAndStuff", RecoveredFromLegacy = "Test", ImportedFromLegacy = true,
+                Salvor = salvor
+            },
+            new()
+            {
+                // if District is removed from droit it returns null or raises an exception?
+                Id = Guid.NewGuid(), Reference = "NotMatchingDroit",
+                District = "" , LegacyFileReference = "", GoodsDischargedBy = "",
+                DateDelivered = "", Agent = "", RecoveredFromLegacy = "", ImportedFromLegacy = true,
+                Salvor = salvor
+            },
+        }.AsQueryable();
+    
+        // Act
+        var result = DroitQueryBuilder.BuildQuery(form, droits, false);
+    
+        // Assert
+        Assert.Equal(2, result.Count()); 
+        Assert.True(result.Any(d => d.Reference == "MatchingDroit"));
+        Assert.True(result.Any(d => d.Reference == "PartiallyMatchingDroit"));
+        Assert.False(result.Any(d => d.Reference == "NotMatchingDroit"));
+    }
 }
