@@ -419,7 +419,7 @@ public class DroitQueryBuilderUnitTests
     }
     
     [Fact]
-    public void BuildQuery_WithWreckMaterialDateSearchFields_ReturnsFilteredQuery()
+    public void BuildQuery_WithWreckMaterialIntSearchFields_ReturnsFilteredQuery()
     {
         // Arrange
         var form = new DroitSearchForm
@@ -461,7 +461,7 @@ public class DroitQueryBuilderUnitTests
     }
     
     [Fact]
-    public void BuildQuery_WithWreckMaterialDateSearchFieldsWhereSomeAreNull_ReturnsFilteredQuery()
+    public void BuildQuery_WithWreckMaterialIntSearchFieldsWhereSomeAreNull_ReturnsFilteredQuery()
     {
         // Arrange
         var form = new DroitSearchForm
@@ -498,6 +498,39 @@ public class DroitQueryBuilderUnitTests
         Assert.Equal(2, result.Count()); 
         Assert.True(result.Any(d => d.Reference == "MatchingDroit"));
         Assert.True(result.Any(d => d.Reference == "AnotherMatchingDroit"));
+        Assert.False(result.Any(d => d.Reference == "NotMatchingDroit"));
+    }
+    
+    [Fact]
+    public void BuildQuery_WithWreckMaterialQuantitySearchField_ReturnsFilteredQuery()
+    {
+        // Arrange
+        var form = new DroitSearchForm
+        {
+            QuantityFrom = 2, QuantityTo = 2
+        };
+        var matchingWreckMaterial = new WreckMaterial() { Quantity = 2 };
+        var notMatchingWreckMaterial = new WreckMaterial() { Quantity = 3 };
+        var droits = new List<Droit>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "MatchingDroit",
+                WreckMaterials = new List<WreckMaterial>() {matchingWreckMaterial}
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "NotMatchingDroit",
+                WreckMaterials = new List<WreckMaterial>() {notMatchingWreckMaterial}
+            },
+        }.AsQueryable();
+    
+        // Act
+        var result = DroitQueryBuilder.BuildQuery(form, droits, false);
+    
+        // Assert
+        Assert.Equal(1, result.Count()); 
+        Assert.True(result.Any(d => d.Reference == "MatchingDroit"));
         Assert.False(result.Any(d => d.Reference == "NotMatchingDroit"));
     }
     
