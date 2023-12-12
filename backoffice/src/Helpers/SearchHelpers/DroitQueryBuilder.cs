@@ -199,46 +199,34 @@ public static class DroitQueryBuilder
                     form.ValueConfirmed == null || wm.ValueConfirmed == form.ValueConfirmed));
             // the "in between" values here may need to be pull put to an if statement using the first conditional
 
-            if ( form.QuantityFrom != null )
+            if (form.QuantityFrom != null || form.QuantityTo != null)
             {
                 query = query.Where(d =>
                     d.WreckMaterials.Any(wm =>
-                        wm.Quantity >= form.QuantityFrom));
+                        (form.QuantityFrom == null || wm.Quantity >= form.QuantityFrom) &&
+                        (form.QuantityTo == null || wm.Quantity <= form.QuantityTo)
+                    )
+                );
             }
             
-            if ( form.QuantityTo != null )
+            if (form.ValueFrom != null || form.ValueTo != null)
             {
                 query = query.Where(d =>
                     d.WreckMaterials.Any(wm =>
-                        wm.Quantity <= form.QuantityTo));
-            }
-            
-            if ( form.ValueFrom != null )
-            {
-                query = query.Where(d =>
-                    d.WreckMaterials.Any(wm =>
-                        wm.Value >= form.ValueFrom));
-            }
-            
-            if ( form.ValueTo != null )
-            {
-                query = query.Where(d =>
-                    d.WreckMaterials.Any(wm =>
-                        wm.Value <= form.ValueTo));
+                        (form.ValueFrom == null || wm.Value >= form.ValueFrom) &&
+                        (form.ValueTo == null || wm.Value <= form.ValueTo)
+                    )
+                );
             }
            
-            if ( form.ReceiverValuationFrom != null )
+            if (form.ReceiverValuationFrom != null || form.ReceiverValuationTo != null)
             {
                 query = query.Where(d =>
                     d.WreckMaterials.Any(wm =>
-                        wm.ReceiverValuation >= form.ReceiverValuationFrom));
-            }
-            
-            if ( form.ReceiverValuationTo != null )
-            {
-                query = query.Where(d =>
-                    d.WreckMaterials.Any(wm =>
-                        wm.ReceiverValuation <= form.ReceiverValuationTo));
+                        (form.ReceiverValuationFrom == null || wm.ReceiverValuation >= form.ReceiverValuationFrom) &&
+                        (form.ReceiverValuationTo == null || wm.ReceiverValuation <= form.ReceiverValuationTo)
+                    )
+                );
             }
             //Salvage Filters
             

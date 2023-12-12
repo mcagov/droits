@@ -507,10 +507,12 @@ public class DroitQueryBuilderUnitTests
         // Arrange
         var form = new DroitSearchForm
         {
-            QuantityFrom = 2, QuantityTo = 2
+            QuantityFrom = 2, QuantityTo = 4
         };
         var matchingWreckMaterial = new WreckMaterial() { Quantity = 2 };
-        var notMatchingWreckMaterial = new WreckMaterial() { Quantity = 3 };
+        var notMatchingWreckMaterial = new WreckMaterial() { Quantity = 5 };
+        var anotherNotMatchingWreckMaterial = new WreckMaterial() { Quantity = 1 };
+
         var droits = new List<Droit>
         {
             new()
@@ -521,7 +523,7 @@ public class DroitQueryBuilderUnitTests
             new()
             {
                 Id = Guid.NewGuid(), Reference = "NotMatchingDroit",
-                WreckMaterials = new List<WreckMaterial>() {notMatchingWreckMaterial}
+                WreckMaterials = new List<WreckMaterial>() {notMatchingWreckMaterial,anotherNotMatchingWreckMaterial}
             },
         }.AsQueryable();
     
