@@ -64,9 +64,9 @@ public class Droit : BaseEntity
     // Legacy fields
     public string? District { get; set; }
     public string? LegacyFileReference { get; set; } //Physical file location/ref
-    public string? GoodsDischargedBy { get; set; } //Initals of RoW member.
+    public string? GoodsDischargedBy { get; set; } //Initials of RoW member.
     public string? DateDelivered { get; set; } //Unsure of date format.
     public string? Agent { get; set; }
     public string? RecoveredFromLegacy { get; set; }
-    public bool ImportedFromLegacy { get; set; } = false;
+    public bool ImportedFromLegacy { get; set; }
 }

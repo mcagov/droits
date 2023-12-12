@@ -634,7 +634,6 @@ public class DroitQueryBuilderUnitTests
             District = "Test" , LegacyFileReference = "Test", GoodsDischargedBy = "Test",
             DateDelivered = "Test", Agent = "Test", RecoveredFromLegacy = "Test", ImportedFromLegacy = true
         };
-        var salvor = new Salvor();
         var droits = new List<Droit>
         {
             new()
@@ -642,22 +641,16 @@ public class DroitQueryBuilderUnitTests
                 Id = Guid.NewGuid(), Reference = "MatchingDroit",
                 District = "Test" , LegacyFileReference = "Test", GoodsDischargedBy = "Test",
                 DateDelivered = "Test", Agent = "Test", RecoveredFromLegacy = "Test", ImportedFromLegacy = true,
-                Salvor = salvor
             },
             new()
             {
                 Id = Guid.NewGuid(), Reference = "PartiallyMatchingDroit",
                 District = "TestAndStuff" , LegacyFileReference = "Test", GoodsDischargedBy = "Test",
                 DateDelivered = "Test", Agent = "TestAndStuff", RecoveredFromLegacy = "Test", ImportedFromLegacy = true,
-                Salvor = salvor
             },
             new()
             {
-                // if District is removed from droit it returns null or raises an exception?
                 Id = Guid.NewGuid(), Reference = "NotMatchingDroit",
-                District = "" , LegacyFileReference = "", GoodsDischargedBy = "",
-                DateDelivered = "", Agent = "", RecoveredFromLegacy = "", ImportedFromLegacy = true,
-                Salvor = salvor
             },
         }.AsQueryable();
     
