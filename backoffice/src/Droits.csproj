@@ -38,8 +38,8 @@
       <AdditionalFiles Include="Views\Shared\DisplayTemplates\LetterStatus.cshtml" />
     </ItemGroup>
 
-<!--    <Target Name="PostBuild" AfterTargets="PostBuildEvent">-->
-<!--        <Exec Command="npx webpack &#45;&#45;config webpack.config.js" />-->
-<!--    </Target>-->
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="npx webpack --config webpack.config.js" />
+    </Target>
 
 </Project>

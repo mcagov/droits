@@ -185,7 +185,7 @@ public static class DroitQueryBuilder
                       wm.Description.ToLower().Contains(form.WreckMaterial.ToLower()) )) &&
                 d.WreckMaterials.Any(wm =>
                     form.WreckMaterialOwner != null &&
-                    ( !string.IsNullOrEmpty(wm.Description) &&
+                    ( !string.IsNullOrEmpty(wm.WreckMaterialOwner) &&
                       ( usePsql
                           ? EF.Functions.FuzzyStringMatchLevenshtein(
                               form.WreckMaterialOwner.ToLower(),

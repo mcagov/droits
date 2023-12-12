@@ -187,63 +187,6 @@ namespace Droits.Tests.UnitTests.Services
             Assert.DoesNotContain("magna carta", System.Text.Encoding.UTF8.GetString(data));
         }
         
-        private DroitSearchForm SearchForm()
-        {
-            return new DroitSearchForm()
-            {
-                Reference = "Ref1",
-                CreatedFrom = null,
-                CreatedTo = null,
-                LastModifiedFrom = null,
-                LastModifiedTo = null,
-                ReportedDateFrom = null,
-                ReportedDateTo = null,
-                DateFoundFrom = null,
-                DateFoundTo = null,
-                WreckName = "",
-                IsHazardousFind = null,
-                IsDredge = null,
-                IsIsolatedFind = null,
-                SalvorName = "",
-                LatitudeFrom = null,
-                LatitudeTo = null,
-                LongitudeFrom = null,
-                LongitudeTo = null,
-                InUkWaters = null,
-                LocationRadius = null,
-                DepthFrom = null,
-                DepthTo = null,
-                LocationDescription = "",
-                WreckMaterial = "",
-                WreckMaterialOwner = "",
-                StoredAtSalvorAddress = null,
-                ValueConfirmed = null,
-                QuantityFrom = null,
-                QuantityTo = null,
-                ValueFrom = null,
-                ValueTo = null,
-                ReceiverValuationFrom = null,
-                ReceiverValuationTo = null,
-                SalvageAwardClaimed = null,
-                ServicesDescription = "",
-                ServicesDuration = "",
-                ServicesEstimatedCost = null,
-                // duplication?
-                ServicesEstimatedCostFrom = null,
-                ServicesEstimatedCostTo = null,
-                SalvageClaimAwardedFrom = null,
-                SalvageClaimAwardedTo = null,
-                MMOLicenceProvided = null,
-                MMOLicenceRequired = null,
-                District = "",
-                LegacyFileReference = "",
-                GoodsDischargedBy = "",
-                DateDelivered = "",
-                Agent = "",
-                RecoveredFromLegacy = "",
-                ImportedFromLegacy = null,
-            };
-        }
     }
     
 }
