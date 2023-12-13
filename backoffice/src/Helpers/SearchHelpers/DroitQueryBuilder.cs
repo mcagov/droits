@@ -232,7 +232,7 @@ public static class DroitQueryBuilder
             if (!string.IsNullOrEmpty(form.ServicesDescription))
             {
                 query = query.Where(d =>
-                    d.Salvor != null && d.ServicesDescription != null && 
+                    d.ServicesDescription != null && 
                     !string.IsNullOrEmpty(d.ServicesDescription) &&
                      (d.ServicesDescription.ToLower().Contains(form.ServicesDescription.ToLower()) || 
                      (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.ServicesDescription.ToLower(), d.ServicesDescription.ToLower()) :
@@ -243,7 +243,7 @@ public static class DroitQueryBuilder
             if (!string.IsNullOrEmpty(form.ServicesDuration))
             {
                 query = query.Where(d =>
-                    d.Salvor != null && d.ServicesDuration != null && 
+                    d.ServicesDuration != null && 
                     !string.IsNullOrEmpty(d.ServicesDuration) &&
                      (d.ServicesDuration.ToLower().Contains(form.ServicesDuration.ToLower()) ||
                       (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.ServicesDuration.ToLower(), d.ServicesDuration.ToLower()) :
