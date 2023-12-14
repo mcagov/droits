@@ -196,7 +196,6 @@ public static class DroitQueryBuilder
                        ) &&
                 d.WreckMaterials.Any(wm =>
                     form.ValueConfirmed == null || wm.ValueConfirmed == form.ValueConfirmed));
-            // the "in between" values here may need to be pull put to an if statement using the first conditional
 
             if (form.QuantityFrom != null || form.QuantityTo != null)
             {
