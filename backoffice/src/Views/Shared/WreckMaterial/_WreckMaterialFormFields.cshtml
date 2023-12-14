@@ -1,5 +1,5 @@
 @model WreckMaterialForm
-<div class="js-wreck-material-form col-md-6 mb-2">
+<div class="js-wreck-material-form col mb-2">
     <div class="card">
         <div class="card-header">
             <div class="row">
@@ -72,7 +72,7 @@
                     @Html.LabelFor(m => m.ValueConfirmed, new { @class = "col-form-label font-weight-bold" })
                 </div>
                 <div class="col-md-8">
-                    @Html.DropDownListFor(m => m.ValueConfirmed, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.ValueConfirmed, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.ValueConfirmed, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -106,31 +106,34 @@
                     @Html.ValidationMessageFor(m => m.Outcome, "", new { @class = "text-danger" })
                 </div>
             </div>
-
-            <div class="form-group row mt-2">
-                <div class="col-md-4">
-                    @Html.LabelFor(m => m.WhereSecured, new { @class = "col-form-label font-weight-bold" })
-                </div>
-                <div class="col-md-8">
-                    @Html.EditorFor(m => m.WhereSecured, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(m => m.WhereSecured, "", new { @class = "text-danger" })
-                </div>
-            </div>
+            
             
             <div class="form-group row mt-2">
                 <h5>Storage Address</h5>
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        @Html.LabelFor(m => m.StoredAtSalvor, new { @class = "col-form-label font-weight-bold" })
+                        @Html.LabelFor(m => m.StoredAtSalvorAddress, new { @class = "col-form-label font-weight-bold" })
                     </div>
                     <div class="col-md-6 form-switch">
-                        @Html.CheckBoxFor(m => m.StoredAtSalvor, new { @class = "js-stored-salvor form-check-input font-weight-bold" } )
+                        @Html.CheckBoxFor(m => m.StoredAtSalvorAddress, new { @class = "js-stored-salvor form-check-input font-weight-bold" } )
                     </div>
                 </div>
             </div>
             
             <div class="js-wreck-material-address">
                 <partial name="Address/_AddressFormFields" for="StorageAddress"/>
+            </div>
+            
+            <div class="js-images mt-2">
+                <div class="js-images-form-container row">
+                    @for (var i = 0; i < Model.ImageForms.Count; i++)
+                    {
+                        <partial name="Image/_ImageFormFields" for="ImageForms[i]"/>
+                    }
+                </div>
+                <div class="col-12 mt-4">
+                    <button type="button" class="js-add-image-form mt-2 btn btn-primary">Add Image</button>
+                </div>
             </div>
         </div>
     </div>

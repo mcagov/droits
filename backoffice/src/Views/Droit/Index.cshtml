@@ -1,4 +1,4 @@
-﻿@model Droits.Models.ViewModels.ListViews.DroitListView
+﻿@model DroitListView
 @{
     ViewData["Title"] = "Droit Reports";
 }
@@ -9,10 +9,21 @@
 
 <div class="row">
     <div class="col">
-        <h4>@ViewData["Title"]</h4>
+        <h4 class="d-inline">@ViewData["Title"]</h4>
     </div>
     <div class="col">
-        <a class="btn btn-primary float-end" asp-action="Add">Add Droit</a>
+       <div class="d-flex justify-content-end">
+           <a class="btn btn-primary js-toggle-droit-search mx-2">Search <i class="fas fa-search"></i></a>
+           <a class="btn btn-primary" asp-action="Add">Add Droit</a>
+       </div>
+    </div>
+</div>
+
+<div class="form-search js-droit-search @( Model.SearchOpen ? "" : "d-none")">
+    <div class="card mt-2">
+        <div class="card-body">
+            <partial name="_DroitSearchForm" model="@Model.SearchForm"/>
+        </div>
     </div>
 </div>
 

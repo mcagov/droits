@@ -1,36 +1,49 @@
 @model SalvorView
-
 @{
     ViewData["Title"] = Model.Name == "" ? "Salvor View" : Model.Name;
 }
 
-<div class="card">
-    <div class="card-header">
-        <h2 class="card-title">@ViewData["Title"]</h2>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-12">
-                <partial name="Salvor/_SalvorViewFields"/>
-            </div>
-        </div>
+@{
+    await Html.RenderPartialAsync("_MessageBanner");
+}
+
+<div class="row">
+    <div class="col-6 col-lg-8">
+        <h4>@ViewData["Title"]</h4>
     </div>
 </div>
 
+<ul class="nav nav-tabs" id="salvorTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="salvor-tab" data-bs-toggle="tab" data-bs-target="#salvor-content" type="button" role="tab" aria-controls="salvor-content" aria-selected="true">Salvor</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="droits-tab" data-bs-toggle="tab" data-bs-target="#droits-content" type="button" role="tab" aria-controls="droits-content" aria-selected="false">Droits</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes-content" type="button" role="tab" aria-controls="notes-content" aria-selected="false">Notes</button>
+    </li>
+</ul>
 
-<div class="card mt-4">
-    <div class="card-header">
-        <h2 class="card-title">Droits</h2>
+<div class="tab-content mt-3" id="salvorView">
+    <div class="tab-pane fade show active" id="salvor-content" role="tabpanel" aria-labelledby="salvor-tab">
+        <partial name="Salvor/_SalvorViewFields"/>
     </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-12">
-                <partial name="Droit/_DroitListTable" model="@Model.Droits"/>
+
+    <div class="tab-pane fade" id="droits-content" role="tabpanel" aria-labelledby="droits-tab">
+        <partial name="Droit/_DroitListTable" model="@Model.Droits"/>
+    </div>
+
+    <div class="tab-pane fade" id="notes-content" role="tabpanel" aria-labelledby="notes-tab">
+        <div class="row justify-content-end">
+            <div class="col-6 col-lg-4 text-end">
+                <a type="button" class="btn btn-primary" asp-controller="Note" asp-action="Add" asp-route-SalvorId="@Model.Id" asp-route-ObjectReference="@Model.Name">Add Note</a>
             </div>
         </div>
+
+        <partial name="_NoteListTable" for="Notes"/>
     </div>
 </div>
-
 
 <div class="col d-flex flex-row mt-4 justify-content-end">
     <div class="align-self-end">

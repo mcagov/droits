@@ -1,35 +1,41 @@
+#region
+
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
+#endregion
+
 namespace Droits.Models.FormModels;
 
-public class DroitForm : FormModel
+public class DroitForm : BaseEntityForm
 {
     public DroitForm()
     {
     }
 
 
-    public DroitForm(Droit droit)
+    public DroitForm(Droit droit) : base(droit)
     {
-        Id = droit.Id;
+        AssignedToUserId = droit.AssignedToUserId;
         WreckId = droit.WreckId;
         SalvorId = droit.SalvorId;
 
         Status = droit.Status;
+        TriageNumber = droit.TriageNumber;
         ReportedDate = droit.ReportedDate;
         DateFound = droit.DateFound;
 
         IsIsolatedFind = droit.WreckId == default;
-
-        Created = droit.Created;
-        Modified = droit.LastModified;
+        
         Reference = droit.Reference;
         IsHazardousFind = droit.IsHazardousFind;
         IsDredge = droit.IsDredge;
+        
+        OriginalSubmission = droit.OriginalSubmission;
+        
 
         // Location
         Latitude = droit.Latitude;
@@ -39,14 +45,22 @@ public class DroitForm : FormModel
         Depth = droit.Depth;
         LocationDescription = droit.LocationDescription;
 
+        
+        //Reported Wreck 
+
+        ReportedWreckName = droit.ReportedWreckName;
+        ReportedWreckConstructionDetails = droit.ReportedWreckConstructionDetails;
+        ReportedWreckYearConstructed = droit.ReportedWreckYearConstructed;
+        ReportedWreckYearSunk = droit.ReportedWreckYearSunk;
+
         // Salvage
 
         SalvageAwardClaimed = droit.SalvageAwardClaimed;
         ServicesDescription = droit.ServicesDescription;
         ServicesDuration = droit.ServicesDuration;
         ServicesEstimatedCost = droit.ServicesEstimatedCost;
-        MMOLicenceRequired = droit.MMOLicenceRequired;
-        MMOLicenceProvided = droit.MMOLicenceProvided;
+        MmoLicenceRequired = droit.MmoLicenceRequired;
+        MmoLicenceProvided = droit.MmoLicenceProvided;
         SalvageClaimAwarded = droit.SalvageClaimAwarded;
 
         // Legacy fields
@@ -58,6 +72,7 @@ public class DroitForm : FormModel
         Agent = droit.Agent;
         RecoveredFrom = droit.RecoveredFrom;
         ImportedFromLegacy = droit.ImportedFromLegacy;
+        LegacyRemarks = droit.LegacyRemarks;
 
 
         if ( droit.WreckMaterials.Any() )
@@ -68,10 +83,9 @@ public class DroitForm : FormModel
     }
 
 
+
+
     // Base fields...
-
-    public Guid Id { get; set; }
-
     public WreckForm WreckForm { get; set; } = new();
 
     [DisplayName("Is Isolated Find")]
@@ -84,24 +98,24 @@ public class DroitForm : FormModel
     public string Reference { get; set; } = string.Empty;
 
     public DroitStatus Status { get; set; } = DroitStatus.Received;
+    
+    [DisplayName("Triage Number")]
+    public int? TriageNumber { get; set; }
 
+    [DisplayName("Assigned To")]
+    public Guid? AssignedToUserId { get; set; }
+    
     [DisplayName("Reported Date")]
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime ReportedDate { get; set; } = DateTime.Now;
+    public DateTime ReportedDate { get; set; } = DateTime.UtcNow;
 
     [DisplayName("Date Found")]
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime DateFound { get; set; } = DateTime.Now;
+    public DateTime DateFound { get; set; } = DateTime.UtcNow;
 
-    [DataType(DataType.Date)]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime Created { get; set; } = DateTime.Now;
-
-    [DataType(DataType.Date)]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime Modified { get; set; } = DateTime.Now;
+    public string? OriginalSubmission { get; set; } = string.Empty;
 
 
     // Wreck
@@ -114,14 +128,19 @@ public class DroitForm : FormModel
     [DisplayName("Is Dredge")]
     public bool IsDredge { get; set; }
 
+    public string? ReportedWreckName { get; set; }
+    public int? ReportedWreckYearSunk { get; set; }
+    public int? ReportedWreckYearConstructed { get; set; }
+    public string? ReportedWreckConstructionDetails { get; set; }
+    
     // Salvor
 
     public Guid? SalvorId { get; set; }
 
 
     // Location
-    public string? Latitude { get; set; }
-    public string? Longitude { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
 
     [DisplayName("In UK Waters")]
     public bool InUkWaters { get; set; }
@@ -131,6 +150,9 @@ public class DroitForm : FormModel
 
     [DisplayName("Depth (Metres)")]
     public int? Depth { get; set; }
+    
+    [DisplayName("Recovered From")]
+    public RecoveredFrom? RecoveredFrom { get; set; }
 
     [DisplayName("Location Description")]
     public string? LocationDescription { get; set; } = string.Empty;
@@ -149,16 +171,16 @@ public class DroitForm : FormModel
 
     [DisplayName("Services Estimated Cost")]
 
-    public float? ServicesEstimatedCost { get; set; }
+    public double? ServicesEstimatedCost { get; set; }
 
     [DisplayName("MMO Licence Required")]
-    public bool MMOLicenceRequired { get; set; }
+    public bool MmoLicenceRequired { get; set; }
 
     [DisplayName("MMO Licence Provided")]
-    public bool MMOLicenceProvided { get; set; }
+    public bool MmoLicenceProvided { get; set; }
 
     [DisplayName("Salvage Claim Awarded")]
-    public float SalvageClaimAwarded { get; set; }
+    public double SalvageClaimAwarded { get; set; }
 
     // Legacy fields
     public string? District { get; set; }
@@ -175,25 +197,32 @@ public class DroitForm : FormModel
     public string? Agent { get; set; }
 
     [DisplayName("Recovered From")]
-    public string? RecoveredFrom { get; set; }
+    public string? RecoveredFromLegacy { get; set; }
 
     [DisplayName("Imported From Legacy")]
     public bool ImportedFromLegacy { get; set; }
+    
+    [DisplayName("Legacy Remarks")]
+    [DataType(DataType.MultilineText)]
+    public string? LegacyRemarks { get; }
 
+    public List<SelectListItem> AllUsers { get; set; } = new();
     public List<SelectListItem> AllWrecks { get; set; } = new();
     public List<SelectListItem> AllSalvors { get; set; } = new();
 
 
     public Droit ApplyChanges(Droit droit)
     {
-        droit.Id = Id;
+        
+        base.ApplyChanges(droit);
+        droit.AssignedToUserId = AssignedToUserId;
         droit.WreckId = IsIsolatedFind ? default : WreckId;
         droit.SalvorId = SalvorId;
         droit.Status = Status;
+        droit.TriageNumber = TriageNumber;
+        droit.RecoveredFrom = RecoveredFrom;
         droit.ReportedDate = ReportedDate;
         droit.DateFound = DateFound;
-        droit.Created = Created;
-        droit.LastModified = Modified;
         droit.Reference = Reference;
         droit.IsHazardousFind = IsHazardousFind;
         droit.IsDredge = IsDredge;
@@ -212,8 +241,8 @@ public class DroitForm : FormModel
         droit.ServicesDescription = ServicesDescription;
         droit.ServicesDuration = ServicesDuration;
         droit.ServicesEstimatedCost = ServicesEstimatedCost;
-        droit.MMOLicenceRequired = MMOLicenceRequired;
-        droit.MMOLicenceProvided = MMOLicenceProvided;
+        droit.MmoLicenceRequired = MmoLicenceRequired;
+        droit.MmoLicenceProvided = MmoLicenceProvided;
         droit.SalvageClaimAwarded = SalvageClaimAwarded;
 
         // Legacy fields
@@ -223,8 +252,9 @@ public class DroitForm : FormModel
         droit.GoodsDischargedBy = GoodsDischargedBy;
         droit.DateDelivered = DateDelivered;
         droit.Agent = Agent;
-        droit.RecoveredFrom = RecoveredFrom;
+        droit.RecoveredFromLegacy = RecoveredFromLegacy;
         droit.ImportedFromLegacy = ImportedFromLegacy;
+        droit.LegacyRemarks = LegacyRemarks;
 
         return droit;
     }

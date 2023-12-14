@@ -1,15 +1,22 @@
+#region
+
 using Droits.Clients;
 using Droits.Exceptions;
 using Droits.Helpers;
-using Droits.Models;
+using Droits.Helpers.SearchHelpers;
+using Droits.Models.DTOs;
+using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Notify.Models.Responses;
+using Microsoft.IdentityModel.Tokens;
+
+#endregion
 
 namespace Droits.Services;
 
@@ -18,10 +25,13 @@ public interface ILetterService
     Task<LetterListView> GetLettersListViewAsync(SearchOptions searchOptions);
     Task<string> GetTemplateBodyAsync(LetterType letterType, Droit? droit);
     Task<string> GetTemplateSubjectAsync(LetterType letterType, Droit? droit);
-    Task<EmailNotificationResponse> SendLetterAsync(Guid id);
-    Task<Letter> GetLetterByIdAsync(Guid id);
+    Task<Letter> SendLetterAsync(Guid id);
+    Task<Letter> GetLetterAsync(Guid id);
     Task<Letter> SaveLetterAsync(LetterForm form);
-    Task<List<Letter>> GetLettersAsync();
+    Task<LetterListView> GetApprovedUnsentLettersListViewForCurrentUserAsync(SearchOptions searchOptions);
+    Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form);
+    Task SendSubmissionConfirmationEmailAsync(Droit droit, SubmittedReportDto report);
+    Task<byte[]> ExportAsync(LetterSearchForm form);
 }
 
 public class LetterService : ILetterService
@@ -30,30 +40,70 @@ public class LetterService : ILetterService
     private readonly ILogger<LetterService> _logger;
     private readonly ILetterRepository _repo;
     private readonly IDroitService _droitService;
+    private readonly IAccountService _accountService;
     private const string TemplateDirectory = "Views/LetterTemplates";
 
 
     public LetterService(ILogger<LetterService> logger,
         IGovNotifyClient client,
         ILetterRepository repo,
-        IDroitService droitService)
+        IDroitService droitService,
+        IAccountService accountService)
     {
         _logger = logger;
         _client = client;
         _repo = repo;
         _droitService = droitService;
+        _accountService = accountService;
     }
 
 
     public async Task<LetterListView> GetLettersListViewAsync(SearchOptions searchOptions)
     {
-        var query = searchOptions.IncludeAssociations
-            ? _repo.GetLettersWithAssociations()
-            : _repo.GetLetters();
+        var query = GetLetterQuery(searchOptions);
+
+        query = query.OrderBy(l =>
+                l.Status == LetterStatus.ReadyForQc ? 0 :
+                l.Status == LetterStatus.ActionRequired ? 1 :
+                l.Status == LetterStatus.QcApproved ? 2 :
+                l.Status == LetterStatus.Draft ? 3 :
+                4 // Sent
+        ).ThenByDescending(l => l.Created);
         var pagedItems =
-            await ServiceHelpers.GetPagedResult(query.Select(l => new LetterView(l)),
+            await ServiceHelper.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.IncludeAssociations)),
                 searchOptions);
 
+        return new LetterListView(pagedItems.Items)
+        {
+            PageNumber = pagedItems.PageNumber,
+            PageSize = pagedItems.PageSize,
+            IncludeAssociations = pagedItems.IncludeAssociations,
+            TotalCount = pagedItems.TotalCount
+        };
+    }
+
+
+    private IQueryable<Letter> GetLetterQuery(SearchOptions searchOptions)
+    {
+        return searchOptions.IncludeAssociations
+            ? _repo.GetLettersWithAssociations()
+            : _repo.GetLetters();
+    }
+    public async Task<LetterListView> GetApprovedUnsentLettersListViewForCurrentUserAsync(SearchOptions searchOptions)
+    {
+        var currentUserId = _accountService.GetCurrentUserId();
+        var query = GetLetterQuery(searchOptions);
+
+        query = query.Where(l =>
+            l.DateSent == null &&
+            l.Status == LetterStatus.QcApproved &&
+            (l.Droit != null && l.Droit.AssignedToUserId == currentUserId )
+        );
+        
+        var pagedItems =
+            await ServiceHelper.GetPagedResult(query.Select(l => new LetterView(l, searchOptions.FilterByAssignedUser)),
+                searchOptions);
+        
         return new LetterListView(pagedItems.Items)
         {
             PageNumber = pagedItems.PageNumber,
@@ -98,26 +148,25 @@ public class LetterService : ILetterService
 
     private async Task<string> ReadFileContentAsync(string path)
     {
-        if ( !File.Exists(path) )
-        {
-            _logger.LogError($"File could not be found at: {path}");
-            throw new FileNotFoundException("File could not be found");
-        }
-
-        return await File.ReadAllTextAsync(path);
+        if ( File.Exists(path) ) return await File.ReadAllTextAsync(path);
+        
+        
+        _logger.LogError($"File could not be found at: {path}");
+        return "";
+        
     }
 
 
-    public async Task<EmailNotificationResponse> SendLetterAsync(Guid id)
+    public async Task<Letter> SendLetterAsync(Guid id)
     {
         try
         {
-            var letter = await GetLetterByIdAsync(id);
-            var govNotifyResponse = await _client.SendLetterAsync(letter);
+            var letter = await GetLetterAsync(id);
+            await _client.SendLetterAsync(letter);
 
             await MarkAsSentAsync(id);
 
-            return govNotifyResponse;
+            return letter;
         }
         catch ( Exception e )
         {
@@ -129,22 +178,18 @@ public class LetterService : ILetterService
 
     private async Task MarkAsSentAsync(Guid id)
     {
-        var sentLetter = await GetLetterByIdAsync(id);
+        var sentLetter = await GetLetterAsync(id);
 
         sentLetter.DateSent = DateTime.UtcNow;
-        await _repo.UpdateLetterAsync(sentLetter);
+        sentLetter.Status = LetterStatus.Sent;
+        await _repo.UpdateAsync(sentLetter);
     }
-
-
-    public async Task<List<Letter>> GetLettersAsync()
-    {
-        return await _repo.GetLetters().ToListAsync();
-    }
-
 
     public async Task<Letter> SaveLetterAsync(LetterForm form)
     {
         Letter letter;
+        var status = LetterStatus.Draft;
+        
         if ( form.Id == default )
         {
             letter = new Letter
@@ -153,13 +198,23 @@ public class LetterService : ILetterService
                 Subject = form.Subject,
                 Body = form.Body,
                 Recipient = form.Recipient,
-                Type = form.Type
+                Type = form.Type,
+                Status = form.Status
             };
         }
         else
         {
-            letter = await GetLetterByIdAsync(form.Id);
+            letter = await GetLetterAsync(form.Id);
+            status = letter.Status;
+                
             letter = form.ApplyChanges(letter);
+        }
+        
+        
+        if ( status != LetterStatus.QcApproved && form.Status == LetterStatus.QcApproved )
+        {
+            var currentUserId = _accountService.GetCurrentUserId();
+            letter.QualityApprovedUserId = currentUserId;
         }
 
         if ( letter.DroitId != default )
@@ -171,11 +226,11 @@ public class LetterService : ILetterService
         {
             if ( form.Id == default )
             {
-                letter = await _repo.AddLetterAsync(letter);
+                letter = await _repo.AddAsync(letter);
             }
             else
             {
-                letter = await _repo.UpdateLetterAsync(letter);
+                letter = await _repo.UpdateAsync(letter);
             }
         }
         catch ( Exception e )
@@ -200,8 +255,92 @@ public class LetterService : ILetterService
     }
 
 
-    public async Task<Letter> GetLetterByIdAsync(Guid id)
+    public async Task<Letter> GetLetterAsync(Guid id)
     {
         return await _repo.GetLetterAsync(id);
+    }
+    
+    public async Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form)
+    {
+        var query = QueryFromForm(form)
+            .Select(l => new LetterView(l, true));
+        
+        var pagedResults =
+            await ServiceHelper.GetPagedResult(query, form);
+
+        return new LetterListView(pagedResults.Items)
+        {
+            PageNumber = pagedResults.PageNumber,
+            PageSize = pagedResults.PageSize,
+            IncludeAssociations = pagedResults.IncludeAssociations,
+            TotalCount = pagedResults.TotalCount,
+            SearchForm = form
+        };
+    }
+
+
+    public async Task SendSubmissionConfirmationEmailAsync(Droit droit, SubmittedReportDto report)
+    {
+
+        var salvor = droit.Salvor;
+
+        if ( salvor == null )
+        {
+            throw new SalvorNotFoundException();
+        }
+
+        var confirmationLetter = new Letter
+        {
+            DroitId = droit.Id,
+            Recipient = salvor.Email,
+            Type = LetterType.ReportConfirmed
+        };
+
+        confirmationLetter.Subject = await GetTemplateSubjectAsync(confirmationLetter.Type, droit);
+
+        if ( droit == null )
+        {
+            throw new DroitNotFoundException();
+        }
+
+        var templateBody = await GetTemplateBodyAsync(LetterType.ReportConfirmed, droit);
+
+        confirmationLetter.Body =
+            LetterContentHelper.GetReportConfirmedEmailBodyAsync(droit, report, templateBody);
+
+        confirmationLetter = await _repo.AddAsync(confirmationLetter);
+        await SendLetterAsync(confirmationLetter.Id);
+    }
+
+
+    private IQueryable<Letter> QueryFromForm(LetterSearchForm form)
+    {
+        var query = _repo.GetLettersWithAssociations();
+
+        return LetterQueryBuilder.BuildQuery(form, query);
+    }
+
+
+    private static List<Letter> SearchLetters(IEnumerable<Letter> query)
+    {
+        return query.ToList();
+    }
+    
+    
+    public async Task<byte[]> ExportAsync(LetterSearchForm form)
+    {
+        
+        var query = QueryFromForm(form);
+
+        var letters = SearchLetters(query);
+        
+        var lettersData = letters.Select(s => new LetterExportDto(s)).ToList();
+        
+        if (letters.IsNullOrEmpty())
+        {
+            throw new Exception("No Salvors to export");
+        }
+
+        return await ExportHelper.ExportRecordsAsync(lettersData);
     }
 }

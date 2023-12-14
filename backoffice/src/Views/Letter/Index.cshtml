@@ -9,20 +9,26 @@
 
 <div class="row">
     <div class="col">
-        <h4>@ViewData["Title"]</h4>
+        <h4 class="d-inline">@ViewData["Title"]</h4>
     </div>
     <div class="col">
-        <a class="btn btn-primary float-end" asp-action="Edit">Compose Letter</a>
+       <div class="d-flex justify-content-end">
+           <a class="btn btn-primary js-toggle-letter-search mx-2">Search <i class="fas fa-search"></i></a>
+       </div>
     </div>
 </div>
 
-<partial name="_LetterListTable" model="@Model.Letters"/>
-
-<div class="row">
-    <div class="col">
-        <a class="btn btn-primary float-end" asp-action="Edit">Compose Letter</a>
+<div class="form-search js-letter-search @( Model.SearchOpen ? "" : "d-none")">
+    <div class="card mt-2">
+        <div class="card-body">
+            <partial name="_LetterSearchForm" model="@Model.SearchForm"/>
+        </div>
     </div>
 </div>
+
+
+<partial name="_LetterListTable" model="@Model"/>
+
 
 <div class="row mt-4">
     <div class="col">

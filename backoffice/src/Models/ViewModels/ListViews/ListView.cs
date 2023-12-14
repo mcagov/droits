@@ -1,3 +1,9 @@
+#region
+
+using Droits.Models.FormModels.SearchFormModels;
+
+#endregion
+
 namespace Droits.Models.ViewModels.ListViews;
 
 public class ListView<T> : SearchOptions
@@ -14,4 +20,7 @@ public class ListView<T> : SearchOptions
     {
         Items = items.ToList();
     }
+    
+    public SearchForm? SearchForm { get; set; }
+    
 }

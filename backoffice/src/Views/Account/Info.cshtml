@@ -1,0 +1,32 @@
+@using System.Security.Claims
+@{
+    var claimsIdentity = User.Identity as ClaimsIdentity;
+    var claims = claimsIdentity?.Claims.ToList();
+}
+
+<h2>This is a secured page that can only be accessed by logging in.</h2>
+
+@if (claims != null && claims.Any())
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Claim Type</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var claim in claims)
+        {
+            <tr>
+                <td>@claim.Type</td>
+                <td>@claim.Value</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No claims available for the user.</p>
+}

@@ -1,11 +1,16 @@
+#region
+
 using Droits.Exceptions;
 using Droits.Models.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Droits.Services;
-using Droits.Models.ViewModels;
-using Droits.Models.FormModels;
 using Droits.Models.Enums;
+using Droits.Models.FormModels;
+using Droits.Models.FormModels.SearchFormModels;
+using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
+using Droits.Services;
+using Microsoft.AspNetCore.Mvc;
+
+#endregion
 
 namespace Droits.Controllers;
 
@@ -41,7 +46,7 @@ public class LetterController : BaseController
         {
             try
             {
-                var letter = await _service.GetLetterByIdAsync(id);
+                var letter = await _service.GetLetterAsync(id);
                 return View(new LetterForm(letter));
             }
             catch ( LetterNotFoundException e )
@@ -53,7 +58,7 @@ public class LetterController : BaseController
 
 
         //This should be done elsewhere.
-        var letterType = LetterType.TestingDroitsv2;
+        var letterType = LetterType.CustomLetter;
 
         try
         {
@@ -78,7 +83,7 @@ public class LetterController : BaseController
         var droit = new Droit();
         try
         {
-            droit = await _droitService.GetDroitAsync(droitId);
+            droit = await _droitService.GetDroitWithAssociationsAsync(droitId);
         }
         catch ( DroitNotFoundException e )
         {
@@ -89,6 +94,7 @@ public class LetterController : BaseController
         var model = new LetterForm
         {
             DroitId = droit.Id,
+            DroitReference = droit.Reference,
             Recipient = droit?.Salvor?.Email ?? "",
             Type = type
         };
@@ -106,9 +112,11 @@ public class LetterController : BaseController
         try
         {
             var letter = await _service.SendLetterAsync(id);
-            if ( letter != null )
+
+            AddSuccessMessage("Letter sent successfully");
+            if ( letter.DroitId != default )
             {
-                AddSuccessMessage("Letter sent successfully");
+                return RedirectToAction("View", "Droit", new { id = letter.DroitId });
             }
         }
         catch ( LetterNotFoundException e )
@@ -116,12 +124,13 @@ public class LetterController : BaseController
             HandleError(_logger, "Letter not found", e);
         }
 
+        
         return RedirectToAction(nameof(Index));
     }
 
 
     [HttpPost]
-    public async Task<IActionResult> SaveLetter(LetterForm form)
+    public async Task<IActionResult> Save(LetterForm form)
     {
         Letter letter;
 
@@ -141,18 +150,18 @@ public class LetterController : BaseController
             return View(nameof(Edit), form);
         }
 
-        return RedirectToAction(nameof(Preview), new { id = letter.Id });
+        return RedirectToAction(nameof(View), new { id = letter.Id });
     }
 
 
     [HttpGet]
-    public async Task<IActionResult> Preview(Guid id)
+    public async Task<IActionResult> View(Guid id)
     {
         try
         {
-            var letter = await _service.GetLetterByIdAsync(id);
+            var letter = await _service.GetLetterAsync(id);
 
-            var model = new LetterView(letter);
+            var model = new LetterView(letter, true);
 
             return View(model);
         }
@@ -161,5 +170,38 @@ public class LetterController : BaseController
             HandleError(_logger, "Letter not found", e);
             return RedirectToAction(nameof(Index));
         }
+    }
+    
+    
+    public async Task<IActionResult> Search(LetterSearchForm form)
+    {
+        if (form.SubmitAction != "Search")
+        {
+                return RedirectToAction(form.SubmitAction,form);
+        }
+
+        form.IncludeAssociations = true;
+        
+        var model = await _service.AdvancedSearchAsync(form);
+        
+        model.SearchOpen = model.PageNumber == 1;
+
+        return View(nameof(Index), model);
+    }
+    
+    public async Task<IActionResult> Export(LetterSearchForm form)
+    {
+        byte[] csvExport;
+        try
+        {
+            csvExport = await _service.ExportAsync(form);
+        }
+        catch ( Exception e )
+        {
+            HandleError(_logger, "No Letters to export", e);
+            return RedirectToAction("Index");
+        }
+
+        return File(csvExport, "text/csv", $"letter-export-{DateTime.UtcNow.ToShortDateString()}.csv");
     }
 }

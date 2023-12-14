@@ -1,10 +1,15 @@
+#region
+
 using Droits.Exceptions;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
-using Microsoft.AspNetCore.Mvc;
 using Droits.Services;
+using Microsoft.AspNetCore.Mvc;
+
+#endregion
 
 namespace Droits.Controllers;
 
@@ -114,7 +119,7 @@ public class SalvorController : BaseController
         }
 
         AddSuccessMessage("Salvor saved successfully.");
-        return RedirectToAction(nameof(Index));
+        return salvor.Id == default ? RedirectToAction(nameof(Index)) : RedirectToAction(nameof(View),new {id = salvor.Id});
     }
 
 
@@ -128,8 +133,42 @@ public class SalvorController : BaseController
         }
         catch ( SalvorNotFoundException e )
         {
-            _logger.LogError("Salvor not found for partial", e);
+            _logger.LogError($"Salvor not found for partial - {e}");
             return NotFound();
         }
+    }
+
+
+    public async Task<IActionResult> Search(SalvorSearchForm form)
+    {
+        if (form.SubmitAction != "Search")
+        {
+                return RedirectToAction(form.SubmitAction,form);
+        }
+        
+        form.IncludeAssociations = true;
+                    
+        var model = await _service.AdvancedSearchAsync(form);
+        
+        model.SearchOpen = model.PageNumber == 1;
+
+        return View(nameof(Index), model);
+        
+    }
+    
+    public async Task<IActionResult> Export(SalvorSearchForm form)
+    {
+        byte[] csvExport;
+        try
+        {
+            csvExport = await _service.ExportAsync(form);
+        }
+        catch ( Exception e )
+        {
+            HandleError(_logger, "No Droits to export", e);
+            return RedirectToAction("Index");
+        }
+
+        return File(csvExport, "text/csv", $"salvor-export-{DateTime.UtcNow.ToShortDateString()}.csv");
     }
 }

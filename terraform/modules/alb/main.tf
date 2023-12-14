@@ -1,7 +1,7 @@
 resource "aws_alb_target_group" "target-group" {
   name        = "${var.application_name}-target-group"
   port        = var.port
-  protocol    = "HTTP"
+  protocol    = var.protocol
   target_type = "ip"
   vpc_id      = var.vpc_id
 }

@@ -1,52 +1,78 @@
+#region
+
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
+using Droits.Models.ViewModels.ListViews;
+
+#endregion
 
 namespace Droits.Models.ViewModels;
 
-public class DroitView
+public class DroitView : BaseEntityView
 {
     public DroitView()
     {
     }
 
 
-    public DroitView(Droit droit)
+    public DroitView(Droit droit) : base(droit)
     {
         Id = droit.Id;
         Status = droit.Status;
+        TriageNumber = droit.TriageNumber;
         ReportedDate = droit.ReportedDate;
         DateFound = droit.DateFound;
 
-        Created = droit.Created;
-        LastModified = droit.LastModified;
+        AssignedUser = droit.AssignedToUser?.Name ?? "Unassigned";
+        
+        
         Reference = droit.Reference;
 
         IsHazardousFind = droit.IsHazardousFind;
         IsDredge = droit.IsDredge;
 
+        OriginalSubmission = droit.OriginalSubmission;
+
         //Wreck
         if ( droit.Wreck != null )
         {
-            Wreck = new WreckView(droit.Wreck);
+            Wreck = new WreckView(droit.Wreck)
+            {
+                Notes =
+                {
+                    Editable = false
+                }
+            };
         }
 
         //Salvor
         if ( droit.Salvor != null )
         {
-            Salvor = new SalvorView(droit.Salvor);
+            Salvor = new SalvorView(droit.Salvor)
+            {
+                Notes =
+                {
+                    Editable = false
+                }
+            };
         }
 
         if ( droit.WreckMaterials.Any() )
         {
-            WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).ToList();
+            WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).OrderByDescending(w => w.Created).ToList();
         }
 
         if ( droit.Letters.Any() )
         {
-            Letters = droit.Letters.Select(l => new LetterView(l)).OrderBy(l => l.DateLastModified)
-                .ToList();
+            Letters = new LetterListView(droit.Letters.Select(l => new LetterView(l)).OrderByDescending(l => l.Created)
+                .ToList());
+        }
+
+        if ( droit.Notes.Any() )
+        {
+            Notes = new NoteListView(droit.Notes.Select(n => new NoteView(n)).OrderByDescending(l => l.Created).ToList());
         }
 
         // Location
@@ -63,8 +89,8 @@ public class DroitView
         ServicesDescription = droit.ServicesDescription;
         ServicesDuration = droit.ServicesDuration;
         ServicesEstimatedCost = droit.ServicesEstimatedCost;
-        MMOLicenceRequired = droit.MMOLicenceRequired;
-        MMOLicenceProvided = droit.MMOLicenceProvided;
+        MmoLicenceRequired = droit.MmoLicenceRequired;
+        MmoLicenceProvided = droit.MmoLicenceProvided;
         SalvageClaimAwarded = droit.SalvageClaimAwarded;
 
         // Legacy fields
@@ -76,7 +102,10 @@ public class DroitView
         Agent = droit.Agent;
         RecoveredFrom = droit.RecoveredFrom;
         ImportedFromLegacy = droit.ImportedFromLegacy;
+        LegacyRemarks = droit.LegacyRemarks;
     }
+
+
     // Base fields...
 
 
@@ -85,21 +114,22 @@ public class DroitView
     public string? Reference { get; } // This is the current reference.
 
     public DroitStatus Status { get; } = DroitStatus.Received;
-
+    
+    [DisplayName("Triage Number")]
+    public int? TriageNumber { get; set; }
+    
     [DisplayName("Reported Date")]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime ReportedDate { get; }
 
+    [DisplayName("Assigned To")]
+    public string AssignedUser { get; } = "Unassigned";
+    
     [DisplayName("Date Found")]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime DateFound { get; }
 
-    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
-    public DateTime Created { get; }
-
-    [DisplayName("Last Modified")]
-    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
-    public DateTime LastModified { get; }
+    public string? OriginalSubmission { get; set; } = string.Empty;
 
     // Wreck Material
 
@@ -107,7 +137,10 @@ public class DroitView
 
     // Letters
 
-    public List<LetterView> Letters { get; } = new();
+    public LetterListView Letters { get; } = new();
+    
+    //Notes
+    public NoteListView Notes { get; } = new();
 
     // Wreck
 
@@ -127,8 +160,8 @@ public class DroitView
 
 
     // Location
-    public string? Latitude { get; }
-    public string? Longitude { get; }
+    public double? Latitude { get; }
+    public double? Longitude { get; }
 
     [DisplayName("In UK Waters")]
     public bool InUkWaters { get; }
@@ -138,6 +171,9 @@ public class DroitView
 
     [DisplayName("Depth (Metres)")]
     public int? Depth { get; }
+    
+    [DisplayName("Recovered From")]
+    public RecoveredFrom? RecoveredFrom { get; }
 
     [DisplayName("Location Description")]
     public string? LocationDescription { get; } = string.Empty;
@@ -156,16 +192,16 @@ public class DroitView
 
     [DisplayName("Services Estimated Cost")]
 
-    public float? ServicesEstimatedCost { get; }
+    public double? ServicesEstimatedCost { get; }
 
     [DisplayName("MMO Licence Required")]
-    public bool MMOLicenceRequired { get; }
+    public bool MmoLicenceRequired { get; }
 
     [DisplayName("MMO Licence Provided")]
-    public bool MMOLicenceProvided { get; }
+    public bool MmoLicenceProvided { get; }
 
     [DisplayName("Salvage Claim Awarded")]
-    public float SalvageClaimAwarded { get; }
+    public double SalvageClaimAwarded { get; }
 
     // Legacy fields
     public string? District { get; }
@@ -182,8 +218,12 @@ public class DroitView
     public string? Agent { get; }
 
     [DisplayName("Recovered From")]
-    public string? RecoveredFrom { get; }
+    public string? RecoveredFromLegacy { get; }
 
     [DisplayName("Imported From Legacy")]
     public bool ImportedFromLegacy { get; }
+    
+    [DisplayName("Legacy Remarks")]
+    [DataType(DataType.MultilineText)]
+    public string? LegacyRemarks { get; }
 }

@@ -34,9 +34,14 @@ variable "image_url" {
   description = "String of backoffice image in ecr repository"
 }
 
-variable "iam_role_arn" {
+variable "execution_role_arn" {
   type        = string
-  description = "IAM Role Arn"
+  description = "IAM Execution Role Arn"
+}
+
+variable "task_role_arn" {
+  type        = string
+  description = "IAM Task Role Arn"
 }
 
 variable "tg_arn" {

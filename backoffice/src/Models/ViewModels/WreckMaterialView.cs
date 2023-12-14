@@ -1,16 +1,20 @@
+#region
+
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 
+#endregion
+
 namespace Droits.Models.ViewModels;
 
-public class WreckMaterialView
+public class WreckMaterialView : BaseEntityView
 {
     public WreckMaterialView()
     {
     }
 
 
-    public WreckMaterialView(WreckMaterial wreckMaterial)
+    public WreckMaterialView(WreckMaterial wreckMaterial) : base(wreckMaterial)
     {
         Id = wreckMaterial.Id;
         DroitId = wreckMaterial.DroitId;
@@ -24,10 +28,12 @@ public class WreckMaterialView
         WreckMaterialOwner = wreckMaterial.WreckMaterialOwner;
         Purchaser = wreckMaterial.Purchaser;
         Outcome = wreckMaterial.Outcome;
-        WhereSecured = wreckMaterial.WhereSecured;
-        Created = wreckMaterial.Created;
-        LastModified = wreckMaterial.LastModified;
         StorageAddress = new AddressView(wreckMaterial.StorageAddress);
+        
+        if ( wreckMaterial.Images.Any() )
+        {
+            Images = wreckMaterial.Images.Select(i => new ImageView(i)).OrderByDescending(i => i.Created).ToList();
+        }
     }
 
 
@@ -39,11 +45,13 @@ public class WreckMaterialView
     [DataType(DataType.MultilineText)]
     public string? Description { get; } = string.Empty;
     public int Quantity { get; } = 1;
-    public float? Value { get; } = 0;
-
+    public double? Value { get; } = 0;
+    
+    // Images
+    public List<ImageView> Images { get; } = new();
 
     [Display(Name = "Receiver Valuation")]
-    public float? ReceiverValuation { get; }
+    public double? ReceiverValuation { get; }
 
     [Display(Name = "Value Confirmed")]
     public bool ValueConfirmed { get; }
@@ -57,13 +65,5 @@ public class WreckMaterialView
 
     [DataType(DataType.MultilineText)]
     public string? Outcome { get; } = string.Empty;
-
-    [Display(Name = "Where Secured")]
-    [DataType(DataType.MultilineText)]
-    public string? WhereSecured { get; } = string.Empty;
-
-    public DateTime Created { get; }
-
-    [Display(Name = "Last Modified")]
-    public DateTime LastModified { get; }
+    
 }

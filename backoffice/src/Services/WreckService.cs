@@ -1,10 +1,19 @@
+#region
+
 using Droits.Helpers;
+using Droits.Helpers.SearchHelpers;
+using Droits.Models.DTOs;
+using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+
+#endregion
 
 namespace Droits.Services;
 
@@ -13,8 +22,11 @@ public interface IWreckService
     Task<List<Wreck>> GetWrecksAsync();
     Task<Wreck> SaveWreckAsync(Wreck wreck);
     Task<Wreck> GetWreckAsync(Guid id);
+    Task<Wreck> GetWreckByPowerappsIdAsync(string powerappsId);
     Task<Guid> SaveWreckFormAsync(WreckForm wreckForm);
     Task<WreckListView> GetWrecksListViewAsync(SearchOptions searchOptions);
+    Task<WreckListView> AdvancedSearchAsync(WreckSearchForm form);
+    Task<byte[]> ExportAsync(WreckSearchForm form);
 }
 
 public class WreckService : IWreckService
@@ -33,7 +45,7 @@ public class WreckService : IWreckService
         var query = searchOptions.IncludeAssociations
             ? _repo.GetWrecksWithAssociations()
             : _repo.GetWrecks();
-        var pagedItems = await ServiceHelpers.GetPagedResult(
+        var pagedItems = await ServiceHelper.GetPagedResult(
             query.Select(w => new WreckView(w, searchOptions.IncludeAssociations)), searchOptions);
 
         return new WreckListView(pagedItems.Items)
@@ -65,13 +77,13 @@ public class WreckService : IWreckService
 
     private async Task<Wreck> AddWreckAsync(Wreck wreck)
     {
-        return await _repo.AddWreckAsync(wreck);
+        return await _repo.AddAsync(wreck);
     }
 
 
     private async Task<Wreck> UpdateWreckAsync(Wreck wreck)
     {
-        return await _repo.UpdateWreckAsync(wreck);
+        return await _repo.UpdateAsync(wreck);
     }
 
 
@@ -81,10 +93,60 @@ public class WreckService : IWreckService
     }
 
 
+    public async Task<Wreck> GetWreckByPowerappsIdAsync(string powerappsId)
+    {
+        return await _repo.GetWreckByPowerappsIdAsync(powerappsId);
+    }
     public async Task<Guid> SaveWreckFormAsync(WreckForm wreckForm)
     {
         var wreck = wreckForm.ApplyChanges(new Wreck());
 
         return ( await SaveWreckAsync(wreck) ).Id;
+    }
+    
+    public async Task<WreckListView> AdvancedSearchAsync(WreckSearchForm form)
+    {
+        var query = QueryFromForm(form)
+            .Select(w => new WreckView(w, true));
+        
+        var pagedResults =
+            await ServiceHelper.GetPagedResult(query, form);
+
+        return new WreckListView(pagedResults.Items)
+        {
+            PageNumber = pagedResults.PageNumber,
+            PageSize = pagedResults.PageSize,
+            IncludeAssociations = pagedResults.IncludeAssociations,
+            TotalCount = pagedResults.TotalCount,
+            SearchForm = form
+        };
+    }
+
+    protected IQueryable<Wreck> QueryFromForm(WreckSearchForm form)
+    {
+        var query = _repo.GetWrecksWithAssociations();
+
+        return WreckQueryBuilder.BuildQuery(form, query);
+    }
+
+
+    private List<Wreck> SearchWrecks(IQueryable<Wreck> query)
+    {
+        return query.ToList();
+    }
+    public async Task<byte[]> ExportAsync(WreckSearchForm form)
+    {
+        var query = QueryFromForm(form);
+
+        var wrecks = SearchWrecks(query);
+        
+        var wrecksData = wrecks.Select(s => new WreckExportDto(s)).ToList();
+        
+        if (wrecks.IsNullOrEmpty())
+        {
+            throw new Exception("No Wrecks to export");
+        }
+
+        return await ExportHelper.ExportRecordsAsync(wrecksData);
     }
 }

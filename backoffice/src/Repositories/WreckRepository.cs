@@ -1,7 +1,12 @@
+#region
+
 using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
+using Droits.Services;
 using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Droits.Repositories;
 
@@ -10,24 +15,21 @@ public interface IWreckRepository
     IQueryable<Wreck> GetWrecks();
     IQueryable<Wreck> GetWrecksWithAssociations();
     Task<Wreck> GetWreckAsync(Guid id);
-    Task<Wreck> AddWreckAsync(Wreck wreck);
-    Task<Wreck> UpdateWreckAsync(Wreck wreck);
+    Task<Wreck> GetWreckByPowerappsIdAsync(string powerappsId);
+    Task<Wreck> AddAsync(Wreck wreck);
+    Task<Wreck> UpdateAsync(Wreck wreck);
 }
 
-public class WreckRepository : IWreckRepository
+public class WreckRepository : BaseEntityRepository<Wreck>, IWreckRepository
 {
-    private readonly DroitsContext _context;
-
-
-    public WreckRepository(DroitsContext dbContext)
+    public WreckRepository(DroitsContext dbContext, IAccountService accountService) : base(dbContext,accountService)
     {
-        _context = dbContext;
     }
 
 
     public IQueryable<Wreck> GetWrecks()
     {
-        return _context.Wrecks;
+        return Context.Wrecks.OrderByDescending(l => l.Created);
     }
 
 
@@ -39,8 +41,10 @@ public class WreckRepository : IWreckRepository
 
     public async Task<Wreck> GetWreckAsync(Guid id)
     {
-        var wreck = await _context.Wrecks
+        var wreck = await Context.Wrecks
             .Include(w => w.Droits)
+            .Include(w => w.LastModifiedByUser)
+            .Include(d => d.Notes).ThenInclude(n => n.LastModifiedByUser)
             .FirstOrDefaultAsync(w => w.Id == id);
         if ( wreck == null )
         {
@@ -49,27 +53,17 @@ public class WreckRepository : IWreckRepository
 
         return wreck;
     }
-
-
-    public async Task<Wreck> AddWreckAsync(Wreck wreck)
+    
+    public async Task<Wreck> GetWreckByPowerappsIdAsync(string powerappsId)
     {
-        wreck.Created = DateTime.UtcNow;
-        wreck.LastModified = DateTime.UtcNow;
+        var wreck = await Context.Wrecks
+            .FirstOrDefaultAsync(w => w.PowerappsWreckId == powerappsId);
+        if ( wreck == null )
+        {
+            throw new WreckNotFoundException();
+        }
 
-        var savedWreck = _context.Wrecks.Add(wreck).Entity;
-        await _context.SaveChangesAsync();
-
-        return savedWreck;
+        return wreck;
     }
-
-
-    public async Task<Wreck> UpdateWreckAsync(Wreck wreck)
-    {
-        wreck.LastModified = DateTime.UtcNow;
-
-        var savedWreck = _context.Wrecks.Update(wreck).Entity;
-        await _context.SaveChangesAsync();
-
-        return savedWreck;
-    }
+    
 }

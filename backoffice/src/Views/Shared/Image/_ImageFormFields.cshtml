@@ -1,0 +1,50 @@
+@model ImageForm
+
+<div class="js-image-form mb-2">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col">
+                    <h5>Image</h5>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-danger float-end js-remove-image-form">Remove</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.WreckMaterialId)
+
+            <div class="form-group row mt-2">
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.Title, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-9">
+                    @Html.EditorFor(m => m.Title, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+                </div>
+            </div> 
+            @if (Model.Id != default)
+            {
+                <div class="form-group row mt-2">
+                    <img src="@Url.Action("DisplayImage","Image", new {id = Model.Id})" alt="Droit image"/>
+                </div>
+            }
+            else
+            {
+                <div class="form-group row mt-2">
+                    <div class="col-md-3">
+                        @Html.LabelFor(m => m.ImageFile, new { @class = "col-form-label font-weight-bold" })
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(m => m.ImageFile, new { htmlAttributes = new { @class = "form-control js-image-file-input", accept = "image/*" } })
+                        @Html.ValidationMessageFor(m => m.ImageFile, "", new { @class = "text-danger" })
+                    </div>
+                    <img class="js-image-preview mt-2 p-4 d-none" id="imagePreview" src="" alt="Image Preview" />
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,27 +1,29 @@
+#region
+
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.ViewModels.ListViews;
 
+#endregion
+
 namespace Droits.Models.ViewModels;
 
-public class SalvorView
+public class SalvorView : BaseEntityView
 {
     public SalvorView()
     {
     }
 
 
-    public SalvorView(Salvor salvor, bool includeAssociations = false)
+    public SalvorView(Salvor salvor, bool includeAssociations = false) : base(salvor)
     {
         Id = salvor.Id;
         Email = salvor.Email;
         Name = salvor.Name;
         TelephoneNumber = salvor.TelephoneNumber;
-        DateOfBirth = salvor.DateOfBirth;
-        Created = salvor.Created;
-        LastModified = salvor.LastModified;
+        MobileNumber = salvor.MobileNumber;
         Address = new AddressView(salvor.Address);
+        Notes = new NoteListView(salvor.Notes.Select(n => new NoteView(n)).OrderByDescending(n => n.Created).ToList());
 
         if ( includeAssociations )
         {
@@ -35,21 +37,13 @@ public class SalvorView
     public string Name { get; } = string.Empty;
 
     [DisplayName("Telephone Number")]
-    public string TelephoneNumber { get; } = string.Empty;
-
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    [DataType(DataType.Date)]
-    [DisplayName("Date of Birth")]
-    public DateTime DateOfBirth { get; }
+    public string? TelephoneNumber { get; } = string.Empty;
+    
+    [DisplayName("Mobile Number")]
+    public string? MobileNumber { get; } = string.Empty;
 
     public AddressView Address { get; } = new();
-
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime Created { get; }
-
-    [DisplayName("Last Modified")]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime LastModified { get; }
-
     public DroitListView Droits { get; } = new();
+    public NoteListView Notes { get; } = new();
+
 }

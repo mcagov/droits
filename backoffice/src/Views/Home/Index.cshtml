@@ -2,10 +2,14 @@
     ViewData["Title"] = "Droits V2";
 }
 
-<div class="jumbotron">
+@{
+    await Html.RenderPartialAsync("_MessageBanner");
+}
+
+
+<div class="jumbotron d-block">
     <h3 class="display-6">@ViewData["Title"]</h3>
     <p class="lead">This is the droits replacement system to replace the PowerApps current system.</p>
-    <p class="lead">
-        <a class="btn btn-primary btn-lg float-end" asp-controller="Droit" asp-action="Index" role="button">Manage Droits</a>
-    </p>
+    
+    <a class="btn btn-primary btn-lg float-end" asp-controller="Droit" asp-action="Index" role="button">Manage Droits</a>
 </div>

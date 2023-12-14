@@ -1,29 +1,30 @@
+#region
+
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
-using Microsoft.AspNetCore.Mvc;
+
+#endregion
+
 
 namespace Droits.Models.FormModels;
 
-public class SalvorForm
+public class SalvorForm : BaseEntityForm
 {
     public SalvorForm()
     {
     }
 
 
-    public SalvorForm(Salvor salvor)
+    public SalvorForm(Salvor salvor) : base(salvor)
     {
-        Id = salvor.Id;
         Name = salvor.Name;
         Email = salvor.Email;
         TelephoneNumber = salvor.TelephoneNumber;
-        DateOfBirth = salvor.DateOfBirth;
+        MobileNumber = salvor.MobileNumber;
         Address = new AddressForm(salvor.Address);
     }
 
-
-    public Guid Id { get; set; }
 
     [Required(ErrorMessage = "Name is required")]
     public string Name { get; set; } = string.Empty;
@@ -32,29 +33,26 @@ public class SalvorForm
     [EmailAddress(ErrorMessage = "Invalid email address")]
     public string Email { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Phone number is required")]
     [Phone()]
     [DisplayName("Telephone Number")]
 
-    public string TelephoneNumber { get; set; } = string.Empty;
-
-    [Required(ErrorMessage = "Date of Birth is required")]
-    [BindProperty]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    [DataType(DataType.Date)]
-    [DisplayName("Date of Birth")]
-    public DateTime DateOfBirth { get; set; }
+    public string? TelephoneNumber { get; set; } = string.Empty;
+    
+    [Phone()]
+    [DisplayName("Mobile Number")]
+    public string? MobileNumber { get; } = string.Empty;
 
     public AddressForm Address { get; set; } = new();
 
 
     public Salvor ApplyChanges(Salvor salvor)
     {
-        salvor.Id = Id;
+        base.ApplyChanges(salvor);
+        
         salvor.Name = Name;
         salvor.Email = Email;
-        salvor.TelephoneNumber = TelephoneNumber;
-        salvor.DateOfBirth = DateOfBirth;
+        salvor.TelephoneNumber = TelephoneNumber ?? "";
+        salvor.MobileNumber = MobileNumber ?? "";
 
         Address.ApplyChanges(salvor.Address);
 

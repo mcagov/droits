@@ -31,7 +31,10 @@ module "security-groups" {
 
 
 module "iam" {
-  source = "./modules/iam"
+  source               = "./modules/iam"
+  s3_images_bucket_arn = module.s3-images.bucket_arn
+
+  depends_on = [module.s3-images]
 }
 
 module "rds" {
@@ -59,6 +62,7 @@ module "backoffice-alb" {
   ssl_certificate_arn = var.ssl_certificate_arn
 
   port             = var.backoffice_port
+  protocol         = "HTTP"
   security_groups  = [module.security-groups.backoffice-lb-security-group-id]
   lb_log_bucket    = module.backoffice-logs-s3.alb-log-bucket
   application_name = "backoffice"
@@ -77,6 +81,7 @@ module "webapp-alb" {
   ssl_certificate_arn = var.ssl_certificate_arn
 
   port             = var.webapp_port
+  protocol         = "HTTP"
   security_groups  = [module.security-groups.webapp-lb-security-group-id]
   lb_log_bucket    = module.webapp-logs-s3.alb-log-bucket
   application_name = "webapp"
@@ -97,7 +102,8 @@ module "backoffice-ecs" {
   vpc_id             = module.vpc.vpc_id
   public_subnets     = module.vpc.public_subnets
   private_subnets    = module.vpc.private_subnets
-  iam_role_arn       = module.iam.iam-role-arn
+  execution_role_arn = module.iam.iam_execution_role_arn
+  task_role_arn      = module.iam.iam_task_role_arn
   security_groups    = [module.security-groups.backoffice-id]
   tg_arn             = module.backoffice-alb.target-group-arn
   droits_ecs_cluster = module.droits-ecs-cluster.ecs_cluster_id
@@ -118,7 +124,8 @@ module "webapp-ecs" {
   vpc_id             = module.vpc.vpc_id
   public_subnets     = module.vpc.public_subnets
   private_subnets    = module.vpc.private_subnets
-  iam_role_arn       = module.iam.iam-role-arn
+  execution_role_arn = module.iam.iam_execution_role_arn
+  task_role_arn      = module.iam.iam_task_role_arn
   security_groups    = [module.security-groups.webapp-security-group-id]
   tg_arn             = module.webapp-alb.target-group-arn
   droits_ecs_cluster = module.droits-ecs-cluster.ecs_cluster_id

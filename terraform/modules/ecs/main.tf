@@ -1,6 +1,7 @@
 resource "aws_ecs_task_definition" "task-definition" {
   family                   = var.service_name
-  execution_role_arn       = var.iam_role_arn
+  execution_role_arn       = var.execution_role_arn
+  task_role_arn            = var.task_role_arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = var.fargate_cpu
@@ -10,7 +11,7 @@ resource "aws_ecs_task_definition" "task-definition" {
     image : var.image_url,
     cpu : var.fargate_cpu,
     memory : var.fargate_memory,
-    environment : [{ "name" : "ENV_FILE", "value" : "${var.environment_file}" }],
+    environment : [{ "name" : "ENV_FILE", "value" : "${var.environment_file}" }, { "name" : "ECS_ENABLE_CONTAINER_METADATA", "value" : "true" }],
     portMappings : [
       {
         containerPort : var.port

@@ -1,7 +1,12 @@
+#region
+
 using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
+using Droits.Services;
 using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Droits.Repositories;
 
@@ -10,24 +15,21 @@ public interface ISalvorRepository
     IQueryable<Salvor> GetSalvors();
     IQueryable<Salvor> GetSalvorsWithAssociations();
     Task<Salvor> GetSalvorAsync(Guid id);
-    Task<Salvor> AddSalvorAsync(Salvor salvor);
-    Task<Salvor> UpdateSalvorAsync(Salvor salvor);
+    Task<Salvor> AddAsync(Salvor salvor);
+    Task<Salvor> UpdateAsync(Salvor salvor);
+    Task<Salvor?> GetSalvorByEmailAddressAsync(string? salvorInfoEmail);
 }
 
-public class SalvorRepository : ISalvorRepository
+public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
 {
-    private readonly DroitsContext _context;
-
-
-    public SalvorRepository(DroitsContext dbContext)
+    public SalvorRepository(DroitsContext dbContext, IAccountService accountService) : base(dbContext,accountService)
     {
-        _context = dbContext;
     }
 
 
     public IQueryable<Salvor> GetSalvors()
     {
-        return _context.Salvors;
+        return Context.Salvors.OrderByDescending(l => l.Created);
     }
 
 
@@ -39,8 +41,10 @@ public class SalvorRepository : ISalvorRepository
 
     public async Task<Salvor> GetSalvorAsync(Guid id)
     {
-        var salvor = await _context.Salvors
+        var salvor = await Context.Salvors
             .Include(s => s.Droits)
+            .Include(s => s.LastModifiedByUser)
+            .Include(d => d.Notes).ThenInclude(n => n.LastModifiedByUser)
             .FirstOrDefaultAsync(s => s.Id == id);
         if ( salvor == null )
         {
@@ -49,27 +53,7 @@ public class SalvorRepository : ISalvorRepository
 
         return salvor;
     }
-
-
-    public async Task<Salvor> AddSalvorAsync(Salvor salvor)
-    {
-        salvor.Created = DateTime.UtcNow;
-        salvor.LastModified = DateTime.UtcNow;
-
-        var savedSalvor = _context.Salvors.Add(salvor).Entity;
-        await _context.SaveChangesAsync();
-
-        return savedSalvor;
-    }
-
-
-    public async Task<Salvor> UpdateSalvorAsync(Salvor salvor)
-    {
-        salvor.LastModified = DateTime.UtcNow;
-
-        var savedSalvor = _context.Salvors.Update(salvor).Entity;
-        await _context.SaveChangesAsync();
-
-        return savedSalvor;
-    }
+    
+    public async Task<Salvor?> GetSalvorByEmailAddressAsync(string? emailAddress) => await Context.Salvors
+                .FirstOrDefaultAsync(s => s.Email.Trim().ToLower().Equals(emailAddress));
 }

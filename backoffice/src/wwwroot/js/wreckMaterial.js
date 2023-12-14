@@ -1,61 +1,85 @@
-import $ from 'jquery';
+import {initializeImage} from "./Image";
 
 export function initializeWreckMaterial() {
+    refreshWmFormIndexes();
+    initializeImage();
 
-    $("body").on("change", ".js-stored-salvor", function (e) {
-        toggleWreckMaterialStorageAddress(e.target);
+    document.body.addEventListener("change", function (e) {
+        if (e.target.matches('.js-stored-salvor')) {
+            toggleWreckMaterialStorageAddress(e.target);
+        }
     });
 
-    $('body').on('click', '.js-remove-wreck-material-form', function () {
-        removeWreckMaterialForm.call(this);
+    document.querySelectorAll('.js-stored-salvor').forEach(toggleWreckMaterialStorageAddress);
+    
+    document.body.addEventListener('click', function(e) {
+        if (e.target.matches('.js-remove-wreck-material-form')) {
+            removeWreckMaterialForm.call(e.target);
+        }
     });
 
-    $('#js-add-wreck-material-form').on('click', function () {
-        addWreckMaterialForm();
-    });
+    const addWreckMaterialBtn = document.querySelector('#js-add-wreck-material-form');
+    addWreckMaterialBtn.addEventListener('click', addWreckMaterialForm);
+    
 }
 
 function toggleWreckMaterialStorageAddress(salvorAddressCheckbox) {
-    const useSalvorAddress = $(salvorAddressCheckbox).prop("checked");
-    const addressContainer = $(salvorAddressCheckbox).closest(".js-wreck-material-form").find(".js-wreck-material-address");
-    addressContainer.toggleClass("d-none", useSalvorAddress);
+    const useSalvorAddress = salvorAddressCheckbox.checked;
+    const addressContainer = salvorAddressCheckbox.closest(".js-wreck-material-form").querySelector(".js-wreck-material-address");
+    if (useSalvorAddress) {
+        addressContainer.classList.add("d-none");
+    } else {
+        addressContainer.classList.remove("d-none");
+    }
 }
 
 export function removeWreckMaterialForm() {
-    var confirmMessage = 'Are you sure you want to remove this Wreck Material?';
-    var removeAction = function () {
-        $(this).closest('.js-wreck-material-form').remove();
+    const confirmMessage = 'Are you sure you want to remove this Wreck Material?';
+    const removeAction = function () {
+        this.closest('.js-wreck-material-form').remove();
         refreshWmFormIndexes();
-        $('#confirmDialog').modal('hide');
+        const confirmDialog = document.querySelector('#confirmDialog');
+        const modalInstance = bootstrap.Modal.getInstance(confirmDialog);
+        modalInstance.hide();
     };
-    confirm(confirmMessage, removeAction.bind(this));
+    window.confirm(confirmMessage, removeAction.bind(this));
 }
 
 export function addWreckMaterialForm() {
-    var wmFormContainer = $('#js-wreck-materials-form-container');
-    $.get('/Droit/WreckMaterialFormPartial')
-        .done(function (response) {
-            var index = wmFormContainer.find('.js-wreck-material-form').length;
-            var $response = $(response);
+        const wmFormContainer = document.querySelector('#js-wreck-materials-form-container');
+        fetch('/Droit/WreckMaterialFormPartial')
+            .then(response => response.text())
+            .then(response => {
+                const responseElement = document.createElement('div');
+                responseElement.innerHTML = response;
 
-            $response.find('[name]').each(function () {
-                var name = $(this).attr('name');
-                if (name) {
-                    $(this).attr('name', `WreckMaterialForms[${index}].${name}`);
-                    $(this).attr('id', `WreckMaterialForms_[${index}]__${name}`);
-                }
+                const index = wmFormContainer.querySelectorAll('.js-wreck-material-form').length;
+
+                responseElement.querySelectorAll('[name]').forEach(elem => {
+                    const name = elem.getAttribute('name');
+                    if (name) {
+                        elem.setAttribute('name', `WreckMaterialForms[${index}].${name}`);
+                        elem.setAttribute('id', `WreckMaterialForms_[${index}]__${name}`);
+                    }
+                });
+                
+                
+                wmFormContainer.appendChild(responseElement);
+
+                refreshWmFormIndexes();
+                
             });
-
-            wmFormContainer.append($response);
-            refreshWmFormIndexes();
-        });
 }
 
+
 function refreshWmFormIndexes() {
-    $('#js-wreck-materials-form-container').find('.js-wreck-material-form').each(function (index) {
-        $(this).find('input, select').each(function () {
-            $(this).attr('name', $(this).attr('name').replace(/WreckMaterialForms\[\d+\]/, `WreckMaterialForms[${index}]`));
-            $(this).attr('id', $(this).attr('id').replace(/WreckMaterialForms_\[\d+\]/, `WreckMaterialForms_[${index}]`));
+    const wmFormContainer = document.querySelector('#js-wreck-materials-form-container');
+    wmFormContainer.querySelectorAll('.js-wreck-material-form').forEach((form, index) => {
+        form.setAttribute("js-data-wm-name", `WreckMaterialForms[${index}]`);
+        form.setAttribute("js-data-wm-id", `WreckMaterialForms_[${index}]`);
+        form.querySelectorAll('input, select').forEach(elem => {
+            elem.setAttribute('name', elem.getAttribute('name').replace(/WreckMaterialForms\[\d+]/, `WreckMaterialForms[${index}]`));
+            elem.setAttribute('id', elem.getAttribute('id').replace(/WreckMaterialForms_\[\d+]/, `WreckMaterialForms_[${index}]`));
         });
     });
 }

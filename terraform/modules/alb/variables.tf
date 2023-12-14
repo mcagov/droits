@@ -22,6 +22,11 @@ variable "security_groups" {
   type = list(any)
 }
 
+variable "protocol" {
+  type        = string
+  description = "The protocol that the backoffice application runs on"
+}
+
 variable "port" {
   type        = string
   description = "The port that the backoffice application runs on"

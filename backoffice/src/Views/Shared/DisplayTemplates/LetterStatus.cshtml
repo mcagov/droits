@@ -1,0 +1,29 @@
+@model LetterStatus
+@{
+    var enumClass = ""; 
+
+    switch (Model)
+    {
+        case LetterStatus.Draft:
+            enumClass = "bg-info";
+            break;
+        case LetterStatus.ReadyForQc:
+            enumClass = "bg-secondary"; 
+            break;
+        case LetterStatus.ActionRequired:
+            enumClass = "bg-warning text-dark"; 
+            break;
+        case LetterStatus.QcApproved:
+            enumClass = "bg-success"; 
+            break;
+        case LetterStatus.Sent:
+            enumClass = "bg-primary"; 
+            break;
+        default:
+            enumClass = "bg-danger";
+            break;
+    }
+
+}
+
+<span class="badge @enumClass">@Model.GetDisplayName()</span>

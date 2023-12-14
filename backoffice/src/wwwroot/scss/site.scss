@@ -1,6 +1,13 @@
 @import 'variables';
-@import 'bootstrap/scss/bootstrap';
-@import 'select2/dist/css/select2.css';
+@import "~bootstrap/scss/bootstrap";
+@import '~choices.js/public/assets/styles/choices.min.css';
+
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
 
 html {
   font-size: 14px;
@@ -72,4 +79,30 @@ div.form-sections {
 
 .multi-line-text {
   white-space: pre-wrap;
+}
+
+.search-bar-results-container{
+  max-height: 75vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+ 
+}
+
+.search-bar-result {
+  text-decoration: none;
+  color: inherit;
+  &:hover {
+    @extend .bg-light;
+  }
+}
+
+.is-open {
+  z-index: 3;
+}
+
+.sticky-content {
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  max-height: calc(100vh - 20px);
 }

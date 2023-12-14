@@ -1,15 +1,18 @@
+#region
+
 using Droits.Models.Entities;
-using Droits.Models.FormModels;
 using Notify.Client;
 using Notify.Models.Responses;
+
+#endregion
 
 namespace Droits.Clients;
 
 public interface IGovNotifyClient
 {
-    Task<EmailNotificationResponse> SendLetterAsync(Letter form);
-    string? getTemplateId();
-    string? getApiKey();
+    Task<EmailNotificationResponse> SendLetterAsync(Letter letter);
+    string? GetTemplateId();
+    string? GetApiKey();
 }
 
 public class GovNotifyClient : IGovNotifyClient
@@ -23,32 +26,33 @@ public class GovNotifyClient : IGovNotifyClient
     {
         _logger = logger;
         _configuration = configuration;
-        _client = new NotificationClient(getApiKey());
+        _client = new NotificationClient(GetApiKey());
     }
 
 
     public async Task<EmailNotificationResponse> SendLetterAsync(Letter letter)
     {
-        var data = new Dictionary<string, dynamic>();
-
-        data.Add("body",letter.Body);
-        data.Add("subject", letter.Subject);
+        var data = new Dictionary<string, dynamic>
+        {
+            { "body", letter.Body },
+            { "subject", letter.Subject }
+        };
 
         return await _client.SendEmailAsync(
             letter.Recipient,
-            getTemplateId(),
+            GetTemplateId(),
             data
         );
     }
 
 
-    public string getTemplateId()
+    public string GetTemplateId()
     {
         return _configuration.GetSection("GovNotify:TemplateId").Value ?? "";
     }
 
 
-    public string getApiKey()
+    public string GetApiKey()
     {
         return _configuration.GetSection("GovNotify:ApiKey").Value ?? "";
     }

@@ -1,35 +1,48 @@
-@model List<LetterView>
+@model LetterListView
 
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
         <tr>
             <th scope="col">Recipient</th>
-            <th scope="col">Subject</th>
+            @if(Model.IncludeAssociations)
+            {
+                <th scope="col">Droit</th>
+            }
             <th scope="col">Type</th>
             <th scope="col">Last Modified</th>
-            <th scope="col">Is Sent?</th>
+            <th scope="col">Status</th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
-        @foreach (var letter in Model)
+        @foreach (LetterView letter in Model.Letters)
         {
-            <tr>
-                <td class="p-3 text-uppercase">
-                    @letter.Recipient
-                </td>
-                <td class="p-3">@letter.Subject</td>
-                <td class="p-3">@Html.DisplayFor(m => letter.LetterType)</td>
-                <td class="p-3">@letter.DateLastModified.ToString("dd/MM/yyyy")</td>
-                <td class="p-3">@Html.DisplayFor(m => letter.IsSent)</td>
-                <td class="p-3">
-                    <div class="btn-group">
-                        <a asp-controller="Letter" asp-action="Edit" asp-route-id="@letter.Id" class="btn btn-primary">Edit</a>
-                        <a asp-controller="Letter" asp-action="Preview" asp-route-id="@letter.Id" class="btn btn-primary">View</a>
-                    </div>
-                </td>
-            </tr>
+                <tr>
+                    <td class="p-3 text-uppercase">
+                        @letter.Recipient
+                    </td>
+                    @if(Model.IncludeAssociations)
+                    {
+                        <td class="p-3 text-uppercase">
+                            @{
+                                if (letter.Droit?.Reference != null)
+                                {
+                                    @Html.ActionLink(letter.Droit.Reference, "View", "Droit", new { id = letter.Droit.Id })
+                                }
+                            }
+                        </td>
+                    }
+                    <td class="p-3">@Html.DisplayFor(m => letter.LetterType)</td>
+                    <td class="p-3">@letter.LastModified.ToString("dd/MM/yyyy")</td>
+                    <td class="p-3">@Html.DisplayFor(m => letter.Status)</td>
+                    <td class="p-3">
+                        <div class="btn-group">
+                            <a asp-controller="Letter" asp-action="Edit" asp-route-id="@letter.Id" class="btn btn-primary">Edit</a>
+                            <a asp-controller="Letter" asp-action="View" asp-route-id="@letter.Id" class="btn btn-primary">View</a>
+                        </div>
+                    </td>
+                </tr>
         }
         </tbody>
     </table>

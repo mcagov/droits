@@ -9,18 +9,32 @@
 
 <div class="row">
     <div class="col">
-        <h4>@ViewData["Title"]</h4>
+        <h4 class="d-inline">@ViewData["Title"]</h4>
     </div>
     <div class="col">
-        <a class="btn btn-primary float-end" asp-action="Add">Add Wreck</a>
+       <div class="d-flex justify-content-end">
+           <a class="btn btn-primary js-toggle-wreck-search mx-2">Search <i class="fas fa-search"></i></a>
+           <a class="btn btn-primary" asp-action="Add">Add Wreck</a>
+       </div>
     </div>
 </div>
+
+<div class="form-search js-wreck-search @( Model.SearchOpen ? "" : "d-none")">
+    <div class="card mt-2">
+        <div class="card-body">
+            <partial name="_WreckSearchForm" model="@Model.SearchForm"/>
+        </div>
+    </div>
+</div>
+
 
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
         <tr>
             <th scope="col">Name</th>
+            <th scope="col">Attributes</th>
+            <th scope="col">Owner</th>
             <th scope="col">Created</th>
             <th scope="col">Actions</th>
         </tr>
@@ -32,6 +46,26 @@
                 <td class="p-3 text-uppercase">
                     <a asp-action="View" asp-route-id="@wreck.Id">@wreck.Name</a>
                 </td>
+                <td class="p-3">
+                    @if (wreck.WreckType != null) { <span class="badge rounded-pill bg-primary">@wreck.WreckType</span> }
+                    @if (wreck.InUkWaters)
+                    {
+                        <span class="badge rounded-pill bg-primary">UK Waters</span>
+                    }
+                    @if (wreck.IsWarWreck)
+                    {
+                        <span class="badge rounded-pill bg-primary">War Wreck</span>
+                    }
+                    @if (wreck.IsAnAircraft)
+                    {
+                        <span class="badge rounded-pill bg-primary">Aircraft</span>
+                    }
+                    @if (wreck.IsProtectedSite)
+                    {
+                        <span class="badge rounded-pill bg-primary">Protected</span>
+                    }
+                </td>
+                <td class="p-3"> @wreck.OwnerName</td>
                 <td class="p-3">@wreck.Created.ToString("dd/MM/yyyy")</td>
                 <td class="p-3">
                     <div class="btn-group">

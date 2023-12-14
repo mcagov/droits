@@ -1,4 +1,3 @@
-using System.Diagnostics.Contracts;
 using System.Text.RegularExpressions;
 using Droits.Helpers;
 

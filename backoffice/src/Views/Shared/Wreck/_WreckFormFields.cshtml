@@ -7,14 +7,21 @@
 </div>
 
 <div class="form-group">
-    @Html.LabelFor(m => m.VesselConstructionDetails, new { @class = "col-form-label" })
-    @Html.EditorFor(m => m.VesselConstructionDetails, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(m => m.VesselConstructionDetails, "", new { @class = "text-danger" })
+    @Html.LabelFor(m => m.WreckType, new { @class = "col-form-label" })
+    @Html.DropDownListFor(m => m.WreckType, Html.GetEnumSelectList(typeof(WreckType)), "Select.....", new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.WreckType, "", new { @class = "text-danger" })
+
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.ConstructionDetails, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.ConstructionDetails, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.ConstructionDetails, "", new { @class = "text-danger" })
 </div>
 <div class="form-group">
-    @Html.LabelFor(m => m.VesselYearConstructed, new { @class = "col-form-label" })
-    @Html.EditorFor(m => m.VesselYearConstructed, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(m => m.VesselYearConstructed, "", new { @class = "text-danger" })
+    @Html.LabelFor(m => m.YearConstructed, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.YearConstructed, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.YearConstructed, "", new { @class = "text-danger" })
 </div>
 
 <div class="form-group">
@@ -25,21 +32,21 @@
 
 <div class="form-group">
     @Html.LabelFor(m => m.InUkWaters, new { @class = "col-form-label" })
-    @Html.DropDownListFor(m => m.InUkWaters, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.InUkWaters, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.InUkWaters, "", new { @class = "text-danger" })
 
 </div>
 
 <div class="form-group">
     @Html.LabelFor(m => m.IsWarWreck, new { @class = "col-form-label" })
-    @Html.DropDownListFor(m => m.IsWarWreck, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.IsWarWreck, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.IsWarWreck, "", new { @class = "text-danger" })
 
 </div>
 
 <div class="form-group">
     @Html.LabelFor(m => m.IsAnAircraft, new { @class = "col-form-label" })
-    @Html.DropDownListFor(m => m.IsAnAircraft, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.IsAnAircraft, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.IsAnAircraft, "", new { @class = "text-danger" })
 </div>
 
@@ -57,15 +64,30 @@
 
 <div class="form-group">
     @Html.LabelFor(m => m.IsProtectedSite, new { @class = "col-form-label" })
-    @Html.DropDownListFor(m => m.IsProtectedSite, Model.BooleanSelectList, "Select.....", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.IsProtectedSite, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.IsProtectedSite, "", new { @class = "text-danger" })
 </div>
 
 <div class="form-group">
     @Html.LabelFor(m => m.ProtectionLegislation, new { @class = "col-form-label" })
-    @Html.EditorFor(m => m.ProtectionLegislation, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.EditorFor(m => m.ProtectionLegislation, new { htmlAttributes = new { @class = "form-control", @list="protection-legislations" } })
     @Html.ValidationMessageFor(m => m.ProtectionLegislation, "", new { @class = "text-danger" })
 </div>
+
+<datalist id="protection-legislations">
+    @foreach (var legislation in Model.ProtectionLegislationList)
+    {
+        <option>@legislation</option>
+    }
+</datalist>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.AdditionalInformation, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.AdditionalInformation, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.AdditionalInformation, "", new { @class = "text-danger" })
+</div>
+
+<h5 class="mt-4">Owner Details</h5>
 
 <div class="form-group">
     @Html.LabelFor(m => m.OwnerName, new { @class = "col-form-label" })
@@ -86,7 +108,10 @@
 </div>
 
 <div class="form-group">
-    @Html.LabelFor(m => m.AdditionalInformation, new { @class = "col-form-label" })
-    @Html.EditorFor(m => m.AdditionalInformation, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(m => m.AdditionalInformation, "", new { @class = "text-danger" })
+    @Html.LabelFor(m => m.OwnerAddress, new { @class = "col-form-label" })
+    @Html.EditorFor(m => m.OwnerAddress, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.OwnerAddress, "", new { @class = "text-danger" })
 </div>
+
+
+

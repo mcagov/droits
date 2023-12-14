@@ -1,27 +1,30 @@
+#region
+
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 using Droits.Models.ViewModels.ListViews;
+
+#endregion
 
 namespace Droits.Models.ViewModels;
 
-public class WreckView
+public class WreckView : BaseEntityView
 {
     public WreckView()
     {
     }
 
 
-    public WreckView(Wreck wreck, bool includeAssociations = false)
+    public WreckView(Wreck wreck, bool includeAssociations = false) : base(wreck)
     {
         Id = wreck.Id;
         Name = wreck.Name;
-
-        VesselConstructionDetails = wreck.VesselConstructionDetails;
-        VesselYearConstructed = wreck.VesselYearConstructed;
-        Created = wreck.Created;
-        LastModified = wreck.LastModified;
-
+        WreckType = wreck.WreckType;
+        
+        ConstructionDetails = wreck.ConstructionDetails;
+        YearConstructed = wreck.YearConstructed;
 
         DateOfLoss = wreck.DateOfLoss;
         InUkWaters = wreck.InUkWaters;
@@ -35,6 +38,8 @@ public class WreckView
         OwnerName = wreck.OwnerName;
         OwnerEmail = wreck.OwnerEmail;
         OwnerNumber = wreck.OwnerNumber;
+        OwnerAddress = wreck.OwnerAddress;
+        Notes = new NoteListView(wreck.Notes.Select(n => new NoteView(n)).OrderByDescending(n => n.Created).ToList());
 
         if ( includeAssociations )
         {
@@ -47,19 +52,15 @@ public class WreckView
 
     public Guid Id { get; }
     public string Name { get; } = string.Empty;
+    
+    [DisplayName("Wreck Type")]
+    public WreckType? WreckType { get; set; }
 
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime Created { get; }
+    [DisplayName("Construction Details")]
+    public string? ConstructionDetails { get; } = string.Empty;
 
-    [DisplayName("Last Modified")]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime LastModified { get; }
-
-    [DisplayName("Vessel Construction Details")]
-    public string? VesselConstructionDetails { get; } = string.Empty;
-
-    [DisplayName("Vessel Year Constructed")]
-    public int? VesselYearConstructed { get; }
+    [DisplayName("Year Constructed")]
+    public int? YearConstructed { get; }
 
     [DisplayName("Date Of Loss")]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -74,8 +75,8 @@ public class WreckView
     [DisplayName("Is An Aircraft")]
     public bool IsAnAircraft { get; } = false;
 
-    public string? Latitude { get; }
-    public string? Longitude { get; }
+    public double? Latitude { get; }
+    public double? Longitude { get; }
 
     [DisplayName("Is A Protected Site")]
     public bool IsProtectedSite { get; } = false;
@@ -91,6 +92,10 @@ public class WreckView
 
     [DisplayName("Owner Name")]
     public string? OwnerName { get; }
+    
+    [DataType(DataType.MultilineText)]
+    [DisplayName("Owner Address")]
+    public string? OwnerAddress { get; }
 
 
     [DisplayName("Additional Information")]
@@ -98,4 +103,6 @@ public class WreckView
     public string? AdditionalInformation { get; } = string.Empty;
 
     public DroitListView Droits { get; } = new();
+    public NoteListView Notes { get; } = new();
+
 }

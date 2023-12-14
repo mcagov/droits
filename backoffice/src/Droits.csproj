@@ -7,11 +7,20 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="12.0.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="AWSSDK.Core" Version="3.7.200.15" />
+        <PackageReference Include="AWSSDK.S3" Version="3.7.201.13" />
+        <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.7" />
         <PackageReference Include="Bogus" Version="34.0.2" />
+        <PackageReference Include="CsvHelper" Version="30.0.1" />
+        <PackageReference Include="FuzzyString" Version="1.0.0" />
         <PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.0.1" />
         <PackageReference Include="GovukNotify" Version="6.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.3" />
+        <PackageReference Include="Microsoft.Identity.Web" Version="2.13.3" />
+        <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.13.3" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
         <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
@@ -22,6 +31,11 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
         <Content Remove="wwwroot/css/**/*" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <AdditionalFiles Include="Views\Shared\DisplayTemplates\LetterStatus.cshtml" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">

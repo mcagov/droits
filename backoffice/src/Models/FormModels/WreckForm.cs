@@ -1,24 +1,28 @@
+#region
+
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 
+#endregion
+
 namespace Droits.Models.FormModels;
 
-public class WreckForm : FormModel
+public class WreckForm : BaseEntityForm
 {
     public WreckForm()
     {
     }
 
 
-    public WreckForm(Wreck wreck)
+    public WreckForm(Wreck wreck) : base(wreck)
     {
-        Id = wreck.Id;
         Name = wreck.Name;
-
-        VesselConstructionDetails = wreck.VesselConstructionDetails;
-        VesselYearConstructed = wreck.VesselYearConstructed;
+        WreckType = wreck.WreckType;
+        
+        ConstructionDetails = wreck.ConstructionDetails;
+        YearConstructed = wreck.YearConstructed;
 
         DateOfLoss = wreck.DateOfLoss;
 
@@ -35,21 +39,20 @@ public class WreckForm : FormModel
         OwnerName = wreck.OwnerName;
         OwnerEmail = wreck.OwnerEmail;
         OwnerNumber = wreck.OwnerNumber;
+        OwnerAddress = wreck.OwnerAddress;
     }
 
 
-    // Base fields...
-
-    public Guid Id { get; set; }
-
     [Required]
     public string Name { get; set; } = string.Empty;
+    [DisplayName("Wreck Type")]
+    public WreckType? WreckType { get; set; }
+    
+    [DisplayName("Construction Details")]
+    public string? ConstructionDetails { get; set; } = string.Empty;
 
-    [DisplayName("Vessel Construction Details")]
-    public string? VesselConstructionDetails { get; set; } = string.Empty;
-
-    [DisplayName("Vessel Year Constructed")]
-    public int? VesselYearConstructed { get; set; }
+    [DisplayName("Year Constructed")]
+    public int? YearConstructed { get; set; }
 
 
     [DisplayName("Date Of Loss")]
@@ -66,14 +69,20 @@ public class WreckForm : FormModel
     [DisplayName("Is An Aircraft")]
     public bool IsAnAircraft { get; set; } = false;
 
-    public string? Latitude { get; set; }
-    public string? Longitude { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
 
     [DisplayName("Is A Protected Site")]
     public bool IsProtectedSite { get; set; } = false;
 
+    
     [DisplayName("Protection Legislation")]
     public string? ProtectionLegislation { get; set; }
+    
+    [DisplayName("Additional Information")]
+    [DataType(DataType.MultilineText)]
+    public string? AdditionalInformation { get; set; } = string.Empty;
+    
     [DisplayName("Owner Name")]
     public string? OwnerName { get; set; }
     [DisplayName("Owner Email")]
@@ -83,18 +92,22 @@ public class WreckForm : FormModel
     [Phone(ErrorMessage = "Invalid phone number")]
     public string? OwnerNumber { get; set; }
 
-    [DisplayName("Additional Information")]
+    [DisplayName("Owner Address")]
     [DataType(DataType.MultilineText)]
-    public string? AdditionalInformation { get; set; } = string.Empty;
+    public string? OwnerAddress { get; set; } = string.Empty;
 
+    
+    public IEnumerable<string> ProtectionLegislationList => new List<string>() { "Protected Wreck Act 1973", "AMAAA 1979", "Protection of Military Remains Act 1986", "Scotland Historic Marine Protected Areas"};
 
     public Wreck ApplyChanges(Wreck wreck)
     {
-        wreck.Id = Id;
+        
+        base.ApplyChanges(wreck);
+        
         wreck.Name = Name;
-
-        wreck.VesselConstructionDetails = VesselConstructionDetails;
-        wreck.VesselYearConstructed = VesselYearConstructed;
+        wreck.WreckType = WreckType;
+        wreck.ConstructionDetails = ConstructionDetails;
+        wreck.YearConstructed = YearConstructed;
 
         wreck.DateOfLoss = DateOfLoss;
 
@@ -105,12 +118,14 @@ public class WreckForm : FormModel
         wreck.Longitude = Longitude;
         wreck.IsProtectedSite = IsProtectedSite;
         wreck.ProtectionLegislation = ProtectionLegislation;
+        wreck.AdditionalInformation = AdditionalInformation;
+
 
         wreck.OwnerName = OwnerName;
         wreck.OwnerEmail = OwnerEmail;
         wreck.OwnerNumber = OwnerNumber;
+        wreck.OwnerAddress = OwnerAddress;
 
-        wreck.AdditionalInformation = AdditionalInformation;
 
         return wreck;
     }
