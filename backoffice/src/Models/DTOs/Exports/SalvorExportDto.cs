@@ -17,6 +17,7 @@ public class SalvorExportDto
         Name = salvor.Name;
         Email = salvor.Email;
         TelephoneNumber = salvor.TelephoneNumber;
+        MobileNumber = salvor.MobileNumber;
         AddressLine1 = salvor.Address.Line1;
         AddressLine2 = salvor.Address.Line2;
         AddressTown = salvor.Address.Town;
@@ -32,6 +33,9 @@ public class SalvorExportDto
     public string? Email { get; set; }
     [DisplayName("Telephone Number")]
     public string? TelephoneNumber { get; set; } 
+    
+    [DisplayName("Mobile Number")]
+    public string? MobileNumber { get; set; } 
     [DisplayName("Address Postcode")]
     public string? AddressPostcode { get; set; }
     [DisplayName("Address County")]

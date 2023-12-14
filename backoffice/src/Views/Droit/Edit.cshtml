@@ -78,6 +78,12 @@
     </div>
     
     <div class="form-group">
+        @Html.LabelFor(m => m.TriageNumber, new { @class = "col-form-label" })
+        @Html.DropDownListFor(m => m.TriageNumber, Enumerable.Range(1, 5).Select(i => new SelectListItem(i.ToString(), i.ToString())), "Select.....", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.TriageNumber, "", new { @class = "text-danger" })
+    </div>
+    
+    <div class="form-group">
         @Html.LabelFor(m => m.AssignedToUserId, "Select RoW", new { @class = "col-form-label" })
         @Html.DropDownListFor(m => m.AssignedToUserId, Model.AllUsers, "Unassigned", new { @id = "js-select-user", @class = "form-control" })
         @Html.ValidationMessageFor(m => m.AssignedToUserId, "", new { @class = "text-danger" })
@@ -157,7 +163,7 @@
     {
         <div class="col-md-6">
             <div class="sticky-content pt-2">
-                <partial name="Wreck/_SubmittedWreckInfo" model="@Model.OriginalSubmission"/>
+                <partial name="Wreck/_ReportedWreckInfo" model="@Model"/>
             </div>
         </div>
     }
@@ -291,6 +297,11 @@
         @Html.LabelFor(m => m.ImportedFromLegacy, new { @class = "col-form-label" })
         @Html.DropDownListFor(m => m.ImportedFromLegacy, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.ImportedFromLegacy, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.LegacyRemarks, new { @class = "col-form-label" })
+        @Html.EditorFor(m => m.LegacyRemarks, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.LegacyRemarks, "", new { @class = "text-danger" })
     </div>
 </div>
 

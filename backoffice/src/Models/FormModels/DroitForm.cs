@@ -24,6 +24,7 @@ public class DroitForm : BaseEntityForm
         SalvorId = droit.SalvorId;
 
         Status = droit.Status;
+        TriageNumber = droit.TriageNumber;
         ReportedDate = droit.ReportedDate;
         DateFound = droit.DateFound;
 
@@ -44,6 +45,14 @@ public class DroitForm : BaseEntityForm
         Depth = droit.Depth;
         LocationDescription = droit.LocationDescription;
 
+        
+        //Reported Wreck 
+
+        ReportedWreckName = droit.ReportedWreckName;
+        ReportedWreckConstructionDetails = droit.ReportedWreckConstructionDetails;
+        ReportedWreckYearConstructed = droit.ReportedWreckYearConstructed;
+        ReportedWreckYearSunk = droit.ReportedWreckYearSunk;
+
         // Salvage
 
         SalvageAwardClaimed = droit.SalvageAwardClaimed;
@@ -63,6 +72,7 @@ public class DroitForm : BaseEntityForm
         Agent = droit.Agent;
         RecoveredFrom = droit.RecoveredFrom;
         ImportedFromLegacy = droit.ImportedFromLegacy;
+        LegacyRemarks = droit.LegacyRemarks;
 
 
         if ( droit.WreckMaterials.Any() )
@@ -71,6 +81,8 @@ public class DroitForm : BaseEntityForm
                 droit.WreckMaterials.Select(wm => new WreckMaterialForm(wm)).ToList();
         }
     }
+
+
 
 
     // Base fields...
@@ -87,6 +99,9 @@ public class DroitForm : BaseEntityForm
 
     public DroitStatus Status { get; set; } = DroitStatus.Received;
     
+    [DisplayName("Triage Number")]
+    public int? TriageNumber { get; set; }
+
     [DisplayName("Assigned To")]
     public Guid? AssignedToUserId { get; set; }
     
@@ -113,6 +128,11 @@ public class DroitForm : BaseEntityForm
     [DisplayName("Is Dredge")]
     public bool IsDredge { get; set; }
 
+    public string? ReportedWreckName { get; set; }
+    public int? ReportedWreckYearSunk { get; set; }
+    public int? ReportedWreckYearConstructed { get; set; }
+    public string? ReportedWreckConstructionDetails { get; set; }
+    
     // Salvor
 
     public Guid? SalvorId { get; set; }
@@ -181,6 +201,10 @@ public class DroitForm : BaseEntityForm
 
     [DisplayName("Imported From Legacy")]
     public bool ImportedFromLegacy { get; set; }
+    
+    [DisplayName("Legacy Remarks")]
+    [DataType(DataType.MultilineText)]
+    public string? LegacyRemarks { get; }
 
     public List<SelectListItem> AllUsers { get; set; } = new();
     public List<SelectListItem> AllWrecks { get; set; } = new();
@@ -195,6 +219,7 @@ public class DroitForm : BaseEntityForm
         droit.WreckId = IsIsolatedFind ? default : WreckId;
         droit.SalvorId = SalvorId;
         droit.Status = Status;
+        droit.TriageNumber = TriageNumber;
         droit.RecoveredFrom = RecoveredFrom;
         droit.ReportedDate = ReportedDate;
         droit.DateFound = DateFound;
@@ -229,6 +254,7 @@ public class DroitForm : BaseEntityForm
         droit.Agent = Agent;
         droit.RecoveredFromLegacy = RecoveredFromLegacy;
         droit.ImportedFromLegacy = ImportedFromLegacy;
+        droit.LegacyRemarks = LegacyRemarks;
 
         return droit;
     }

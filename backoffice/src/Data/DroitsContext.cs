@@ -96,6 +96,7 @@ public partial class DroitsContext : DbContext
             entity.Property(d => d.Id);
             entity.Property(d => d.AssignedToUserId);
             entity.Property(d => d.Status);
+            entity.Property(d => d.TriageNumber);
             entity.Property(d => d.ReportedDate);
             entity.Property(d => d.DateFound);
             entity.Property(d => d.OriginalSubmission);
@@ -130,13 +131,15 @@ public partial class DroitsContext : DbContext
             entity.Property(d => d.SalvageClaimAwarded);
 
             // Legacy fields
-
+            entity.Property(d => d.PowerappsDroitId);
+            entity.Property(d => d.PowerappsWreckId);
             entity.Property(d => d.District);
             entity.Property(d => d.LegacyFileReference);
             entity.Property(d => d.GoodsDischargedBy);
             entity.Property(d => d.DateDelivered);
             entity.Property(d => d.Agent);
             entity.Property(d => d.RecoveredFrom);
+            entity.Property(d => d.LegacyRemarks);
             entity.Property(d => d.ImportedFromLegacy);
 
             //Relationships
@@ -240,8 +243,8 @@ public partial class DroitsContext : DbContext
 
             entity.Property(w => w.Id);
             entity.Property(w => w.Name);
-            entity.Property(w => w.VesselYearConstructed);
-            entity.Property(w => w.VesselConstructionDetails);
+            entity.Property(w => w.YearConstructed);
+            entity.Property(w => w.ConstructionDetails);
             entity.Property(w => w.DateOfLoss);
             entity.Property(w => w.InUkWaters);
             entity.Property(w => w.IsWarWreck);
@@ -253,11 +256,14 @@ public partial class DroitsContext : DbContext
             entity.Property(w => w.OwnerName);
             entity.Property(w => w.OwnerEmail);
             entity.Property(w => w.OwnerNumber);
+            entity.Property(w => w.OwnerAddress);
             entity.Property(w => w.AdditionalInformation);
             
             entity.Property(w => w.Created);
             entity.Property(w => w.LastModified);
             entity.Property(w => w.LastModifiedByUserId);
+            entity.Property(w => w.PowerappsWreckId);
+            entity.Property(w => w.WreckType);
             
             entity.HasMany(w => w.Droits)
                 .WithOne(d => d.Wreck)
@@ -319,10 +325,14 @@ public partial class DroitsContext : DbContext
             entity.ToTable("salvors");
 
             entity.Property(s => s.Id);
+            entity.Property(s => s.PowerappsContactId);
+
             entity.Property(s => s.Email).IsRequired();
             
             entity.Property(s => s.Name);
             entity.Property(s => s.TelephoneNumber);
+            entity.Property(s => s.MobileNumber);
+
 
             entity.Property(s => s.Created);
             entity.Property(s => s.LastModified);

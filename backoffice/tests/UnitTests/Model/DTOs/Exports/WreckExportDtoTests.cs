@@ -21,8 +21,8 @@ public class WreckExportDtoTests
         {
             Id = Guid.NewGuid(),
             Name = "Boat",
-            VesselConstructionDetails = "Hammer",
-            VesselYearConstructed = 1995,
+            ConstructionDetails = "Hammer",
+            YearConstructed = 1995,
             DateOfLoss = new DateTime(),
             InUkWaters = true,
             IsWarWreck = true,
@@ -40,8 +40,8 @@ public class WreckExportDtoTests
         var wreckDto = new WreckExportDto(wreck);
         // Assert
         Assert.Equal(wreck.Name,wreckDto.Name);
-        Assert.Equal(wreck.VesselConstructionDetails,wreckDto.VesselConstructionDetails);
-        Assert.Equal(wreck.VesselYearConstructed,wreckDto.VesselYearConstructed);
+        Assert.Equal(wreck.ConstructionDetails,wreckDto.ConstructionDetails);
+        Assert.Equal(wreck.YearConstructed,wreckDto.YearConstructed);
         Assert.Equal(wreck.DateOfLoss,wreckDto.DateOfLoss);
         Assert.Equal(wreck.InUkWaters,wreckDto.InUkWaters);
         Assert.Equal(wreck.IsWarWreck,wreckDto.IsWarWreck);

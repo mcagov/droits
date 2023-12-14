@@ -9,6 +9,7 @@ namespace Droits.Models.Entities;
 
 public class Droit : BaseEntity
 {
+
     public Guid? AssignedToUserId { get; set; }
     
     [ForeignKey("AssignedToUserId")]
@@ -16,6 +17,8 @@ public class Droit : BaseEntity
     
     public string Reference { get; set; } = string.Empty;
     public DroitStatus Status { get; set; } = DroitStatus.Received;
+    
+    public int? TriageNumber { get; set; }
     public DateTime ReportedDate { get; set; } = DateTime.UtcNow;
     public DateTime DateFound { get; set; } = DateTime.UtcNow;
 
@@ -33,6 +36,15 @@ public class Droit : BaseEntity
     public Guid? WreckId { get; set; }
     public bool IsHazardousFind { get; set; } = false;
     public bool IsDredge { get; set; } = false;
+    
+    //Reported Wreck 
+    
+    public string? ReportedWreckName { get; set; }
+    public int? ReportedWreckYearSunk { get; set; }
+    public int? ReportedWreckYearConstructed { get; set; }
+    public string? ReportedWreckConstructionDetails { get; set; }
+
+
 
     // Salvor
 
@@ -53,20 +65,23 @@ public class Droit : BaseEntity
 
     // Salvage
 
-    public bool SalvageAwardClaimed { get; set; } = false;
+    public bool SalvageAwardClaimed { get; set; }
     public string? ServicesDescription { get; set; }
     public string? ServicesDuration { get; set; } //Units? Unknown.
     public double? ServicesEstimatedCost { get; set; }
-    public bool MmoLicenceRequired { get; set; } = false;
-    public bool MmoLicenceProvided { get; set; } = false;
-    public double SalvageClaimAwarded { get; set; } = 0d;
-
+    public bool MmoLicenceRequired { get; set; }
+    public bool MmoLicenceProvided { get; set; }
+    public double SalvageClaimAwarded { get; set; }
+    
     // Legacy fields
+    public string? PowerappsDroitId { get; set; }
+    public string? PowerappsWreckId { get; set; }
     public string? District { get; set; }
     public string? LegacyFileReference { get; set; } //Physical file location/ref
     public string? GoodsDischargedBy { get; set; } //Initials of RoW member.
     public string? DateDelivered { get; set; } //Unsure of date format.
     public string? Agent { get; set; }
     public string? RecoveredFromLegacy { get; set; }
-    public bool ImportedFromLegacy { get; set; }
+    public string? LegacyRemarks { get; set; }
+    public bool ImportedFromLegacy { get; set; } = false;
 }

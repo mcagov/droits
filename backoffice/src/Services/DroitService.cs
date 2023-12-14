@@ -194,8 +194,8 @@ public class DroitService : IDroitService
 
     private IQueryable<Droit> QueryFromForm(DroitSearchForm form)
     {
+
         var query = _repo.GetDroitsWithAssociations();
-        
         return DroitQueryBuilder.BuildQuery(form,query);
     }
 

@@ -42,6 +42,18 @@ namespace Droits.Data.Mappers
                 .ForMember(dest => dest.ServicesDescription,
                     opt => opt.MapFrom(src =>
                         src.SalvageServices))
+                .ForMember(dest => dest.ReportedWreckName,
+                    opt => opt.MapFrom(src =>
+                        src.VesselName))
+                .ForMember(dest => dest.ReportedWreckYearConstructed,
+                    opt => opt.MapFrom(src =>
+                        src.VesselConstructionYear))
+                .ForMember(dest => dest.ReportedWreckConstructionDetails,
+                    opt => opt.MapFrom(src =>
+                        src.VesselConstructionYear))
+                .ForMember(dest => dest.ReportedWreckYearSunk,
+                    opt => opt.MapFrom(src =>
+                        src.VesselSunkYear))
                 .ForMember(dest => dest.WreckMaterials, opt => opt.Ignore());
 
         }
