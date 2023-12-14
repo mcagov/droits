@@ -32,7 +32,7 @@ public static class DatabaseSeeder
             dbContext.SaveChanges();
         }
         
-        if ( false && !dbContext.Wrecks.Any() )
+        if (!dbContext.Wrecks.Any() )
         {
             dbContext.Wrecks.AddRange(GetWrecks(Faker.Random.ArrayElement(dbContext.Users.ToArray())));
             dbContext.SaveChanges();
