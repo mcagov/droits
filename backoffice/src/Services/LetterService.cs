@@ -3,6 +3,7 @@
 using Droits.Clients;
 using Droits.Exceptions;
 using Droits.Helpers;
+using Droits.Helpers.SearchHelpers;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
@@ -12,6 +13,7 @@ using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 #endregion
@@ -61,9 +63,9 @@ public class LetterService : ILetterService
         var query = GetLetterQuery(searchOptions);
 
         query = query.OrderBy(l =>
-                l.Status == LetterStatus.ReadyForQC ? 0 :
+                l.Status == LetterStatus.ReadyForQc ? 0 :
                 l.Status == LetterStatus.ActionRequired ? 1 :
-                l.Status == LetterStatus.QCApproved ? 2 :
+                l.Status == LetterStatus.QcApproved ? 2 :
                 l.Status == LetterStatus.Draft ? 3 :
                 4 // Sent
         ).ThenByDescending(l => l.Created);
@@ -94,7 +96,7 @@ public class LetterService : ILetterService
 
         query = query.Where(l =>
             l.DateSent == null &&
-            l.Status == LetterStatus.QCApproved &&
+            l.Status == LetterStatus.QcApproved &&
             (l.Droit != null && l.Droit.AssignedToUserId == currentUserId )
         );
         
@@ -209,7 +211,7 @@ public class LetterService : ILetterService
         }
         
         
-        if ( status != LetterStatus.QCApproved && form.Status == LetterStatus.QCApproved )
+        if ( status != LetterStatus.QcApproved && form.Status == LetterStatus.QcApproved )
         {
             var currentUserId = _accountService.GetCurrentUserId();
             letter.QualityApprovedUserId = currentUserId;
@@ -260,21 +262,7 @@ public class LetterService : ILetterService
     
     public async Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form)
     {
-        var query = _repo.GetLettersWithAssociations()
-            .OrderBy(l =>
-                    l.Status == LetterStatus.ReadyForQC ? 0 :
-                    l.Status == LetterStatus.ActionRequired ? 1 :
-                    l.Status == LetterStatus.QCApproved ? 2 :
-                    l.Status == LetterStatus.Draft ? 3 :
-                    4 // Sent
-            ).ThenByDescending(l => l.Created)
-            .Where(l =>
-                SearchHelper.FuzzyMatches(form.Recipient, l.Recipient, 70) && 
-                ( form.StatusList.IsNullOrEmpty() ||
-                  form.StatusList.Contains(l.Status) ) &&
-                ( form.TypeList.IsNullOrEmpty() ||
-                  form.TypeList.Contains(l.Type) ) 
-            )
+        var query = QueryFromForm(form)
             .Select(l => new LetterView(l, true));
         
         var pagedResults =
@@ -327,16 +315,9 @@ public class LetterService : ILetterService
 
     private IQueryable<Letter> QueryFromForm(LetterSearchForm form)
     {
-        var query = _repo.GetLettersWithAssociations()
-            .OrderByDescending(l => l.Created)
-            .Where(l =>
-                ( form.StatusList.IsNullOrEmpty() ||
-                  form.StatusList.Contains(l.Status) ) &&
-                ( form.TypeList.IsNullOrEmpty() ||
-                  form.TypeList.Contains(l.Type) )
-            );
+        var query = _repo.GetLettersWithAssociations();
 
-        return query;
+        return LetterQueryBuilder.BuildQuery(form, query);
     }
 
 

@@ -5,6 +5,7 @@ using AutoMapper;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Helpers.Extensions;
+using Droits.Helpers.SearchHelpers;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
@@ -189,93 +190,13 @@ public class DroitService : IDroitService
     }
     
     public async Task<List<DroitExportDto>> SearchDroitsAsync(string query) => await _repo.SearchDroitsAsync(query);
-    
+
+
     private IQueryable<Droit> QueryFromForm(DroitSearchForm form)
     {
-        var query = _repo.GetDroitsWithAssociations()
-            //Droit Report Filters
-            .Where(d =>
-                SearchHelper.Matches(form.Reference, d.Reference) &&
-                SearchHelper.IsBetween(d.Created, form.CreatedFrom, form.CreatedTo) &&
-                SearchHelper.IsBetween(d.LastModified, form.LastModifiedFrom,
-                    form.LastModifiedTo) &&
-                ( form.StatusList.IsNullOrEmpty() ||
-                  form.StatusList.Contains(d.Status) ) &&
-                SearchHelper.IsBetween(d.ReportedDate, form.ReportedDateFrom,
-                    form.ReportedDateTo) &&
-                SearchHelper.IsBetween(d.DateFound, form.DateFoundFrom, form.DateFoundTo) &&
-                SearchHelper.Matches(form.IsHazardousFind,
-                    d.IsHazardousFind) &&
-                SearchHelper.Matches(form.IsDredge, d.IsDredge) &&
-                SearchHelper.Matches(form.AssignedToUserId, d.AssignedToUserId))
-            //Wreck Filters
-            .Where(d =>
-                ( !form.WreckName.HasValue() ||
-                  ( d.Wreck != null &&
-                    d.Wreck.Name.HasValue() &&
-                    SearchHelper.Matches(form.WreckName, d.Wreck.Name) ) ) &&
-                SearchHelper.Matches(form.IsIsolatedFind, d.WreckId == null)
-            )
-            //Salvor Filters
-            .Where(d =>
-                !form.SalvorName.HasValue() ||
-                ( d.Salvor != null &&
-                  d.Salvor.Name.HasValue() &&
-                  SearchHelper.Matches(form.SalvorName, d.Salvor.Name) )
-            )
-            //Location Filters
-            .Where(d =>
-                // long and lat to use location radius in calculation (method on droit data)
-                SearchHelper.IsBetween(d.Latitude, form.LatitudeFrom, form.LatitudeTo) &&
-                SearchHelper.IsBetween(d.Longitude, form.LongitudeFrom, form.LongitudeTo) &&
-                SearchHelper.IsBetween(d.Depth, form.DepthFrom, form.DepthTo) &&
-                SearchHelper.Matches(form.InUkWaters, d.InUkWaters) &&
-                ( form.RecoveredFromList.IsNullOrEmpty() ||
-                  ( d.RecoveredFrom.HasValue &&
-                    form.RecoveredFromList.Contains(d.RecoveredFrom.Value) ) ) &&
-                SearchHelper.Matches(form.LocationDescription, d.LocationDescription)
-            )
-            //Wreck Material Filters
-            .Where(d =>
-                form.IgnoreWreckMaterialSearch ||
-                d.WreckMaterials.Any(wm =>
-                    SearchHelper.Matches(form.WreckMaterial, $"{wm.Name} {wm.Description}")) &&
-                d.WreckMaterials.Any(wm =>
-                    SearchHelper.Matches(form.WreckMaterialOwner, wm.WreckMaterialOwner)) &&
-                d.WreckMaterials.Any(wm =>
-                    SearchHelper.Matches(form.ValueConfirmed, wm.ValueConfirmed)) &&
-                d.WreckMaterials.Any(wm =>
-                    SearchHelper.IsBetween(wm.Quantity, form.QuantityFrom, form.QuantityTo)) &&
-                d.WreckMaterials.Any(wm =>
-                    SearchHelper.IsBetween(wm.Value, form.ValueFrom, form.ValueTo)) &&
-                d.WreckMaterials.Any(wm => SearchHelper.IsBetween(wm.ReceiverValuation,
-                    form.ReceiverValuationFrom,
-                    form.ReceiverValuationTo))
 
-            )
-            //Salvage Filters
-            .Where(d =>
-                SearchHelper.Matches(form.SalvageAwardClaimed, d.SalvageAwardClaimed) &&
-                SearchHelper.Matches(form.ServicesDescription, d.ServicesDescription) &&
-                SearchHelper.Matches(form.ServicesDuration, d.ServicesDuration) &&
-                SearchHelper.IsBetween(d.ServicesEstimatedCost, form.ServicesEstimatedCostFrom,
-                    form.ServicesEstimatedCostTo) &&
-                SearchHelper.Matches(form.MMOLicenceRequired, d.MmoLicenceRequired) &&
-                SearchHelper.Matches(form.MMOLicenceProvided, d.MmoLicenceProvided) &&
-                SearchHelper.IsBetween(d.SalvageClaimAwarded, form.SalvageClaimAwardedFrom,
-                    form.SalvageClaimAwardedTo)
-            )
-            //Legacy Filters
-            .Where(d =>
-                SearchHelper.Matches(form.District, d.District) &&
-                SearchHelper.Matches(form.LegacyFileReference, d.LegacyFileReference) &&
-                SearchHelper.Matches(form.GoodsDischargedBy, d.GoodsDischargedBy) &&
-                SearchHelper.Matches(form.DateDelivered, d.DateDelivered) &&
-                SearchHelper.Matches(form.Agent, d.Agent) &&
-                SearchHelper.Matches(form.RecoveredFromLegacy, d.RecoveredFromLegacy) &&
-                SearchHelper.Matches(form.ImportedFromLegacy, d.ImportedFromLegacy));
-        
-        return query;
+        var query = _repo.GetDroitsWithAssociations();
+        return DroitQueryBuilder.BuildQuery(form,query);
     }
 
 

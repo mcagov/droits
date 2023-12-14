@@ -11,12 +11,14 @@ public partial class DroitsContext : DbContext
 {
     public DroitsContext()
     {
+         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
 
     public DroitsContext(DbContextOptions<DroitsContext> options)
         : base(options)
     {
+         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
     public virtual DbSet<ApplicationUser> Users { get; set; } = null!;
@@ -36,6 +38,7 @@ public partial class DroitsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        
         modelBuilder.Entity<ApplicationUser>(entity =>
         {
             entity.ToTable("users");
@@ -292,6 +295,8 @@ public partial class DroitsContext : DbContext
             entity.Property(l => l.Created);
             entity.Property(l => l.LastModified);
             entity.Property(l => l.LastModifiedByUserId);
+            entity.Property(l => l.QualityApprovedUserId);
+
             
             entity.HasOne(l => l.Droit)
                 .WithMany(d => d.Letters)
@@ -301,6 +306,12 @@ public partial class DroitsContext : DbContext
             entity.HasOne(l => l.LastModifiedByUser)
                 .WithMany()
                 .HasForeignKey(l => l.LastModifiedByUserId)
+                .IsRequired(false);
+            
+            
+            entity.HasOne(l => l.QualityApprovedUser)
+                .WithMany()
+                .HasForeignKey(l => l.QualityApprovedUserId)
                 .IsRequired(false);
             
             entity.HasMany(l => l.Notes)

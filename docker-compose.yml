@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   backoffice:
+    container_name: droits_backoffice
     build:
       context: ./backoffice
     image: droits-backoffice
@@ -14,8 +15,21 @@ services:
       - ~/.aspnet/https:/https:ro
 
   webapp:
+    container_name: droits_webapp
     build:
       context: ./webapp
     image: droits-webapp
     ports:
       - "3000:3000"
+
+  database:
+    image: postgres:14-alpine
+    container_name: droits_database
+    volumes:
+      - ~/apps/droits_db/pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: droits
+      POSTGRES_USER: service
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"

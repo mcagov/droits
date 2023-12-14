@@ -5,6 +5,7 @@ using AutoMapper;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Helpers.Extensions;
+using Droits.Helpers.SearchHelpers;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
@@ -148,17 +149,12 @@ public class SalvorService : ISalvorService
 
         return salvor;
     }
-
     private IQueryable<Salvor> QueryFromForm(SalvorSearchForm form)
     {
-        var query = _repo.GetSalvorsWithAssociations()
-            .OrderByDescending(s => s.Created)
-            .Where(s =>
-                SearchHelper.FuzzyMatches(form.Name, s.Name, 70) &&
-                SearchHelper.Matches(form.Email, s.Email)
-            );
 
-        return query;
+        var query = _repo.GetSalvorsWithAssociations();
+
+        return SalvorQueryBuilder.BuildQuery(form,query);
     }
 
 

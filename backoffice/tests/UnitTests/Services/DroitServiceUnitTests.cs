@@ -186,5 +186,7 @@ namespace Droits.Tests.UnitTests.Services
             Assert.Contains("Ref2", System.Text.Encoding.UTF8.GetString(data));
             Assert.DoesNotContain("magna carta", System.Text.Encoding.UTF8.GetString(data));
         }
+        
     }
+    
 }

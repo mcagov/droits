@@ -11,11 +11,11 @@ public enum LetterStatus
     [Display(Name = "Draft")]
     Draft,
     [Display(Name = "Ready for QC")]
-    ReadyForQC,
+    ReadyForQc,
     [Display(Name = "Action Required")]
     ActionRequired,
     [Display(Name = "QC Approved")]
-    QCApproved,
+    QcApproved,
     [Display(Name = "Sent")]
     Sent
     

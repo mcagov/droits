@@ -1,6 +1,7 @@
 #region
 
 using Droits.Helpers;
+using Droits.Helpers.SearchHelpers;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
@@ -121,15 +122,11 @@ public class WreckService : IWreckService
         };
     }
 
-    private IQueryable<Wreck> QueryFromForm(WreckSearchForm form)
+    protected IQueryable<Wreck> QueryFromForm(WreckSearchForm form)
     {
-        var query = _repo.GetWrecksWithAssociations()
-            .OrderByDescending(w => w.Created)
-            .Where(w =>
-                SearchHelper.FuzzyMatches(form.Name, w.Name, 70) 
-            );
+        var query = _repo.GetWrecksWithAssociations();
 
-        return query;
+        return WreckQueryBuilder.BuildQuery(form, query);
     }
 
 
