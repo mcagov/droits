@@ -197,10 +197,10 @@ public class DroitSearchForm : SearchForm
     public double? SalvageClaimAwardedTo { get; set; }
 
     [DisplayName("MMO Licence Required")]
-    public bool? MMOLicenceRequired { get; set; }
+    public bool? MmoLicenceRequired { get; set; }
 
     [DisplayName("MMO Licence Provided")]
-    public bool? MMOLicenceProvided { get; set; }
+    public bool? MmoLicenceProvided { get; set; }
 
     // Legacy fields
     public string? District { get; set; }

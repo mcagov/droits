@@ -2,7 +2,7 @@ namespace Droits.Models;
 
 public class DroitItemOwner
 {
-    private readonly int OwnerResponseWindowDays = 30;
+    private readonly int _ownerResponseWindowDays = 30;
     public Guid Id { get; set; }
     public Guid DroitId { get; set; }
     public Guid DroitItemId { get; set; }
@@ -16,5 +16,5 @@ public class DroitItemOwner
 
     public bool OwnerResponseWindowClosed => OwnerRespondedDate != null && !OwnerHasResponded &&
                                              ( DateTime.UtcNow - OwnerRespondedDate.Value ).Days >
-                                             OwnerResponseWindowDays;
+                                             _ownerResponseWindowDays;
 }

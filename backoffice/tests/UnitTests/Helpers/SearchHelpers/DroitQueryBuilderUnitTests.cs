@@ -686,19 +686,19 @@ public class DroitQueryBuilderUnitTests
         // Arrange
         var form = new DroitSearchForm
         {
-            SalvageAwardClaimed = true,MMOLicenceRequired = true, MMOLicenceProvided = false
+            SalvageAwardClaimed = true,MmoLicenceRequired = true, MmoLicenceProvided = false
         };
         var droits = new List<Droit>
         {
             new()
             {
                 Id = Guid.NewGuid(), Reference = "MatchingDroit",
-                SalvageAwardClaimed = true, MMOLicenceRequired = true, MMOLicenceProvided = false
+                SalvageAwardClaimed = true, MmoLicenceRequired = true, MmoLicenceProvided = false
             },
             new()
             {
                 Id = Guid.NewGuid(), Reference = "NotMatchingDroit",
-                SalvageAwardClaimed = true, MMOLicenceRequired = true, MMOLicenceProvided = true
+                SalvageAwardClaimed = true, MmoLicenceRequired = true, MmoLicenceProvided = true
             },
         }.AsQueryable();
     

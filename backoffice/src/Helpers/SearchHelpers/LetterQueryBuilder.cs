@@ -28,9 +28,9 @@ public static class LetterQueryBuilder
             );
 
         query = query.OrderBy(l =>
-                l.Status == LetterStatus.ReadyForQC ? 0 :
+                l.Status == LetterStatus.ReadyForQc ? 0 :
                 l.Status == LetterStatus.ActionRequired ? 1 :
-                l.Status == LetterStatus.QCApproved ? 2 :
+                l.Status == LetterStatus.QcApproved ? 2 :
                 l.Status == LetterStatus.Draft ? 3 :
                 4 // Sent
         ).ThenByDescending(l => l.Created);

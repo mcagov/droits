@@ -282,10 +282,10 @@ public static class DroitQueryBuilder
             query = query.Where(d =>
                 ( form.SalvageAwardClaimed == null ||
                   d.SalvageAwardClaimed == form.SalvageAwardClaimed ) &&
-                ( form.MMOLicenceRequired == null ||
-                  d.MMOLicenceRequired == form.MMOLicenceRequired ) &&
-                ( form.MMOLicenceProvided == null ||
-                  d.MMOLicenceProvided == form.MMOLicenceProvided )
+                ( form.MmoLicenceRequired == null ||
+                  d.MmoLicenceRequired == form.MmoLicenceRequired ) &&
+                ( form.MmoLicenceProvided == null ||
+                  d.MmoLicenceProvided == form.MmoLicenceProvided )
             );
             //Legacy Filters
             

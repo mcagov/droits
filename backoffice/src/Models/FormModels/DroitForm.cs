@@ -50,8 +50,8 @@ public class DroitForm : BaseEntityForm
         ServicesDescription = droit.ServicesDescription;
         ServicesDuration = droit.ServicesDuration;
         ServicesEstimatedCost = droit.ServicesEstimatedCost;
-        MMOLicenceRequired = droit.MMOLicenceRequired;
-        MMOLicenceProvided = droit.MMOLicenceProvided;
+        MmoLicenceRequired = droit.MmoLicenceRequired;
+        MmoLicenceProvided = droit.MmoLicenceProvided;
         SalvageClaimAwarded = droit.SalvageClaimAwarded;
 
         // Legacy fields
@@ -154,10 +154,10 @@ public class DroitForm : BaseEntityForm
     public double? ServicesEstimatedCost { get; set; }
 
     [DisplayName("MMO Licence Required")]
-    public bool MMOLicenceRequired { get; set; }
+    public bool MmoLicenceRequired { get; set; }
 
     [DisplayName("MMO Licence Provided")]
-    public bool MMOLicenceProvided { get; set; }
+    public bool MmoLicenceProvided { get; set; }
 
     [DisplayName("Salvage Claim Awarded")]
     public double SalvageClaimAwarded { get; set; }
@@ -216,8 +216,8 @@ public class DroitForm : BaseEntityForm
         droit.ServicesDescription = ServicesDescription;
         droit.ServicesDuration = ServicesDuration;
         droit.ServicesEstimatedCost = ServicesEstimatedCost;
-        droit.MMOLicenceRequired = MMOLicenceRequired;
-        droit.MMOLicenceProvided = MMOLicenceProvided;
+        droit.MmoLicenceRequired = MmoLicenceRequired;
+        droit.MmoLicenceProvided = MmoLicenceProvided;
         droit.SalvageClaimAwarded = SalvageClaimAwarded;
 
         // Legacy fields

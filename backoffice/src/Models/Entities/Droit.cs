@@ -57,8 +57,8 @@ public class Droit : BaseEntity
     public string? ServicesDescription { get; set; }
     public string? ServicesDuration { get; set; } //Units? Unknown.
     public double? ServicesEstimatedCost { get; set; }
-    public bool MMOLicenceRequired { get; set; } = false;
-    public bool MMOLicenceProvided { get; set; } = false;
+    public bool MmoLicenceRequired { get; set; } = false;
+    public bool MmoLicenceProvided { get; set; } = false;
     public double SalvageClaimAwarded { get; set; } = 0d;
 
     // Legacy fields

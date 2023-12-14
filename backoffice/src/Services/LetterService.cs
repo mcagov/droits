@@ -63,9 +63,9 @@ public class LetterService : ILetterService
         var query = GetLetterQuery(searchOptions);
 
         query = query.OrderBy(l =>
-                l.Status == LetterStatus.ReadyForQC ? 0 :
+                l.Status == LetterStatus.ReadyForQc ? 0 :
                 l.Status == LetterStatus.ActionRequired ? 1 :
-                l.Status == LetterStatus.QCApproved ? 2 :
+                l.Status == LetterStatus.QcApproved ? 2 :
                 l.Status == LetterStatus.Draft ? 3 :
                 4 // Sent
         ).ThenByDescending(l => l.Created);
@@ -96,7 +96,7 @@ public class LetterService : ILetterService
 
         query = query.Where(l =>
             l.DateSent == null &&
-            l.Status == LetterStatus.QCApproved &&
+            l.Status == LetterStatus.QcApproved &&
             (l.Droit != null && l.Droit.AssignedToUserId == currentUserId )
         );
         
@@ -211,7 +211,7 @@ public class LetterService : ILetterService
         }
         
         
-        if ( status != LetterStatus.QCApproved && form.Status == LetterStatus.QCApproved )
+        if ( status != LetterStatus.QcApproved && form.Status == LetterStatus.QcApproved )
         {
             var currentUserId = _accountService.GetCurrentUserId();
             letter.QualityApprovedUserId = currentUserId;

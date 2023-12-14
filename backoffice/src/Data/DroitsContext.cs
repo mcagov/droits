@@ -125,8 +125,8 @@ public partial class DroitsContext : DbContext
             entity.Property(d => d.ServicesDescription);
             entity.Property(d => d.ServicesDuration);
             entity.Property(d => d.ServicesEstimatedCost);
-            entity.Property(d => d.MMOLicenceRequired);
-            entity.Property(d => d.MMOLicenceProvided);
+            entity.Property(d => d.MmoLicenceRequired);
+            entity.Property(d => d.MmoLicenceProvided);
             entity.Property(d => d.SalvageClaimAwarded);
 
             // Legacy fields

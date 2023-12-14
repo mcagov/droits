@@ -74,7 +74,7 @@ public class LetterQueryBuilderUnitTests
         {
             new() { Id = Guid.NewGuid(), Status = LetterStatus.Draft },
             new() { Id = Guid.NewGuid(), Status = LetterStatus.Sent },
-            new() { Id = Guid.NewGuid(), Status = LetterStatus.QCApproved }
+            new() { Id = Guid.NewGuid(), Status = LetterStatus.QcApproved }
         }.AsQueryable();
 
         // Act
@@ -84,7 +84,7 @@ public class LetterQueryBuilderUnitTests
         Assert.Equal(2, result.Count());
         Assert.True(result.Any(l => l.Status == LetterStatus.Draft));
         Assert.True(result.Any(l => l.Status == LetterStatus.Sent));
-        Assert.False(result.Any(l => l.Status == LetterStatus.QCApproved));
+        Assert.False(result.Any(l => l.Status == LetterStatus.QcApproved));
     }
     
 }

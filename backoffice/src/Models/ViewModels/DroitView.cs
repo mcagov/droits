@@ -88,8 +88,8 @@ public class DroitView : BaseEntityView
         ServicesDescription = droit.ServicesDescription;
         ServicesDuration = droit.ServicesDuration;
         ServicesEstimatedCost = droit.ServicesEstimatedCost;
-        MMOLicenceRequired = droit.MMOLicenceRequired;
-        MMOLicenceProvided = droit.MMOLicenceProvided;
+        MmoLicenceRequired = droit.MmoLicenceRequired;
+        MmoLicenceProvided = droit.MmoLicenceProvided;
         SalvageClaimAwarded = droit.SalvageClaimAwarded;
 
         // Legacy fields
@@ -190,10 +190,10 @@ public class DroitView : BaseEntityView
     public double? ServicesEstimatedCost { get; }
 
     [DisplayName("MMO Licence Required")]
-    public bool MMOLicenceRequired { get; }
+    public bool MmoLicenceRequired { get; }
 
     [DisplayName("MMO Licence Provided")]
-    public bool MMOLicenceProvided { get; }
+    public bool MmoLicenceProvided { get; }
 
     [DisplayName("Salvage Claim Awarded")]
     public double SalvageClaimAwarded { get; }
