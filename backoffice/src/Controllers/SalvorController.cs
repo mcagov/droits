@@ -133,7 +133,7 @@ public class SalvorController : BaseController
         }
         catch ( SalvorNotFoundException e )
         {
-            _logger.LogError("Salvor not found for partial", e);
+            _logger.LogError($"Salvor not found for partial - {e}");
             return NotFound();
         }
     }

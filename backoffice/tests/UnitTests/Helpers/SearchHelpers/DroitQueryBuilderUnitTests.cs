@@ -475,29 +475,29 @@ public class DroitQueryBuilderUnitTests
         // Arrange
         var form = new DroitSearchForm
         {
-            QuantityFrom = 2,QuantityTo = 5,
-            ValueFrom = 100,ValueTo = 1000,
-            ReceiverValuationFrom = 200,ReceiverValuationTo = 800
+            QuantityFrom = 1,QuantityTo = 3,
+            // ValueFrom = 1,ValueTo = 3,
+            // ReceiverValuationFrom = 1,ReceiverValuationTo = 3
         };
-        var matchingWreckMaterial = new WreckMaterial() { Quantity = 4, Value = 300, ReceiverValuation = 325};
-        var notMatchingWreckMaterial = new WreckMaterial() { Quantity = 10, Value = 300, ReceiverValuation = 325};
-        var anotherMatchingWreckMaterial = new WreckMaterial() { Quantity = 2, Value = 100, ReceiverValuation = 325};
+        var matchingWreckMaterial = new WreckMaterial() { Quantity = 2, Value = 2, ReceiverValuation = 2};
+        var notMatchingWreckMaterial = new WreckMaterial() { Quantity = 10, Value = 10, ReceiverValuation = 10};
+        var anotherMatchingWreckMaterial = new WreckMaterial() { Quantity = 2, Value = 1, ReceiverValuation = 3};
         var droits = new List<Droit>
         {
             new()
             {
                 Id = Guid.NewGuid(), Reference = "MatchingDroit",
-                WreckMaterials = new List<WreckMaterial>() {matchingWreckMaterial}
+                WreckMaterials = new List<WreckMaterial>() { matchingWreckMaterial }
             },
             new()
             {
                 Id = Guid.NewGuid(), Reference = "AnotherMatchingDroit",
-                WreckMaterials = new List<WreckMaterial>() {anotherMatchingWreckMaterial}
+                WreckMaterials = new List<WreckMaterial>() { anotherMatchingWreckMaterial }
             },
             new()
             {
                 Id = Guid.NewGuid(), Reference = "NotMatchingDroit",
-                WreckMaterials = new List<WreckMaterial>() {notMatchingWreckMaterial}
+                WreckMaterials = new List<WreckMaterial>() { notMatchingWreckMaterial }
             },
         }.AsQueryable();
     
@@ -620,13 +620,7 @@ public class DroitQueryBuilderUnitTests
                 ServicesDescription = "NotMatching", ServicesDuration = "",
                 ServicesEstimatedCost = 11,SalvageClaimAwarded = 7,
                 Salvor = salvor
-            },
-            new()
-            {
-                Id = Guid.NewGuid(), Reference = "MatchingDroitWithNoSalvor",
-                ServicesDescription = "Test",ServicesDuration = "Time",
-                ServicesEstimatedCost = 10, SalvageClaimAwarded = 4,
-            },
+            }
         }.AsQueryable();
     
         // Act

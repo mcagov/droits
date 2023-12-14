@@ -171,60 +171,52 @@ public static class DroitQueryBuilder
             );
 
             //Wreck Material Filters
-            query = query.Where(d =>
-                form.IgnoreWreckMaterialSearch ||
-                d.WreckMaterials.Any(wm =>
-                    form.WreckMaterial != null &&
-                     !string.IsNullOrEmpty(wm.Description) &&
-                      (wm.Description.ToLower().Contains(form.WreckMaterial.ToLower())||( usePsql
-                          ? EF.Functions.FuzzyStringMatchLevenshtein(
-                              form.WreckMaterial.ToLower(), wm.Description.ToLower())
-                          : SearchHelper.GetLevenshteinDistance(form.WreckMaterial.ToLower(),
-                              wm.Description.ToLower()) ) < MaxLevenshteinDistance)
-                       ) &&
-                d.WreckMaterials.Any(wm =>
-                    form.WreckMaterialOwner != null &&
-                     !string.IsNullOrEmpty(wm.WreckMaterialOwner) &&
-                      (wm.WreckMaterialOwner.ToLower().Contains(form.WreckMaterialOwner.ToLower()) || 
-                      ( usePsql
-                          ? EF.Functions.FuzzyStringMatchLevenshtein(
-                              form.WreckMaterialOwner.ToLower(),
-                              wm.WreckMaterialOwner.ToLower())
-                          : SearchHelper.GetLevenshteinDistance(
-                              form.WreckMaterialOwner.ToLower(),
-                              wm.WreckMaterialOwner.ToLower()) ) < MaxLevenshteinDistance)
-                       ) &&
-                d.WreckMaterials.Any(wm =>
-                    form.ValueConfirmed == null || wm.ValueConfirmed == form.ValueConfirmed));
+            if ( !form.IgnoreWreckMaterialSearch )
+            {
+              query = query.Where(d =>
+                    d.WreckMaterials.Any(wm =>
+                        (string.IsNullOrEmpty(form.WreckMaterial)||
+                        (!string.IsNullOrEmpty(wm.Description) &&
+                        ( wm.Description.ToLower().Contains(form.WreckMaterial.ToLower()) ||
+                          ( usePsql
+                              ? EF.Functions.FuzzyStringMatchLevenshtein(
+                                  form.WreckMaterial.ToLower(), wm.Description.ToLower())
+                              : SearchHelper.GetLevenshteinDistance(form.WreckMaterial.ToLower(),
+                                  wm.Description.ToLower()) ) < MaxLevenshteinDistance )
+                        ))
+                &&
+                        (string.IsNullOrEmpty(form.WreckMaterialOwner) ||
+                        (!string.IsNullOrEmpty(wm.WreckMaterialOwner) &&
+                        ( wm.WreckMaterialOwner.ToLower()
+                              .Contains(form.WreckMaterialOwner.ToLower()) ||
+                          ( usePsql
+                              ? EF.Functions.FuzzyStringMatchLevenshtein(
+                                  form.WreckMaterialOwner.ToLower(),
+                                  wm.WreckMaterialOwner.ToLower())
+                              : SearchHelper.GetLevenshteinDistance(
+                                  form.WreckMaterialOwner.ToLower(),
+                                  wm.WreckMaterialOwner.ToLower()) ) < MaxLevenshteinDistance ))
+                    ) &&
+                    
+                        (form.ValueConfirmed == null || wm.ValueConfirmed == form.ValueConfirmed)
+                &&
+                    
+                            ( form.QuantityFrom == null || wm.Quantity >= form.QuantityFrom ) &&
+                            ( form.QuantityTo == null || wm.Quantity <= form.QuantityTo )
+                        
+                &&
+                            ( form.ValueFrom == null || wm.Value >= form.ValueFrom ) &&
+                            ( form.ValueTo == null || wm.Value <= form.ValueTo )
+                        
 
-            if (form.QuantityFrom != null || form.QuantityTo != null)
-            {
-                query = query.Where(d =>
-                    d.WreckMaterials.Any(wm =>
-                        (form.QuantityFrom == null || wm.Quantity >= form.QuantityFrom) &&
-                        (form.QuantityTo == null || wm.Quantity <= form.QuantityTo)
-                    )
-                );
-            }
-            
-            if (form.ValueFrom != null || form.ValueTo != null)
-            {
-                query = query.Where(d =>
-                    d.WreckMaterials.Any(wm =>
-                        (form.ValueFrom == null || wm.Value >= form.ValueFrom) &&
-                        (form.ValueTo == null || wm.Value <= form.ValueTo)
-                    )
-                );
-            }
-           
-            if (form.ReceiverValuationFrom != null || form.ReceiverValuationTo != null)
-            {
-                query = query.Where(d =>
-                    d.WreckMaterials.Any(wm =>
-                        (form.ReceiverValuationFrom == null || wm.ReceiverValuation >= form.ReceiverValuationFrom) &&
-                        (form.ReceiverValuationTo == null || wm.ReceiverValuation <= form.ReceiverValuationTo)
-                    )
-                );
+                && 
+                            ( form.ReceiverValuationFrom == null ||
+                              wm.ReceiverValuation >= form.ReceiverValuationFrom ) &&
+                            ( form.ReceiverValuationTo == null ||
+                              wm.ReceiverValuation <= form.ReceiverValuationTo )
+                        
+                   ) );
+                
             }
             //Salvage Filters
             

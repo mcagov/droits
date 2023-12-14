@@ -133,7 +133,7 @@ public class WreckController : BaseController
         }
         catch ( WreckNotFoundException e )
         {
-            _logger.LogError("Wreck not found for partial", e);
+            _logger.LogError($"Wreck not found for partial - {e}");
             return NotFound();
         }
     }

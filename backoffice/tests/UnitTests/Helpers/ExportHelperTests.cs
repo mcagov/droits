@@ -10,7 +10,7 @@ public class ExportHelperTests
     
     private readonly List<string> _expectedDroitHeaders = new()
         {
-            "Id", "Reference", "Created", "LastModified", "WreckName", "SalvorName", "AssignedTo", "Status"
+            "Id", "Reference", "Created", "LastModified", "WreckName", "SalvorName", "AssignedTo", "Status", "TriageNumber"
         };
     
     [Fact]
