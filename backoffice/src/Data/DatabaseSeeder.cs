@@ -32,7 +32,7 @@ public static class DatabaseSeeder
             dbContext.SaveChanges();
         }
         
-        if ( !dbContext.Wrecks.Any() )
+        if (!dbContext.Wrecks.Any() )
         {
             dbContext.Wrecks.AddRange(GetWrecks(Faker.Random.ArrayElement(dbContext.Users.ToArray())));
             dbContext.SaveChanges();
@@ -90,8 +90,8 @@ public static class DatabaseSeeder
                     .Where(s => s != LetterStatus.Sent) 
                     .MinBy(x => Guid.NewGuid()),
                 SenderUserId = new Guid(),
-                Created = DateTime.Now,
-                LastModified = DateTime.Now,
+                Created = DateTime.UtcNow,
+                LastModified = DateTime.UtcNow,
                 LastModifiedByUserId = user.Id,
             })
             .ToList();
@@ -126,13 +126,13 @@ public static class DatabaseSeeder
     private static IEnumerable<Droit> GetDroits(IEnumerable<Wreck> wrecks, IEnumerable<Salvor> salvors, IEnumerable<ApplicationUser> users)
     {
         return Enumerable.Range(0, 50)
-            .Select(i => SeedDroit(Faker.Random.ArrayElement(wrecks.ToArray()),
+            .Select(i => SeedDroit(wrecks.Any()?Faker.Random.ArrayElement(wrecks.ToArray()):null,
                 Faker.Random.ArrayElement(salvors.ToArray()),Faker.Random.ArrayElement(users.ToArray()) ))
             .ToList();
     }
 
 
-    private static Droit SeedDroit(Wreck wreck, Salvor salvor, ApplicationUser user)
+    private static Droit SeedDroit(Wreck? wreck, Salvor salvor, ApplicationUser user)
     {
         var reportedDate = Faker.Date.Past(3, DateTime.UtcNow);
 
@@ -145,6 +145,7 @@ public static class DatabaseSeeder
             Status = Enum.GetValues(typeof(DroitStatus))
                 .OfType<DroitStatus>()
                 .MinBy(x => Guid.NewGuid()),
+            TriageNumber = Faker.Random.Int(1, 5).OrNull(Faker, 0.3f),
             ReportedDate = reportedDate,
             OriginalSubmission = GenerateOriginalSubmission(),
             DateFound = Faker.Date.Past(2, reportedDate),
@@ -152,14 +153,14 @@ public static class DatabaseSeeder
             LastModified = DateTime.UtcNow,
             LastModifiedByUserId = user.Id,
 
-            WreckId = wreck.Id,
+            WreckId = wreck?.Id,
             IsHazardousFind = Faker.Random.Bool(),
             IsDredge = Faker.Random.Bool(),
 
             SalvorId = salvor.Id,
 
-            Latitude = wreck.Latitude,
-            Longitude = wreck.Longitude,
+            Latitude = wreck?.Latitude,
+            Longitude = wreck?.Longitude,
             InUkWaters = Faker.Random.Bool(),
             LocationRadius = Faker.Random.Int(1, 500),
             Depth = Faker.Random.Int(1, 5000),
@@ -172,8 +173,8 @@ public static class DatabaseSeeder
             ServicesDescription = Faker.Lorem.Sentence(),
             ServicesDuration = Faker.Lorem.Sentence(),
             ServicesEstimatedCost = Faker.Random.Int(1, 5000),
-            MMOLicenceRequired = Faker.Random.Bool(),
-            MMOLicenceProvided = Faker.Random.Bool(),
+            MmoLicenceRequired = Faker.Random.Bool(),
+            MmoLicenceProvided = Faker.Random.Bool(),
             SalvageClaimAwarded = Faker.Random.Float(),
 
             District = Faker.Address.County(),
@@ -182,7 +183,8 @@ public static class DatabaseSeeder
             DateDelivered = Faker.Date.Between(reportedDate, DateTime.UtcNow).ToShortDateString(),
             Agent = Faker.Name.FullName(),
             RecoveredFromLegacy = Faker.Random.ArrayElement(new[] { "Afloat", "Ashore", "Seabed" }),
-            ImportedFromLegacy = Faker.Random.Bool()
+            ImportedFromLegacy = Faker.Random.Bool(),
+            LegacyRemarks = Faker.Lorem.Sentences()
         };
     }
 
@@ -229,8 +231,8 @@ public static class DatabaseSeeder
             {
                 Id = Guid.NewGuid(),
                 Name = Faker.Name.FullName(),
-                VesselConstructionDetails = Faker.Lorem.Word(),
-                VesselYearConstructed = Faker.Random.Int(1500, DateTime.UtcNow.Year),
+                ConstructionDetails = Faker.Lorem.Word(),
+                YearConstructed = Faker.Random.Int(1500, DateTime.UtcNow.Year),
                 DateOfLoss = Faker.Date.Past(500, DateTime.UtcNow),
                 InUkWaters = Faker.Random.Bool(),
                 IsWarWreck = Faker.Random.Bool(),

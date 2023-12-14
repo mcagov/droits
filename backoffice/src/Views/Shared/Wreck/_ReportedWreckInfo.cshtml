@@ -1,0 +1,106 @@
+@model DroitForm
+
+@{
+    string GetValueOrDefault(string? value) => string.IsNullOrEmpty(value) ? "---" : value;
+}
+<div class="mb-2">
+    <p class="font-weight-bold">Information submitted by the Salvor:</p>
+</div>
+
+<div class="mt-2 p-2 border border-grey">
+    
+    <h5>Vessel</h5>
+    
+    <div class="form-group row m-1">
+        <div class="col-md-5">
+            <label class="font-weight-bold">Name</label>
+        </div>
+        <div class="col-md-7">
+            @GetValueOrDefault(@Model.ReportedWreckName)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-5">
+            <label class="font-weight-bold">Construction Year</label>
+        </div>
+        <div class="col-md-7">
+            @GetValueOrDefault(@Model.ReportedWreckYearConstructed?.ToString())
+        </div>
+    </div>
+    
+    <div class="form-group row m-1">
+        <div class="col-md-5">
+            <label class="font-weight-bold">Construction Details</label>
+        </div>
+        <div class="col-md-7">
+            @GetValueOrDefault(@Model.ReportedWreckConstructionDetails)
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-5">
+            <label class="font-weight-bold">Sunk Year</label>
+        </div>
+        <div class="col-md-7">
+            @GetValueOrDefault(@Model.ReportedWreckYearSunk?.ToString())
+        </div>
+    </div>
+
+    <div class="form-group row m-1">
+        <div class="col-md-5">
+            <label class="font-weight-bold">Location Description</label>
+        </div>
+        <div class="col-md-7">
+            @GetValueOrDefault(@Model.LocationDescription)
+        </div>
+    </div>
+    
+    <h5>Location</h5>
+    
+        <div class="form-group row m-1">
+            <div class="col-md-5">
+                <label class="font-weight-bold">Latitude</label>
+            </div>
+            <div class="col-md-7">
+                @GetValueOrDefault(@Model.Latitude.ToString())
+            </div>
+        </div>
+    
+    <div class="form-group row m-1">
+        <div class="col-md-5">
+            <label class="font-weight-bold">Longitude</label>
+        </div>
+        <div class="col-md-7">
+            @GetValueOrDefault(@Model.Longitude.ToString())
+        </div>
+    </div>
+    
+    <div class="form-group row m-1">
+        <div class="col-md-5">
+            <label class="font-weight-bold">Radius</label>
+        </div>
+        <div class="col-md-7">
+            @GetValueOrDefault(Model.LocationRadius?.ToString())
+        </div>
+    </div>
+    
+    <div class="form-group row m-1">
+        <div class="col-md-5">
+            <label class="font-weight-bold">Depth</label>
+        </div>
+        <div class="col-md-7">
+            @GetValueOrDefault(@Model.Depth?.ToString())
+        </div>
+    </div>
+    
+    <div class="form-group row m-1">
+        <div class="col-md-5">
+            <label class="font-weight-bold">Removed From</label>
+        </div>
+        <div class="col-md-7">
+            @GetValueOrDefault(@Model.RecoveredFrom?.GetDisplayName())
+        </div>
+    </div>
+    
+</div>

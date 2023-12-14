@@ -1,3 +1,4 @@
+using AutoMapper;
 using Droits.Exceptions;
 using Droits.Models.DTOs;
 using Droits.Services;
@@ -18,8 +19,11 @@ namespace Droits.Tests.UnitTests.Services
 
             var salvorServiceMock = new Mock<ISalvorService>();
             var letterServiceMock = new Mock<ILetterService>();
+            var wreckServiceMock = new Mock<IWreckService>();
+            
+            var mapperMock = new Mock<IMapper>();
 
-            _service = new ApiService(loggerMock.Object, droitServiceMock.Object, wreckMaterialServiceMock.Object, salvorServiceMock.Object, letterServiceMock.Object);
+            _service = new ApiService(loggerMock.Object, droitServiceMock.Object, wreckMaterialServiceMock.Object, salvorServiceMock.Object, letterServiceMock.Object, wreckServiceMock.Object, mapperMock.Object);
         }
         
         [Fact]

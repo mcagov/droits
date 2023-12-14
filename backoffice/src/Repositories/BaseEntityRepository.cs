@@ -33,7 +33,7 @@ public class BaseEntityRepository<TEntity> where TEntity : BaseEntity
 
     public virtual async Task<TEntity> AddAsync(TEntity entity)
     {
-        entity.Created = DateTime.UtcNow;
+        // entity.Created = DateTime.UtcNow;
         entity.LastModified = DateTime.UtcNow;
         entity.LastModifiedByUserId = _accountService.GetCurrentUserId();
 

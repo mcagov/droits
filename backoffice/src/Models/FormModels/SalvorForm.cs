@@ -21,6 +21,7 @@ public class SalvorForm : BaseEntityForm
         Name = salvor.Name;
         Email = salvor.Email;
         TelephoneNumber = salvor.TelephoneNumber;
+        MobileNumber = salvor.MobileNumber;
         Address = new AddressForm(salvor.Address);
     }
 
@@ -36,6 +37,10 @@ public class SalvorForm : BaseEntityForm
     [DisplayName("Telephone Number")]
 
     public string? TelephoneNumber { get; set; } = string.Empty;
+    
+    [Phone()]
+    [DisplayName("Mobile Number")]
+    public string? MobileNumber { get; } = string.Empty;
 
     public AddressForm Address { get; set; } = new();
 
@@ -47,6 +52,7 @@ public class SalvorForm : BaseEntityForm
         salvor.Name = Name;
         salvor.Email = Email;
         salvor.TelephoneNumber = TelephoneNumber ?? "";
+        salvor.MobileNumber = MobileNumber ?? "";
 
         Address.ApplyChanges(salvor.Address);
 

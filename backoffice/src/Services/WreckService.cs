@@ -1,6 +1,7 @@
 #region
 
 using Droits.Helpers;
+using Droits.Helpers.SearchHelpers;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
@@ -21,6 +22,7 @@ public interface IWreckService
     Task<List<Wreck>> GetWrecksAsync();
     Task<Wreck> SaveWreckAsync(Wreck wreck);
     Task<Wreck> GetWreckAsync(Guid id);
+    Task<Wreck> GetWreckByPowerappsIdAsync(string powerappsId);
     Task<Guid> SaveWreckFormAsync(WreckForm wreckForm);
     Task<WreckListView> GetWrecksListViewAsync(SearchOptions searchOptions);
     Task<WreckListView> AdvancedSearchAsync(WreckSearchForm form);
@@ -90,6 +92,11 @@ public class WreckService : IWreckService
         return await _repo.GetWreckAsync(id);
     }
 
+
+    public async Task<Wreck> GetWreckByPowerappsIdAsync(string powerappsId)
+    {
+        return await _repo.GetWreckByPowerappsIdAsync(powerappsId);
+    }
     public async Task<Guid> SaveWreckFormAsync(WreckForm wreckForm)
     {
         var wreck = wreckForm.ApplyChanges(new Wreck());
@@ -115,15 +122,11 @@ public class WreckService : IWreckService
         };
     }
 
-    private IQueryable<Wreck> QueryFromForm(WreckSearchForm form)
+    protected IQueryable<Wreck> QueryFromForm(WreckSearchForm form)
     {
-        var query = _repo.GetWrecksWithAssociations()
-            .OrderByDescending(w => w.Created)
-            .Where(w =>
-                SearchHelper.FuzzyMatches(form.Name, w.Name, 70) 
-            );
+        var query = _repo.GetWrecksWithAssociations();
 
-        return query;
+        return WreckQueryBuilder.BuildQuery(form, query);
     }
 
 

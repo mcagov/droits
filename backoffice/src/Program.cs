@@ -4,6 +4,7 @@ using Amazon.S3;
 using Droits.Clients;
 using Droits.Data;
 using Droits.Data.Mappers;
+using Droits.Data.Mappers.Powerapps;
 using Droits.Middleware;
 using Droits.ModelBinders;
 using Droits.Repositories;
@@ -67,7 +68,9 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 
 // Database Context
-builder.Services.AddDbContext<DroitsContext>(opt => opt.UseInMemoryDatabase("droits"));
+var databaseOptions = builder.Configuration.GetSection("Database").Get<DatabaseOptions>();
+
+builder.Services.AddDbContext<DroitsContext>(opt => opt.UseNpgsql(databaseOptions?.ConnectionString));
 
 // Session and HealthChecks
 builder.Services.AddSession();
@@ -110,7 +113,7 @@ builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
 
 // Mappers
-builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile));
+builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile));
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();

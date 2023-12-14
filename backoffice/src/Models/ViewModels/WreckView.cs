@@ -3,6 +3,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 using Droits.Models.ViewModels.ListViews;
 
 #endregion
@@ -20,9 +21,10 @@ public class WreckView : BaseEntityView
     {
         Id = wreck.Id;
         Name = wreck.Name;
-
-        VesselConstructionDetails = wreck.VesselConstructionDetails;
-        VesselYearConstructed = wreck.VesselYearConstructed;
+        WreckType = wreck.WreckType;
+        
+        ConstructionDetails = wreck.ConstructionDetails;
+        YearConstructed = wreck.YearConstructed;
 
         DateOfLoss = wreck.DateOfLoss;
         InUkWaters = wreck.InUkWaters;
@@ -36,6 +38,7 @@ public class WreckView : BaseEntityView
         OwnerName = wreck.OwnerName;
         OwnerEmail = wreck.OwnerEmail;
         OwnerNumber = wreck.OwnerNumber;
+        OwnerAddress = wreck.OwnerAddress;
         Notes = new NoteListView(wreck.Notes.Select(n => new NoteView(n)).OrderByDescending(n => n.Created).ToList());
 
         if ( includeAssociations )
@@ -49,12 +52,15 @@ public class WreckView : BaseEntityView
 
     public Guid Id { get; }
     public string Name { get; } = string.Empty;
+    
+    [DisplayName("Wreck Type")]
+    public WreckType? WreckType { get; set; }
 
-    [DisplayName("Vessel Construction Details")]
-    public string? VesselConstructionDetails { get; } = string.Empty;
+    [DisplayName("Construction Details")]
+    public string? ConstructionDetails { get; } = string.Empty;
 
-    [DisplayName("Vessel Year Constructed")]
-    public int? VesselYearConstructed { get; }
+    [DisplayName("Year Constructed")]
+    public int? YearConstructed { get; }
 
     [DisplayName("Date Of Loss")]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -86,6 +92,10 @@ public class WreckView : BaseEntityView
 
     [DisplayName("Owner Name")]
     public string? OwnerName { get; }
+    
+    [DataType(DataType.MultilineText)]
+    [DisplayName("Owner Address")]
+    public string? OwnerAddress { get; }
 
 
     [DisplayName("Additional Information")]

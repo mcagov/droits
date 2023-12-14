@@ -5,6 +5,7 @@ using AutoMapper;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Helpers.Extensions;
+using Droits.Helpers.SearchHelpers;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
@@ -28,7 +29,7 @@ public interface ISalvorService
     Task<Salvor> GetSalvorAsync(Guid id);
     Task<Guid> SaveSalvorFormAsync(SalvorForm form);
     Task<SalvorListView> AdvancedSearchAsync(SalvorSearchForm form);
-    Task<Salvor> GetOrCreateAsync(SubmittedReportDto report);
+    Task<Salvor> GetOrCreateAsync(Salvor salvor);
     Task<byte[]> ExportAsync(SalvorSearchForm form);
 }
 
@@ -126,9 +127,8 @@ public class SalvorService : ISalvorService
     }
 
 
-    public async Task<Salvor> GetOrCreateAsync(SubmittedReportDto report)
+    public async Task<Salvor> GetOrCreateAsync(Salvor salvor)
     {
-        var salvor = _mapper.Map<Salvor>(report);
 
         if ( !salvor.Email.HasValue() )
         {
@@ -149,17 +149,12 @@ public class SalvorService : ISalvorService
 
         return salvor;
     }
-
     private IQueryable<Salvor> QueryFromForm(SalvorSearchForm form)
     {
-        var query = _repo.GetSalvorsWithAssociations()
-            .OrderByDescending(s => s.Created)
-            .Where(s =>
-                SearchHelper.FuzzyMatches(form.Name, s.Name, 70) &&
-                SearchHelper.Matches(form.Email, s.Email)
-            );
 
-        return query;
+        var query = _repo.GetSalvorsWithAssociations();
+
+        return SalvorQueryBuilder.BuildQuery(form,query);
     }
 
 

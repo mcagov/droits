@@ -13,7 +13,8 @@ public class Letter : BaseEntity
     
     [ForeignKey("DroitId")]
     public virtual Droit? Droit { get; set; }
-    public Guid QualityApprovedUserId { get; set; }
+    public Guid? QualityApprovedUserId { get; set; }
+    
     [ForeignKey("QualityApprovedUserId")]
     public virtual ApplicationUser? QualityApprovedUser { get; set; }
     public string Subject { get; set; } = string.Empty;

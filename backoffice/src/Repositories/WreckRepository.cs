@@ -15,6 +15,7 @@ public interface IWreckRepository
     IQueryable<Wreck> GetWrecks();
     IQueryable<Wreck> GetWrecksWithAssociations();
     Task<Wreck> GetWreckAsync(Guid id);
+    Task<Wreck> GetWreckByPowerappsIdAsync(string powerappsId);
     Task<Wreck> AddAsync(Wreck wreck);
     Task<Wreck> UpdateAsync(Wreck wreck);
 }
@@ -52,4 +53,17 @@ public class WreckRepository : BaseEntityRepository<Wreck>, IWreckRepository
 
         return wreck;
     }
+    
+    public async Task<Wreck> GetWreckByPowerappsIdAsync(string powerappsId)
+    {
+        var wreck = await Context.Wrecks
+            .FirstOrDefaultAsync(w => w.PowerappsWreckId == powerappsId);
+        if ( wreck == null )
+        {
+            throw new WreckNotFoundException();
+        }
+
+        return wreck;
+    }
+    
 }
