@@ -11,12 +11,14 @@ public partial class DroitsContext : DbContext
 {
     public DroitsContext()
     {
+         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
 
     public DroitsContext(DbContextOptions<DroitsContext> options)
         : base(options)
     {
+         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
     public virtual DbSet<ApplicationUser> Users { get; set; } = null!;

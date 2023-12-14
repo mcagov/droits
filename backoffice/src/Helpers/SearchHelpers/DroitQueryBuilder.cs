@@ -27,42 +27,42 @@ public static class DroitQueryBuilder
             
             if (form.CreatedFrom != null )
             {
-                query = query.Where(d => d.Created >= form.CreatedFrom);
+                query = query.Where(d => d.Created >= form.CreatedFrom.Value.StartOfDay());
             }
             
             if (form.CreatedTo != null)
             {
-                query = query.Where(d => d.Created <= form.CreatedTo);
+                query = query.Where(d => d.Created <= form.CreatedTo.Value.EndOfDay());
             }
             
             if (form.LastModifiedFrom != null)
             {
-                query = query.Where(d => d.LastModified >= form.LastModifiedFrom);
+                query = query.Where(d => d.LastModified >= form.LastModifiedFrom.Value.StartOfDay());
             }
             
             if (form.LastModifiedTo != null)
             {
-                query = query.Where(d => d.LastModified <= form.LastModifiedTo);
+                query = query.Where(d => d.LastModified <= form.LastModifiedTo.Value.EndOfDay());
             }
             
             if (form.ReportedDateFrom != null)
             {
-                query = query.Where(d => d.ReportedDate >= form.ReportedDateFrom);
+                query = query.Where(d => d.ReportedDate >= form.ReportedDateFrom.Value.StartOfDay());
             }
             
             if (form.ReportedDateTo != null)
             {
-                query = query.Where(d => d.ReportedDate <= form.ReportedDateTo);
+                query = query.Where(d => d.ReportedDate <= form.ReportedDateTo.Value.EndOfDay());
             }
             
             if (form.DateFoundFrom != null )
             {
-                query = query.Where(d => d.DateFound >= form.DateFoundFrom);
+                query = query.Where(d => d.DateFound >= form.DateFoundFrom.Value.StartOfDay());
             }
             
             if (form.DateFoundTo != null)
             {
-                query = query.Where(d => d.DateFound <= form.DateFoundTo);
+                query = query.Where(d => d.DateFound <= form.DateFoundTo.Value.EndOfDay());
             }
             
             query = query.Where(d =>

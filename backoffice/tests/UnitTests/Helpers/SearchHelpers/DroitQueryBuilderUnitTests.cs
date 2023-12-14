@@ -85,6 +85,57 @@ public class DroitQueryBuilderUnitTests
         Assert.DoesNotContain(result.ToList(), d => d.Reference == "NotMatchingRef");
     }
     
+    [Theory]
+    [MemberData(nameof(DateTimeTestData))]
+    public void BuildQuery_WithDroitDateSearchFields_ReturnsFilteredQueryWithInclusiveDates(DateTime dateFrom, DateTime dateTo)
+    {
+        // Arrange
+        var form = new DroitSearchForm
+        {
+            CreatedFrom = dateFrom,
+            LastModifiedTo = dateTo,
+            ReportedDateFrom = dateFrom,
+            DateFoundTo = dateTo,
+        };
+        var droits = new List<Droit>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "Ref",
+                Created = new DateTime(2023,10,10),
+                LastModified = new DateTime(2023,10,10),
+                ReportedDate = new DateTime(2023,10,10),
+                DateFound = new DateTime(2023,10,10)
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "AnotherRef" ,
+                Created = new DateTime(2023,10,01),
+                LastModified = new DateTime(2023,10,01),
+                ReportedDate = new DateTime(2023,10,01),
+                DateFound = new DateTime(2023,10,01)
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "NotMatchingRef" ,
+                Created = new DateTime(2023,9,01),
+                LastModified = new DateTime(2023,11,01),
+                ReportedDate = new DateTime(2023,9,01),
+                DateFound = new DateTime(2023,11,01)
+            },
+        }.AsQueryable();
+    
+        // Act
+        var result = DroitQueryBuilder.BuildQuery(form, droits, false);
+    
+        // Assert
+        Assert.Equal(2, result.Count());
+        Assert.DoesNotContain(result.ToList(), d => d.Reference == "NotMatchingRef");
+        Assert.Contains(result.ToList(), d => d.Reference == "Ref");
+        Assert.Contains(result.ToList(), d => d.Reference == "AnotherRef");
+
+    }
+    
     [Fact]
     public void BuildQuery_WithDroitBooleanAndGuidSearchFields_ReturnsFilteredQuery()
     {
