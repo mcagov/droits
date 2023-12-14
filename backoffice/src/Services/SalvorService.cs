@@ -28,7 +28,7 @@ public interface ISalvorService
     Task<Salvor> GetSalvorAsync(Guid id);
     Task<Guid> SaveSalvorFormAsync(SalvorForm form);
     Task<SalvorListView> AdvancedSearchAsync(SalvorSearchForm form);
-    Task<Salvor> GetOrCreateAsync(SubmittedReportDto report);
+    Task<Salvor> GetOrCreateAsync(Salvor salvor);
     Task<byte[]> ExportAsync(SalvorSearchForm form);
 }
 
@@ -126,9 +126,8 @@ public class SalvorService : ISalvorService
     }
 
 
-    public async Task<Salvor> GetOrCreateAsync(SubmittedReportDto report)
+    public async Task<Salvor> GetOrCreateAsync(Salvor salvor)
     {
-        var salvor = _mapper.Map<Salvor>(report);
 
         if ( !salvor.Email.HasValue() )
         {

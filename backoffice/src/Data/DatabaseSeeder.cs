@@ -173,8 +173,8 @@ public static class DatabaseSeeder
             ServicesDescription = Faker.Lorem.Sentence(),
             ServicesDuration = Faker.Lorem.Sentence(),
             ServicesEstimatedCost = Faker.Random.Int(1, 5000),
-            MMOLicenceRequired = Faker.Random.Bool(),
-            MMOLicenceProvided = Faker.Random.Bool(),
+            MmoLicenceRequired = Faker.Random.Bool(),
+            MmoLicenceProvided = Faker.Random.Bool(),
             SalvageClaimAwarded = Faker.Random.Float(),
 
             District = Faker.Address.County(),
@@ -183,7 +183,8 @@ public static class DatabaseSeeder
             DateDelivered = Faker.Date.Between(reportedDate, DateTime.UtcNow).ToShortDateString(),
             Agent = Faker.Name.FullName(),
             RecoveredFromLegacy = Faker.Random.ArrayElement(new[] { "Afloat", "Ashore", "Seabed" }),
-            ImportedFromLegacy = Faker.Random.Bool()
+            ImportedFromLegacy = Faker.Random.Bool(),
+            LegacyRemarks = Faker.Lorem.Sentences()
         };
     }
 

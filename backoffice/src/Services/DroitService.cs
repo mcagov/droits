@@ -260,8 +260,8 @@ public class DroitService : IDroitService
                 SearchHelper.Matches(form.ServicesDuration, d.ServicesDuration) &&
                 SearchHelper.IsBetween(d.ServicesEstimatedCost, form.ServicesEstimatedCostFrom,
                     form.ServicesEstimatedCostTo) &&
-                SearchHelper.Matches(form.MMOLicenceRequired, d.MMOLicenceRequired) &&
-                SearchHelper.Matches(form.MMOLicenceProvided, d.MMOLicenceProvided) &&
+                SearchHelper.Matches(form.MMOLicenceRequired, d.MmoLicenceRequired) &&
+                SearchHelper.Matches(form.MMOLicenceProvided, d.MmoLicenceProvided) &&
                 SearchHelper.IsBetween(d.SalvageClaimAwarded, form.SalvageClaimAwardedFrom,
                     form.SalvageClaimAwardedTo)
             )

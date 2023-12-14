@@ -123,18 +123,20 @@ public partial class DroitsContext : DbContext
             entity.Property(d => d.ServicesDescription);
             entity.Property(d => d.ServicesDuration);
             entity.Property(d => d.ServicesEstimatedCost);
-            entity.Property(d => d.MMOLicenceRequired);
-            entity.Property(d => d.MMOLicenceProvided);
+            entity.Property(d => d.MmoLicenceRequired);
+            entity.Property(d => d.MmoLicenceProvided);
             entity.Property(d => d.SalvageClaimAwarded);
 
             // Legacy fields
-
+            entity.Property(d => d.PowerappsDroitId);
+            entity.Property(d => d.PowerappsWreckId);
             entity.Property(d => d.District);
             entity.Property(d => d.LegacyFileReference);
             entity.Property(d => d.GoodsDischargedBy);
             entity.Property(d => d.DateDelivered);
             entity.Property(d => d.Agent);
             entity.Property(d => d.RecoveredFrom);
+            entity.Property(d => d.LegacyRemarks);
             entity.Property(d => d.ImportedFromLegacy);
 
             //Relationships

@@ -89,8 +89,8 @@ public class DroitView : BaseEntityView
         ServicesDescription = droit.ServicesDescription;
         ServicesDuration = droit.ServicesDuration;
         ServicesEstimatedCost = droit.ServicesEstimatedCost;
-        MMOLicenceRequired = droit.MMOLicenceRequired;
-        MMOLicenceProvided = droit.MMOLicenceProvided;
+        MmoLicenceRequired = droit.MmoLicenceRequired;
+        MmoLicenceProvided = droit.MmoLicenceProvided;
         SalvageClaimAwarded = droit.SalvageClaimAwarded;
 
         // Legacy fields
@@ -102,6 +102,7 @@ public class DroitView : BaseEntityView
         Agent = droit.Agent;
         RecoveredFrom = droit.RecoveredFrom;
         ImportedFromLegacy = droit.ImportedFromLegacy;
+        LegacyRemarks = droit.LegacyRemarks;
     }
 
 
@@ -194,10 +195,10 @@ public class DroitView : BaseEntityView
     public double? ServicesEstimatedCost { get; }
 
     [DisplayName("MMO Licence Required")]
-    public bool MMOLicenceRequired { get; }
+    public bool MmoLicenceRequired { get; }
 
     [DisplayName("MMO Licence Provided")]
-    public bool MMOLicenceProvided { get; }
+    public bool MmoLicenceProvided { get; }
 
     [DisplayName("Salvage Claim Awarded")]
     public double SalvageClaimAwarded { get; }
@@ -221,4 +222,8 @@ public class DroitView : BaseEntityView
 
     [DisplayName("Imported From Legacy")]
     public bool ImportedFromLegacy { get; }
+    
+    [DisplayName("Legacy Remarks")]
+    [DataType(DataType.MultilineText)]
+    public string? LegacyRemarks { get; }
 }

@@ -45,14 +45,22 @@ public class DroitForm : BaseEntityForm
         Depth = droit.Depth;
         LocationDescription = droit.LocationDescription;
 
+        
+        //Reported Wreck 
+
+        ReportedWreckName = droit.ReportedWreckName;
+        ReportedWreckConstructionDetails = droit.ReportedWreckConstructionDetails;
+        ReportedWreckYearConstructed = droit.ReportedWreckYearConstructed;
+        ReportedWreckYearSunk = droit.ReportedWreckYearSunk;
+
         // Salvage
 
         SalvageAwardClaimed = droit.SalvageAwardClaimed;
         ServicesDescription = droit.ServicesDescription;
         ServicesDuration = droit.ServicesDuration;
         ServicesEstimatedCost = droit.ServicesEstimatedCost;
-        MMOLicenceRequired = droit.MMOLicenceRequired;
-        MMOLicenceProvided = droit.MMOLicenceProvided;
+        MmoLicenceRequired = droit.MmoLicenceRequired;
+        MmoLicenceProvided = droit.MmoLicenceProvided;
         SalvageClaimAwarded = droit.SalvageClaimAwarded;
 
         // Legacy fields
@@ -64,6 +72,7 @@ public class DroitForm : BaseEntityForm
         Agent = droit.Agent;
         RecoveredFrom = droit.RecoveredFrom;
         ImportedFromLegacy = droit.ImportedFromLegacy;
+        LegacyRemarks = droit.LegacyRemarks;
 
 
         if ( droit.WreckMaterials.Any() )
@@ -119,6 +128,11 @@ public class DroitForm : BaseEntityForm
     [DisplayName("Is Dredge")]
     public bool IsDredge { get; set; }
 
+    public string? ReportedWreckName { get; set; }
+    public int? ReportedWreckYearSunk { get; set; }
+    public int? ReportedWreckYearConstructed { get; set; }
+    public string? ReportedWreckConstructionDetails { get; set; }
+    
     // Salvor
 
     public Guid? SalvorId { get; set; }
@@ -160,10 +174,10 @@ public class DroitForm : BaseEntityForm
     public double? ServicesEstimatedCost { get; set; }
 
     [DisplayName("MMO Licence Required")]
-    public bool MMOLicenceRequired { get; set; }
+    public bool MmoLicenceRequired { get; set; }
 
     [DisplayName("MMO Licence Provided")]
-    public bool MMOLicenceProvided { get; set; }
+    public bool MmoLicenceProvided { get; set; }
 
     [DisplayName("Salvage Claim Awarded")]
     public double SalvageClaimAwarded { get; set; }
@@ -187,6 +201,10 @@ public class DroitForm : BaseEntityForm
 
     [DisplayName("Imported From Legacy")]
     public bool ImportedFromLegacy { get; set; }
+    
+    [DisplayName("Legacy Remarks")]
+    [DataType(DataType.MultilineText)]
+    public string? LegacyRemarks { get; }
 
     public List<SelectListItem> AllUsers { get; set; } = new();
     public List<SelectListItem> AllWrecks { get; set; } = new();
@@ -223,8 +241,8 @@ public class DroitForm : BaseEntityForm
         droit.ServicesDescription = ServicesDescription;
         droit.ServicesDuration = ServicesDuration;
         droit.ServicesEstimatedCost = ServicesEstimatedCost;
-        droit.MMOLicenceRequired = MMOLicenceRequired;
-        droit.MMOLicenceProvided = MMOLicenceProvided;
+        droit.MmoLicenceRequired = MmoLicenceRequired;
+        droit.MmoLicenceProvided = MmoLicenceProvided;
         droit.SalvageClaimAwarded = SalvageClaimAwarded;
 
         // Legacy fields
@@ -236,6 +254,7 @@ public class DroitForm : BaseEntityForm
         droit.Agent = Agent;
         droit.RecoveredFromLegacy = RecoveredFromLegacy;
         droit.ImportedFromLegacy = ImportedFromLegacy;
+        droit.LegacyRemarks = LegacyRemarks;
 
         return droit;
     }

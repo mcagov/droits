@@ -15,49 +15,49 @@ namespace Droits.Models.DTOs.Powerapps
     public class PowerappsWreckDto
     {
         [JsonPropertyName("crf99_mcawrecksid")]
-        public string? Crf99Mcawrecksid { get; set; }
+        public string? Mcawrecksid { get; set; }
 
         [JsonPropertyName("createdon")]
         public DateTime? CreatedOn { get; set; }
 
         [JsonPropertyName("crf99_name")]
-        public string? Crf99Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonPropertyName("crf99_wrecktype")]
-        public int? Crf99WreckType { get; set; } // 614880000 is Historic, 614880001 is Modern
+        public int? WreckType { get; set; } // 614880000 is Historic, 614880001 is Modern
 
         [JsonPropertyName("crf99_isaircraft")]
-        public bool? Crf99IsAircraft { get; set; }
+        public bool? IsAircraft { get; set; }
 
         [JsonPropertyName("crf99_protectedsite")]
-        public bool? Crf99ProtectedSite { get; set; }
+        public bool? ProtectedSite { get; set; }
 
         [JsonPropertyName("crf99_iswarwreck")]
-        public bool? Crf99IsWarWreck { get; set; }
+        public bool? IsWarWreck { get; set; }
 
         [JsonPropertyName("crf99_dateofloss")]
-        public DateTime? Crf99DateOfLoss { get; set; }
+        public DateTime? DateOfLoss { get; set; }
 
         [JsonPropertyName("_crf99_protectionlegislation_value")]
-        public string? Crf99ProtectionLegislationValue { get; set; }
+        public string? ProtectionLegislationValue { get; set; }
 
         [JsonPropertyName("crf99_longitude")]
-        public double? Crf99Longitude { get; set; }
+        public double? Longitude { get; set; }
 
         [JsonPropertyName("crf99_latitude")]
-        public double? Crf99Latitude { get; set; }
+        public double? Latitude { get; set; }
 
         [JsonPropertyName("crf99_WreckOwner")]
         public PowerappsWreckOwnerDto? WreckOwner { get; set; }
 
-        public WreckType? GetWreckType() => Crf99WreckType switch
+        public WreckType? GetWreckType() => WreckType switch
         {
-            614880000 => WreckType.Historic,
-            614880001 => WreckType.Modern,
+            614880000 => Enums.WreckType.Historic,
+            614880001 => Enums.WreckType.Modern,
             _ => null
         };
         
-        public string? GetProtectedLegislation() => Crf99ProtectionLegislationValue switch
+        public string? GetProtectedLegislation() => ProtectionLegislationValue switch
         {
             "6b097d27-c525-ec11-b6e6-000d3ad65574" => "Historic Monuments and Archaeological Objects (Northern Ireland) Order 1995",
             "cec2eab2-ac85-ec11-8d21-00224842d40e" => "Protection of Wrecks Act 1973",

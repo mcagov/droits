@@ -21,6 +21,7 @@ public interface IWreckService
     Task<List<Wreck>> GetWrecksAsync();
     Task<Wreck> SaveWreckAsync(Wreck wreck);
     Task<Wreck> GetWreckAsync(Guid id);
+    Task<Wreck> GetWreckByPowerappsIdAsync(string powerappsId);
     Task<Guid> SaveWreckFormAsync(WreckForm wreckForm);
     Task<WreckListView> GetWrecksListViewAsync(SearchOptions searchOptions);
     Task<WreckListView> AdvancedSearchAsync(WreckSearchForm form);
@@ -90,6 +91,11 @@ public class WreckService : IWreckService
         return await _repo.GetWreckAsync(id);
     }
 
+
+    public async Task<Wreck> GetWreckByPowerappsIdAsync(string powerappsId)
+    {
+        return await _repo.GetWreckByPowerappsIdAsync(powerappsId);
+    }
     public async Task<Guid> SaveWreckFormAsync(WreckForm wreckForm)
     {
         var wreck = wreckForm.ApplyChanges(new Wreck());

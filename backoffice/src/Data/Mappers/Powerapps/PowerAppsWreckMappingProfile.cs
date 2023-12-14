@@ -11,22 +11,22 @@ namespace Droits.Data.Mappers.Powerapps
         {
             CreateMap<PowerappsWreckDto, Wreck>()
                 .ForMember(dest => dest.PowerappsWreckId,
-                    opt => opt.MapFrom(src => src.Crf99Mcawrecksid))
+                    opt => opt.MapFrom(src => src.Mcawrecksid))
                 .ForMember(dest => dest.Name,
-                    opt => opt.MapFrom(src => src.Crf99Name))
+                    opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.WreckType,
                     opt => opt.MapFrom(src => src.GetWreckType()))
                 .ForMember(dest => dest.Created, opt => opt.MapFrom(src => src.CreatedOn))
 
-                .ForMember(dest => dest.DateOfLoss, opt => opt.MapFrom(src => src.Crf99DateOfLoss))
+                .ForMember(dest => dest.DateOfLoss, opt => opt.MapFrom(src => src.DateOfLoss))
 
-                .ForMember(dest => dest.IsWarWreck, opt => opt.MapFrom(src => src.Crf99IsWarWreck))
+                .ForMember(dest => dest.IsWarWreck, opt => opt.MapFrom(src => src.IsWarWreck))
                 .ForMember(dest => dest.IsAnAircraft,
-                    opt => opt.MapFrom(src => src.Crf99IsAircraft))
-                .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Crf99Latitude))
-                .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Crf99Longitude))
+                    opt => opt.MapFrom(src => src.IsAircraft))
+                .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Latitude))
+                .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Longitude))
                 .ForMember(dest => dest.IsProtectedSite,
-                    opt => opt.MapFrom(src => src.Crf99ProtectedSite))
+                    opt => opt.MapFrom(src => src.ProtectedSite))
                 .ForMember(dest => dest.ProtectionLegislation,
                     opt => opt.MapFrom(src => src.GetProtectedLegislation()))
                 .ForMember(dest => dest.OwnerName,

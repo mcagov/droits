@@ -25,16 +25,16 @@ namespace Droits.Tests.UnitTests.Data.Mappers.Powerapps
             // Arrange
             var powerappsWreckDto = new PowerappsWreckDto
             {
-                Crf99Mcawrecksid = "1",
-                Crf99Name = "Test Wreck",
-                Crf99WreckType = 614880000, // Historic Type
-                Crf99IsAircraft = true,
-                Crf99ProtectedSite = true,
-                Crf99IsWarWreck = true,
-                Crf99DateOfLoss = DateTime.Now.AddDays(-100),
-                Crf99ProtectionLegislationValue = "6b097d27-c525-ec11-b6e6-000d3ad65574",
-                Crf99Longitude = 123.456,
-                Crf99Latitude = 78.90,
+                Mcawrecksid = "1",
+                Name = "Test Wreck",
+                WreckType = 614880000, // Historic Type
+                IsAircraft = true,
+                ProtectedSite = true,
+                IsWarWreck = true,
+                DateOfLoss = DateTime.Now.AddDays(-100),
+                ProtectionLegislationValue = "6b097d27-c525-ec11-b6e6-000d3ad65574",
+                Longitude = 123.456,
+                Latitude = 78.90,
                 WreckOwner = new PowerappsWreckOwnerDto
                 {
                     FullName = "Owner Full Name",
@@ -54,7 +54,7 @@ namespace Droits.Tests.UnitTests.Data.Mappers.Powerapps
             Assert.True(wreck.IsAnAircraft);
             Assert.True(wreck.IsProtectedSite);
             Assert.True(wreck.IsWarWreck);
-            Assert.Equal(powerappsWreckDto.Crf99DateOfLoss, wreck.DateOfLoss);
+            Assert.Equal(powerappsWreckDto.DateOfLoss, wreck.DateOfLoss);
             Assert.Equal("Historic Monuments and Archaeological Objects (Northern Ireland) Order 1995", wreck.ProtectionLegislation);
             Assert.Equal(123.456, wreck.Longitude);
             Assert.Equal(78.90, wreck.Latitude);
@@ -76,16 +76,16 @@ namespace Droits.Tests.UnitTests.Data.Mappers.Powerapps
             // Arrange
             var powerappsWreckDto = new PowerappsWreckDto
             {
-                Crf99Mcawrecksid = "1",
-                Crf99Name = "Test Modern Wreck",
-                Crf99WreckType = 614880001, // Modern Type
-                Crf99IsAircraft = false,
-                Crf99ProtectedSite = false,
-                Crf99IsWarWreck = false,
-                Crf99DateOfLoss = DateTime.Now.AddDays(-100),
-                Crf99ProtectionLegislationValue = "cec2eab2-ac85-ec11-8d21-00224842d40e",
-                Crf99Longitude = 123.456,
-                Crf99Latitude = 78.90,
+                Mcawrecksid = "1",
+                Name = "Test Modern Wreck",
+                WreckType = 614880001, // Modern Type
+                IsAircraft = false,
+                ProtectedSite = false,
+                IsWarWreck = false,
+                DateOfLoss = DateTime.Now.AddDays(-100),
+                ProtectionLegislationValue = "cec2eab2-ac85-ec11-8d21-00224842d40e",
+                Longitude = 123.456,
+                Latitude = 78.90,
                 WreckOwner = new PowerappsWreckOwnerDto
                 {
                     FullName = "Owner Full Name",
@@ -105,7 +105,7 @@ namespace Droits.Tests.UnitTests.Data.Mappers.Powerapps
             Assert.False(wreck.IsAnAircraft);
             Assert.False(wreck.IsProtectedSite);
             Assert.False(wreck.IsWarWreck);
-            Assert.Equal(powerappsWreckDto.Crf99DateOfLoss, wreck.DateOfLoss);
+            Assert.Equal(powerappsWreckDto.DateOfLoss, wreck.DateOfLoss);
             Assert.Equal("Protection of Wrecks Act 1973", wreck.ProtectionLegislation);
             Assert.Equal(123.456, wreck.Longitude);
             Assert.Equal(78.90, wreck.Latitude);
@@ -126,16 +126,16 @@ namespace Droits.Tests.UnitTests.Data.Mappers.Powerapps
             // Arrange
             var powerappsWreckDto = new PowerappsWreckDto
             {
-                Crf99Mcawrecksid = null,
-                Crf99Name = null,
-                Crf99WreckType = null,
-                Crf99IsAircraft = null,
-                Crf99ProtectedSite = null,
-                Crf99IsWarWreck = null,
-                Crf99DateOfLoss = null,
-                Crf99ProtectionLegislationValue = null,
-                Crf99Longitude = null,
-                Crf99Latitude = null,
+                Mcawrecksid = null,
+                Name = null,
+                WreckType = null,
+                IsAircraft = null,
+                ProtectedSite = null,
+                IsWarWreck = null,
+                DateOfLoss = null,
+                ProtectionLegislationValue = null,
+                Longitude = null,
+                Latitude = null,
                 WreckOwner = null
             };
 

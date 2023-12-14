@@ -10,7 +10,9 @@ public interface IApiService
 {
 
     Task<Droit> SaveDroitReportAsync(SubmittedReportDto report);
-    Task<List<Wreck>> SaveWrecksAsync(PowerappsWrecksDto request);
+    Task<List<Droit>> MigrateDroitsAsync(PowerappsDroitReportsDto request);
+
+    Task<List<Wreck>> MigrateWrecksAsync(PowerappsWrecksDto request);
 }
 
 public class ApiService : IApiService
@@ -56,7 +58,7 @@ public class ApiService : IApiService
     }
 
 
-    public async Task<List<Wreck>> SaveWrecksAsync(PowerappsWrecksDto wrecksRequest)
+    public async Task<List<Wreck>> MigrateWrecksAsync(PowerappsWrecksDto wrecksRequest)
     {
         if ( wrecksRequest == null )
         {
@@ -92,10 +94,73 @@ public class ApiService : IApiService
         return wrecks;
     }
 
+    public async Task<List<Droit>> MigrateDroitsAsync(PowerappsDroitReportsDto droitsRequest)
+    {
+        if ( droitsRequest == null )
+        {
+            _logger.LogError("Request is null");
+            throw new DroitNotFoundException();
+        }
+
+        var droits = new List<Droit>();
+
+        if ( droitsRequest.Value == null ) return droits;
+        
+        foreach ( var powerappsDroitReportDto in droitsRequest.Value )
+        {
+            var droit = _mapper.Map<Droit>(powerappsDroitReportDto);
+
+            try
+            {
+                if ( string.IsNullOrEmpty(droit.Reference) )
+                {
+                    continue;
+                }
+
+                if ( !string.IsNullOrEmpty(droit.PowerappsWreckId) )
+                {
+                    try
+                    {
+                        var wreck =
+                            await _wreckService.GetWreckByPowerappsIdAsync(droit.PowerappsWreckId);
+                        droit.WreckId = wreck.Id;
+                    }
+                    catch ( WreckNotFoundException ex )
+                    {
+                        _logger.LogError($"Unable to find Wreck by Powerapps ID - {droit.PowerappsWreckId} - {ex}");
+
+                    }
+                }
+                
+                // Need to create/find salvor and bind to droit. 
+
+                if ( powerappsDroitReportDto.Reporter != null )
+                {
+                    var mappedSalvor = _mapper.Map<Salvor>(powerappsDroitReportDto.Reporter);
+                    var salvor = await _salvorService.GetOrCreateAsync(mappedSalvor);
+
+                    droit.SalvorId = salvor.Id;
+                }
+                
+                droit = await _droitService.SaveDroitAsync(droit);
+
+                droits.Add(droit);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unable to save droit - {droit.PowerappsWreckId} {droit.Reference} - {ex}");
+            }
+            
+        }
+
+        return droits;
+    }
+
 
     private async Task<Droit> MapSubmittedDataAsync(SubmittedReportDto report)
     {
-        var salvor = await _salvorService.GetOrCreateAsync(report);
+        var mappedSalvor = _mapper.Map<Salvor>(report);
+        var salvor = await _salvorService.GetOrCreateAsync(mappedSalvor);
         
         var droit = await _droitService.CreateDroitAsync(report, salvor);
 
