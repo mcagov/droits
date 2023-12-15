@@ -39,6 +39,8 @@ public partial class DroitsContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         
+        modelBuilder.HasPostgresExtension("fuzzystrmatch");
+                
         modelBuilder.Entity<ApplicationUser>(entity =>
         {
             entity.ToTable("users");
