@@ -18,10 +18,8 @@ public static class DroitQueryBuilder
             if (!string.IsNullOrEmpty(form.Reference))
             {
                 query = query.Where(d =>
-                 !string.IsNullOrEmpty(d.Reference) &&
-                 (d.Reference.ToLower().Contains(form.Reference.ToLower()) ||
-                 (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.Reference.ToLower(), d.Reference.ToLower()) : 
-                     SearchHelper.GetLevenshteinDistance(form.Reference.ToLower(), d.Reference.ToLower())) < MaxLevenshteinDistance) 
+                    !string.IsNullOrEmpty(d.Reference) &&
+                    d.Reference.ToLower().Contains(form.Reference.ToLower())
                 );
             }
             
