@@ -132,10 +132,10 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
             .Include(d => d.Salvor)
             .Include(d => d.AssignedToUser)
             .Where(d =>
-                SearchHelper.Matches(query, d.Reference) ||
-                (d.Wreck != null && SearchHelper.Matches(query, d.Wreck.Name)) ||
-                (d.Salvor != null && SearchHelper.Matches(query, d.Salvor.Name)) ||
-                (d.AssignedToUser != null && SearchHelper.Matches(query, d.AssignedToUser.Name))
+                !string.IsNullOrEmpty(d.Reference) && d.Reference.ToLower().Contains(query)||
+                (d.Wreck != null && !string.IsNullOrEmpty(d.Wreck.Name) && d.Wreck.Name.ToLower().Contains(query)) ||
+                (d.Salvor != null && !string.IsNullOrEmpty(d.Salvor.Name) && d.Salvor.Name.ToLower().Contains(query)) ||
+                (d.AssignedToUser != null && !string.IsNullOrEmpty(d.AssignedToUser.Name) && d.AssignedToUser.Name.ToLower().Contains(query))
             )
             .ToListAsync();
 
