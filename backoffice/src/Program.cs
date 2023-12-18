@@ -70,7 +70,17 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 // Database Context
 var databaseOptions = builder.Configuration.GetSection("Database").Get<DatabaseOptions>();
 
-builder.Services.AddDbContext<DroitsContext>(opt => opt.UseNpgsql(databaseOptions?.ConnectionString));
+builder.Services.AddDbContext<DroitsContext>(opt =>
+{
+    if (builder.Environment.IsDevelopment())
+    {
+        opt.UseInMemoryDatabase(databaseOptions?.Database ?? "Droits");
+    }
+    else
+    {
+        opt.UseNpgsql(databaseOptions?.ConnectionString);
+    }
+});
 
 // Session and HealthChecks
 builder.Services.AddSession();
