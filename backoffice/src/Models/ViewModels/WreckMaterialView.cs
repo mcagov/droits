@@ -2,6 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 
 #endregion
 
@@ -26,13 +27,20 @@ public class WreckMaterialView : BaseEntityView
         ValueConfirmed = wreckMaterial.ValueConfirmed;
         // Images = wreckMaterial.Images;
         WreckMaterialOwner = wreckMaterial.WreckMaterialOwner;
+        WreckMaterialOwnerContactDetails = wreckMaterial.WreckMaterialOwnerContactDetails;
         Purchaser = wreckMaterial.Purchaser;
+        PurchaserContactDetails = wreckMaterial.PurchaserContactDetails;
         Outcome = wreckMaterial.Outcome;
+        OutcomeRemarks = wreckMaterial.OutcomeRemarks;
         StorageAddress = new AddressView(wreckMaterial.StorageAddress);
         
         if ( wreckMaterial.Images.Any() )
         {
             Images = wreckMaterial.Images.Select(i => new ImageView(i)).OrderByDescending(i => i.Created).ToList();
+        }
+        if ( wreckMaterial.Files.Any() )
+        {
+            Files = wreckMaterial.Files.Select(i => new DroitFileView(i)).OrderByDescending(i => i.Created).ToList();
         }
     }
 
@@ -49,6 +57,8 @@ public class WreckMaterialView : BaseEntityView
     
     // Images
     public List<ImageView> Images { get; } = new();
+    public List<DroitFileView> Files { get; } = new();
+
 
     [Display(Name = "Receiver Valuation")]
     public double? ReceiverValuation { get; }
@@ -57,13 +67,25 @@ public class WreckMaterialView : BaseEntityView
     public bool ValueConfirmed { get; }
     // public List<string> Images { get; } = new List<string>();
 
-    [Display(Name = "Wreck Material Owner")]
+    [Display(Name = "Owner")]
+    public string? WreckMaterialOwner { get; set; } = string.Empty;
+    
+    [Display(Name = "Owner Contact Details")]
     [DataType(DataType.MultilineText)]
-    public string? WreckMaterialOwner { get; } = string.Empty;
-
-    public string? Purchaser { get; } = string.Empty;
-
+    public string? WreckMaterialOwnerContactDetails { get; set; } = string.Empty;
+    
+    
+    [Display(Name = "Purchaser")]
+    public string? Purchaser { get; set; } = string.Empty;
+    
+    [Display(Name = "Purchaser Contact Details")]
     [DataType(DataType.MultilineText)]
-    public string? Outcome { get; } = string.Empty;
+    public string? PurchaserContactDetails { get; set; } = string.Empty;
+    
+    public WreckMaterialOutcome? Outcome { get; set; }
+    
+    [Display(Name = "Outcome Remarks")]
+    [DataType(DataType.MultilineText)]
+    public string? OutcomeRemarks { get; set; } = string.Empty;
     
 }

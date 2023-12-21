@@ -1,0 +1,59 @@
+@model DroitFileForm
+
+<div class="js-file-form mb-2">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col">
+                    <h5>File</h5>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-danger float-end js-remove-file-form">Remove</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.WreckMaterialId)
+
+            <div class="form-group row mt-2">
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.Title, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-9">
+                    @Html.EditorFor(m => m.Title, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+                </div>
+            </div> 
+            
+            <div class="form-group row mt-2">
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.Url, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-9">
+                    @Html.EditorFor(m => m.Url, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Url, "", new { @class = "text-danger" })
+                </div>
+            </div> 
+
+            <div class="form-group row mt-2">
+                
+                @if (Model.Id != default && !string.IsNullOrEmpty(Model.Filename))
+                {
+                    <a type="button" asp-controller="File" asp-action="Download" asp-route-id="@Model.Id" target="_blank" class="btn btn-primary float-end">Download @Model.Filename</a>
+                }
+                else
+                {
+                    <div class="col-md-3">
+                        @Html.LabelFor(m => m.DroitFile, new { @class = "col-form-label font-weight-bold" })
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(m => m.DroitFile, new { htmlAttributes = new { @class = "form-control js-file-file-input", accept = "*/*" } })
+                        @Html.ValidationMessageFor(m => m.DroitFile, "", new { @class = "text-danger" })
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

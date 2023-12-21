@@ -9,21 +9,21 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Droits.Clients;
 
-public interface IImageStorageClient
+public interface ICloudStorageClient
 {
-    Task UploadImageAsync(string key, Stream imageStream, string contentType);
-    Task<Stream> GetImageAsync(string key);
-    Task DeleteImageAsync(string key);
+    Task UploadFileAsync(string? key, Stream imageStream, string contentType);
+    Task<Stream> GetFileAsync(string? key);
+    Task DeleteFileAsync(string? key);
 }
 
-public class ImageStorageClient : IImageStorageClient
+public class CloudStorageClient : ICloudStorageClient
 {
     private readonly IAmazonS3 _s3Client;
-    private readonly ILogger<ImageStorageClient> _logger;
+    private readonly ILogger<CloudStorageClient> _logger;
 
     private readonly string? _bucketName;
     
-    public ImageStorageClient(IAmazonS3 s3Client, ILogger<ImageStorageClient> logger, IConfiguration configuration)
+    public CloudStorageClient(IAmazonS3 s3Client, ILogger<CloudStorageClient> logger, IConfiguration configuration)
     {
         _s3Client = s3Client;
         _logger = logger;
@@ -36,8 +36,13 @@ public class ImageStorageClient : IImageStorageClient
         }
     }
 
-    public async Task UploadImageAsync(string key, Stream imageStream, string contentType)
+    public async Task UploadFileAsync(string? key, Stream imageStream, string contentType)
     {
+        if ( string.IsNullOrEmpty(key) )
+        {
+            return;
+        }
+        
         var putRequest = new PutObjectRequest
         {
             BucketName = _bucketName,
@@ -64,9 +69,9 @@ public class ImageStorageClient : IImageStorageClient
         
     }
 
-    public async Task<Stream> GetImageAsync(string key)
+    public async Task<Stream> GetFileAsync(string? key)
     {
-        
+
         var getRequest = new GetObjectRequest
         {
             BucketName = _bucketName,
@@ -85,8 +90,12 @@ public class ImageStorageClient : IImageStorageClient
         }
     }
     
-    public async Task DeleteImageAsync(string key)
+    public async Task DeleteFileAsync(string? key)
     {
+        if ( string.IsNullOrEmpty(key) )
+        {
+            return;
+        }
         var deleteRequest = new DeleteObjectRequest
         {
             BucketName = _bucketName,

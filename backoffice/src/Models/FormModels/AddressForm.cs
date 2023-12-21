@@ -18,17 +18,17 @@ public class AddressForm
 
     public AddressForm(Address address)
     {
-        Line1 = address.Line1;
-        Line2 = address.Line2;
-        Town = address.Town;
-        County = address.County;
-        Postcode = address.Postcode;
+        Line1 = address.Line1 ?? string.Empty;
+        Line2 = address.Line2 ?? string.Empty;
+        Town = address.Town ?? string.Empty;
+        County = address.County ?? string.Empty;
+        Postcode = address.Postcode ?? string.Empty;
     }
 
 
     [Required]
     [DisplayName("Line 1")]
-    public string Line1 { get; set; } = string.Empty;
+    public string? Line1 { get; set; } = string.Empty;
 
 
     [DisplayName("Line 2")]
@@ -36,14 +36,14 @@ public class AddressForm
 
     [Required]
     [DisplayName("City/Town")]
-    public string Town { get; set; } = string.Empty;
+    public string? Town { get; set; } = string.Empty;
 
     public string? County { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Postcode is required")]
     [RegularExpression(Constants.PostcodeRegex,
         ErrorMessage = "Invalid postcode")]
-    public string Postcode { get; set; } = string.Empty;
+    public string? Postcode { get; set; } = string.Empty;
 
 
     public Address ApplyChanges(Address address)

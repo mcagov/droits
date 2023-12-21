@@ -11,4 +11,13 @@ public static class StringHelper
         }
         return string.Join(separator, values.Where(s => !string.IsNullOrEmpty(s)));
     }
+    public static string FormatUrl(string url)
+    {
+        if ( string.IsNullOrWhiteSpace(url) ) return url;
+        if (!url.StartsWith("http://") && !url.StartsWith("https://"))
+        {
+            url = "https://" + url;
+        }
+        return url;
+    }
 }

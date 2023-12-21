@@ -18,12 +18,16 @@ namespace Droits.Tests.UnitTests.Services
             var wreckMaterialServiceMock = new Mock<IWreckMaterialService>();
 
             var salvorServiceMock = new Mock<ISalvorService>();
-            var letterServiceMock = new Mock<ILetterService>();
+            var imageServiceMock = new Mock<IImageService>();
+            var fileServiceMock = new Mock<IDroitFileService>();
+
+            var noteServiceMock = new Mock<INoteService>();
+
             var wreckServiceMock = new Mock<IWreckService>();
             
             var mapperMock = new Mock<IMapper>();
 
-            _service = new ApiService(loggerMock.Object, droitServiceMock.Object, wreckMaterialServiceMock.Object, salvorServiceMock.Object, letterServiceMock.Object, wreckServiceMock.Object, mapperMock.Object);
+            _service = new ApiService(loggerMock.Object, droitServiceMock.Object, wreckMaterialServiceMock.Object, salvorServiceMock.Object, imageServiceMock.Object, fileServiceMock.Object, wreckServiceMock.Object,  noteServiceMock.Object, mapperMock.Object);
         }
         
         [Fact]

@@ -65,10 +65,20 @@
                     @Html.LabelFor(m => m.WreckMaterialOwner, new { @class = "font-weight-bold" })
                 </div>
                 <div class="col-md-8">
-                    @Html.DisplayFor(m => m.WreckMaterialOwner, "MultilineText")
+                    @Html.DisplayFor(m => m.WreckMaterialOwner)
                 </div>
             </div>
 
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.WreckMaterialOwnerContactDetails, new { @class = "font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.DisplayFor(m => m.WreckMaterialOwnerContactDetails, "MultilineText")
+                </div>
+            </div>
+
+            
             <div class="form-group row mt-2">
                 <div class="col-md-4">
                     @Html.LabelFor(m => m.Purchaser, new { @class = "font-weight-bold" })
@@ -77,13 +87,31 @@
                     @Html.DisplayFor(m => m.Purchaser)
                 </div>
             </div>
+            
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.PurchaserContactDetails, new { @class = "font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.DisplayFor(m => m.PurchaserContactDetails, "MultilineText")
+                </div>
+            </div>
 
             <div class="form-group row mt-2">
                 <div class="col-md-4">
                     @Html.LabelFor(m => m.Outcome, new { @class = "font-weight-bold" })
                 </div>
                 <div class="col-md-8">
-                    @Html.DisplayFor(m => m.Outcome, "MultilineText")
+                    @Html.DisplayFor(m => m.Outcome)
+                </div>
+            </div>
+            
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.OutcomeRemarks, new { @class = "font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.DisplayFor(m => m.OutcomeRemarks, "MultilineText")
                 </div>
             </div>
 
@@ -93,13 +121,28 @@
                 <partial name="Address/_AddressViewFields" for="StorageAddress"/>
             </div>
 
-            <div class="form-group row mt-2">
-                <h5>Images</h5>
-                @for (var i = 0; i < Model.Images.Count; i++)
-                {
-                    <partial name="Image/_ImageViewFields" for="Images[i]"/>
-                }
-            </div>
+            @if (@Model.Images.Any())
+            {
+                <div class="form-group row mt-2">
+                    <h5>Images</h5>
+                    @for (var i = 0; i < Model.Images.Count; i++)
+                    {
+                        <partial name="Image/_ImageViewFields" for="Images[i]"/>
+                    }
+                </div>
+            }
+            
+            @if (@Model.Files.Any())
+            {
+                <div class="form-group row mt-2">
+                    <h5>Files</h5>
+                    @for (var i = 0; i < Model.Files.Count; i++)
+                    {
+                        <partial name="DroitFile/_DroitFileViewFields" for="Files[i]"/>
+                    }
+                </div>
+            }
+
 
         </div>
     </div>

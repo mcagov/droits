@@ -10,6 +10,7 @@ using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 #endregion
@@ -91,7 +92,7 @@ public class DroitController : BaseController
 
         await _service.UpdateDroitStatusAsync(id, status);
 
-        return RedirectToAction(nameof(View), new { id = id });
+        return RedirectToAction(nameof(View), new { id });
     }
 
 
@@ -144,7 +145,6 @@ public class DroitController : BaseController
         
         wmForms
             .Select((wmForm, i) => new { Form = wmForm, Index = i })
-            .Where(item => item.Form.StoredAtSalvorAddress)
             .ToList()
             .ForEach(item =>
                 ModelState.RemoveStartingWith($"WreckMaterialForms[{item.Index}].StorageAddress"));
@@ -156,8 +156,21 @@ public class DroitController : BaseController
             .ForEach(item =>
                 ModelState.RemoveStartingWith($"WreckMaterialForms[{item.WmFormIndex}].ImageForms[{item.ImgIndex}].ImageFile"));
         
+        wmForms
+            .SelectMany((wmForm, i) => wmForm.DroitFileForms.Select((fileForm, j) => new { WmFormIndex = i, FileForm = fileForm, FileIndex = j }))
+            // .Where(item => item.FileForm.Id != default)
+            .ToList()
+            .ForEach(item =>
+                ModelState.RemoveStartingWith($"WreckMaterialForms[{item.WmFormIndex}].DroitFileForms"));
+        
         if ( !ModelState.IsValid )
         {
+            foreach (var error in ModelState.Where(kvp => kvp.Value?.ValidationState == ModelValidationState.Invalid)
+                         .SelectMany(kvp => kvp.Value?.Errors.Select(error => $"{kvp.Key} - {error.ErrorMessage}") ?? Array.Empty<string>()))
+            {
+                _logger.LogError($"Error saving droit: {error}");
+            }
+            
             AddErrorMessage("Could not save Droit");
             form = await PopulateDroitFormAsync(form);
             return View(nameof(Edit), form);
@@ -185,10 +198,7 @@ public class DroitController : BaseController
             droit.WreckId = await _wreckService.SaveWreckFormAsync(form.WreckForm);
         }
 
-        if ( !droit.SalvorId.HasValue )
-        {
-            droit.SalvorId = await _salvorService.SaveSalvorFormAsync(form.SalvorForm);
-        }
+        droit.SalvorId ??= await _salvorService.SaveSalvorFormAsync(form.SalvorForm);
 
         try
         {
@@ -238,6 +248,12 @@ public class DroitController : BaseController
         return PartialView("Image/_ImageFormFields", new ImageForm());
     }
 
+    [HttpGet]
+    public ActionResult FileFormPartial()
+    {
+        return PartialView("DroitFile/_DroitFileFormFields", new DroitFileForm());
+    }
+
 
     private async Task<DroitForm> PopulateDroitFormAsync(DroitForm form)
     {
@@ -250,6 +266,7 @@ public class DroitController : BaseController
             allWrecks.Select(w => new SelectListItem(w.Name, w.Id.ToString())).ToList();
         form.AllSalvors = allSalvors
             .Select(s => new SelectListItem($"{s.Name} ({s.Email})", s.Id.ToString())).ToList();
+        form.WreckMaterialForms = form.WreckMaterialForms.Where(wmf => !string.IsNullOrEmpty(wmf.Name)).ToList();
 
         return form;
     }

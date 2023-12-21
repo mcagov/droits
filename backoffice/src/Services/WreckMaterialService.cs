@@ -14,6 +14,8 @@ namespace Droits.Services;
 public interface IWreckMaterialService
 {
     Task<WreckMaterial> SaveWreckMaterialAsync(WreckMaterialForm wmForm);
+    Task<WreckMaterial> AddWreckMaterialAsync(WreckMaterial wreckMaterial);
+
     Task<WreckMaterial>  GetWreckMaterialAsync(Guid id);
     Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep);
     Task CreateWreckMaterialsAsync(SubmittedReportDto report, Guid droitId);
@@ -23,15 +25,17 @@ public class WreckMaterialService : IWreckMaterialService
 {
 
     private readonly IImageService _imageService;
+    private readonly IDroitFileService _fileService;
     private readonly ILogger<WreckMaterialService> _logger;
     private readonly IWreckMaterialRepository _repository;
     private readonly IMapper _mapper;
 
 
 
-    public WreckMaterialService(IImageService imageService, ILogger<WreckMaterialService> logger, IWreckMaterialRepository repository, IMapper mapper)
+    public WreckMaterialService(IImageService imageService, IDroitFileService fileService, ILogger<WreckMaterialService> logger, IWreckMaterialRepository repository, IMapper mapper)
     {
         _imageService = imageService;
+        _fileService = fileService;
         _logger = logger;
         _repository = repository;
         _mapper = mapper;
@@ -42,7 +46,7 @@ public class WreckMaterialService : IWreckMaterialService
         WreckMaterial wreckMaterial;
         if ( wreckMaterialForm.Id == default )
         {
-            wreckMaterial = await _repository.AddAsync(
+            wreckMaterial = await AddWreckMaterialAsync(
                 wreckMaterialForm.ApplyChanges(new WreckMaterial()));
         }
 
@@ -56,9 +60,15 @@ public class WreckMaterialService : IWreckMaterialService
         }
         
         await SaveImagesAsync(wreckMaterial.Id, wreckMaterialForm.ImageForms);
-
+        await SaveFilesAsync(wreckMaterial.Id, wreckMaterialForm.DroitFileForms);
+        
         return wreckMaterial;
     }
+
+
+    public async Task<WreckMaterial> AddWreckMaterialAsync(WreckMaterial wreckMaterial) => 
+        await _repository.AddAsync(wreckMaterial);
+
 
 
     private async Task<WreckMaterial> UpdateWreckMaterialAsync(WreckMaterial wreckMaterial)
@@ -96,6 +106,7 @@ public class WreckMaterialService : IWreckMaterialService
 
                 await _imageService.SaveImageFormAsync(imageForm);
             }
+            
         }
         catch ( WreckMaterialNotFoundException e )
         {
@@ -103,6 +114,32 @@ public class WreckMaterialService : IWreckMaterialService
         }
     }
      
+     private async Task SaveFilesAsync(Guid wmId,
+         List<DroitFileForm> fileForms)
+     {
+         var fileIdsToKeep = fileForms.Select(f => f.Id);
+        
+         await _fileService.DeleteDroitFilesForWreckMaterialAsync(wmId, fileIdsToKeep);
+        
+
+         try
+         {
+             var wreckMaterial = await GetWreckMaterialAsync(wmId);
+            
+             foreach ( var fileForm in fileForms )
+             {
+                 fileForm.WreckMaterialId = wreckMaterial.Id;
+
+                 await _fileService.SaveDroitFileFormAsync(fileForm);
+             }
+            
+         }
+         catch ( WreckMaterialNotFoundException e )
+         {
+             _logger.LogError($"Wreck Material not found - {e}");
+         }
+     }
+
      public async Task CreateWreckMaterialsAsync(SubmittedReportDto report, Guid droitId)
      {
          if ( report.WreckMaterials == null || !report.WreckMaterials.Any() )
@@ -116,7 +153,7 @@ public class WreckMaterialService : IWreckMaterialService
              var wreckMaterial = _mapper.Map<WreckMaterial>(wreckMaterialSubmission);
              wreckMaterial.DroitId = droitId;
 
-             await _repository.AddAsync(wreckMaterial);
+             await AddWreckMaterialAsync(wreckMaterial);
 
              if ( wreckMaterialSubmission.Image != null )
              {

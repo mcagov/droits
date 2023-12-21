@@ -1,6 +1,7 @@
 #region
 
 using Droits.Exceptions;
+using Droits.Helpers;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +13,11 @@ public class ImageController : BaseController
 {
     private readonly IImageService _service;
     private readonly ILogger<ImageController> _logger;
-
     public ImageController(IImageService service, ILogger<ImageController> logger )
     {
         _service = service;
         _logger = logger;
+
     }
     
     public async Task<IActionResult> DisplayImage(Guid id)
@@ -34,4 +35,5 @@ public class ImageController : BaseController
         }
         
     }
+    
 }

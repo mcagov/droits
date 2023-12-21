@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Droits.Helpers;
 
 namespace Droits.Models.DTOs.Powerapps
 {
@@ -48,5 +49,12 @@ namespace Droits.Models.DTOs.Powerapps
 
         [JsonPropertyName("address1_composite")]
         public string? AddressComposite { get; set; }
+        
+        public string? GetContactDetails()
+        {
+            return StringHelper.JoinWithSeparator("\n",  EmailAddress, AddressLine1, AddressLine2, AddressLine3,
+                AddressCity, AddressCounty, AddressCountry, AddressPostalCode,
+                Telephone1, Telephone2, Telephone3, MobilePhone);
+        }
     }
 }

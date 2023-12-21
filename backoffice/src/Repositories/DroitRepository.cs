@@ -2,8 +2,6 @@
 
 using Droits.Data;
 using Droits.Exceptions;
-using Droits.Helpers;
-using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
 using Droits.Services;
@@ -19,6 +17,7 @@ public interface IDroitRepository
     IQueryable<Droit> GetDroitsWithAssociations();
     Task<Droit> GetDroitWithAssociationsAsync(Guid id);
     Task<Droit> GetDroitAsync(Guid id);
+    Task<Droit> GetDroitByPowerappsIdAsync(string powerappsId);
     Task<Droit> AddAsync(Droit droit);
     Task<Droit> UpdateAsync(Droit droit);
 
@@ -63,7 +62,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
             .Include(d => d.Wreck).ThenInclude(w => w!.Notes).ThenInclude(n => n.LastModifiedByUser)
             .Include(d => d.Salvor).ThenInclude(s => s!.Notes).ThenInclude(n => n.LastModifiedByUser)
             .Include(d => d.WreckMaterials).ThenInclude(wm => wm.Images)
-
+            .Include(d => d.WreckMaterials).ThenInclude(wm => wm.Files)
             .Include(d => d.Notes).ThenInclude(n => n.LastModifiedByUser)
             .Include(d => d.LastModifiedByUser)
             .FirstOrDefaultAsync(d => d.Id == id);
@@ -142,5 +141,17 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
         var results = droits.Select(d => new DroitExportDto(d)).ToList();
 
         return results;
+    }
+    
+    public async Task<Droit> GetDroitByPowerappsIdAsync(string powerappsId)
+    {
+        var droit = await Context.Droits
+            .FirstOrDefaultAsync(w => w.PowerappsDroitId == powerappsId);
+        if ( droit == null )
+        {
+            throw new DroitNotFoundException();
+        }
+
+        return droit;
     }
 }

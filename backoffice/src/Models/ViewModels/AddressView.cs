@@ -16,11 +16,11 @@ public class AddressView
 
     public AddressView(Address address)
     {
-        Line1 = address.Line1;
-        Line2 = address.Line2;
-        Town = address.Town;
-        County = address.County;
-        Postcode = address.Postcode;
+        Line1 = address.Line1 ?? string.Empty;
+        Line2 = address.Line2 ?? string.Empty;
+        Town = address.Town ?? string.Empty;
+        County = address.County ?? string.Empty;
+        Postcode = address.Postcode ?? string.Empty;
     }
 
 

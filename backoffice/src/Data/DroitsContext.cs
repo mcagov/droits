@@ -29,6 +29,8 @@ public partial class DroitsContext : DbContext
     public virtual DbSet<Letter> Letters { get; set; } = null!;
     public virtual DbSet<Salvor> Salvors { get; set; } = null!;
     public virtual DbSet<Image> Images { get; set; } = null!;
+    public virtual DbSet<DroitFile> DroitFiles { get; set; } = null!;
+
 
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -184,14 +186,19 @@ public partial class DroitsContext : DbContext
             entity.Property(w => w.Value);
             entity.Property(w => w.ReceiverValuation);
             entity.Property(w => w.ValueConfirmed);
-            // entity.Property(w => w.Images);
             entity.Property(w => w.WreckMaterialOwner);
+            entity.Property(w => w.WreckMaterialOwnerContactDetails);
             entity.Property(w => w.Purchaser);
+            entity.Property(w => w.PurchaserContactDetails);
             entity.Property(w => w.Outcome);
+            entity.Property(w => w.OutcomeRemarks);
             
             entity.Property(w => w.Created);
             entity.Property(w => w.LastModified);
             entity.Property(w => w.LastModifiedByUserId);
+            entity.Property(w => w.PowerappsWreckMaterialId);
+            entity.Property(w => w.PowerappsDroitId);
+
 
             entity.OwnsOne(w => w.StorageAddress);
             entity.Property(w => w.StoredAtSalvorAddress);
@@ -202,6 +209,11 @@ public partial class DroitsContext : DbContext
                 .IsRequired();
 
             entity.HasMany(w => w.Images)
+                .WithOne(i => i.WreckMaterial)
+                .HasForeignKey(i => i.WreckMaterialId)
+                .IsRequired(false);
+            
+            entity.HasMany(w => w.Files)
                 .WithOne(i => i.WreckMaterial)
                 .HasForeignKey(i => i.WreckMaterialId)
                 .IsRequired(false);
@@ -235,6 +247,31 @@ public partial class DroitsContext : DbContext
                 .HasForeignKey(i => i.WreckMaterialId)
                 .IsRequired(false);
             
+            
+        });
+
+        
+        modelBuilder.Entity<DroitFile>(entity =>
+        {
+            entity.Property(i => i.Id);
+            entity.Property(i => i.Title);
+            entity.Property(i => i.Url);
+
+            
+            entity.Property(i => i.Key);
+            entity.Property(i => i.Filename);
+            entity.Property(i => i.FileContentType);
+            
+            entity.Property(i => i.WreckMaterialId);
+            
+            entity.Property(i => i.Created);
+            entity.Property(i => i.LastModified);
+            entity.Property(i => i.LastModifiedByUserId);
+            
+            entity.HasOne(i => i.WreckMaterial)
+                .WithMany(w => w.Files)
+                .HasForeignKey(i => i.WreckMaterialId)
+                .IsRequired(false);
             
         });
 

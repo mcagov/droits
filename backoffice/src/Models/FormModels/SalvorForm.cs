@@ -33,12 +33,9 @@ public class SalvorForm : BaseEntityForm
     [EmailAddress(ErrorMessage = "Invalid email address")]
     public string Email { get; set; } = string.Empty;
 
-    [Phone()]
     [DisplayName("Telephone Number")]
-
     public string? TelephoneNumber { get; set; } = string.Empty;
     
-    [Phone()]
     [DisplayName("Mobile Number")]
     public string? MobileNumber { get; } = string.Empty;
 
