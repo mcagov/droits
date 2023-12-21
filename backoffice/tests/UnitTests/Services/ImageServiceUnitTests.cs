@@ -5,6 +5,7 @@ using Droits.Models.FormModels;
 using Droits.Repositories;
 using Droits.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Droits.Tests.UnitTests.Services;
@@ -18,8 +19,7 @@ public class ImageServiceUnitTests
     {
         var mockLogger = new Mock<ILogger<ImageService>>(); 
         _mockRepo = new Mock<IImageRepository>();
-        var mockAzureBlobClient = new Mock<AzureBlobClient>();
-        _service = new ImageService(mockLogger.Object,_mockRepo.Object, mockAzureBlobClient.Object);
+        _service = new ImageService(mockLogger.Object,_mockRepo.Object, new AzureBlobClient(null));
     }
 
 
