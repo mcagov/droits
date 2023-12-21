@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
@@ -72,14 +73,14 @@ var databaseOptions = builder.Configuration.GetSection("Database").Get<DatabaseO
 
 builder.Services.AddDbContext<DroitsContext>(opt =>
 {
-    if (builder.Environment.IsDevelopment())
-    {
+    // if (builder.Environment.IsDevelopment())
+    // {
         opt.UseInMemoryDatabase(databaseOptions?.Database ?? "Droits");
-    }
-    else
-    {
-        opt.UseNpgsql(databaseOptions?.ConnectionString);
-    }
+    // }
+    // else
+    // {
+    //     opt.UseNpgsql(databaseOptions?.ConnectionString);
+    // }
 });
 
 // Session and HealthChecks
@@ -105,7 +106,7 @@ builder.Services.AddScoped<ILetterService, LetterService>();
 
 builder.Services.AddScoped<IGovNotifyClient, GovNotifyClient>();
 
-builder.Services.AddScoped<IImageStorageClient, ImageStorageClient>();
+builder.Services.AddScoped<ICloudStorageClient, CloudStorageClient>();
 
 builder.Services.AddScoped<IWreckMaterialRepository, WreckMaterialRepository>();
 builder.Services.AddScoped<IWreckMaterialService, WreckMaterialService>();
@@ -121,9 +122,13 @@ builder.Services.AddScoped<ISalvorService, SalvorService>();
 
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IAzureBlobClient, AzureBlobClient>();
+
+builder.Services.AddScoped<IDroitFileRepository, DroitFileRepository>();
+builder.Services.AddScoped<IDroitFileService, DroitFileService>();
 
 // Mappers
-builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile));
+builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile), typeof(PowerAppsDroitReportMappingProfile), typeof(PowerAppsWreckMaterialMappingProfile));
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();
@@ -156,6 +161,12 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SameSite = SameSiteMode.None;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
+
+builder.Services.Configure<KestrelServerOptions>(options =>
+{
+    options.Limits.MaxRequestBodySize = int.MaxValue; // Set the maximum size here as required
+});
+
 
 // ** APP BUILD & MIDDLEWARE **
 

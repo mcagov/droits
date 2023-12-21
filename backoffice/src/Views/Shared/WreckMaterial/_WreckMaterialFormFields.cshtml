@@ -89,6 +89,17 @@
 
             <div class="form-group row mt-2">
                 <div class="col-md-4">
+                    @Html.LabelFor(m => m.WreckMaterialOwnerContactDetails, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.WreckMaterialOwnerContactDetails, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.WreckMaterialOwnerContactDetails, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
                     @Html.LabelFor(m => m.Purchaser, new { @class = "col-form-label font-weight-bold" })
                 </div>
                 <div class="col-md-8">
@@ -96,14 +107,34 @@
                     @Html.ValidationMessageFor(m => m.Purchaser, "", new { @class = "text-danger" })
                 </div>
             </div>
-
+            
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.PurchaserContactDetails, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.PurchaserContactDetails, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.PurchaserContactDetails, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            
             <div class="form-group row mt-2">
                 <div class="col-md-4">
                     @Html.LabelFor(m => m.Outcome, new { @class = "col-form-label font-weight-bold" })
                 </div>
                 <div class="col-md-8">
-                    @Html.EditorFor(m => m.Outcome, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(m => m.Outcome, "", new { @class = "text-danger" })
+                     @Html.DropDownListFor(m => m.Outcome, Html.GetEnumSelectList(typeof(WreckMaterialOutcome)), "Select.....", new { @class = "form-control" })
+                     @Html.ValidationMessageFor(m => m.Outcome, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            
+            <div class="form-group row mt-2">
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.OutcomeRemarks, new { @class = "col-form-label font-weight-bold" })
+                </div>
+                <div class="col-md-8">
+                    @Html.EditorFor(m => m.OutcomeRemarks, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.OutcomeRemarks, "", new { @class = "text-danger" })
                 </div>
             </div>
             
@@ -135,6 +166,19 @@
                     <button type="button" class="js-add-image-form mt-2 btn btn-primary">Add Image</button>
                 </div>
             </div>
+            
+            <div class="js-files mt-2">
+                <div class="js-files-form-container row">
+                    @for (var i = 0; i < Model.DroitFileForms.Count; i++)
+                    {
+                        <partial name="DroitFile/_DroitFileFormFields" for="DroitFileForms[i]"/>
+                    }
+                </div>
+                <div class="col-12 mt-4">
+                    <button type="button" class="js-add-file-form mt-2 btn btn-primary">Add File</button>
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>

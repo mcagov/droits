@@ -110,5 +110,61 @@ public class ApiController : Controller
 
     }
     
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> MigrateDroit([FromBody] PowerappsDroitReportDto request)
+    {
+
+        try
+        {
+            var savedDroit = await _service.MigrateDroitAsync(request);
+            
+            return Json(new
+            {
+                droit = new
+                {
+                    savedDroit.Id,
+                    savedDroit.PowerappsDroitId,
+                    savedDroit.PowerappsWreckId,
+                    savedDroit.Reference
+                }
+            });
+        }
+        catch ( Exception e )
+        {
+            _logger.LogError("Droits could not be saved" + e);
+            return NotFound();
+        }
+
+    }
+    
+    
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> MigrateWreckMaterial([FromBody] PowerappsWreckMaterialDto request)
+    {
+    
+        try
+        {
+            var savedWreckMaterial = await _service.MigrateWreckMaterialAsync(request);
+            
+            return Json(new
+            {
+                WreckMaterial = new
+                {
+                    savedWreckMaterial.Id,
+                    savedWreckMaterial.DroitId,
+                    savedWreckMaterial.Name
+                }
+            });
+        }
+        catch ( Exception e )
+        {
+            _logger.LogError("WM could not be saved" + e);
+            return NotFound();
+        }
+    
+    }
+
     
 }

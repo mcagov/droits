@@ -18,15 +18,15 @@ public interface IImageRepository
     Task<Image> UpdateAsync(Image image);
     Task<Image> GetImageAsync(Guid id);
     Task UploadImageFileAsync(Image image, IFormFile imageFile);
-    Task<Stream> GetImageStreamAsync(string key);
+    Task<Stream> GetImageStreamAsync(string? key);
     Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep);
 }
 
 public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
 {
     private readonly ILogger<ImageRepository> _logger;
-    private readonly IImageStorageClient _storageClient; 
-    public ImageRepository(DroitsContext dbContext, ILogger<ImageRepository> logger, IAccountService accountService, IImageStorageClient storageClient) : base(dbContext,accountService)
+    private readonly ICloudStorageClient _storageClient; 
+    public ImageRepository(DroitsContext dbContext, ILogger<ImageRepository> logger, IAccountService accountService, ICloudStorageClient storageClient) : base(dbContext,accountService)
     {
         _logger = logger;
         _storageClient = storageClient;
@@ -67,7 +67,7 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
         {
             var contentType = FileHelper.GetContentType(imageFile.FileName);
             await using var stream = imageFile.OpenReadStream();
-            await _storageClient.UploadImageAsync(key,stream,contentType);
+            await _storageClient.UploadFileAsync(key,stream,contentType);
             image.Filename = imageFile.FileName;
             image.FileContentType = contentType;
             image.Key = key;
@@ -80,7 +80,7 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
     }
 
 
-    public async Task<Stream> GetImageStreamAsync(string key) => await _storageClient.GetImageAsync(key);
+    public async Task<Stream> GetImageStreamAsync(string? key) => await _storageClient.GetFileAsync(key);
     
     public async Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep)
     {
@@ -106,7 +106,7 @@ public class ImageRepository : BaseEntityRepository<Image>, IImageRepository
 
     private async Task DeleteImagesFromStorageAsync(IEnumerable<Image> imagesToDelete)
     {
-        var deletionTasks = imagesToDelete.Select(image => _storageClient.DeleteImageAsync(image.Key));
+        var deletionTasks = imagesToDelete.Select(image => _storageClient.DeleteFileAsync(image.Key));
         await Task.WhenAll(deletionTasks);
     }
 }

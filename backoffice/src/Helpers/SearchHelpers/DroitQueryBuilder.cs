@@ -184,16 +184,16 @@ public static class DroitQueryBuilder
                         ))
                 &&
                         (string.IsNullOrEmpty(form.WreckMaterialOwner) ||
-                        (!string.IsNullOrEmpty(wm.WreckMaterialOwner) &&
-                        ( wm.WreckMaterialOwner.ToLower()
+                        (!string.IsNullOrEmpty(wm.WreckMaterialOwnerContactDetails) &&
+                        ( wm.WreckMaterialOwnerContactDetails.ToLower()
                               .Contains(form.WreckMaterialOwner.ToLower()) ||
                           ( usePsql
                               ? EF.Functions.FuzzyStringMatchLevenshtein(
                                   form.WreckMaterialOwner.ToLower(),
-                                  wm.WreckMaterialOwner.ToLower())
+                                  wm.WreckMaterialOwnerContactDetails.ToLower())
                               : SearchHelper.GetLevenshteinDistance(
                                   form.WreckMaterialOwner.ToLower(),
-                                  wm.WreckMaterialOwner.ToLower()) ) < MaxLevenshteinDistance ))
+                                  wm.WreckMaterialOwnerContactDetails.ToLower()) ) < MaxLevenshteinDistance ))
                     ) &&
                     
                         (form.ValueConfirmed == null || wm.ValueConfirmed == form.ValueConfirmed)

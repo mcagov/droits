@@ -29,7 +29,7 @@ public class WreckMaterialRepository : BaseEntityRepository<WreckMaterial>, IWre
     public async Task<WreckMaterial> GetWreckMaterialAsync(Guid id)
     {
         var wreckMaterial =
-            await Context.WreckMaterials.Include(wm => wm.Images).FirstOrDefaultAsync(wm =>
+            await Context.WreckMaterials.Include(wm => wm.Images).Include(wm => wm.Files).FirstOrDefaultAsync(wm =>
                 wm.Id == id);
         if ( wreckMaterial == null )
         {

@@ -18,6 +18,8 @@ namespace Droits.Data.Mappers.Powerapps
                     src.WreckValue))
                 .ForMember(dest => dest.Reference, opt => opt.MapFrom(src =>
                         src.ReportReference))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src =>
+                    src.GetDroitStatus()))
                 .ForMember(dest => dest.Created, opt => opt.MapFrom(src =>
                             src.CreatedOn))
                 .ForMember(dest => dest.ReportedDate,
@@ -78,7 +80,6 @@ namespace Droits.Data.Mappers.Powerapps
                     opt => opt.MapFrom(src =>
                         src.MmoLicenseProvided))
                 
-                //Separate fields, or build into json as the webapp does?
                 .ForMember(dest => dest.ReportedWreckName,
                     opt => opt.MapFrom(src =>
                         src.VesselName))

@@ -1,8 +1,11 @@
+using Amazon.Runtime.Internal.Util;
+using Droits.Clients;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Repositories;
 using Droits.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Droits.Tests.UnitTests.Services;
 
@@ -13,8 +16,10 @@ public class ImageServiceUnitTests
 
     public ImageServiceUnitTests()
     {
+        var mockLogger = new Mock<ILogger<ImageService>>(); 
         _mockRepo = new Mock<IImageRepository>();
-        _service = new ImageService(_mockRepo.Object);
+        var mockAzureBlobClient = new Mock<AzureBlobClient>();
+        _service = new ImageService(mockLogger.Object,_mockRepo.Object, mockAzureBlobClient.Object);
     }
 
 

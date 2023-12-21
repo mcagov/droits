@@ -3,6 +3,7 @@ using Droits.Exceptions;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Models.Entities;
+using Droits.Models.Enums;
 
 namespace Droits.Services;
 
@@ -11,7 +12,9 @@ public interface IApiService
 
     Task<Droit> SaveDroitReportAsync(SubmittedReportDto report);
     Task<List<Droit>> MigrateDroitsAsync(PowerappsDroitReportsDto request);
+    Task<Droit> MigrateDroitAsync(PowerappsDroitReportDto request);
 
+    Task<WreckMaterial> MigrateWreckMaterialAsync(PowerappsWreckMaterialDto wmRequest);
     Task<List<Wreck>> MigrateWrecksAsync(PowerappsWrecksDto request);
 }
 
@@ -21,21 +24,25 @@ public class ApiService : IApiService
     private readonly IDroitService _droitService;
     private readonly IWreckMaterialService _wreckMaterialService;
     private readonly ISalvorService _salvorService;
-    private readonly ILetterService _letterService;
+    private readonly IImageService _imageService;
     private readonly IWreckService _wreckService;
+    private readonly IDroitFileService _fileService;
+    private readonly INoteService _noteService;
     
     private readonly IMapper _mapper;
 
 
     
-    public ApiService(ILogger<ApiService> logger,  IDroitService droitService, IWreckMaterialService wreckMaterialService, ISalvorService salvorService, ILetterService letterService, IWreckService wreckService, IMapper mapper)
+    public ApiService(ILogger<ApiService> logger,  IDroitService droitService, IWreckMaterialService wreckMaterialService, ISalvorService salvorService, IImageService imageService, IDroitFileService fileService, IWreckService wreckService, INoteService noteService, IMapper mapper)
     {
         _logger = logger;
         _droitService = droitService;
         _wreckMaterialService = wreckMaterialService;
         _salvorService = salvorService;
-        _letterService = letterService;
+        _imageService = imageService;
+        _fileService = fileService;
         _wreckService = wreckService;
+        _noteService = noteService;
         _mapper = mapper;
     }
 
@@ -52,7 +59,8 @@ public class ApiService : IApiService
         var droit = await MapSubmittedDataAsync(report);
 
         // Send submission confirmed email 
-        await _letterService.SendSubmissionConfirmationEmailAsync(droit, report);
+        //Turned off sending submission emails for now.
+        // await _letterService.SendSubmissionConfirmationEmailAsync(droit, report);
         
         return droit;
     }
@@ -108,55 +116,148 @@ public class ApiService : IApiService
         
         foreach ( var powerappsDroitReportDto in droitsRequest.Value )
         {
-            var droit = _mapper.Map<Droit>(powerappsDroitReportDto);
-
             try
             {
-                if ( string.IsNullOrEmpty(droit.Reference) )
+                if ( string.IsNullOrEmpty(powerappsDroitReportDto.ReportReference) )
                 {
                     continue;
                 }
-
-                if ( !string.IsNullOrEmpty(droit.PowerappsWreckId) )
-                {
-                    try
-                    {
-                        var wreck =
-                            await _wreckService.GetWreckByPowerappsIdAsync(droit.PowerappsWreckId);
-                        droit.WreckId = wreck.Id;
-                    }
-                    catch ( WreckNotFoundException ex )
-                    {
-                        _logger.LogError($"Unable to find Wreck by Powerapps ID - {droit.PowerappsWreckId} - {ex}");
-
-                    }
-                }
                 
-                // Need to create/find salvor and bind to droit. 
-
-                if ( powerappsDroitReportDto.Reporter != null )
-                {
-                    var mappedSalvor = _mapper.Map<Salvor>(powerappsDroitReportDto.Reporter);
-                    var salvor = await _salvorService.GetOrCreateAsync(mappedSalvor);
-
-                    droit.SalvorId = salvor.Id;
-                }
-                
-                droit = await _droitService.SaveDroitAsync(droit);
+                var droit = await MigrateDroitAsync(powerappsDroitReportDto);
 
                 droits.Add(droit);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Unable to save droit - {droit.PowerappsWreckId} {droit.Reference} - {ex}");
+                _logger.LogError($"Unable to save droit - {powerappsDroitReportDto.WreckValue} {powerappsDroitReportDto.ReportReference} - {ex}");
             }
             
         }
 
         return droits;
     }
+    
+    public async Task<Droit> MigrateDroitAsync(PowerappsDroitReportDto droitRequest)
+    {
+        if ( droitRequest == null )
+        {
+            _logger.LogError("Request is null");
+            throw new DroitNotFoundException();
+        }
+        
+        var droit = _mapper.Map<Droit>(droitRequest);
 
+        try
+        {
+            if ( string.IsNullOrEmpty(droit.Reference) )
+            {
+                _logger.LogError("Reference is null");
+                throw new DroitNotFoundException();
+            }
 
+            if ( !string.IsNullOrEmpty(droit.PowerappsWreckId) )
+            {
+                try
+                {
+                    var wreck =
+                        await _wreckService.GetWreckByPowerappsIdAsync(droit.PowerappsWreckId);
+                    droit.WreckId = wreck.Id;
+                }
+                catch ( WreckNotFoundException ex )
+                {
+                    _logger.LogError($"Unable to find Wreck by Powerapps ID - {droit.PowerappsWreckId} - {ex}");
+
+                }
+            }
+                
+            // Need to create/find salvor and bind to droit. 
+
+            if ( droitRequest.Reporter != null )
+            {
+                var mappedSalvor = _mapper.Map<Salvor>(droitRequest.Reporter);
+                var salvor = await _salvorService.GetOrCreateAsync(mappedSalvor);
+
+                droit.SalvorId = salvor.Id;
+            }
+                
+            droit = await _droitService.SaveDroitAsync(droit);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Unable to save droit - {droit.PowerappsWreckId} {droit.Reference} - {ex}");
+        }
+            
+
+        return droit;
+    }
+
+    
+        
+    public async Task<WreckMaterial> MigrateWreckMaterialAsync(PowerappsWreckMaterialDto wmRequest)
+    {
+        if ( wmRequest == null )
+        {
+            _logger.LogError("Request is null");
+            throw new WreckMaterialNotFoundException();
+        }
+        
+        var wreckMaterial = _mapper.Map<WreckMaterial>(wmRequest);
+
+        try
+        {
+            if ( string.IsNullOrEmpty(wreckMaterial.Name) )
+            {
+                _logger.LogError("Name is null");
+                throw new WreckMaterialNotFoundException();
+            }
+
+            // Connect the droit.. 
+            Droit droit = null!;
+            if ( !string.IsNullOrEmpty(wmRequest.PowerappsDroitId) )
+            {
+                try
+                {
+                    droit =
+                        await _droitService.GetDroitByPowerappsIdAsync(wmRequest.PowerappsDroitId);
+                    wreckMaterial.DroitId = droit.Id;
+                    
+                    
+                    
+                    
+                }
+                catch ( DroitNotFoundException ex )
+                {
+                    _logger.LogError($"Unable to find Droit by Powerapps ID - {wmRequest.PowerappsDroitId} - {ex}");
+
+                }
+            }
+            
+            //save
+            wreckMaterial = await _wreckMaterialService.AddWreckMaterialAsync(wreckMaterial);
+
+            if (!string.IsNullOrEmpty(wmRequest.ImageUrl) )
+            {
+                if (wmRequest.ImageUrl.ToLower().Contains(".blob.core.windows.net/report-uploads"))
+                {
+                    await _imageService.AddImageByUrlToWreckMaterial(wreckMaterial.Id,
+                        wmRequest.ImageUrl);
+                }
+                else
+                {
+                    await _fileService.AddFileUrlToWreckMaterial(wreckMaterial.Id, wmRequest.ImageUrl);
+                }
+               
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Unable to save Wreck Material - {wmRequest.PowerappsWreckMaterialId} {wmRequest.Name} - {ex}");
+        }
+            
+
+        return wreckMaterial;
+    }
+    
     private async Task<Droit> MapSubmittedDataAsync(SubmittedReportDto report)
     {
         var mappedSalvor = _mapper.Map<Salvor>(report);

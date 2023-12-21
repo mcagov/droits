@@ -1,6 +1,7 @@
 #region
 
 using System.ComponentModel.DataAnnotations.Schema;
+using Droits.Models.Enums;
 
 #endregion
 
@@ -15,19 +16,26 @@ public class WreckMaterial : BaseEntity
     public string Name { get; set; } = string.Empty;
     public Address StorageAddress { get; set; } = new();
     public virtual ICollection<Image> Images { get; set; } = new List<Image>();
+    public virtual ICollection<DroitFile> Files { get; set; } = new List<DroitFile>();
+
     public bool StoredAtSalvorAddress { get; set; } = false;
     public string? Description { get; set; } = string.Empty;
     public int Quantity { get; set; } = 1;
     public double? Value { get; set; } = 0;
-    
-    public bool ValueKnown { get; set; } = false;
+    public bool ValueKnown { get; set; }
     public double? ReceiverValuation { get; set; } = 0;
-    public bool ValueConfirmed { get; set; } = false;
-
-    
-    // Legacy fields ..
+    public bool ValueConfirmed { get; set; }
 
     public string? WreckMaterialOwner { get; set; } = string.Empty;
+    public string? WreckMaterialOwnerContactDetails { get; set; } = string.Empty;
+    
     public string? Purchaser { get; set; } = string.Empty;
-    public string? Outcome { get; set; } = string.Empty;
+    public string? PurchaserContactDetails { get; set; } = string.Empty;
+    
+    public WreckMaterialOutcome? Outcome { get; set; }
+    public string? OutcomeRemarks { get; set; } = string.Empty;
+    
+    public string? PowerappsWreckMaterialId { get; set; }
+    public string? PowerappsDroitId { get; set; }
+
 }

@@ -26,48 +26,66 @@ public static class DatabaseSeeder
     {
         dbContext.Database.EnsureCreated();
 
-        if ( !dbContext.Users.Any() )
-        {
-            dbContext.Users.AddRange(GetUsers());
-            dbContext.SaveChanges();
-        }
-        
-        if (!dbContext.Wrecks.Any() )
-        {
-            dbContext.Wrecks.AddRange(GetWrecks(Faker.Random.ArrayElement(dbContext.Users.ToArray())));
-            dbContext.SaveChanges();
-        }
+        // if ( false )
+        // {
+            if ( !dbContext.Users.Any() )
+            {
+                dbContext.Users.AddRange(GetUsers());
+                dbContext.SaveChanges();
+            }
 
-        if ( !dbContext.Salvors.Any() )
-        {
-            dbContext.Salvors.AddRange(GetSalvors(Faker.Random.ArrayElement(dbContext.Users.ToArray())));
-            dbContext.SaveChanges();
-        }
-        
-        if ( !dbContext.Droits.Any() )
-        {
-            dbContext.Droits.AddRange(GetDroits(dbContext.Wrecks,
-                dbContext.Salvors, dbContext.Users));
-            dbContext.SaveChanges();
-        }
+            if ( !dbContext.Wrecks.Any() )
+            {
+                dbContext.Wrecks.AddRange(
+                    GetWrecks(Faker.Random.ArrayElement(dbContext.Users.ToArray())));
+                dbContext.SaveChanges();
+            }
 
-        if ( !dbContext.Letters.Any() )
-        {
-            dbContext.Letters.AddRange(GetLetters(dbContext.Droits, Faker.Random.ArrayElement(dbContext.Users.ToArray())));
-            dbContext.SaveChanges();
-        }
+            if ( !dbContext.Salvors.Any() )
+            {
+                dbContext.Salvors.AddRange(
+                    GetSalvors(Faker.Random.ArrayElement(dbContext.Users.ToArray())));
+                dbContext.SaveChanges();
+            }
 
-        if ( !dbContext.Notes.Any() )
-        {
-            SeedNotes(dbContext);
-            dbContext.SaveChanges();
-        }
-        
-        if ( !dbContext.Images.Any() )
-        {
-            dbContext.Images.AddRange(GetImages());
-            dbContext.SaveChanges();
-        }
+            if ( !dbContext.Droits.Any() )
+            {
+                dbContext.Droits.AddRange(GetDroits(dbContext.Wrecks,
+                    dbContext.Salvors, dbContext.Users));
+                dbContext.SaveChanges();
+            }
+
+            if ( !dbContext.WreckMaterials.Any() )
+            {
+                foreach (var droit in dbContext.Droits)
+                {
+                    dbContext.WreckMaterials.AddRange(GenerateWreckMaterials(droit.Id));
+                }
+                
+                dbContext.SaveChanges();
+            }
+            
+            if ( !dbContext.Letters.Any() )
+            {
+                dbContext.Letters.AddRange(GetLetters(dbContext.Droits,
+                    Faker.Random.ArrayElement(dbContext.Users.ToArray())));
+                dbContext.SaveChanges();
+            }
+
+            if ( !dbContext.Notes.Any() )
+            {
+                SeedNotes(dbContext);
+                dbContext.SaveChanges();
+            }
+
+            if ( !dbContext.Images.Any() )
+            {
+                dbContext.Images.AddRange(GetImages());
+                dbContext.SaveChanges();
+            }
+
+
+        // }
 
     }
 
@@ -184,11 +202,43 @@ public static class DatabaseSeeder
             Agent = Faker.Name.FullName(),
             RecoveredFromLegacy = Faker.Random.ArrayElement(new[] { "Afloat", "Ashore", "Seabed" }),
             ImportedFromLegacy = Faker.Random.Bool(),
-            LegacyRemarks = Faker.Lorem.Sentences()
+            LegacyRemarks = Faker.Lorem.Sentences(),
         };
     }
 
-
+    private static List<WreckMaterial> GenerateWreckMaterials(Guid droitId)
+    {
+        return Enumerable.Range(1, 3).Select(i =>
+            new WreckMaterial
+            {
+                Name = Faker.Lorem.Word(),
+                DroitId = droitId,
+                StorageAddress = new Address
+                {
+                    Line1 = Faker.Address.StreetAddress(),
+                    Line2 = Faker.Address.SecondaryAddress(),
+                    Town = Faker.Address.City(),
+                    County = Faker.Address.County(),
+                    Postcode = Faker.Address.ZipCode()
+                },
+                StoredAtSalvorAddress = Faker.Random.Bool(),
+                Description = Faker.Lorem.Sentence(),
+                Quantity = Faker.Random.Int(1, 100),
+                Value = Math.Round(Faker.Random.Double(1, 5000),2),
+                ValueKnown = Faker.Random.Bool(),
+                ReceiverValuation = Math.Round(Faker.Random.Double(1, 5000),2),
+                ValueConfirmed = Faker.Random.Bool(),
+                WreckMaterialOwner = Faker.Company.CompanyName(),
+                WreckMaterialOwnerContactDetails = Faker.Lorem.Sentences(),
+                Purchaser = Faker.Company.CompanyName(),
+                PurchaserContactDetails = Faker.Lorem.Sentences(),
+                Outcome = Enum.GetValues(typeof(WreckMaterialOutcome))
+                    .OfType<WreckMaterialOutcome>()
+                    .MinBy(x => Guid.NewGuid())
+                    .OrNull(Faker, 0.3f),
+                OutcomeRemarks = Faker.Lorem.Sentences()
+            }).ToList();
+    }
     private static string GenerateOriginalSubmission()
     {
         var fakeData = new Faker<SubmittedReportDto>()
@@ -231,6 +281,10 @@ public static class DatabaseSeeder
             {
                 Id = Guid.NewGuid(),
                 Name = Faker.Name.FullName(),
+                WreckType = Enum.GetValues(typeof(WreckType))
+                    .OfType<WreckType>()
+                    .MinBy(x => Guid.NewGuid())
+                    .OrNull(Faker, 0.3f),
                 ConstructionDetails = Faker.Lorem.Word(),
                 YearConstructed = Faker.Random.Int(1500, DateTime.UtcNow.Year),
                 DateOfLoss = Faker.Date.Past(500, DateTime.UtcNow),
@@ -282,7 +336,7 @@ public static class DatabaseSeeder
     
         dbContext.Notes.AddRange(notes);
     }
-
+    
 
     private static IEnumerable<Note> GenerateNotesForEntities<T>(DroitsContext dbContext,
         IEnumerable<T> entities, string propertyName) where T : BaseEntity

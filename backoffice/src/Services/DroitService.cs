@@ -27,6 +27,7 @@ public interface IDroitService
 {
     Task<DroitListView> GetDroitsListViewAsync(SearchOptions searchOptions);
     Task<List<Droit>> GetDroitsAsync();
+    Task<Droit> GetDroitByPowerappsIdAsync(string powerappsId);
     Task<List<Droit>> GetDroitsWithAssociationsAsync();
     Task<Droit> SaveDroitAsync(Droit droit);
     Task<Droit> GetDroitAsync(Guid id);
@@ -100,7 +101,10 @@ public class DroitService : IDroitService
         return await _repo.GetDroits().ToListAsync();
     }
 
-
+    public async Task<Droit> GetDroitByPowerappsIdAsync(string powerappsId)
+    {
+        return await _repo.GetDroitByPowerappsIdAsync(powerappsId);
+    }
     public async Task<List<Droit>> GetDroitsWithAssociationsAsync()
     {
         return await _repo.GetDroitsWithAssociations().ToListAsync();
@@ -117,7 +121,11 @@ public class DroitService : IDroitService
 
     private async Task<Droit> AddDroitAsync(Droit droit)
     {
-        droit.Reference = await GetNextDroitReference();
+        if ( string.IsNullOrEmpty(droit.Reference) || !await IsReferenceUnique(droit))
+        {
+            droit.Reference = await GetNextDroitReference();
+        }
+
         return await _repo.AddAsync(droit);
     }
 
@@ -152,7 +160,9 @@ public class DroitService : IDroitService
     public async Task SaveWreckMaterialsAsync(Guid droitId,
         List<WreckMaterialForm> wreckMaterialForms)
     {
-        var wreckMaterialIdsToKeep = wreckMaterialForms.Select(wm => wm.Id);
+        
+        wreckMaterialForms = wreckMaterialForms.Where(wmf => !string.IsNullOrEmpty(wmf.Name)).ToList();
+        var wreckMaterialIdsToKeep = wreckMaterialForms.Where(wm => !string.IsNullOrEmpty(wm.Name)).Select(wm => wm.Id);
 
         await _wreckMaterialService.DeleteWreckMaterialForDroitAsync(droitId,
             wreckMaterialIdsToKeep);

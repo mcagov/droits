@@ -1,0 +1,40 @@
+@using Droits.Helpers
+@model DroitFileView
+
+<div class="mb-2">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col">
+                    <h5>@Html.DisplayFor(m => m.Title)</h5>
+                </div>
+                <div class="col">
+                    @if (!string.IsNullOrEmpty(Model.Filename))
+                    {
+                        <a type="button" asp-controller="File" asp-action="Download" asp-route-id="@Model.Id" target="_blank" class="btn btn-primary float-end">Download File</a>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="form-group row mt-2">
+                @if (!string.IsNullOrEmpty(Model.Url))
+                {
+                    <h5><a href="@(StringHelper.FormatUrl(Model.Url))" target="_blank"> @Html.DisplayFor(m => m.Url)</a></h5>
+                }
+                
+                @if (!string.IsNullOrEmpty(Model.Filename))
+                {
+                    <a type="button" asp-controller="File" asp-action="Download" asp-route-id="@Model.Id" target="_blank" class="btn btn-primary float-end">Download @Model.Filename</a>
+                }
+                
+                @if (ViewData["ImageError"] != null)
+                {
+                    <div class="alert alert-danger">
+                        @ViewData["ImageError"]
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
