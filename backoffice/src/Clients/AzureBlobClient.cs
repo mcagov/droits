@@ -9,10 +9,11 @@ public interface IAzureBlobClient
 
 public class AzureBlobClient : IAzureBlobClient
 {
-    private readonly BlobServiceClient _blobServiceClient;
+    private readonly BlobServiceClient? _blobServiceClient;
 
-    public AzureBlobClient(IConfiguration configuration)
+    public AzureBlobClient(IConfiguration? configuration)
     {
+        if ( configuration == null ) return;
         var connectionString = configuration["Azure:BlobConfig:ConnectionString"];
         if (string.IsNullOrEmpty(connectionString))
         {
