@@ -25,6 +25,8 @@ backoffice/tests/appsettings.*
 
 backoffice/Droits.sln.DotSettings.user
 
+##scripts
+scripts/data/**
 
 ##terraform
 .terraform
