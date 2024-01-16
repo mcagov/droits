@@ -9,7 +9,7 @@ public class SalvorQueryBuilder
     private const int MaxLevenshteinDistance = 5;
     
     public static IQueryable<Salvor> BuildQuery(SalvorSearchForm form, IQueryable<Salvor> query,
-        bool usePsql = true)
+        bool usePsql = false) // change to true when using real db
     { 
         if ( !string.IsNullOrEmpty(form.Name) )
         {

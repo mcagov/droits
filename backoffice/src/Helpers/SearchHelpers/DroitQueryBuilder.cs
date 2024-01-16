@@ -12,7 +12,7 @@ public static class DroitQueryBuilder
     
     private const int MaxLevenshteinDistance = 5;
     
-    public static IQueryable<Droit> BuildQuery(DroitSearchForm form, IQueryable<Droit> query,  bool usePsql = true)
+    public static IQueryable<Droit> BuildQuery(DroitSearchForm form, IQueryable<Droit> query,  bool usePsql = false) // change to true when using real db
     {
             
             if (!string.IsNullOrEmpty(form.Reference))
