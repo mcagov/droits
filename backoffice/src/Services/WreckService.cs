@@ -126,7 +126,7 @@ public class WreckService : IWreckService
     {
         var query = _repo.GetWrecksWithAssociations();
 
-        return WreckQueryBuilder.BuildQuery(form, query);
+        return WreckQueryBuilder.BuildQuery(form, query, false);
     }
 
 

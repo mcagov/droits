@@ -1,7 +1,9 @@
 using AutoMapper;
 using Droits.Exceptions;
+using Droits.Helpers.SearchHelpers;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Powerapps;
+using Droits.Models.DTOs.Webapp;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 
@@ -16,6 +18,7 @@ public interface IApiService
 
     Task<WreckMaterial> MigrateWreckMaterialAsync(PowerappsWreckMaterialDto wmRequest);
     Task<List<Wreck>> MigrateWrecksAsync(PowerappsWrecksDto request);
+    Task<SalvorInfoDto> GetSalvorInfoAsync(string salvorEmail);
 }
 
 public class ApiService : IApiService
@@ -169,9 +172,7 @@ public class ApiService : IApiService
 
                 }
             }
-                
-            // Need to create/find salvor and bind to droit. 
-
+            
             if ( droitRequest.Reporter != null )
             {
                 var mappedSalvor = _mapper.Map<Salvor>(droitRequest.Reporter);
@@ -271,5 +272,37 @@ public class ApiService : IApiService
         }
 
         return droit;
+    }
+
+
+    public async Task<SalvorInfoDto> GetSalvorInfoAsync(string salvorEmail)
+    {
+        var salvors = await _salvorService.GetSalvorsAsync();
+
+        var salvor = salvors.First();
+        try
+        {
+            var foundSalvor = await _salvorService.GetSalvorByEmailAsync(salvor.Email);
+            var salvorInfo = _mapper.Map<SalvorInfoDto>(foundSalvor);
+
+            // var reports = new List<SalvorInfoReportDto>();
+            //
+            // foreach ( var droit in salvor.Droits )
+            // {
+            //     var salvorInfoDroit = _mapper.Map<SalvorInfoReportDto>(droit);
+            //     reports.Add(salvorInfoDroit);
+            // }
+            //
+            // salvorInfo.Reports = reports.ToArray();
+
+            return salvorInfo;
+
+        }
+        catch ( Exception ex )
+        {
+            _logger.LogError($"Salvor not found.. {ex}" );
+            throw new SalvorNotFoundException("Salvor not found");
+        }
+        
     }
 }

@@ -31,6 +31,7 @@ public interface ISalvorService
     Task<SalvorListView> AdvancedSearchAsync(SalvorSearchForm form);
     Task<Salvor> GetOrCreateAsync(Salvor salvor);
     Task<byte[]> ExportAsync(SalvorSearchForm form);
+    Task<Salvor> GetSalvorByEmailAsync(string salvorEmail);
 }
 
 public class SalvorService : ISalvorService
@@ -97,6 +98,20 @@ public class SalvorService : ISalvorService
     public async Task<Salvor> GetSalvorAsync(Guid id)
     {
         return await _repo.GetSalvorAsync(id);
+    }
+
+    public async Task<Salvor> GetSalvorByEmailAsync(string salvorEmail)
+    {
+        var existingSalvor = await _repo.GetSalvorByEmailAddressWithAssociationsAsync(salvorEmail.Trim().ToLower());
+        
+        
+        if ( existingSalvor == null)
+        {
+            throw new SalvorNotFoundException($"No Salvor found with email address {salvorEmail}");
+        }
+
+        return existingSalvor;
+        
     }
 
 

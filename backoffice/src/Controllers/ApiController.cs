@@ -1,6 +1,7 @@
 ﻿using Bogus.DataSets;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Powerapps;
+using Droits.Models.Enums;
 using Droits.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -164,6 +165,17 @@ public class ApiController : Controller
             return NotFound();
         }
     
+    }
+    
+    [HttpGet]
+    [AllowAnonymous]
+    public async Task<IActionResult> Test(string email)
+    {
+
+        var salvorInfo = await _service.GetSalvorInfoAsync(email);
+
+        return Json(salvorInfo);
+        
     }
 
     

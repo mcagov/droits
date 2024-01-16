@@ -17,7 +17,9 @@ public interface ISalvorRepository
     Task<Salvor> GetSalvorAsync(Guid id);
     Task<Salvor> AddAsync(Salvor salvor);
     Task<Salvor> UpdateAsync(Salvor salvor);
-    Task<Salvor?> GetSalvorByEmailAddressAsync(string? salvorInfoEmail);
+    Task<Salvor?> GetSalvorByEmailAddressAsync(string? salvorInfoEmail); 
+    Task<Salvor?> GetSalvorByEmailAddressWithAssociationsAsync(string? salvorInfoEmail);
+
 }
 
 public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
@@ -56,4 +58,8 @@ public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
     
     public async Task<Salvor?> GetSalvorByEmailAddressAsync(string? emailAddress) => await Context.Salvors
                 .FirstOrDefaultAsync(s => s.Email.Trim().ToLower().Equals(emailAddress));
+    public async Task<Salvor?> GetSalvorByEmailAddressWithAssociationsAsync(string? emailAddress) => await Context.Salvors
+        .Include(s => s.Droits).ThenInclude(d => d.WreckMaterials)
+        .FirstOrDefaultAsync(s => s.Email.Trim().ToLower().Equals(emailAddress));
+    
 }
