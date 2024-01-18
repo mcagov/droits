@@ -130,10 +130,5 @@ public class SalvorInfoWreckMaterialDto
     public SalvorInfoAddressDto? StorageAddress { get; set; }
 
     [JsonPropertyName("image_ids")]
-
     public Guid[] ImageIds { get; set; } = Array.Empty<Guid>();
-
-    [JsonPropertyName("image_urls")]
-    public List<string> ImageUrls =>
-        ImageIds.Select(id => $"http://localhost:5000/image/DisplayImage/{id}").ToList();
 }
