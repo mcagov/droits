@@ -112,7 +112,28 @@ public class SalvorInfoWreckMaterialDto
 
     [JsonPropertyName("outcome")]
     public string? Outcome { get; set; }
+    
+    [JsonPropertyName("quantity")]
+    public int? Quantity { get; set; }
+
+
+    [JsonPropertyName("value")]
+    public decimal? Value { get; set; }
+
+    [JsonPropertyName("total_value")]
+    public decimal? TotalValue => (Quantity ?? 0) * (Value ?? 0);
+    
+    [JsonPropertyName("id")]
+    public string? Id { get; set; }
 
     [JsonPropertyName("storage_address")]
     public SalvorInfoAddressDto? StorageAddress { get; set; }
+
+    [JsonPropertyName("image_ids")]
+
+    public Guid[] ImageIds { get; set; } = Array.Empty<Guid>();
+
+    [JsonPropertyName("image_urls")]
+    public List<string> ImageUrls =>
+        ImageIds.Select(id => $"http://localhost:5000/image/DisplayImage/{id}").ToList();
 }

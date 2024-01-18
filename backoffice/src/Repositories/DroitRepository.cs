@@ -78,7 +78,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
     public async Task<Droit> GetDroitAsync(Guid id)
     {
         var droit = await Context.Droits
-                                .Include(d => d.WreckMaterials)
+                                .Include(d => d.WreckMaterials).ThenInclude(wm => wm.Images)
                                 .Include(d => d.LastModifiedByUser)
                                 .Include(d => d.AssignedToUser)
                                 .FirstOrDefaultAsync(d => d.Id == id);

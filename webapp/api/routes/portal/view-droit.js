@@ -20,7 +20,6 @@ export default function (app) {
 }
 
 export const formatReportData = (data) => {
-  const wreckMaterialsData = data.wreck_materials;
   const statusCode = data.status;
 
   let reportItem = data;
@@ -30,12 +29,6 @@ export const formatReportData = (data) => {
     'DD MMM YYYY'
   );
   reportItem['last-updated'] = dayjs(data.last_updated,  'DD/MM/YYYY HH:mm:ss' ).format('DD MMM YYYY');
-  
-  // reportItem['wreck-materials'] = [];
-  //
-  // wreckMaterialsData.forEach((item) => {
-  //   reportItem['wreck-materials'].push( { description : item.description , outcome: item.outcome, storage_address: item.storage_address, quantity: "1"});
-  // });
 
   const reportStatus = assignSalvorInfoReportStatus(statusCode);
 

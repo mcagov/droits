@@ -20,6 +20,7 @@ public interface IApiService
     Task<List<Wreck>> MigrateWrecksAsync(PowerappsWrecksDto request);
     Task<SalvorInfoDto> GetSalvorInfoAsync(string salvorEmail);
     Task<SalvorInfoReportDto> GetReportByIdAsync(Guid droitId);
+    Task<WreckMaterial> GetWreckMaterialAsync(Guid wmId);
 }
 
 public class ApiService : IApiService
@@ -314,5 +315,13 @@ public class ApiService : IApiService
         var report = _mapper.Map<SalvorInfoReportDto>(droit);
 
         return report;
+    }
+
+
+    public async Task<WreckMaterial> GetWreckMaterialAsync(Guid wmId)
+    {
+        var wm = await _wreckMaterialService.GetWreckMaterialAsync(wmId);
+
+        return wm;
     }
 }

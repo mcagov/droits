@@ -188,6 +188,19 @@ public class ApiController : Controller
         return Json(report);
         
     }
+    
+    [HttpGet]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetFirstWMImage(Guid id)
+    {
+
+        var wm = await _service.GetWreckMaterialAsync(id);
+
+        var firstImage = wm.Images.FirstOrDefault().Id.ToString();
+
+        return Redirect($"http://localhost:5000/Image/DisplayImage/{firstImage}");
+
+    }
 
     
 }
