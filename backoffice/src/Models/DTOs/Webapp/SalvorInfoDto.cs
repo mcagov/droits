@@ -58,6 +58,33 @@ public class SalvorInfoReportDto
     [JsonPropertyName("coordinates")]
     public string? Coordinates { get; set; }
     
+    [JsonPropertyName("depth")]
+    public string? Depth { get; set; }
+    
+    [JsonPropertyName("location_description")]
+    public string? LocationDescription { get; set; }
+    
+    [JsonPropertyName("reported_wreck_name")]
+    public string? ReportedWreckName { get; set; }
+    
+    [JsonPropertyName("reported_wreck_year_sunk")]
+    public string? ReportedWreckYearSunk { get; set; }
+    
+    [JsonPropertyName("reported_wreck_year_constructed")]
+    public string? ReportedWreckYearConstructed { get; set; }
+    
+    [JsonPropertyName("reported_wreck_construction_details")]
+    public string? ReportedWreckConstructionDetails { get; set; }
+    
+    [JsonPropertyName("latitude")]
+    public double? Latitude { get; set; }
+        
+    [JsonPropertyName("longitude")]
+    public double? Longitude { get; set; }
+    
+    [JsonPropertyName("location_radius")]
+    public int? LocationRadius { get; set; } 
+    
     [JsonPropertyName("date_found")]
     public string? DateFound { get; set; }
     
@@ -66,6 +93,13 @@ public class SalvorInfoReportDto
     
     [JsonPropertyName("last_updated")]
     public string? LastUpdated { get; set; }
+    
+    [JsonPropertyName("services_description")]
+    public string? ServicesDescription { get; set; }
+
+    
+    [JsonPropertyName("salvage_award_claimed")]
+    public bool SalvageAwardClaimed { get; set; }
     
     [JsonPropertyName("wreck_materials")]
     public SalvorInfoWreckMaterialDto[]? WreckMaterials { get; set; }

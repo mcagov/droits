@@ -23,7 +23,8 @@ export class ReportFilter {
 
   filterSelectionEvent() {
     this.filterItems.forEach((item) => {
-      item.addEventListener('click', () => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
         const isActive = item.classList.contains('portal-filter-item--active'),
               status = item.dataset.status;
 

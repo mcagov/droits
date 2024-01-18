@@ -19,6 +19,7 @@ public interface IApiService
     Task<WreckMaterial> MigrateWreckMaterialAsync(PowerappsWreckMaterialDto wmRequest);
     Task<List<Wreck>> MigrateWrecksAsync(PowerappsWrecksDto request);
     Task<SalvorInfoDto> GetSalvorInfoAsync(string salvorEmail);
+    Task<SalvorInfoReportDto> GetReportByIdAsync(Guid droitId);
 }
 
 public class ApiService : IApiService
@@ -304,5 +305,14 @@ public class ApiService : IApiService
             throw new SalvorNotFoundException("Salvor not found");
         }
         
+    }
+
+
+    public async Task<SalvorInfoReportDto> GetReportByIdAsync(Guid id)
+    {
+        var droit = await _droitService.GetDroitAsync(id);
+        var report = _mapper.Map<SalvorInfoReportDto>(droit);
+
+        return report;
     }
 }

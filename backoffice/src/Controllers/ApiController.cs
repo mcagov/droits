@@ -177,6 +177,17 @@ public class ApiController : Controller
         return Json(salvorInfo);
         
     }
+    
+    [HttpGet]
+    [AllowAnonymous]
+    public async Task<IActionResult> Droit(Guid id)
+    {
+
+        var report = await _service.GetReportByIdAsync(id);
+
+        return Json(report);
+        
+    }
 
     
 }

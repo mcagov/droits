@@ -1,133 +1,140 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
+import CustomParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(CustomParseFormat);
 import ensureAuthenticated from './ensureAuthenticated';
 import { assignReportStatus } from '../../../utilities';
+import {assignSalvorInfoReportStatus} from "../../../utilities/assignReportStatus";
+import res from "express/lib/response";
+import req from "express/lib/request";
 require("dotenv-json")();
 
-const url = process.env.DATAVERSE_BASE_URL + process.env.DATAVERSE_SERVICE_URL;
+const url = "http://localhost:5000/api/test"
 
 export default function (app) {
   app
-    .get('/portal/dashboard', ensureAuthenticated, function (req, res) {
-      const currentUserEmail = req.user.emails[0];
+    // .get('/portal/dashboard', ensureAuthenticated, function (req, res) {
+        .get('/portal/dashboard', function (req, res) {
 
-      let accessToken = req.session.data.token;
-      let currentUserID;
+      // const currentUserEmail = req.user.emails[0];
+      const currentUserEmail = "test@email.com";
+          
+      // let accessToken = req.session.data.token;
+      // let currentUserID;
       let userReports = [];
 
-      const contactsUrl = `${url}contacts?$filter=emailaddress1 eq '${currentUserEmail}'`;
-      // The query url converts any '+' symbols into whitespace, so we replace these
-      // with encoded characters incase currentUserEmail contains a '+' symbol
-      const encodedContactsUrl = contactsUrl.replace('+', '%2B');
-
-      getUserData(accessToken).then(() => {
-        const filteredReportUrl = `${url}crf99_mcawreckreports?$filter=_crf99_reporter_value eq ${currentUserID}&$expand=crf99_MCAWreckMaterial_WreckReport_crf99_($select=crf99_description)&$orderby=crf99_datereported desc`;
-
-        fetchReportData(accessToken, filteredReportUrl, userReports, res).then(
+        fetchSalvorInfo(url, currentUserEmail, userReports, res).then(
           () => {
             return res.render('portal/dashboard', { userReports: userReports });
           }
         );
-      }).catch(() => {
-        req.logOut();
-        return res.redirect('/account-error');
+      // }).catch(() => {
+      //   req.logOut();
+      //   return res.redirect('/account-error');
       });
+          
+          
+          console.log("Sending Request");
 
-      function getUserData(token) {
-        return new Promise((resolve, reject) => {
-          axios
-            .get(encodedContactsUrl, {
-              headers: { Authorization: `bearer ${token}` },
-            })
-            .then((res) => {
-              const data = res.data.value[0];
-              const session = req.session.data;
-              currentUserID = data.contactid;
-              session.id = currentUserID;
-              session.userName = data.fullname;
-              session.userEmail = data.emailaddress1;
-              session.userTel = data.telephone1;
-              session.userAddress1 = data.address1_line1;
-              session.userAddress2 = data.address1_line2;
-              session.userCity = data.address1_city;
-              session.userCounty = data.address1_county;
-              session.userPostcode = data.address1_postalcode;
-              resolve();
-            })
-            .catch((reqError) => {
-              console.log('User ID error');
-              console.log(reqError);
-              reject();
-            });
+const fetchSalvorInfo = (url, currentUserEmail, userReports, res) => {
+  url = `${url}?email=${currentUserEmail}`;
+  return new Promise((resolve, reject) => {
+    axios
+        .get(url)
+        .then((res) => {
+          const reportData = res.data.reports;
+          reportData.forEach((item) => {
+            formatSalvorInfo(item, userReports);
+          });
+          resolve();
+        })
+        .catch((err) => {
+          console.log('[Report data error]:' + err);
+          if (err.response.status === 401) {
+            req.logOut();
+            res.redirect('/error');
+          }
+          reject();
         });
-      }
-    })
+  });
+};
+   
+      // function getUserData(token) {
+      //   return new Promise((resolve, reject) => {
+      //     axios
+      //       .get(encodedContactsUrl, {
+      //         headers: { Authorization: `bearer ${token}` },
+      //       })
+      //       .then((res) => {
+      //         const data = res.data.value[0];
+      //         const session = req.session.data;
+      //         // currentUserID = data.contactid;
+      //         session.id = currentUserID;
+      //         session.userName = data.fullname;
+      //         session.userEmail = data.emailaddress1;
+      //         session.userTel = data.telephone1;
+      //         session.userAddress1 = data.address1_line1;
+      //         session.userAddress2 = data.address1_line2;
+      //         session.userCity = data.address1_city;
+      //         session.userCounty = data.address1_county;
+      //         session.userPostcode = data.address1_postalcode;
+      //         resolve();
+      //       })
+      //       .catch((reqError) => {
+      //         console.log('User ID error');
+      //         console.log(reqError);
+      //         reject();
+      //       });
+      //   });
+      // }
+    // })
 
     // Sorting reports
-    .post(
-      '/portal/dashboard',
-
-      function (req, res) {
-        const type = req.body['report-sort-by'];
-        const accessToken = req.session.data.token;
-        const filteredReportUrl = `${url}crf99_mcawreckreports?$filter=_crf99_reporter_value eq ${req.session.data.id}&$expand=crf99_MCAWreckMaterial_WreckReport_crf99_($select=crf99_description)&$orderby=${type} desc`;
-
-        let userReports = [];
-
-        fetchReportData(accessToken, filteredReportUrl, userReports, res).then(
-          () => {
-            return res.render('portal/dashboard', {
-              userReports: userReports,
-              sort: type,
-            });
-          }
-        );
-      }
-    );
+    // .post(
+    //   '/portal/dashboard',
+    //
+    //   function (req, res) {
+    //     const type = req.body['report-sort-by'];
+    //     const accessToken = req.session.data.token;
+    //     const filteredReportUrl = `${url}crf99_mcawreckreports?$filter=_crf99_reporter_value eq ${req.session.data.id}&$expand=crf99_MCAWreckMaterial_WreckReport_crf99_($select=crf99_description)&$orderby=${type} desc`;
+    //
+    //     let userReports = [];
+    //
+    //     fetchReportData(accessToken, filteredReportUrl, userReports, res).then(
+    //       () => {
+    //         return res.render('portal/dashboard', {
+    //           userReports: userReports,
+    //           sort: type,
+    //         });
+    //       }
+    //     );
+    //   }
+    // );
 }
 
-const fetchReportData = (accessToken, url, userReports, res) =>
-  new Promise((resolve, reject) => {
-    axios
-      .get(url, {
-        headers: { Authorization: `bearer ${accessToken}` },
-      })
-      .then((res) => {
-        const reportData = res.data.value;
-        reportData.forEach((item) => {
-          formatReportData(item, userReports);
-        });
-        resolve();
-      })
-      .catch((err) => {
-        console.log('[Report data error]:' + err);
-        if (err.response.status === 401) {
-          req.logOut();
-          res.redirect('/error');
-        }
-        reject();
-      });
-  });
 
-const formatReportData = (data, userReports) => {
-  const wreckMaterialsData = data.crf99_MCAWreckMaterial_WreckReport_crf99_;
-  const statusCode = data.crf99_reportstatus;
+
+export const formatSalvorInfo = (data, userReports) => {
+  const wreckMaterialsData = data.wreck_materials;
+  const statusCode = data.status;
 
   let reportItem = {};
 
-  reportItem['report-ref'] = data.crf99_reportreference;
-  reportItem['date-found'] = dayjs(data.crf99_datefound).format('DD MM YYYY');
-  reportItem['date-reported'] = dayjs(data.crf99_datereported).format(
-    'DD MM YYYY'
+  reportItem['report-id'] = data.id;
+  reportItem['report-ref'] = data.reference;
+  reportItem['date-found'] = dayjs(data.date_found, 'DD/MM/YYYY HH:mm:ss' ).format('DD MMM YYYY');
+  reportItem['date-reported'] = dayjs(data.date_reported, 'DD/MM/YYYY HH:mm:ss' ).format(
+    'DD MMM YYYY'
   );
-  reportItem['last-updated'] = dayjs(data.modifiedon).format('DD MM YYYY');
+  reportItem['last-updated'] = dayjs(data.last_updated,  'DD/MM/YYYY HH:mm:ss' ).format('DD MMM YYYY');
   reportItem['wreck-materials'] = [];
 
   wreckMaterialsData.forEach((item) => {
-    reportItem['wreck-materials'].push(item.crf99_description);
+    reportItem['wreck-materials'].push(item.description);
   });
 
-  const reportStatus = assignReportStatus(statusCode);
+  const reportStatus = assignSalvorInfoReportStatus(statusCode);
 
   reportItem['status'] = reportStatus[0];
   reportItem['status-attr'] = reportStatus[1];
@@ -136,3 +143,4 @@ const formatReportData = (data, userReports) => {
   userReports.push(reportItem);
   return userReports;
 };
+
