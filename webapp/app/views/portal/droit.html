@@ -124,7 +124,7 @@ Report Details - {{ serviceName }} – GOV.UK
         </dl>
     </div>
 
-    {% if reportData.reported_wreck_name %}
+    {% if reportData["reported_wreck_name"] %}
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h2 class="govuk-heading-m">Submitted vessel information</h2>
 
@@ -134,26 +134,26 @@ Report Details - {{ serviceName }} – GOV.UK
                   Vessel name
               </dt>
               <dd class="govuk-summary-list__value">
-                  {{ reportData.reported_wreck_name }}
+                  {{ reportData["reported_wreck_name"] }}
               </dd>
           </div>
-          {% if reportData.reported_wreck_year_constructed %}
+          {% if reportData["reported_wreck_year_constructed"] %}
           <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">
                   Vessel construction year
               </dt>
               <dd class="govuk-summary-list__value">
-                  {{ reportData.reported_wreck_year_constructed }}
+                  {{ reportData["reported_wreck_year_constructed"] }}
               </dd>
           </div>
           {% endif %}
-          {% if reportData.reported_wreck_year_sunk %}
+          {% if reportData["reported_wreck_year_sunk"] %}
           <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key">
                   Vessel sunk year
               </dt>
               <dd class="govuk-summary-list__value">
-                  {{ reportData.reported_wreck_year_sunk }}
+                  {{ reportData["reported_wreck_year_sunk"] }}
               </dd>
           </div>
           {% endif %}
