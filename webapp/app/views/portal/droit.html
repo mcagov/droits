@@ -55,17 +55,6 @@ Report Details - {{ serviceName }} – GOV.UK
                 actions: {
                     items: []
                 }
-                },
-                {
-                key: {
-                text: "Wreck material removed"
-                },
-                value: {
-                text: "Yes"
-                },
-                actions: {
-                    items: []
-                }
                 }
             ]
             }) }}
@@ -221,7 +210,7 @@ Report Details - {{ serviceName }} – GOV.UK
         {% if reportData.coordinates %}
         <div data-js="static-map">
           <div id="location-map" class="map-display hide-on-print" data-latitude="{{ reportData.latitude }}" data-longitude="{{ reportData.longitude }}"
-              data-radius="{{ reportData.location_radius }}"></div>
+              data-radius="{{ reportData['location_radius'] }}"></div>
         </div>
         {% endif %}
     </div>
