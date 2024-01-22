@@ -38,6 +38,8 @@ test.tfvars
 
 ##scripts
 scripts/data
+scripts/config/set_secrets.sh
+
 
 ##Github
 .github/.vscode/
