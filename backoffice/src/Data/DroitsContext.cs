@@ -91,6 +91,11 @@ public partial class DroitsContext : DbContext
                 .WithMany()
                 .HasForeignKey(n => n.LastModifiedByUserId)
                 .IsRequired(false);
+            
+            entity.HasMany(n => n.Files)
+                .WithOne(i => i.Note)
+                .HasForeignKey(i => i.NoteId)
+                .IsRequired(false);
         });
 
         modelBuilder.Entity<Droit>(entity =>
@@ -218,7 +223,7 @@ public partial class DroitsContext : DbContext
                 .HasForeignKey(i => i.WreckMaterialId)
                 .IsRequired(false);
 
-            
+
             entity.HasOne(w => w.LastModifiedByUser)
                 .WithMany()
                 .HasForeignKey(w => w.LastModifiedByUserId)
@@ -273,6 +278,12 @@ public partial class DroitsContext : DbContext
                 .HasForeignKey(i => i.WreckMaterialId)
                 .IsRequired(false);
             
+            entity.HasOne(i => i.Note)
+                .WithMany(n => n.Files)
+                .HasForeignKey(i => i.NoteId)
+                .IsRequired(false);
+            
+           
         });
 
 

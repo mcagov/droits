@@ -45,31 +45,23 @@ function refreshFileFormIndexes() {
 
     fileFormContainers.forEach((fileFormContainer) => {
         const wmForm = fileFormContainer.closest('.js-wreck-material-form');
-        
-        if (!wmForm){
-            console.error("Wreck Material Form not found");
-            return;
-        }
-        
-        const wmFormId = wmForm.getAttribute("js-data-wm-id");
-        const wmFormName = wmForm.getAttribute("js-data-wm-name");
-        
+        const namePrefix = wmForm ? `${wmForm.getAttribute("js-data-wm-name")}.DroitFileForms` : 'DroitFileForms';
+        const idPrefix = wmForm ? `${wmForm.getAttribute("js-data-wm-id")}__DroitFileForms_` : 'DroitFileForms_';
+
         fileFormContainer.querySelectorAll('.js-file-form').forEach((form, index) => {
-             form.querySelectorAll('input, select').forEach(elem => {
-                elem.setAttribute('name', elem.getAttribute('name').replace(/.*?DroitFileForms\[\d+]/, `${wmFormName}.DroitFileForms[${index}]`));
-                elem.setAttribute('id', elem.getAttribute('id').replace(/.*?DroitFileForms_\[\d+]/, `${wmFormId}__DroitFileForms_[${index}]`));
+            form.querySelectorAll('input, select').forEach(elem => {
+                elem.setAttribute('name', elem.getAttribute('name').replace(/.*?DroitFileForms\[\d+]/, `${namePrefix}[${index}]`));
+                elem.setAttribute('id', elem.getAttribute('id').replace(/.*?DroitFileForms_\[\d+]/, `${idPrefix}[${index}]`));
             });
         });
     });
 }
 
-
-
 export function removeFileForm() {
     const confirmMessage = 'Are you sure you want to remove this File?';
     const removeAction = function () {
         this.closest('.js-file-form').remove();
-        refreshImageFormIndexes();
+        refreshFileFormIndexes();
         const confirmDialog = document.querySelector('#confirmDialog');
         const modalInstance = bootstrap.Modal.getInstance(confirmDialog);
         modalInstance.hide();

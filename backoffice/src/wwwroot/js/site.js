@@ -6,6 +6,9 @@ import {initializeDroitForm, initializeDroitView} from './droitForm.js';
 import {initializeMessageBanner} from './messageBanner';
 import {initializeSearchBar} from './searchBar';
 import {initializeSearchForms} from './searchForms';
+import {initializeFile} from "./droitFile";
+import {initializeTinyMce} from "./tinyMCE";
+
 
 document.addEventListener('DOMContentLoaded', function () {
     window.confirm = function (message, callback) {
@@ -18,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeSearchBar();
     initializeMessageBanner();
     initializeSearchForms();
+    initializeFile();
+    initializeTinyMce();
 });
 
 function initializeComponents(selector, initializer) {
