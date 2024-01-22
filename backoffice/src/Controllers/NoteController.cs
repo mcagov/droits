@@ -1,8 +1,10 @@
 #region
 
 using Droits.Exceptions;
+using Droits.Helpers.Extensions;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Models.ViewModels;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,7 +37,7 @@ public class NoteController : BaseController
         try
         {
             var note = await _service.GetNoteAsync(id);
-            return View(new NoteForm(note));
+            return View(new NoteView(note));
         }
         catch ( NoteNotFoundException e )
         {
@@ -79,11 +81,14 @@ public class NoteController : BaseController
     [HttpPost]
     public async Task<IActionResult> Save(NoteForm form)
     {
-        if (!ModelState.IsValid)
-        {
+
+       ModelState.RemoveStartingWith("DroitFileForms");
+
+       if (!ModelState.IsValid)
+       {
             AddErrorMessage("Could not save Note");
             return View(nameof(Edit), form);
-        }
+       }
 
         var note = new Note();
 
@@ -103,8 +108,9 @@ public class NoteController : BaseController
         note = form.ApplyChanges(note);
 
         try
-        {
-            await _service.SaveNoteAsync(note);
+        { 
+            note = await _service.SaveNoteAsync(note);
+            await _service.SaveFilesAsync(note.Id, form.DroitFileForms);
         }
         catch (Exception e)
         {

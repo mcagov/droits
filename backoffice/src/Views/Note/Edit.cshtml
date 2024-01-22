@@ -14,7 +14,7 @@
 
 <h4>@ViewData["Title"]</h4>
 
-<form class="form-horizontal mt-4" asp-action="Save" method="POST">
+<form class="form-horizontal mt-4" asp-action="Save" enctype="multipart/form-data" method="POST">
 
     <div class="col mt-4">
         <div class="card">
@@ -33,17 +33,29 @@
                 </div>
                 
                 <div class="form-group">
-                   @Html.LabelFor(m => m.Text, new { @class = "col-form-label" })
-                   @Html.EditorFor(m => m.Text, new { htmlAttributes = new { @class = "form-control" } })
-                   @Html.ValidationMessageFor(m => m.Text, "", new { @class = "text-danger" })
-               </div>
-               
+                    @Html.LabelFor(m => m.Text, new { @class = "col-form-label" })
+                    @Html.EditorFor(m => m.Text, new { htmlAttributes = new { @class = "form-control wysiwyg-editor" } })
+                    @Html.ValidationMessageFor(m => m.Text, "", new { @class = "text-danger" })
+                </div>
+
                 <div class="form-group">
                     @Html.LabelFor(m => m.Type, new { @class = "col-form-label" })
                     @Html.DropDownListFor(m => m.Type, Html.GetEnumSelectList(typeof(NoteType)), "Select.....", new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Type, "", new { @class = "text-danger" })
                 </div>
 
+                <div class="js-files mt-2">
+                    <div class="js-files-form-container row">
+                        @for (var i = 0; i < Model.DroitFileForms.Count; i++)
+                        {
+                            <partial name="DroitFile/_DroitFileFormFields" for="DroitFileForms[i]"/>
+                        }
+                    </div>
+                    <div class="col-12 mt-4">
+                        <button type="button" class="js-add-file-form mt-2 btn btn-primary">Add File</button>
+                    </div>
+                </div>
+                
                 <div class="mt-4 float-end">
                     @{
                         var (controller, entityId) = Model.GetAssociatedEntityInfo();
@@ -64,3 +76,4 @@
     </div>
 
 </form>
+

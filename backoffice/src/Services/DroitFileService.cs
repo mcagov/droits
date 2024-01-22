@@ -15,6 +15,8 @@ public interface IDroitFileService
     Task<DroitFile> SaveDroitFileFormAsync(DroitFileForm droitFileForm);
     Task<Stream> GetDroitFileStreamAsync(string? key);
     Task DeleteDroitFilesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> droitFilesToKeep);
+    Task DeleteDroitFilesForNoteAsync(Guid noteId, IEnumerable<Guid> droitFilesToKeep);
+
     Task AddFileUrlToWreckMaterial(Guid wreckMaterialId, string wmRequestImageUrl);
 }
 
@@ -99,6 +101,12 @@ public class DroitFileService : IDroitFileService
         IEnumerable<Guid> droitFilesToKeep)
     {
         await _repo.DeleteDroitFilesForWreckMaterialAsync(wmId, droitFilesToKeep);
+    }
+
+    public async Task DeleteDroitFilesForNoteAsync(Guid noteId,
+        IEnumerable<Guid> droitFilesToKeep)
+    {
+        await _repo.DeleteDroitFilesForNoteAsync(noteId, droitFilesToKeep);
     }
 
 

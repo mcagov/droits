@@ -1,5 +1,6 @@
 #region
 
+using Droits.Helpers;
 using Droits.Models.Entities;
 
 #endregion
@@ -30,4 +31,7 @@ public class DroitFileView : BaseEntityView
 
     public DateTime UploadDate { get; }
 
+    public bool CanOpen() => !string.IsNullOrEmpty(Filename) && FileHelper.CanOpen(Filename);
+    
+    public bool IsImage() => !string.IsNullOrEmpty(Filename) && FileHelper.IsImage(Filename);
 }

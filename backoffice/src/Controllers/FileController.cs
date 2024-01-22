@@ -43,4 +43,25 @@ public class FileController : BaseController
         
     }
     
+    public async Task<IActionResult> Preview(Guid id)
+    {
+        var droitFile = await _service.GetDroitFileAsync(id);
+
+        if (string.IsNullOrEmpty(droitFile.Filename))
+        {
+            return NotFound();
+        }
+
+        var stream = await _service.GetDroitFileStreamAsync(droitFile.Key);
+
+        try
+        {
+            return File(stream, FileHelper.GetContentType(droitFile.Filename));
+        }
+        catch (FileNotFoundException e)
+        {
+            _logger.LogError(e, "Could not retrieve File");
+            return NotFound();
+        }
+    }
 }

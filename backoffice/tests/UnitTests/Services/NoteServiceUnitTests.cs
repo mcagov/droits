@@ -1,6 +1,8 @@
 using Droits.Models.Entities;
+using Droits.Models.FormModels;
 using Droits.Repositories;
 using Droits.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Droits.Tests.UnitTests.Services
 {
@@ -13,7 +15,10 @@ namespace Droits.Tests.UnitTests.Services
         {
             _mockRepo = new Mock<INoteRepository>();
             var mockDroitService = new Mock<IDroitService>();
-            _service = new NoteService(_mockRepo.Object, mockDroitService.Object);
+            var mockFileService = new Mock<IDroitFileService>();
+            Mock<ILogger<NoteService>> mockLogger = new();
+                
+            _service = new NoteService(_mockRepo.Object, mockDroitService.Object, mockFileService.Object, mockLogger.Object);
         }
 
         [Fact]

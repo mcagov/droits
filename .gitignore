@@ -34,6 +34,9 @@ test.tfvars
 /terraform/refresh-diagram.sh
 /terraform/terraform_diagram.html
 
+##scripts
+scripts/data
+
 ##Github
 .github/.vscode/
 

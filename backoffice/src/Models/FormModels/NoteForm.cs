@@ -23,6 +23,12 @@ namespace Droits.Models.FormModels
             WreckId = note.WreckId;
             SalvorId = note.SalvorId;
             LetterId = note.LetterId;
+            
+            if ( note.Files.Any() )
+            {
+                DroitFileForms = 
+                    note.Files.Select(f => new DroitFileForm(f)).ToList();
+            }
         }
 
         [Required(ErrorMessage = "Type is required")]
@@ -45,7 +51,8 @@ namespace Droits.Models.FormModels
 
         public Guid? LetterId { get; set; }
 
-        
+        public List<DroitFileForm> DroitFileForms { get; set; } = new();
+
         public (string EntityController, Guid? EntityId) GetAssociatedEntityInfo()
         {
             if (DroitId.HasValue) return ("Droit", DroitId.Value);
