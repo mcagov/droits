@@ -37,6 +37,16 @@ public static class StringExtensions
 
         throw new ArgumentException("Invalid date string", nameof(dateString));
     }
+    
+    public static int? AsInt(this string? intString)
+    {
+        if (int.TryParse(intString, out var number))
+        {
+            return number;
+        }
+
+        return null;
+    }
 
     public static string Pluralize(this string? word, int count, string? pluralForm = null)
     {

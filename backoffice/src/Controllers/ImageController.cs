@@ -36,4 +36,19 @@ public class ImageController : BaseController
         
     }
     
+    // public async Task<IActionResult> DisplayAzureImage(string url)
+    // {
+    //     var stream = await _service.GetAzureImageStreamAsync(url);
+    //     try
+    //     {
+    //         return File(stream, FileHelper.GetContentType(url));
+    //     }
+    //     catch ( ImageNotFoundException e )
+    //     {
+    //         _logger.LogError(e,"Could not retrieve Image");
+    //         return NotFound();
+    //     }
+    //     
+    // }
+    
 }

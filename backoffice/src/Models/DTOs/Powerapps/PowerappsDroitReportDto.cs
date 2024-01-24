@@ -87,13 +87,13 @@ namespace Droits.Models.DTOs.Powerapps
         public string? VesselName { get; set; }
 
         [JsonPropertyName("crf99_vesselyearsunk")]
-        public int? VesselYearSunk { get; set; }
+        public string? VesselYearSunk { get; set; }
 
         [JsonPropertyName("crf99_wreckconstructiondetails")]
         public string? WreckConstructionDetails { get; set; }
 
         [JsonPropertyName("crf99_vesselyearconstructed")]
-        public int? VesselYearConstructed { get; set; }
+        public string?  VesselYearConstructed { get; set; }
         
 //Salvage
         [JsonPropertyName("crf99_salvageclaimawarded")]

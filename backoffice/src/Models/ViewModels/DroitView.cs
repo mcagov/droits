@@ -34,7 +34,9 @@ public class DroitView : BaseEntityView
         IsDredge = droit.IsDredge;
 
         OriginalSubmission = droit.OriginalSubmission;
+        ReportedWreckInfo = new ReportedWreckInfoView(droit);
 
+        
         //Wreck
         if ( droit.Wreck != null )
         {
@@ -121,6 +123,8 @@ public class DroitView : BaseEntityView
     [DisplayName("Reported Date")]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime ReportedDate { get; }
+
+    public ReportedWreckInfoView ReportedWreckInfo = new ();
 
     [DisplayName("Assigned To")]
     public string AssignedUser { get; } = "Unassigned";

@@ -25,6 +25,8 @@ backoffice/tests/appsettings.*
 
 backoffice/Droits.sln.DotSettings.user
 
+##scripts
+scripts/data/**
 
 ##terraform
 .terraform
@@ -36,6 +38,7 @@ test.tfvars
 
 ##scripts
 scripts/data
+scripts/config/set_secrets.sh
 
 ##Github
 .github/.vscode/
