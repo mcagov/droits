@@ -43,7 +43,7 @@ namespace Droits.Models.DTOs.Powerapps
         public int? Quantity { get; set; }
 
         [JsonPropertyName("crf99_value")]
-        public int? Value { get; set; }
+        public decimal? Value { get; set; }
 
         [JsonPropertyName("crf99_outcome")]
         public int? Outcome { get; set; } // Lookup

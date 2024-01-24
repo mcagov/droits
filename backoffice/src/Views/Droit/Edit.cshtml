@@ -132,7 +132,7 @@
 <div class="tab-pane fade @(selectedTab.Equals("wreck") ? "show active" : "")" id="wreck" role="tabpanel" aria-labelledby="wreck-tab">
     
     <div class="row">
-        <div class="@(!string.IsNullOrEmpty(Model.OriginalSubmission)?"col-md-6":"")">
+        <div class="col-md-6">
             
             <div class="form-group">
                 @Html.LabelFor(m => m.IsIsolatedFind, new { @class = "col-form-label" })
@@ -142,8 +142,8 @@
             
             <div class="js-known-wreck">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.WreckId, "Select Wreck", new { @class = "col-form-label" })
-                    @Html.DropDownListFor(m => m.WreckId, Model.AllWrecks, "New Wreck..", new { @id = "js-select-wreck", @class = "form-control" })
+                    @Html.LabelFor(m => m.WreckId, "Select Verified Wreck", new { @class = "col-form-label" })
+                    @Html.DropDownListFor(m => m.WreckId, Model.AllWrecks, "New Verified Wreck..", new { @id = "js-select-wreck", @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.WreckId, "", new { @class = "text-danger" })
                 </div>
 
@@ -158,15 +158,12 @@
             </div>
             
         </div>
-
-    @if (!string.IsNullOrEmpty(Model.OriginalSubmission))
-    {
+        
         <div class="col-md-6">
             <div class="sticky-content pt-2">
-                <partial name="Wreck/_ReportedWreckInfo" model="@Model"/>
+                <partial name="Wreck/_ReportedWreckInfo" model="@Model.ReportedWreckInfo"/>
             </div>
         </div>
-    }
     </div>
 </div>
 

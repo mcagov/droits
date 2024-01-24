@@ -1,4 +1,4 @@
-@model DroitForm
+@model ReportedWreckInfoView
 
 @{
     string GetValueOrDefault(string? value) => string.IsNullOrEmpty(value) ? "---" : value;
@@ -9,11 +9,11 @@
 
 <div class="mt-2 p-2 border border-grey">
     
-    <h5>Vessel</h5>
+    <h5>Reported Wreck</h5>
     
     <div class="form-group row m-1">
         <div class="col-md-5">
-            <label class="font-weight-bold">Name</label>
+            <label class="font-weight-bold">Reported Wreck Name</label>
         </div>
         <div class="col-md-7">
             @GetValueOrDefault(@Model.ReportedWreckName)

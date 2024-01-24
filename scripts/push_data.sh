@@ -33,7 +33,7 @@ echo "$DATA_ARRAY" | jq -c '.[]' | while IFS= read -r item; do
     # Check if the item is not empty
     if [ -n "$item" ]; then
     #     # Make POST request to API endpoint
-
+        echo "$item" >> ./data/latest_item.json
         curl -X "POST" -H "Content-Type: application/json" -d "$item" "$API_ENDPOINT" >> $DATA_FILE.output
     fi
 done
