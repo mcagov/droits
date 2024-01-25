@@ -8,6 +8,10 @@ export default function (app) {
     try {
       const droitId = req.params.droitId;
       const apiUrl = `${apiEndpoint}/api/droit/${droitId}`;
+      
+      console.dir(req.session.data.email)
+            console.dir(req.session.data.userEmail)
+
 
       const response = await axios.get(apiUrl);
       const reportData = formatReportData(response.data);
