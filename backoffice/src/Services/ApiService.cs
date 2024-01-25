@@ -3,7 +3,7 @@ using Droits.Exceptions;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Models.Entities;
-using Droits.Models.Enums;
+
 
 namespace Droits.Services;
 
@@ -16,6 +16,8 @@ public interface IApiService
 
     Task<WreckMaterial> MigrateWreckMaterialAsync(PowerappsWreckMaterialDto wmRequest);
     Task<List<Wreck>> MigrateWrecksAsync(PowerappsWrecksDto request);
+    Task<Wreck> MigrateWreckAsync(PowerappsWreckDto request);
+
 }
 
 public class ApiService : IApiService
@@ -80,26 +82,50 @@ public class ApiService : IApiService
         
         foreach ( var powerappsWreckDto in wrecksRequest.Value )
         {
-            var wreck = _mapper.Map<Wreck>(powerappsWreckDto);
 
             try
             {
-                if ( string.IsNullOrEmpty(wreck.Name) )
-                {
-                    continue;
-                }
-                wreck = await _wreckService.SaveWreckAsync(wreck);
-
+              
+                var wreck = await MigrateWreckAsync(powerappsWreckDto);
                 wrecks.Add(wreck);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Unable to save wreck - {wreck.PowerappsWreckId} {wreck.Name} - {ex}");
+                _logger.LogError($"Unable to save wreck - {powerappsWreckDto.Mcawrecksid} {powerappsWreckDto.Name} - {ex}");
             }
             
         }
 
         return wrecks;
+    }
+    
+    public async Task<Wreck> MigrateWreckAsync(PowerappsWreckDto wreckRequest)
+    {
+        if ( wreckRequest == null )
+        {
+            _logger.LogError("Request is null");
+            throw new WreckNotFoundException();
+        }
+
+
+        var wreck = _mapper.Map<Wreck>(wreckRequest);
+
+        try
+        {
+            if ( string.IsNullOrEmpty(wreck.Name) )
+            {
+                _logger.LogError("Name is null");
+                throw new WreckNotFoundException();
+            }
+            wreck = await _wreckService.SaveWreckAsync(wreck);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Unable to save wreck - {wreck.PowerappsWreckId} {wreck.Name} - {ex}");
+        }
+            
+
+        return wreck;
     }
 
     public async Task<List<Droit>> MigrateDroitsAsync(PowerappsDroitReportsDto droitsRequest)

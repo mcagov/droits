@@ -28,7 +28,7 @@ namespace Droits.Repositories
 
         public async Task<Note> GetNoteAsync(Guid id)
         {
-            var note = await Context.Notes.FirstOrDefaultAsync(n => n.Id == id);
+            var note = await Context.Notes.Include(n => n.Files).FirstOrDefaultAsync(n => n.Id == id);
             if (note == null)
             {
                 throw new NoteNotFoundException();

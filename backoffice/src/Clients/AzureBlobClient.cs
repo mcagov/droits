@@ -31,6 +31,10 @@ public class AzureBlobClient : IAzureBlobClient
             var containerName = uri.Segments[1].TrimEnd('/');
             var blobName = Uri.UnescapeDataString(uri.Segments[2]);
 
+            if ( _blobServiceClient == null )
+            {
+                throw new Exception("Blob Client is not connected.");
+            }
             var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
             var blobClient = containerClient.GetBlobClient(blobName);
 

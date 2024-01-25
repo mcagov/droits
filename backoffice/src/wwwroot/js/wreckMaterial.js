@@ -1,10 +1,8 @@
 import {initializeImage} from "./Image";
-import {initializeFile} from "./droitFile";
 
 export function initializeWreckMaterial() {
     refreshWmFormIndexes();
     initializeImage();
-    initializeFile();
 
     document.body.addEventListener("change", function (e) {
         if (e.target.matches('.js-stored-salvor')) {

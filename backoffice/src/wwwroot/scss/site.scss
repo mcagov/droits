@@ -106,3 +106,7 @@ div.form-sections {
   overflow-y: auto;
   max-height: calc(100vh - 20px);
 }
+
+.tox.tox-tinymce * {
+  font-family: var(--bs-body-font-family) !important;
+}

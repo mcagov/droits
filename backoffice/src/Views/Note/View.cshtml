@@ -1,4 +1,4 @@
-@model NoteForm
+@model NoteView
 @{
     ViewData["Title"] = Model.Title.HasValue() ? $"Note : {Model.Title}" : "Note";
 }
@@ -27,6 +27,8 @@
                     @Html.LabelFor(m => m.Text, new { @class = "font-weight-bold" })
                 </div>
                 <div class="col-md-10">
+                    @Html.TextAreaFor(m => m.Text, new { @class = "form-control wysiwyg-editor-readonly", @readonly = "readonly" })
+
                     @Html.DisplayFor(m => m.Text, "MultilineText")
                 </div>
             </div>
@@ -39,6 +41,16 @@
                 </div>
             </div>
 
+            @if (@Model.Files.Any())
+            {
+                <div class="form-group row mt-2">
+                    <h5>Files</h5>
+                    @for (var i = 0; i < Model.Files.Count; i++)
+                    {
+                        <partial name="DroitFile/_DroitFileViewFields" for="Files[i]"/>
+                    }
+                </div>
+            }
             <div class="col d-flex flex-row mt-4 justify-content-end">
                 <div class="align-self-end">
                     @{

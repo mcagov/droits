@@ -1,6 +1,8 @@
 #region
 
+using Droits.Exceptions;
 using Droits.Models.Entities;
+using Droits.Models.FormModels;
 using Droits.Repositories;
 
 #endregion
@@ -10,6 +12,10 @@ namespace Droits.Services
     public interface INoteService
     {
         Task<Note> SaveNoteAsync(Note note);
+
+
+        Task SaveFilesAsync(Guid noteId,
+            List<DroitFileForm> fileForms);
         Task<Note> GetNoteAsync(Guid id);
     }
 
@@ -17,11 +23,18 @@ namespace Droits.Services
     {
         private readonly INoteRepository _repo;
         private readonly IDroitService _droitService;
+        private readonly IDroitFileService _fileService;
+        private readonly ILogger<NoteService> _logger;
 
-        public NoteService(INoteRepository repo, IDroitService droitService)
+
+
+        public NoteService(INoteRepository repo, IDroitService droitService, IDroitFileService fileService, ILogger<NoteService> logger)
         {
             _repo = repo;
             _droitService = droitService;
+            _fileService = fileService;
+            _logger = logger;
+
         }
 
         public async Task<Note> SaveNoteAsync(Note note)
@@ -43,7 +56,36 @@ namespace Droits.Services
             
             return note;
         }
+        public async Task SaveFilesAsync(Guid noteId,
+            List<DroitFileForm> fileForms)
+        {
+            var fileIdsToKeep = fileForms.Select(f => f.Id);
+        
+            await _fileService.DeleteDroitFilesForNoteAsync(noteId, fileIdsToKeep);
 
+
+            try
+            {
+                var note = await GetNoteAsync(noteId);
+
+                foreach ( var fileForm in fileForms )
+                {
+                    fileForm.NoteId = note.Id;
+
+                    await _fileService.SaveDroitFileFormAsync(fileForm);
+                }
+
+            }
+            catch ( NoteNotFoundException e )
+            {
+                _logger.LogError($"Note not found - {e}");
+            }
+            catch ( Exception ex )
+            {
+                _logger.LogError(ex.ToString());
+            }
+        }
+        
         private async Task<Note> AddNoteAsync(Note note)
         {
             return await _repo.AddAsync(note);

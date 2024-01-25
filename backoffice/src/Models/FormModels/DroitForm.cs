@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
+using Droits.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 #endregion
@@ -74,6 +75,7 @@ public class DroitForm : BaseEntityForm
         ImportedFromLegacy = droit.ImportedFromLegacy;
         LegacyRemarks = droit.LegacyRemarks;
 
+        ReportedWreckInfo = new ReportedWreckInfoView(droit);
 
         if ( droit.WreckMaterials.Any() )
         {
@@ -132,6 +134,8 @@ public class DroitForm : BaseEntityForm
     public int? ReportedWreckYearSunk { get; set; }
     public int? ReportedWreckYearConstructed { get; set; }
     public string? ReportedWreckConstructionDetails { get; set; }
+
+    public ReportedWreckInfoView ReportedWreckInfo = new ();
     
     // Salvor
 

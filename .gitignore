@@ -25,6 +25,8 @@ backoffice/tests/appsettings.*
 
 backoffice/Droits.sln.DotSettings.user
 
+##scripts
+scripts/data/**
 
 ##terraform
 .terraform
@@ -33,6 +35,11 @@ test.tfvars
 /terraform/.env
 /terraform/refresh-diagram.sh
 /terraform/terraform_diagram.html
+
+##scripts
+scripts/data
+scripts/config/set_secrets.sh
+
 
 ##Github
 .github/.vscode/

@@ -76,7 +76,7 @@ public class Droit : BaseEntity
     // Legacy fields
     public string? PowerappsDroitId { get; set; }
     public string? PowerappsWreckId { get; set; }
-    public string? District { get; set; }
+    public string? District { get; set; } 
     public string? LegacyFileReference { get; set; } //Physical file location/ref
     public string? GoodsDischargedBy { get; set; } //Initials of RoW member.
     public string? DateDelivered { get; set; } //Unsure of date format.

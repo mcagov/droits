@@ -27,6 +27,11 @@ namespace Droits.Models.ViewModels
             SalvorId = note.SalvorId;
             LetterId = note.LetterId;
 
+            if ( note.Files.Any() )
+            {
+                Files = note.Files.Select(i => new DroitFileView(i)).OrderByDescending(i => i.Created).ToList();
+            }
+            
             if (includeAssociations)
             {
                 
@@ -49,5 +54,14 @@ namespace Droits.Models.ViewModels
         public Guid? WreckId { get; }
         public Guid? SalvorId { get; }
         public Guid? LetterId { get; }
+        public List<DroitFileView> Files { get; } = new();
+        public (string EntityController, Guid? EntityId) GetAssociatedEntityInfo()
+        {
+            if (DroitId.HasValue) return ("Droit", DroitId.Value);
+            if (WreckId.HasValue) return ("Wreck", WreckId.Value);
+            if (SalvorId.HasValue) return ("Salvor", SalvorId.Value);
+            if (LetterId.HasValue) return ("Letter", LetterId.Value);
+            return ("Note", null);
+        }
     }
 }

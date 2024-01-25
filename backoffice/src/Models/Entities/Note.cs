@@ -27,5 +27,8 @@ public class Note : BaseEntity
     public Guid? LetterId { get; set; }
     [ForeignKey("LetterId")]
     public virtual Letter? Letter { get; set; }
+    
+    public virtual ICollection<DroitFile> Files { get; set; } = new List<DroitFile>();
+
 
 }

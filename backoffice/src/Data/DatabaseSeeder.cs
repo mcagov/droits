@@ -26,8 +26,8 @@ public static class DatabaseSeeder
     {
         dbContext.Database.EnsureCreated();
 
-        // if ( false )
-        // {
+        if ( false )
+        {
             if ( !dbContext.Users.Any() )
             {
                 dbContext.Users.AddRange(GetUsers());
@@ -85,7 +85,7 @@ public static class DatabaseSeeder
             }
 
 
-        // }
+        }
 
     }
 

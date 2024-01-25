@@ -21,5 +21,9 @@ public class DroitFile : BaseEntity
     public Guid? WreckMaterialId { get; set; }    
     [ForeignKey("WreckMaterialId")]
     public virtual WreckMaterial? WreckMaterial { get; set; }
+    
+    public Guid? NoteId { get; set; }    
+    [ForeignKey("NoteId")]
+    public virtual Note? Note { get; set; }
 
 }

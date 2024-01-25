@@ -84,14 +84,12 @@ namespace Droits.Data.Mappers.Powerapps
                     opt => opt.MapFrom(src =>
                         src.VesselName))
                 .ForMember(dest => dest.ReportedWreckYearSunk,
-                    opt => opt.MapFrom(src =>
-                        src.VesselYearSunk))
-                .ForMember(dest => dest.ReportedWreckConstructionDetails,
+                    opt =>     opt.MapFrom(src => src.VesselYearSunk!= null ? src.VesselYearSunk.AsInt() : null))
+                        .ForMember(dest => dest.ReportedWreckConstructionDetails,
                     opt => opt.MapFrom(src =>
                         src.WreckConstructionDetails))
                 .ForMember(dest => dest.ReportedWreckYearConstructed,
-                    opt => opt.MapFrom(src =>
-                        src.VesselYearConstructed))
+                    opt => opt.MapFrom(src => src.VesselYearConstructed!= null ? src.VesselYearConstructed.AsInt() : null))
 
                 .ForMember(dest => dest.RecoveredFromLegacy,
                     opt => opt.MapFrom(src =>
