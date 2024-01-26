@@ -54,7 +54,12 @@ namespace Droits.Tests.IntegrationTests.Services
         public async Task UpdateDroitAsync_ShouldUpdateExistingDroitInDatabase()
         {
             // Arrange
-            var existingDroit = await _dbContext.Droits.FirstOrDefaultAsync();
+            var newDroit = new Droit
+            {
+                Reference = "NewDroit",
+                Status = DroitStatus.Closed
+            };
+            var existingDroit = await _service.SaveDroitAsync(newDroit);
             var updatedStatus = DroitStatus.Received;
 
             // Act
@@ -66,39 +71,6 @@ namespace Droits.Tests.IntegrationTests.Services
             Assert.NotNull(retrievedDroit);
             Assert.Equal(updatedStatus, retrievedDroit.Status);
         }
-        
-        //Search tests
-        //
-        // [Fact]
-        // public async Task AdvancedSearchDroitsAsync_ShouldReturnCorrectMatches()
-        // {
-        //     // Arrange
-        //     await _service.SaveDroitAsync(new Droit
-        //     {
-        //         Reference = "NewDroit",
-        //         Status = DroitStatus.Received
-        //     });
-        //     
-        //     await _service.SaveDroitAsync(new Droit
-        //     {
-        //         Reference = "NoMatch",
-        //         Status = DroitStatus.Received
-        //     });
-        //
-        //     var droitSearchForm = new DroitSearchForm()
-        //     {
-        //         Reference = "NewDroit"
-        //     };
-        //
-        //     // Act
-        //
-        //     var results =
-        //         await _service.AdvancedSearchDroitsAsync(droitSearchForm, new SearchOptions());
-        //
-        //     // Assert
-        //     Assert.NotEmpty(results.Items);
-        //     Assert.Equal(1, results.TotalCount);
-        // }
         
     }
 }
