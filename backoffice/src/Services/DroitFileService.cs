@@ -130,7 +130,7 @@ public class DroitFileService : IDroitFileService
     public async Task<DroitFile> AddFileToNoteAsync(Note note, PowerappsNoteDto noteRequest)
     {
         var documentBody = noteRequest.DocumentBody;
-        var fileName = noteRequest.FileName;
+        var fileName = noteRequest.FileName??"noteFile";
 
         if (string.IsNullOrEmpty(documentBody))
         {

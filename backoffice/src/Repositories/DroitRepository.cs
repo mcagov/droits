@@ -93,7 +93,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
 
     public async Task<int> GetYearDroitCount()
     {
-        return await Context.Droits.CountAsync(d => d.Created.Year == DateTime.UtcNow.Year);
+        return await Context.Droits.CountAsync(d => d.Reference.EndsWith($"/{DateTime.UtcNow:yy}"));
     }
     public async Task<bool> IsReferenceUnique(Droit droit)
     {

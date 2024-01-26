@@ -31,7 +31,7 @@ public class CurrentUserServiceTests
 
 
     [Fact]
-    public void GetCurrentUserId_ReturnsEmptyGuid_WhenClaimDoesNotExist()
+    public void GetCurrentUserId_ReturnsNull_WhenClaimDoesNotExist()
     {
         // Given
         var user = new ClaimsPrincipal(new ClaimsIdentity());
@@ -46,6 +46,6 @@ public class CurrentUserServiceTests
         var result = service.GetCurrentUserId();
 
         // Then
-        Assert.Equal(Guid.Empty, result);
+        Assert.False(result.HasValue);
     }
 }
