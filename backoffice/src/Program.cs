@@ -75,11 +75,11 @@ builder.Services.AddDbContext<DroitsContext>(opt =>
 {
     // if (builder.Environment.IsDevelopment())
     // {
-        opt.UseInMemoryDatabase(databaseOptions?.Database ?? "Droits");
+        // opt.UseInMemoryDatabase(databaseOptions?.Database ?? "Droits");
     // }
     // else
     // {
-    //     opt.UseNpgsql(databaseOptions?.ConnectionString);
+    opt.UseNpgsql(databaseOptions?.ConnectionString);
     // }
 });
 
@@ -182,6 +182,7 @@ if (!app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<DroitsContext>();
+    dbContext.Database.EnsureCreated();
     // DatabaseSeeder.SeedData(dbContext);
 }
 
