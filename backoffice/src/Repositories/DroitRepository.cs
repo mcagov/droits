@@ -38,26 +38,26 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
 
     public IQueryable<Droit> GetDroits()
     {
-        return Context.Droits.Include(d => d.AssignedToUser).OrderByDescending(d => d.ReportedDate);
+        return Context.Droits.Include(d => d.AssignedToUser).OrderByDescending(d => d.ReportedDate).AsNoTracking();
     }
 
 
     public IQueryable<Droit> GetDroitsWithAssociations()
     {
         return GetDroits()
-            .Include(d => d.AssignedToUser)
-            .Include(d => d.Letters)
-            .Include(d => d.Wreck)
-            .Include(d => d.Salvor)
-            .Include(d => d.WreckMaterials);
+            .Include(d => d.AssignedToUser).AsNoTracking()
+            .Include(d => d.Letters).AsNoTracking()
+            .Include(d => d.Wreck).AsNoTracking()
+            .Include(d => d.Salvor).AsNoTracking()
+            .Include(d => d.WreckMaterials).AsNoTracking();
     }
 
 
     public async Task<Droit> GetDroitWithAssociationsAsync(Guid id)
     {
         var droit = await Context.Droits
-            .Include(d => d.AssignedToUser)
-            .Include(d => d.Letters)
+            .Include(d => d.AssignedToUser).AsNoTracking()
+            .Include(d => d.Letters).AsNoTracking()
 
             .Include(d => d.Wreck).ThenInclude(w => w!.Notes).ThenInclude(n => n.LastModifiedByUser)
             .Include(d => d.Salvor).ThenInclude(s => s!.Notes).ThenInclude(n => n.LastModifiedByUser)

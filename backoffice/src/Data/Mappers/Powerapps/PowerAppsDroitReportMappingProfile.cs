@@ -4,6 +4,7 @@ using System;
 using Droits.Helpers;
 using Droits.Helpers.Extensions;
 using Droits.Models.DTOs.Powerapps;
+using Microsoft.Extensions.Options;
 
 namespace Droits.Data.Mappers.Powerapps
 {
@@ -115,9 +116,8 @@ namespace Droits.Data.Mappers.Powerapps
                 .ForMember(dest => dest.LegacyRemarks,
                     opt => opt.MapFrom(src =>
                         StringHelper.JoinWithSeparator(" | ",src.RemarksLegacy1, src.RemarksLegacy2)))
-            
-                
-                
+                .ForMember(dest => dest.LastModifiedByUserId, opt => opt.MapFrom(src => default(Guid?)))
+
                 //Need to match up wreck from WreckValue (Powerapps Id)
                 .ForMember(dest => dest.Wreck, opt => opt.Ignore())
                 .ForMember(dest => dest.WreckMaterials, opt => opt.Ignore());

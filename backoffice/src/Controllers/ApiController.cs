@@ -107,6 +107,34 @@ public class ApiController : Controller
 
     }
 
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> MigrateNote([FromBody] PowerappsNoteDto request)
+    {
+
+        try
+        {
+            var savedNote = await _service.MigrateNoteAsync(request);
+            
+            return Json(new
+            {
+                note = new
+                {
+                    savedNote.Id,
+                    savedNote.WreckId,
+                    savedNote.DroitId,
+                    savedNote.SalvorId,
+                    savedNote.LetterId
+                }
+            });
+        }
+        catch ( Exception e )
+        {
+            _logger.LogError("Note could not be saved" + e);
+            return NotFound();
+        }
+
+    }
     
     [HttpPost]
     [AllowAnonymous]

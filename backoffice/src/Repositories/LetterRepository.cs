@@ -35,7 +35,7 @@ public class LetterRepository : BaseEntityRepository<Letter>, ILetterRepository
     public IQueryable<Letter> GetLettersWithAssociations()
     {
         return GetLetters()
-            .Include(l => l.Droit);
+            .Include(l => l.Droit).AsNoTracking();
     }
 
     public async Task<Letter> GetLetterAsync(Guid id)

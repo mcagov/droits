@@ -40,6 +40,15 @@ public static class FileHelper
         return ImageExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase);
     }
     
+    public static string? GetFileExtension(string mimeType)
+    {
+        var fileExtension = ContentTypeProvider.Mappings
+            .FirstOrDefault(pair => string.Equals(pair.Value, mimeType, StringComparison.OrdinalIgnoreCase))
+            .Key;
+
+        return fileExtension;
+    }
+    
     public static string? GetFileKey(DroitFile droitFile, string? filename)
     {
         if ( droitFile.WreckMaterial != null )

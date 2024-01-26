@@ -35,7 +35,7 @@ public class WreckRepository : BaseEntityRepository<Wreck>, IWreckRepository
 
     public IQueryable<Wreck> GetWrecksWithAssociations()
     {
-        return GetWrecks();
+        return GetWrecks().AsNoTracking();
     }
 
 

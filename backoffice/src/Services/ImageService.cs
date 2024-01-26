@@ -141,8 +141,10 @@ public class ImageService : IImageService
                 throw new ImageNotFoundException($"Image stream is null or empty {imageUrl}");
             }
             
+            var uri = new Uri(imageUrl);
+            var fileName = Uri.UnescapeDataString(uri.Segments[2]);
             
-            IFormFile formFile = new FormFile(ms, 0, ms.Length, imageUrl, imageUrl);
+            IFormFile formFile = new FormFile(ms, 0, ms.Length, imageUrl, fileName);
 
             var imageForm = new ImageForm()
             {

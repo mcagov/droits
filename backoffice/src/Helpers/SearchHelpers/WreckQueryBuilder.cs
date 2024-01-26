@@ -12,7 +12,7 @@ public static class WreckQueryBuilder
     private const int MaxLevenshteinDistance = 5;
     
     public static IQueryable<Wreck> BuildQuery(WreckSearchForm form, IQueryable<Wreck> query,
-        bool usePsql = false) // change to true when using real db
+        bool usePsql = true)
     {
             
         if ( !string.IsNullOrEmpty(form.Name) )

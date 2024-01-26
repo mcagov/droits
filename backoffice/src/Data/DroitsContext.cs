@@ -64,7 +64,7 @@ public partial class DroitsContext : DbContext
             entity.Property(n => n.Type);
             entity.Property(n => n.Created);
             entity.Property(n => n.LastModified);
-            entity.Property(n => n.LastModifiedByUserId);
+            entity.Property(n => n.LastModifiedByUserId).IsRequired(false);
 
             // Relationships
             entity.HasOne(n => n.Droit)
@@ -118,7 +118,7 @@ public partial class DroitsContext : DbContext
             
             entity.Property(d => d.Created);
             entity.Property(d => d.LastModified);
-            entity.Property(d => d.LastModifiedByUserId);
+            entity.Property(d => d.LastModifiedByUserId).IsRequired(false);
             
 
             // Location
@@ -200,7 +200,7 @@ public partial class DroitsContext : DbContext
             
             entity.Property(w => w.Created);
             entity.Property(w => w.LastModified);
-            entity.Property(w => w.LastModifiedByUserId);
+            entity.Property(w => w.LastModifiedByUserId).IsRequired(false);
             entity.Property(w => w.PowerappsWreckMaterialId);
             entity.Property(w => w.PowerappsDroitId);
 
@@ -234,6 +234,8 @@ public partial class DroitsContext : DbContext
 
         modelBuilder.Entity<Image>(entity =>
         {
+            entity.ToTable("images");
+
             entity.Property(i => i.Id);
             entity.Property(i => i.Title);
             
@@ -245,7 +247,7 @@ public partial class DroitsContext : DbContext
             
             entity.Property(i => i.Created);
             entity.Property(i => i.LastModified);
-            entity.Property(i => i.LastModifiedByUserId);
+            entity.Property(i => i.LastModifiedByUserId).IsRequired(false);
             
             entity.HasOne(i => i.WreckMaterial)
                 .WithMany(w => w.Images)
@@ -258,6 +260,8 @@ public partial class DroitsContext : DbContext
         
         modelBuilder.Entity<DroitFile>(entity =>
         {
+            entity.ToTable("droit_files");
+
             entity.Property(i => i.Id);
             entity.Property(i => i.Title);
             entity.Property(i => i.Url);
@@ -271,7 +275,7 @@ public partial class DroitsContext : DbContext
             
             entity.Property(i => i.Created);
             entity.Property(i => i.LastModified);
-            entity.Property(i => i.LastModifiedByUserId);
+            entity.Property(i => i.LastModifiedByUserId).IsRequired(false);
             
             entity.HasOne(i => i.WreckMaterial)
                 .WithMany(w => w.Files)
@@ -311,7 +315,7 @@ public partial class DroitsContext : DbContext
             
             entity.Property(w => w.Created);
             entity.Property(w => w.LastModified);
-            entity.Property(w => w.LastModifiedByUserId);
+            entity.Property(w => w.LastModifiedByUserId).IsRequired(false);;
             entity.Property(w => w.PowerappsWreckId);
             entity.Property(w => w.WreckType);
             
@@ -344,7 +348,7 @@ public partial class DroitsContext : DbContext
             
             entity.Property(l => l.Created);
             entity.Property(l => l.LastModified);
-            entity.Property(l => l.LastModifiedByUserId);
+            entity.Property(l => l.LastModifiedByUserId).IsRequired(false);
             entity.Property(l => l.QualityApprovedUserId);
 
             
@@ -386,7 +390,7 @@ public partial class DroitsContext : DbContext
 
             entity.Property(s => s.Created);
             entity.Property(s => s.LastModified);
-            entity.Property(s => s.LastModifiedByUserId);
+            entity.Property(s => s.LastModifiedByUserId).IsRequired(false);
 
             entity.HasIndex(s => s.Email)
                 .IsUnique();

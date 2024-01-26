@@ -73,14 +73,15 @@ var databaseOptions = builder.Configuration.GetSection("Database").Get<DatabaseO
 
 builder.Services.AddDbContext<DroitsContext>(opt =>
 {
-    // if (builder.Environment.IsDevelopment())
-    // {
+    var useInMemoryDb = false; //builder.Environment.IsDevelopment()
+    if (useInMemoryDb)
+    {
         opt.UseInMemoryDatabase(databaseOptions?.Database ?? "Droits");
-    // }
-    // else
-    // {
-    //     opt.UseNpgsql(databaseOptions?.ConnectionString);
-    // }
+    }
+    else
+    {
+        opt.UseNpgsql(databaseOptions?.ConnectionString);
+    }
 });
 
 // Session and HealthChecks
@@ -128,7 +129,7 @@ builder.Services.AddScoped<IDroitFileRepository, DroitFileRepository>();
 builder.Services.AddScoped<IDroitFileService, DroitFileService>();
 
 // Mappers
-builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile), typeof(PowerAppsDroitReportMappingProfile), typeof(PowerAppsWreckMaterialMappingProfile));
+builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile), typeof(PowerAppsDroitReportMappingProfile), typeof(PowerAppsWreckMaterialMappingProfile), typeof(PowerAppsNoteMappingProfile));
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();
@@ -182,6 +183,8 @@ if (!app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<DroitsContext>();
+    dbContext.Database.EnsureCreated();
+
     // DatabaseSeeder.SeedData(dbContext);
 }
 
