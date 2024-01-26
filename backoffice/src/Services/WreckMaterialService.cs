@@ -19,6 +19,8 @@ public interface IWreckMaterialService
     Task<WreckMaterial>  GetWreckMaterialAsync(Guid id);
     Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep);
     Task CreateWreckMaterialsAsync(SubmittedReportDto report, Guid droitId);
+    Task<WreckMaterial> GetWreckMaterialByPowerappsIdAsync(string powerappsId);
+
 }
 
 public class WreckMaterialService : IWreckMaterialService
@@ -161,6 +163,10 @@ public class WreckMaterialService : IWreckMaterialService
              }
          }
      }
+
+
+     public async Task<WreckMaterial> GetWreckMaterialByPowerappsIdAsync(string powerappsId) =>
+         await _repository.GetWreckMaterialByPowerappsIdAsync(powerappsId);
 
 
      private async Task SaveSubmittedImageAsync(Guid wreckMaterialId, SubmittedImageDto image)

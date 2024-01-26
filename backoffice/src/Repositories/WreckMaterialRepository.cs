@@ -18,9 +18,10 @@ public interface IWreckMaterialRepository
     Task<WreckMaterial> UpdateAsync(WreckMaterial wreckMaterial);
     Task<WreckMaterial> GetWreckMaterialAsync(Guid id);
     Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep);
+    Task<WreckMaterial> GetWreckMaterialByPowerappsIdAsync(string powerappsId);
 }
 
-public class WreckMaterialRepository : BaseEntityRepository<WreckMaterial>, IWreckMaterialRepository
+public class  WreckMaterialRepository : BaseEntityRepository<WreckMaterial>, IWreckMaterialRepository
 {
     public WreckMaterialRepository(DroitsContext dbContext, IAccountService accountService) : base(dbContext,accountService)
     {
@@ -56,6 +57,18 @@ public class WreckMaterialRepository : BaseEntityRepository<WreckMaterial>, IWre
     {
         Context.WreckMaterials.RemoveRange(wreckMaterialsToDelete);
         await Context.SaveChangesAsync();
+    }
+    
+    public async Task<WreckMaterial> GetWreckMaterialByPowerappsIdAsync(string powerappsId)
+    {
+        var wreckMaterial = await Context.WreckMaterials
+            .FirstOrDefaultAsync(w => w.PowerappsWreckMaterialId == powerappsId);
+        if ( wreckMaterial == null )
+        {
+            throw new WreckMaterialNotFoundException();
+        }
+
+        return wreckMaterial;
     }
 
     

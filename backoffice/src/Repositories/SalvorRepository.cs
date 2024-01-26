@@ -18,6 +18,7 @@ public interface ISalvorRepository
     Task<Salvor> AddAsync(Salvor salvor);
     Task<Salvor> UpdateAsync(Salvor salvor);
     Task<Salvor?> GetSalvorByEmailAddressAsync(string? salvorInfoEmail);
+    Task<Salvor> GetSalvorByPowerappsIdAsync(string powerappsId);
 }
 
 public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
@@ -35,7 +36,7 @@ public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
 
     public IQueryable<Salvor> GetSalvorsWithAssociations()
     {
-        return GetSalvors();
+        return GetSalvors().AsNoTracking();
     }
 
 
@@ -56,4 +57,18 @@ public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
     
     public async Task<Salvor?> GetSalvorByEmailAddressAsync(string? emailAddress) => await Context.Salvors
                 .FirstOrDefaultAsync(s => s.Email.Trim().ToLower().Equals(emailAddress));
+    
+    
+    public async Task<Salvor> GetSalvorByPowerappsIdAsync(string powerappsId)
+    {
+        var salvor = await Context.Salvors
+            .FirstOrDefaultAsync(s => s.PowerappsContactId == powerappsId);
+        if ( salvor == null )
+        {
+            throw new SalvorNotFoundException();
+        }
+
+        return salvor;
+    }
+
 }

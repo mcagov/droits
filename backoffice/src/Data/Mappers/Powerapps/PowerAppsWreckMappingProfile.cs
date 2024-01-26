@@ -35,6 +35,7 @@ namespace Droits.Data.Mappers.Powerapps
                 .ForMember(dest => dest.OwnerNumber, opt => opt.MapFrom(src => src.WreckOwner != null ? src.WreckOwner.MobilePhone :""))
                 .ForMember(dest => dest.OwnerAddress, opt => opt.MapFrom(src => src.WreckOwner != null ? src.WreckOwner.AddressComposite :""))
                 .ForMember(dest => dest.AdditionalInformation, opt => opt.Ignore()) //This isn't in the current system
+                .ForMember(dest => dest.LastModifiedByUserId, opt => opt.MapFrom(src => default(Guid?)))
                 .ForMember(dest => dest.ConstructionDetails,
                     opt => opt.Ignore()) //This isn't in the current system
                 .ForMember(dest => dest.YearConstructed,
