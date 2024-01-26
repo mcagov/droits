@@ -434,11 +434,11 @@ public class DroitQueryBuilderUnitTests
             WreckMaterial = "Test", WreckMaterialOwner = "Owner",
             ValueConfirmed = true
         };
-        var matchingWreckMaterial = new WreckMaterial() { Description = "Test", WreckMaterialOwnerContactDetails = "Owner", 
+        var matchingWreckMaterial = new WreckMaterial() { Description = "Test", WreckMaterialOwner = "Owner", 
             ValueConfirmed = true};
-        var notMatchingWreckMaterial = new WreckMaterial() { Description = "Not Matching", WreckMaterialOwnerContactDetails = "None", 
+        var notMatchingWreckMaterial = new WreckMaterial() { Description = "Not Matching", WreckMaterialOwner = "None", 
             ValueConfirmed = false};
-        var anotherMatchingWreckMaterial = new WreckMaterial() { Description = "Test with extra", WreckMaterialOwnerContactDetails = "Same Owner", 
+        var anotherMatchingWreckMaterial = new WreckMaterial() { Description = "Test with extra", WreckMaterialOwner = "Same Owner", 
             ValueConfirmed = true};
         var droits = new List<Droit>
         {
