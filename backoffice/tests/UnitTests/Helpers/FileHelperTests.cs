@@ -192,6 +192,5 @@ namespace Droits.Tests.UnitTests.Helpers
             // Assert
             Assert.Null(result);
         }
-
     }
 }
