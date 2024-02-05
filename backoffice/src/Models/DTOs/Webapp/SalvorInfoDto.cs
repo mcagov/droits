@@ -15,9 +15,9 @@ public class SalvorInfoDto
     
     [JsonPropertyName("telephoneNumber")]
     public string? TelephoneNumber { get; set; }
-    
+
     [JsonPropertyName("address")]
-    public SalvorInfoAddressDto? Address { get; set; }
+    public SalvorInfoAddressDto Address { get; set; } = new();
     
     [JsonPropertyName("reports")]
     public SalvorInfoReportDto[]? Reports { get; set; }
@@ -127,7 +127,7 @@ public class SalvorInfoWreckMaterialDto
     public string? Id { get; set; }
 
     [JsonPropertyName("storage_address")]
-    public SalvorInfoAddressDto? StorageAddress { get; set; }
+    public SalvorInfoAddressDto StorageAddress { get; set; } = new();
 
     [JsonPropertyName("image_ids")]
     public Guid[] ImageIds { get; set; } = Array.Empty<Guid>();

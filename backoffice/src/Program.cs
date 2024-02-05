@@ -91,6 +91,8 @@ builder.Services.AddHealthChecks();
 // Dependency Injections
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IApiService, ApiService>();
+builder.Services.AddScoped<IMigrationService, MigrationService>();
+
 
 builder.Services.AddScoped<ITokenValidationService, TokenValidationService>();
 
