@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations;
 using Droits.Models.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
-using Npgsql.Replication.PgOutput.Messages;
 
 #endregion
 
