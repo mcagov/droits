@@ -184,7 +184,7 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<DroitsContext>();
     dbContext.Database.EnsureCreated();
-    // DatabaseSeeder.SeedData(dbContext);
+    DatabaseSeeder.SeedData(dbContext);
 }
 
 // Middleware Pipeline

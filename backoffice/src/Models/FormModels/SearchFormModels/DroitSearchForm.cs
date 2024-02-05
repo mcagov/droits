@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using Droits.Models.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql.Replication.PgOutput.Messages;
 
 #endregion
 
@@ -48,7 +49,12 @@ public class DroitSearchForm : SearchForm
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime? LastModifiedTo { get; set; }
 
+    public List<int> TriageNumberList = new() { 1, 2, 3, 4, 5 };
 
+    public List<int> TriageNumbers { get; set; } = new();
+    
+    public List<int> SelectedTriageNumbers { get; set; } = new();
+    
     public List<DroitStatus> StatusList { get; set; } = new();
     public List<int> SelectedStatusList => StatusList.Select(s => ( int )s).ToList();
 

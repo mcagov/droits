@@ -67,6 +67,23 @@
             </div>
         </div>
     </div>
+    
+    <div class="form-floating mb-3 triage-numbers-select">
+        <select class="form-control js-search-droit-triage-numbers" id="TriageNumberList" multiple="multiple" name="TriageNumberList" placeholder="">
+            @foreach (var o in Model.TriageNumberList)
+            {
+                if (@Model.SelectedTriageNumbers.Contains(o))
+                {
+                    <option value="@o" selected="selected">@o</option>
+                }
+                else
+                {
+                    <option value="@o">@o</option>
+
+                }
+            }
+        </select>    
+    </div>
 
     <div class="form-floating mb-3 status-select">
         <select class="form-control js-search-droit-status" id="StatusList" multiple="multiple" name="StatusList" placeholder="">
