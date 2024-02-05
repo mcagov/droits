@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Error: Reporter not found – GOV.UK
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-m">
+        Reporter Not Found
+      </h1>
+      <div>
+        <p>We could not find any reports from the email address <strong>{{ salvorEmail }}</strong>.</p>
+        <p>To create a droit report, please submit a <strong><a href="/report/start">Report Wreck and Salvage form</a></strong>.</p>
+      </div>
+    </div>
+
+  </div>
+
+{% endblock %}

@@ -226,7 +226,7 @@ Report Details - {{ serviceName }} – GOV.UK
                     <th scope="col" class="govuk-table__header govuk-table__header--numeric">Quantity</th>
                     <th scope="col" class="govuk-table__header govuk-table__header--numeric">Total value</th>
                     <th scope="col" class="govuk-table__header">Images</th>
-                    <th scope="col" class="govuk-table__header">Storage address</th>
+                    <!-- <th scope="col" class="govuk-table__header">Storage address</th> -->
                 </tr>
             </thead>
 
@@ -236,6 +236,20 @@ Report Details - {{ serviceName }} – GOV.UK
                   <td class="govuk-table__cell report-responsive-table__cell">
                       <span class="report-responsive-table__mobile-label">Description:</span>
                       {{ item.description }}
+
+                      <br/>
+                      <br/>
+                      <strong>Storage Address:</strong>
+
+                      <p>{% set addressLines = [
+                            item.storage_address.line1,
+                            item.storage_address.line2,
+                            item.storage_address.city,
+                            item.storage_address.county,
+                            item.storage_address.postcode]
+                          %}
+                          {{ address(addressLines) }}
+                    </p>
                   </td>
                   <td class="govuk-table__cell govuk-table__cell--numeric report-responsive-table__cell">
                       <span class="report-responsive-table__mobile-label">Quantity:</span>
@@ -251,30 +265,18 @@ Report Details - {{ serviceName }} – GOV.UK
                   </td>
                   <td class="govuk-table__cell report-responsive-table__cell" data-label="Image">
                       <span class="report-responsive-table__mobile-label">Images:</span>
-                      
+
                       {% if item["image_ids"].length > 0 %}
                           {% for imageId in item["image_ids"] %}
                               <a class="glightbox" href="{{reportData['base_image_url']}}/{{imageId}}">
-                                <img src="{{reportData['base_image_url']}}/{{imageId}}" width="250" alt="Wreck material image described as '{{ item.description }}'"/>
+                                <img src="{{reportData['base_image_url']}}/{{imageId}}" width="250" alt="Image of Wreck Material'"/>
                               </a>
                           {% endfor %}
                       {% else %}
                         No images for this item.
                       {% endif %}
-                      
 
-                  </td>
-                  
-                  <td class="govuk-table__cell report-responsive-table__cell" data-label="Storage address">
-                      <span class="report-responsive-table__mobile-label">Storage address:</span>
-                      {% set addressLines = [ 
-                        item.storage_address.line1,
-                        item.storage_address.line2,
-                        item.storage_address.city,
-                        item.storage_address.county,
-                        item.storage_address.postcode]
-                      %}
-                      {{ address(addressLines) }}
+
                   </td>
               </tr>
               {% endfor %}
@@ -333,7 +335,7 @@ Report Details - {{ serviceName }} – GOV.UK
 {% endset -%}
 
 
-<div class="govuk-grid-row">        
+<div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
 
         <h1 class="govuk-heading-xl">
@@ -343,7 +345,7 @@ Report Details - {{ serviceName }} – GOV.UK
     </div>
 </div>
 
-<div class="govuk-grid-row">        
+<div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half-from-desktop">
 
         <dl class="govuk-summary-list">
@@ -417,9 +419,9 @@ Report Details - {{ serviceName }} – GOV.UK
         ]
       }) }}
   {% endset %}
-  {% endif %}        
+  {% endif %}
 
-<div class="govuk-grid-row">        
+<div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         {{ tabs }}
         <div class="show-on-print">

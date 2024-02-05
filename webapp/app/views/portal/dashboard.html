@@ -35,7 +35,7 @@
       text: "Investigation Ongoing",
       classes: "govuk-tag--blue govuk-!-margin-bottom-2"
     })}}
-    <br/>The Receiver of Wreck has all information currently required and is undertaking enquiries to determine the outcome of this report. 
+    <br/>The Receiver of Wreck has all information currently required and is undertaking enquiries to determine the outcome of this report.
   </p>
   <p>
     {{govukTag({
@@ -75,21 +75,12 @@
             </a>
           </span>
           <span class="portal-filter-item-wrapper">
-            <a class="portal-filter-item govuk-!-margin-right-4" href="#" data-js="portal-filter-item" data-status="awaiting">
-              {{govukTag({
-                text: "Awaiting your response",
-                classes: "govuk-tag--orange govuk-!-margin-bottom-2"
-              })}}
-              <span class="portal-filter-item__close">&#10005;</span>
-            </a>
-          </span>
-          <span class="portal-filter-item-wrapper">
             <a class="portal-filter-item govuk-!-margin-right-4" href="#" data-js="portal-filter-item" data-status="ongoing">
               {{govukTag({
                 text: "Investigation Ongoing",
                 classes: "govuk-tag--blue govuk-!-margin-bottom-2"
-              })}}   
-              <span class="portal-filter-item__close">&#10005;</span>       
+              })}}
+              <span class="portal-filter-item__close">&#10005;</span>
             </a>
           </span>
           <span class="portal-filter-item-wrapper">
@@ -98,26 +89,26 @@
                 text: "Closed",
                 classes: "govuk-tag--grey govuk-!-margin-bottom-2"
               })}}
-              <span class="portal-filter-item__close">&#10005;</span>       
+              <span class="portal-filter-item__close">&#10005;</span>
             </a>
           </span>
         </div>
       </div>
-      
+
       {% set reportedSelected = false %}
       {% set foundSelected = false %}
       {% set lastUpdated = false %}
-      {% if sort === 'crf99_datereported' %}
+      {% if sort === 'date-reported' %}
         {% set reportedSelected = true %}
       {% endif %}
-      {% if sort === 'crf99_datefound' %}
+      {% if sort === 'date-found' %}
         {% set foundSelected = true %}
       {% endif %}
-      {% if sort === 'modifiedon' %}
+      {% if sort === 'last-updated' %}
         {% set lastUpdatedSelected = true %}
       {% endif %}
-      
-      <form class="form" action='/portal/dashboard' method="post" data-js="portal-sort">
+
+      <!-- <form class="form" action='/portal/dashboard' method="post" data-js="portal-sort">
         {{ govukSelect({
           id: "report-sort-by",
           name: "report-sort-by",
@@ -126,23 +117,23 @@
           },
           items: [
             {
-              value: "crf99_datereported",
+              value: "date-reported",
               text: "Reported",
               selected: reportedSelected
             },
             {
-              value: "crf99_datefound",
+              value: "date-found",
               text: "Found",
               selected: foundSelected
             },
             {
-              value: "modifiedon",
+              value: "last-updated",
               text: "Last Updated",
               selected: lastUpdatedSelected
             }
           ]
         }) }}
-      </form>
+      </form> -->
 
       <table class="govuk-table report-responsive-table" data-js="report-listings-table">
         <thead class="govuk-table__head report-responsive-table__head">
@@ -162,7 +153,7 @@
           {% else %}
              {% set itemSummaryText = "items" %}
           {% endif %}
-          
+
           <tr class="govuk-table__row report-responsive-table__row report-responsive-table__row--portal-dashboard" data-status="{{item['status-attr']}}" data-js="report-listings-row">
             <td class="govuk-table__cell report-responsive-table__cell">
             <span class="report-responsive-table__mobile-label">Reference:</span>

@@ -1,4 +1,5 @@
-﻿using Droits.Models.DTOs;
+﻿using Droits.Exceptions;
+using Droits.Models.DTOs;
 using Droits.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +26,6 @@ public class ApiController : Controller
     [AllowAnonymous]
     public async Task<IActionResult> Send([FromBody] SubmittedReportDto report)
     {
- 
-
         try
         {
             var savedDroit = await _service.SaveDroitReportAsync(report);
@@ -54,10 +53,18 @@ public class ApiController : Controller
     public async Task<IActionResult> Salvor(string email)
     {
 
-        var salvorInfo = await _service.GetSalvorInfoAsync(email);
+        try
+        {
 
-        return Json(salvorInfo);
-        
+            var salvorInfo = await _service.GetSalvorInfoAsync(email);
+
+            return Json(salvorInfo);
+        }
+        catch ( SalvorNotFoundException )
+        {
+            return NotFound("Salvor not found");
+        }
+
     }
     
     [HttpGet]

@@ -25,4 +25,12 @@
     </div>
 
   </div>
+
+  {% if errorInfo %}
+  <div class="error-info" style="display: none;">
+    <!-- Display error information here -->
+    <p>Error Details: {{ errorInfo }}</p>
+  </div>
+{% endif %}
+
 {% endblock %}

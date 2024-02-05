@@ -15,29 +15,55 @@ const url = "http://localhost:5000/api/salvor"
 export default function (app) {
   app
     .get('/portal/dashboard', ensureAuthenticated, function (req, res) {
-      const currentUserEmail = req.user.emails[0];
+      const currentUserEmail = req.user.emails[0] || req.session.user.emails[0];
+      console.log(currentUserEmail);
+
       let userReports = [];
 
-        fetchSalvorInfo(url, currentUserEmail, userReports, res).then(
-          () => {
-            return res.render('portal/dashboard', { userReports: userReports });
-          }
-        );
-      // }).catch(() => {
-      //   req.logOut();
-      //   return res.redirect('/account-error');
+      fetchSalvorInfo(url, currentUserEmail, userReports, res, req)
+      .then(() => {
+        return res.render('portal/dashboard', { userReports: userReports });
+      })
+      // .catch((error) => {
+      //   // Handle the error here
+      //   console.error('An error occurred:', error);
+
+      //            //   req.logOut();
+      //           //   return res.redirect('/account-error');
+
+      //           return res.status(500).json({
+      //             status: 500,
+      //             message: 'An error occurred while fetching Salvor information. Please try again later.',
+      //             error: error.message // Optionally include the error message
+      //         });
+
+
+      //   // Render an error page or do something else as needed
+      //   // return res.render('error', { errorMessage: 'An error occurred. Please try again later.' });
+      // });
       });
-          
-          
+
+
           console.log("Sending Request");
 
-const fetchSalvorInfo = (url, currentUserEmail, userReports, res) => {
+const fetchSalvorInfo = (url, currentUserEmail, userReports, res, req) => {
   url = `${url}?email=${encodeURIComponent(currentUserEmail)}`;
   return new Promise((resolve, reject) => {
     axios
         .get(url)
         .then((res) => {
           const reportData = res.data.reports;
+          const session = req.session.data;
+          session.userName = res.data.name || "";
+          session.userEmail = res.data.email || "";
+
+          session.userTel = res.data.telephoneNumber || "";
+          session.userAddress1 = res.data.address.line1 || "";
+          session.userAddress2 = res.data.address.line2 || "";
+          session.userCity = res.data.address.city || "";
+          session.userCounty = res.data.address.county || "";
+          session.userPostcode = res.data.address.postcode || "";
+
           reportData.forEach((item) => {
             formatSalvorInfo(item, userReports);
           });
@@ -48,41 +74,16 @@ const fetchSalvorInfo = (url, currentUserEmail, userReports, res) => {
           if (err.response.status === 401) {
             req.logOut();
             res.redirect('/error');
+          } else if (err.response.status === 404) {
+            // Handle 404 response here
+            res.render('portal/unknown-salvor', {salvorEmail: currentUserEmail} )
+          } else {
+            reject();
           }
-          reject();
         });
   });
 };
-   
-      // function getUserData(token) {
-      //   return new Promise((resolve, reject) => {
-      //     axios
-      //       .get(encodedContactsUrl, {
-      //         headers: { Authorization: `bearer ${token}` },
-      //       })
-      //       .then((res) => {
-      //         const data = res.data.value[0];
-      //         const session = req.session.data;
-      //         // currentUserID = data.contactid;
-      //         session.id = currentUserID;
-      //         session.userName = data.fullname;
-      //         session.userEmail = data.emailaddress1;
-      //         session.userTel = data.telephone1;
-      //         session.userAddress1 = data.address1_line1;
-      //         session.userAddress2 = data.address1_line2;
-      //         session.userCity = data.address1_city;
-      //         session.userCounty = data.address1_county;
-      //         session.userPostcode = data.address1_postalcode;
-      //         resolve();
-      //       })
-      //       .catch((reqError) => {
-      //         console.log('User ID error');
-      //         console.log(reqError);
-      //         reject();
-      //       });
-      //   });
-      // }
-    // })
+
 
     // Sorting reports
     // .post(
