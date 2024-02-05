@@ -111,4 +111,22 @@ public class StringExtensionsTests
         // Assert
         Assert.Equal(expected, result);
     }
+    
+    [Theory]
+    [InlineData("", "a", "", "")]
+    [InlineData("apple", "p", "x", "axxle")]
+    [InlineData("banana", "a", "o", "bonono")]
+    [InlineData("hello world", " ", "-", "hello-world")]
+    [InlineData("abc", "d", "XYZ", "abc")]
+    [InlineData("<div><span>test</span></div><img loading=\"lazy\" src=\"/api/data/v9.0/msdyn_richtextfiles(xxx-xxx-xxx-xxx-xxx)/msdyn_imageblob/$value?size=full\" style=\"height:802px; width:1183px\">", "src=\"/api/data", "src=\"https://reportwreckmaterial.crm11.dynamics.com/api/data", "<div><span>test</span></div><img loading=\"lazy\" src=\"https://reportwreckmaterial.crm11.dynamics.com/api/data/v9.0/msdyn_richtextfiles(xxx-xxx-xxx-xxx-xxx)/msdyn_imageblob/$value?size=full\" style=\"height:802px; width:1183px\">")]
+    [InlineData("<div><span>test</span></div><img loading=\"lazy\" src=\"https://reportwreckmaterial.crm11.dynamics.com/api/data/v9.0/msdyn_richtextfiles(xxx-xxx-xxx-xxx-xxx)/msdyn_imageblob/$value?size=full\" style=\"height:802px; width:1183px\">", "src=\"/api/data","src=\"https://reportwreckmaterial.crm11.dynamics.com/api/data", "<div><span>test</span></div><img loading=\"lazy\" src=\"https://reportwreckmaterial.crm11.dynamics.com/api/data/v9.0/msdyn_richtextfiles(xxx-xxx-xxx-xxx-xxx)/msdyn_imageblob/$value?size=full\" style=\"height:802px; width:1183px\">")]
+
+    public void TestReplace(string word, string find, string replace, string expected)
+    {
+        // Act
+        var result = word.Replace(find, replace);
+
+        // Assert
+        Assert.Equal(expected, result);
+    }
 }

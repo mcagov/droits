@@ -20,7 +20,8 @@ namespace Droits.Data.Mappers.Powerapps
                 .ForPath(dest => dest.Address.Line2, opt => opt.MapFrom(src => StringHelper.JoinWithSeparator(", ", src.AddressLine2, src.AddressLine3)))
                 .ForPath(dest => dest.Address.Town, opt => opt.MapFrom(src => src.AddressCity))
                 .ForPath(dest => dest.Address.County, opt => opt.MapFrom(src => src.AddressCounty))
-                .ForPath(dest => dest.Address.Postcode, opt => opt.MapFrom(src => src.AddressPostalCode));
+                .ForPath(dest => dest.Address.Postcode, opt => opt.MapFrom(src => src.AddressPostalCode))
+                .ForMember(dest => dest.LastModifiedByUserId, opt => opt.MapFrom(src => default(Guid?)));
 
         }
     }

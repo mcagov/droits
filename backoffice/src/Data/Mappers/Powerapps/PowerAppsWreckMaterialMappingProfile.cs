@@ -68,7 +68,9 @@ namespace Droits.Data.Mappers.Powerapps
                 .ForMember(dest => dest.OutcomeRemarks,
                     opt => opt.MapFrom(src =>
                         StringHelper.JoinWithSeparator(" | ", src.OutcomeRemarks,
-                            src.OutcomeLegacy)));
+                            src.OutcomeLegacy)))
+                .ForMember(dest => dest.LastModifiedByUserId, opt => opt.MapFrom(src => default(Guid?)))
+                ;
         }
     }
 }

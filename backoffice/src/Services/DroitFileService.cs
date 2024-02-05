@@ -1,5 +1,7 @@
 #region
 
+using Droits.Helpers;
+using Droits.Models.DTOs.Powerapps;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Repositories;
@@ -15,7 +17,10 @@ public interface IDroitFileService
     Task<DroitFile> SaveDroitFileFormAsync(DroitFileForm droitFileForm);
     Task<Stream> GetDroitFileStreamAsync(string? key);
     Task DeleteDroitFilesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> droitFilesToKeep);
+    Task DeleteDroitFilesForNoteAsync(Guid noteId, IEnumerable<Guid> droitFilesToKeep);
+
     Task AddFileUrlToWreckMaterial(Guid wreckMaterialId, string wmRequestImageUrl);
+    Task<DroitFile> AddFileToNoteAsync(Note note, PowerappsNoteDto noteRequest);
 }
 
 public class DroitFileService : IDroitFileService
@@ -101,6 +106,12 @@ public class DroitFileService : IDroitFileService
         await _repo.DeleteDroitFilesForWreckMaterialAsync(wmId, droitFilesToKeep);
     }
 
+    public async Task DeleteDroitFilesForNoteAsync(Guid noteId,
+        IEnumerable<Guid> droitFilesToKeep)
+    {
+        await _repo.DeleteDroitFilesForNoteAsync(noteId, droitFilesToKeep);
+    }
+
 
     public async Task AddFileUrlToWreckMaterial(Guid wreckMaterialId, string wmRequestImageUrl)
     {
@@ -113,6 +124,42 @@ public class DroitFileService : IDroitFileService
 
         await _repo.AddAsync(file);
 
+    }
+
+
+    public async Task<DroitFile> AddFileToNoteAsync(Note note, PowerappsNoteDto noteRequest)
+    {
+        var documentBody = noteRequest.DocumentBody;
+        var fileName = noteRequest.FileName??"noteFile";
+
+        if (string.IsNullOrEmpty(documentBody))
+        {
+            _logger.LogError("Base64-encoded file content is null or empty");
+            throw new ArgumentException("Base64-encoded file content is null or empty", nameof(documentBody));
+        }
+
+        byte[] fileBytes = Convert.FromBase64String(documentBody);
+
+        using var ms = new MemoryStream(fileBytes);
+
+        if (ms.Length == 0)
+        {
+            _logger.LogError("File stream is null or empty");
+            throw new FileNotFoundException("File stream is null or empty");
+        }
+
+        IFormFile formFile = new FormFile(ms, 0, ms.Length, fileName, fileName);
+        
+        var fileForm = new DroitFileForm()
+        {
+            NoteId = note.Id,
+            DroitFile = formFile,
+            Filename = fileName,
+            Title = fileName
+        };
+
+        var file = await SaveDroitFileFormAsync(fileForm);
+        return file;
     }
 
 }

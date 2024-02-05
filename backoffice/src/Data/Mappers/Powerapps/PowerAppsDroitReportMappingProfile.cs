@@ -4,6 +4,7 @@ using System;
 using Droits.Helpers;
 using Droits.Helpers.Extensions;
 using Droits.Models.DTOs.Powerapps;
+using Microsoft.Extensions.Options;
 
 namespace Droits.Data.Mappers.Powerapps
 {
@@ -84,14 +85,12 @@ namespace Droits.Data.Mappers.Powerapps
                     opt => opt.MapFrom(src =>
                         src.VesselName))
                 .ForMember(dest => dest.ReportedWreckYearSunk,
-                    opt => opt.MapFrom(src =>
-                        src.VesselYearSunk))
-                .ForMember(dest => dest.ReportedWreckConstructionDetails,
+                    opt =>     opt.MapFrom(src => src.VesselYearSunk!= null ? src.VesselYearSunk.AsInt() : null))
+                        .ForMember(dest => dest.ReportedWreckConstructionDetails,
                     opt => opt.MapFrom(src =>
                         src.WreckConstructionDetails))
                 .ForMember(dest => dest.ReportedWreckYearConstructed,
-                    opt => opt.MapFrom(src =>
-                        src.VesselYearConstructed))
+                    opt => opt.MapFrom(src => src.VesselYearConstructed!= null ? src.VesselYearConstructed.AsInt() : null))
 
                 .ForMember(dest => dest.RecoveredFromLegacy,
                     opt => opt.MapFrom(src =>
@@ -117,9 +116,8 @@ namespace Droits.Data.Mappers.Powerapps
                 .ForMember(dest => dest.LegacyRemarks,
                     opt => opt.MapFrom(src =>
                         StringHelper.JoinWithSeparator(" | ",src.RemarksLegacy1, src.RemarksLegacy2)))
-            
-                
-                
+                .ForMember(dest => dest.LastModifiedByUserId, opt => opt.MapFrom(src => default(Guid?)))
+
                 //Need to match up wreck from WreckValue (Powerapps Id)
                 .ForMember(dest => dest.Wreck, opt => opt.Ignore())
                 .ForMember(dest => dest.WreckMaterials, opt => opt.Ignore());

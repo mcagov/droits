@@ -20,6 +20,8 @@ public interface IDroitFileRepository
     Task UploadDroitFileAsync(DroitFile droitFile, IFormFile droitFileUpload);
     Task<Stream> GetDroitFileStreamAsync(string? key);
     Task DeleteDroitFilesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> droitFilesToKeep);
+    Task DeleteDroitFilesForNoteAsync(Guid noteId, IEnumerable<Guid> droitFilesToKeep);
+
 }
 
 public class DroitFileRepository : BaseEntityRepository<DroitFile>, IDroitFileRepository
@@ -53,15 +55,22 @@ public class DroitFileRepository : BaseEntityRepository<DroitFile>, IDroitFileRe
         {
             throw new FileNotFoundException();
         }
-        
-        
-        if ( droitFile.WreckMaterial == null )
+
+
+        if ( droitFile.WreckMaterial == null && droitFile.NoteId == null )
         {
-            throw new WreckMaterialNotFoundException();
+            if ( droitFile.WreckMaterial == null )
+            {
+                throw new WreckMaterialNotFoundException();
+            }
+
+            if ( droitFile.Note == null )
+            {
+                throw new NoteNotFoundException();
+            }
         }
-        
-        
-        var key = $"Droits/{droitFile.WreckMaterial.DroitId}/WreckMaterials/{droitFile.WreckMaterialId}/DroitFiles/{droitFile.Id}_{droitFileUpload.FileName}";
+
+        var key = FileHelper.GetFileKey(droitFile,droitFileUpload.FileName);
         
         try
         {
@@ -78,25 +87,36 @@ public class DroitFileRepository : BaseEntityRepository<DroitFile>, IDroitFileRe
             _logger.LogError($"DroitFile {droitFile.Id} could not be saved - {e.Message} ");
         }
     }
+    
 
 
     public async Task<Stream> GetDroitFileStreamAsync(string? key) => await _storageClient.GetFileAsync(key);
     
     public async Task DeleteDroitFilesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> droitFilesToKeep)
     {
-        var droitFilesToDelete = await GetDroitFilesToDeleteAsync(wmId, droitFilesToKeep);
+        var droitFilesToDelete = await Context.DroitFiles
+            .Where(droitFile => droitFile.WreckMaterialId == wmId && !droitFilesToKeep.Contains(droitFile.Id))
+            .ToListAsync();
     
+        await DeleteDroitFiles(droitFilesToDelete);
+    }
+    public async Task DeleteDroitFilesForNoteAsync(Guid noteId, IEnumerable<Guid> droitFilesToKeep)
+    {
+        var droitFilesToDelete = await Context.DroitFiles
+            .Where(droitFile => droitFile.NoteId == noteId && !droitFilesToKeep.Contains(droitFile.Id))
+            .ToListAsync();
+
+        await DeleteDroitFiles(droitFilesToDelete);
+    }
+
+
+    private async Task DeleteDroitFiles(List<DroitFile> droitFilesToDelete)
+    {
         await RemoveDroitFilesFromDatabaseAsync(droitFilesToDelete);
-    
+
         await DeleteDroitFilesFromStorageAsync(droitFilesToDelete);
     }
 
-    private async Task<List<DroitFile>> GetDroitFilesToDeleteAsync(Guid wmId, IEnumerable<Guid> droitFilesToKeep)
-    {
-        return await Context.DroitFiles
-            .Where(droitFile => droitFile.WreckMaterialId == wmId && !droitFilesToKeep.Contains(droitFile.Id))
-            .ToListAsync();
-    }
 
     private async Task RemoveDroitFilesFromDatabaseAsync(IEnumerable<DroitFile> droitFilesToDelete)
     {

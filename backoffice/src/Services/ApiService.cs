@@ -5,7 +5,7 @@ using Droits.Models.DTOs;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Models.DTOs.Webapp;
 using Droits.Models.Entities;
-using Droits.Models.Enums;
+
 
 namespace Droits.Services;
 
@@ -21,6 +21,10 @@ public interface IApiService
     Task<SalvorInfoDto> GetSalvorInfoAsync(string salvorEmail);
     Task<SalvorInfoReportDto> GetReportByIdAsync(Guid droitId);
     Task<WreckMaterial> GetWreckMaterialAsync(Guid wmId);
+    Task<Wreck> MigrateWreckAsync(PowerappsWreckDto request);
+    Task<Note> MigrateNoteAsync(PowerappsNoteDto request);
+
+
 }
 
 public class ApiService : IApiService
@@ -85,28 +89,118 @@ public class ApiService : IApiService
         
         foreach ( var powerappsWreckDto in wrecksRequest.Value )
         {
-            var wreck = _mapper.Map<Wreck>(powerappsWreckDto);
 
             try
             {
-                if ( string.IsNullOrEmpty(wreck.Name) )
-                {
-                    continue;
-                }
-                wreck = await _wreckService.SaveWreckAsync(wreck);
-
+              
+                var wreck = await MigrateWreckAsync(powerappsWreckDto);
                 wrecks.Add(wreck);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Unable to save wreck - {wreck.PowerappsWreckId} {wreck.Name} - {ex}");
+                _logger.LogError($"Unable to save wreck - {powerappsWreckDto.Mcawrecksid} {powerappsWreckDto.Name} - {ex}");
             }
             
         }
 
         return wrecks;
     }
+    
+    public async Task<Wreck> MigrateWreckAsync(PowerappsWreckDto wreckRequest)
+    {
+        if ( wreckRequest == null )
+        {
+            _logger.LogError("Request is null");
+            throw new WreckNotFoundException();
+        }
 
+
+        var wreck = _mapper.Map<Wreck>(wreckRequest);
+
+        try
+        {
+            if ( string.IsNullOrEmpty(wreck.Name) )
+            {
+                _logger.LogError("Name is null");
+                throw new WreckNotFoundException();
+            }
+            wreck = await _wreckService.SaveWreckAsync(wreck);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Unable to save wreck - {wreck.PowerappsWreckId} {wreck.Name} - {ex}");
+        }
+            
+
+        return wreck;
+    }
+
+    public async Task<Note> MigrateNoteAsync(PowerappsNoteDto noteRequest)
+    {
+        if ( noteRequest == null )
+        {
+            _logger.LogError("Request is null");
+            throw new WreckNotFoundException();
+        }
+        
+        var note = _mapper.Map<Note>(noteRequest);
+        
+        if ( string.IsNullOrEmpty(noteRequest.LinkedEntityPowerappsId) )
+        {
+            throw new Exception(
+                $"No linked entity id for note - {noteRequest.PowerappsAnnotationId}");
+        }
+        switch (noteRequest.LinkedEntityType)
+        {
+            case "crf99_mcawreckreport":
+                note.DroitId = (await _droitService.GetDroitByPowerappsIdAsync(noteRequest.LinkedEntityPowerappsId)).Id;
+                break;
+
+            case "crf99_mcawreckmaterial":
+                var wreckMaterial =
+                    await _wreckMaterialService.GetWreckMaterialByPowerappsIdAsync(noteRequest
+                        .LinkedEntityPowerappsId);
+
+                note.Text = $"{note.Text} - For Wreck Material {wreckMaterial.Name}";
+                
+                note.DroitId = wreckMaterial.DroitId;
+                break;
+
+            case "crf99_mcawrecks":
+                note.WreckId = (await _wreckService.GetWreckByPowerappsIdAsync(noteRequest.LinkedEntityPowerappsId)).Id;
+                break;
+
+            case "contact":
+                note.SalvorId = (await _salvorService.GetSalvorByPowerappsIdAsync(noteRequest.LinkedEntityPowerappsId)).Id;
+                break;
+
+            default:
+                throw new Exception($"Note for type {noteRequest.LinkedEntityType} found - {noteRequest.PowerappsAnnotationId}");
+        }
+        
+        
+        
+        try
+        {
+            note = await _noteService.SaveNoteAsync(note);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Unable to save note - {noteRequest.PowerappsAnnotationId} {note.Title} - {ex}");
+        }
+            
+
+        // Add file to note.. 
+        
+        if (!string.IsNullOrEmpty(noteRequest.DocumentBody) )
+        {
+            var file = await _fileService.AddFileToNoteAsync(note, noteRequest);
+        }
+        
+        return note;
+    }
+
+    
     public async Task<List<Droit>> MigrateDroitsAsync(PowerappsDroitReportsDto droitsRequest)
     {
         if ( droitsRequest == null )
@@ -151,7 +245,7 @@ public class ApiService : IApiService
         }
         
         var droit = _mapper.Map<Droit>(droitRequest);
-
+        
         try
         {
             if ( string.IsNullOrEmpty(droit.Reference) )

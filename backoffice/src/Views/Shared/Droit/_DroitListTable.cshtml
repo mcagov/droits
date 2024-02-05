@@ -11,6 +11,8 @@
             {
                 <th scope="col">Salvor</th>
                 <th scope="col">Wreck</th>
+                <th scope="col">Items</th>
+
             }
             <th scope="col">Created</th>
             <th scope="col">Actions</th>
@@ -52,6 +54,9 @@
                                 <span>No Wreck</span>
                             }
                         }
+                    </td>
+                    <td class="p-3">
+                        <span>@droit?.WreckMaterials.Count</span>
                     </td>
                 }
                 <td class="p-3">@droit?.Created.ToString("dd/MM/yyyy")</td>

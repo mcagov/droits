@@ -172,33 +172,40 @@
 </div>
 
 <div class="tab-pane fade" id="wreck" role="tabpanel" aria-labelledby="wreck-tab">
-    @if (Model.Wreck != null)
-    {
-        <div class="row">
-            <div class="row">
-                <partial name="Wreck/_WreckViewFields" for="Wreck"/>
-               
-                @if (Model.Wreck.Latitude != null   && Model.Wreck.Longitude != null)
-                {
-                    <div class="row mt-3">
-                        <iframe src="https://maps.google.com/maps?q=@Model.Wreck?.Latitude,@Model.Wreck?.Longitude&amp;output=embed"></iframe>
+    <div class="row">
+        <div class="col-md-6">
+            @if (Model.Wreck != null)
+            {
+                    <div class="row">
+                        <partial name="Wreck/_WreckViewFields" for="Wreck"/>
+                       
+                        @if (Model.Wreck.Latitude != null   && Model.Wreck.Longitude != null)
+                        {
+                            <div class="row mt-3">
+                                <iframe src="https://maps.google.com/maps?q=@Model.Wreck?.Latitude,@Model.Wreck?.Longitude&amp;output=embed"></iframe>
+                            </div>
+                        }
+                        <div class="col d-flex flex-row mt-4 justify-content-end">
+                                <a type="button" class="btn btn-primary" target="_blank" asp-action="View" asp-controller="Wreck" asp-route-id="@Model.Wreck?.Id">View Wreck</a>
+                        </div>
                     </div>
-                }
-                <div class="col d-flex flex-row mt-4 justify-content-end">
-                        <a type="button" class="btn btn-primary" target="_blank" asp-action="View" asp-controller="Wreck" asp-route-id="@Model.Wreck?.Id">View Wreck</a>
-                </div>
-            </div>
-            
-            <div class="row">
-                <h5>Wreck Notes</h5>
-                <partial name="_NoteListTable" model="@Model.Wreck?.Notes" />
-            </div>
+                    
+                    <div class="row">
+                        <h5>Wreck Notes</h5>
+                        <partial name="_NoteListTable" model="@Model.Wreck?.Notes" />
+                    </div>
+            }
+            else
+            {
+                <h5 class="text-center">No Associated Verified Wreck</h5>
+            }
+    </div>
+    <div class="col-md-6">
+        <div class="sticky-content pt-2">
+            <partial name="Wreck/_ReportedWreckInfo" model="@Model.ReportedWreckInfo"/>
         </div>
-    }
-    else
-    {
-        <h5 class="text-center">No Associated Wreck</h5>
-    }
+    </div>
+    </div>
 </div>
 
 

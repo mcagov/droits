@@ -8,7 +8,7 @@ namespace Droits.Services;
 
 public interface IAccountService
 {
-    Guid GetCurrentUserId();
+    Guid? GetCurrentUserId();
 }
 
 public class AccountService : IAccountService
@@ -20,7 +20,7 @@ public class AccountService : IAccountService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public Guid GetCurrentUserId()
+    public Guid? GetCurrentUserId()
     {
         var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier);
         if (userIdClaim != null && Guid.TryParse(userIdClaim.Value, out var userId))
@@ -28,6 +28,6 @@ public class AccountService : IAccountService
             return userId;
         }
 
-        return Guid.Empty;
+        return null;
     }
 }

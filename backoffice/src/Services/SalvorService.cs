@@ -32,6 +32,7 @@ public interface ISalvorService
     Task<Salvor> GetOrCreateAsync(Salvor salvor);
     Task<byte[]> ExportAsync(SalvorSearchForm form);
     Task<Salvor> GetSalvorByEmailAsync(string salvorEmail);
+    Task<Salvor> GetSalvorByPowerappsIdAsync(string powerappsId);
 }
 
 public class SalvorService : ISalvorService
@@ -195,4 +196,7 @@ public class SalvorService : ISalvorService
 
         return await ExportHelper.ExportRecordsAsync(salvorsData);
     }
+    
+    public async Task<Salvor> GetSalvorByPowerappsIdAsync(string powerappsId) =>
+        await _repo.GetSalvorByPowerappsIdAsync(powerappsId);
 }

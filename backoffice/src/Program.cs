@@ -73,7 +73,8 @@ var databaseOptions = builder.Configuration.GetSection("Database").Get<DatabaseO
 
 builder.Services.AddDbContext<DroitsContext>(opt =>
 {
-    if (builder.Environment.IsDevelopment())
+    var useInMemoryDb = false; //builder.Environment.IsDevelopment()
+    if (useInMemoryDb)
     {
         opt.UseInMemoryDatabase(databaseOptions?.Database ?? "Droits");
     }
@@ -128,7 +129,7 @@ builder.Services.AddScoped<IDroitFileRepository, DroitFileRepository>();
 builder.Services.AddScoped<IDroitFileService, DroitFileService>();
 
 // Mappers
-builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile), typeof(PowerAppsDroitReportMappingProfile), typeof(PowerAppsWreckMaterialMappingProfile), typeof(WebappSalvorInfoMappingProfile), typeof(WebappSalvorInfoDroitMappingProfile),typeof(WebappSalvorInfoWreckMaterialMappingProfile));
+builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile), typeof(PowerAppsDroitReportMappingProfile), typeof(PowerAppsWreckMaterialMappingProfile), typeof(PowerAppsNoteMappingProfile), typeof(WebappSalvorInfoMappingProfile), typeof(WebappSalvorInfoDroitMappingProfile),typeof(WebappSalvorInfoWreckMaterialMappingProfile));
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();
@@ -182,7 +183,8 @@ if (!app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<DroitsContext>();
-    DatabaseSeeder.SeedData(dbContext);
+    dbContext.Database.EnsureCreated();
+    // DatabaseSeeder.SeedData(dbContext);
 }
 
 // Middleware Pipeline

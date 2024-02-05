@@ -17,6 +17,8 @@ public interface IImageService
     Task<Image> SaveImageAsync(Image image);
     Task<Image> SaveImageFormAsync(ImageForm imageForm);
     Task<Stream> GetImageStreamAsync(string? key);
+    Task<Stream> GetAzureImageStreamAsync(string url);
+
     Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep);
     Task AddImageByUrlToWreckMaterial(Guid wreckMaterialId, string? imageUrl);
 
@@ -99,7 +101,7 @@ public class ImageService : IImageService
     public async Task<Stream> GetImageStreamAsync(string? key) =>  await _repo.GetImageStreamAsync(key);
     
     
-    private async Task<Stream> GetAzureImageStreamAsync(string url) =>  await _azureClient.GetAzureImageStreamAsync(url);
+    public async Task<Stream> GetAzureImageStreamAsync(string url) =>  await _azureClient.GetAzureImageStreamAsync(url);
 
     public async Task DeleteImagesForWreckMaterialAsync(Guid wmId, IEnumerable<Guid> imagesToKeep)
     {
@@ -116,12 +118,11 @@ public class ImageService : IImageService
 
         _logger.LogDebug($"Uploading image with URL: {imageUrl}");
 
-        imageUrl = imageUrl.ToLower();
         try
         {
             Stream imageStream;
 
-            if (imageUrl.Contains(".blob.core.windows.net/report-uploads"))
+            if (imageUrl.ToLower().Contains(".blob.core.windows.net/report-uploads"))
             {
                 imageStream = await GetAzureImageStreamAsync(imageUrl);
             }
@@ -140,8 +141,10 @@ public class ImageService : IImageService
                 throw new ImageNotFoundException($"Image stream is null or empty {imageUrl}");
             }
             
+            var uri = new Uri(imageUrl);
+            var fileName = Uri.UnescapeDataString(uri.Segments[2]);
             
-            IFormFile formFile = new FormFile(ms, 0, ms.Length, imageUrl, imageUrl);
+            IFormFile formFile = new FormFile(ms, 0, ms.Length, imageUrl, fileName);
 
             var imageForm = new ImageForm()
             {

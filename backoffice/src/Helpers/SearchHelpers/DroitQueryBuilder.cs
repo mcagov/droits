@@ -12,7 +12,7 @@ public static class DroitQueryBuilder
     
     private const int MaxLevenshteinDistance = 5;
     
-    public static IQueryable<Droit> BuildQuery(DroitSearchForm form, IQueryable<Droit> query,  bool usePsql = false) // change to true when using real db
+    public static IQueryable<Droit> BuildQuery(DroitSearchForm form, IQueryable<Droit> query,  bool usePsql = true)
     {
             
             if (!string.IsNullOrEmpty(form.Reference))
@@ -178,22 +178,22 @@ public static class DroitQueryBuilder
                         ( wm.Description.ToLower().Contains(form.WreckMaterial.ToLower()) ||
                           ( usePsql
                               ? EF.Functions.FuzzyStringMatchLevenshtein(
-                                  form.WreckMaterial.ToLower(), wm.Description.ToLower())
+                                  form.WreckMaterial.ToLower(), wm.Description.Substring(0,Math.Min(255, wm.Description.Length)).ToLower())
                               : SearchHelper.GetLevenshteinDistance(form.WreckMaterial.ToLower(),
                                   wm.Description.ToLower()) ) < MaxLevenshteinDistance )
                         ))
                 &&
                         (string.IsNullOrEmpty(form.WreckMaterialOwner) ||
-                        (!string.IsNullOrEmpty(wm.WreckMaterialOwnerContactDetails) &&
-                        ( wm.WreckMaterialOwnerContactDetails.ToLower()
+                        (!string.IsNullOrEmpty(wm.WreckMaterialOwner) &&
+                        ( wm.WreckMaterialOwner.ToLower()
                               .Contains(form.WreckMaterialOwner.ToLower()) ||
                           ( usePsql
                               ? EF.Functions.FuzzyStringMatchLevenshtein(
                                   form.WreckMaterialOwner.ToLower(),
-                                  wm.WreckMaterialOwnerContactDetails.ToLower())
+                                  wm.WreckMaterialOwner.Substring(0,Math.Min(255, wm.WreckMaterialOwner.Length)).ToLower())
                               : SearchHelper.GetLevenshteinDistance(
                                   form.WreckMaterialOwner.ToLower(),
-                                  wm.WreckMaterialOwnerContactDetails.ToLower()) ) < MaxLevenshteinDistance ))
+                                  wm.WreckMaterialOwner.ToLower()) ) < MaxLevenshteinDistance ))
                     ) &&
                     
                         (form.ValueConfirmed == null || wm.ValueConfirmed == form.ValueConfirmed)
@@ -224,7 +224,7 @@ public static class DroitQueryBuilder
                     d.ServicesDescription != null && 
                     !string.IsNullOrEmpty(d.ServicesDescription) &&
                      (d.ServicesDescription.ToLower().Contains(form.ServicesDescription.ToLower()) || 
-                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.ServicesDescription.ToLower(), d.ServicesDescription.ToLower()) :
+                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.ServicesDescription.ToLower(), d.ServicesDescription.Substring(0,Math.Min(255, d.ServicesDescription.Length)).ToLower()) :
                          SearchHelper.GetLevenshteinDistance(form.ServicesDescription.ToLower(), d.ServicesDescription.ToLower())) < MaxLevenshteinDistance )
                 );
             }
@@ -235,7 +235,7 @@ public static class DroitQueryBuilder
                     d.ServicesDuration != null && 
                     !string.IsNullOrEmpty(d.ServicesDuration) &&
                      (d.ServicesDuration.ToLower().Contains(form.ServicesDuration.ToLower()) ||
-                      (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.ServicesDuration.ToLower(), d.ServicesDuration.ToLower()) :
+                      (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.ServicesDuration.ToLower(), d.ServicesDuration.Substring(0,Math.Min(255, d.ServicesDuration.Length)).ToLower()) :
                           SearchHelper.GetLevenshteinDistance(form.ServicesDuration.ToLower(), d.ServicesDuration.ToLower())) < MaxLevenshteinDistance)
                 );
             }

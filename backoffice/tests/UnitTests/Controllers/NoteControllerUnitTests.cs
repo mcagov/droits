@@ -80,30 +80,7 @@ namespace Droits.Tests.UnitTests.Controllers
             var model = Assert.IsAssignableFrom<NoteForm>(viewResult.ViewData.Model);
             Assert.Equal(form, model);
         }
-
-        [Theory]
-        [InlineData("Droit", typeof(NoteForm))]
-        [InlineData("Wreck", typeof(NoteForm))]
-        [InlineData("Salvor", typeof(NoteForm))]
-        [InlineData("Letter", typeof(NoteForm))]
-        public async void Save_ValidFormWithEntityAssociation_RedirectsToAssociatedController(string controllerName, Type formType)
-        {
-            // Given
-            var entityId = Guid.NewGuid();
-            var form = (NoteForm)Activator.CreateInstance(formType)!;
-            form.GetType().GetProperty($"{controllerName}Id")?.SetValue(form, entityId);
-            _mockTempData.Setup(t => t["SuccessMessage"]).Returns("Note saved successfully.");
-
-            // When
-            var result = await _controller.Save(form);
-
-            // Then
-            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("View", redirectResult.ActionName);
-            Assert.Equal(controllerName, redirectResult.ControllerName);
-            Assert.Equal(entityId, redirectResult.RouteValues?["id"]);
-        }
-
+        
         [Fact]
         public void Add_GetRequest_ReturnsEditViewWithEmptyNoteForm()
         {

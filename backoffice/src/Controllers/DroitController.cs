@@ -158,7 +158,6 @@ public class DroitController : BaseController
         
         wmForms
             .SelectMany((wmForm, i) => wmForm.DroitFileForms.Select((fileForm, j) => new { WmFormIndex = i, FileForm = fileForm, FileIndex = j }))
-            // .Where(item => item.FileForm.Id != default)
             .ToList()
             .ForEach(item =>
                 ModelState.RemoveStartingWith($"WreckMaterialForms[{item.WmFormIndex}].DroitFileForms"));

@@ -25,9 +25,7 @@ public static class DatabaseSeeder
     public static void SeedData(DroitsContext dbContext)
     {
         dbContext.Database.EnsureCreated();
-
-        // if ( false )
-        // {
+        
             if ( !dbContext.Users.Any() )
             {
                 dbContext.Users.AddRange(GetUsers());
@@ -83,10 +81,6 @@ public static class DatabaseSeeder
                 dbContext.Images.AddRange(GetImages());
                 dbContext.SaveChanges();
             }
-
-
-        // }
-
     }
 
 
