@@ -225,7 +225,7 @@ public class ApiController : Controller
     
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> Test(string email)
+    public async Task<IActionResult> Salvor(string email)
     {
 
         var salvorInfo = await _service.GetSalvorInfoAsync(email);

@@ -10,18 +10,12 @@ import res from "express/lib/response";
 import req from "express/lib/request";
 require("dotenv-json")();
 
-const url = "http://localhost:5000/api/test"
+const url = "http://localhost:5000/api/salvor"
 
 export default function (app) {
   app
-    // .get('/portal/dashboard', ensureAuthenticated, function (req, res) {
-        .get('/portal/dashboard', function (req, res) {
-
-      // const currentUserEmail = req.user.emails[0];
-      const currentUserEmail = "test@email.com";
-          
-      // let accessToken = req.session.data.token;
-      // let currentUserID;
+    .get('/portal/dashboard', ensureAuthenticated, function (req, res) {
+      const currentUserEmail = req.user.emails[0];
       let userReports = [];
 
         fetchSalvorInfo(url, currentUserEmail, userReports, res).then(
@@ -38,7 +32,7 @@ export default function (app) {
           console.log("Sending Request");
 
 const fetchSalvorInfo = (url, currentUserEmail, userReports, res) => {
-  url = `${url}?email=${currentUserEmail}`;
+  url = `${url}?email=${encodeURIComponent(currentUserEmail)}`;
   return new Promise((resolve, reject) => {
     axios
         .get(url)

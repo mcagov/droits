@@ -373,23 +373,10 @@ public class ApiService : IApiService
 
     public async Task<SalvorInfoDto> GetSalvorInfoAsync(string salvorEmail)
     {
-        var salvors = await _salvorService.GetSalvorsAsync();
-
-        var salvor = salvors.First();
         try
         {
-            var foundSalvor = await _salvorService.GetSalvorByEmailAsync(salvor.Email);
+            var foundSalvor = await _salvorService.GetSalvorByEmailAsync(salvorEmail);
             var salvorInfo = _mapper.Map<SalvorInfoDto>(foundSalvor);
-
-            // var reports = new List<SalvorInfoReportDto>();
-            //
-            // foreach ( var droit in salvor.Droits )
-            // {
-            //     var salvorInfoDroit = _mapper.Map<SalvorInfoReportDto>(droit);
-            //     reports.Add(salvorInfoDroit);
-            // }
-            //
-            // salvorInfo.Reports = reports.ToArray();
 
             return salvorInfo;
 
