@@ -67,12 +67,12 @@
             </div>
         </div>
     </div>
-    
+
     <div class="form-floating mb-3 triage-numbers-select">
-        <select class="form-control js-search-droit-triage-numbers" id="TriageNumberList" multiple="multiple" name="TriageNumberList" placeholder="">
+        <select class="form-control js-search-droit-triage-numbers" id="TriageNumbers" multiple="multiple" name="TriageNumbers" placeholder="">
             @foreach (var o in Model.TriageNumberList)
             {
-                if (@Model.SelectedTriageNumbers.Contains(o))
+                if (@Model.TriageNumbers.Contains(o))
                 {
                     <option value="@o" selected="selected">@o</option>
                 }

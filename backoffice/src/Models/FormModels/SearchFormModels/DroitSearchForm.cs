@@ -48,12 +48,10 @@ public class DroitSearchForm : SearchForm
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime? LastModifiedTo { get; set; }
 
-    public List<int> TriageNumberList = new() { 1, 2, 3, 4, 5 };
+    public List<int> TriageNumberList = new() { 1, 2, 3, 4, 5 }; // could have
 
-    public List<int> TriageNumbers { get; set; } = new();
-    
-    public List<int> SelectedTriageNumbers { get; set; } = new();
-    
+    public List<int> TriageNumbers { get; set; } = new(); //posted back
+        
     public List<DroitStatus> StatusList { get; set; } = new();
     public List<int> SelectedStatusList => StatusList.Select(s => ( int )s).ToList();
 
