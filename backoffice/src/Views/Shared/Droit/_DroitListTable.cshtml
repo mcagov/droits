@@ -6,6 +6,7 @@
         <tr>
             <th scope="col">Reference</th>
             <th scope="col">Assigned To</th>
+            <th scope="col" style="white-space: nowrap; text-align: left;">Triage</th>
             <th scope="col">Status</th>
             @if (Model.IncludeAssociations)
             {
@@ -27,6 +28,9 @@
                 </td>
                 <td class="p-3 text-uppercase">
                     @droit.AssignedUser
+                </td>
+                <td class="p-3 text-uppercase" style="text-align: left">
+                    @droit.TriageNumber
                 </td>
                 <td class="p-3">@Html.DisplayFor(m => droit.Status)</td>
                 @if (Model.IncludeAssociations)
