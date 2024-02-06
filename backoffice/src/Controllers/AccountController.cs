@@ -1,5 +1,6 @@
 #region
 
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Services;
@@ -28,13 +29,20 @@ public class AccountController : BaseController
     }
 
     
-    public async Task<IActionResult> Index(SearchOptions searchOptions)
+    public async Task<IActionResult> Index(DashboardView model)
     {
+        var searchOptions = model.DashboardSearchForm;
+        
         searchOptions.IncludeAssociations = true;
         searchOptions.FilterByAssignedUser = true;
-        
+
+
+        searchOptions.PageNumber = searchOptions.DroitsPageNumber;
         var droits = await _droitService.GetDroitsListViewAsync(searchOptions);
+        
+        searchOptions.PageNumber = searchOptions.LettersPageNumber;
         var letters = await _letterService.GetApprovedUnsentLettersListViewForCurrentUserAsync(searchOptions);
+        
         return View(new DashboardView(droits,letters));
     }
 

@@ -19,8 +19,14 @@
             <h3 class="display-4 text-center">@ViewData["Title"]</h3>
         </div>
     </div>
-    
-    
+    <form class="form-horizontal" asp-action="Index" enctype="multipart/form-data" method="POST">
+
+        <div class="js-dashboard-search d-none">
+            @Html.EditorFor(f => f.DashboardSearchForm.DroitsPageNumber, new { htmlAttributes = new { @class = "js-droit-page-number-field"} })
+            @Html.EditorFor(f => f.DashboardSearchForm.LettersPageNumber, new { htmlAttributes = new { @class = "js-letter-page-number-field"} })
+            </div>
+    </form>
+   
     
     <div class="card">
         <div class="card-header">
@@ -30,7 +36,7 @@
             @if (Model.Droits.TotalCount > 0)
             {
                 <partial name="Droit/_DroitListTable" model="@Model.Droits"/>
-                <div class="mt-4">
+                <div class="mt-4 pagination-container" data-pagination-input-selector=".js-droit-page-number-field">
                     @await Html.PartialAsync("_PaginationPartial", Model.Droits)
                 </div>
             }
@@ -49,7 +55,7 @@
              @if (Model.Letters.TotalCount > 0)
              {
                  <partial name="_LetterListTable" model="@Model.Letters"/>
-                 <div class="mt-4">
+                 <div class="mt-4 pagination-container" data-pagination-input-selector=".js-letter-page-number-field">
                      @await Html.PartialAsync("_PaginationPartial", Model.Letters)
                  </div>
              }
