@@ -1,4 +1,5 @@
 import Choices from "choices.js";
+import {Input} from "postcss";
 
 function initializeSearchForm(formClass, toggleButtonClass) {
     const searchFormElements = document.querySelectorAll(formClass);
@@ -16,8 +17,17 @@ function initializeSearchForm(formClass, toggleButtonClass) {
     paginationButtons.forEach((button) => {
         button.addEventListener('click', function (ev) {
             ev.preventDefault();
+            
+            const paginationContainer = button.closest(".pagination-container");
+            
+            let inputSelector = ".js-page-number-field";
+            
+            if(paginationContainer) {
+                inputSelector = paginationContainer.getAttribute("data-pagination-input-selector") || ".js-page-number-field";
+            }
 
-            const pageNumberField = document.querySelector(".js-page-number-field");
+            const pageNumberField = document.querySelector(inputSelector);
+            
             pageNumberField.value = button.getAttribute("data-page-number");
 
             pageNumberField.closest("form").submit();
@@ -56,4 +66,7 @@ export function initializeSearchForms() {
     initializeSearchForm('.js-salvor-search', '.js-toggle-salvor-search');
     initializeSearchForm('.js-wreck-search', '.js-toggle-wreck-search');
     initializeSearchForm('.js-letter-search', '.js-toggle-letter-search');
+    
+    initializeSearchForm('.js-dashboard-search', null);
+
 }
