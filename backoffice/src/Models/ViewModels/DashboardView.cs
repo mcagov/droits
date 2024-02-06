@@ -1,5 +1,6 @@
 #region
 
+using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels.ListViews;
 
 #endregion
@@ -12,6 +13,7 @@ public class DashboardView
     {
         Droits = new DroitListView();
         Letters = new LetterListView();
+        DashboardSearchForm = new DashboardSearchForm();
     }
 
 
@@ -19,8 +21,14 @@ public class DashboardView
     {
         Droits = droits;
         Letters = letters;
+        DashboardSearchForm = new DashboardSearchForm()
+        {
+            DroitsPageNumber = droits.PageNumber,
+            LettersPageNumber = letters.PageNumber
+        };
     }
     
     public DroitListView Droits { get; set; }
     public LetterListView Letters { get; set; }
+    public DashboardSearchForm DashboardSearchForm { get; set; }
 }

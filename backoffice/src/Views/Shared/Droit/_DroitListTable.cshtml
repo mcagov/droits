@@ -11,9 +11,12 @@
             {
                 <th scope="col">Salvor</th>
                 <th scope="col">Wreck</th>
+            }    
+            <th scope="col">Triage</th>
+            @if (Model.IncludeAssociations)
+            {
                 <th scope="col">Items</th>
-
-            }
+            }   
             <th scope="col">Created</th>
             <th scope="col">Actions</th>
         </tr>
@@ -54,6 +57,9 @@
                                 <span>No Wreck</span>
                             }
                         }
+                    </td>
+                    <td class="p-3 text-uppercase">
+                        <span class="badge rounded-pill bg-primary">@droit.TriageNumber</span>
                     </td>
                     <td class="p-3">
                         <span>@droit?.WreckMaterials.Count</span>
