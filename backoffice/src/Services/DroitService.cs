@@ -64,8 +64,10 @@ public class DroitService : IDroitService
     public async Task<string> GetNextDroitReference()
     {
         var yearCount = await _repo.GetYearDroitCount();
-
-        return $"{( yearCount + 1 ):D3}/{DateTime.UtcNow:yy}";
+        var currentYear = DateTime.UtcNow.Year;
+        var referenceEnding = $"/{currentYear.ToString().Substring(2)}";
+        var nextReferenceNumber = (yearCount + 1).ToString().PadLeft(3, '0');
+        return $"{nextReferenceNumber}{referenceEnding}";
     }
 
 

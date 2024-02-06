@@ -53,6 +53,14 @@ public class DroitController : BaseController
 
 
     [HttpGet]
+    public async Task<IActionResult> NextReference()
+    {
+        var reference = await _service.GetNextDroitReference();
+        return Json(reference);
+    }
+
+    
+    [HttpGet]
     public async Task<IActionResult> View(Guid id)
     {
         Droit droit;
