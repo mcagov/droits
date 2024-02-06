@@ -10,8 +10,7 @@ import res from "express/lib/response";
 import req from "express/lib/request";
 require("dotenv-json")();
 
-const url = "http://localhost:5000/api/salvor"
-
+const url = `${process.env.API_ENDPOINT}/api/salvor`
 export default function (app) {
   app
     .get('/portal/dashboard', ensureAuthenticated, function (req, res) {
@@ -24,36 +23,24 @@ export default function (app) {
       .then(() => {
         return res.render('portal/dashboard', { userReports: userReports });
       })
-      // .catch((error) => {
-      //   // Handle the error here
-      //   console.error('An error occurred:', error);
+    });
 
-      //            //   req.logOut();
-      //           //   return res.redirect('/account-error');
-
-      //           return res.status(500).json({
-      //             status: 500,
-      //             message: 'An error occurred while fetching Salvor information. Please try again later.',
-      //             error: error.message // Optionally include the error message
-      //         });
-
-
-      //   // Render an error page or do something else as needed
-      //   // return res.render('error', { errorMessage: 'An error occurred. Please try again later.' });
-      // });
-      });
-
-
-          console.log("Sending Request");
 
 const fetchSalvorInfo = (url, currentUserEmail, userReports, res, req) => {
   url = `${url}?email=${encodeURIComponent(currentUserEmail)}`;
   return new Promise((resolve, reject) => {
     axios
-        .get(url)
+        .get(url, {
+            headers: {
+              'X-API-Key': process.env.API_KEY
+            }
+        })
         .then((res) => {
+          
+          console.dir(res);
           const reportData = res.data.reports;
           const session = req.session.data;
+          session.userId = res.data.id || "";
           session.userName = res.data.name || "";
           session.userEmail = res.data.email || "";
 

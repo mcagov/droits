@@ -13,6 +13,7 @@ namespace Droits.Data.Mappers
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Reference,
                     opt => opt.MapFrom(src => src.Reference.ToString()))
+                .ForMember(dest => dest.SalvorId, opt => opt.MapFrom(src => src.SalvorId.ToString()))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
                 .ForMember(dest => dest.RecoveredFrom,
                     opt => opt.MapFrom(src => src.RecoveredFrom.ToString()))

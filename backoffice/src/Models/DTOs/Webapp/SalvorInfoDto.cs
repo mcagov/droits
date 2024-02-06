@@ -45,6 +45,9 @@ public class SalvorInfoReportDto
 {
     [JsonPropertyName("id")]
     public string? Id { get; set; }
+    
+    [JsonPropertyName("salvorId")]
+    public string? SalvorId { get; set; }
 
     [JsonPropertyName("reference")]
     public string? Reference { get; set; }

@@ -15,7 +15,6 @@ public interface IApiService
     Task<Droit> SaveDroitReportAsync(SubmittedReportDto report);
     Task<SalvorInfoDto> GetSalvorInfoAsync(string salvorEmail);
     Task<SalvorInfoReportDto> GetReportByIdAsync(Guid droitId);
-    Task<WreckMaterial> GetWreckMaterialAsync(Guid wmId);
 }
 
 public class ApiService : IApiService
@@ -396,4 +395,5 @@ public class ApiService : IApiService
 
         return wm;
     }
+    
 }

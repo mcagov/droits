@@ -1,4 +1,4 @@
-﻿using Droits.Models.DTOs;
+﻿using Droits.Helpers;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -10,11 +10,14 @@ public class MigrationController : Controller
     private readonly ILogger<MigrationController> _logger;
 
     private readonly IMigrationService _service;
+    private readonly IConfiguration _configuration;
 
-    public MigrationController(ILogger<MigrationController> logger, IMigrationService migrationService)
+    public MigrationController(ILogger<MigrationController> logger, IMigrationService migrationService, IConfiguration configuration)
     {
         _logger = logger;
         _service = migrationService;
+        _configuration = configuration;
+
     }
 
     public IActionResult Index()
@@ -23,39 +26,15 @@ public class MigrationController : Controller
     }
     
     
-    [HttpPost]
-    [AllowAnonymous]
-    public async Task<IActionResult> MigrateWrecks([FromBody] PowerappsWrecksDto request)
-    {
-
-        try
-        {
-            var savedWrecks = await _service.MigrateWrecksAsync(request);
-
-            var wreckIdsList = savedWrecks.Select(w => new
-            {
-                w.Id,
-                w.PowerappsWreckId,
-                w.Name
-            }).ToList();
-
-            return Json(new
-            {
-                wrecks = wreckIdsList
-            });
-        }
-        catch ( Exception e )
-        {
-            _logger.LogError("Wrecks could not be saved" + e);
-            return NotFound();
-        }
-
-    }
     
     [HttpPost]
     [AllowAnonymous]
-    public async Task<IActionResult> MigrateWreck([FromBody] PowerappsWreckDto request)
+    public async Task<IActionResult> MigrateWreck([FromBody] PowerappsWreckDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
+        if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
+        {
+            return Unauthorized("Invalid API key");
+        }
 
         try
         {
@@ -81,8 +60,12 @@ public class MigrationController : Controller
 
     [HttpPost]
     [AllowAnonymous]
-    public async Task<IActionResult> MigrateNote([FromBody] PowerappsNoteDto request)
+    public async Task<IActionResult> MigrateNote([FromBody] PowerappsNoteDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
+        if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
+        {
+            return Unauthorized("Invalid API key");
+        }
 
         try
         {
@@ -108,40 +91,16 @@ public class MigrationController : Controller
 
     }
     
-    [HttpPost]
-    [AllowAnonymous]
-    public async Task<IActionResult> MigrateDroits([FromBody] PowerappsDroitReportsDto request)
-    {
-
-        try
-        {
-            var savedDroits = await _service.MigrateDroitsAsync(request);
-
-            var droitIdsList = savedDroits.Select(d => new
-            {
-                d.Id,
-                d.PowerappsDroitId,
-                d.PowerappsWreckId,
-                d.Reference
-            }).ToList();
-
-            return Json(new
-            {
-                droits = droitIdsList
-            });
-        }
-        catch ( Exception e )
-        {
-            _logger.LogError("Droits could not be saved" + e);
-            return NotFound();
-        }
-
-    }
     
     [HttpPost]
     [AllowAnonymous]
-    public async Task<IActionResult> MigrateDroit([FromBody] PowerappsDroitReportDto request)
+    public async Task<IActionResult> MigrateDroit([FromBody] PowerappsDroitReportDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
+
+        if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
+        {
+            return Unauthorized("Invalid API key");
+        }
 
         try
         {
@@ -170,8 +129,13 @@ public class MigrationController : Controller
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> MigrateWreckMaterial(
-        [FromBody] PowerappsWreckMaterialDto request)
+        [FromBody] PowerappsWreckMaterialDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
+
+        if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
+        {
+            return Unauthorized("Invalid API key");
+        }
 
         try
         {

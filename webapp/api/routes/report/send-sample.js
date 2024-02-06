@@ -54,10 +54,10 @@ export default function (app) {
 
     app.get('/report/send-sample', async function (req, res, next) {
         await axios.post(
-            process.env.API_POST_ENDPOINT,
+            `${process.env.API_ENDPOINT}/api/send`,
             sampleReport,
             {
-              headers: { 'content-type': 'application/json' },
+              headers: { 'content-type': 'application/json' , 'X-API-Key': 'xxx'}
             }
           ).then((response) => {
             return res.render('report/send-sample',{data: JSON.stringify(response.data)});

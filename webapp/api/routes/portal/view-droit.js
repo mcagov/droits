@@ -2,24 +2,30 @@ import axios from "axios";
 import {assignSalvorInfoReportStatus} from "../../../utilities/assignReportStatus";
 import dayjs from "dayjs";
 
-const apiEndpoint = "http://localhost:5000";
 export default function (app) {
   app.get('/portal/droit/:droitId', async function (req, res) {
     try {
+      const session = req.session.data;
+      
       const droitId = req.params.droitId;
-      const apiUrl = `${apiEndpoint}/api/droit/${droitId}`;
+      const salvorId = session.userId;
+      const apiUrl = `${process.env.API_ENDPOINT}/api/droit/${droitId}?salvorId=${salvorId}`;
       
       console.dir(req.session.data.email)
             console.dir(req.session.data.userEmail)
 
 
-      const response = await axios.get(apiUrl);
+      const response = await axios.get(apiUrl, {
+        headers: {
+          'X-API-Key': process.env.API_KEY
+        }
+      });
       const reportData = formatReportData(response.data);
 
       res.render("portal/droit",{ reportData: reportData });
     } catch (error) {
       console.error('Error:', error);
-      res.status(500).send('Internal Server Error');
+      res.render('portal/unauthorized', {error: error} )
     }
   });
 }
@@ -41,6 +47,6 @@ export const formatReportData = (data) => {
   reportItem['status-attr'] = reportStatus[1];
   reportItem['status-colour'] = reportStatus[2];
 
-  reportItem['base_image_url'] = `${apiEndpoint}/Image/DisplayImage`
+  reportItem['base_image_url'] = `${process.env.API_ENDPOINT}/Image/DisplayImage`
   return reportItem;
 };

@@ -8,11 +8,8 @@ namespace Droits.Services;
 
 public interface IMigrationService
 {
-    Task<List<Droit>> MigrateDroitsAsync(PowerappsDroitReportsDto request);
     Task<Droit> MigrateDroitAsync(PowerappsDroitReportDto request);
-
     Task<WreckMaterial> MigrateWreckMaterialAsync(PowerappsWreckMaterialDto wmRequest);
-    Task<List<Wreck>> MigrateWrecksAsync(PowerappsWrecksDto request);
     Task<Wreck> MigrateWreckAsync(PowerappsWreckDto request);
     Task<Note> MigrateNoteAsync(PowerappsNoteDto request);
 
@@ -47,38 +44,6 @@ public class MigrationService : IMigrationService
         _mapper = mapper;
     }
 
-
-    public async Task<List<Wreck>> MigrateWrecksAsync(PowerappsWrecksDto wrecksRequest)
-    {
-        if ( wrecksRequest == null )
-        {
-            _logger.LogError("Request is null");
-            throw new WreckNotFoundException();
-        }
-
-        var wrecks = new List<Wreck>();
-
-        if ( wrecksRequest.Value == null ) return wrecks;
-        
-        foreach ( var powerappsWreckDto in wrecksRequest.Value )
-        {
-
-            try
-            {
-              
-                var wreck = await MigrateWreckAsync(powerappsWreckDto);
-                wrecks.Add(wreck);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Unable to save wreck - {powerappsWreckDto.Mcawrecksid} {powerappsWreckDto.Name} - {ex}");
-            }
-            
-        }
-
-        return wrecks;
-    }
-    
     public async Task<Wreck> MigrateWreckAsync(PowerappsWreckDto wreckRequest)
     {
         if ( wreckRequest == null )
@@ -172,42 +137,7 @@ public class MigrationService : IMigrationService
         
         return note;
     }
-
     
-    public async Task<List<Droit>> MigrateDroitsAsync(PowerappsDroitReportsDto droitsRequest)
-    {
-        if ( droitsRequest == null )
-        {
-            _logger.LogError("Request is null");
-            throw new DroitNotFoundException();
-        }
-
-        var droits = new List<Droit>();
-
-        if ( droitsRequest.Value == null ) return droits;
-        
-        foreach ( var powerappsDroitReportDto in droitsRequest.Value )
-        {
-            try
-            {
-                if ( string.IsNullOrEmpty(powerappsDroitReportDto.ReportReference) )
-                {
-                    continue;
-                }
-                
-                var droit = await MigrateDroitAsync(powerappsDroitReportDto);
-
-                droits.Add(droit);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Unable to save droit - {powerappsDroitReportDto.WreckValue} {powerappsDroitReportDto.ReportReference} - {ex}");
-            }
-            
-        }
-
-        return droits;
-    }
     
     public async Task<Droit> MigrateDroitAsync(PowerappsDroitReportDto droitRequest)
     {
