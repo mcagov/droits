@@ -21,8 +21,8 @@ export default function (app) {
 
       res.render("portal/report",{ reportData: reportData });
     } catch (error) {
-      console.error('Error:', error);
-      res.render('portal/unauthorized', {error: error} )
+      console.error('Error:', error.message);
+      res.render('portal/unauthorized', {error: error.message} )
     }
   });
 }
