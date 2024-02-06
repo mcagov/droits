@@ -9,6 +9,7 @@ fi
 
 API_ENDPOINT="$1"
 DATA_FILE="$2"
+DOTNET_API_KEY="$3"
 
 echo "SENDING " "$DATA_FILE"
 
@@ -34,6 +35,6 @@ echo "$DATA_ARRAY" | jq -c '.[]' | while IFS= read -r item; do
     if [ -n "$item" ]; then
     #     # Make POST request to API endpoint
         echo "$item" >> ./data/latest_item.json
-        curl -X "POST" -H "Content-Type: application/json" -d "$item" "$API_ENDPOINT" >> $DATA_FILE.output
+        curl -X "POST" -H "Content-Type: application/json" -H "X-API-Key: $DOTNET_API_KEY" -d "$item" "$API_ENDPOINT" >> $DATA_FILE.output
     fi
 done

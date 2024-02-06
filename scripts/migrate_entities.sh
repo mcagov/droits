@@ -41,6 +41,6 @@ while IFS= read -r entity_data; do
     sh pull_data.sh "$powerapps_full_endpoint" "$data_file" "$powerapps_access_token"
 
     # Post data to the new API
-    sh push_data.sh "$dotnet_full_endpoint" "$data_file"
+    sh push_data.sh "$dotnet_full_endpoint" "$data_file" "$DOTNET_API_KEY"
 
 done <<< "$entities"
