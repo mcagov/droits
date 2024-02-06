@@ -23,7 +23,6 @@ import portalLogout from './portal/logout';
 import portalLoginRedirectUrl from './portal/loginRedirectUrl';
 import portalDashboard from './portal/dashboard';
 import portalViewReport from './portal/view-report';
-import portalViewDroit from './portal/view-droit';
 import error from './portal/error';
 import accountError from './portal/error';
 
@@ -54,14 +53,12 @@ export default () => {
   salvageAward(app);
   checkYourAnswers(app);
 
-  //Need to add portal endpoints back in, issues with login connecting to azure.
   portalStart(app);
   portalLogin(app);
   portalLogout(app);
   portalLoginRedirectUrl(app);
   portalDashboard(app);
   portalViewReport(app);
-  portalViewDroit(app);
   error(app);
   accountError(app);
 
