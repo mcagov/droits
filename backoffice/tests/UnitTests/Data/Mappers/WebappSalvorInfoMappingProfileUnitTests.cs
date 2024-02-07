@@ -1,3 +1,4 @@
+using System.Globalization;
 using AutoMapper;
 using Droits.Data.Mappers;
 using Droits.Models.DTOs.Webapp;
@@ -106,19 +107,20 @@ public WebappSalvorInfoMappingProfileTests()
             Assert.Equal(salvor.Address.County, salvorInfo.Address?.County);
             Assert.Equal(salvor.Address.Postcode, salvorInfo.Address?.Postcode);
             
-            Assert.Equal(salvor.Droits.First().Id.ToString(), salvorInfo.Reports.First().Id);
-            Assert.Equal(salvor.Droits.First().Reference, salvorInfo.Reports.First().Reference);
-            Assert.Equal(salvor.Droits.First().Status.ToString(), salvorInfo.Reports.First().Status);
-            Assert.Equal(salvor.Droits.First().RecoveredFrom.ToString(), salvorInfo.Reports.First().RecoveredFrom);
-            Assert.Equal($"{salvor.Droits.First().Latitude}°,{salvor.Droits.First().Longitude}°", salvorInfo.Reports.First().Coordinates);
-            Assert.Equal(salvor.Droits.First().DateFound.ToString(), salvorInfo.Reports.First().DateFound);
-            Assert.Equal(salvor.Droits.First().ReportedDate.ToString(), salvorInfo.Reports.First().DateReported);
-            Assert.Equal(salvor.Droits.First().LastModified.ToString(), salvorInfo.Reports.First().LastUpdated);
-            
-            Assert.Contains(salvorInfo.Reports.First().WreckMaterials, wm => wm.Description == "First Wreck Material");
-            Assert.Contains(salvorInfo.Reports.First().WreckMaterials, wm => wm.Description == "Second Wreck Material");
-            Assert.Contains(salvorInfo.Reports.First().WreckMaterials, wm => wm.Outcome == "ReturnedToOwner");
-            Assert.Contains(salvorInfo.Reports.First().WreckMaterials, wm => wm.Outcome == "DonatedToMuseum");
+            Assert.Equal(salvor.Droits.First().Id.ToString(), salvorInfo.Reports?.First().Id);
+            Assert.Equal(salvor.Droits.First().Reference, salvorInfo.Reports?.First().Reference);
+            Assert.Equal(salvor.Droits.First().Status.ToString(), salvorInfo.Reports?.First().Status);
+            Assert.Equal(salvor.Droits.First().RecoveredFrom.ToString(), salvorInfo.Reports?.First().RecoveredFrom);
+            Assert.Equal($"{salvor.Droits.First().Latitude}°,{salvor.Droits.First().Longitude}°", salvorInfo.Reports?.First().Coordinates);
+            Assert.Equal(salvor.Droits.First().DateFound.ToString(CultureInfo.CurrentCulture), salvorInfo.Reports?.First().DateFound);
+            Assert.Equal(salvor.Droits.First().ReportedDate.ToString(CultureInfo.CurrentCulture), salvorInfo.Reports?.First().DateReported);
+            Assert.Equal(salvor.Droits.First().LastModified.ToString(CultureInfo.CurrentCulture), salvorInfo.Reports?.First().LastUpdated);
+
+            var wreckMaterials = salvorInfo.Reports?.First().WreckMaterials ?? Array.Empty<SalvorInfoWreckMaterialDto>();
+            Assert.Contains(wreckMaterials, wm => wm.Description == "First Wreck Material");
+            Assert.Contains(wreckMaterials, wm => wm.Description == "Second Wreck Material");
+            Assert.Contains(wreckMaterials, wm => wm.Outcome == "ReturnedToOwner");
+            Assert.Contains(wreckMaterials, wm => wm.Outcome == "DonatedToMuseum");
             
         }
         //
