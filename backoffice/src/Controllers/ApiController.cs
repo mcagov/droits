@@ -1,6 +1,6 @@
-﻿using Bogus.DataSets;
+﻿using Droits.Exceptions;
+using Droits.Helpers;
 using Droits.Models.DTOs;
-using Droits.Models.DTOs.Powerapps;
 using Droits.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +11,15 @@ public class ApiController : Controller
     private readonly ILogger<ApiController> _logger;
 
     private readonly IApiService _service;
+    private readonly IConfiguration _configuration;
 
-    public ApiController(ILogger<ApiController> logger, IApiService apiService)
+
+    public ApiController(ILogger<ApiController> logger, IApiService apiService, IConfiguration configuration)
     {
         _logger = logger;
         _service = apiService;
+        _configuration = configuration;
+
     }
 
     public IActionResult Index()
@@ -25,10 +29,13 @@ public class ApiController : Controller
 
     [HttpPost]
     [AllowAnonymous]
-    public async Task<IActionResult> Send([FromBody] SubmittedReportDto report)
+    public async Task<IActionResult> Send([FromBody] SubmittedReportDto report, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
- 
-
+        if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
+        {
+            return Unauthorized("Invalid API key");
+        }
+        
         try
         {
             var savedDroit = await _service.SaveDroitReportAsync(report);
@@ -50,177 +57,47 @@ public class ApiController : Controller
         }
 
     }
-    
-    [HttpPost]
+ 
+    [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> MigrateWrecks([FromBody] PowerappsWrecksDto request)
+    public async Task<IActionResult> Salvor(string email, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
-
+        if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
+        {
+            return Unauthorized("Invalid API key");
+        }
+        
         try
         {
-            var savedWrecks = await _service.MigrateWrecksAsync(request);
 
-            var wreckIdsList = savedWrecks.Select(w => new
-            {
-                w.Id,
-                w.PowerappsWreckId,
-                w.Name
-            }).ToList();
+            var salvorInfo = await _service.GetSalvorInfoAsync(email);
 
-            return Json(new
-            {
-                wrecks = wreckIdsList
-            });
+            return Json(salvorInfo);
         }
-        catch ( Exception e )
+        catch ( SalvorNotFoundException )
         {
-            _logger.LogError("Wrecks could not be saved" + e);
-            return NotFound();
+            return NotFound("Salvor not found");
         }
 
     }
     
-    [HttpPost]
+    [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> MigrateWreck([FromBody] PowerappsWreckDto request)
+    public async Task<IActionResult> Droit(Guid id, string? salvorId, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
-
-        try
+        if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
         {
-            var savedWreck = await _service.MigrateWreckAsync(request);
-            
-            return Json(new
-            {
-                wreck = new
-                {
-                    savedWreck.Id,
-                    savedWreck.PowerappsWreckId,
-                    savedWreck.Name
-                }
-            });
+            return Unauthorized("Invalid API key");
         }
-        catch ( Exception e )
-        {
-            _logger.LogError("Wreck could not be saved" + e);
-            return NotFound();
-        }
+        
+        var report = await _service.GetReportByIdAsync(id);
 
+        if ( report.SalvorId != salvorId )
+        {
+            return Unauthorized("Unauthorized Salvor");
+        }
+        
+        return Json(report);
+        
     }
-
-    [HttpPost]
-    [AllowAnonymous]
-    public async Task<IActionResult> MigrateNote([FromBody] PowerappsNoteDto request)
-    {
-
-        try
-        {
-            var savedNote = await _service.MigrateNoteAsync(request);
-            
-            return Json(new
-            {
-                note = new
-                {
-                    savedNote.Id,
-                    savedNote.WreckId,
-                    savedNote.DroitId,
-                    savedNote.SalvorId,
-                    savedNote.LetterId
-                }
-            });
-        }
-        catch ( Exception e )
-        {
-            _logger.LogError("Note could not be saved" + e);
-            return NotFound();
-        }
-
-    }
-    
-    [HttpPost]
-    [AllowAnonymous]
-    public async Task<IActionResult> MigrateDroits([FromBody] PowerappsDroitReportsDto request)
-    {
-
-        try
-        {
-            var savedDroits = await _service.MigrateDroitsAsync(request);
-
-            var droitIdsList = savedDroits.Select(d => new
-            {
-                d.Id,
-                d.PowerappsDroitId,
-                d.PowerappsWreckId,
-                d.Reference
-            }).ToList();
-
-            return Json(new
-            {
-                droits = droitIdsList
-            });
-        }
-        catch ( Exception e )
-        {
-            _logger.LogError("Droits could not be saved" + e);
-            return NotFound();
-        }
-
-    }
-    
-    [HttpPost]
-    [AllowAnonymous]
-    public async Task<IActionResult> MigrateDroit([FromBody] PowerappsDroitReportDto request)
-    {
-
-        try
-        {
-            var savedDroit = await _service.MigrateDroitAsync(request);
-            
-            return Json(new
-            {
-                droit = new
-                {
-                    savedDroit.Id,
-                    savedDroit.PowerappsDroitId,
-                    savedDroit.PowerappsWreckId,
-                    savedDroit.Reference
-                }
-            });
-        }
-        catch ( Exception e )
-        {
-            _logger.LogError("Droits could not be saved" + e);
-            return NotFound();
-        }
-
-    }
-    
-    
-    [HttpPost]
-    [AllowAnonymous]
-    public async Task<IActionResult> MigrateWreckMaterial([FromBody] PowerappsWreckMaterialDto request)
-    {
-    
-        try
-        {
-            var savedWreckMaterial = await _service.MigrateWreckMaterialAsync(request);
-            
-            return Json(new
-            {
-                WreckMaterial = new
-                {
-                    savedWreckMaterial.Id,
-                    savedWreckMaterial.DroitId,
-                    savedWreckMaterial.Name
-                }
-            });
-        }
-        catch ( Exception e )
-        {
-            _logger.LogError("WM could not be saved" + e);
-            return NotFound();
-        }
-    
-    }
-
-    
 }

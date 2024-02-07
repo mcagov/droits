@@ -78,7 +78,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
     public async Task<Droit> GetDroitAsync(Guid id)
     {
         var droit = await Context.Droits
-                                .Include(d => d.WreckMaterials)
+                                .Include(d => d.WreckMaterials).ThenInclude(wm => wm.Images)
                                 .Include(d => d.LastModifiedByUser)
                                 .Include(d => d.AssignedToUser)
                                 .FirstOrDefaultAsync(d => d.Id == id);
@@ -93,7 +93,9 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
 
     public async Task<int> GetYearDroitCount()
     {
-        return await Context.Droits.CountAsync(d => d.Reference.EndsWith($"/{DateTime.UtcNow:yy}"));
+        var currentYear = DateTime.UtcNow.Year;
+        var referenceEnding = $"/{currentYear.ToString().Substring(2)}";
+        return await Context.Droits.CountAsync(d => d.Reference.EndsWith(referenceEnding));
     }
     public async Task<bool> IsReferenceUnique(Droit droit)
     {

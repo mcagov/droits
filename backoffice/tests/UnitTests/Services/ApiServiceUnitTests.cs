@@ -90,13 +90,6 @@ namespace Droits.Tests.UnitTests.Services
                     }
                 }
             };
-
-            // // Act
-            // var result = await _service.SaveDroitReportAsync(report);
-            //
-            // // Assert
-            // Assert.Equal(report.LocationDescription,result.LocationDescription);
-            //
         }
     }
 }

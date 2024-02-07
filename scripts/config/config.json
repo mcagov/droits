@@ -2,28 +2,28 @@
     "entities": [
         {
             "entity": "wrecks",
-            "dotnet_endpoint": "/api/MigrateWreck",
+            "dotnet_endpoint": "/Migration/MigrateWreck",
             "powerapps_endpoint": "/crf99_mcawreckses?$select=crf99_mcawrecksid,crf99_name,crf99_wrecktype,crf99_longitude,crf99_latitude,crf99_iswarwreck,crf99_isaircraft,createdon,crf99_dateofloss,crf99_protectedsite,_crf99_protectionlegislation_value&$expand=crf99_WreckOwner($select=fullname,emailaddress1,address1_line1,address1_city,address1_postalcode,address1_composite,mobilephone,createdon)"
 
         },
         {
             "entity": "droits",
-            "dotnet_endpoint": "/api/MigrateDroit",
+            "dotnet_endpoint": "/Migration/MigrateDroit",
             "powerapps_endpoint": "/crf99_mcawreckreports?$select=crf99_mcawreckreportid,crf99_reportreference,createdon,crf99_recoveredfrom,crf99_datereported,crf99_datefound,crf99_inukwaters,crf99_hazardousfind,crf99_servicesduration,crf99_servicesdescription,crf99_servicesestimatedcost_base,crf99_servicesestimatedcost,crf99_negotiatingsalvageaward,crf99_locationdescription,crf99_locationradius,crf99_depth,crf99_latitude,crf99_longitude,_crf99_wreck_value,crf99_vesselname,crf99_vesselyearsunk,crf99_wreckconstructiondetails,crf99_vesselyearconstructed,crf99_salvageclaimawarded,crf99_salvageawardclaimed,crf99_salvageclaimawarded_base,crf99_mmolicencerequired,crf99_mmolicenceprovided,crf99_recoveredfromlegacy,crf99_importedfromlegacy,crf99_remarkslegacy1,crf99_remarkslegacy2,crf99_agentlegacy,crf99_datedelivered,crf99_goodsdischargedby,crf99_legacyfilereference,crf99_district,crf99_acknowledgementsent,crf99_inprogress,crf99_investigationcomplete,crf99_closeddate,crf99_underinvestigation,crf99_researchingreport,crf99_requestinginformation&$expand=crf99_Reporter($select=contactid,fullname,emailaddress1,telephone1,telephone2,telephone3,mobilephone,address1_line1,address1_line2,address1_line3,address1_city,address1_county,address1_country,address1_postalcode,address1_composite)"
         },
         {
             "entity": "wreck_materials_pre_2020",
-            "dotnet_endpoint": "/api/MigrateWreckMaterial",
+            "dotnet_endpoint": "/Migration/MigrateWreckMaterial",
             "powerapps_endpoint": "/crf99_mcawreckmaterials?$select=crf99_mcawreckmaterialid,_crf99_wreckreport_value,createdon,crf99_name,crf99_description,crf99_purchasedbymuseum,crf99_receivervaluation,crf99_valueconfirmed,crf99_imageurl,crf99_quantity,crf99_value,crf99_outcome,crf99_outcomelegacy,crf99_outcomeremarks,crf99_purchaserlegacy,crf99_wheresecuredlegacy,crf99_wreckmaterialownerlegacy&$expand=crf99_StorageAddress($select=crf99_addressline1,crf99_addressline2,crf99_city,crf99_county,crf99_postcode),crf99_Purchaser($select=fullname,emailaddress1,telephone1,telephone2,telephone3,mobilephone,address1_line1,address1_line2,address1_line3,address1_city,address1_county,address1_country,address1_postalcode,address1_composite),crf99_WreckMaterialOwner($select=fullname,emailaddress1,telephone1,telephone2,telephone3,mobilephone,address1_line1,address1_line2,address1_line3,address1_city,address1_county,address1_country,address1_postalcode,address1_composite)&$filter=createdon%20lt%202020-01-01T00:00:00Z"
         },
         {
             "entity": "wreck_materials_post_2020",
-            "dotnet_endpoint": "/api/MigrateWreckMaterial",
+            "dotnet_endpoint": "/Migration/MigrateWreckMaterial",
             "powerapps_endpoint": "/crf99_mcawreckmaterials?$select=crf99_mcawreckmaterialid,_crf99_wreckreport_value,createdon,crf99_name,crf99_description,crf99_purchasedbymuseum,crf99_receivervaluation,crf99_valueconfirmed,crf99_imageurl,crf99_quantity,crf99_value,crf99_outcome,crf99_outcomelegacy,crf99_outcomeremarks,crf99_purchaserlegacy,crf99_wheresecuredlegacy,crf99_wreckmaterialownerlegacy&$expand=crf99_StorageAddress($select=crf99_addressline1,crf99_addressline2,crf99_city,crf99_county,crf99_postcode),crf99_Purchaser($select=fullname,emailaddress1,telephone1,telephone2,telephone3,mobilephone,address1_line1,address1_line2,address1_line3,address1_city,address1_county,address1_country,address1_postalcode,address1_composite),crf99_WreckMaterialOwner($select=fullname,emailaddress1,telephone1,telephone2,telephone3,mobilephone,address1_line1,address1_line2,address1_line3,address1_city,address1_county,address1_country,address1_postalcode,address1_composite)&$filter=createdon%20ge%202020-01-01T00:00:00Z"
         },
         {
             "entity": "notes",
-            "dotnet_endpoint": "/api/MigrateNote",
+            "dotnet_endpoint": "/Migration/MigrateNote",
             "powerapps_endpoint": "/annotations?$select=annotationid,createdon,objecttypecode,_objectid_value,notetext,subject,isdocument,filesize,filename,mimetype,documentbody"
         }
 

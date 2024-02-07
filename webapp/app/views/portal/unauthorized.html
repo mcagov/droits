@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Error: Unauthorized – GOV.UK
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-m">
+        Unauthorized
+      </h1>
+      <div>
+        <p>You are not authorized to view this page.</p>
+      </div>
+    </div>
+
+    <p style="display:none;">{{error}}</p>
+  </div>
+
+{% endblock %}

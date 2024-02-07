@@ -3,6 +3,7 @@
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 #endregion
@@ -20,6 +21,7 @@ public class ImageController : BaseController
 
     }
     
+    [AllowAnonymous]
     public async Task<IActionResult> DisplayImage(Guid id)
     {
         var image = await _service.GetImageAsync(id);

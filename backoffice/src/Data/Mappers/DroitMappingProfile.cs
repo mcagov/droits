@@ -47,13 +47,13 @@ namespace Droits.Data.Mappers
                         src.VesselName))
                 .ForMember(dest => dest.ReportedWreckYearConstructed,
                     opt => opt.MapFrom(src =>
-                        src.VesselConstructionYear))
+                        src.VesselConstructionYear!= null ? src.VesselConstructionYear.AsInt() : null))
                 .ForMember(dest => dest.ReportedWreckConstructionDetails,
                     opt => opt.MapFrom(src =>
-                        src.VesselConstructionYear))
+                        src.WreckDescription))
                 .ForMember(dest => dest.ReportedWreckYearSunk,
                     opt => opt.MapFrom(src =>
-                        src.VesselSunkYear))
+                        src.VesselSunkYear!= null ? src.VesselSunkYear.AsInt() : null))
                 .ForMember(dest => dest.WreckMaterials, opt => opt.Ignore());
 
         }

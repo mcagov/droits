@@ -91,6 +91,8 @@ builder.Services.AddHealthChecks();
 // Dependency Injections
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IApiService, ApiService>();
+builder.Services.AddScoped<IMigrationService, MigrationService>();
+
 
 builder.Services.AddScoped<ITokenValidationService, TokenValidationService>();
 
@@ -129,7 +131,7 @@ builder.Services.AddScoped<IDroitFileRepository, DroitFileRepository>();
 builder.Services.AddScoped<IDroitFileService, DroitFileService>();
 
 // Mappers
-builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile), typeof(PowerAppsDroitReportMappingProfile), typeof(PowerAppsWreckMaterialMappingProfile), typeof(PowerAppsNoteMappingProfile));
+builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile), typeof(PowerAppsDroitReportMappingProfile), typeof(PowerAppsWreckMaterialMappingProfile), typeof(PowerAppsNoteMappingProfile), typeof(WebappSalvorInfoMappingProfile), typeof(WebappSalvorInfoDroitMappingProfile),typeof(WebappSalvorInfoWreckMaterialMappingProfile));
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();

@@ -5,7 +5,6 @@ import {formatValidationErrors} from '../../../utilities';
 
 const { body, validationResult } = require('express-validator');
 var cloneDeep = require('lodash.clonedeep');
-
 export default function (app) {
   // If user clicks back button on confirmation page it will redirect to start page
   app.get('/report/check-your-answers', function (req, res, next) {
@@ -109,10 +108,10 @@ export default function (app) {
         try {
           console.dir(JSON.stringify(data));
           const response = await axios.post(
-              process.env.API_POST_ENDPOINT,
+              `${process.env.API_ENDPOINT}/api/send`,
             JSON.stringify(data),
             {
-              headers: { 'content-type': 'application/json' },
+              headers: { 'content-type': 'application/json' , 'X-API-Key': process.env.API_KEY},
             }
           );
 
