@@ -4,15 +4,18 @@ import { isValidUUID } from '../../../utilities/validationUtils';
 import dayjs from "dayjs";
 
 export default function (app) {
-  app.get('/portal/report/:droitId', validateDroitId, async function (req, res) {
+  app.get('/portal/report/:droitId', async function (req, res) {
     try {
       const session = req.session.data;
-
       const droitId = req.params.droitId;
       const salvorId = session.userId;
-      const apiUrl = `${process.env.API_ENDPOINT}/api/droit/${droitId}?salvorId=${salvorId}`;
-
-
+      
+      if(!isValidUUID(droitId) || !isValidUUID(salvorId)){
+        return res.render('portal/unauthorized', {error: "DroitId, or SalvorId is invalid"} );
+      }
+      
+      const apiUrl = `${process.env.API_ENDPOINT}/api/droit/${encodeURIComponent(droitId)}?salvorId=${encodeURIComponent(salvorId)}`;
+      
       const response = await axios.get(apiUrl, {
         headers: {
           'X-API-Key': process.env.API_KEY
@@ -47,14 +50,4 @@ export const formatReportData = (data) => {
 
   reportItem['base_image_url'] = `${process.env.API_ENDPOINT}/Image/DisplayImage`
   return reportItem;
-};
-
-const validateDroitId = (req, res, next) => {
-  const droitId = req.params.droitId;
-
-  if (!isValidUUID(droitId)) {
-    return res.status(400).json({ error: 'Invalid droitId' });
-  }
-
-  next();
 };
