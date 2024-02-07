@@ -1,9 +1,10 @@
 import axios from "axios";
 import {assignSalvorInfoReportStatus} from "../../../utilities/assignReportStatus";
+import { isValidUUID } from '../../../utilities/validationUtils';
 import dayjs from "dayjs";
 
 export default function (app) {
-  app.get('/portal/report/:droitId', async function (req, res) {
+  app.get('/portal/report/:droitId', validateDroitId, async function (req, res) {
     try {
       const session = req.session.data;
 
@@ -46,4 +47,14 @@ export const formatReportData = (data) => {
 
   reportItem['base_image_url'] = `${process.env.API_ENDPOINT}/Image/DisplayImage`
   return reportItem;
+};
+
+const validateDroitId = (req, res, next) => {
+  const droitId = req.params.droitId;
+
+  if (!isValidUUID(droitId)) {
+    return res.status(400).json({ error: 'Invalid droitId' });
+  }
+
+  next();
 };
