@@ -10,7 +10,7 @@ export const assignReportStatus = function (id) {
       statusColour = "purple";
       break;
     case 614880001:
-      status = "investigation ongoing";
+      status = "in progress";
       statusAttr = "ongoing"
       statusColour = "blue"
       break;
@@ -46,7 +46,7 @@ export const assignSalvorInfoReportStatus = function (id) {
     case "ReadyForQc":
     case "QcApproved":    
     case "NegotiatingSalvageAward":
-      status = "investigation ongoing";
+      status = "in progress";
       statusAttr = "ongoing"
       statusColour = "blue"
       break;

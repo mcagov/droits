@@ -65,7 +65,8 @@ namespace Droits.Tests.UnitTests.Data.Mappers
                 LocationDescription = "Some place in water",
                 RemovedFrom = "afloat",
                 ClaimSalvage = "true", 
-                SalvageServices = "Salvage services description" 
+                SalvageServices = "Salvage services description",
+                VesselConstructionYear = ""
             };
 
             // Act
