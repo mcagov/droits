@@ -31,7 +31,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Setup dotnet
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet4
       with:
         dotnet-version: ${{ inputs.dotnet-version }}
 
