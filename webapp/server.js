@@ -103,8 +103,7 @@ app.set('view engine', 'html');
 
 app.use(express.static(path.join(__dirname, './dist')));
 app.use('/uploads', express.static('uploads'));
-app.use('/static', express.static(path.join(__dirname, 'public')));
-app.use('/auth', express.static(path.join(__dirname, 'app', 'auth')));
+app.use('/auth', express.static(path.join(__dirname, 'app', 'static', 'auth')));
 
 
 app.use(
