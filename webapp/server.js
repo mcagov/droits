@@ -16,9 +16,11 @@ import helmet from 'helmet';
 
 import sessionInMemory from 'express-session';
 import { NONAME } from 'dns';
-
+var cors = require('cors')
 require("dotenv-json")();
 const app = express();
+app.options('*', cors());
+
 const PORT = process.env.PORT || config.PORT;
 
 // Global vars
