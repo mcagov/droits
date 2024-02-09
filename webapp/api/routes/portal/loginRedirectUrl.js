@@ -8,7 +8,16 @@ export default function (app) {
         passport.authenticate('azuread-openidconnect', {
           response: res,
           failureRedirect: '/error',
-        })(req, res, next);
+        })(req, res, function (err) {
+          if (err) {
+            // Save the error message in the session
+            req.session.errorMessage = err.message;
+            // Redirect to the error page
+            return res.redirect('/error');
+          }
+
+          next();
+        });
       },
       function (req, res) {
         res.redirect('/portal/dashboard');
