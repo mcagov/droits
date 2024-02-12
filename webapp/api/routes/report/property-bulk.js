@@ -79,9 +79,6 @@ export default function (app) {
 
                 req.session.data['bulk-upload'] = {};
                 const sessionBulkUpload = req.session.data['bulk-upload'];
-
-                console.log("bulk-upload session data:");
-                console.dir(sessionBulkUpload);
                 
                 fileUpload.forEach((obj, index) => {
                   // Create a bulk upload ID for each item
