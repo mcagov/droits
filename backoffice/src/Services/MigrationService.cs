@@ -1,7 +1,9 @@
 using AutoMapper;
 using Droits.Exceptions;
+using Droits.Models;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Models.Entities;
+using JetBrains.Annotations;
 
 
 namespace Droits.Services;
@@ -12,6 +14,7 @@ public interface IMigrationService
     Task<WreckMaterial> MigrateWreckMaterialAsync(PowerappsWreckMaterialDto wmRequest);
     Task<Wreck> MigrateWreckAsync(PowerappsWreckDto request);
     Task<Note> MigrateNoteAsync(PowerappsNoteDto request);
+    Task HandleTriageCsvAsync(List<TriageRowDto> records);
 
 
 }
@@ -256,6 +259,34 @@ public class MigrationService : IMigrationService
             
 
         return wreckMaterial;
+    }
+
+
+    public async Task HandleTriageCsvAsync(List<TriageRowDto> records)
+    {
+        // loop through records
+        foreach ( var record in records )
+        {
+            // get report droitref
+            var droitReference = record.DroitReference;
+            var droitTriageNo = record.TriageNumber;
+            // get droit though record reference
+
+            var droit = await _droitService.GetDroitByReferenceAsync(droitReference);         
+            // update triage number
+            try
+            {
+                droit.TriageNumber = int.Parse(droitTriageNo);
+                await _droitService.SaveDroitAsync(droit);
+            } 
+            // catch errors
+            catch ( DroitNotFoundException e )
+            {
+                _logger.LogError($"Droit not found - {e}");
+            }
+            
+        }
+       
     }
     
 }

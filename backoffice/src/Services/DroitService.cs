@@ -39,6 +39,8 @@ public interface IDroitService
     Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form);
     Task<Droit> CreateDroitAsync(SubmittedReportDto report, Salvor salvor);
     Task<byte[]> ExportAsync(DroitSearchForm form);
+    Task<Droit> GetDroitByReferenceAsync(string reference);
+
 }
 
 public class DroitService : IDroitService
@@ -232,6 +234,13 @@ public class DroitService : IDroitService
 
         return await ExportHelper.ExportRecordsAsync(droitsData);
     }
+
+
+    public async Task<Droit> GetDroitByReferenceAsync(string reference)
+    {
+        return await _repo.GetDroitByReferenceAsync(reference);
+    }
+
 
     public async Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form)
     {

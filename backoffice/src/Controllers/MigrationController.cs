@@ -1,8 +1,12 @@
-﻿using Droits.Helpers;
+﻿using System.Globalization;
+using CsvHelper;
+using Droits.Helpers;
+using Droits.Models;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 
 namespace Droits.Controllers;
 public class MigrationController : Controller
@@ -157,5 +161,44 @@ public class MigrationController : Controller
             return NotFound();
         }
 
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> ProcessCsv(IFormFile? file)
+    {
+        if ( file == null || file.Length == 0 )
+        {
+            ModelState.AddModelError("File", "Please select a file");
+            return RedirectToAction("NewPage");
+        }
+
+        try
+        {
+            var reader = new StreamReader(file.OpenReadStream());
+            var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            var records = csv.GetRecords<TriageRowDto>().ToList();
+
+            await _service.HandleTriageCsvAsync(records);
+            
+            Console.Write("records uploaded");
+    
+            return RedirectToAction("Index","Droit");
+        }
+        catch ( Exception e )
+        {
+            // this needs improving
+            _logger.LogError("File couldn't be uploaded" + e);
+            return View("NewPage");
+        }
+
+        
+    }
+
+
+    [HttpGet]
+    public IActionResult NewPage()
+    {
+        return View();
     }
 }

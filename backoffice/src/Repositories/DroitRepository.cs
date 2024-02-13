@@ -26,6 +26,8 @@ public interface IDroitRepository
     Task<int> GetYearDroitCount();
     
     Task<List<DroitExportDto>> SearchDroitsAsync(string query);
+    Task<Droit> GetDroitByReferenceAsync(string reference);
+
 }
 
 public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
@@ -82,6 +84,21 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
                                 .Include(d => d.LastModifiedByUser)
                                 .Include(d => d.AssignedToUser)
                                 .FirstOrDefaultAsync(d => d.Id == id);
+        if ( droit == null )
+        {
+            throw new DroitNotFoundException();
+        }
+
+        return droit;
+    }
+    
+    public async Task<Droit> GetDroitByReferenceAsync(string reference)
+    {
+        var droit = await Context.Droits
+                                .Include(d => d.WreckMaterials).ThenInclude(wm => wm.Images)
+                                .Include(d => d.LastModifiedByUser)
+                                .Include(d => d.AssignedToUser)
+                                .FirstOrDefaultAsync(d => d.Reference == reference);
         if ( droit == null )
         {
             throw new DroitNotFoundException();
