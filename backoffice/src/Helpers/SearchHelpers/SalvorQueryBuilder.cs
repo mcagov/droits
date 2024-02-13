@@ -15,9 +15,9 @@ public class SalvorQueryBuilder
         {
              query = query.Where(s =>
                  !string.IsNullOrEmpty(s.Name) &&
-                 (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.Name.ToLower(), s.Name.ToLower()) : 
-                     SearchHelper.GetLevenshteinDistance(form.Name.ToLower(), s.Name.ToLower())) < MaxLevenshteinDistance ||
-                 s.Name.ToLower().Contains(form.Name.ToLower())
+                 (s.Name.ToLower().Contains(form.Name.ToLower()) ||
+                  (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.Name.ToLower(), s.Name.ToLower()) :
+                      SearchHelper.GetLevenshteinDistance(form.Name.ToLower(), s.Name.ToLower())) < MaxLevenshteinDistance)
              );
         }
         

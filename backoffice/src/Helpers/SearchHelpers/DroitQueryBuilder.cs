@@ -89,9 +89,9 @@ public static class DroitQueryBuilder
             }
             
             query = query.Where(d =>
-                !form.WreckName.HasValue() ||
+                string.IsNullOrEmpty(form.WreckName) ||
                 d.Wreck != null &&
-                d.Wreck.Name.HasValue()
+                !string.IsNullOrEmpty(d.Wreck.Name)
             );
             
             //Salvor Filters
@@ -108,9 +108,9 @@ public static class DroitQueryBuilder
             }
             
             query = query.Where(d =>
-                !form.SalvorName.HasValue() ||
+                string.IsNullOrEmpty(form.SalvorName) ||
                 ( d.Salvor != null &&
-                  d.Salvor.Name.HasValue() ));
+                  !string.IsNullOrEmpty(d.Salvor.Name) ));
             
             //Location Filters
             
