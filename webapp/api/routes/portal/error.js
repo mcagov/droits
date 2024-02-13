@@ -8,9 +8,7 @@ export default function (app) {
       req.logOut();
 
       console.log(error);
-      res.render('service-error', { error });
-
-      // return res.redirect(`${process.env.B2C_BASE_URL}/oauth2/v2.0/logout?p=B2C_1_login&post_logout_redirect_uri=${process.env.ENV_BASE_URL}/service-error`);
+      return res.redirect(`${process.env.B2C_BASE_URL}/oauth2/v2.0/logout?p=B2C_1_login&post_logout_redirect_uri=${process.env.ENV_BASE_URL}/service-error`);
     });
   });
 

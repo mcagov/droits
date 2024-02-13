@@ -79,7 +79,7 @@ export default function (app) {
 
                 req.session.data['bulk-upload'] = {};
                 const sessionBulkUpload = req.session.data['bulk-upload'];
-
+                
                 fileUpload.forEach((obj, index) => {
                   // Create a bulk upload ID for each item
 
@@ -117,6 +117,8 @@ export default function (app) {
                 for (const prop in sessionBulkUpload) {
                   req.session.data['property'][prop] = sessionBulkUpload[prop];
                 }
+                
+                req.session.save();
 
                 res.json({ status: 200 });
               });

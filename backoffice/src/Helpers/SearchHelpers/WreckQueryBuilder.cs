@@ -19,9 +19,9 @@ public static class WreckQueryBuilder
         {
              query = query.Where(w =>
                  !string.IsNullOrEmpty(w.Name) &&
-                 (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.Name.ToLower(), w.Name.ToLower()) : 
-                     SearchHelper.GetLevenshteinDistance(form.Name.ToLower(), w.Name.ToLower())) < MaxLevenshteinDistance ||
-                 w.Name.ToLower().Contains(form.Name.ToLower())
+                 (w.Name.ToLower().Contains(form.Name.ToLower()) ||
+                  (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.Name.ToLower(), w.Name.ToLower()) :
+                      SearchHelper.GetLevenshteinDistance(form.Name.ToLower(), w.Name.ToLower())) < MaxLevenshteinDistance)
              );
         }
         
