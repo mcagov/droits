@@ -15,8 +15,8 @@ public interface ISalvorRepository
     IQueryable<Salvor> GetSalvors();
     IQueryable<Salvor> GetSalvorsWithAssociations();
     Task<Salvor> GetSalvorAsync(Guid id);
-    Task<Salvor> AddAsync(Salvor salvor);
-    Task<Salvor> UpdateAsync(Salvor salvor);
+    Task<Salvor> AddAsync(Salvor salvor, bool updateLastModified = true);
+    Task<Salvor> UpdateAsync(Salvor salvor, bool updateLastModified = true);
     Task<Salvor?> GetSalvorByEmailAddressWithAssociationsAsync(string? salvorInfoEmail);
     Task<Salvor?> GetSalvorByEmailAddressAsync(string? salvorInfoEmail);
     Task<Salvor> GetSalvorByPowerappsIdAsync(string powerappsId);

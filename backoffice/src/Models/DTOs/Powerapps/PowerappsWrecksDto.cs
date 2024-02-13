@@ -17,6 +17,9 @@ namespace Droits.Models.DTOs.Powerapps
         [JsonPropertyName("crf99_mcawrecksid")]
         public string? Mcawrecksid { get; set; }
 
+        [JsonPropertyName("modifiedby")]
+        public PowerappsUserDto? ModifiedBy { get; set; }
+                
         [JsonPropertyName("createdon")]
         public DateTime? CreatedOn { get; set; }
 

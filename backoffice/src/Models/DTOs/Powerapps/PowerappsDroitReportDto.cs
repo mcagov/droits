@@ -32,6 +32,12 @@ namespace Droits.Models.DTOs.Powerapps
 
         [JsonPropertyName("crf99_Reporter")]
         public PowerappsContactDto? Reporter { get; set; }
+        
+        [JsonPropertyName("crf99_Receiver")]
+        public PowerappsUserDto? Receiver { get; set; }
+        
+        [JsonPropertyName("modifiedby")]
+        public PowerappsUserDto? ModifiedBy { get; set; }
 
         [JsonPropertyName("createdon")]
         public DateTime? CreatedOn { get; set; }

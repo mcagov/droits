@@ -56,7 +56,7 @@ public class ImageServiceUnitTests
         };
         image = imageForm.ApplyChanges(new Image());
 
-        _mockRepo.Setup(r => r.AddAsync(It.IsAny<Image>())).ReturnsAsync(image);
+        _mockRepo.Setup(r => r.AddAsync(It.IsAny<Image>(),It.IsAny<bool>())).ReturnsAsync(image);
         _mockRepo.Setup(r => r.UploadImageFileAsync(image, imageForm.ImageFile)).Callback<Image, IFormFile>((image, imageFile) => {});
         
         // When
@@ -64,7 +64,7 @@ public class ImageServiceUnitTests
         
         // Then
         Assert.Equal(image,response);
-        _mockRepo.Verify(r => r.AddAsync(It.IsAny<Image>()), Times.Once);
+        _mockRepo.Verify(r => r.AddAsync(It.IsAny<Image>(),It.IsAny<bool>()), Times.Once);
 
     }
     
@@ -87,7 +87,7 @@ public class ImageServiceUnitTests
         };
 
         _mockRepo.Setup(r => r.GetImageAsync(It.IsAny<Guid>())).ReturnsAsync(existingImage);
-        _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Image>())).ReturnsAsync(existingImage);
+        _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Image>(),It.IsAny<bool>())).ReturnsAsync(existingImage);
         _mockRepo.Setup(r => r.UploadImageFileAsync(existingImage, imageForm.ImageFile)).Callback<Image, IFormFile>((image, imageFile) => {});
         
         // When
@@ -95,6 +95,6 @@ public class ImageServiceUnitTests
         
         // Then
         Assert.Equal(existingImage,response);
-        _mockRepo.Verify(r => r.UpdateAsync(It.IsAny<Image>()), Times.Once);
+        _mockRepo.Verify(r => r.UpdateAsync(It.IsAny<Image>(),It.IsAny<bool>()), Times.Once);
     }
 }

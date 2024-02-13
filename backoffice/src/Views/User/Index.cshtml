@@ -8,6 +8,13 @@
     await Html.RenderPartialAsync("_MessageBanner");
 }
 
+<form class="form-horizontal" asp-action="Index" enctype="multipart/form-data" method="POST">
+
+    <div class="js-user-search d-none">
+        @Html.EditorFor(m => m.PageNumber, new { htmlAttributes = new { @class = "js-page-number-field"} })
+    </div>
+</form>
+
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>

@@ -14,8 +14,8 @@ namespace Droits.Repositories;
 
 public interface IImageRepository
 {
-    Task<Image> AddAsync(Image image);
-    Task<Image> UpdateAsync(Image image);
+    Task<Image> AddAsync(Image image, bool updateLastModified = true);
+    Task<Image> UpdateAsync(Image image, bool updateLastModified = true);
     Task<Image> GetImageAsync(Guid id);
     Task UploadImageFileAsync(Image image, IFormFile imageFile);
     Task<Stream> GetImageStreamAsync(string? key);

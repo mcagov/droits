@@ -68,5 +68,6 @@ export function initializeSearchForms() {
     initializeSearchForm('.js-letter-search', '.js-toggle-letter-search');
     
     initializeSearchForm('.js-dashboard-search', null);
+    initializeSearchForm('.js-user-search', null);
 
 }

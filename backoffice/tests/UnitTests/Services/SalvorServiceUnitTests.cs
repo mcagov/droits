@@ -24,14 +24,14 @@ namespace Droits.Tests.UnitTests.Services
         {
             // Given
             var newSalvor = new Salvor { Name = "NewSalvor" };
-            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Salvor>())).ReturnsAsync(newSalvor);
+            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Salvor>(),It.IsAny<bool>())).ReturnsAsync(newSalvor);
 
             // When
             var result = await _service.SaveSalvorAsync(newSalvor);
 
             // Then
             Assert.Equal(newSalvor, result);
-            _mockRepo.Verify(r => r.AddAsync(newSalvor), Times.Once);
+            _mockRepo.Verify(r => r.AddAsync(newSalvor, true), Times.Once);
         }
 
         [Fact]
@@ -39,14 +39,14 @@ namespace Droits.Tests.UnitTests.Services
         {
             // Given
             var existingSalvor = new Salvor { Id = Guid.NewGuid(), Name = "ExistingSalvor" };
-            _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Salvor>())).ReturnsAsync(existingSalvor);
+            _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Salvor>(),It.IsAny<bool>())).ReturnsAsync(existingSalvor);
 
             // When
             var result = await _service.SaveSalvorAsync(existingSalvor);
 
             // Then
             Assert.Equal(existingSalvor, result);
-            _mockRepo.Verify(r => r.UpdateAsync(existingSalvor), Times.Once);
+            _mockRepo.Verify(r => r.UpdateAsync(existingSalvor, true), Times.Once);
         }
 
         [Fact]
@@ -70,15 +70,15 @@ namespace Droits.Tests.UnitTests.Services
             // Given
             var salvorForm = new SalvorForm { Name = "NewSalvorForm" };
             var newSalvor = new Salvor { Name = "NewSalvor" };
-            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Salvor>())).ReturnsAsync(newSalvor);
+            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Salvor>(),It.IsAny<bool>())).ReturnsAsync(newSalvor);
 
             // When
             var result = await _service.SaveSalvorFormAsync(salvorForm);
 
             // Then
             Assert.Equal(newSalvor.Id, result);
-            _mockRepo.Verify(r => r.AddAsync(It.IsAny<Salvor>()), Times.Once);
-            _mockRepo.Verify(r => r.UpdateAsync(It.IsAny<Salvor>()), Times.Never);
+            _mockRepo.Verify(r => r.AddAsync(It.IsAny<Salvor>(),It.IsAny<bool>()), Times.Once);
+            _mockRepo.Verify(r => r.UpdateAsync(It.IsAny<Salvor>(),It.IsAny<bool>()), Times.Never);
         }
 
     }

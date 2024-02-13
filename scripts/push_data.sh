@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 <API_ENDPOINT> <DATA_FILE>"
+if [ "$#" -ne 3 ]; then
+    echo "Usage: $0 <API_ENDPOINT> <DATA_FILE> <API_KEY>"
     exit 1
 fi
 
@@ -21,7 +21,7 @@ if ! command -v jq > /dev/null; then
 fi
 
 # Read the value array from the data file
-DATA_ARRAY=$(jq -r '.value | walk(if type == "string" then gsub("[\u0000-\u001F]"; ", ") | gsub("\\\\"; "\\\\") else . end)' "$DATA_FILE")
+DATA_ARRAY=$(jq -r '.value | walk(if type == "string" then gsub("[\u0000-\u001F]"; " ") | gsub("\\\\"; "\\\\") else . end)' "$DATA_FILE")
 
 # Check if the array is not empty
 if [ -z "$DATA_ARRAY" ]; then

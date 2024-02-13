@@ -20,7 +20,9 @@ namespace Droits.Models.DTOs.Powerapps
         [JsonPropertyName("_crf99_wreckreport_value")]
         public string? PowerappsDroitId { get; set; } //Droit ID, to attach to droit
 
-
+        [JsonPropertyName("modifiedby")]
+        public PowerappsUserDto? ModifiedBy { get; set; }
+        
         [JsonPropertyName("createdon")]
         public DateTime? CreatedOn { get; set; }
 

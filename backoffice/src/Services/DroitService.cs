@@ -31,6 +31,7 @@ public interface IDroitService
     Task<List<Droit>> GetDroitsWithAssociationsAsync();
     Task<Droit> SaveDroitAsync(Droit droit);
     Task<Droit> GetDroitAsync(Guid id);
+    Task<Droit> AddDroitAsync(Droit droit, bool updateLastModified = true);
     Task<Droit> GetDroitWithAssociationsAsync(Guid id);
     Task SaveWreckMaterialsAsync(Guid id, List<WreckMaterialForm> wreckMaterialForms);
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
@@ -121,14 +122,14 @@ public class DroitService : IDroitService
     }
 
 
-    private async Task<Droit> AddDroitAsync(Droit droit)
+    public async Task<Droit> AddDroitAsync(Droit droit, bool updateLastModified = true)
     {
         if ( string.IsNullOrEmpty(droit.Reference) || !await IsReferenceUnique(droit))
         {
             droit.Reference = await GetNextDroitReference();
         }
 
-        return await _repo.AddAsync(droit);
+        return await _repo.AddAsync(droit, updateLastModified);
     }
 
 
