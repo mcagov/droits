@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using CsvHelper;
+using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Models;
 using Droits.Models.DTOs.Powerapps;
@@ -7,9 +8,10 @@ using Droits.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Diagnostics;
+using MissingFieldException = CsvHelper.MissingFieldException;
 
 namespace Droits.Controllers;
-public class MigrationController : Controller
+public class MigrationController : BaseController
 {
     private readonly ILogger<MigrationController> _logger;
 
@@ -185,10 +187,15 @@ public class MigrationController : Controller
     
             return RedirectToAction("Index","Droit");
         }
-        catch ( Exception e )
+        catch ( DroitNotFoundException e )
         {
-            // this needs improving
-            _logger.LogError("File couldn't be uploaded" + e);
+            // better error message - specify which ref is failing
+            HandleError(_logger, "Could not find a Droit", e);
+            return View("UploadTriageFile");
+        }
+        catch ( MissingFieldException e )
+        {
+            HandleError(_logger, "File is missing a field", e);
             return View("UploadTriageFile");
         }
 

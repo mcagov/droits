@@ -8,6 +8,7 @@ import {initializeSearchBar} from './searchBar';
 import {initializeSearchForms} from './searchForms';
 import {initializeFile} from "./droitFile";
 import {initializeTinyMce} from "./tinyMCE";
+import {initializeAccordion} from "./accordion";
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeSearchForms();
     initializeFile();
     initializeTinyMce();
+    initializeAccordion();
 });
 
 function initializeComponents(selector, initializer) {
