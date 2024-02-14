@@ -165,12 +165,12 @@ public class MigrationController : Controller
 
 
     [HttpPost]
-    public async Task<IActionResult> ProcessCsv(IFormFile? file)
+    public async Task<IActionResult> ProcessTriageFile(IFormFile? file)
     {
         if ( file == null || file.Length == 0 )
         {
             ModelState.AddModelError("File", "Please select a file");
-            return RedirectToAction("NewPage");
+            return RedirectToAction("UploadTriageFile");
         }
 
         try
@@ -189,7 +189,7 @@ public class MigrationController : Controller
         {
             // this needs improving
             _logger.LogError("File couldn't be uploaded" + e);
-            return View("NewPage");
+            return View("UploadTriageFile");
         }
 
         
@@ -197,7 +197,7 @@ public class MigrationController : Controller
 
 
     [HttpGet]
-    public IActionResult NewPage()
+    public IActionResult UploadTriageFile()
     {
         return View();
     }

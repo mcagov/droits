@@ -95,9 +95,6 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
     public async Task<Droit> GetDroitByReferenceAsync(string reference)
     {
         var droit = await Context.Droits
-                                .Include(d => d.WreckMaterials).ThenInclude(wm => wm.Images)
-                                .Include(d => d.LastModifiedByUser)
-                                .Include(d => d.AssignedToUser)
                                 .FirstOrDefaultAsync(d => d.Reference == reference);
         if ( droit == null )
         {

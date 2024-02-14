@@ -3,7 +3,6 @@ using Droits.Exceptions;
 using Droits.Models;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Models.Entities;
-using JetBrains.Annotations;
 
 
 namespace Droits.Services;
@@ -267,19 +266,12 @@ public class MigrationService : IMigrationService
         // loop through records
         foreach ( var record in records )
         {
-            // get report droitref
-            var droitReference = record.DroitReference;
-            var droitTriageNo = record.TriageNumber;
-            // get droit though record reference
-
-            var droit = await _droitService.GetDroitByReferenceAsync(droitReference);         
-            // update triage number
             try
             {
-                droit.TriageNumber = int.Parse(droitTriageNo);
+                var droit = await _droitService.GetDroitByReferenceAsync(record.DroitReference);         
+                droit.TriageNumber = int.Parse(record.TriageNumber);
                 await _droitService.SaveDroitAsync(droit);
             } 
-            // catch errors
             catch ( DroitNotFoundException e )
             {
                 _logger.LogError($"Droit not found - {e}");
