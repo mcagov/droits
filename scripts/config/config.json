@@ -22,9 +22,19 @@
             "powerapps_endpoint": "/crf99_mcawreckmaterials?$select=crf99_mcawreckmaterialid,_crf99_wreckreport_value,createdon,crf99_name,crf99_description,crf99_purchasedbymuseum,crf99_receivervaluation,crf99_valueconfirmed,crf99_imageurl,crf99_quantity,crf99_value,crf99_outcome,crf99_outcomelegacy,crf99_outcomeremarks,crf99_purchaserlegacy,crf99_wheresecuredlegacy,crf99_wreckmaterialownerlegacy&$expand=crf99_StorageAddress($select=crf99_addressline1,crf99_addressline2,crf99_city,crf99_county,crf99_postcode),crf99_Purchaser($select=fullname,emailaddress1,telephone1,telephone2,telephone3,mobilephone,address1_line1,address1_line2,address1_line3,address1_city,address1_county,address1_country,address1_postalcode,address1_composite),crf99_WreckMaterialOwner($select=fullname,emailaddress1,telephone1,telephone2,telephone3,mobilephone,address1_line1,address1_line2,address1_line3,address1_city,address1_county,address1_country,address1_postalcode,address1_composite)&$filter=createdon%20ge%202020-01-01T00:00:00Z"
         },
         {
-            "entity": "notes",
+            "entity": "notes_with_documents",
             "dotnet_endpoint": "/Migration/MigrateNote",
-            "powerapps_endpoint": "/annotations?$select=annotationid,createdon,objecttypecode,_objectid_value,notetext,subject,isdocument,filesize,filename,mimetype,documentbody&$expand=modifiedby($select=internalemailaddress,fullname)"
+            "powerapps_endpoint": "/annotations?$select=annotationid,createdon,objecttypecode,_objectid_value,notetext,subject,isdocument,filesize,filename,mimetype,documentbody&$expand=modifiedby($select=internalemailaddress,fullname)&$filter=documentbody%20ne%20null"
+        },
+        {
+            "entity": "notes_without_documents_with_inline_images",
+            "dotnet_endpoint": "/Migration/MigrateNote",
+            "powerapps_endpoint": "/annotations?$select=annotationid,createdon,objecttypecode,_objectid_value,notetext,subject,isdocument,filesize,filename,mimetype,documentbody&$expand=modifiedby($select=internalemailaddress,fullname)&$filter=documentbody%20eq%20null%20and%20contains(notetext,%20%27/api/data/%27)"
+        },
+        {
+            "entity": "notes_without_documents_without_inline_images",
+            "dotnet_endpoint": "/Migration/MigrateNote",
+            "powerapps_endpoint": "/annotations?$select=annotationid,createdon,objecttypecode,_objectid_value,notetext,subject,isdocument,filesize,filename,mimetype,documentbody&$expand=modifiedby($select=internalemailaddress,fullname)&$filter=documentbody%20eq%20null%20and%20not%20contains(notetext,%20%27/api/data/%27)"
         }
 
     ]

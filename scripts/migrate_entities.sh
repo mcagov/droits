@@ -24,6 +24,8 @@ powerapps_access_token=$(curl -s -X POST \
   -d "resource=https://reportwreckmaterial.crm11.dynamics.com/" \
   "https://login.microsoftonline.com/3fd408b5-82e6-4dc0-a36c-6e2aa815db3e/oauth2/token" | jq -r '.access_token')
 
+rm data/*
+
 # Loop through entities
 while IFS= read -r entity_data; do
     entity_name=$(jq -r '.entity' <<< "$entity_data")

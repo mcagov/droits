@@ -33,8 +33,15 @@ fi
 echo "$DATA_ARRAY" | jq -c '.[]' | while IFS= read -r item; do
     # Check if the item is not empty
     if [ -n "$item" ]; then
-    #     # Make POST request to API endpoint
+        # Write the current item to a temporary file
+        temp_file=$(mktemp)
+        echo "$item" > "$temp_file"
         echo "$item" >> ./data/latest_item.json
-        curl -X "POST" -H "Content-Type: application/json" -H "X-API-Key: $DOTNET_API_KEY" -d "$item" "$API_ENDPOINT" >> $DATA_FILE.output
+
+        # Make POST request to API endpoint using the temporary file
+        curl -X "POST" -H "Content-Type: application/json" -H "X-API-Key: $DOTNET_API_KEY" --data-binary @"$temp_file" "$API_ENDPOINT" >> "$DATA_FILE.output"
+
+        # Clean up: Remove temporary file
+        rm "$temp_file"
     fi
 done
