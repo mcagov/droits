@@ -68,8 +68,34 @@ namespace Droits.Tests.UnitTests.Services
             _mockDroitService.Verify(r => r.GetDroitByReferenceAsync("002/24"), Times.Once);
             _mockDroitService.Verify(r => r.SaveDroitAsync(droitOne), Times.Once);
             _mockDroitService.Verify(r => r.SaveDroitAsync(droitTwo), Times.Once);
+            
+        }
+        
+        [Fact]
+        public async Task HandleTriageCsv_RaisesError_WhenGivenATriageNumberOutOfRange()
+        {
+            // Assemble
+            var records = new List<TriageRowDto>()
+            {
+                new()
+                {
+                    DroitReference = "001/24",
+                    TriageNumber = "3"
+                },
+                new()
+                {
+                    DroitReference = "002/24",
+                    TriageNumber = "6"
+                },
+            };
+            
 
+            // Apply
 
+            await _service.HandleTriageCsvAsync(records);
+            // Assert
+
+            
         }
         
     }

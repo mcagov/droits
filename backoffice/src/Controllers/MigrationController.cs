@@ -174,28 +174,29 @@ public class MigrationController : BaseController
             ModelState.AddModelError("File", "Please select a file");
             return RedirectToAction("UploadTriageFile");
         }
-
+        
         try
         {
             var reader = new StreamReader(file.OpenReadStream());
             var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
             var records = csv.GetRecords<TriageRowDto>().ToList();
 
-            await _service.HandleTriageCsvAsync(records);
-            
+            var result = await _service.HandleTriageCsvAsync(records);
+
+            if ( result.HasError() )
+            {
+                AddErrorMessage(result.GetErrorMessage());
+                return View("UploadTriageFile");
+            }
             Console.Write("records uploaded");
     
+            AddSuccessMessage(result.GetSuccessMessage());
             return RedirectToAction("Index","Droit");
         }
-        catch ( DroitNotFoundException e )
-        {
-            // better error message - specify which ref is failing
-            HandleError(_logger, "Could not find a Droit", e);
-            return View("UploadTriageFile");
-        }
-        catch ( MissingFieldException e )
-        {
-            HandleError(_logger, "File is missing a field", e);
+        catch ( Exception e )
+        { 
+            HandleError(_logger, "Error updating triage numbers", e);
+
             return View("UploadTriageFile");
         }
 

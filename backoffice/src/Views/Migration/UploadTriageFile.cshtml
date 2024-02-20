@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "File Upload";
+    ViewData["Title"] = "Droit Triage File Upload";
 }
 
 @{
@@ -8,29 +8,21 @@
 
 <h4>@ViewData["Title"]</h4>
 
-<h2>Droit Triage Upload</h2>
-
 @* add instructions here *@
-<div class="border">
-    <button class="btn btn-primary" id="triageHelp">How to bulk update triage numbers</button>
-    <div class="panel">
-        <p>Upload a csv, xls or xlsx file only</p>
-        <p>Use the example file as a guide, there should be two columns only with the exact headers shown</p>
+<div class="border p-4">
+    @* <button class="btn btn-primary" id="triageHelp">How to bulk update triage numbers</button> *@
+        <h5>Upload a csv, xls or xlsx file only</h5>
+        <p>Use the template file as a guide, there should be two columns only with the exact headers shown</p>
         <a href="~/downloads/triage_test.csv" download>
-            example file here
+            download the template here
         </a>
-    </div>
-</div>
-<form method="post" action="@Url.Action("ProcessTriageFile", "Migration")" enctype="multipart/form-data">
-
-    <div>
-        <label for="file">Select File:</label>
-        <input type="file" name="file" id="file" accept=".csv,.xls,.xlsx" required />
-    </div>
-    <br />
-    <div>
-        <input type="submit" value="Upload" />
-    </div>
+ </div>
+<form method="post" class="mt-2" action="@Url.Action("ProcessTriageFile", "Migration")" enctype="multipart/form-data">
+        <div class="form-group row mt-2">
+            <input type="file" name="file" id="file" accept=".csv,.xls,.xlsx" class="form-control js-file-file-input text-box single-line" required />
+        </div>
+        
+        <button class="btn btn-primary mt-2 float-end" type="submit">Upload</button>
 
 </form>
 

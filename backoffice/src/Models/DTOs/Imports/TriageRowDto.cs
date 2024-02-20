@@ -4,6 +4,6 @@ namespace Droits.Models;
 
 public class TriageRowDto 
 {
-    public string DroitReference { get; set; }
-    public string TriageNumber { get; set; }
+    public string? DroitReference { get; set; }
+    public string? TriageNumber { get; set; }
 }

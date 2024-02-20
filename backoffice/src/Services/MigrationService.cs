@@ -13,7 +13,7 @@ public interface IMigrationService
     Task<WreckMaterial> MigrateWreckMaterialAsync(PowerappsWreckMaterialDto wmRequest);
     Task<Wreck> MigrateWreckAsync(PowerappsWreckDto request);
     Task<Note> MigrateNoteAsync(PowerappsNoteDto request);
-    Task HandleTriageCsvAsync(List<TriageRowDto> records);
+    Task<TriageUploadResultDto> HandleTriageCsvAsync(List<TriageRowDto> records);
 
 
 }
@@ -261,24 +261,51 @@ public class MigrationService : IMigrationService
     }
 
 
-    public async Task HandleTriageCsvAsync(List<TriageRowDto> records)
+    public async Task<TriageUploadResultDto> HandleTriageCsvAsync(List<TriageRowDto> records)
     {
+        
+        var result = new TriageUploadResultDto();
         // loop through records
         foreach ( var record in records )
         {
             try
             {
-                var droit = await _droitService.GetDroitByReferenceAsync(record.DroitReference);         
-                droit.TriageNumber = int.Parse(record.TriageNumber);
-                await _droitService.SaveDroitAsync(droit);
-            } 
+                var droit = await _droitService.GetDroitByReferenceAsync(record.DroitReference);
+
+                    var isValid = int.TryParse(record.TriageNumber, out var triageNumber);
+                    droit.TriageNumber = triageNumber;
+                
+
+                if ( isValid && triageNumber is > 0 and < 5)
+                {  
+                    await _droitService.SaveDroitAsync(droit);
+                    result.SuccessfulTriageUpdates.Add(record.DroitReference,record.TriageNumber);
+
+                }
+                else
+                {
+                 throw new MissingFieldException("Invalid triage number");
+                }
+
+                
+            }
             catch ( DroitNotFoundException e )
             {
+                result.InvalidDroitReferences.Add(record.DroitReference,record.TriageNumber);
                 _logger.LogError($"Droit not found - {e}");
+            }
+            catch ( MissingFieldException e )
+            {               
+                result.InvalidTriageNumberValues.Add(record.DroitReference,record.TriageNumber);
+                _logger.LogError($"Triage number not found - {e}");
             }
             
         }
-       
+
+        return result;
     }
+
+
+
     
 }

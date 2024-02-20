@@ -95,7 +95,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
     public async Task<Droit> GetDroitByReferenceAsync(string reference)
     {
         var droit = await Context.Droits
-                                .FirstOrDefaultAsync(d => d.Reference == reference);
+                                .FirstOrDefaultAsync(d => d.Reference.ToLower().Equals(reference.ToLower()));
         if ( droit == null )
         {
             throw new DroitNotFoundException();
