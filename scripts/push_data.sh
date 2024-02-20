@@ -11,14 +11,14 @@ API_ENDPOINT="$1"
 DATA_FILE="$2"
 DOTNET_API_KEY="$3"
 
-echo "SENDING " "$DATA_FILE"
-
 
 # Validate if jq is available
 if ! command -v jq > /dev/null; then
     echo "jq is not installed. Please install jq to process JSON data."
     exit 1
 fi
+
+echo "SENDING " "$DATA_FILE"
 
 # Read the value array from the data file
 DATA_ARRAY=$(jq -r '.value | walk(if type == "string" then gsub("[\u0000-\u001F]"; " ") | gsub("\\\\"; "\\\\") else . end)' "$DATA_FILE")

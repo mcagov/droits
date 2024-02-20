@@ -12,7 +12,7 @@ processNotes() {
     # Extract and replace image URLs with their base64-encoded content
     while read -r image_url; do
         if [ -z "$image_url" ]; then
-            echo "No image URLs found. Exiting..."
+            echo "No image URLs found. Skipping getting image data..."
             break
         fi
         echo "Processing image URL: $image_url"
@@ -34,8 +34,9 @@ processNotes() {
         fi
     done <<< "$(echo "$modified_output" | grep -oE 'https:\/\/reportwreckmaterial.crm11.dynamics.com\/api\/data\/v9\.0\/msdyn_richtextfiles([^"]*)\/msdyn_imageblob\/\$value\?size=full' | sed -e 's/src=\?\"//' -e 's/\\?\"$//')"
 
-    # Remove non-printable characters and save the modified output to the output file
-    echo "$modified_output" | tr -dc '[:print:]' > "$OUTPUT_FILE"
+    DATA=$(sed -e 's/\\/\\\\/g' -e 's/\\"/\"/g' <<< "$modified_output" | jq '. | walk(if type == "string" then gsub("[\u0000-\u001F]"; "\\n") | gsub("[\u0000-\u001F]"; "\"") else . end)')
+    echo "$DATA" | jq '.' > "$OUTPUT_FILE"
+
     echo "Annotation data processed and saved to $OUTPUT_FILE"
 }
 
@@ -64,7 +65,9 @@ if [[ "$POWERAPPS_ENDPOINT" == *"/annotations"* ]]; then
     processNotes "$temp_file" "$ACCESS_TOKEN" "$OUTPUT_FILE"
 else
     # Output regular JSON data to the output file
-    cat "$temp_file" | jq '.' > "$OUTPUT_FILE"
+        # DATA=$(sed -e 's/\\/\\\\/g' -e 's/\\"/\"/g' <<< "$modified_output" | jq '. | walk(if type == "string" then gsub("[\u0000-\u001F]"; "\\n") | gsub("[\u0000-\u001F]"; "\"") else . end)')
+
+cat "$temp_file" | jq '.' | sed -e 's/\\/\\\\/g' -e 's/\\"/\"/g' -e 's/’/'\''/g' > "$OUTPUT_FILE"
     echo "Regular JSON data saved to $OUTPUT_FILE"
 fi
 

@@ -141,6 +141,7 @@ builder.Services.AddLogging(loggingBuilder =>
 {
     loggingBuilder.AddConsole();
     loggingBuilder.SetMinimumLevel(LogLevel.Debug);
+    
 });
 
 // Forwarded Headers
