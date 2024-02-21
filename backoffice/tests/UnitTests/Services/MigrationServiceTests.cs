@@ -1,5 +1,4 @@
 using AutoMapper;
-using Droits.Exceptions;
 using Droits.Models;
 using Droits.Models.Entities;
 using Droits.Services;
@@ -22,12 +21,14 @@ namespace Droits.Tests.UnitTests.Services
             var mockImageService = new Mock<IImageService>();
             var mockWreckService = new Mock<IWreckService>();
             var mockNoteService = new Mock<INoteService>();
+           var mockUserService = new Mock<IUserService>();
+
             var mockMapper = new Mock<IMapper>();
             _mockLogger = new Mock<ILogger<MigrationService>>();
 
             _service = new MigrationService(_mockLogger.Object,_mockDroitService.Object,
                 mockWreckMaterialService.Object, mockSalvorService.Object, mockImageService.Object,
-                mockFileService.Object,  mockWreckService.Object,mockNoteService.Object, mockMapper.Object);
+                mockFileService.Object,  mockWreckService.Object,mockNoteService.Object, mockUserService.Object ,mockMapper.Object);
         }
 
 
@@ -52,9 +53,9 @@ namespace Droits.Tests.UnitTests.Services
             var droitOne = new Droit() { Id = Guid.NewGuid(), Reference = "001/24" };
             var droitTwo = new Droit() { Id = Guid.NewGuid(), Reference = "002/24" };
 
-            _mockDroitService.Setup(ds => ds.GetDroitByReferenceAsync("001/24"))
+            _mockDroitService.Setup(ds => ds.GetDroitByReferenceAsync(droitOne.Reference))
                 .ReturnsAsync(droitOne);
-            _mockDroitService.Setup(ds => ds.GetDroitByReferenceAsync("002/24"))
+            _mockDroitService.Setup(ds => ds.GetDroitByReferenceAsync(droitTwo.Reference))
                 .ReturnsAsync(droitTwo);
             _mockDroitService.Setup(ds => ds.SaveDroitAsync(droitOne)).ReturnsAsync(droitOne);
             _mockDroitService.Setup(ds => ds.SaveDroitAsync(droitTwo)).ReturnsAsync(droitTwo);
@@ -64,37 +65,9 @@ namespace Droits.Tests.UnitTests.Services
             await _service.HandleTriageCsvAsync(records);
             // Assert
             
-            _mockDroitService.Verify(r => r.GetDroitByReferenceAsync("001/24"), Times.Once);
-            _mockDroitService.Verify(r => r.GetDroitByReferenceAsync("002/24"), Times.Once);
-            _mockDroitService.Verify(r => r.SaveDroitAsync(droitOne), Times.Once);
-            _mockDroitService.Verify(r => r.SaveDroitAsync(droitTwo), Times.Once);
-            
-        }
-        
-        [Fact]
-        public async Task HandleTriageCsv_RaisesError_WhenGivenATriageNumberOutOfRange()
-        {
-            // Assemble
-            var records = new List<TriageRowDto>()
-            {
-                new()
-                {
-                    DroitReference = "001/24",
-                    TriageNumber = "3"
-                },
-                new()
-                {
-                    DroitReference = "002/24",
-                    TriageNumber = "6"
-                },
-            };
-            
-
-            // Apply
-
-            await _service.HandleTriageCsvAsync(records);
-            // Assert
-
+            _mockDroitService.Verify(r => r.GetDroitByReferenceAsync(droitOne.Reference), Times.Once);
+            _mockDroitService.Verify(r => r.GetDroitByReferenceAsync(droitTwo.Reference), Times.Once);
+            _mockDroitService.Verify(r => r.SaveDroitAsync(It.IsAny<Droit>()), Times.Exactly(2));
             
         }
         

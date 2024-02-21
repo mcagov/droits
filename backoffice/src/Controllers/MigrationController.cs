@@ -3,6 +3,7 @@ using CsvHelper;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Models;
+using Droits.Models.DTOs.Imports;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -182,22 +183,17 @@ public class MigrationController : BaseController
             var records = csv.GetRecords<TriageRowDto>().ToList();
 
             var result = await _service.HandleTriageCsvAsync(records);
-
-            if ( result.HasError() )
-            {
-                AddErrorMessage(result.GetErrorMessage());
-                return View("UploadTriageFile");
-            }
             Console.Write("records uploaded");
-    
-            AddSuccessMessage(result.GetSuccessMessage());
-            return RedirectToAction("Index","Droit");
+            
+            AddTriageErrorMessage(result.GetErrorMessage());
+            AddTriageSuccessMessage(result.GetSuccessMessage());
+            return View("UploadTriageFile", result);
         }
         catch ( Exception e )
         { 
             HandleError(_logger, "Error updating triage numbers", e);
 
-            return View("UploadTriageFile");
+            return View("UploadTriageFile", new TriageUploadResultDto());
         }
 
         
@@ -207,6 +203,6 @@ public class MigrationController : BaseController
     [HttpGet]
     public IActionResult UploadTriageFile()
     {
-        return View();
+        return View(new TriageUploadResultDto());
     }
 }

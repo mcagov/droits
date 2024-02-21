@@ -19,6 +19,19 @@ public class BaseController : Controller
     {
         TempData.SetErrorMessage(message);
     }
+    
+    // Below may move somewhere else
+    protected void AddTriageSuccessMessage(string message)
+    {
+        TempData.SetTriageSuccessMessage(message);
+    }
+
+
+    protected void AddTriageErrorMessage(string message)
+    {
+        TempData.SetTriageErrorMessage(message);
+    }
+
 
 
     protected void HandleError(ILogger log, string message, Exception e)
