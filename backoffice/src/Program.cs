@@ -190,7 +190,7 @@ using (var scope = app.Services.CreateScope())
     // dbContext.Database.EnsureDeleted();
     
     dbContext.Database.EnsureCreated();
-    DatabaseSeeder.SeedData(dbContext);
+    // DatabaseSeeder.SeedData(dbContext);
 }
 
 // Middleware Pipeline
