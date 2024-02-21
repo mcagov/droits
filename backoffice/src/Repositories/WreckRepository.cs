@@ -16,8 +16,8 @@ public interface IWreckRepository
     IQueryable<Wreck> GetWrecksWithAssociations();
     Task<Wreck> GetWreckAsync(Guid id);
     Task<Wreck> GetWreckByPowerappsIdAsync(string powerappsId);
-    Task<Wreck> AddAsync(Wreck wreck);
-    Task<Wreck> UpdateAsync(Wreck wreck);
+    Task<Wreck> AddAsync(Wreck wreck, bool updateLastModified = true);
+    Task<Wreck> UpdateAsync(Wreck wreck, bool updateLastModified = true);
 }
 
 public class WreckRepository : BaseEntityRepository<Wreck>, IWreckRepository

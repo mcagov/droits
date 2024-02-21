@@ -59,14 +59,14 @@ namespace Droits.Tests.UnitTests.Services
         {
             // Given
             var newDroit = new Droit { Reference = "Ref3" };
-            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Droit>())).ReturnsAsync(newDroit);
+            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Droit>(), true)).ReturnsAsync(newDroit);
 
             // When
             var result = await _service.SaveDroitAsync(newDroit);
 
             // Then
             Assert.NotNull(result);
-            _mockRepo.Verify(r => r.AddAsync(It.IsAny<Droit>()), Times.Once);
+            _mockRepo.Verify(r => r.AddAsync(It.IsAny<Droit>(),It.IsAny<bool>()), Times.Once);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace Droits.Tests.UnitTests.Services
  
             // Then
             
-            _mockRepo.Verify(r => r.UpdateAsync(It.Is<Droit>(d => d.Id == droitId && d.Status == DroitStatus.Research)), Times.Once);
+            _mockRepo.Verify(r => r.UpdateAsync(It.Is<Droit>(d => d.Id == droitId && d.Status == DroitStatus.Research),It.IsAny<bool>()), Times.Once);
             Assert.Equal(DroitStatus.Research, existingDroit.Status);
         }
 
@@ -92,13 +92,13 @@ namespace Droits.Tests.UnitTests.Services
         {
             // Given
             var newDroit = new Droit { Id = default(Guid) };
-            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Droit>())).ReturnsAsync(newDroit);
+            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Droit>(), true)).ReturnsAsync(newDroit);
 
             // When
             var result = await _service.SaveDroitAsync(newDroit);
 
             // Then
-            _mockRepo.Verify(r => r.AddAsync(newDroit), Times.Once);
+            _mockRepo.Verify(r => r.AddAsync(newDroit, true), Times.Once);
             Assert.Equal(newDroit, result);
         }
 
@@ -109,14 +109,14 @@ namespace Droits.Tests.UnitTests.Services
             var existingDroitId = Guid.NewGuid();
             var existingDroit = new Droit { Id = existingDroitId, Reference = "ExistingRef" };
             _mockRepo.Setup(r => r.GetDroitAsync(existingDroitId)).ReturnsAsync(existingDroit);
-            _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Droit>())).ReturnsAsync(existingDroit);
+            _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Droit>(), true)).ReturnsAsync(existingDroit);
             _mockRepo.Setup(r => r.IsReferenceUnique(It.IsAny<Droit>())).ReturnsAsync(true);
 
             // When
             var result = await _service.SaveDroitAsync(existingDroit);
 
             // Then
-            _mockRepo.Verify(r => r.UpdateAsync(existingDroit), Times.Once);
+            _mockRepo.Verify(r => r.UpdateAsync(existingDroit, true), Times.Once);
             Assert.Equal(existingDroit, result);
         }
 

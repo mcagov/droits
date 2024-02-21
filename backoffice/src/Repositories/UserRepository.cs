@@ -15,6 +15,8 @@ public interface IUserRepository
     IQueryable<ApplicationUser> GetUsersWithAssociations();
     Task<ApplicationUser> GetUserAsync(Guid id);
     Task<ApplicationUser> GetUserByAuthIdAsync(string authId);
+    Task<ApplicationUser> GetUserByEmailAddressAsync(string emailAddress);
+
     Task<ApplicationUser> AddUserAsync(ApplicationUser user);
     Task<ApplicationUser> UpdateUserAsync(ApplicationUser user);
 }
@@ -54,6 +56,23 @@ public class UserRepository : IUserRepository
     public async Task<ApplicationUser> GetUserByAuthIdAsync(string authId)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.AuthId == authId);
+        
+        if (user == null)
+        {
+            throw new UserNotFoundException(); 
+        }
+
+        return user;
+    }
+    
+    public async Task<ApplicationUser> GetUserByEmailAddressAsync(string emailAddress)
+    {
+        if ( string.IsNullOrEmpty(emailAddress) )
+        {
+            throw new UserNotFoundException();
+        }
+        
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower().Equals(emailAddress.ToLower()));
         
         if (user == null)
         {

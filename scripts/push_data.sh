@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 <API_ENDPOINT> <DATA_FILE>"
+if [ "$#" -ne 3 ]; then
+    echo "Usage: $0 <API_ENDPOINT> <DATA_FILE> <API_KEY>"
     exit 1
 fi
 
@@ -11,8 +11,6 @@ API_ENDPOINT="$1"
 DATA_FILE="$2"
 DOTNET_API_KEY="$3"
 
-echo "SENDING " "$DATA_FILE"
-
 
 # Validate if jq is available
 if ! command -v jq > /dev/null; then
@@ -20,8 +18,10 @@ if ! command -v jq > /dev/null; then
     exit 1
 fi
 
+echo "SENDING " "$DATA_FILE"
+
 # Read the value array from the data file
-DATA_ARRAY=$(jq -r '.value | walk(if type == "string" then gsub("[\u0000-\u001F]"; ", ") | gsub("\\\\"; "\\\\") else . end)' "$DATA_FILE")
+DATA_ARRAY=$(jq -r '.value | walk(if type == "string" then gsub("[\u0000-\u001F]"; " ") | gsub("\\\\"; "\\\\") else . end)' "$DATA_FILE")
 
 # Check if the array is not empty
 if [ -z "$DATA_ARRAY" ]; then
@@ -33,8 +33,15 @@ fi
 echo "$DATA_ARRAY" | jq -c '.[]' | while IFS= read -r item; do
     # Check if the item is not empty
     if [ -n "$item" ]; then
-    #     # Make POST request to API endpoint
+        # Write the current item to a temporary file
+        temp_file=$(mktemp)
+        echo "$item" > "$temp_file"
         echo "$item" >> ./data/latest_item.json
-        curl -X "POST" -H "Content-Type: application/json" -H "X-API-Key: $DOTNET_API_KEY" -d "$item" "$API_ENDPOINT" >> $DATA_FILE.output
+
+        # Make POST request to API endpoint using the temporary file
+        curl -X "POST" -H "Content-Type: application/json" -H "X-API-Key: $DOTNET_API_KEY" --data-binary @"$temp_file" "$API_ENDPOINT" >> "$DATA_FILE.output"
+
+        # Clean up: Remove temporary file
+        rm "$temp_file"
     fi
 done

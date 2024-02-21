@@ -20,22 +20,29 @@ public class BaseEntityRepository<TEntity> where TEntity : BaseEntity
         _accountService = accountService;
     }
 
-    public virtual async Task<TEntity> UpdateAsync(TEntity entity)
+    public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool updateLastModified = true)
     {
-        entity.LastModified = DateTime.UtcNow;
-        entity.LastModifiedByUserId = _accountService.GetCurrentUserId();
-        
+
+        if ( updateLastModified )
+        {
+            entity.LastModified = DateTime.UtcNow;
+            entity.LastModifiedByUserId = _accountService.GetCurrentUserId(); 
+        }
+
         var savedEntity = Context.Set<TEntity>().Update(entity).Entity;
         await Context.SaveChangesAsync();
 
         return savedEntity;
     }
 
-    public virtual async Task<TEntity> AddAsync(TEntity entity)
+    public virtual async Task<TEntity> AddAsync(TEntity entity, bool updateLastModified = true)
     {
-        // entity.Created = DateTime.UtcNow;
-        entity.LastModified = DateTime.UtcNow;
-        entity.LastModifiedByUserId = _accountService.GetCurrentUserId();
+
+        if ( updateLastModified )
+        {
+            entity.LastModified = DateTime.UtcNow;
+            entity.LastModifiedByUserId = _accountService.GetCurrentUserId();
+        }
 
         var savedEntity = Context.Set<TEntity>().Add(entity).Entity;
         await Context.SaveChangesAsync();

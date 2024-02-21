@@ -16,6 +16,9 @@ namespace Droits.Models.DTOs.Powerapps
         [JsonPropertyName("annotationid")]
         public string? PowerappsAnnotationId { get; set; }
 
+        [JsonPropertyName("modifiedby")]
+        public PowerappsUserDto? ModifiedBy { get; set; }
+        
         [JsonPropertyName("createdon")]
         public DateTime? CreatedOn { get; set; }
 

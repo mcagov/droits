@@ -21,6 +21,7 @@ public interface IWreckService
 {
     Task<List<Wreck>> GetWrecksAsync();
     Task<Wreck> SaveWreckAsync(Wreck wreck);
+    Task<Wreck> AddWreckAsync(Wreck wreck, bool updateLastModified = true);
     Task<Wreck> GetWreckAsync(Guid id);
     Task<Wreck> GetWreckByPowerappsIdAsync(string powerappsId);
     Task<Guid> SaveWreckFormAsync(WreckForm wreckForm);
@@ -75,9 +76,9 @@ public class WreckService : IWreckService
     }
 
 
-    private async Task<Wreck> AddWreckAsync(Wreck wreck)
+    public async Task<Wreck> AddWreckAsync(Wreck wreck, bool updateLastModified = true)
     {
-        return await _repo.AddAsync(wreck);
+        return await _repo.AddAsync(wreck, updateLastModified);
     }
 
 

@@ -14,8 +14,8 @@ namespace Droits.Repositories;
 
 public interface IDroitFileRepository
 {
-    Task<DroitFile> AddAsync(DroitFile droitFile);
-    Task<DroitFile> UpdateAsync(DroitFile droitFile);
+    Task<DroitFile> AddAsync(DroitFile droitFile, bool updateLastModified = true);
+    Task<DroitFile> UpdateAsync(DroitFile droitFile, bool updateLastModified = true);
     Task<DroitFile> GetDroitFileAsync(Guid id);
     Task UploadDroitFileAsync(DroitFile droitFile, IFormFile droitFileUpload);
     Task<Stream> GetDroitFileStreamAsync(string? key);

@@ -23,6 +23,7 @@ public interface IUserService
     Task<ApplicationUser> SaveUserAsync(ApplicationUser user);
     Task<ApplicationUser> GetUserAsync(Guid id);
     Task<ApplicationUser> GetOrCreateUserAsync(string authId, string name, string email);
+    Task<ApplicationUser> GetOrCreateByEmailAddressAsync(ApplicationUser user);
 }
 
 public class UserService : IUserService
@@ -82,14 +83,38 @@ public class UserService : IUserService
         }
         catch ( UserNotFoundException )
         {
-            var newUser = new ApplicationUser
+            try
             {
-                AuthId = authId,
-                Name = name,
-                Email = email,
-            };
+                var matchingUser = await _repo.GetUserByEmailAddressAsync(email);
+                matchingUser.AuthId = authId;
+                return await _repo.UpdateUserAsync(matchingUser);
+            }
+            catch ( UserNotFoundException )
+            {
+                var newUser = new ApplicationUser
+                {
+                    AuthId = authId,
+                    Name = name,
+                    Email = email,
+                };
 
-            return await _repo.AddUserAsync(newUser);    
+                return await _repo.AddUserAsync(newUser);    
+            }
         }
     }
+
+
+    public async Task<ApplicationUser> GetOrCreateByEmailAddressAsync(ApplicationUser user)
+    {
+        try
+        {
+            return await _repo.GetUserByEmailAddressAsync(user.Email);
+        }
+        catch ( UserNotFoundException )
+        {
+            user.AuthId = string.Empty;
+            return await _repo.AddUserAsync(user);    
+        } 
+    }
+
 }
