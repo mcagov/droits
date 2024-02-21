@@ -19,17 +19,6 @@ public static class TempDataExtensions
         tempData["ErrorMessage"] = message;
     }
     
-    public static void SetTriageSuccessMessage<T>(this ITempDataDictionary tempData, T message)
-    {
-        tempData["TriageSuccessMessage"] = message;
-    }
-
-
-    public static void SetTriageErrorMessage<T>(this ITempDataDictionary tempData, T message)
-    {
-        tempData["TriageErrorMessage"] = message;
-    }
-
 
     public static void Add<T>(this ITempDataDictionary tempData, string key, string value)
     {
