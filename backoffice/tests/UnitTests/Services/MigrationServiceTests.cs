@@ -111,14 +111,51 @@ namespace Droits.Tests.UnitTests.Services
                     TriageNumber = ""
                 },
             };
-            
-            _mockDroitService.Setup(ds => ds.GetDroitByReferenceAsync("001/24"))
-                .Throws(new MissingFieldException() );
 
             var result = await _service.HandleTriageCsvAsync(records);
             
             Assert.NotEmpty(result.InvalidTriageNumberValues);
             Assert.True(result.InvalidTriageNumberValues.Exists(kv => kv.Key == "001/24"));
+            
+        }
+        
+        [Fact]
+        public async Task HandleTriageCsv_HandlesOutOfBoundsTriageNumbers()
+        {
+
+            var records = new List<TriageRowDto>()
+            {
+                new()
+                {
+                    DroitReference = "001/24",
+                    TriageNumber = "-1"
+                },
+                new()
+                {
+                    DroitReference = "002/24",
+                    TriageNumber = "0"
+                },
+                new()
+                {
+                    DroitReference = "003/24",
+                    TriageNumber = "6"
+                },
+                new()
+                {
+                    DroitReference = "004/24",
+                    TriageNumber = "3"
+                },
+            };
+            
+            _mockDroitService.Setup(ds => ds.GetDroitByReferenceAsync("004/24"))
+                .ReturnsAsync(new Droit {Reference = "004/24",TriageNumber = 3});
+
+            var result = await _service.HandleTriageCsvAsync(records);
+            
+            Assert.True(result.SuccessfulTriageUpdates.Exists(kv => kv.Key == "004/24"));
+            Assert.True(result.InvalidTriageNumberValues.Exists(kv => kv.Key == "001/24"));
+            Assert.True(result.InvalidTriageNumberValues.Exists(kv => kv.Key == "002/24"));
+            Assert.True(result.InvalidTriageNumberValues.Exists(kv => kv.Key == "003/24"));
             
         }
     }
