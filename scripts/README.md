@@ -1,7 +1,3 @@
-Certainly! Below is the enhanced version of the README with additional information about each script:
-
----
-
 # Migration Script README
 
 This script is designed to facilitate the migration of data from a Microsoft PowerApps environment to a .NET Core application. It pulls data from specified endpoints in the PowerApps environment and pushes it to corresponding endpoints in the .NET Core application.
@@ -64,7 +60,3 @@ To execute the migration script, follow these steps:
 - Make sure to handle any errors or exceptions encountered during the migration process appropriately to ensure data integrity and consistency.
 
 - Regularly review and update the configuration file (`config.json`) as per your evolving migration requirements.
-
-By following these instructions, you can efficiently migrate data from your Microsoft PowerApps environment to your .NET Core application using this migration script.
-
----
