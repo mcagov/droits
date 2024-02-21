@@ -1,4 +1,5 @@
 using AutoMapper;
+using Droits.Exceptions;
 using Droits.Models;
 using Droits.Models.Entities;
 using Droits.Services;
@@ -62,15 +63,64 @@ namespace Droits.Tests.UnitTests.Services
 
             // Apply
 
-            await _service.HandleTriageCsvAsync(records);
+            var result = await _service.HandleTriageCsvAsync(records);
             // Assert
             
             _mockDroitService.Verify(r => r.GetDroitByReferenceAsync(droitOne.Reference), Times.Once);
             _mockDroitService.Verify(r => r.GetDroitByReferenceAsync(droitTwo.Reference), Times.Once);
             _mockDroitService.Verify(r => r.SaveDroitAsync(It.IsAny<Droit>()), Times.Exactly(2));
             
+            Assert.NotEmpty(result.SuccessfulTriageUpdates);
+            Assert.True(result.SuccessfulTriageUpdates.Exists(kv => kv.Key == "001/24"));
+            Assert.True(result.SuccessfulTriageUpdates.Exists(kv => kv.Key == "002/24"));
+
+        }
+
+        [Fact]
+        public async Task HandleTriageCsv_ReturnsDroitNotFoundErrors()
+        {
+
+            var records = new List<TriageRowDto>()
+            {
+                new()
+                {
+                    DroitReference = "001/24",
+                    TriageNumber = "3"
+                },
+            };
+            
+            _mockDroitService.Setup(ds => ds.GetDroitByReferenceAsync("001/24"))
+                .Throws(new DroitNotFoundException());
+
+            var result = await _service.HandleTriageCsvAsync(records);
+            
+            Assert.NotEmpty(result.InvalidDroitReferences);
+            Assert.True(result.InvalidDroitReferences.Exists(kv => kv.Key == "001/24"));
+            
         }
         
+        [Fact]
+        public async Task HandleTriageCsv_ReturnsMissingTriageFieldsErrors()
+        {
+
+            var records = new List<TriageRowDto>()
+            {
+                new()
+                {
+                    DroitReference = "001/24",
+                    TriageNumber = ""
+                },
+            };
+            
+            _mockDroitService.Setup(ds => ds.GetDroitByReferenceAsync("001/24"))
+                .Throws(new MissingFieldException() );
+
+            var result = await _service.HandleTriageCsvAsync(records);
+            
+            Assert.NotEmpty(result.InvalidTriageNumberValues);
+            Assert.True(result.InvalidTriageNumberValues.Exists(kv => kv.Key == "001/24"));
+            
+        }
     }
     
     
