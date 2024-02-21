@@ -65,9 +65,7 @@ if [[ "$POWERAPPS_ENDPOINT" == *"/annotations"* ]]; then
     processNotes "$temp_file" "$ACCESS_TOKEN" "$OUTPUT_FILE"
 else
     # Output regular JSON data to the output file
-        # DATA=$(sed -e 's/\\/\\\\/g' -e 's/\\"/\"/g' <<< "$modified_output" | jq '. | walk(if type == "string" then gsub("[\u0000-\u001F]"; "\\n") | gsub("[\u0000-\u001F]"; "\"") else . end)')
-
-cat "$temp_file" | jq '.' | sed -e 's/\\/\\\\/g' -e 's/\\"/\"/g' -e 's/’/'\''/g' > "$OUTPUT_FILE"
+    cat "$temp_file" | jq '.' | sed -e 's/\\/\\\\/g' -e 's/\\"/\"/g' -e 's/’/'\''/g' > "$OUTPUT_FILE"
     echo "Regular JSON data saved to $OUTPUT_FILE"
 fi
 
