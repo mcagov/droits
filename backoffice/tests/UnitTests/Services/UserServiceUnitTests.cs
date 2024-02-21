@@ -79,6 +79,40 @@ namespace Droits.Tests.UnitTests.Services
             _mockRepo.Verify(r => r.GetUserByAuthIdAsync(authId), Times.Once);
             _mockRepo.Verify(r => r.AddUserAsync(It.IsAny<ApplicationUser>()), Times.Never);
         }
+        
+        [Fact]
+        public async Task GetOrCreateUserAsync_UserWithEmailExists_ReturnsExistingUser()
+        {
+            // Given
+            const string emailAddress = "john@example.com";
+            const string authId = "auth123";
+            var existingUser = new ApplicationUser { Id = Guid.NewGuid(), Email = emailAddress };
+            _mockRepo.Setup(r => r.GetUserByAuthIdAsync(It.IsAny<string>())).Throws<UserNotFoundException>();
+            _mockRepo.Setup(r => r.GetUserByEmailAddressAsync(emailAddress))
+                .ReturnsAsync(existingUser);
+
+            var updatedUser = new ApplicationUser()
+            {
+                Id = existingUser.Id,
+                Email = emailAddress,
+                Name = "John Doe",
+                AuthId = authId
+            };
+            
+            _mockRepo.Setup(r => r.UpdateUserAsync(It.IsAny<ApplicationUser>()))
+                .ReturnsAsync(updatedUser);
+            
+            // When
+            var result = await _service.GetOrCreateUserAsync(authId, "John Doe", emailAddress);
+
+            // Then
+            Assert.Equal(updatedUser, result);
+            _mockRepo.Verify(r => r.GetUserByAuthIdAsync(authId), Times.Once);
+            _mockRepo.Verify(r => r.GetUserByEmailAddressAsync(emailAddress), Times.Once);
+            _mockRepo.Verify(r => r.UpdateUserAsync(It.IsAny<ApplicationUser>()), Times.Once);
+            _mockRepo.Verify(r => r.AddUserAsync(It.IsAny<ApplicationUser>()), Times.Never);
+
+        }
 
         [Fact]
         public async Task GetOrCreateUserAsync_UserDoesNotExist_AddsNewUser()
@@ -87,6 +121,7 @@ namespace Droits.Tests.UnitTests.Services
             var authId = "auth123";
             var newUser = new ApplicationUser { Id = Guid.NewGuid(), AuthId = authId };
             _mockRepo.Setup(r => r.GetUserByAuthIdAsync(authId)).Throws<UserNotFoundException>();
+            _mockRepo.Setup(r => r.GetUserByEmailAddressAsync(It.IsAny<string>())).Throws<UserNotFoundException>();
             _mockRepo.Setup(r => r.AddUserAsync(It.IsAny<ApplicationUser>())).ReturnsAsync(newUser);
 
             // When
