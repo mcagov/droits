@@ -185,8 +185,6 @@ public class MigrationController : BaseController
             var result = await _service.HandleTriageCsvAsync(records);
             Console.Write("records uploaded");
             
-            AddTriageErrorMessage(result.GetErrorMessage());
-            AddTriageSuccessMessage(result.GetSuccessMessage());
             return View("UploadTriageFile", result);
         }
         catch ( Exception e )
