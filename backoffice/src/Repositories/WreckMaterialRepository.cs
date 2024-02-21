@@ -14,8 +14,8 @@ namespace Droits.Repositories;
 public interface IWreckMaterialRepository
 {
 
-    Task<WreckMaterial> AddAsync(WreckMaterial wreckMaterial);
-    Task<WreckMaterial> UpdateAsync(WreckMaterial wreckMaterial);
+    Task<WreckMaterial> AddAsync(WreckMaterial wreckMaterial, bool updateLastModified = true);
+    Task<WreckMaterial> UpdateAsync(WreckMaterial wreckMaterial, bool updateLastModified = true);
     Task<WreckMaterial> GetWreckMaterialAsync(Guid id);
     Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep);
     Task<WreckMaterial> GetWreckMaterialByPowerappsIdAsync(string powerappsId);

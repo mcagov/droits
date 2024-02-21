@@ -26,14 +26,14 @@ namespace Droits.Tests.UnitTests.Services
         {
             // Given
             var newNote = new Note { Text = "NewNoteText" };
-            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Note>())).ReturnsAsync(newNote);
+            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Note>(),It.IsAny<bool>())).ReturnsAsync(newNote);
 
             // When
             var result = await _service.SaveNoteAsync(newNote);
 
             // Then
             Assert.Equal(newNote, result);
-            _mockRepo.Verify(r => r.AddAsync(newNote), Times.Once);
+            _mockRepo.Verify(r => r.AddAsync(newNote, true), Times.Once);
         }
 
         [Fact]
@@ -41,14 +41,14 @@ namespace Droits.Tests.UnitTests.Services
         {
             // Given
             var existingNote = new Note { Id = Guid.NewGuid(), Text = "ExistingNoteText" };
-            _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Note>())).ReturnsAsync(existingNote);
+            _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Note>(),It.IsAny<bool>())).ReturnsAsync(existingNote);
 
             // When
             var result = await _service.SaveNoteAsync(existingNote);
 
             // Then
             Assert.Equal(existingNote, result);
-            _mockRepo.Verify(r => r.UpdateAsync(existingNote), Times.Once);
+            _mockRepo.Verify(r => r.UpdateAsync(existingNote, true), Times.Once);
         }
 
         [Fact]

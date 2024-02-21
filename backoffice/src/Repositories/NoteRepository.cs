@@ -14,8 +14,8 @@ namespace Droits.Repositories
 {
     public interface INoteRepository
     {
-        Task<Note> AddAsync(Note note);
-        Task<Note> UpdateAsync(Note note);
+        Task<Note> AddAsync(Note note, bool updateLastModified = true);
+        Task<Note> UpdateAsync(Note note, bool updateLastModified = true);
         Task<Note> GetNoteAsync(Guid id);
     }
 

@@ -58,9 +58,13 @@
                             }
                         }
                     </td>
-                    <td class="p-3 text-uppercase">
-                        <span class="badge rounded-pill bg-primary">@droit?.TriageNumber</span>
-                    </td>
+                }
+               
+                <td class="p-3 text-uppercase">
+                    <span class="badge rounded-pill bg-primary">@droit?.TriageNumber</span>
+                </td>
+                 @if (Model.IncludeAssociations)
+                 {
                     <td class="p-3">
                         <span>@droit?.WreckMaterials.Count</span>
                     </td>

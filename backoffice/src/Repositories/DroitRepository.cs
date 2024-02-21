@@ -18,8 +18,8 @@ public interface IDroitRepository
     Task<Droit> GetDroitWithAssociationsAsync(Guid id);
     Task<Droit> GetDroitAsync(Guid id);
     Task<Droit> GetDroitByPowerappsIdAsync(string powerappsId);
-    Task<Droit> AddAsync(Droit droit);
-    Task<Droit> UpdateAsync(Droit droit);
+    Task<Droit> AddAsync(Droit droit, bool updateLastModified = true);
+    Task<Droit> UpdateAsync(Droit droit, bool updateLastModified = true);
 
     Task<bool> IsReferenceUnique(Droit droit);
 

@@ -28,12 +28,14 @@ public class MigrationService : IMigrationService
     private readonly IWreckService _wreckService;
     private readonly IDroitFileService _fileService;
     private readonly INoteService _noteService;
+    private readonly IUserService _userService;
+
     
     private readonly IMapper _mapper;
 
 
     
-    public MigrationService(ILogger<MigrationService> logger,  IDroitService droitService, IWreckMaterialService wreckMaterialService, ISalvorService salvorService, IImageService imageService, IDroitFileService fileService, IWreckService wreckService, INoteService noteService, IMapper mapper)
+    public MigrationService(ILogger<MigrationService> logger,  IDroitService droitService, IWreckMaterialService wreckMaterialService, ISalvorService salvorService, IImageService imageService, IDroitFileService fileService, IWreckService wreckService, INoteService noteService, IUserService userService, IMapper mapper)
     {
         _logger = logger;
         _droitService = droitService;
@@ -43,6 +45,7 @@ public class MigrationService : IMigrationService
         _fileService = fileService;
         _wreckService = wreckService;
         _noteService = noteService;
+        _userService = userService;
         _mapper = mapper;
     }
 
@@ -64,7 +67,19 @@ public class MigrationService : IMigrationService
                 _logger.LogError("Name is null");
                 throw new WreckNotFoundException();
             }
-            wreck = await _wreckService.SaveWreckAsync(wreck);
+            
+            if ( wreckRequest.ModifiedBy != null )
+            {
+                var mappedUser = _mapper.Map<ApplicationUser>(wreckRequest.ModifiedBy);
+                
+                
+                var modifiedBy = await _userService.GetOrCreateByEmailAddressAsync(mappedUser);
+
+                wreck.LastModifiedByUserId = modifiedBy.Id;
+            }
+
+            
+            wreck = await _wreckService.AddWreckAsync(wreck, false);
         }
         catch (Exception ex)
         {
@@ -122,7 +137,17 @@ public class MigrationService : IMigrationService
         
         try
         {
-            note = await _noteService.SaveNoteAsync(note);
+            if ( noteRequest.ModifiedBy != null )
+            {
+                var mappedUser = _mapper.Map<ApplicationUser>(noteRequest.ModifiedBy);
+                
+                
+                var modifiedBy = await _userService.GetOrCreateByEmailAddressAsync(mappedUser);
+
+                note.LastModifiedByUserId = modifiedBy.Id;
+            }
+            
+            note = await _noteService.AddNoteAsync(note, false);
         }
         catch (Exception ex)
         {
@@ -174,15 +199,39 @@ public class MigrationService : IMigrationService
                 }
             }
             
+            
+            if ( droitRequest.ModifiedBy != null )
+            {
+                var mappedUser = _mapper.Map<ApplicationUser>(droitRequest.ModifiedBy);
+                
+                
+                var modifiedBy = await _userService.GetOrCreateByEmailAddressAsync(mappedUser);
+
+                droit.LastModifiedByUserId = modifiedBy.Id;
+            }
+
+            
+            if ( droitRequest.Receiver != null )
+            {
+                var mappedUser = _mapper.Map<ApplicationUser>(droitRequest.Receiver);
+                
+                
+                var reporter = await _userService.GetOrCreateByEmailAddressAsync(mappedUser);
+
+                droit.AssignedToUserId = reporter.Id;
+            }
+            
             if ( droitRequest.Reporter != null )
             {
                 var mappedSalvor = _mapper.Map<Salvor>(droitRequest.Reporter);
                 var salvor = await _salvorService.GetOrCreateAsync(mappedSalvor);
-
+                
+                // Could set the last modified of the salvor to be the same as the last modified of the droit here.. 
+                
                 droit.SalvorId = salvor.Id;
             }
-                
-            droit = await _droitService.SaveDroitAsync(droit);
+
+            droit =  await _droitService.AddDroitAsync(droit, false);
         }
         catch (Exception ex)
         {
@@ -212,6 +261,16 @@ public class MigrationService : IMigrationService
                 _logger.LogError("Name is null");
                 throw new WreckMaterialNotFoundException();
             }
+            
+            if ( wmRequest.ModifiedBy != null )
+            {
+                var mappedUser = _mapper.Map<ApplicationUser>(wmRequest.ModifiedBy);
+                
+                
+                var modifiedBy = await _userService.GetOrCreateByEmailAddressAsync(mappedUser);
+
+                wreckMaterial.LastModifiedByUserId = modifiedBy.Id;
+            }
 
             // Connect the droit.. 
             Droit droit = null!;
@@ -222,10 +281,7 @@ public class MigrationService : IMigrationService
                     droit =
                         await _droitService.GetDroitByPowerappsIdAsync(wmRequest.PowerappsDroitId);
                     wreckMaterial.DroitId = droit.Id;
-                    
-                    
-                    
-                    
+     
                 }
                 catch ( DroitNotFoundException ex )
                 {

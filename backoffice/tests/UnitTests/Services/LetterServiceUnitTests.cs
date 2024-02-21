@@ -99,7 +99,7 @@ namespace Droits.Tests.UnitTests.Services
             var result = await _service.SendLetterAsync(letterId);
 
             // Then
-            _mockRepo.Verify(r => r.UpdateAsync(letter), Times.Once);
+            _mockRepo.Verify(r => r.UpdateAsync(letter, true), Times.Once);
             Assert.NotNull(result);
         }
     }

@@ -22,14 +22,14 @@ namespace Droits.Tests.UnitTests.Services
         {
             // Given
             var newWreck = new Wreck { Name = "NewWreck" };
-            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Wreck>())).ReturnsAsync(newWreck);
+            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Wreck>(),It.IsAny<bool>())).ReturnsAsync(newWreck);
 
             // When
             var result = await _service.SaveWreckAsync(newWreck);
 
             // Then
             Assert.Equal(newWreck, result);
-            _mockRepo.Verify(r => r.AddAsync(newWreck), Times.Once);
+            _mockRepo.Verify(r => r.AddAsync(newWreck, true), Times.Once);
         }
 
         [Fact]
@@ -37,14 +37,14 @@ namespace Droits.Tests.UnitTests.Services
         {
             // Given
             var existingWreck = new Wreck { Id = Guid.NewGuid(), Name = "ExistingWreck" };
-            _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Wreck>())).ReturnsAsync(existingWreck);
+            _mockRepo.Setup(r => r.UpdateAsync(It.IsAny<Wreck>(),It.IsAny<bool>())).ReturnsAsync(existingWreck);
 
             // When
             var result = await _service.SaveWreckAsync(existingWreck);
 
             // Then
             Assert.Equal(existingWreck, result);
-            _mockRepo.Verify(r => r.UpdateAsync(existingWreck), Times.Once);
+            _mockRepo.Verify(r => r.UpdateAsync(existingWreck, true), Times.Once);
         }
 
         [Fact]
@@ -68,15 +68,15 @@ namespace Droits.Tests.UnitTests.Services
             // Given
             var wreckForm = new WreckForm { Name = "NewWreckForm" };
             var newWreck = new Wreck { Name = "NewWreck" };
-            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Wreck>())).ReturnsAsync(newWreck);
+            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Wreck>(),It.IsAny<bool>())).ReturnsAsync(newWreck);
 
             // When
             var result = await _service.SaveWreckFormAsync(wreckForm);
 
             // Then
             Assert.Equal(newWreck.Id, result);
-            _mockRepo.Verify(r => r.AddAsync(It.IsAny<Wreck>()), Times.Once);
-            _mockRepo.Verify(r => r.UpdateAsync(It.IsAny<Wreck>()), Times.Never);
+            _mockRepo.Verify(r => r.AddAsync(It.IsAny<Wreck>(),It.IsAny<bool>()), Times.Once);
+            _mockRepo.Verify(r => r.UpdateAsync(It.IsAny<Wreck>(),It.IsAny<bool>()), Times.Never);
 
         }
 

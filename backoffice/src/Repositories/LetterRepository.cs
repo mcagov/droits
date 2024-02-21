@@ -15,8 +15,8 @@ public interface ILetterRepository
     IQueryable<Letter> GetLetters();
     IQueryable<Letter> GetLettersWithAssociations();
     Task<Letter> GetLetterAsync(Guid id);
-    Task<Letter> AddAsync(Letter letter);
-    Task<Letter> UpdateAsync(Letter letter);
+    Task<Letter> AddAsync(Letter letter, bool updateLastModified = true);
+    Task<Letter> UpdateAsync(Letter letter, bool updateLastModified = true);
 }
 
 public class LetterRepository : BaseEntityRepository<Letter>, ILetterRepository

@@ -131,7 +131,7 @@ builder.Services.AddScoped<IDroitFileRepository, DroitFileRepository>();
 builder.Services.AddScoped<IDroitFileService, DroitFileService>();
 
 // Mappers
-builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile), typeof(PowerAppsDroitReportMappingProfile), typeof(PowerAppsWreckMaterialMappingProfile), typeof(PowerAppsNoteMappingProfile), typeof(WebappSalvorInfoMappingProfile), typeof(WebappSalvorInfoDroitMappingProfile),typeof(WebappSalvorInfoWreckMaterialMappingProfile));
+builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile), typeof(PowerAppsDroitReportMappingProfile), typeof(PowerAppsWreckMaterialMappingProfile), typeof(PowerAppsNoteMappingProfile), typeof(PowerAppsUserMappingProfile), typeof(WebappSalvorInfoMappingProfile), typeof(WebappSalvorInfoDroitMappingProfile),typeof(WebappSalvorInfoWreckMaterialMappingProfile));
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();
@@ -141,6 +141,7 @@ builder.Services.AddLogging(loggingBuilder =>
 {
     loggingBuilder.AddConsole();
     loggingBuilder.SetMinimumLevel(LogLevel.Debug);
+    
 });
 
 // Forwarded Headers
@@ -185,6 +186,9 @@ if (!app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<DroitsContext>();
+    //This line drops the db, make sure this doesn't get released!!!
+    dbContext.Database.EnsureDeleted();
+    
     dbContext.Database.EnsureCreated();
     // DatabaseSeeder.SeedData(dbContext);
 }
