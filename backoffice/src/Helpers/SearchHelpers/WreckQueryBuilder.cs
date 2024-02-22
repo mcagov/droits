@@ -15,13 +15,23 @@ public static class WreckQueryBuilder
         bool usePsql = true)
     {
             
-        if ( !string.IsNullOrEmpty(form.Name) )
+        if ( !string.IsNullOrEmpty(form.WreckName) )
         {
              query = query.Where(w =>
                  !string.IsNullOrEmpty(w.Name) &&
-                 (w.Name.ToLower().Contains(form.Name.ToLower()) ||
-                  (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.Name.ToLower(), w.Name.ToLower()) :
-                      SearchHelper.GetLevenshteinDistance(form.Name.ToLower(), w.Name.ToLower())) < MaxLevenshteinDistance)
+                 (w.Name.ToLower().Contains(form.WreckName.ToLower()) ||
+                  (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.WreckName.ToLower(), w.Name.ToLower()) :
+                      SearchHelper.GetLevenshteinDistance(form.WreckName.ToLower(), w.Name.ToLower())) < MaxLevenshteinDistance)
+             );
+        }
+        
+        if ( !string.IsNullOrEmpty(form.OwnerName) )
+        {
+             query = query.Where(w =>
+                 !string.IsNullOrEmpty(w.OwnerName) &&
+                 (w.OwnerName.ToLower().Contains(form.OwnerName.ToLower()) ||
+                  (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.OwnerName.ToLower(), w.OwnerName.ToLower()) :
+                      SearchHelper.GetLevenshteinDistance(form.OwnerName.ToLower(), w.OwnerName.ToLower())) < MaxLevenshteinDistance)
              );
         }
         

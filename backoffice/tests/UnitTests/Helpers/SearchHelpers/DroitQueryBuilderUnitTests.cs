@@ -273,6 +273,42 @@ public class DroitQueryBuilderUnitTests
     }
     
     [Fact]
+    public void BuildQuery_WithWreckOwnerSearchField_ReturnsFilteredQuery()
+    {
+        // Arrange
+        var matchingWreck = new Wreck() { Id = Guid.NewGuid(), OwnerName = "Test"};
+        var partiallyMatchingWreck = new Wreck() { Id = Guid.NewGuid(), OwnerName = "AnotherTest"};
+        var form = new DroitSearchForm { OwnerName = "Test" };
+        var droits = new List<Droit>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "MatchingDroit",
+                Wreck = matchingWreck,
+                WreckId = matchingWreck.Id
+            },
+            new() {
+                Id = Guid.NewGuid(), Reference = "PartiallyMatchingDroit",
+                Wreck = partiallyMatchingWreck,
+                WreckId = partiallyMatchingWreck.Id
+            },
+            new() {
+                Id = Guid.NewGuid(), Reference = "NotMatchingDroit",
+                Wreck = new Wreck(),
+                WreckId = Guid.NewGuid()
+            },
+        }.AsQueryable();
+    
+        // Act
+        var result = DroitQueryBuilder.BuildQuery(form, droits, false);
+    
+        // Assert
+        Assert.Equal(2, result.Count()); 
+        Assert.True(result.Any(d => d.Reference == "MatchingDroit"));
+        Assert.True(result.Any(d => d.Reference == "PartiallyMatchingDroit"));
+    }
+    
+    [Fact]
     public void BuildQuery_WithSalvorSearchFields_ReturnsFilteredQuery()
     {
         // Arrange

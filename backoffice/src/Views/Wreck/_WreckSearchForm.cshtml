@@ -7,8 +7,13 @@
     </div>
 
     <div class="form-floating mb-3">
-        @Html.EditorFor(w => w.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "" } })
-        @Html.LabelFor(w => w.Name)
+        @Html.EditorFor(w => w.WreckName, new { htmlAttributes = new { @class = "form-control", @placeholder = "" } })
+        @Html.LabelFor(w => w.WreckName)
+    </div>
+    
+    <div class="form-floating mb-3">
+        @Html.EditorFor(w => w.OwnerName, new { htmlAttributes = new { @class = "form-control", @placeholder = "" } })
+        @Html.LabelFor(w => w.OwnerName)
     </div>
 
     <div class="col d-flex flex-row mt-4">

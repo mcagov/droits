@@ -1,6 +1,12 @@
+using System.ComponentModel;
+
 namespace Droits.Models.FormModels.SearchFormModels;
 
 public class WreckSearchForm : SearchForm
 {
-    public string? Name { get; set; } = string.Empty;
+    [DisplayName("Wreck Name")]
+    public string? WreckName { get; set; } = string.Empty;
+    
+    [DisplayName("Owner Name")]
+    public string? OwnerName { get; set; } = string.Empty;
 }

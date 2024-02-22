@@ -88,10 +88,26 @@ public static class DroitQueryBuilder
                 );
             }
             
+            if (!string.IsNullOrEmpty(form.OwnerName))
+            {
+                query = query.Where(d => 
+                    d.Wreck != null && !string.IsNullOrEmpty(d.Wreck.OwnerName) &&
+                    (d.Wreck.OwnerName.ToLower().Contains(form.OwnerName.ToLower()) ||
+                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.OwnerName.ToLower(), d.Wreck.OwnerName.ToLower()) :
+                         SearchHelper.GetLevenshteinDistance(form.OwnerName.ToLower(), d.Wreck.OwnerName.ToLower())) < MaxLevenshteinDistance)
+                );
+            }
+            
             query = query.Where(d =>
                 string.IsNullOrEmpty(form.WreckName) ||
                 d.Wreck != null &&
                 !string.IsNullOrEmpty(d.Wreck.Name)
+            );
+            
+            query = query.Where(d =>
+                string.IsNullOrEmpty(form.OwnerName) ||
+                d.Wreck != null &&
+                !string.IsNullOrEmpty(d.Wreck.OwnerName)
             );
             
             //Salvor Filters
