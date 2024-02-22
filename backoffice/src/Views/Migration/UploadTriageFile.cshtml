@@ -1,0 +1,101 @@
+@model Droits.Models.DTOs.Imports.TriageUploadResultDto
+
+@{
+    ViewData["Title"] = "Droit Triage File Upload";
+}
+
+@{
+    await Html.RenderPartialAsync("_MessageBanner");
+}
+
+<h4>@ViewData["Title"]</h4>
+
+<div class="border p-4">
+    <h5>Upload a csv, xls or xlsx file only</h5>
+    <p>Use the template file as a guide, there should be two columns only with the exact headers shown</p>
+    <a href="~/downloads/triage_test.csv" download>
+        download the template here
+    </a>
+</div>
+<div class="row">
+    <form method="post" class="mt-2" action="@Url.Action("ProcessTriageFile", "Migration")" enctype="multipart/form-data">
+        <div class="form-group col mt-2">
+            <input type="file" name="file" id="file" accept=".csv,.xls,.xlsx" class="form-control js-file-file-input text-box single-line" required />
+        </div>
+        <div class="form-group col mt-2">
+            <button class="btn btn-primary mt-2 float-end" type="submit">Upload</button>
+        </div>
+    </form>
+</div>
+
+@if (Model.SuccessfulTriageUpdates.Any())
+{
+    <div class="alert alert-success mt-2 p-4" role="alert">
+
+
+        <h5>Successful Droits</h5>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Droit Reference</th>
+                <th scope="col">Triage Number</th>
+            </tr>
+            </thead>
+            @foreach (var result in Model.SuccessfulTriageUpdates)
+            {
+                <tr>
+                    <td>@result.Key</td>
+                    <td>@result.Value</td>
+                </tr>
+            }
+        </table>
+
+    </div>
+}
+@if (Model.InvalidDroitReferences.Any())
+{
+    <div class="alert alert-danger mt-2 p-4" role="alert">
+
+        <h5>Unable to find the following droits:</h5>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Droit Reference</th>
+                <th scope="col">Triage Number</th>
+            </tr>
+            </thead>
+            @foreach (var result in Model.InvalidDroitReferences)
+            {
+                <tr>
+                    <td>@result.Key</td>
+                    <td>@result.Value</td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+@if (Model.InvalidTriageNumberValues.Any())
+{
+    <div class="alert alert-danger mt-2 p-4" role="alert">
+        <h5>Invalid Triage Number:</h5>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Droit Reference</th>
+                <th scope="col">Triage Number</th>
+            </tr>
+            </thead>
+            @foreach (var result in Model.InvalidTriageNumberValues)
+            {
+                <tr>
+                    <td>@result.Key</td>
+                    <td>@result.Value</td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+
+

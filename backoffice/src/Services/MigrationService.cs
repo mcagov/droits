@@ -1,5 +1,7 @@
 using AutoMapper;
 using Droits.Exceptions;
+using Droits.Models;
+using Droits.Models.DTOs.Imports;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Models.Entities;
 
@@ -12,6 +14,7 @@ public interface IMigrationService
     Task<WreckMaterial> MigrateWreckMaterialAsync(PowerappsWreckMaterialDto wmRequest);
     Task<Wreck> MigrateWreckAsync(PowerappsWreckDto request);
     Task<Note> MigrateNoteAsync(PowerappsNoteDto request);
+    Task<TriageUploadResultDto> HandleTriageCsvAsync(List<TriageRowDto> records);
 
 
 }
@@ -313,5 +316,63 @@ public class MigrationService : IMigrationService
 
         return wreckMaterial;
     }
+
+
+    public async Task<TriageUploadResultDto> HandleTriageCsvAsync(List<TriageRowDto> records)
+    {
+        
+        var result = new TriageUploadResultDto();
+        // loop through records
+        foreach ( var record in records )
+        {
+            try
+            {
+                if ( string.IsNullOrEmpty(record.DroitReference) )
+                {
+                    throw new DroitNotFoundException("Reference number not supplied");
+                }
+                
+                if ( string.IsNullOrEmpty(record.TriageNumber) )
+                {
+                    throw new MissingFieldException("Triage number not supplied");
+                }
+                
+                var droit = await _droitService.GetDroitByReferenceAsync(record.DroitReference);
+
+                var isValid = int.TryParse(record.TriageNumber, out var triageNumber);
+                
+
+                if ( isValid && triageNumber is > 0 and <= 5)
+                {  
+                    droit.TriageNumber = triageNumber;
+                    await _droitService.SaveDroitAsync(droit);
+                    result.SuccessfulTriageUpdates.Add(new KeyValuePair<string, string?>(record.DroitReference,record.TriageNumber));
+
+                }
+                else
+                {
+                 throw new MissingFieldException("Invalid triage number");
+                }
+
+                
+            }
+            catch ( DroitNotFoundException e )
+            {
+                result.InvalidDroitReferences.Add(new KeyValuePair<string, string?>(record.DroitReference??"",record.TriageNumber));
+                _logger.LogError($"Droit not found - {e}");
+            }
+            catch ( MissingFieldException e )
+            {               
+                result.InvalidTriageNumberValues.Add(new KeyValuePair<string, string?>(record.DroitReference??"",record.TriageNumber));
+                _logger.LogError($"Triage number not found - {e}");
+            }
+            
+        }
+
+        return result;
+    }
+
+
+
     
 }

@@ -1,11 +1,18 @@
-﻿using Droits.Helpers;
+﻿using System.Globalization;
+using CsvHelper;
+using Droits.Exceptions;
+using Droits.Helpers;
+using Droits.Models;
+using Droits.Models.DTOs.Imports;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
+using MissingFieldException = CsvHelper.MissingFieldException;
 
 namespace Droits.Controllers;
-public class MigrationController : Controller
+public class MigrationController : BaseController
 {
     private readonly ILogger<MigrationController> _logger;
 
@@ -157,5 +164,43 @@ public class MigrationController : Controller
             return NotFound();
         }
 
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> ProcessTriageFile(IFormFile? file)
+    {
+        if ( file == null || file.Length == 0 )
+        {
+            ModelState.AddModelError("File", "Please select a file");
+            return RedirectToAction("UploadTriageFile");
+        }
+        
+        try
+        {
+            var reader = new StreamReader(file.OpenReadStream());
+            var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            var records = csv.GetRecords<TriageRowDto>().ToList();
+
+            var result = await _service.HandleTriageCsvAsync(records);
+            Console.Write("records uploaded");
+            
+            return View("UploadTriageFile", result);
+        }
+        catch ( Exception e )
+        { 
+            HandleError(_logger, "Error updating triage numbers", e);
+
+            return View("UploadTriageFile", new TriageUploadResultDto());
+        }
+
+        
+    }
+
+
+    [HttpGet]
+    public IActionResult UploadTriageFile()
+    {
+        return View(new TriageUploadResultDto());
     }
 }
