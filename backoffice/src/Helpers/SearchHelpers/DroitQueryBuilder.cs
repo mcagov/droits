@@ -88,11 +88,15 @@ public static class DroitQueryBuilder
                 );
             }
             
-            query = query.Where(d =>
-                string.IsNullOrEmpty(form.WreckName) ||
-                d.Wreck != null &&
-                !string.IsNullOrEmpty(d.Wreck.Name)
-            );
+            if (!string.IsNullOrEmpty(form.OwnerName))
+            {
+                query = query.Where(d => 
+                    d.Wreck != null && !string.IsNullOrEmpty(d.Wreck.OwnerName) &&
+                    (d.Wreck.OwnerName.ToLower().Contains(form.OwnerName.ToLower()) ||
+                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.OwnerName.ToLower(), d.Wreck.OwnerName.ToLower()) :
+                         SearchHelper.GetLevenshteinDistance(form.OwnerName.ToLower(), d.Wreck.OwnerName.ToLower())) < MaxLevenshteinDistance)
+                );
+            }
             
             //Salvor Filters
             
@@ -106,11 +110,6 @@ public static class DroitQueryBuilder
                      
                 );
             }
-            
-            query = query.Where(d =>
-                string.IsNullOrEmpty(form.SalvorName) ||
-                ( d.Salvor != null &&
-                  !string.IsNullOrEmpty(d.Salvor.Name) ));
             
             //Location Filters
             

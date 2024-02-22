@@ -86,6 +86,9 @@ public class DroitSearchForm : SearchForm
 
     [DisplayName("Wreck Name")]
     public string? WreckName { get; set; }
+    
+    [DisplayName("Owner Name")]
+    public string? OwnerName { get; set; }
 
     [DisplayName("Is Isolated Find")]
     public bool? IsIsolatedFind { get; set; }
