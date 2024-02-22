@@ -120,15 +120,9 @@ public class NoteController : BaseController
 
         AddSuccessMessage("Note saved successfully.");
 
-        var (controllerName, entityId) = form.GetAssociatedEntityInfo();
-
-        if (!string.IsNullOrEmpty(controllerName) && entityId.HasValue)
-        {
-            return RedirectToAction("View", controllerName, new { id = entityId.Value });
-        }
-
-        AddErrorMessage("No associated entity found for the note.");
-        return View(nameof(Edit), form);
+        
+        return RedirectToAction("View", new { id = note.Id });
+        
     }
 
 }
