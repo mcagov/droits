@@ -98,18 +98,6 @@ public static class DroitQueryBuilder
                 );
             }
             
-            query = query.Where(d =>
-                string.IsNullOrEmpty(form.WreckName) ||
-                d.Wreck != null &&
-                !string.IsNullOrEmpty(d.Wreck.Name)
-            );
-            
-            query = query.Where(d =>
-                string.IsNullOrEmpty(form.OwnerName) ||
-                d.Wreck != null &&
-                !string.IsNullOrEmpty(d.Wreck.OwnerName)
-            );
-            
             //Salvor Filters
             
             if (!string.IsNullOrEmpty(form.SalvorName))
@@ -122,11 +110,6 @@ public static class DroitQueryBuilder
                      
                 );
             }
-            
-            query = query.Where(d =>
-                string.IsNullOrEmpty(form.SalvorName) ||
-                ( d.Salvor != null &&
-                  !string.IsNullOrEmpty(d.Salvor.Name) ));
             
             //Location Filters
             
