@@ -1,3 +1,4 @@
+// var esm = require('esm')
 import express from 'express';
 import bodyParser from 'body-parser';
 import nunjucks from 'nunjucks';
@@ -12,11 +13,16 @@ import {
 } from './utilities';
 import routes from './api/routes';
 import config from './app/config.js';
-import helmet from 'helmet';
 
 import sessionInMemory from 'express-session';
-import { NONAME } from 'dns';
+
+var connect_redis = require("connect-redis");
+
 var cors = require('cors')
+
+// import helmet from 'helmet';
+// import { NONAME } from 'dns';
+
 require("dotenv-json")();
 const app = express();
 app.options('*', cors());
@@ -68,7 +74,16 @@ useHttps = useHttps.toLowerCase();
 
 // Production session data
 const session = require('express-session');
-const AzureTablesStoreFactory = require('connect-azuretables')(session);
+var redis = require("redis");
+var redisStore = connect_redis(session);
+var redisClient = redis.createClient({
+    // these need to be pulled from env.
+    // Redis elasticache needs to be in terraform (see beacons)
+    
+    
+    host: 'localhost', 
+    port: 6379,
+});
 
 const isSecure = env === 'production' && useHttps === 'true';
 if (isSecure) {
@@ -127,27 +142,28 @@ const sessionOptions = {
 
 
 //Need to add remote session storage back in, issues with azure-tables connecting. - Maybe we should switch to elasticache.
-if (env === 'development') {
-  app.use(
-    sessionInMemory(
-      Object.assign(sessionOptions, {
-        name: sessionName,
-        resave: false,
-        saveUninitialized: false,
-      })
-    )
-  );
-} else {
-  app.use(
-    session(
-      Object.assign(sessionOptions, {
-        store: AzureTablesStoreFactory.create(),
-        resave: false,
-        saveUninitialized: false,
-      })
-    )
-  );
-}
+// if (env === 'development') {
+//   app.use(
+//     sessionInMemory(
+//       Object.assign(sessionOptions, {
+//         name: sessionName,
+//         resave: false,
+//         saveUninitialized: false,
+//       })
+//     )
+//   );
+// } else {
+  app.use(session({
+      // secret needs to be pulled from env
+      secret: 'mysecret',
+      // create new redis store.
+      store: new redisStore({
+          client: redisClient
+      }),
+      saveUninitialized: false,
+      resave: false
+  }));
+// }
 
 // Manage session data. Assigns default values to data
 app.use(sessionData);
