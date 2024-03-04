@@ -14,6 +14,7 @@ import routes from './api/routes';
 import config from './app/config.js';
 
 import sessionInMemory from 'express-session';
+import {httpOnly} from "express-session/session/cookie";
 
 var connect_redis = require("connect-redis");
 
@@ -163,7 +164,8 @@ const sessionOptions = {
           client: redisClient
       }),
       saveUninitialized: false,
-      resave: false
+      resave: false,
+      cookie: { httpOnly: true }
   }));
 // }
 
