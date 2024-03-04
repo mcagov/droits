@@ -48,6 +48,7 @@ namespace Droits.Models.ViewModels
         [DisplayName("Note")]
         [DataType(DataType.MultilineText)]
         public string Text { get; } = string.Empty;
+        public string ObjectReference { get; set; } = string.Empty;
 
         // Relationships
         public Guid? DroitId { get; }

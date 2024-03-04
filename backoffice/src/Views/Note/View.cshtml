@@ -1,6 +1,10 @@
 @model NoteView
 @{
     ViewData["Title"] = Model.Title.HasValue() ? $"Note : {Model.Title}" : "Note";
+    if (Model.ObjectReference.HasValue())
+    {
+        ViewData["Title"] += $" For {Model.GetAssociatedEntityInfo().EntityController} ({Model.ObjectReference})";
+    }
 }
 
 @{
@@ -26,7 +30,7 @@
                 <div class="col-md-2">
                     @Html.LabelFor(m => m.Text, new { @class = "font-weight-bold" })
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-12">
                     @Html.TextAreaFor(m => m.Text, new { @class = "form-control wysiwyg-editor-readonly", @readonly = "readonly" })
                     @* @Html.DisplayFor(m => m.Text, "MultilineText") *@
                 </div>
@@ -58,7 +62,7 @@
 
                     @if (entityId.HasValue)
                     {
-                        <a type="button" class="btn btn-secondary" asp-controller="@controller" asp-action="View" asp-route-id="@entityId.Value">Back</a>
+                        <a type="button" class="btn btn-secondary" asp-controller="@controller" asp-action="View" asp-route-id="@entityId.Value" asp-route-selectedTab="notes">Back</a>
                     }
                     else
                     {

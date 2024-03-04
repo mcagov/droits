@@ -61,7 +61,7 @@ public class DroitController : BaseController
 
     
     [HttpGet]
-    public async Task<IActionResult> View(Guid id)
+    public async Task<IActionResult> View(Guid id, string? selectedTab)
     {
         Droit droit;
         try
@@ -72,6 +72,11 @@ public class DroitController : BaseController
         {
             HandleError(_logger, "Droit not found.", e);
             return RedirectToAction(nameof(Index));
+        }
+            
+        if ( !string.IsNullOrEmpty(selectedTab) )
+        {
+            ViewBag.SelectedTab = selectedTab;
         }
 
         var model = new DroitView(droit);
