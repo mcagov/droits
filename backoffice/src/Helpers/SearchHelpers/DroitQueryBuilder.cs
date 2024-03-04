@@ -88,6 +88,16 @@ public static class DroitQueryBuilder
                 );
             }
             
+            if (!string.IsNullOrEmpty(form.ReportedWreckName))
+            {
+                query = query.Where(d => 
+                    d.ReportedWreckName != null && !string.IsNullOrEmpty(d.ReportedWreckName) &&
+                    (d.ReportedWreckName.ToLower().Contains(form.ReportedWreckName.ToLower()) ||
+                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.ReportedWreckName.ToLower(), d.ReportedWreckName.ToLower()) :
+                         SearchHelper.GetLevenshteinDistance(form.ReportedWreckName.ToLower(), d.ReportedWreckName.ToLower())) < MaxLevenshteinDistance)
+                );
+            }
+            
             if (!string.IsNullOrEmpty(form.OwnerName))
             {
                 query = query.Where(d => 
@@ -155,10 +165,12 @@ public static class DroitQueryBuilder
                query = query.Where(d => 
                     d.LocationDescription != null && !string.IsNullOrEmpty(d.LocationDescription) &&
                     (d.LocationDescription.ToLower().Contains(form.LocationDescription.ToLower()) ||
-                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.LocationDescription.ToLower(), d.LocationDescription.ToLower()) :
-                         SearchHelper.GetLevenshteinDistance(form.LocationDescription.ToLower(), d.LocationDescription.ToLower())) < MaxLevenshteinDistance )
-                    
-                );
+                     (usePsql? 
+                         EF.Functions.FuzzyStringMatchLevenshtein(
+                             form.LocationDescription.ToLower(), d.LocationDescription.Substring(0,Math.Min(255, d.LocationDescription.Length)).ToLower())
+                         :
+                         SearchHelper.GetLevenshteinDistance(form.LocationDescription.ToLower(), d.LocationDescription.ToLower())) < MaxLevenshteinDistance)
+               );
             }
 
 

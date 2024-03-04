@@ -37,7 +37,7 @@ namespace Droits.Tests.UnitTests.Controllers
             _mockService.Setup(service => service.GetNoteAsync(noteId)).ReturnsAsync(expectedNote);
 
             // When
-            var result = await _controller.Edit(noteId);
+            var result = await _controller.Edit(noteId, null);
 
             // Then
             var viewResult = Assert.IsType<ViewResult>(result);
@@ -56,7 +56,7 @@ namespace Droits.Tests.UnitTests.Controllers
             _mockTempData.Setup(t => t["ErrorMessage"]).Returns("Note not found");
 
             // When
-            var result = await _controller.Edit(noteId);
+            var result = await _controller.Edit(noteId, null);
 
             // Then
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
@@ -105,7 +105,7 @@ namespace Droits.Tests.UnitTests.Controllers
             _mockService.Setup(service => service.GetNoteAsync(noteId)).Throws(new NoteNotFoundException());
 
             // When
-            var result = await _controller.Edit(noteId);
+            var result = await _controller.Edit(noteId, null);
 
             // Then
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
@@ -119,7 +119,7 @@ namespace Droits.Tests.UnitTests.Controllers
             var noteId = default(Guid);
 
             // When
-            var result = await _controller.Edit(noteId);
+            var result = await _controller.Edit(noteId,null);
 
             // Then
             var viewResult = Assert.IsType<ViewResult>(result);

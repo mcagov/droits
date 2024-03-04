@@ -75,6 +75,7 @@ public class DroitView : BaseEntityView
         if ( droit.Notes.Any() )
         {
             Notes = new NoteListView(droit.Notes.Select(n => new NoteView(n)).OrderByDescending(l => l.Created).ToList());
+            Notes.ObjectReference = droit.Reference;
         }
 
         // Location

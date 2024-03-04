@@ -26,10 +26,10 @@
                 <td class="p-3">@Html.DisplayFor(m => note.LastModifiedBy)</td>
                 <td class="p-3">
                     <div class="btn-group">
-                        <a asp-controller="Note" asp-action="View" asp-route-id="@note.Id" class="btn btn-primary">View</a> 
+                        <a asp-controller="Note" asp-action="View" asp-route-id="@note.Id" asp-route-objectReference="@Model.ObjectReference" class="btn btn-primary">View</a> 
                         @if (Model.Editable)
                         {
-                            <a asp-controller="Note" asp-action="Edit" asp-route-id="@note.Id" class="btn btn-primary">Edit</a>
+                            <a asp-controller="Note" asp-action="Edit" asp-route-id="@note.Id" asp-route-objectReference="@Model.ObjectReference" class="btn btn-primary">Edit</a>
                         }
                     </div>
                 </td>

@@ -32,12 +32,18 @@ public class NoteController : BaseController
     
     
     [HttpGet]
-    public async Task<IActionResult> View(Guid id)
+    public async Task<IActionResult> View(Guid id, string? objectReference)
     {
         try
         {
             var note = await _service.GetNoteAsync(id);
-            return View(new NoteView(note));
+            var viewModel = new NoteView(note);
+            if ( !string.IsNullOrEmpty(objectReference) )
+            {
+                viewModel.ObjectReference = objectReference;
+            }
+            
+            return View(viewModel);
         }
         catch ( NoteNotFoundException e )
         {
@@ -56,7 +62,7 @@ public class NoteController : BaseController
 
     
     [HttpGet]
-    public async Task<IActionResult> Edit(Guid id)
+    public async Task<IActionResult> Edit(Guid id, string? objectReference)
     {
 
         var noteForm = new NoteForm();
@@ -66,6 +72,10 @@ public class NoteController : BaseController
             {
                 var note = await _service.GetNoteAsync(id);
                 noteForm = new NoteForm(note);
+                if ( !string.IsNullOrEmpty(objectReference) )
+                {
+                    noteForm.ObjectReference = objectReference;
+                }
             }
             catch ( NoteNotFoundException e )
             {

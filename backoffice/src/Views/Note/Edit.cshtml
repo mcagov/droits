@@ -63,7 +63,7 @@
                 
                     @if (entityId.HasValue)
                     {
-                        <a type="button" class="btn btn-secondary" asp-controller="@controller" asp-action="View" asp-route-id="@entityId.Value">Cancel</a>
+                        <a type="button" class="btn btn-secondary" asp-controller="@controller" asp-action="View" asp-route-id="@entityId.Value" asp-route-selectedTab="notes">Cancel</a>
                     }
                     else
                     {

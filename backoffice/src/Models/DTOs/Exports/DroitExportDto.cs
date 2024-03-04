@@ -37,7 +37,7 @@ namespace Droits.Models.DTOs.Exports
         public string? Created { get; set; }
         [DisplayName("Last Modified")]
         public string? LastModified { get; set; }
-        [DisplayName("Wreck Name")]
+        [DisplayName("Verified Wreck Name")]
         public string? WreckName { get; set; }
         [DisplayName("Salvor Name")]
         public string? SalvorName { get; set; }

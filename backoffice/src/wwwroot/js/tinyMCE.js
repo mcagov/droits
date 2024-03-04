@@ -43,8 +43,6 @@ export function initializeTinyMce()
         skin: false,
         content_css: false,
         link_assume_external_targets: true
-
-        // content_style: "",
     });
     tinymce.init({
         selector: '.wysiwyg-editor-readonly',
@@ -58,10 +56,6 @@ export function initializeTinyMce()
         skin: false,
         content_css: false,
         link_assume_external_targets: true
-
-
-        // content_style: "",
-
 
     });
 }

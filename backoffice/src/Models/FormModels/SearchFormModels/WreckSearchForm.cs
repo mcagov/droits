@@ -4,7 +4,7 @@ namespace Droits.Models.FormModels.SearchFormModels;
 
 public class WreckSearchForm : SearchForm
 {
-    [DisplayName("Wreck Name")]
+    [DisplayName("Verified Wreck Name")]
     public string? WreckName { get; set; } = string.Empty;
     
     [DisplayName("Owner Name")]

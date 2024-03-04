@@ -44,7 +44,7 @@ public class WreckForm : BaseEntityForm
 
 
     [Required]
-    [DisplayName("Wreck Name")]
+    [DisplayName("Verified Wreck Name")]
     public string Name { get; set; } = string.Empty;
     [DisplayName("Wreck Type")]
     public WreckType? WreckType { get; set; }
