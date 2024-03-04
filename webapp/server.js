@@ -1,4 +1,3 @@
-// var esm = require('esm')
 import express from 'express';
 import bodyParser from 'body-parser';
 import nunjucks from 'nunjucks';
@@ -19,6 +18,9 @@ import sessionInMemory from 'express-session';
 var connect_redis = require("connect-redis");
 
 var cors = require('cors')
+
+const csrf = require('lusca').csrf;
+
 
 // import helmet from 'helmet';
 // import { NONAME } from 'dns';
@@ -155,7 +157,7 @@ const sessionOptions = {
 // } else {
   app.use(session({
       // secret needs to be pulled from env
-      secret: 'mysecret',
+      secret: process.env.CSRFT_SESSION_SECRET,
       // create new redis store.
       store: new redisStore({
           client: redisClient
@@ -167,6 +169,8 @@ const sessionOptions = {
 
 // Manage session data. Assigns default values to data
 app.use(sessionData);
+
+app.use(csrf());
 
 // Logs req.session data
 if (env === 'development') edt(app, { panels: ['session'] });
