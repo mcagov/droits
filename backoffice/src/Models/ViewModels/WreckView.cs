@@ -51,6 +51,8 @@ public class WreckView : BaseEntityView
     // Base fields...
 
     public Guid Id { get; }
+    
+    [DisplayName("Verified Wreck Name")]
     public string Name { get; } = string.Empty;
     
     [DisplayName("Wreck Type")]
