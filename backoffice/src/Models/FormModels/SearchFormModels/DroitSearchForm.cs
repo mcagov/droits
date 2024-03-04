@@ -16,15 +16,6 @@ public class DroitSearchForm : SearchForm
     {
 
     }
-
-
-    // Base fields...
-    // public WreckForm WreckForm { get; set; } = new();
-
-
-    // public List<WreckMaterialForm> WreckMaterialForms { get; set; } = new();
-    // public SalvorForm SalvorForm { get; set; } = new();
-
     public string? Reference { get; set; }
 
     [DisplayName("Created From")]
@@ -84,9 +75,12 @@ public class DroitSearchForm : SearchForm
     // Wreck
 
 
-    [DisplayName("Wreck Name")]
+    [DisplayName("Verified Wreck Name")]
     public string? WreckName { get; set; }
     
+    [DisplayName("Reported Wreck Name")]
+    public string? ReportedWreckName { get; set; }
+
     [DisplayName("Owner Name")]
     public string? OwnerName { get; set; }
 
