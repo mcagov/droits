@@ -169,6 +169,18 @@ module "db-sns" {
   aws_account_number  = var.aws_account_number
 }
 
+module "elasticache" {
+  source              = "./modules/elasticache"
+  resource_name       = elasticache
+  vpc_id              = module.vpc.vpc_id
+  redis_port          = var.redis_port
+  public_subnets      = module.vpc.public_subnets
+  application_name    = var.webapp_ecr_repository_name
+  security_groups     = [module.security-groups.webapp-security-group-id]
+  
+  depends_on = [module.vpc, module.security-groups]
+}
+
 module "cloudwatch" {
   source     = "./modules/cloudwatch"
   aws_region = var.aws_region

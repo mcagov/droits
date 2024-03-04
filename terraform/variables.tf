@@ -120,6 +120,12 @@ variable "api_backofice_service_minimum_task_count" {
   default     = 1
 }
 
+variable "redis_port" {
+  type        = number
+  description = "Port exposed by Docker for the Redis session storage"
+  default     = 6379
+}
+
 variable "ecr_repository_url" {
   type        = string
   description = "The url of the Elastic Container Repository for our container images"

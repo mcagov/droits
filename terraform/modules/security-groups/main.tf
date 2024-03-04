@@ -108,3 +108,25 @@ resource "aws_security_group" "webapp-lb" {
     description = "Allow outbound access to anywhere"
   }
 }
+
+
+resource "aws_security_group" "elasticache" {
+  name        = "${var.application_name}-mca-beacons-elasticache-security-group"
+  description = "Allows inbound access from the task only"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    protocol        = "tcp"
+    from_port       = var.redis_port
+    to_port         = var.redis_port
+#    this should allow webapp security groups
+    security_groups = var.security_groups 
+  }
+
+  egress {
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
