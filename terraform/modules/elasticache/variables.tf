@@ -3,7 +3,7 @@ variable "application_name" {
 }
 
 variable "public_subnets" {
-  type = string
+  type = list(any)
 }
 
 variable "vpc_id" {

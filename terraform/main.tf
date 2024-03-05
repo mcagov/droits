@@ -175,7 +175,7 @@ module "elasticache" {
   source           = "./modules/elasticache"
   vpc_id           = module.vpc.vpc_id
   redis_port       = var.redis_port
-  public_subnets   = module.vpc.public_subnets
+  public_subnets   = [module.vpc.public_subnets]
   application_name = var.webapp_ecr_repository_name
   security_groups  = [module.security-groups.elasticache-security-group-id]
 
