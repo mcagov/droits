@@ -173,7 +173,7 @@ module "db-sns" {
 
 module "elasticache" {
   source           = "./modules/elasticache"
-  resource_name    = elasticache
+  resource_name    = "elasticache"
   vpc_id           = module.vpc.vpc_id
   redis_port       = var.redis_port
   public_subnets   = module.vpc.public_subnets
