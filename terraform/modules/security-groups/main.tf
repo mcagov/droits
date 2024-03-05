@@ -111,7 +111,7 @@ resource "aws_security_group" "webapp-lb" {
 
 
 resource "aws_security_group" "elasticache" {
-  name        = "${var.application_name}-mca-beacons-elasticache-security-group"
+  name        = "${var.application_name}-mca-droits-elasticache-security-group"
   description = "Allows inbound access from the task only"
   vpc_id      = var.vpc_id
 
