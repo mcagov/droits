@@ -25,6 +25,8 @@ module "vpc" {
 module "security-groups" {
   source = "./modules/security-groups"
   vpc_id = module.vpc.vpc_id
+  redis_port = var.redis_port
+  application_name = var.webapp_ecr_repository_name
 
   depends_on = [module.vpc]
 }
@@ -167,6 +169,18 @@ module "db-sns" {
   resource_name       = "db"
   alert_email_address = var.alert_email_address
   aws_account_number  = var.aws_account_number
+}
+
+module "elasticache" {
+  source              = "./modules/elasticache"
+  resource_name       = elasticache
+  vpc_id              = module.vpc.vpc_id
+  redis_port          = var.redis_port
+  public_subnets      = module.vpc.public_subnets
+  application_name    = var.webapp_ecr_repository_name
+  security_groups     = [module.security-groups.elasticache-security-group-id]
+  
+  depends_on = [module.vpc, module.security-groups]
 }
 
 module "cloudwatch" {

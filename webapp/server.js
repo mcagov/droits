@@ -12,11 +12,20 @@ import {
 } from './utilities';
 import routes from './api/routes';
 import config from './app/config.js';
-import helmet from 'helmet';
 
 import sessionInMemory from 'express-session';
-import { NONAME } from 'dns';
+import {httpOnly} from "express-session/session/cookie";
+
+var connect_redis = require("connect-redis");
+
 var cors = require('cors')
+
+const csrf = require('lusca').csrf;
+
+
+// import helmet from 'helmet';
+// import { NONAME } from 'dns';
+
 require("dotenv-json")();
 const app = express();
 app.options('*', cors());
@@ -68,7 +77,12 @@ useHttps = useHttps.toLowerCase();
 
 // Production session data
 const session = require('express-session');
-const AzureTablesStoreFactory = require('connect-azuretables')(session);
+var redis = require("redis");
+var redisStore = connect_redis(session);
+var redisClient = redis.createClient({
+    host: process.env.REDIS_HOST,
+    port: 6379,
+});
 
 const isSecure = env === 'production' && useHttps === 'true';
 if (isSecure) {
@@ -125,32 +139,20 @@ const sessionOptions = {
   },
 };
 
-
-//Need to add remote session storage back in, issues with azure-tables connecting. - Maybe we should switch to elasticache.
-if (env === 'development') {
-  app.use(
-    sessionInMemory(
-      Object.assign(sessionOptions, {
-        name: sessionName,
-        resave: false,
-        saveUninitialized: false,
-      })
-    )
-  );
-} else {
-  app.use(
-    session(
-      Object.assign(sessionOptions, {
-        store: AzureTablesStoreFactory.create(),
-        resave: false,
-        saveUninitialized: false,
-      })
-    )
-  );
-}
+app.use(session({
+  secret: process.env.CSRFT_SESSION_SECRET,
+  store: new redisStore({
+      client: redisClient
+  }),
+  saveUninitialized: false,
+  resave: false,
+  cookie: { httpOnly: true , secure: true}
+}));
 
 // Manage session data. Assigns default values to data
 app.use(sessionData);
+
+app.use(csrf());
 
 // Logs req.session data
 if (env === 'development') edt(app, { panels: ['session'] });

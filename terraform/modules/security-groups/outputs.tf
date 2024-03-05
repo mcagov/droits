@@ -16,3 +16,7 @@ output "webapp-security-group-id" {
 output "webapp-lb-security-group-id" {
   value = aws_security_group.webapp-lb.id
 }
+
+output "elasticache-security-group-id" {
+  value = aws_security_group.elasticache.id
+}
