@@ -116,10 +116,10 @@ resource "aws_security_group" "elasticache" {
   vpc_id      = var.vpc_id
 
   ingress {
-    protocol        = "tcp"
-    from_port       = var.redis_port
-    to_port         = var.redis_port
-#    this should allow webapp security groups
+    protocol  = "tcp"
+    from_port = var.redis_port
+    to_port   = var.redis_port
+    #    this should allow webapp security groups
     security_groups = [aws_security_group.webapp-lb.id]
   }
 
