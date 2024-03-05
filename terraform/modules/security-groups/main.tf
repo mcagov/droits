@@ -120,7 +120,7 @@ resource "aws_security_group" "elasticache" {
     from_port       = var.redis_port
     to_port         = var.redis_port
 #    this should allow webapp security groups
-    security_groups = var.security_groups 
+    security_groups = [aws_security_group.webapp-lb.id]
   }
 
   egress {

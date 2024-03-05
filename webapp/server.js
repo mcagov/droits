@@ -80,11 +80,7 @@ const session = require('express-session');
 var redis = require("redis");
 var redisStore = connect_redis(session);
 var redisClient = redis.createClient({
-    // these need to be pulled from env.
-    // Redis elasticache needs to be in terraform (see beacons)
-    
-    
-    host: 'localhost', 
+    host: process.env.REDIS_HOST,
     port: 6379,
 });
 
@@ -143,31 +139,15 @@ const sessionOptions = {
   },
 };
 
-
-//Need to add remote session storage back in, issues with azure-tables connecting. - Maybe we should switch to elasticache.
-// if (env === 'development') {
-//   app.use(
-//     sessionInMemory(
-//       Object.assign(sessionOptions, {
-//         name: sessionName,
-//         resave: false,
-//         saveUninitialized: false,
-//       })
-//     )
-//   );
-// } else {
-  app.use(session({
-      // secret needs to be pulled from env
-      secret: process.env.CSRFT_SESSION_SECRET,
-      // create new redis store.
-      store: new redisStore({
-          client: redisClient
-      }),
-      saveUninitialized: false,
-      resave: false,
-      cookie: { httpOnly: true }
-  }));
-// }
+app.use(session({
+  secret: process.env.CSRFT_SESSION_SECRET,
+  store: new redisStore({
+      client: redisClient
+  }),
+  saveUninitialized: false,
+  resave: false,
+  cookie: { httpOnly: true }
+}));
 
 // Manage session data. Assigns default values to data
 app.use(sessionData);
