@@ -12,5 +12,5 @@ resource "aws_elasticache_cluster" "main" {
   engine_version       = "7.x"
   port                 = var.redis_port
   subnet_group_name    = aws_elasticache_subnet_group.main.name
-  security_groups      = var.security_groups
+  security_group_ids   = var.security_groups
 }
