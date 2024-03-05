@@ -82,7 +82,7 @@ public class WreckQueryBuilderUnitTests
 
         // Assert
         Assert.Equal(2, result.Count()); 
-        Assert.True(result.All(w => w.OwnerName.ToLower().Contains("test")));
+        Assert.True(result.All(w => w.OwnerName!= null && w.OwnerName.ToLower().Contains("test")));
     }
 
     [Fact]
