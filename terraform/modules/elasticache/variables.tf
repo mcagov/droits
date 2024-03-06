@@ -7,7 +7,7 @@ variable "public_subnets" {
 }
 
 variable "vpc_id" {
-  type = number
+  type = string
 }
 
 variable "redis_port" {
@@ -16,5 +16,5 @@ variable "redis_port" {
 
 variable "security_groups" {
   type        = list(any)
-  description = "Security groups for ECS"
+  description = "Security groups for Elasticache"
 }
