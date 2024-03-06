@@ -13,6 +13,8 @@ services:
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
     volumes:
       - ~/.aspnet/https:/https:ro
+    depends_on:
+      - database
 
   webapp:
     container_name: droits_webapp
@@ -21,6 +23,9 @@ services:
     image: droits-webapp
     ports:
       - "3000:3000"
+    depends_on:
+      - backoffice
+      - redis
 
   database:
     image: postgres:14-alpine
@@ -35,7 +40,7 @@ services:
       - "5432:5432"
 
   redis:
-    image: redis:latest
+    image: redis:7
     container_name: droits_redis
     ports:
       - "6379:6379"

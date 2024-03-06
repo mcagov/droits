@@ -13,9 +13,6 @@ import {
 import routes from './api/routes';
 import config from './app/config.js';
 
-import sessionInMemory from 'express-session';
-import {httpOnly} from "express-session/session/cookie";
-
 var connect_redis = require("connect-redis");
 
 var cors = require('cors')
@@ -130,15 +127,6 @@ app.use(
 );
 
 // Session uses service name to avoid clashes with other prototypes
-const sessionName = Buffer.from(config.SERVICE_NAME, 'utf8').toString('hex');
-const sessionOptions = {
-  secret: sessionName,
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 4, // 4 hours
-    secure: isSecure
-  },
-};
-
 app.use(session({
   secret: process.env.CSRFT_SESSION_SECRET,
   store: new redisStore({
