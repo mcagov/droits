@@ -17,7 +17,7 @@ var connect_redis = require("connect-redis");
 
 var cors = require('cors')
 
-const csrf = require('lusca').csrf;
+const lusca = require('lusca');
 
 
 // import helmet from 'helmet';
@@ -26,6 +26,13 @@ const csrf = require('lusca').csrf;
 require("dotenv-json")();
 const app = express();
 app.options('*', cors());
+
+// app.use(lusca.csrf());
+
+// app.use((req, res, next) => {
+//   res.locals.csrfToken = req.csrfToken();
+//   next();
+// });
 
 const PORT = process.env.PORT || config.PORT;
 
@@ -139,8 +146,6 @@ app.use(session({
 
 // Manage session data. Assigns default values to data
 app.use(sessionData);
-
-app.use(csrf());
 
 // Logs req.session data
 if (env === 'development') edt(app, { panels: ['session'] });

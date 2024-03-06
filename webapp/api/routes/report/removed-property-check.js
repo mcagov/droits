@@ -13,7 +13,9 @@ export default function (app) {
         .withMessage('Select yes if you have removed the wreck material'),
     ],
     function (req, res) {
+
       const errors = formatValidationErrors(validationResult(req));
+
       if (!errors) {
         req.session.data['removed-property'] = req.body['removed-property'];
 
@@ -36,6 +38,7 @@ export default function (app) {
           return res.redirect('not-removed-property-content');
         }
       } else {
+
         return res.render('report/removed-property-check', {
           errors,
           errorSummary: Object.values(errors),
