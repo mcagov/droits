@@ -2,12 +2,12 @@ resource "aws_security_group" "backoffice" {
   name   = "backoffice"
   vpc_id = var.vpc_id
   ingress {
-    protocol  = "-1"
-    from_port = 0
-    to_port   = 0
-    #    security_groups = [aws_security_group.backoffice-lb.id]
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow inbound access from the backoffice LB only"
+    protocol        = "-1"
+    from_port       = 0
+    to_port         = 0
+    security_groups = [aws_security_group.backoffice-lb.id]
+    cidr_blocks     = ["0.0.0.0/0"]
+    description     = "Allow inbound access from the backoffice LB only"
   }
   egress {
     protocol    = "-1"
@@ -71,7 +71,7 @@ resource "aws_security_group" "webapp" {
     from_port       = 0
     to_port         = 65535
     protocol        = "tcp"
-    security_groups = [aws_security_group.webapp-lb.id, aws_security_group.elasticache.id]
+    security_groups = [aws_security_group.webapp-lb.id]
     description     = "Allow inbound access from the webapp LB only"
   }
   egress {
