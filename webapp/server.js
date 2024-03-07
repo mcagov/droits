@@ -141,7 +141,7 @@ app.use(session({
   }),
   saveUninitialized: false,
   resave: false,
-  cookie: { httpOnly: true , secure: true}
+  cookie: { httpOnly: true , secure: isSecure}
 }));
 
 // Manage session data. Assigns default values to data

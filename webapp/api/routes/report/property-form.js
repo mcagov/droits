@@ -25,7 +25,7 @@ export default function (app) {
       if (property[rawPropertyID] !== undefined) {
         propertyID = rawPropertyID;
       } else {
-        res.redirect('/report/property-summary');
+        return res.redirect('/report/property-summary');
       }
     }
 
