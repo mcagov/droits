@@ -133,6 +133,13 @@ app.use(
   )
 );
 
+// Serve CSS files specifically
+app.use('/assets/css', (req, res, next) => {
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  next();
+}, express.static(path.join(__dirname, './dist/assets/css')));
+
+
 // Session uses service name to avoid clashes with other prototypes
 app.use(session({
   secret: process.env.CSRFT_SESSION_SECRET,
