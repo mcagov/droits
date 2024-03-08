@@ -11,6 +11,7 @@ public static class DroitQueryBuilder
 {
     
     private const int MaxLevenshteinDistance = 5;
+    private const int LowerLevenshteinDistance = 1;
     
     public static IQueryable<Droit> BuildQuery(DroitSearchForm form, IQueryable<Droit> query,  bool usePsql = true)
     {
@@ -295,7 +296,7 @@ public static class DroitQueryBuilder
                     !string.IsNullOrEmpty(d.District) &&
                     (d.District.ToLower().Contains(form.District.ToLower()) || 
                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.District.ToLower(), d.District.ToLower()) :
-                        SearchHelper.GetLevenshteinDistance(form.District.ToLower(), d.District.ToLower())) < 1
+                        SearchHelper.GetLevenshteinDistance(form.District.ToLower(), d.District.ToLower())) <= LowerLevenshteinDistance
                    )
                 );
             }
@@ -306,7 +307,7 @@ public static class DroitQueryBuilder
                     !string.IsNullOrEmpty(d.LegacyFileReference) &&
                     (d.LegacyFileReference.ToLower().Contains(form.LegacyFileReference.ToLower()) || 
                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.LegacyFileReference.ToLower(), d.LegacyFileReference.ToLower()) :
-                        SearchHelper.GetLevenshteinDistance(form.LegacyFileReference.ToLower(), d.LegacyFileReference.ToLower())) < 1
+                        SearchHelper.GetLevenshteinDistance(form.LegacyFileReference.ToLower(), d.LegacyFileReference.ToLower())) <= LowerLevenshteinDistance
                    )
                 );
             }
@@ -317,7 +318,7 @@ public static class DroitQueryBuilder
                    !string.IsNullOrEmpty(d.GoodsDischargedBy) &&
                     (d.GoodsDischargedBy.ToLower().Contains(form.GoodsDischargedBy.ToLower()) || 
                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.GoodsDischargedBy.ToLower(), d.GoodsDischargedBy.ToLower()) :
-                        SearchHelper.GetLevenshteinDistance(form.GoodsDischargedBy.ToLower(), d.GoodsDischargedBy.ToLower())) < 1
+                        SearchHelper.GetLevenshteinDistance(form.GoodsDischargedBy.ToLower(), d.GoodsDischargedBy.ToLower())) <= LowerLevenshteinDistance
                    )
                 );
             }
@@ -328,7 +329,7 @@ public static class DroitQueryBuilder
                     !string.IsNullOrEmpty(d.DateDelivered) &&
                     (d.DateDelivered.ToLower().Contains(form.DateDelivered.ToLower()) || 
                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.DateDelivered.ToLower(), d.DateDelivered.ToLower()) :
-                        SearchHelper.GetLevenshteinDistance(form.DateDelivered.ToLower(), d.DateDelivered.ToLower())) < 1
+                        SearchHelper.GetLevenshteinDistance(form.DateDelivered.ToLower(), d.DateDelivered.ToLower())) <= LowerLevenshteinDistance
                    )
                 );
             }
@@ -339,7 +340,7 @@ public static class DroitQueryBuilder
                     !string.IsNullOrEmpty(d.Agent) &&
                     (d.Agent.ToLower().Contains(form.Agent.ToLower()) || 
                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.Agent.ToLower(), d.Agent.ToLower()) :
-                        SearchHelper.GetLevenshteinDistance(form.Agent.ToLower(), d.Agent.ToLower())) < 1
+                        SearchHelper.GetLevenshteinDistance(form.Agent.ToLower(), d.Agent.ToLower())) <= LowerLevenshteinDistance
                    )
                 );
             }
@@ -350,7 +351,7 @@ public static class DroitQueryBuilder
                     !string.IsNullOrEmpty(d.RecoveredFromLegacy) &&
                     (d.RecoveredFromLegacy.ToLower().Contains(form.RecoveredFromLegacy.ToLower()) || 
                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.RecoveredFromLegacy.ToLower(), d.RecoveredFromLegacy.ToLower()) :
-                        SearchHelper.GetLevenshteinDistance(form.RecoveredFromLegacy.ToLower(), d.RecoveredFromLegacy.ToLower())) < 1
+                        SearchHelper.GetLevenshteinDistance(form.RecoveredFromLegacy.ToLower(), d.RecoveredFromLegacy.ToLower())) <= LowerLevenshteinDistance
                    )
                 );
             }
