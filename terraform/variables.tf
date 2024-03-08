@@ -28,7 +28,7 @@ variable "webapp_port" {
 variable "webapp_health_check_path" {
   type        = string
   description = "Health check path used by the Application Load Balancer for the DROITS Webapp"
-  default     = "/api/health"
+  default     = "/health"
 }
 // See docs for ecs task definition: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html
 variable "webapp_fargate_cpu" {

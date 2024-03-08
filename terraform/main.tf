@@ -99,7 +99,7 @@ module "droits-ecs-cluster" {
 module "backoffice-ecs" {
   source             = "./modules/ecs"
   service_name       = "backoffice"
-  health_check_url   = "http://localhost:5000/healthz"
+  health_check_url   = "http://127.0.0.1:5000/healthz"
   aws_region         = var.aws_region
   vpc_id             = module.vpc.vpc_id
   public_subnets     = module.vpc.public_subnets
@@ -121,7 +121,7 @@ module "backoffice-ecs" {
 module "webapp-ecs" {
   source             = "./modules/ecs"
   service_name       = "webapp"
-  health_check_url   = "http://localhost:3000/health"
+  health_check_url   = "http://127.0.0.1:3000/health"
   aws_region         = var.aws_region
   vpc_id             = module.vpc.vpc_id
   public_subnets     = module.vpc.public_subnets
