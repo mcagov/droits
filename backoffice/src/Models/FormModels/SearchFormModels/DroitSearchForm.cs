@@ -122,10 +122,10 @@ public class DroitSearchForm : SearchForm
     [DisplayName("Location Radius")]
     public int? LocationRadius { get; set; }
 
-    [DisplayName("Depth From (metres)")]
+    [DisplayName("Min Depth (metres)")]
     public double? DepthFrom { get; set; }
     
-    [DisplayName("Depth To (metres)")]
+    [DisplayName("Max Depth (metres)")]
     public double? DepthTo { get; set; }
 
     [DisplayName("Recovered From")]
