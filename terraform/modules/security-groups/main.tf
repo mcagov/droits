@@ -71,7 +71,7 @@ resource "aws_security_group" "webapp" {
     from_port       = 0
     to_port         = 65535
     protocol        = "tcp"
-    security_groups = [aws_security_group.webapp-lb.id, data.aws_security_group.elasticache.id]
+    security_groups = [aws_security_group.webapp-lb.id]
     description     = "Allow inbound access from the webapp LB only"
   }
   egress {
@@ -129,8 +129,4 @@ resource "aws_security_group" "elasticache" {
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
-
-data "aws_security_group" "elasticache" {
-  name = "${var.application_name}-mca-droits-elasticache-security-group"
 }
