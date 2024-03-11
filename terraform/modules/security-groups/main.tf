@@ -132,5 +132,5 @@ resource "aws_security_group" "elasticache" {
 }
 
 data "aws_security_group" "elasticache" {
-    name        = "${var.application_name}-mca-droits-elasticache-security-group"
+  name = "${var.application_name}-mca-droits-elasticache-security-group"
 }
