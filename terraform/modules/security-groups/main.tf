@@ -71,7 +71,7 @@ resource "aws_security_group" "webapp" {
     from_port       = 0
     to_port         = 65535
     protocol        = "tcp"
-    security_groups = [aws_security_group.webapp-lb.id]
+    security_groups = [aws_security_group.webapp-lb.id,aws_security_group.elasticache.id]
     description     = "Allow inbound access from the webapp LB only"
   }
   egress {
