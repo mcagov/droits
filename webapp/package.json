@@ -11,7 +11,7 @@
     "build": "webpack --env.production",
     "dev": "cross-env NODE_ENV=development concurrently \"nodemon -r esm server.js\" \"npm run watch\"",
     "local": "cross-env NODE_ENV=production concurrently \"nodemon -r esm server.js\" \"npm run watch\"",
-    "prod": "cross-env NODE_ENV=production concurrently \"node -r esm server.js\" \"npm run build\""
+    "prod": "cross-env NODE_ENV=production concurrently \"node -r esm server.js\" \"cpulimit -l 80 npm run build\""
   },
   "repository": {
     "type": "git",
