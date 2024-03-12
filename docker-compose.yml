@@ -11,6 +11,7 @@ services:
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Password: "password"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
+      DB_HOST: 'database'
     volumes:
       - ~/.aspnet/https:/https:ro
     depends_on:
@@ -21,6 +22,8 @@ services:
     build:
       context: ./webapp
     image: droits-webapp
+    environment:
+      REDIS_HOST: 'redis'
     ports:
       - "3000:3000"
     depends_on:
