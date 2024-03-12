@@ -9,7 +9,7 @@ FROM node:14-slim
 WORKDIR /srv
 COPY --from=build /srv .
 
-RUN npm install -g cpulimit
+RUN npm install -g cpulimit && npm run build
 
 EXPOSE 3000
 
