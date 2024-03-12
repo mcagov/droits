@@ -30,4 +30,4 @@ docker-compose up backoffice --build
 
 This command will build the application's Docker images and start the necessary containers. After the process is complete, the `droits-backoffice` application should be accessible via your web browser.
 
- 
+
