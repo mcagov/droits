@@ -2,7 +2,7 @@ FROM node:14 AS build
 
 WORKDIR /srv
 ADD . .
-RUN rm -rf node_modules && npm install --cache /tmp/empty-cache
+RUN sudo apt-get install cpulimit && rm -rf node_modules && cpulimit -l 80 npm install --cache /tmp/empty-cache
 
 FROM node:14-slim
 
