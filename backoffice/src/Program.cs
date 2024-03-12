@@ -71,6 +71,12 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 // Database Context
 var databaseOptions = builder.Configuration.GetSection("Database").Get<DatabaseOptions>();
 
+var envDbHost = Environment.GetEnvironmentVariable("DB_HOST");
+if ( !string.IsNullOrEmpty(envDbHost) && databaseOptions != null )
+{
+    databaseOptions.Host = envDbHost;
+}
+
 builder.Services.AddDbContext<DroitsContext>(opt =>
 {
     var useInMemoryDb = false; //builder.Environment.IsDevelopment()

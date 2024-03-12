@@ -8,6 +8,9 @@ FROM node:14-slim
 
 WORKDIR /srv
 COPY --from=build /srv .
+
+RUN apt-get update && apt-get install curl -y && npm run build
+
 EXPOSE 3000
 
 CMD [ "npm", "run", "prod"]
