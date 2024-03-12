@@ -8,7 +8,7 @@ FROM node:14-slim
 
 WORKDIR /srv
 COPY --from=build /srv .
-RUN sudo apt-get install cpulimit
+RUN apt-get install cpulimit
 EXPOSE 3000
 
 CMD [ "npm", "run", "prod"]
