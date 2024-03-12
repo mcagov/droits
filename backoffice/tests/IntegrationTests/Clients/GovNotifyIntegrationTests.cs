@@ -13,6 +13,7 @@ public class GovNotifyIntegrationTests : IClassFixture<TestFixture>
         var logger = new Mock<ILogger<GovNotifyClient>>();
 
         var configuration = fixture.Configuration;
+        configuration["GovNotify:ApiKey"] = configuration["GovNotify:TestApiKey"];
 
         _client = new GovNotifyClient(logger.Object, configuration);
     }
