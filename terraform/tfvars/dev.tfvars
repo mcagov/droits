@@ -1,6 +1,6 @@
 ecs_cluster_name          = "droits-cluster"
-webapp_fargate_cpu        = 512
-webapp_fargate_memory     = 1024
+webapp_fargate_cpu        = 1024
+webapp_fargate_memory     = 2048
 backoffice_fargate_cpu    = 256
 backoffice_fargate_memory = 512
 
