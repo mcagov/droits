@@ -2,6 +2,7 @@
 #region
 
 using AutoMapper;
+using Droits.Data.Mappers.CsvMappers;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Helpers.Extensions;
@@ -232,10 +233,9 @@ public class DroitService : IDroitService
         {
             throw new Exception("No Droits to export");
         }
-
-        return await ExportHelper.ExportRecordsAsync(droitsData);
+        
+        return await ExportHelper.ExportRecordsAsync(droitsData, new DroitsCsvMap(form.ExportFieldsForm));
     }
-
 
     public async Task<Droit> GetDroitByReferenceAsync(string reference)
     {

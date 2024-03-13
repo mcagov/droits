@@ -1,0 +1,240 @@
+@model ExportFieldsForm
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Id, new { @class = "col-form-label" })
+    <div class="col-md-6 form-switch">
+        @Html.CheckBoxFor(m => m.Id, new { @class = "form-check-input font-weight-bold" } )
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Reference, new { @class = "col-form-label" })
+    <div class="col-md-6 form-switch">
+        @Html.CheckBoxFor(m => m.Reference, new { @class = "form-check-input font-weight-bold" } )
+    </div>
+
+</div>
+
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Created, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.Created, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.Created, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.LastModified, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.LastModified, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.LastModified, "", new { @class = "text-danger" })
+</div>
+    
+<div class="form-group">
+    @Html.LabelFor(m => m.WreckName, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.WreckName, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.WreckName, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.SalvorName, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.SalvorName, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.SalvorName, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.AssignedTo, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.AssignedTo, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.AssignedTo, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Status, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.Status, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.TriageNumber, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.TriageNumber, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.TriageNumber, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.ReportedDate, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.ReportedDate, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.ReportedDate, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.DateFound, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.DateFound, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.DateFound, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.IsHazardousFind, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.IsHazardousFind, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.IsHazardousFind, "", new { @class = "text-danger" })
+</div>
+    
+<div class="form-group">
+    @Html.LabelFor(m => m.IsDredge, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.IsDredge, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.IsDredge, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.ReportedWreckName, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.ReportedWreckName, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.ReportedWreckName, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.ReportedWreckYearSunk, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.ReportedWreckYearSunk, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.ReportedWreckYearSunk, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.ReportedWreckYearConstructed, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.ReportedWreckYearConstructed, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.ReportedWreckYearConstructed, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.ReportedWreckConstructionDetails, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.ReportedWreckConstructionDetails, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.ReportedWreckConstructionDetails, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Latitude, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.Latitude, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.Latitude, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Longitude, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.Longitude, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.Longitude, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.InUkWaters, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.InUkWaters, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.InUkWaters, "", new { @class = "text-danger" })
+</div>
+    
+<div class="form-group">
+    @Html.LabelFor(m => m.LocationRadius, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.LocationRadius, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.LocationRadius, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Depth, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.Depth, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.Depth, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.RecoveredFrom, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.RecoveredFrom, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.RecoveredFrom, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.LocationDescription, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.LocationDescription, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.LocationDescription, "", new { @class = "text-danger" })
+</div>
+    
+<div class="form-group">
+    @Html.LabelFor(m => m.SalvageAwardClaimed, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.SalvageAwardClaimed, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.SalvageAwardClaimed, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.ServicesDescription, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.ServicesDescription, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.ServicesDescription, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.ServicesDuration, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.ServicesDuration, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.ServicesDuration, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.ServicesEstimatedCost, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.ServicesEstimatedCost, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.ServicesEstimatedCost, "", new { @class = "text-danger" })
+</div>
+    
+<div class="form-group">
+    @Html.LabelFor(m => m.MmoLicenceRequired, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.MmoLicenceRequired, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.MmoLicenceRequired, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.MmoLicenceProvided, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.MmoLicenceProvided, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.MmoLicenceProvided, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.SalvageClaimAwarded, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.SalvageClaimAwarded, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.SalvageClaimAwarded, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.District, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.District, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.District, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.ImportedFromLegacy, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.ImportedFromLegacy, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.ImportedFromLegacy, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.GoodsDischargedBy, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.GoodsDischargedBy, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.GoodsDischargedBy, "", new { @class = "text-danger" })
+</div>
+
+
+<div class="form-group">
+    @Html.LabelFor(m => m.DateDelivered, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.DateDelivered, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.DateDelivered, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Agent, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.Agent, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.Agent, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.RecoveredFromLegacy, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.RecoveredFromLegacy, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.RecoveredFromLegacy, "", new { @class = "text-danger" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.LegacyRemarks, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.LegacyRemarks, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.LegacyRemarks, "", new { @class = "text-danger" })
+</div>
+    
+<div class="form-group">
+    @Html.LabelFor(m => m.ImportedFromLegacy, new { @class = "col-form-label" })
+    @Html.CheckBoxFor(m => m.ImportedFromLegacy, new { htmlAttributes = new { @class = "form-check-input" } })
+    @Html.ValidationMessageFor(m => m.ImportedFromLegacy, "", new { @class = "text-danger" })
+</div>

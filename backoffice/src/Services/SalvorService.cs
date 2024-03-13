@@ -2,6 +2,7 @@
 #region
 
 using AutoMapper;
+using CsvHelper.Configuration;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Helpers.Extensions;
@@ -194,7 +195,7 @@ public class SalvorService : ISalvorService
             throw new Exception("No Salvors to export");
         }
 
-        return await ExportHelper.ExportRecordsAsync(salvorsData);
+        return await ExportHelper.ExportRecordsAsync(salvorsData, new DefaultClassMap<SalvorExportDto>());
     }
     
     public async Task<Salvor> GetSalvorByPowerappsIdAsync(string powerappsId) =>

@@ -1,6 +1,7 @@
 #region
 
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Droits.Helpers.Extensions;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
@@ -49,8 +50,6 @@ namespace Droits.Models.DTOs.Exports
             MmoLicenceRequired = droit.MmoLicenceRequired;
             MmoLicenceProvided = droit.MmoLicenceProvided;
             SalvageClaimAwarded = droit.SalvageClaimAwarded;
-            PowerappsDroitId = droit.PowerappsDroitId;
-            PowerappsWreckId = droit.PowerappsWreckId;
             District = droit.District;
             LegacyFileReference = droit.LegacyFileReference;
             GoodsDischargedBy = droit.GoodsDischargedBy;
@@ -78,9 +77,11 @@ namespace Droits.Models.DTOs.Exports
         public int? TriageNumber { get; set; }
         
         [DisplayName("Reported Date")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime ReportedDate { get; set; }
     
         [DisplayName("Date Found")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateFound { get; set; }
 
         [DisplayName("Is Hazardous Find?")]
@@ -139,12 +140,6 @@ namespace Droits.Models.DTOs.Exports
 
         [DisplayName("Salvage Claim Awarded")]
         public double SalvageClaimAwarded { get; set; }
-
-        [DisplayName("PowerApps Droit ID")]
-        public string? PowerappsDroitId { get; set; }
-
-        [DisplayName("PowerApps Wreck ID")]
-        public string? PowerappsWreckId { get; set; }
 
         [DisplayName("District")]
         public string? District { get; set; }
