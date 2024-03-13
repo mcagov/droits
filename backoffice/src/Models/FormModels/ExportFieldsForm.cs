@@ -9,8 +9,8 @@ public class ExportFieldsForm
     {
         
     }
-    
-    
+
+
     public bool Id { get; set; }
     public bool Reference { get; set; }
     public bool Created { get; set; }
@@ -84,7 +84,7 @@ public class ExportFieldsForm
     [DisplayName("Mmo Licence Required")]
     public bool MmoLicenceRequired { get; set; }
 
-    [DisplayName("Mmo Licence Required")]
+    [DisplayName("Mmo Licence Provided")]
     public bool MmoLicenceProvided { get; set; }
 
     [DisplayName("Salvage Claim Awarded")]
