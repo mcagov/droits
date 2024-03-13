@@ -146,6 +146,7 @@ app.use(session({
   store: new redisStore({
       client: redisClient
   }),
+  sameSite: 'none',
   saveUninitialized: false,
   resave: false,
   cookie: { httpOnly: true , secure: isSecure}
