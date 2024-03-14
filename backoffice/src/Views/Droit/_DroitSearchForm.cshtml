@@ -22,6 +22,9 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="legacy-tab" data-bs-toggle="tab" data-bs-target="#legacy" type="button" role="tab" aria-controls="legacy" aria-selected="false">Legacy</button>
     </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="export-tab" data-bs-toggle="tab" data-bs-target="#export" type="button" role="tab" aria-controls="export" aria-selected="false">Export</button>
+    </li>
 </ul>
 
 <form class="form-horizontal" asp-action="Search" enctype="multipart/form-data" method="POST">
@@ -412,6 +415,10 @@
         @Html.DropDownListFor(m => m.ImportedFromLegacy, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.ImportedFromLegacy, "", new { @class = "text-danger" })
     </div>
+</div>
+
+<div class="tab-pane fade" id="export" role="tabpanel" aria-labelledby="export-tab">
+    <partial name="Export/_ExportFieldsForm" for="DroitExportForm"/>
 </div>
 
 <div class="col d-flex flex-row mt-4">

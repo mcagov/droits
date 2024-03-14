@@ -1,5 +1,6 @@
 #region
 
+using CsvHelper.Configuration;
 using Droits.Clients;
 using Droits.Exceptions;
 using Droits.Helpers;
@@ -341,6 +342,6 @@ public class LetterService : ILetterService
             throw new Exception("No Salvors to export");
         }
 
-        return await ExportHelper.ExportRecordsAsync(lettersData);
+        return await ExportHelper.ExportRecordsAsync(lettersData, null);
     }
 }

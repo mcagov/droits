@@ -298,10 +298,25 @@ public class DroitController : BaseController
 
     public async Task<IActionResult> Search(DroitSearchForm form)
     {
-        
-        if (form.SubmitAction != "Search")
-        {
-                return RedirectToAction(form.SubmitAction,form);
+
+        if ( form.SubmitAction != "Search" ){
+            switch ( form.SubmitAction )
+            {
+                case "Export" : 
+                    try
+                    {
+                        var csvExport = await _service.ExportAsync(form); 
+                        return File(csvExport, "text/csv", $"droit-export-{DateTime.UtcNow.ToShortDateString()}.csv");
+                    }
+                    catch ( Exception e )
+                    {
+                        HandleError(_logger, "No Droits to export", e);
+                        return RedirectToAction("Index");
+                    }
+
+                default:
+                    return RedirectToAction(form.SubmitAction, form);
+            }
         }
 
         form.IncludeAssociations = true;
@@ -313,21 +328,5 @@ public class DroitController : BaseController
         model.SearchOpen = model.PageNumber == 1;
         
         return View(nameof(Index), model);
-    }
-    
-    public async Task<IActionResult> Export(DroitSearchForm form)
-    {
-        byte[] csvExport;
-        try
-        {
-            csvExport = await _service.ExportAsync(form);
-        }
-        catch ( Exception e )
-        {
-            HandleError(_logger, "No Droits to export", e);
-            return RedirectToAction("Index");
-        }
-
-        return File(csvExport, "text/csv", $"droit-export-{DateTime.UtcNow.ToShortDateString()}.csv");
     }
 }

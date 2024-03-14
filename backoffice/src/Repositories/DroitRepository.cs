@@ -4,6 +4,7 @@ using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
+using Droits.Models.FormModels;
 using Droits.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -103,7 +104,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
 
         return droit;
     }
-
+    
 
     public async Task<int> GetYearDroitCount()
     {

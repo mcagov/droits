@@ -1,5 +1,7 @@
 #region
 
+using CsvHelper.Configuration;
+using Droits.Data.Mappers.CsvMappers;
 using Droits.Helpers;
 using Droits.Helpers.SearchHelpers;
 using Droits.Models.DTOs;
@@ -148,6 +150,6 @@ public class WreckService : IWreckService
             throw new Exception("No Wrecks to export");
         }
 
-        return await ExportHelper.ExportRecordsAsync(wrecksData);
+        return await ExportHelper.ExportRecordsAsync(wrecksData, null);
     }
 }

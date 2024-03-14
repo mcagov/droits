@@ -1,7 +1,9 @@
 using System.Text;
+using Droits.Data.Mappers.CsvMappers;
 using Droits.Helpers;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
+using Droits.Models.FormModels;
 
 namespace Droits.Tests.UnitTests.Helpers;
 
@@ -24,7 +26,8 @@ public class ExportHelperTests
         };
 
         // When
-        var data = await ExportHelper.ExportRecordsAsync(droits);
+        var data = await ExportHelper.ExportRecordsAsync(droits,new DroitsCsvMap(new DroitExportForm(){Id = false}));
+        
 
         // Assert
         Assert.NotEmpty(data);
@@ -42,7 +45,7 @@ public class ExportHelperTests
         };
 
         // When
-        var data = await ExportHelper.ExportRecordsAsync(droits);
+        var data = await ExportHelper.ExportRecordsAsync(droits,new DroitsCsvMap(new DroitExportForm(){Id = false}));
         var dataString = Encoding.Default.GetString(data);
         var rows = dataString.Split("\r\n");
 
@@ -78,7 +81,8 @@ public class ExportHelperTests
         
 
         // When
-        var data = await ExportHelper.ExportRecordsAsync(droits);
+        var data = await ExportHelper.ExportRecordsAsync(droits,new DroitsCsvMap(new DroitExportForm(){Id = false}));
+
         var dataString = Encoding.Default.GetString(data);
 
         var headers = dataString.Split("\r\n").First().Split(",").ToList();
