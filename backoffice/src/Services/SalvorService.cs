@@ -195,7 +195,7 @@ public class SalvorService : ISalvorService
             throw new Exception("No Salvors to export");
         }
 
-        return await ExportHelper.ExportRecordsAsync(salvorsData, new DefaultClassMap<SalvorExportDto>());
+        return await ExportHelper.ExportRecordsAsync(salvorsData, null);
     }
     
     public async Task<Salvor> GetSalvorByPowerappsIdAsync(string powerappsId) =>

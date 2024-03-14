@@ -150,6 +150,6 @@ public class WreckService : IWreckService
             throw new Exception("No Wrecks to export");
         }
 
-        return await ExportHelper.ExportRecordsAsync(wrecksData, new DefaultClassMap<WreckExportDto>());
+        return await ExportHelper.ExportRecordsAsync(wrecksData, null);
     }
 }

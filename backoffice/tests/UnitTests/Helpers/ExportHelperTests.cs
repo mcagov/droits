@@ -26,7 +26,7 @@ public class ExportHelperTests
         };
 
         // When
-        var data = await ExportHelper.ExportRecordsAsync(droits,new DroitsCsvMap(new ExportFieldsForm(){Id = false}));
+        var data = await ExportHelper.ExportRecordsAsync(droits,new DroitsCsvMap(new DroitExportForm(){Id = false}));
         
 
         // Assert
@@ -45,7 +45,7 @@ public class ExportHelperTests
         };
 
         // When
-        var data = await ExportHelper.ExportRecordsAsync(droits,new DroitsCsvMap(new ExportFieldsForm(){Id = false}));
+        var data = await ExportHelper.ExportRecordsAsync(droits,new DroitsCsvMap(new DroitExportForm(){Id = false}));
         var dataString = Encoding.Default.GetString(data);
         var rows = dataString.Split("\r\n");
 
@@ -81,7 +81,7 @@ public class ExportHelperTests
         
 
         // When
-        var data = await ExportHelper.ExportRecordsAsync(droits,new DroitsCsvMap(new ExportFieldsForm(){Id = false}));
+        var data = await ExportHelper.ExportRecordsAsync(droits,new DroitsCsvMap(new DroitExportForm(){Id = false}));
 
         var dataString = Encoding.Default.GetString(data);
 

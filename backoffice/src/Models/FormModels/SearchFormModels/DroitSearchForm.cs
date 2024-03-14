@@ -14,9 +14,9 @@ public class DroitSearchForm : SearchForm
 {
     public DroitSearchForm()
     {
-        ExportFieldsForm = new ExportFieldsForm(){ Id = false};
+        DroitExportForm = new DroitExportForm();
     }
-    public ExportFieldsForm ExportFieldsForm { get; set; } 
+    public DroitExportForm DroitExportForm { get; set; } 
     public string? Reference { get; set; }
 
     [DisplayName("Created From")]

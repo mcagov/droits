@@ -28,8 +28,8 @@ namespace Droits.Models.DTOs.Exports
             AssignedTo = droit.AssignedToUser?.Name ?? "Unassigned";
             Status = droit.Status.GetDisplayName();
             TriageNumber = droit.TriageNumber;
-            ReportedDate = droit.ReportedDate;
-            DateFound = droit.DateFound;
+            ReportedDate = droit.ReportedDate.ToString("dd/MM/yyyy");;
+            DateFound = droit.DateFound.ToString("dd/MM/yyyy");;
             IsHazardousFind = droit.IsHazardousFind;
             IsDredge = droit.IsDredge;
             ReportedWreckName = droit.ReportedWreckName;
@@ -49,7 +49,7 @@ namespace Droits.Models.DTOs.Exports
             ServicesEstimatedCost = droit.ServicesEstimatedCost;
             MmoLicenceRequired = droit.MmoLicenceRequired;
             MmoLicenceProvided = droit.MmoLicenceProvided;
-            SalvageClaimAwarded = droit.SalvageClaimAwarded;
+            SalvageClaimAwarded = droit.SalvageClaimAwarded.ToString("0.00");
             District = droit.District;
             LegacyFileReference = droit.LegacyFileReference;
             GoodsDischargedBy = droit.GoodsDischargedBy;
@@ -77,12 +77,10 @@ namespace Droits.Models.DTOs.Exports
         public int? TriageNumber { get; set; }
         
         [DisplayName("Reported Date")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime ReportedDate { get; set; }
+        public string? ReportedDate { get; set; }
     
         [DisplayName("Date Found")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime DateFound { get; set; }
+        public string? DateFound { get; set; }
 
         [DisplayName("Is Hazardous Find?")]
         public bool IsHazardousFind { get; set; }
@@ -139,7 +137,7 @@ namespace Droits.Models.DTOs.Exports
         public bool MmoLicenceProvided { get; set; }
 
         [DisplayName("Salvage Claim Awarded")]
-        public double SalvageClaimAwarded { get; set; }
+        public string? SalvageClaimAwarded { get; set; }
 
         [DisplayName("District")]
         public string? District { get; set; }

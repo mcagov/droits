@@ -234,7 +234,7 @@ public class DroitService : IDroitService
             throw new Exception("No Droits to export");
         }
         
-        return await ExportHelper.ExportRecordsAsync(droitsData, new DroitsCsvMap(form.ExportFieldsForm));
+        return await ExportHelper.ExportRecordsAsync(droitsData, new DroitsCsvMap(form.DroitExportForm));
     }
 
     public async Task<Droit> GetDroitByReferenceAsync(string reference)

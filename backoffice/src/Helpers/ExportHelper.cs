@@ -5,8 +5,6 @@ using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Droits.Data.Mappers.CsvMappers;
-using Droits.Models.FormModels;
 
 #endregion
 
@@ -14,7 +12,7 @@ namespace Droits.Helpers;
 
 public static class ExportHelper
 {
-    public static async Task<byte[]> ExportRecordsAsync<T>( List<T> records, ClassMap<T> classMap)
+    public static async Task<byte[]> ExportRecordsAsync<T>( List<T> records, ClassMap<T>? classMap)
     {
         if (records.IsNullOrEmpty())
         {
@@ -26,10 +24,11 @@ public static class ExportHelper
         var csvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture);
         var csv = new CsvWriter(csvData, csvConfiguration);
 
-        // var classMap = new DroitsCsvMap(new ExportFieldsForm() { Id = true });
+        if ( classMap != null )
+        {
+             csv.Context.RegisterClassMap(classMap);
+        }
         
-        csv.Context.RegisterClassMap(classMap);
-    
         await csv.WriteRecordsAsync(records);
         var fileContents = Encoding.UTF8.GetBytes(csvData.ToString());
     

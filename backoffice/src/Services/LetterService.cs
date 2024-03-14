@@ -342,6 +342,6 @@ public class LetterService : ILetterService
             throw new Exception("No Salvors to export");
         }
 
-        return await ExportHelper.ExportRecordsAsync(lettersData, new DefaultClassMap<LetterExportDto>());
+        return await ExportHelper.ExportRecordsAsync(lettersData, null);
     }
 }
