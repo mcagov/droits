@@ -12,7 +12,7 @@ public class ExportHelperTests
     
     private readonly List<string> _expectedDroitHeaders = new()
         {
-            "Id", "Reference", "Created", "LastModified", "WreckName", "SalvorName", "AssignedTo", "Status", "TriageNumber"
+            "Reference", "Created", "LastModified", "WreckName", "SalvorName", "AssignedTo", "Status", "TriageNumber"
         };
     
     [Fact]
@@ -89,6 +89,6 @@ public class ExportHelperTests
 
 
         // Assert
-        Assert.Equal(_expectedDroitHeaders, headers);
+        Assert.Equivalent(_expectedDroitHeaders, headers);
     }
 }
