@@ -6,7 +6,6 @@ namespace Droits.Helpers.SearchHelpers;
 
 public class SalvorQueryBuilder
 {
-    private const int MaxLevenshteinDistance = 5;
     
     public static IQueryable<Salvor> BuildQuery(SalvorSearchForm form, IQueryable<Salvor> query,
         bool usePsql = true)
@@ -17,7 +16,7 @@ public class SalvorQueryBuilder
                  !string.IsNullOrEmpty(s.Name) &&
                  (s.Name.ToLower().Contains(form.Name.ToLower()) ||
                   (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.Name.ToLower(), s.Name.ToLower()) :
-                      SearchHelper.GetLevenshteinDistance(form.Name.ToLower(), s.Name.ToLower())) < MaxLevenshteinDistance)
+                      SearchHelper.GetLevenshteinDistance(form.Name.ToLower(), s.Name.ToLower())) < SearchHelper.GetLevenshteinDistanceThreshold(form.Name))
              );
         }
         
