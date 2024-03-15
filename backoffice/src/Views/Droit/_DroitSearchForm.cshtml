@@ -274,7 +274,7 @@
     </div>
     <div class="form-group mb-3">
         @Html.LabelFor(m => m.ValueConfirmed, new { @class = "col-form-label" })
-        @Html.EditorFor(m => m.ValueConfirmed, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.DropDownListFor(m => m.ValueConfirmed, FormModelHelper.BooleanSelectList, "Select.....", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.ValueConfirmed, "", new { @class = "text-danger" })
     </div>
     <div class="row form-row">
