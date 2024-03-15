@@ -52,7 +52,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
             .Include(d => d.Letters).AsNoTracking()
             .Include(d => d.Wreck).AsNoTracking()
             .Include(d => d.Salvor).AsNoTracking()
-            .Include(d => d.WreckMaterials).AsNoTracking();
+            .Include(d => d.WreckMaterials.OrderBy(wm => wm.Created)).AsNoTracking();
     }
 
 
@@ -64,8 +64,8 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
 
             .Include(d => d.Wreck).ThenInclude(w => w!.Notes).ThenInclude(n => n.LastModifiedByUser)
             .Include(d => d.Salvor).ThenInclude(s => s!.Notes).ThenInclude(n => n.LastModifiedByUser)
-            .Include(d => d.WreckMaterials).ThenInclude(wm => wm.Images)
-            .Include(d => d.WreckMaterials).ThenInclude(wm => wm.Files)
+            .Include(d => d.WreckMaterials.OrderBy(wm => wm.Created)).ThenInclude(wm => wm.Images)
+            .Include(d => d.WreckMaterials.OrderBy(wm => wm.Created)).ThenInclude(wm => wm.Files)
             .Include(d => d.Notes).ThenInclude(n => n.LastModifiedByUser)
             .Include(d => d.LastModifiedByUser)
             .FirstOrDefaultAsync(d => d.Id == id);
@@ -81,7 +81,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
     public async Task<Droit> GetDroitAsync(Guid id)
     {
         var droit = await Context.Droits
-                                .Include(d => d.WreckMaterials).ThenInclude(wm => wm.Images)
+                                .Include(d => d.WreckMaterials.OrderBy(wm => wm.Created)).ThenInclude(wm => wm.Images)
                                 .Include(d => d.LastModifiedByUser)
                                 .Include(d => d.AssignedToUser)
                                 .FirstOrDefaultAsync(d => d.Id == id);

@@ -63,7 +63,7 @@ public class DroitView : BaseEntityView
 
         if ( droit.WreckMaterials.Any() )
         {
-            WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).OrderByDescending(w => w.Created).ToList();
+            WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).OrderBy(w => w.Created).ToList();
         }
 
         if ( droit.Letters.Any() )
