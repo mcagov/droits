@@ -52,9 +52,9 @@ public class WreckQueryBuilderUnitTests
         var form = new WreckSearchForm { WreckName = "TustWrack" };
         var wrecks = new List<Wreck>
         {
-            new() { Id = Guid.NewGuid(), Name = "TestWreck44" },
-            new() { Id = Guid.NewGuid(), Name = "TestWreck555" },
-            new() { Id = Guid.NewGuid(), Name = "TestWreck6666" },
+            new() { Id = Guid.NewGuid(), Name = "TestWreck" },
+            new() { Id = Guid.NewGuid(), Name = "TestWreck11" },
+            new() { Id = Guid.NewGuid(), Name = "TestWreck222" },
         }.AsQueryable();
 
         // Act
@@ -62,7 +62,7 @@ public class WreckQueryBuilderUnitTests
 
         // Assert
         Assert.Equal(1, result.Count()); 
-        Assert.Equal("TestWreck44",result.First().Name);
+        Assert.Equal("TestWreck",result.First().Name);
     }
     
     [Fact]
@@ -93,7 +93,7 @@ public class WreckQueryBuilderUnitTests
         var wrecks = new List<Wreck>
         {
             new() { Id = Guid.NewGuid(), OwnerName = "TestOwner" },
-            new() { Id = Guid.NewGuid(), OwnerName = "AnotherTestOwner" }
+            new() { Id = Guid.NewGuid(), OwnerName = "TestOwner1" }
         }.AsQueryable();
 
         // Act
@@ -111,9 +111,9 @@ public class WreckQueryBuilderUnitTests
         var form = new WreckSearchForm { WreckName = "TustOwnar" };
         var wrecks = new List<Wreck>
         {
-            new() { Id = Guid.NewGuid(), Name = "TestOwner44" },
-            new() { Id = Guid.NewGuid(), Name = "TestOwner555" },
-            new() { Id = Guid.NewGuid(), Name = "TestOwner6666" },
+            new() { Id = Guid.NewGuid(), Name = "TestOwner" },
+            new() { Id = Guid.NewGuid(), Name = "TestOwner11" },
+            new() { Id = Guid.NewGuid(), Name = "TestOwner222" },
         }.AsQueryable();
 
         // Act
@@ -121,7 +121,7 @@ public class WreckQueryBuilderUnitTests
 
         // Assert
         Assert.Equal(1, result.Count()); 
-        Assert.Equal("TestOwner44",result.First().Name);
+        Assert.Equal("TestOwner",result.First().Name);
     }
     
 }
