@@ -1,3 +1,5 @@
+using Droits.Models.FormModels.ExportFormModels;
+
 namespace Droits.Models.FormModels.SearchFormModels;
 
 public class SalvorSearchForm : SearchForm

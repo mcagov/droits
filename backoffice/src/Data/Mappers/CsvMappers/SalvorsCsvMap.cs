@@ -5,6 +5,7 @@ using CsvHelper.Configuration;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Models.FormModels.ExportFormModels;
 
 namespace Droits.Data.Mappers.CsvMappers;
 
@@ -14,27 +15,27 @@ public sealed class SalvorsCsvMap : ClassMap<SalvorExportDto>
     {
         AutoMap(CultureInfo.InvariantCulture);
         if ( !salvorExportForm.Created )
-            Map(d => d.Created).Ignore();
+            Map(s => s.Created).Ignore();
         if ( !salvorExportForm.LastModified )
-            Map(d => d.LastModified).Ignore();
+            Map(s => s.LastModified).Ignore();
         if ( !salvorExportForm.Name )
-            Map(d => d.Name).Ignore();
+            Map(s => s.Name).Ignore();
         if ( !salvorExportForm.Email )
-            Map(d => d.Email).Ignore();
+            Map(s => s.Email).Ignore();
         if ( !salvorExportForm.TelephoneNumber )
-            Map(d => d.TelephoneNumber).Ignore();
+            Map(s => s.TelephoneNumber).Ignore();
         if ( !salvorExportForm.MobileNumber )
-            Map(d => d.MobileNumber).Ignore();
+            Map(s => s.MobileNumber).Ignore();
         if ( !salvorExportForm.AddressPostcode )
-            Map(d => d.AddressPostcode).Ignore();
+            Map(s => s.AddressPostcode).Ignore();
         if ( !salvorExportForm.AddressCounty )
-            Map(d => d.AddressCounty).Ignore();
+            Map(s => s.AddressCounty).Ignore();
         if ( !salvorExportForm.AddressTown )
-            Map(d => d.AddressTown).Ignore();
+            Map(s => s.AddressTown).Ignore();
         if ( !salvorExportForm.AddressLine1 )
-            Map(d => d.AddressLine1).Ignore();
+            Map(s => s.AddressLine1).Ignore();
         if ( !salvorExportForm.AddressLine2 )
-            Map(d => d.AddressLine2).Ignore();
+            Map(s => s.AddressLine2).Ignore();
     }
 
 }

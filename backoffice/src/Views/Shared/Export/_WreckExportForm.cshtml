@@ -1,0 +1,197 @@
+@model Droits.Models.FormModels.ExportFormModels.WreckExportForm
+
+<div class="row">
+
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.Created, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.Created, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.LastModified, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.LastModified, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.Name, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.Name, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.Type, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.Type, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.ConstructionDetails, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.ConstructionDetails, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.YearConstructed, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.YearConstructed, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.DateOfLoss, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.DateOfLoss, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.InUkWaters, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.InUkWaters, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.IsWarWreck, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.IsWarWreck, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.IsAnAircraft, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.IsAnAircraft, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.Latitude, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.Latitude, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.Longitude, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.Longitude, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.IsProtectedSite, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.IsProtectedSite, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.ProtectionLegislation, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.ProtectionLegislation, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.AdditionalInformation, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.AdditionalInformation, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.OwnerName, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.OwnerName, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.OwnerEmail, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.OwnerEmail, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.OwnerNumber, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.OwnerNumber, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.OwnerAddress, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.OwnerAddress, new { @class = "form-check-input font-weight-bold" })
+        </div>
+
+    </div>
+
+</div>
+

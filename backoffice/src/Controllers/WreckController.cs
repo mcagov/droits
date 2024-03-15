@@ -142,7 +142,24 @@ public class WreckController : BaseController
     {
         if (form.SubmitAction != "Search")
         {
-                return RedirectToAction(form.SubmitAction,form);
+            switch ( form.SubmitAction )
+            {
+                case "Export" : 
+                    try
+                    {
+                        var csvExport = await _service.ExportAsync(form); 
+                        return File(csvExport, "text/csv", $"wreck-export-{DateTime.UtcNow.ToShortDateString()}.csv");
+                    }
+                    catch ( Exception e )
+                    {
+                        HandleError(_logger, "No Wrecks to export", e);
+                        return RedirectToAction("Index");
+                    }
+
+                default:
+                    return RedirectToAction(form.SubmitAction, form);
+            }
+            
         }
         
         form.IncludeAssociations = true;
@@ -154,20 +171,4 @@ public class WreckController : BaseController
         return View(nameof(Index), model);
     }
     
-    public async Task<IActionResult> Export(WreckSearchForm form)
-    {
-        byte[] csvExport;
-        try
-        {
-            csvExport = await _service.ExportAsync(form);
-        }
-        catch ( Exception e )
-        {
-            HandleError(_logger, "No Wrecks to export", e);
-            return RedirectToAction("Index");
-        }
-        
-
-        return File(csvExport, "text/csv", $"wreck-export-{DateTime.UtcNow.ToShortDateString()}.csv");
-    }
 }

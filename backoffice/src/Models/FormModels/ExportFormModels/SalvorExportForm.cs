@@ -1,7 +1,6 @@
 using System.ComponentModel;
-using Droits.Models.Enums;
 
-namespace Droits.Models.FormModels;
+namespace Droits.Models.FormModels.ExportFormModels;
 
 public class SalvorExportForm
 {

@@ -1,62 +1,88 @@
 @model LetterSearchForm
 
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="letter-tab" data-bs-toggle="tab" data-bs-target="#letter" type="button" role="tab" aria-controls="letter" aria-selected="true">Letter</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="export-tab" data-bs-toggle="tab" data-bs-target="#export" type="button" role="tab" aria-controls="export" aria-selected="false">Export</button>
+    </li>
+</ul>
+
 <form class="form-horizontal" asp-action="Search" enctype="multipart/form-data" method="POST">
     
     <div class="d-none">
         @Html.EditorFor(l => l.PageNumber, new { htmlAttributes = new { @class = "js-page-number-field"} })
     </div>
+    
+    <div class="tab-content mt-4" id="letterForm">
 
-    <div class="form-floating mb-3">
-        @Html.EditorFor(l => l.Recipient, new { htmlAttributes = new { @class = "form-control", @placeholder = "" } })
-        @Html.LabelFor(l => l.Recipient)
-    </div>
+        <div class="tab-pane fade show active" id="location" role="tabpanel" aria-labelledby="location-tab">
 
-    <div class="form-floating mb-3 status-select">
-        <select class="form-control js-search-letter-status" id="StatusList" multiple="multiple" name="StatusList" placeholder="">
-            @foreach (var o in Html.GetEnumSelectList(typeof(LetterStatus)))
-            {
-                if (@Model.SelectedStatusList.Contains(int.Parse(o.Value)))
-                {
-                    <option value="@o.Value" selected="selected">@o.Text</option>
-                }
-                else
-                {
-                    <option value="@o.Value">@o.Text</option>
+            <div class="form-floating mb-3">
+                @Html.EditorFor(l => l.Recipient, new { htmlAttributes = new { @class = "form-control", @placeholder = "" } })
+                @Html.LabelFor(l => l.Recipient)
+            </div>
 
-                }
-            }
-        </select>
-    </div>
+            <div class="form-floating mb-3 status-select">
+                <select class="form-control js-search-letter-status" id="StatusList" multiple="multiple" name="StatusList" placeholder="">
+                    @foreach (var o in Html.GetEnumSelectList(typeof(LetterStatus)))
+                    {
+                        if (@Model.SelectedStatusList.Contains(int.Parse(o.Value)))
+                        {
+                            <option value="@o.Value" selected="selected">@o.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@o.Value">@o.Text</option>
+        
+                        }
+                    }
+                </select>
+            </div>
 
-    <div class="form-floating mb-3 type-select">
-        <select class="form-control js-search-letter-type" id="TypeList" multiple="multiple" name="TypeList" placeholder="">
-            @foreach (var o in Html.GetEnumSelectList(typeof(LetterType)))
-            {
-                if (@Model.SelectedTypeList.Contains(int.Parse(o.Value)))
-                {
-                    <option value="@o.Value" selected="selected">@o.Text</option>
-                }
-                else
-                {
-                    <option value="@o.Value">@o.Text</option>
-
-                }
-            }
-        </select>
-    </div>
-
-
-    <div class="col d-flex flex-row mt-4">
-        <div class="col">
-            <button class="btn btn-primary" name="SubmitAction" value="Search" type="submit">Search</button>
-            <button class="btn btn-primary" name="SubmitAction" value="Export" type="submit">Export</button>
+            <div class="form-floating mb-3 type-select">
+                <select class="form-control js-search-letter-type" id="TypeList" multiple="multiple" name="TypeList" placeholder="">
+                    @foreach (var o in Html.GetEnumSelectList(typeof(LetterType)))
+                    {
+                        if (@Model.SelectedTypeList.Contains(int.Parse(o.Value)))
+                        {
+                            <option value="@o.Value" selected="selected">@o.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@o.Value">@o.Text</option>
+    
+                        }
+                    }
+                </select>
+            </div>
+        
         </div>
-        <div class="col ms-auto">
-            <div class="float-end">
-                <a class="btn btn-primary" asp-action="Index">Reset</a>
-                <button class="btn btn-primary js-toggle-letter-search" type="button">Close</button>
+        
+        <div class="tab-pane fade letter-export-form" id="export" role="tabpanel" aria-labelledby="export-tab">
+            <partial name="Export/_LetterExportForm" for="LetterExportForm"/>
+            
+            <div class="btn-group btn-group-sm" role="group">
+                <button class="toggleExportFields btn btn-primary" data-parent-container=".letter-export-form" data-checked="true">Select All</button>
+                <button class="toggleExportFields btn btn-primary" data-parent-container=".letter-export-form" data-checked="false">Select None</button>
+            </div>
+        
+        </div>
+
+
+        <div class="col d-flex flex-row mt-4">
+            <div class="col">
+                <button class="btn btn-primary" name="SubmitAction" value="Search" type="submit">Search</button>
+                <button class="btn btn-primary" name="SubmitAction" value="Export" type="submit">Export</button>
+            </div>
+            <div class="col ms-auto">
+                <div class="float-end">
+                    <a class="btn btn-primary" asp-action="Index">Reset</a>
+                    <button class="btn btn-primary js-toggle-letter-search" type="button">Close</button>
+                </div>
             </div>
         </div>
-    </div>
 
+    </div>
 </form>

@@ -5,6 +5,7 @@ using CsvHelper.Configuration;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Models.FormModels.ExportFormModels;
 
 namespace Droits.Data.Mappers.CsvMappers;
 
