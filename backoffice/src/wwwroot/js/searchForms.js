@@ -34,6 +34,17 @@ function initializeSearchForm(formClass, toggleButtonClass) {
         });
     });
 
+    document.querySelectorAll('.toggleExportFields').forEach(function(button) {
+        button.addEventListener("click", function(e) {
+            e.preventDefault();
+            const parentContainerSelector = this.getAttribute('data-parent-container');
+            const checkedState = this.getAttribute('data-checked') === 'true';
+
+            document.querySelectorAll(parentContainerSelector + ' .form-check-input').forEach(function(checkbox) {
+                checkbox.checked = checkedState;
+            });
+        });
+    });
     
     switch (formClass) {
         case '.js-droit-search':

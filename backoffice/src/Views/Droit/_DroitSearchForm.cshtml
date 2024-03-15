@@ -417,8 +417,14 @@
     </div>
 </div>
 
-<div class="tab-pane fade" id="export" role="tabpanel" aria-labelledby="export-tab">
-    <partial name="Export/_ExportFieldsForm" for="DroitExportForm"/>
+<div class="tab-pane fade droit-export-form" id="export" role="tabpanel" aria-labelledby="export-tab">
+    <partial name="Export/_DroitExportForm" for="DroitExportForm"/>
+    
+    <div class="btn-group btn-group-sm" role="group">
+        <button class="toggleExportFields btn btn-primary" data-parent-container=".droit-export-form" data-checked="true">Select All</button>
+        <button class="toggleExportFields btn btn-primary" data-parent-container=".droit-export-form" data-checked="false">Select None</button>
+    </div>
+    
 </div>
 
 <div class="col d-flex flex-row mt-4">

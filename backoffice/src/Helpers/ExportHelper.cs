@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Droits.Data.Mappers.CsvMappers;
 using Microsoft.IdentityModel.Tokens;
 
 #endregion
@@ -26,7 +27,7 @@ public static class ExportHelper
 
         if ( classMap != null )
         {
-             csv.Context.RegisterClassMap(classMap);
+            csv.Context.RegisterClassMap(classMap);
         }
         
         await csv.WriteRecordsAsync(records);
