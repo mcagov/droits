@@ -3,6 +3,7 @@
 
 using AutoMapper;
 using CsvHelper.Configuration;
+using Droits.Data.Mappers.CsvMappers;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Helpers.Extensions;
@@ -188,14 +189,25 @@ public class SalvorService : ISalvorService
 
         var salvors = SearchSalvors(query);
         
-        var salvorsData = salvors.Select(s => new SalvorExportDto(s)).ToList();
+       
         
         if (salvors.IsNullOrEmpty())
         {
             throw new Exception("No Salvors to export");
         }
 
-        return await ExportHelper.ExportRecordsAsync(salvorsData, null);
+        try
+        {
+            var salvorsData = salvors.Select(s => new SalvorExportDto(s)).ToList();
+            return await ExportHelper.ExportRecordsAsync(salvorsData, new SalvorsCsvMap(form.SalvorExportForm));
+        }
+        catch ( Exception e )
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+       
     }
     
     public async Task<Salvor> GetSalvorByPowerappsIdAsync(string powerappsId) =>
