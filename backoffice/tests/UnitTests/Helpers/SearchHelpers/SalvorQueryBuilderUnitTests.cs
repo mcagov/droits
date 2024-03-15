@@ -52,9 +52,9 @@ public class SalvorQueryBuilderUnitTests
         var form = new SalvorSearchForm { Name = "TustSulvor" };
         var salvors = new List<Salvor>
         {
-            new() { Id = Guid.NewGuid(), Name = "TestSalvor44" },
-            new() { Id = Guid.NewGuid(), Name = "TestSalvor555" },
-            new() { Id = Guid.NewGuid(), Name = "TestSalvor6666" },
+            new() { Id = Guid.NewGuid(), Name = "TestSalvor" },
+            new() { Id = Guid.NewGuid(), Name = "TestSalvor11" },
+            new() { Id = Guid.NewGuid(), Name = "TestSalvor222" },
         }.AsQueryable();
 
         // Act
@@ -62,7 +62,7 @@ public class SalvorQueryBuilderUnitTests
 
         // Assert
         Assert.Equal(1, result.Count()); 
-        Assert.Equal("TestSalvor44",result.First().Name);
+        Assert.Equal("TestSalvor",result.First().Name);
     }
     
     [Fact]
