@@ -2,7 +2,17 @@
 @model ListView<object>
 @{
     IPagedList<object> pagedItems = new StaticPagedList<object>(Model.Items, Model.PageNumber, Model.PageSize, Model.TotalCount);
+    var startIndex = (Model.PageNumber - 1) * Model.PageSize + 1;
+    var endIndex = Math.Min(startIndex + Model.Items.Count - 1, Model.TotalCount);
 }
+
+
+<div class="row justify-content-center mb-1">
+    <div class="col text-center">
+           Showing @startIndex-@endIndex of @Model.TotalCount @("result".Pluralize(Model.TotalCount))
+    </div>
+</div>
+
 
 <ul class="pagination justify-content-center">
     @if (pagedItems.HasPreviousPage)
