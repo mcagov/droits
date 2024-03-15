@@ -53,6 +53,7 @@ public class WreckMaterialView : BaseEntityView
     [DataType(DataType.MultilineText)]
     public string? Description { get; } = string.Empty;
     public int Quantity { get; } = 1;
+    [Display(Name = "Salvor Valuation")]
     public double? Value { get; } = 0;
     
     // Images

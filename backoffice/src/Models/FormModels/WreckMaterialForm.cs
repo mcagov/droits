@@ -61,6 +61,7 @@ public class WreckMaterialForm : BaseEntityForm
     public int Quantity { get; set; } = 1;
 
     [Range(0, double.MaxValue, ErrorMessage = "Value must be a non-negative number.")]
+    [Display(Name = "Salvor Valuation")]
     public double? Value { get; set; } = 0;
 
     [Range(0, double.MaxValue, ErrorMessage = "Receiver valuation must be a non-negative number.")]
