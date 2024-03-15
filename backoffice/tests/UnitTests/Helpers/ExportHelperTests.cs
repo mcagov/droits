@@ -75,8 +75,16 @@ public class ExportHelperTests
         // Given
         var droits = new List<DroitExportDto>()
         {
-            new() { Id = new Guid(), Reference = "Ref3" },
-            new() { Id = new Guid(), Reference = "Ref4" }
+            new() { Id = new Guid(), Reference = "Ref3" ,WreckMaterials = new List<WreckMaterialDto>() {new WreckMaterialDto()
+            {
+                Description = "foo",
+                Name = "bar",
+                Owner = "baz",
+                Outcome = "woo",
+                Quantity = "1",
+                Value = "350"
+            }}},
+            new() { Id = new Guid(), Reference = "Ref4" , WreckMaterials = new List<WreckMaterialDto>()}
         };
         
 

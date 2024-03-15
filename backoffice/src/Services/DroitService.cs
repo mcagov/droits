@@ -226,15 +226,29 @@ public class DroitService : IDroitService
         var query = QueryFromForm(form);
 
         var droits = SearchDroits(query);
-        
-        var droitsData = droits.Select(d => new DroitExportDto(d)).ToList();
-        
+
+         
         if (droits.IsNullOrEmpty())
         {
             throw new Exception("No Droits to export");
         }
         
-        return await ExportHelper.ExportRecordsAsync(droitsData, new DroitsCsvMap(form.DroitExportForm));
+        
+        
+        try
+        {
+            var droitsData = droits.Select(d => new DroitExportDto(d)).ToList();
+            return await ExportHelper.ExportRecordsAsync(droitsData, new DroitsCsvMap(form.DroitExportForm));
+        }
+        catch ( Exception e )
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
+       
+        
+        
     }
 
     public async Task<Droit> GetDroitByReferenceAsync(string reference)

@@ -58,6 +58,16 @@ namespace Droits.Models.DTOs.Exports
             RecoveredFromLegacy = droit.RecoveredFromLegacy;
             LegacyRemarks = droit.LegacyRemarks;
             ImportedFromLegacy = droit.ImportedFromLegacy;
+            if ( droit.WreckMaterials.Any() )
+            {
+                WreckMaterials =
+                    droit.WreckMaterials.Select(wm =>
+                        new WreckMaterialDto(wm));
+            }
+            else
+            {
+                WreckMaterials = new WreckMaterialDto[0];
+            }
         }
 
         public Guid? Id { get; set; }
@@ -162,5 +172,44 @@ namespace Droits.Models.DTOs.Exports
 
         [DisplayName("Imported from Legacy")]
         public bool ImportedFromLegacy { get; set; }
+
+        public IEnumerable<WreckMaterialDto> WreckMaterials { get; set; }
+    }
+
+    public class WreckMaterialDto
+    {
+        public WreckMaterialDto(WreckMaterial wreckMaterial)
+        {
+            Name = wreckMaterial.Name;
+            Quantity = wreckMaterial.Quantity.ToString();
+            Description = wreckMaterial.Description;
+            Value = wreckMaterial.Value.ToString();
+            Outcome = wreckMaterial.Outcome.ToString();
+            Owner = wreckMaterial.WreckMaterialOwner;
+
+        }
+
+
+        public WreckMaterialDto()
+        {
+        }
+
+
+        public string? Owner { get; set; }
+
+
+        public string? Outcome { get; set; }
+
+
+        public string? Value { get; set; }
+
+
+        public string? Description { get; set; }
+
+
+        public string? Quantity { get; set; }
+
+
+        public string? Name { get; set; }
     }
 }
