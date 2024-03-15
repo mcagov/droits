@@ -23,18 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeSearchForms();
     initializeFile();
     initializeTinyMce();
-
-    document.querySelectorAll('.toggleExportFields').forEach(function(button) {
-        button.addEventListener("click", function(e) {
-            e.preventDefault();
-            var parentContainerSelector = this.getAttribute('data-parent-container');
-            var checkedState = this.getAttribute('data-checked') === 'true';
-
-            document.querySelectorAll(parentContainerSelector + ' .form-check-input').forEach(function(checkbox) {
-                checkbox.checked = checkedState;
-            });
-        });
-    });
 });
 
 function initializeComponents(selector, initializer) {
