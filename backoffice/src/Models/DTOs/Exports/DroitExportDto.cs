@@ -64,10 +64,7 @@ namespace Droits.Models.DTOs.Exports
                     droit.WreckMaterials.Select(wm =>
                         new WreckMaterialDto(wm));
             }
-            else
-            {
-                WreckMaterials = new WreckMaterialDto[0];
-            }
+            
         }
 
         public Guid? Id { get; set; }
@@ -173,7 +170,7 @@ namespace Droits.Models.DTOs.Exports
         [DisplayName("Imported from Legacy")]
         public bool ImportedFromLegacy { get; set; }
 
-        public IEnumerable<WreckMaterialDto> WreckMaterials { get; set; }
+        public IEnumerable<WreckMaterialDto> WreckMaterials { get; set; } = Array.Empty<WreckMaterialDto>();
     }
 
     public class WreckMaterialDto
@@ -195,21 +192,20 @@ namespace Droits.Models.DTOs.Exports
         }
 
 
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string? Quantity { get; set; }
+        public string? Value { get; set; }
         public string? Owner { get; set; }
-
-
         public string? Outcome { get; set; }
 
 
-        public string? Value { get; set; }
-
-
-        public string? Description { get; set; }
-
-
-        public string? Quantity { get; set; }
-
-
-        public string? Name { get; set; }
+        public override string ToString()=> $"Name: {Name}\n" +
+                                            $"Description: {Description}\n" +
+                                            $"Quantity: {Quantity}\n" +
+                                            $"Value: {Value}\n" +
+                                            $"Owner: {Owner}\n" +
+                                            $"Outcome: {Outcome}";
+        
     }
 }

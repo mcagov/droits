@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Globalization;
+using AutoMapper;
 using CsvHelper.Configuration;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
@@ -90,41 +91,9 @@ public sealed class DroitsCsvMap : ClassMap<DroitExportDto>
             Map(d => d.LegacyRemarks).Ignore();
         if ( !droitExportForm.ImportedFromLegacy )
             Map(d => d.ImportedFromLegacy).Ignore();
+        if ( droitExportForm.WreckMaterials )
+            Map(d => d.WreckMaterials);
 
-       int materialIndex = 1;
-        foreach (var property in typeof(WreckMaterial).GetProperties())
-        {
-            if (!droitExportForm.Materials)
-                Map($"WreckMaterial_{materialIndex}_{property.Name}").Ignore();
-            else
-                Map($"WreckMaterial_{materialIndex}_{property.Name}").ConvertUsing(row =>
-                {
-                    var materials = row.GetField<List<WreckMaterial>>("Materials");
-                    if (materials != null && materials.Count >= materialIndex)
-                        return property.GetValue(materials[materialIndex - 1]);
-                    return null;
-                });
-            
-            materialIndex++;
-        }
-        
-        References<WreckMaterialMap>(d => d.WreckMaterials);
     }
 
-}
-public sealed class WreckMaterialMap : ClassMap<WreckMaterialDto>
-{
-    public WreckMaterialMap()
-    {
-        int index = 1; // Start index for properties
-
-        Map(m => m.Name).Name($"WreckMaterial_{index}_Name");
-        Map(m => m.Quantity).Name($"WreckMaterial_{index}_Quantity");
-        Map(m => m.Description).Name($"WreckMaterial_{index}_Description");
-        Map(m => m.Value).Name($"WreckMaterial_{index}_Value");
-        Map(m => m.Outcome).Name($"WreckMaterial_{index}_Outcome");
-        Map(m => m.Owner).Name($"WreckMaterial_{index}_Owner");
-
-        index++; // Increment index for next properties
-    }
 }

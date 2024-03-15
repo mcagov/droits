@@ -27,9 +27,7 @@ public static class ExportHelper
 
         if ( classMap != null )
         {
-                         csv.Context.RegisterClassMap<WreckMaterialMap>();
-
-             csv.Context.RegisterClassMap(classMap);
+            csv.Context.RegisterClassMap(classMap);
         }
         
         await csv.WriteRecordsAsync(records);

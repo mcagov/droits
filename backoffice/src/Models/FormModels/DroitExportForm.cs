@@ -38,6 +38,9 @@ public class DroitExportForm
     
     [DisplayName("Is Dredge?")]
     public bool IsDredge { get; set; } = true;
+    
+    [DisplayName("Wreck Materials")]
+    public bool WreckMaterials { get; set; } = true;
 
     [DisplayName("Reported Wreck Name")]
     public bool ReportedWreckName { get; set; } = true;
@@ -113,4 +116,7 @@ public class DroitExportForm
 
     [DisplayName("Imported from Legacy")]
     public bool ImportedFromLegacy { get; set; } = true;
+    
+
+
 }
