@@ -223,7 +223,7 @@ public static class DatabaseSeeder
                 StoredAtSalvorAddress = Faker.Random.Bool(),
                 Description = Faker.Lorem.Sentence(),
                 Quantity = Faker.Random.Int(1, 100),
-                Value = Math.Round(Faker.Random.Double(1, 5000),2),
+                SalvorValuation = Math.Round(Faker.Random.Double(1, 5000),2),
                 ValueKnown = Faker.Random.Bool(),
                 ReceiverValuation = Math.Round(Faker.Random.Double(1, 5000),2),
                 ValueConfirmed = Faker.Random.Bool(),

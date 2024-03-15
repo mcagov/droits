@@ -49,11 +49,11 @@
 
             <div class="form-group row mt-2">
                 <div class="col-md-4">
-                    @Html.LabelFor(m => m.Value, new { @class = "col-form-label font-weight-bold" })
+                    @Html.LabelFor(m => m.SalvorValuation, new { @class = "col-form-label font-weight-bold" })
                 </div>
                 <div class="col-md-8">
-                    @Html.EditorFor(m => m.Value, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(m => m.Value, "", new { @class = "text-danger" })
+                    @Html.EditorFor(m => m.SalvorValuation, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.SalvorValuation, "", new { @class = "text-danger" })
                 </div>
             </div>
 

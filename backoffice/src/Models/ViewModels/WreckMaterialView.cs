@@ -22,7 +22,7 @@ public class WreckMaterialView : BaseEntityView
         Name = wreckMaterial.Name;
         Description = wreckMaterial.Description;
         Quantity = wreckMaterial.Quantity;
-        Value = wreckMaterial.Value;
+        SalvorValuation = wreckMaterial.SalvorValuation;
         ReceiverValuation = wreckMaterial.ReceiverValuation;
         ValueConfirmed = wreckMaterial.ValueConfirmed;
         // Images = wreckMaterial.Images;
@@ -54,7 +54,7 @@ public class WreckMaterialView : BaseEntityView
     public string? Description { get; } = string.Empty;
     public int Quantity { get; } = 1;
     [Display(Name = "Salvor Valuation")]
-    public double? Value { get; } = 0;
+    public double? SalvorValuation { get; } = 0;
     
     // Images
     public List<ImageView> Images { get; } = new();

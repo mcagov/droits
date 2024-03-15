@@ -15,7 +15,7 @@ namespace Droits.Data.Mappers
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.ImageIds, opt => opt.MapFrom(src => src.Images.Select(i => i.Id)))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
-                .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Value))
+                .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.SalvorValuation))
                 .ForPath(dest => dest.StorageAddress.Line1,
                     opt => opt.MapFrom(src => src.StorageAddress.Line1))
             .ForPath(dest => dest.StorageAddress.Line2,
