@@ -2,11 +2,20 @@ using Droits.Helpers.SearchHelpers;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels.SearchFormModels;
+using Xunit.Abstractions;
 
 namespace Droits.Tests.UnitTests.Helpers.SearchHelpers;
 
 public class DroitQueryBuilderUnitTests
 {
+    private readonly ITestOutputHelper _output;
+
+
+    public DroitQueryBuilderUnitTests(ITestOutputHelper output)
+    {
+        _output = output;
+    }
+    
     [Fact]
     public void BuildQuery_WithValidName_ReturnsFilteredQuery()
     {
@@ -778,5 +787,53 @@ public class DroitQueryBuilderUnitTests
         Assert.True(result.Any(d => d.Reference == "MatchingDroit"));
         Assert.True(result.Any(d => d.Reference == "PartiallyMatchingDroit"));
         Assert.False(result.Any(d => d.Reference == "NotMatchingDroit"));
+    }
+    
+    
+    
+    [Fact]
+    public void BuildQuery_WithLocation_ShouldMatchAll_ReturnsFilteredQuery()
+    {
+        // Arrange
+        var form = new DroitSearchForm
+        {
+            LocationDescription = "sandwhiche"
+        };
+        var droits = new List<Droit>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(), LocationDescription = "Sandwich"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), LocationDescription = "Sandwich bay"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), LocationDescription = "Sandwich flats"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), LocationDescription = "Sandwich nomatch" 
+            },
+        }.AsQueryable();
+    
+        _output.WriteLine($"{form.LocationDescription.ToLower()} Len: {form.LocationDescription.Length} Threshold: {SearchHelper.GetLevenshteinDistanceThreshold(form.LocationDescription.ToLower())}");
+        foreach (var d in droits)
+        {
+            _output.WriteLine($"{d.LocationDescription.ToLower()} Distance: {SearchHelper.GetLevenshteinDistance(form.LocationDescription.ToLower(), d.LocationDescription.ToLower())}");
+        }
+
+        
+        // Act
+        var result = DroitQueryBuilder.BuildQuery(form, droits, false);
+    
+        // Assert
+        Assert.Equal(3, result.Count()); 
+        Assert.True(result.Any(d => d.LocationDescription == "Sandwich"));
+        Assert.True(result.Any(d => d.LocationDescription == "Sandwich bay"));
+        Assert.True(result.Any(d => d.LocationDescription == "Sandwich flats"));
+        Assert.False(result.Any(d => d.LocationDescription == "Sandwich nomatch"));
     }
 }
