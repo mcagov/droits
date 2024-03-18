@@ -180,7 +180,7 @@ namespace Droits.Models.DTOs.Exports
             Name = wreckMaterial.Name;
             Quantity = wreckMaterial.Quantity.ToString();
             Description = wreckMaterial.Description;
-            Value = wreckMaterial.Value.ToString();
+            Value = wreckMaterial.SalvorValuation.ToString();
             Outcome = wreckMaterial.Outcome.ToString();
             Owner = wreckMaterial.WreckMaterialOwner;
 

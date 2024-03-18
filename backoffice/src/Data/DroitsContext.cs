@@ -188,7 +188,7 @@ public partial class DroitsContext : DbContext
             entity.Property(w => w.Name);
             entity.Property(w => w.Description);
             entity.Property(w => w.Quantity);
-            entity.Property(w => w.Value);
+            entity.Property(w => w.SalvorValuation);
             entity.Property(w => w.ReceiverValuation);
             entity.Property(w => w.ValueConfirmed);
             entity.Property(w => w.WreckMaterialOwner);

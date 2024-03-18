@@ -22,7 +22,7 @@ public class WreckMaterialForm : BaseEntityForm
         Name = wreckMaterial.Name;
         Description = wreckMaterial.Description;
         Quantity = wreckMaterial.Quantity;
-        Value = wreckMaterial.Value;
+        SalvorValuation = wreckMaterial.SalvorValuation;
         ReceiverValuation = wreckMaterial.ReceiverValuation;
         ValueConfirmed = wreckMaterial.ValueConfirmed;
         WreckMaterialOwner = wreckMaterial.WreckMaterialOwner;
@@ -61,7 +61,8 @@ public class WreckMaterialForm : BaseEntityForm
     public int Quantity { get; set; } = 1;
 
     [Range(0, double.MaxValue, ErrorMessage = "Value must be a non-negative number.")]
-    public double? Value { get; set; } = 0;
+    [Display(Name = "Salvor Valuation")]
+    public double? SalvorValuation { get; set; } = 0;
 
     [Range(0, double.MaxValue, ErrorMessage = "Receiver valuation must be a non-negative number.")]
     [Display(Name = "Receiver Valuation")]
@@ -109,7 +110,7 @@ public class WreckMaterialForm : BaseEntityForm
         wreckMaterial.Name = Name;
         wreckMaterial.Description = Description;
         wreckMaterial.Quantity = Quantity;
-        wreckMaterial.Value = Value;
+        wreckMaterial.SalvorValuation = SalvorValuation;
         wreckMaterial.ReceiverValuation = ReceiverValuation;
         wreckMaterial.ValueConfirmed = ValueConfirmed;
         
