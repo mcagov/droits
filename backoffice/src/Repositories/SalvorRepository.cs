@@ -38,8 +38,9 @@ public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
 
     public IQueryable<Salvor> GetSalvorsWithAssociations()
     {
-        return GetSalvors()
+        return Context.Salvors
             .Include(s => s.Droits)
+            .OrderByDescending(l => l.Created)
             .AsNoTracking();
     }
 
