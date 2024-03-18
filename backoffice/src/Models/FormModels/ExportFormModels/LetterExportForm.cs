@@ -17,4 +17,6 @@ public class LetterExportForm
     public bool Status { get; set; } = true;
     [DisplayName("Letter type")]
     public bool Type { get; set; } = true;
+
+    public bool Subject { get; set; } = true;
 }

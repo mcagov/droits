@@ -24,6 +24,8 @@ public sealed class LettersCsvMap : ClassMap<LetterExportDto>
             Map(l => l.Status).Ignore();
         if ( !letterExportForm.Type )
             Map(l => l.Type).Ignore();
+        if ( !letterExportForm.Subject )
+            Map(l => l.Subject).Ignore();
     }
 
 }

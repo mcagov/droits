@@ -29,4 +29,6 @@ public class LetterExportDto
     public LetterStatus Status { get; set; }
     [DisplayName("Letter Type")]
     public LetterType Type { get; set; }
+
+    public object Subject { get; set; }
 }
