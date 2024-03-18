@@ -42,4 +42,7 @@ public class WreckExportForm
     public bool OwnerNumber { get; set; } = true;
     [DisplayName("Owner Address")]
     public bool OwnerAddress{ get; set; } = true;
+
+    [DisplayName("Droit Count")]
+    public bool DroitCount { get; set; } = true;
 }

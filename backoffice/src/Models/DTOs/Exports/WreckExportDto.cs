@@ -28,6 +28,7 @@ namespace Droits.Models.DTOs.Exports
             OwnerNumber = wreck.OwnerNumber;
             OwnerAddress = wreck.OwnerAddress;
             AdditionalInformation = wreck.AdditionalInformation;
+            DroitCount = wreck.Droits.Count.ToString();
         }
 
         public DateTime? Created { get; set; }
@@ -67,6 +68,7 @@ namespace Droits.Models.DTOs.Exports
         public string? OwnerNumber { get; set; }
         [DisplayName("Owner Address")]
         public string? OwnerAddress { get; set; }
-        
+        [DisplayName("Droit Count")]
+        public string? DroitCount { get; set; }
     }
 }

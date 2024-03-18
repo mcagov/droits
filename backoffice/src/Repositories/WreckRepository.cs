@@ -29,13 +29,16 @@ public class WreckRepository : BaseEntityRepository<Wreck>, IWreckRepository
 
     public IQueryable<Wreck> GetWrecks()
     {
-        return Context.Wrecks.OrderByDescending(l => l.Created);
+        return Context.Wrecks
+            .OrderByDescending(l => l.Created);
     }
 
 
     public IQueryable<Wreck> GetWrecksWithAssociations()
     {
-        return GetWrecks().AsNoTracking();
+        return GetWrecks()
+            .Include(w => w.Droits)
+            .AsNoTracking();
     }
 
 

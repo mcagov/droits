@@ -19,4 +19,7 @@ public class SalvorExportForm
     public bool MobileNumber { get; set; } = true;
     [DisplayName("Address")]
     public bool Address { get; set; } = true;
+
+    [DisplayName("Droit Count")]
+    public bool DroitCount { get; set; } = true;
 }

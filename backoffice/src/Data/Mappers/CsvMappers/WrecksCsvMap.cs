@@ -52,6 +52,8 @@ public sealed class WrecksCsvMap : ClassMap<WreckExportDto>
             Map(w => w.OwnerNumber).Ignore();
         if ( !wreckExportForm.OwnerAddress )
             Map(w => w.OwnerAddress).Ignore();
+        if ( !wreckExportForm.DroitCount )
+            Map(w => w.DroitCount).Ignore();
     }
 
 }

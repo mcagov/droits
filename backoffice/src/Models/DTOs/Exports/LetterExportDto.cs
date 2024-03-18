@@ -18,6 +18,7 @@ public class LetterExportDto
         QualityApprovedUser = letter.QualityApprovedUser?.Name ?? "N/A";
         Status = letter.Status;
         Type = letter.Type;
+        Subject = letter.Subject;
     }
     
     public string? Recipient { get; set; }
@@ -30,5 +31,5 @@ public class LetterExportDto
     [DisplayName("Letter Type")]
     public LetterType Type { get; set; }
 
-    public object Subject { get; set; }
+    public string Subject { get; set; }
 }
