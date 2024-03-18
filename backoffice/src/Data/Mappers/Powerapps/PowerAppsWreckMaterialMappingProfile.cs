@@ -27,7 +27,7 @@ namespace Droits.Data.Mappers.Powerapps
                     opt => opt.MapFrom(src => src.ValueConfirmed))
                 .ForMember(dest => dest.Quantity,
                     opt => opt.MapFrom(src => src.Quantity))
-                .ForMember(dest => dest.Value,
+                .ForMember(dest => dest.SalvorValuation,
                     opt => opt.MapFrom(src => src.Value))
                 
                 .ForPath(dest => dest.StorageAddress.Line1, opt => opt.MapFrom(src => src.StorageAddress != null ? src.StorageAddress.AddressLine1 : src.WhereSecuredLegacy))

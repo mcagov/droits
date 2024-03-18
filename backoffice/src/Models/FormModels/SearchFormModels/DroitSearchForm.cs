@@ -158,11 +158,11 @@ public class DroitSearchForm : SearchForm
     [DisplayName("Quantity To")]
     public int? QuantityTo { get; set; } 
     
-    [DisplayName("Value From")]
-    public double? ValueFrom { get; set; } 
+    [DisplayName("Salvor Valuation From")]
+    public double? SalvorValuationFrom { get; set; } 
     
-    [DisplayName("Value To")]
-    public double? ValueTo { get; set; } 
+    [DisplayName("Salvor Valuation To")]
+    public double? SalvorValuationTo { get; set; } 
     
     [DisplayName("Receiver Valuation From")]
     public double? ReceiverValuationFrom { get; set; } 
@@ -228,8 +228,8 @@ public class DroitSearchForm : SearchForm
         WreckMaterial.IsNullOrEmpty(),
         QuantityFrom == null,
         QuantityTo == null,
-        ValueFrom == null,
-        ValueTo == null,
+        SalvorValuationFrom == null,
+        SalvorValuationTo == null,
         ReceiverValuationFrom == null,
         ReceiverValuationTo == null,
         WreckMaterialOwner.IsNullOrEmpty(),

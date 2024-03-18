@@ -42,7 +42,7 @@ namespace Droits.Tests.UnitTests.Data.Mappers
             // Assert
             Assert.Equal("Sample Material", wreckMaterial.Name);
             Assert.Equal(10, wreckMaterial.Quantity);
-            Assert.Equal(99.99d, wreckMaterial.Value);
+            Assert.Equal(99.99d, wreckMaterial.SalvorValuation);
             Assert.True(wreckMaterial.ValueKnown);
             Assert.Equal("123 Main St", wreckMaterial.StorageAddress.Line1);
             Assert.Equal("Apt 4B", wreckMaterial.StorageAddress.Line2);
@@ -72,7 +72,7 @@ namespace Droits.Tests.UnitTests.Data.Mappers
             // Assert
             Assert.Equal(string.Empty, wreckMaterial.Name);
             Assert.Equal(0, wreckMaterial.Quantity);
-            Assert.Equal(0.0d, wreckMaterial.Value);
+            Assert.Equal(0.0d, wreckMaterial.SalvorValuation);
             Assert.False(wreckMaterial.ValueKnown);
             Assert.Equal(string.Empty, wreckMaterial.StorageAddress.Line1);
             Assert.Equal(string.Empty, wreckMaterial.StorageAddress.Line2);

@@ -21,7 +21,7 @@ public class WreckMaterial : BaseEntity
     public bool StoredAtSalvorAddress { get; set; } = false;
     public string? Description { get; set; } = string.Empty;
     public int Quantity { get; set; } = 1;
-    public double? Value { get; set; } = 0;
+    public double? SalvorValuation { get; set; } = 0;
     public bool ValueKnown { get; set; }
     public double? ReceiverValuation { get; set; } = 0;
     public bool ValueConfirmed { get; set; }

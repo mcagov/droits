@@ -214,8 +214,8 @@ public static class DroitQueryBuilder
                             ( form.QuantityTo == null || wm.Quantity <= form.QuantityTo )
                         
                 &&
-                            ( form.ValueFrom == null || wm.Value >= form.ValueFrom ) &&
-                            ( form.ValueTo == null || wm.Value <= form.ValueTo )
+                            ( form.SalvorValuationFrom == null || wm.SalvorValuation >= form.SalvorValuationFrom ) &&
+                            ( form.SalvorValuationTo == null || wm.SalvorValuation <= form.SalvorValuationTo )
                         
 
                 && 
