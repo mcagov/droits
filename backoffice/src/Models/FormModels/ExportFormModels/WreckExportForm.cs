@@ -9,6 +9,7 @@ public class WreckExportForm
         
     }
     public bool Created { get; set; } = true;
+    [DisplayName("Last Modified")]
     public bool LastModified { get; set; } = true;
     public bool Name { get; set; } = true;
     [DisplayName("Wreck Type")]

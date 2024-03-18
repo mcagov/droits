@@ -26,16 +26,14 @@ public sealed class SalvorsCsvMap : ClassMap<SalvorExportDto>
             Map(s => s.TelephoneNumber).Ignore();
         if ( !salvorExportForm.MobileNumber )
             Map(s => s.MobileNumber).Ignore();
-        if ( !salvorExportForm.AddressPostcode )
+        if ( !salvorExportForm.Address ) {
             Map(s => s.AddressPostcode).Ignore();
-        if ( !salvorExportForm.AddressCounty )
             Map(s => s.AddressCounty).Ignore();
-        if ( !salvorExportForm.AddressTown )
             Map(s => s.AddressTown).Ignore();
-        if ( !salvorExportForm.AddressLine1 )
             Map(s => s.AddressLine1).Ignore();
-        if ( !salvorExportForm.AddressLine2 )
             Map(s => s.AddressLine2).Ignore();
+            
+        }
     }
 
 }

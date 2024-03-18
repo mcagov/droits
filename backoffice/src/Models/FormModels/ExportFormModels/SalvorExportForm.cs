@@ -9,6 +9,7 @@ public class SalvorExportForm
         
     }
     public bool Created { get; set; } = true;
+    [DisplayName("Last Modified")]
     public bool LastModified { get; set; } = true;
     public bool Name { get; set; } = true;
     public bool Email { get; set; } = true;
@@ -16,14 +17,6 @@ public class SalvorExportForm
     public bool TelephoneNumber { get; set; } = true;
     [DisplayName("Mobile Number")]
     public bool MobileNumber { get; set; } = true;
-    [DisplayName("Address Postcode")]
-    public bool AddressPostcode { get; set; } = true;
-    [DisplayName("Address County")]
-    public bool AddressCounty { get; set; } = true;
-    [DisplayName("Address Town")]
-    public bool AddressTown { get; set; } = true;
-    [DisplayName("Address Line 1")]
-    public bool AddressLine1 { get; set; } = true;
-    [DisplayName("Address Line 2")]
-    public bool AddressLine2 { get; set; } = true;
+    [DisplayName("Address")]
+    public bool Address { get; set; } = true;
 }
