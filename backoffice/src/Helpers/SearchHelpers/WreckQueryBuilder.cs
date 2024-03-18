@@ -19,7 +19,7 @@ public static class WreckQueryBuilder
                  !string.IsNullOrEmpty(w.Name) &&
                  (w.Name.ToLower().Contains(form.WreckName.ToLower()) ||
                   (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.WreckName.ToLower(), w.Name.ToLower()) :
-                      SearchHelper.GetLevenshteinDistance(form.WreckName.ToLower(), w.Name.ToLower())) < SearchHelper.GetLevenshteinDistanceThreshold(form.WreckName))
+                      SearchHelper.GetLevenshteinDistance(form.WreckName.ToLower(), w.Name.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.WreckName))
              );
         }
         
@@ -29,7 +29,7 @@ public static class WreckQueryBuilder
                  !string.IsNullOrEmpty(w.OwnerName) &&
                  (w.OwnerName.ToLower().Contains(form.OwnerName.ToLower()) ||
                   (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.OwnerName.ToLower(), w.OwnerName.ToLower()) :
-                      SearchHelper.GetLevenshteinDistance(form.OwnerName.ToLower(), w.OwnerName.ToLower())) < SearchHelper.GetLevenshteinDistanceThreshold(form.OwnerName))
+                      SearchHelper.GetLevenshteinDistance(form.OwnerName.ToLower(), w.OwnerName.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.OwnerName))
              );
         }
         
