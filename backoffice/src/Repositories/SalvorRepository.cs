@@ -31,13 +31,17 @@ public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
 
     public IQueryable<Salvor> GetSalvors()
     {
-        return Context.Salvors.OrderByDescending(l => l.Created);
+        return Context.Salvors
+            .OrderByDescending(l => l.Created);
     }
 
 
     public IQueryable<Salvor> GetSalvorsWithAssociations()
     {
-        return GetSalvors().AsNoTracking();
+        return Context.Salvors
+            .Include(s => s.Droits)
+            .OrderByDescending(l => l.Created)
+            .AsNoTracking();
     }
 
 

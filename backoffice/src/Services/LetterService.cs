@@ -2,6 +2,7 @@
 
 using CsvHelper.Configuration;
 using Droits.Clients;
+using Droits.Data.Mappers.CsvMappers;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Helpers.SearchHelpers;
@@ -335,13 +336,23 @@ public class LetterService : ILetterService
 
         var letters = SearchLetters(query);
         
-        var lettersData = letters.Select(s => new LetterExportDto(s)).ToList();
+        
         
         if (letters.IsNullOrEmpty())
         {
             throw new Exception("No Salvors to export");
         }
 
-        return await ExportHelper.ExportRecordsAsync(lettersData, null);
+        try
+        {
+            var lettersData = letters.Select(s => new LetterExportDto(s)).ToList();
+            return await ExportHelper.ExportRecordsAsync(lettersData, new LettersCsvMap(form.LetterExportForm));
+        }
+        catch ( Exception e )
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
     }
 }

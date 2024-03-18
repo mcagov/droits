@@ -143,13 +143,21 @@ public class WreckService : IWreckService
 
         var wrecks = SearchWrecks(query);
         
-        var wrecksData = wrecks.Select(s => new WreckExportDto(s)).ToList();
-        
         if (wrecks.IsNullOrEmpty())
         {
             throw new Exception("No Wrecks to export");
         }
 
-        return await ExportHelper.ExportRecordsAsync(wrecksData, null);
+        try
+        {
+            var wrecksData = wrecks.Select(s => new WreckExportDto(s)).ToList();        
+            return await ExportHelper.ExportRecordsAsync(wrecksData, new WrecksCsvMap(form.WreckExportForm));
+        }
+        catch ( Exception e )
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
     }
 }

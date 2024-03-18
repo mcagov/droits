@@ -1,32 +1,56 @@
 @model SalvorSearchForm
 
-<form class="form-horizontal" asp-action="Search" enctype="multipart/form-data" method="POST">
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="salvor-tab" data-bs-toggle="tab" data-bs-target="#salvor" type="button" role="tab" aria-controls="salvor" aria-selected="true">Salvor</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="export-tab" data-bs-toggle="tab" data-bs-target="#export" type="button" role="tab" aria-controls="export" aria-selected="false">Export</button>
+    </li>
+</ul>
 
+<form class="form-horizontal" asp-action="Search" enctype="multipart/form-data" method="POST">
     <div class="d-none">
         @Html.EditorFor(s => s.PageNumber, new { htmlAttributes = new { @class = "js-page-number-field"} })
     </div>
-    
-    <div class="form-floating mb-3">
-        @Html.EditorFor(s => s.Name, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })    
-        @Html.LabelFor(s => s.Name)
-    </div>
-    
-    <div class="form-floating mb-3">
-        @Html.EditorFor(s => s.Email, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })    
-        @Html.LabelFor(s => s.Email)
-    </div>
+        
+    <div class="tab-content mt-4" id="salvorForm">
 
-    <div class="col d-flex flex-row mt-4">
-        <div class="col">
-            <button class="btn btn-primary" name="SubmitAction" value="Search" type="submit">Search</button>
-            <button class="btn btn-primary" name="SubmitAction" value="Export" type="submit">Export</button> 
-        </div>
-        <div class="col ms-auto">
-            <div class="float-end">
-                <a class="btn btn-primary" asp-action="Index">Reset</a>
-                <button class="btn btn-primary js-toggle-salvor-search" type="button">Close</button>
+        <div class="tab-pane fade show active" id="salvor" role="tabpanel" aria-labelledby="salvor-tab">
+        
+            <div class="form-floating mb-3">
+                @Html.EditorFor(s => s.Name, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })    
+                @Html.LabelFor(s => s.Name)
+            </div>
+            
+            <div class="form-floating mb-3">
+                @Html.EditorFor(s => s.Email, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })    
+                @Html.LabelFor(s => s.Email)
             </div>
         </div>
-    </div>
+    
+        <div class="tab-pane fade salvor-export-form" id="export" role="tabpanel" aria-labelledby="export-tab">
+            <partial name="Export/_SalvorExportForm" for="SalvorExportForm"/>
+            
+            <div class="btn-group btn-group-sm" role="group">
+                <button class="toggleExportFields btn btn-primary" data-parent-container=".salvor-export-form" data-checked="true">Select All</button>
+                <button class="toggleExportFields btn btn-primary" data-parent-container=".salvor-export-form" data-checked="false">Select None</button>
+            </div>
+    
+        </div>
 
+        <div class="col d-flex flex-row mt-4">
+            <div class="col">
+                <button class="btn btn-primary" name="SubmitAction" value="Search" type="submit">Search</button>
+                <button class="btn btn-primary" name="SubmitAction" value="Export" type="submit">Export</button> 
+            </div>
+            <div class="col ms-auto">
+                <div class="float-end">
+                    <a class="btn btn-primary" asp-action="Index">Reset</a>
+                    <button class="btn btn-primary js-toggle-salvor-search" type="button">Close</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
 </form>

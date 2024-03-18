@@ -23,7 +23,7 @@ public class SalvorExportDto
         AddressTown = salvor.Address.Town;
         AddressCounty = salvor.Address.County;
         AddressPostcode = salvor.Address.Postcode;
-
+        DroitCount = salvor.Droits.Count.ToString();
     }
 
     public DateTime? Created { get; set; }
@@ -46,6 +46,6 @@ public class SalvorExportDto
     public string? AddressLine1 { get; set; }
     [DisplayName("Address Line Two")]
     public string? AddressLine2 { get; set; }
-        
-
+    [DisplayName("Droit Count")]
+    public string? DroitCount { get; set; }
 }

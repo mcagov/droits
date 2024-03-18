@@ -1,32 +1,57 @@
 @model WreckSearchForm
 
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="wreck-tab" data-bs-toggle="tab" data-bs-target="#wreck" type="button" role="tab" aria-controls="wreck" aria-selected="true">Wreck</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="export-tab" data-bs-toggle="tab" data-bs-target="#export" type="button" role="tab" aria-controls="export" aria-selected="false">Export</button>
+    </li>
+</ul>
+
 <form class="form-horizontal" asp-action="Search" enctype="multipart/form-data" method="POST">
     
     <div class="d-none">
         @Html.EditorFor(w => w.PageNumber, new { htmlAttributes = new { @class = "js-page-number-field"} })
     </div>
-
-    <div class="form-floating mb-3">
-        @Html.EditorFor(w => w.WreckName, new { htmlAttributes = new { @class = "form-control", @placeholder = "" } })
-        @Html.LabelFor(w => w.WreckName)
-    </div>
     
-    <div class="form-floating mb-3">
-        @Html.EditorFor(w => w.OwnerName, new { htmlAttributes = new { @class = "form-control", @placeholder = "" } })
-        @Html.LabelFor(w => w.OwnerName)
-    </div>
+    <div class="tab-content mt-4" id="wreckForm">
 
-    <div class="col d-flex flex-row mt-4">
-        <div class="col">
-            <button class="btn btn-primary" name="SubmitAction" value="Search" type="submit">Search</button>
-            <button class="btn btn-primary" name="SubmitAction" value="Export" type="submit">Export</button>
-        </div>
-        <div class="col ms-auto">
-            <div class="float-end">
-                <a class="btn btn-primary" asp-action="Index">Reset</a>
-                <button class="btn btn-primary js-toggle-wreck-search" type="button">Close</button>
+        <div class="tab-pane fade show active" id="wreck" role="tabpanel" aria-labelledby="wreck-tab">
+
+            <div class="form-floating mb-3">
+                @Html.EditorFor(w => w.WreckName, new { htmlAttributes = new { @class = "form-control", @placeholder = "" } })
+                @Html.LabelFor(w => w.WreckName)
+            </div>
+            
+            <div class="form-floating mb-3">
+                @Html.EditorFor(w => w.OwnerName, new { htmlAttributes = new { @class = "form-control", @placeholder = "" } })
+                @Html.LabelFor(w => w.OwnerName)
             </div>
         </div>
-    </div>
+    
+        <div class="tab-pane fade wreck-export-form" id="export" role="tabpanel" aria-labelledby="export-tab">
+            <partial name="Export/_WreckExportForm" for="WreckExportForm"/>
+            
+            <div class="btn-group btn-group-sm" role="group">
+                <button class="toggleExportFields btn btn-primary" data-parent-container=".wreck-export-form" data-checked="true">Select All</button>
+                <button class="toggleExportFields btn btn-primary" data-parent-container=".wreck-export-form" data-checked="false">Select None</button>
+            </div>
+        
+        </div>
 
+        <div class="col d-flex flex-row mt-4">
+            <div class="col">
+                <button class="btn btn-primary" name="SubmitAction" value="Search" type="submit">Search</button>
+                <button class="btn btn-primary" name="SubmitAction" value="Export" type="submit">Export</button>
+            </div>
+            <div class="col ms-auto">
+                <div class="float-end">
+                    <a class="btn btn-primary" asp-action="Index">Reset</a>
+                    <button class="btn btn-primary js-toggle-wreck-search" type="button">Close</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </form>
