@@ -815,7 +815,11 @@ public class DroitQueryBuilderUnitTests
             },
             new()
             {
-                Id = Guid.NewGuid(), LocationDescription = "Sandwich nomatch" 
+                Id = Guid.NewGuid(), LocationDescription = "Sandwich Flats, Sandwhich Bay" 
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), LocationDescription = "disgusting Sammich" 
             },
         }.AsQueryable();
     
@@ -824,7 +828,7 @@ public class DroitQueryBuilderUnitTests
         {
             if ( !string.IsNullOrEmpty(d.LocationDescription) )
             {
-                _output.WriteLine($"{d.LocationDescription.ToLower()} Distance: {SearchHelper.GetLevenshteinDistance(form.LocationDescription.ToLower(), d.LocationDescription.ToLower())}");
+                _output.WriteLine($"{d.LocationDescription.ToLower()} Distance: {SearchHelper.GetLevenshteinDistanceSmallest(form.LocationDescription.ToLower(), d.LocationDescription.ToLower())}");
             }
         }
 
@@ -833,10 +837,12 @@ public class DroitQueryBuilderUnitTests
         var result = DroitQueryBuilder.BuildQuery(form, droits, false);
     
         // Assert
-        Assert.Equal(3, result.Count()); 
+        Assert.Equal(4, result.Count()); 
         Assert.True(result.Any(d => d.LocationDescription == "Sandwich"));
         Assert.True(result.Any(d => d.LocationDescription == "Sandwich bay"));
         Assert.True(result.Any(d => d.LocationDescription == "Sandwich flats"));
-        Assert.False(result.Any(d => d.LocationDescription == "Sandwich nomatch"));
+        Assert.True(result.Any(d => d.LocationDescription == "Sandwich Flats, Sandwhich Bay"));
+        Assert.False(result.Any(d => d.LocationDescription == "disgusting Sammich"));
+
     }
 }

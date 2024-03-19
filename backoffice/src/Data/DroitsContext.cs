@@ -2,6 +2,7 @@
 
 using Droits.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 #endregion
 
@@ -412,6 +413,20 @@ public partial class DroitsContext : DbContext
 
         });
 
+        modelBuilder.HasDbFunction(
+            typeof(CustomEfFunctions).GetMethod(
+                nameof(CustomEfFunctions.SmallestLevenshteinDistance))!, builder =>
+        {
+            builder.HasParameter("source").HasStoreType("text");
+            builder.HasParameter("target").HasStoreType("text");
+
+            builder.HasTranslation(args =>
+            {
+                return new SqlFunctionExpression("get_smallest_levenshtein_distance", args, false, args.Select(x => false), typeof(int), null);
+                
+            });
+        });
+        
         base.OnModelCreating(modelBuilder);
     }
 

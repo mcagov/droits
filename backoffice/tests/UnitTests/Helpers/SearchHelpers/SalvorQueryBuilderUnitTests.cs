@@ -59,11 +59,11 @@ public class SalvorQueryBuilderUnitTests
     public void BuildQuery_WithValidFuzzyName_ReturnsFilteredQuery()
     {
         // Arrange
-        var form = new SalvorSearchForm { Name = "TustSulvor" };
+        var form = new SalvorSearchForm { Name = "TustSalvor" };
         var salvors = new List<Salvor>
         {
             new() { Id = Guid.NewGuid(), Name = "TestSalvor" },
-            new() { Id = Guid.NewGuid(), Name = "Test Salvor Sr" },
+            new() { Id = Guid.NewGuid(), Name = "TestSalvor Sr" },
             new() { Id = Guid.NewGuid(), Name = "Test Salvor NotMatching" },
         }.AsQueryable();
 

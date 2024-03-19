@@ -130,11 +130,11 @@ public class WreckQueryBuilderUnitTests
     public void BuildQuery_WithValidFuzzyOwnerName_ReturnsFilteredQuery()
     {
         // Arrange
-        var form = new WreckSearchForm { OwnerName = "TustOwnar" };
+        var form = new WreckSearchForm { OwnerName = "TustOwner" };
         var wrecks = new List<Wreck>
         {
             new() { Id = Guid.NewGuid(), OwnerName = "TestOwner" },
-            new() { Id = Guid.NewGuid(), OwnerName = "Test Owner Jr" },
+            new() { Id = Guid.NewGuid(), OwnerName = "TestOwner Jr" },
             new() { Id = Guid.NewGuid(), OwnerName = "Test Owner NotMatching" },
         }.AsQueryable();
 
@@ -143,7 +143,7 @@ public class WreckQueryBuilderUnitTests
         {
             if ( !string.IsNullOrEmpty(w.OwnerName) )
             {
-                _output.WriteLine($"{w.OwnerName.ToLower()} Distance: {SearchHelper.GetLevenshteinDistance(form.OwnerName.ToLower(), w.OwnerName.ToLower())}");
+                _output.WriteLine($"{w.OwnerName.ToLower()} Total Distance: {SearchHelper.GetLevenshteinDistance(form.OwnerName.ToLower(), w.OwnerName.ToLower())}  Smallest Distance: {SearchHelper.GetLevenshteinDistanceSmallest(form.OwnerName.ToLower(), w.OwnerName.ToLower())}");
             }
         }
         
@@ -156,4 +156,30 @@ public class WreckQueryBuilderUnitTests
         Assert.Equal("TestOwner",result.First().OwnerName);
     }
     
+    
+    [Fact]
+    public void BuildQuery_WithValidFuzzyWreckNameSmallestDistance_ReturnsFilteredQuery()
+    {
+        // Arrange
+        var form = new WreckSearchForm { WreckName = "TustWrack" };
+        var wrecks = new List<Wreck>
+        {
+            new() { Id = Guid.NewGuid(), Name = "TestWreck" },
+            new() { Id = Guid.NewGuid(), Name = "TestWreck Copy" },
+            new() { Id = Guid.NewGuid(), Name = "Test Wreck NotMatching" },
+        }.AsQueryable();
+    
+        _output.WriteLine($"{form.WreckName.ToLower()} Len: {form.WreckName.Length} Threshold: {SearchHelper.GetLevenshteinDistanceThreshold(form.WreckName.ToLower())}");
+        foreach (var w in wrecks)
+        {
+            _output.WriteLine($"{w.Name.ToLower()} Distance: {SearchHelper.GetLevenshteinDistanceSmallest(form.WreckName.ToLower(), w.Name.ToLower())}");
+        }
+        
+        // Act
+        var result = WreckQueryBuilder.BuildQuery(form, wrecks, false);
+    
+        // Assert
+        Assert.Equal(2, result.Count()); 
+        Assert.Equal("TestWreck",result.First().Name);
+    }
 }

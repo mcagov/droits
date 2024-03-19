@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Droits.Data;
 using Droits.Helpers.Extensions;
 using Droits.Models.Entities;
 using Droits.Models.FormModels.SearchFormModels;
@@ -80,8 +81,8 @@ public static class DroitQueryBuilder
                 query = query.Where(d => 
                     d.Wreck != null && !string.IsNullOrEmpty(d.Wreck.Name) &&
                     (d.Wreck.Name.ToLower().Contains(form.WreckName.ToLower()) ||
-                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.WreckName.ToLower(), d.Wreck.Name.ToLower()) :
-                         SearchHelper.GetLevenshteinDistance(form.WreckName.ToLower(), d.Wreck.Name.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.WreckName))
+                     (usePsql? CustomEfFunctions.SmallestLevenshteinDistance(form.WreckName.ToLower(), d.Wreck.Name.ToLower()) :
+                         SearchHelper.GetLevenshteinDistanceSmallest(form.WreckName.ToLower(), d.Wreck.Name.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.WreckName))
                 );
             }
             
@@ -90,8 +91,8 @@ public static class DroitQueryBuilder
                 query = query.Where(d => 
                     d.ReportedWreckName != null && !string.IsNullOrEmpty(d.ReportedWreckName) &&
                     (d.ReportedWreckName.ToLower().Contains(form.ReportedWreckName.ToLower()) ||
-                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.ReportedWreckName.ToLower(), d.ReportedWreckName.ToLower()) :
-                         SearchHelper.GetLevenshteinDistance(form.ReportedWreckName.ToLower(), d.ReportedWreckName.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.ReportedWreckName))
+                     (usePsql? CustomEfFunctions.SmallestLevenshteinDistance(form.ReportedWreckName.ToLower(), d.ReportedWreckName.ToLower()) :
+                         SearchHelper.GetLevenshteinDistanceSmallest(form.ReportedWreckName.ToLower(), d.ReportedWreckName.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.ReportedWreckName))
                 );
             }
             
@@ -100,8 +101,8 @@ public static class DroitQueryBuilder
                 query = query.Where(d => 
                     d.Wreck != null && !string.IsNullOrEmpty(d.Wreck.OwnerName) &&
                     (d.Wreck.OwnerName.ToLower().Contains(form.OwnerName.ToLower()) ||
-                     (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.OwnerName.ToLower(), d.Wreck.OwnerName.ToLower()) :
-                         SearchHelper.GetLevenshteinDistance(form.OwnerName.ToLower(), d.Wreck.OwnerName.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.OwnerName))
+                     (usePsql? CustomEfFunctions.SmallestLevenshteinDistance(form.OwnerName.ToLower(), d.Wreck.OwnerName.ToLower()) :
+                         SearchHelper.GetLevenshteinDistanceSmallest(form.OwnerName.ToLower(), d.Wreck.OwnerName.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.OwnerName))
                 );
             }
             
@@ -112,8 +113,8 @@ public static class DroitQueryBuilder
                 query = query.Where(d => 
                     d.Salvor != null && !string.IsNullOrEmpty(d.Salvor.Name) &&
                      (d.Salvor.Name.ToLower().Contains(form.SalvorName.ToLower()) || 
-                      (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.SalvorName.ToLower(), d.Salvor.Name.ToLower()) :
-                          SearchHelper.GetLevenshteinDistance(form.SalvorName.ToLower(), d.Salvor.Name.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.SalvorName))
+                      (usePsql? CustomEfFunctions.SmallestLevenshteinDistance(form.SalvorName.ToLower(), d.Salvor.Name.ToLower()) :
+                          SearchHelper.GetLevenshteinDistanceSmallest(form.SalvorName.ToLower(), d.Salvor.Name.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.SalvorName))
                      
                 );
             }
@@ -164,9 +165,9 @@ public static class DroitQueryBuilder
                     d.LocationDescription != null && !string.IsNullOrEmpty(d.LocationDescription) &&
                     (d.LocationDescription.ToLower().Contains(form.LocationDescription.ToLower()) ||
                      (usePsql? 
-                         EF.Functions.FuzzyStringMatchLevenshtein(
+                         CustomEfFunctions.SmallestLevenshteinDistance(
                              form.LocationDescription.ToLower(), d.LocationDescription.Substring(0,Math.Min(255, d.LocationDescription.Length)).ToLower())
-                         : SearchHelper.GetLevenshteinDistance(form.LocationDescription.ToLower(), d.LocationDescription.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.LocationDescription))
+                         : SearchHelper.GetLevenshteinDistanceSmallest(form.LocationDescription.ToLower(), d.LocationDescription.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.LocationDescription))
                );
             }
 
@@ -188,9 +189,9 @@ public static class DroitQueryBuilder
                         (!string.IsNullOrEmpty(wm.Description) &&
                         ( wm.Description.ToLower().Contains(form.WreckMaterial.ToLower()) ||
                           ( usePsql
-                              ? EF.Functions.FuzzyStringMatchLevenshtein(
+                              ? CustomEfFunctions.SmallestLevenshteinDistance(
                                   form.WreckMaterial.ToLower(), wm.Description.Substring(0,Math.Min(255, wm.Description.Length)).ToLower())
-                              : SearchHelper.GetLevenshteinDistance(form.WreckMaterial.ToLower(),
+                              : SearchHelper.GetLevenshteinDistanceSmallest(form.WreckMaterial.ToLower(),
                                   wm.Description.ToLower()) ) <= SearchHelper.GetLevenshteinDistanceThreshold(form.WreckMaterial) )
                         ))
                 &&
@@ -199,10 +200,10 @@ public static class DroitQueryBuilder
                         ( wm.WreckMaterialOwner.ToLower()
                               .Contains(form.WreckMaterialOwner.ToLower()) ||
                           ( usePsql
-                              ? EF.Functions.FuzzyStringMatchLevenshtein(
+                              ? CustomEfFunctions.SmallestLevenshteinDistance(
                                   form.WreckMaterialOwner.ToLower(),
                                   wm.WreckMaterialOwner.Substring(0,Math.Min(255, wm.WreckMaterialOwner.Length)).ToLower())
-                              : SearchHelper.GetLevenshteinDistance(
+                              : SearchHelper.GetLevenshteinDistanceSmallest(
                                   form.WreckMaterialOwner.ToLower(),
                                   wm.WreckMaterialOwner.ToLower()) ) <= SearchHelper.GetLevenshteinDistanceThreshold(form.WreckMaterialOwner) ))
                     ) &&
@@ -243,8 +244,8 @@ public static class DroitQueryBuilder
                     d.ServicesDuration != null && 
                     !string.IsNullOrEmpty(d.ServicesDuration) &&
                      (d.ServicesDuration.ToLower().Contains(form.ServicesDuration.ToLower()) ||
-                      (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.ServicesDuration.ToLower(), d.ServicesDuration.Substring(0,Math.Min(255, d.ServicesDuration.Length)).ToLower()) :
-                          SearchHelper.GetLevenshteinDistance(form.ServicesDuration.ToLower(), d.ServicesDuration.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.ServicesDescription))
+                      (usePsql? CustomEfFunctions.SmallestLevenshteinDistance(form.ServicesDuration.ToLower(), d.ServicesDuration.Substring(0,Math.Min(255, d.ServicesDuration.Length)).ToLower()) :
+                          SearchHelper.GetLevenshteinDistanceSmallest(form.ServicesDuration.ToLower(), d.ServicesDuration.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.ServicesDescription))
                 );
             }
             
@@ -291,8 +292,8 @@ public static class DroitQueryBuilder
                 query = query.Where(d =>
                     !string.IsNullOrEmpty(d.District) &&
                     (d.District.ToLower().Contains(form.District.ToLower()) || 
-                    (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.District.ToLower(), d.District.ToLower()) :
-                        SearchHelper.GetLevenshteinDistance(form.District.ToLower(), d.District.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.District)
+                    (usePsql? CustomEfFunctions.SmallestLevenshteinDistance(form.District.ToLower(), d.District.ToLower()) :
+                        SearchHelper.GetLevenshteinDistanceSmallest(form.District.ToLower(), d.District.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.District)
                    )
                 );
             }
@@ -302,8 +303,8 @@ public static class DroitQueryBuilder
                 query = query.Where(d =>
                     !string.IsNullOrEmpty(d.LegacyFileReference) &&
                     (d.LegacyFileReference.ToLower().Contains(form.LegacyFileReference.ToLower()) || 
-                    (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.LegacyFileReference.ToLower(), d.LegacyFileReference.ToLower()) :
-                        SearchHelper.GetLevenshteinDistance(form.LegacyFileReference.ToLower(), d.LegacyFileReference.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.LegacyFileReference)
+                    (usePsql? CustomEfFunctions.SmallestLevenshteinDistance(form.LegacyFileReference.ToLower(), d.LegacyFileReference.ToLower()) :
+                        SearchHelper.GetLevenshteinDistanceSmallest(form.LegacyFileReference.ToLower(), d.LegacyFileReference.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.LegacyFileReference)
                    )
                 );
             }
@@ -313,8 +314,8 @@ public static class DroitQueryBuilder
                 query = query.Where(d =>
                    !string.IsNullOrEmpty(d.GoodsDischargedBy) &&
                     (d.GoodsDischargedBy.ToLower().Contains(form.GoodsDischargedBy.ToLower()) || 
-                    (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.GoodsDischargedBy.ToLower(), d.GoodsDischargedBy.ToLower()) :
-                        SearchHelper.GetLevenshteinDistance(form.GoodsDischargedBy.ToLower(), d.GoodsDischargedBy.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.GoodsDischargedBy)
+                    (usePsql? CustomEfFunctions.SmallestLevenshteinDistance(form.GoodsDischargedBy.ToLower(), d.GoodsDischargedBy.ToLower()) :
+                        SearchHelper.GetLevenshteinDistanceSmallest(form.GoodsDischargedBy.ToLower(), d.GoodsDischargedBy.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.GoodsDischargedBy)
                    )
                 );
             }
@@ -324,8 +325,8 @@ public static class DroitQueryBuilder
                 query = query.Where(d =>
                     !string.IsNullOrEmpty(d.DateDelivered) &&
                     (d.DateDelivered.ToLower().Contains(form.DateDelivered.ToLower()) || 
-                    (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.DateDelivered.ToLower(), d.DateDelivered.ToLower()) :
-                        SearchHelper.GetLevenshteinDistance(form.DateDelivered.ToLower(), d.DateDelivered.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.DateDelivered)
+                    (usePsql? CustomEfFunctions.SmallestLevenshteinDistance(form.DateDelivered.ToLower(), d.DateDelivered.ToLower()) :
+                        SearchHelper.GetLevenshteinDistanceSmallest(form.DateDelivered.ToLower(), d.DateDelivered.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.DateDelivered)
                    )
                 );
             }
@@ -335,8 +336,8 @@ public static class DroitQueryBuilder
                 query = query.Where(d =>
                     !string.IsNullOrEmpty(d.Agent) &&
                     (d.Agent.ToLower().Contains(form.Agent.ToLower()) || 
-                    (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.Agent.ToLower(), d.Agent.ToLower()) :
-                        SearchHelper.GetLevenshteinDistance(form.Agent.ToLower(), d.Agent.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.Agent)
+                    (usePsql? CustomEfFunctions.SmallestLevenshteinDistance(form.Agent.ToLower(), d.Agent.ToLower()) :
+                        SearchHelper.GetLevenshteinDistanceSmallest(form.Agent.ToLower(), d.Agent.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.Agent)
                    )
                 );
             }
@@ -346,8 +347,8 @@ public static class DroitQueryBuilder
                 query = query.Where(d =>
                     !string.IsNullOrEmpty(d.RecoveredFromLegacy) &&
                     (d.RecoveredFromLegacy.ToLower().Contains(form.RecoveredFromLegacy.ToLower()) || 
-                    (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.RecoveredFromLegacy.ToLower(), d.RecoveredFromLegacy.ToLower()) :
-                        SearchHelper.GetLevenshteinDistance(form.RecoveredFromLegacy.ToLower(), d.RecoveredFromLegacy.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.RecoveredFromLegacy)
+                    (usePsql? CustomEfFunctions.SmallestLevenshteinDistance(form.RecoveredFromLegacy.ToLower(), d.RecoveredFromLegacy.ToLower()) :
+                        SearchHelper.GetLevenshteinDistanceSmallest(form.RecoveredFromLegacy.ToLower(), d.RecoveredFromLegacy.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.RecoveredFromLegacy)
                    )
                 );
             }

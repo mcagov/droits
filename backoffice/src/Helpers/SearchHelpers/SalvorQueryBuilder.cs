@@ -1,6 +1,6 @@
+using Droits.Data;
 using Droits.Models.Entities;
 using Droits.Models.FormModels.SearchFormModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Helpers.SearchHelpers;
 
@@ -15,8 +15,8 @@ public class SalvorQueryBuilder
              query = query.Where(s =>
                  !string.IsNullOrEmpty(s.Name) &&
                  (s.Name.ToLower().Contains(form.Name.ToLower()) ||
-                  (usePsql? EF.Functions.FuzzyStringMatchLevenshtein(form.Name.ToLower(), s.Name.ToLower()) :
-                      SearchHelper.GetLevenshteinDistance(form.Name.ToLower(), s.Name.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.Name))
+                  (usePsql? CustomEfFunctions.SmallestLevenshteinDistance(form.Name.ToLower(), s.Name.ToLower()) :
+                      SearchHelper.GetLevenshteinDistanceSmallest(form.Name.ToLower(), s.Name.ToLower())) <= SearchHelper.GetLevenshteinDistanceThreshold(form.Name))
              );
         }
         
