@@ -1,11 +1,21 @@
 using Droits.Helpers.SearchHelpers;
 using Droits.Models.Entities;
 using Droits.Models.FormModels.SearchFormModels;
+using Xunit.Abstractions;
 
 namespace Droits.Tests.UnitTests.Helpers.SearchHelpers;
 
 public class SalvorQueryBuilderUnitTests
 {
+        
+    private readonly ITestOutputHelper _output;
+
+
+    public SalvorQueryBuilderUnitTests(ITestOutputHelper output)
+    {
+        _output = output;
+    }
+    
     [Fact]
     public void BuildQuery_WithValidName_ReturnsFilteredQuery()
     {
@@ -53,15 +63,23 @@ public class SalvorQueryBuilderUnitTests
         var salvors = new List<Salvor>
         {
             new() { Id = Guid.NewGuid(), Name = "TestSalvor" },
-            new() { Id = Guid.NewGuid(), Name = "TestSalvor11" },
-            new() { Id = Guid.NewGuid(), Name = "TestSalvor222" },
+            new() { Id = Guid.NewGuid(), Name = "Test Salvor Sr" },
+            new() { Id = Guid.NewGuid(), Name = "Test Salvor NotMatching" },
         }.AsQueryable();
 
+            
+        _output.WriteLine($"{form.Name.ToLower()} Len: {form.Name.Length} Threshold: {SearchHelper.GetLevenshteinDistanceThreshold(form.Name.ToLower())}");
+        foreach (var s in salvors)
+        {
+            _output.WriteLine($"{s.Name.ToLower()} Distance: {SearchHelper.GetLevenshteinDistance(form.Name.ToLower(), s.Name.ToLower())}");
+        }
+
+        
         // Act
         var result = SalvorQueryBuilder.BuildQuery(form, salvors, false);
 
         // Assert
-        Assert.Equal(1, result.Count()); 
+        Assert.Equal(2, result.Count()); 
         Assert.Equal("TestSalvor",result.First().Name);
     }
     
