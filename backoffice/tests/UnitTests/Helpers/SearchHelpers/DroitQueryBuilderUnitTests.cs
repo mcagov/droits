@@ -642,7 +642,7 @@ public class DroitQueryBuilderUnitTests
             ServicesEstimatedCostFrom = 2, ServicesEstimatedCostTo = 10,
             SalvageClaimAwardedFrom = 2, SalvageClaimAwardedTo = 5
         };
-        var salvor = new Salvor() {};
+        Salvor salvor = new();
         var droits = new List<Droit>
         {
             new()
@@ -686,7 +686,7 @@ public class DroitQueryBuilderUnitTests
         {
             ServicesEstimatedCostFrom = 2, SalvageClaimAwardedTo = 5
         };
-        var salvor = new Salvor() {};
+        Salvor salvor = new ();
         var droits = new List<Droit>
         {
             new()
@@ -822,7 +822,10 @@ public class DroitQueryBuilderUnitTests
         _output.WriteLine($"{form.LocationDescription.ToLower()} Len: {form.LocationDescription.Length} Threshold: {SearchHelper.GetLevenshteinDistanceThreshold(form.LocationDescription.ToLower())}");
         foreach (var d in droits)
         {
-            _output.WriteLine($"{d.LocationDescription.ToLower()} Distance: {SearchHelper.GetLevenshteinDistance(form.LocationDescription.ToLower(), d.LocationDescription.ToLower())}");
+            if ( !string.IsNullOrEmpty(d.LocationDescription) )
+            {
+                _output.WriteLine($"{d.LocationDescription.ToLower()} Distance: {SearchHelper.GetLevenshteinDistance(form.LocationDescription.ToLower(), d.LocationDescription.ToLower())}");
+            }
         }
 
         

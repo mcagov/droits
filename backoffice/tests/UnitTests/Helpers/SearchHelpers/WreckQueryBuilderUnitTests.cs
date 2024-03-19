@@ -141,7 +141,10 @@ public class WreckQueryBuilderUnitTests
         _output.WriteLine($"{form.OwnerName.ToLower()} Len: {form.OwnerName.Length} Threshold: {SearchHelper.GetLevenshteinDistanceThreshold(form.OwnerName.ToLower())}");
         foreach (var w in wrecks)
         {
-            _output.WriteLine($"{w.OwnerName.ToLower()} Distance: {SearchHelper.GetLevenshteinDistance(form.OwnerName.ToLower(), w.OwnerName.ToLower())}");
+            if ( !string.IsNullOrEmpty(w.OwnerName) )
+            {
+                _output.WriteLine($"{w.OwnerName.ToLower()} Distance: {SearchHelper.GetLevenshteinDistance(form.OwnerName.ToLower(), w.OwnerName.ToLower())}");
+            }
         }
         
         
