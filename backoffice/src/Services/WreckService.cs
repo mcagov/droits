@@ -150,7 +150,11 @@ public class WreckService : IWreckService
 
         try
         {
-            var wrecksData = wrecks.Select(s => new WreckExportDto(s)).ToList();        
+            var wrecksData = wrecks.Select(s => new WreckExportDto(s)).ToList();
+            foreach ( var wreck in wrecksData )
+            {
+                wreck.DroitRefs = await GetDroitRefs(wreck.Id);
+            }
             return await ExportHelper.ExportRecordsAsync(wrecksData, new WrecksCsvMap(form.WreckExportForm));
         }
         catch ( Exception e )
@@ -159,5 +163,13 @@ public class WreckService : IWreckService
             throw;
         }
 
+    }
+
+
+    private async Task<string?> GetDroitRefs(Guid id)
+    {
+        var wreck = await GetWreckAsync(id);
+
+        return string.Join(", ",wreck.Droits.Select(droit => droit.Reference).ToList());
     }
 }
