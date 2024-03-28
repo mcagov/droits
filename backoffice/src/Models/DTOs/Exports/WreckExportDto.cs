@@ -17,7 +17,7 @@ namespace Droits.Models.DTOs.Exports
             Type = wreck.WreckType;
             ConstructionDetails = wreck.ConstructionDetails;
             YearConstructed = wreck.YearConstructed;
-            DateOfLoss = wreck.DateOfLoss.ToString("dd/MM/yyyy");
+            DateOfLoss = wreck.DateOfLoss?.ToString("dd/MM/yyyy");
             InUkWaters = wreck.InUkWaters;
             IsWarWreck = wreck.IsWarWreck;
             IsAnAircraft = wreck.IsAnAircraft;

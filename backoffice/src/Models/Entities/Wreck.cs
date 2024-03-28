@@ -9,7 +9,7 @@ public class Wreck : BaseEntity
     public WreckType? WreckType { get; set; }
     public string? ConstructionDetails { get; set; } = string.Empty;
     public int? YearConstructed { get; set; }
-    public DateTime DateOfLoss { get; set; }
+    public DateTime? DateOfLoss { get; set; }
     public bool InUkWaters { get; set; } = false;
     public bool IsWarWreck { get; set; } = false;
     public bool IsAnAircraft { get; set; } = false;

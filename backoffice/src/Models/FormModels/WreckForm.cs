@@ -59,7 +59,7 @@ public class WreckForm : BaseEntityForm
     [DisplayName("Date Of Loss")]
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime DateOfLoss { get; set; }
+    public DateTime? DateOfLoss { get; set; }
 
     [DisplayName("In UK Waters")]
     public bool InUkWaters { get; set; } = false;
