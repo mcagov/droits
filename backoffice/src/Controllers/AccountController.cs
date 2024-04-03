@@ -49,25 +49,9 @@ public class AccountController : BaseController
         return View(new DashboardView(droits,letters));
     }
     
-    public async Task<IActionResult> MetricsDashboard(DashboardView model)
+    public IActionResult MetricsDashboard()
     {
-        var searchOptions = model.DashboardSearchForm;
-        
-        searchOptions.IncludeAssociations = true;
-        searchOptions.FilterByAssignedUser = true;
-
-
-        searchOptions.PageNumber = searchOptions.DroitsPageNumber;
-        var droits = await _droitService.GetDroitsListViewAsync(searchOptions);
-
-
-        
-
-        
-        searchOptions.PageNumber = searchOptions.LettersPageNumber;
-        var letters = await _letterService.GetApprovedUnsentLettersListViewForCurrentUserAsync(searchOptions);
-        
-        return View(new MetricsDashboardView(droits,letters));
+        return View();
     }
  
     
