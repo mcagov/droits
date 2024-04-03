@@ -1,11 +1,6 @@
 #region
 
-using System.Globalization;
-using Droits.Helpers.Extensions;
-using Droits.Models.Enums;
-using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
-using Droits.Models.ViewModels.ListViews;
 using Droits.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
