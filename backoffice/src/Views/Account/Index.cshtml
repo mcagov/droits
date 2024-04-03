@@ -4,7 +4,7 @@
     ViewData["Title"] = "My Dashboard";
 }
 
-<div class="container mt-5">
+<div class="mt-5">
 
     <div class="row">
         <div class="col">
@@ -16,10 +16,10 @@
 
     <div class="row mt-4">
         <div class="col">
-            <h3 class="display-4 text-center">@ViewData["Title"]</h3>
+            <h3 class="display-6 text-center">@ViewData["Title"]</h3>
         </div>
     </div>
-    <form class="form-horizontal" asp-action="Index" enctype="multipart/form-data" method="POST">
+    <form class="form-horizontal mt-2" asp-action="Index" enctype="multipart/form-data" method="POST">
 
         <div class="js-dashboard-search d-none">
             @Html.EditorFor(f => f.DashboardSearchForm.DroitsPageNumber, new { htmlAttributes = new { @class = "js-droit-page-number-field"} })

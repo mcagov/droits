@@ -1,5 +1,8 @@
 #region
 
+using System.Globalization;
+using Droits.Helpers.Extensions;
+using Droits.Models.Enums;
 using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
@@ -45,7 +48,38 @@ public class AccountController : BaseController
         
         return View(new DashboardView(droits,letters));
     }
+    
+    public async Task<IActionResult> MetricsDashboard(DashboardView model)
+    {
+        var searchOptions = model.DashboardSearchForm;
+        
+        searchOptions.IncludeAssociations = true;
+        searchOptions.FilterByAssignedUser = true;
 
+
+        searchOptions.PageNumber = searchOptions.DroitsPageNumber;
+        var droits = await _droitService.GetDroitsListViewAsync(searchOptions);
+
+
+        
+
+        
+        searchOptions.PageNumber = searchOptions.LettersPageNumber;
+        var letters = await _letterService.GetApprovedUnsentLettersListViewForCurrentUserAsync(searchOptions);
+        
+        return View(new MetricsDashboardView(droits,letters));
+    }
+ 
+    
+    public async Task<IActionResult> MetricsData()
+    {
+        var droitMetrics = await _droitService.GetDroitsMetrics();
+        return Json(droitMetrics);
+    }
+
+
+
+    
     public IActionResult Info()
     {
         return View();

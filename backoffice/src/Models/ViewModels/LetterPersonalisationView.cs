@@ -13,7 +13,7 @@ public class LetterPersonalisationView
     {
         Reference = droit.Reference;
         Date = droit.ReportedDate.ToString("dd/MM/yyyy");
-        Wreck = droit?.Wreck?.Name ?? "No Wreck";
+        Wreck = droit?.Wreck?.Name ?? "---";
         
     }
 

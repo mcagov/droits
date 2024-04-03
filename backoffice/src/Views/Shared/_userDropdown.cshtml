@@ -5,6 +5,7 @@
     <div class="dropdown-menu dropdown-menu-end w-100" aria-labelledby="userDropdown">
         @if (User.Identity is { IsAuthenticated: true })
         {
+            <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="MetricsDashboard">Metrics Dashboard</a>
             <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Index">Manage Users</a>
             <a class="dropdown-item" asp-area="" asp-controller="Migration" asp-action="UploadTriageFile">Import Triage File</a>
             <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">My Profile</a>
