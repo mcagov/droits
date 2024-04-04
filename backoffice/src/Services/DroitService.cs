@@ -7,7 +7,6 @@ using Droits.Data.Mappers;
 using Droits.Data.Mappers.CsvMappers;
 using Droits.Exceptions;
 using Droits.Helpers;
-using Droits.Helpers.Extensions;
 using Droits.Helpers.SearchHelpers;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
@@ -47,6 +46,7 @@ public interface IDroitService
     Task<Droit> GetDroitByReferenceAsync(string reference);
     List<String> UploadWmCsvForm(List<WMRowDto> wreckMaterials);
 
+    Task<List<object>?> GetDroitsMetrics();
 }
 
 public class DroitService : IDroitService
@@ -249,10 +249,7 @@ public class DroitService : IDroitService
             Console.WriteLine(e);
             throw;
         }
-        
-       
-        
-        
+
     }
 
     public async Task<Droit> GetDroitByReferenceAsync(string reference)
@@ -294,8 +291,6 @@ public class DroitService : IDroitService
 
     public async Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form)
     {
-        
-        //To-do - move somewhere better/ more generic with other searches. 
         var query = QueryFromForm(form)
             .Select(d => new DroitView(d));
 
@@ -325,4 +320,15 @@ public class DroitService : IDroitService
 
         return await SaveDroitAsync(droit);
     }
+
+    public async Task<List<object>?> GetDroitsMetrics()
+    {
+        var allDroits = await GetDroitsAsync();
+
+        return (MetricsHelper.GetDroitsMetrics(allDroits) ?? Array.Empty<object>()).ToList();
+
+    }
+
+
+    
 }

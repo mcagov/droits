@@ -23,7 +23,7 @@ namespace Droits.Models.DTOs.Exports
             Reference = droit.Reference;
             Created = droit.Created.ToString("dd/MM/yyyy");
             LastModified = droit.LastModified.ToString("dd/MM/yyyy");
-            WreckName = droit.Wreck?.Name ?? "No Wreck";
+            WreckName = droit.Wreck?.Name ?? "---";
             SalvorName = droit.Salvor?.Name ?? "Unknown";
             AssignedTo = droit.AssignedToUser?.Name ?? "Unassigned";
             Status = droit.Status.GetDisplayName();

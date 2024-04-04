@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "Metrics Dashboard";
+    Layout = "_WideLayout";
+}
+<div class="mt-5">
+
+    <div class="row">
+        <div class="col">
+            @{
+                await Html.RenderPartialAsync("_MessageBanner");
+            }
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col">
+            <h3 class="display-6 text-center">@ViewData["Title"]</h3>
+        </div>
+    </div>
+    
+    <div class="js-metrics-dashboard row row-cols-1 row-cols-lg-1 row-cols-xl-2 g-4">
+        
+        <div class="col">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="mb-0">Status (Year)</h4>
+                </div>
+                <div class="card-body">
+                    <div id="year-status-grid-container" class="ag-theme-alpine w-100" style="height:500px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="mb-0">Status (Month)</h4>
+                </div>
+                <div class="card-body">
+                    <div id="month-status-grid-container" class="ag-theme-alpine w-100" style="height:500px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="mb-0">Triage (Year)</h4>
+                </div>
+                <div class="card-body">
+                    <div id="year-triage-grid-container" class="ag-theme-alpine w-100" style="height:500px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="mb-0">Triage (Month)</h4>
+                </div>
+                <div class="card-body">
+                    <div id="month-triage-grid-container" class="ag-theme-alpine w-100" style="height:500px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="mb-0">Open/Closed (Year)</h4>
+                </div>
+                <div class="card-body">
+                    <div id="year-open-closed-grid-container" class="ag-theme-alpine w-100" style="height:500px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="mb-0">Open/Closed (Month)</h4>
+                </div>
+                <div class="card-body">
+                    <div id="month-open-closed-grid-container" class="ag-theme-alpine w-100" style="height:500px;"></div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
