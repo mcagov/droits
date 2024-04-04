@@ -1,6 +1,7 @@
 import { createGrid } from 'ag-grid-community';
+import moment from 'moment';
 
-// Reusable function for getting row style
+
 function getRowStyle(params) {
     if (params.data.year === 'Total') {
         return { fontWeight: 'bold' };
@@ -142,6 +143,27 @@ export function initializeMetricsDashboard() {
                 yearOpenClosedGrid.setGridOption('rowData', yearOpenClosedData);
                 monthOpenClosedGrid.setGridOption('rowData', monthOpenClosedData);
 
+                // Add CSV Export
+                
+                document.querySelector('#export-csv-year-status').addEventListener('click', () => {
+                    exportCsv(yearStatusGrid, "StatusYearExport");
+                });
+                document.querySelector('#export-csv-month-status').addEventListener('click', () => {
+                    exportCsv(monthStatusGrid, "StatusMonthExport");
+                });
+                document.querySelector('#export-csv-year-triage').addEventListener('click', () => {
+                    exportCsv(yearTriageGrid, "TriageYearExport");
+                });
+                document.querySelector('#export-csv-month-triage').addEventListener('click', () => {
+                    exportCsv(monthTriageGrid, "TriageMonthExport");
+                });
+                document.querySelector('#export-csv-year-open-closed').addEventListener('click', () => {
+                    exportCsv(yearOpenClosedGrid, "OpenClosedYearExport");
+                });
+                document.querySelector('#export-csv-month-open-closed').addEventListener('click', () => {
+                    exportCsv(monthOpenClosedGrid, "OpenClosedMonthExport");
+                });
+
             } else {
                 console.error('Failed to fetch data: ' + xhr.status);
             }
@@ -150,4 +172,15 @@ export function initializeMetricsDashboard() {
 
     xhr.open('GET', '/Account/MetricsData', true);
     xhr.send();
+}
+
+function exportCsv(grid, fileName = 'export') {
+    const timestamp = moment().format('YYYY-MM-DD_HH-mm');
+    const csvExportParams = {
+        skipHeader: false,
+        columnSeparator: ',',
+        fileName: `${fileName}_${timestamp}.csv`
+    };
+
+    grid.exportDataAsCsv(csvExportParams);
 }
