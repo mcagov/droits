@@ -2,6 +2,8 @@
 #region
 
 using AutoMapper;
+using CsvHelper;
+using Droits.Data.Mappers;
 using Droits.Data.Mappers.CsvMappers;
 using Droits.Exceptions;
 using Droits.Helpers;
@@ -9,6 +11,7 @@ using Droits.Helpers.Extensions;
 using Droits.Helpers.SearchHelpers;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
+using Droits.Models.DTOs.Imports;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
@@ -42,6 +45,7 @@ public interface IDroitService
     Task<Droit> CreateDroitAsync(SubmittedReportDto report, Salvor salvor);
     Task<byte[]> ExportAsync(DroitSearchForm form);
     Task<Droit> GetDroitByReferenceAsync(string reference);
+    List<String> UploadWmCsvForm(List<WMRowDto> wreckMaterials);
 
 }
 
@@ -254,6 +258,37 @@ public class DroitService : IDroitService
     public async Task<Droit> GetDroitByReferenceAsync(string reference)
     {
         return await _repo.GetDroitByReferenceAsync(reference);
+    }
+
+
+    public List<String> UploadWmCsvForm(List<WMRowDto> wreckMaterials)
+    {
+        var result = new List<WreckMaterialForm>();
+
+        foreach ( var rowDto in wreckMaterials )
+        {
+            // Enum.TryParse<WreckMaterialOutcome>(rowDto.Outcome,out var outcome);
+            var wmForm = new WreckMaterialForm();
+            // wmForm.DroitId = new Guid(rowDto.DroitId);
+            wmForm.Name = rowDto.Name;
+            // wmForm.StoredAtSalvorAddress = rowDto.StoredAtSalvorAddress.AsBoolean();
+            // wmForm.Description = rowDto.Description;
+            // wmForm.Quantity = Convert.ToInt32(rowDto.Quantity);
+            // wmForm.SalvorValuation = Convert.ToDouble(rowDto.SalvorValuation);
+            // wmForm.ReceiverValuation =Convert.ToDouble(rowDto.ReceiverValuation);
+            // wmForm.ValueConfirmed = rowDto.ValueConfirmed.AsBoolean();
+            // wmForm.WreckMaterialOwner = rowDto.WreckMaterialOwner;
+            // wmForm.WreckMaterialOwnerContactDetails = rowDto.WreckMaterialOwnerContactDetails;
+            // wmForm.Purchaser = rowDto.Purchaser;
+            // wmForm.PurchaserContactDetails = rowDto.PurchaserContactDetails;
+            // wmForm.Outcome = outcome;
+            // wmForm.OutcomeRemarks = rowDto.OutcomeRemarks;
+            // wmForm.WhereSecured = rowDto.WhereSecured;
+            
+            result.Add(wmForm);
+        }
+
+        return result.Select(wm => wm.Name).ToList();
     }
 
 

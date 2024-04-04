@@ -1,7 +1,10 @@
 #region
 
+using System.Globalization;
+using CsvHelper;
 using Droits.Exceptions;
 using Droits.Helpers.Extensions;
+using Droits.Models.DTOs.Imports;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
@@ -329,4 +332,39 @@ public class DroitController : BaseController
         
         return View(nameof(Index), model);
     }
+
+
+    [HttpGet]
+    public ActionResult WreckMaterialBulkUpload(Guid droitId ,String droitRef)
+    {
+        var model = new WreckMaterialCsvForm(droitId,droitRef);
+        return View(nameof(WreckMaterialBulkUpload),model);
+    }
+
+    [HttpPost]
+    public ActionResult UploadWmCsv(WreckMaterialCsvForm form)
+    {
+        try
+        {
+           
+            var reader = new StreamReader(form.CsvFile?.OpenReadStream());
+            var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            var records = csv.GetRecords<WMRowDto>().ToList();
+
+            var result = _service.UploadWmCsvForm(records);
+            Console.Write("records uploaded");
+            
+            // more stuff needed here to add the forms to the droit
+            
+            AddSuccessMessage($"Wreck Materials {result} uploaded");
+
+            return RedirectToAction(nameof(Edit), new {id = form.DroitId, selectedTab ="wreck-materials"});
+        }
+        catch ( Exception e )
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
 }
