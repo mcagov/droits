@@ -1,6 +1,6 @@
 import { createGrid } from 'ag-grid-community';
 import moment from 'moment';
-
+import Chart from 'chart.js/auto';
 
 function getRowStyle(params) {
     if (params.data.year === 'Total') {
@@ -54,6 +54,7 @@ const openClosedColumnDefs = [
     {headerName: 'Open Count', field: 'open'},
     {headerName: 'Closed Count', field: 'closed'}
 ];
+
 export function initializeMetricsDashboard() {
     // Create grid options for each grid
     const statusGridOptions = createGridOptions(statusColumnDefs);
@@ -70,7 +71,6 @@ export function initializeMetricsDashboard() {
     const yearOpenClosedGrid = createGrid(document.querySelector('#year-open-closed-grid-container'), openClosedGridOptions);
     const monthOpenClosedGrid = createGrid(document.querySelector('#month-open-closed-grid-container'), openClosedGridOptions);
 
-    
     // Fetch data using AJAX
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
@@ -117,22 +117,18 @@ export function initializeMetricsDashboard() {
                             reported: groupData.countPerStatus["Reported Count"],
                             open: groupData.countPerStatus["Open Count"],
                             closed: groupData.countPerStatus["Closed Count"],
-
                         };
                         if(groupData.group === "Total") {
                             yearStatusData.push(statusRowData);
                             yearTriageData.push(triageRowData);
                             yearOpenClosedData.push(openClosedRowData);
-
-                        }else{
+                        } else {
                             monthStatusData.push(statusRowData);
                             monthTriageData.push(triageRowData);
                             monthOpenClosedData.push(openClosedRowData);
                         }
-
                     });
                 });
-
 
                 yearStatusGrid.setGridOption('rowData', yearStatusData);
                 monthStatusGrid.setGridOption('rowData', monthStatusData);
@@ -144,7 +140,6 @@ export function initializeMetricsDashboard() {
                 monthOpenClosedGrid.setGridOption('rowData', monthOpenClosedData);
 
                 // Add CSV Export
-                
                 document.querySelector('#export-csv-year-status').addEventListener('click', () => {
                     exportCsv(yearStatusGrid, "StatusYearExport");
                 });
@@ -163,6 +158,10 @@ export function initializeMetricsDashboard() {
                 document.querySelector('#export-csv-month-open-closed').addEventListener('click', () => {
                     exportCsv(monthOpenClosedGrid, "OpenClosedMonthExport");
                 });
+
+                // Initialize Open Closed Chart
+                initializeOpenClosedChart(yearOpenClosedData, 'openClosedYearChart');
+                initializeOpenClosedChart(monthOpenClosedData, 'openClosedMonthChart');
 
             } else {
                 console.error('Failed to fetch data: ' + xhr.status);
@@ -183,4 +182,53 @@ function exportCsv(grid, fileName = 'export') {
     };
 
     grid.exportDataAsCsv(csvExportParams);
+}
+
+function initializeOpenClosedChart(data, containerId) {
+    const ctx = document.getElementById(containerId).getContext('2d');
+
+    const labels = data.filter(entry => entry.reported>0).map(entry => entry.group==="Total"?`${entry.year}`:`${entry.year}-${entry.group}`);
+
+    const chartData = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Reported Count',
+                backgroundColor: 'rgba(0, 153, 204, 0.5)',
+                borderColor: 'rgba(0, 153, 204, 1)',
+                borderWidth: 1,
+                data: data.filter(entry => entry.reported>0).map(entry => entry.reported)
+            },
+            {
+                label: 'Open Count',
+                backgroundColor: 'rgba(255, 102, 0, 0.5)',
+                borderColor: 'rgba(255, 102, 0, 1)',
+                borderWidth: 1,
+                data: data.filter(entry => entry.reported>0).map(entry => entry.open)
+            },
+            {
+                label: 'Closed Count',
+                backgroundColor: 'rgba(51, 204, 51, 0.5)',
+                borderColor: 'rgba(51, 204, 51, 1)',
+                borderWidth: 1,
+                data: data.filter(entry => entry.reported>0).map(entry => entry.closed)
+            }
+        ]
+    };
+
+    const options = {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    };
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: {
+            scales: options.scales
+        }
+    });
 }
