@@ -24,7 +24,7 @@ public static class MetricsHelper
             }
         };
 
-        groupedDroits.AddRange(Enumerable.Range(minYear, maxYear - minYear + 1)
+        groupedDroits.AddRange(Enumerable.Range(minYear, maxYear - minYear + 1).Reverse()
             .Select(year => new
             {
                 Year = year,
@@ -48,16 +48,18 @@ public static class MetricsHelper
         };
 
         // Group by months
-        if (year != 0)
+        if ( year == 0 ) return groupedDroits;
+        
+        var months = year < DateTime.Now.Year
+            ? Enumerable.Range(1, 12)
+            : Enumerable.Range(1, DateTime.Now.Month);
+            
+        groupedDroits.AddRange(months.Reverse().Select(month => new
         {
-            groupedDroits.AddRange(Enumerable.Range(1, 12)
-                .Select(month => new
-                {
-                    Group = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month),
-                    CountPerStatus = GetCountPerStatus(droits.Where(d => d.ReportedDate.Year == year && d.ReportedDate.Month == month), allStatuses),
-                    CountPerTriage = GetCountPerTriage(droits.Where(d => d.ReportedDate.Year == year && d.ReportedDate.Month == month))
-                }));
-        }
+            Group = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month),
+            CountPerStatus = GetCountPerStatus(droits.Where(d => d.ReportedDate.Year == year && d.ReportedDate.Month == month), allStatuses),
+            CountPerTriage = GetCountPerTriage(droits.Where(d => d.ReportedDate.Year == year && d.ReportedDate.Month == month))
+        }));
 
         return groupedDroits;
     }

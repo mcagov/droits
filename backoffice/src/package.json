@@ -20,6 +20,7 @@
     "handlebars": "^4.7.8",
     "imports-loader": "^4.0.1",
     "mini-css-extract-plugin": "^2.7.6",
+    "moment": "^2.30.1",
     "postcss": "^8.4.24",
     "postcss-loader": "^7.3.3",
     "postcss-preset-env": "^8.5.1",
