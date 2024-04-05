@@ -1,6 +1,6 @@
 import { createGrid } from 'ag-grid-community';
 import moment from 'moment';
-
+import {initializeOpenClosedGraph, initializeStatusGraph, initializeTriageGraph} from "./metricsGraphs";
 
 function getRowStyle(params) {
     if (params.data.year === 'Total') {
@@ -54,6 +54,7 @@ const openClosedColumnDefs = [
     {headerName: 'Open Count', field: 'open'},
     {headerName: 'Closed Count', field: 'closed'}
 ];
+
 export function initializeMetricsDashboard() {
     // Create grid options for each grid
     const statusGridOptions = createGridOptions(statusColumnDefs);
@@ -70,7 +71,6 @@ export function initializeMetricsDashboard() {
     const yearOpenClosedGrid = createGrid(document.querySelector('#year-open-closed-grid-container'), openClosedGridOptions);
     const monthOpenClosedGrid = createGrid(document.querySelector('#month-open-closed-grid-container'), openClosedGridOptions);
 
-    
     // Fetch data using AJAX
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
@@ -117,22 +117,18 @@ export function initializeMetricsDashboard() {
                             reported: groupData.countPerStatus["Reported Count"],
                             open: groupData.countPerStatus["Open Count"],
                             closed: groupData.countPerStatus["Closed Count"],
-
                         };
                         if(groupData.group === "Total") {
                             yearStatusData.push(statusRowData);
                             yearTriageData.push(triageRowData);
                             yearOpenClosedData.push(openClosedRowData);
-
-                        }else{
+                        } else {
                             monthStatusData.push(statusRowData);
                             monthTriageData.push(triageRowData);
                             monthOpenClosedData.push(openClosedRowData);
                         }
-
                     });
                 });
-
 
                 yearStatusGrid.setGridOption('rowData', yearStatusData);
                 monthStatusGrid.setGridOption('rowData', monthStatusData);
@@ -144,7 +140,6 @@ export function initializeMetricsDashboard() {
                 monthOpenClosedGrid.setGridOption('rowData', monthOpenClosedData);
 
                 // Add CSV Export
-                
                 document.querySelector('#export-csv-year-status').addEventListener('click', () => {
                     exportCsv(yearStatusGrid, "StatusYearExport");
                 });
@@ -163,6 +158,16 @@ export function initializeMetricsDashboard() {
                 document.querySelector('#export-csv-month-open-closed').addEventListener('click', () => {
                     exportCsv(monthOpenClosedGrid, "OpenClosedMonthExport");
                 });
+
+                // Initialize Open Closed Chart
+                initializeOpenClosedGraph(yearOpenClosedData.reverse(), 'openClosedYearChart', false, 'bar');
+                initializeOpenClosedGraph(monthOpenClosedData.reverse(), 'openClosedMonthChart', true, 'bar');
+
+                initializeStatusGraph(yearStatusData.reverse(), 'statusYearChart', false, 'bar');
+                initializeStatusGraph(monthStatusData.reverse(), 'statusMonthChart', true, 'bar');
+
+                initializeTriageGraph(yearTriageData.reverse(), 'triageYearChart', false , 'bar');
+                initializeTriageGraph(monthTriageData.reverse(), 'triageMonthChart', true, 'line');
 
             } else {
                 console.error('Failed to fetch data: ' + xhr.status);
