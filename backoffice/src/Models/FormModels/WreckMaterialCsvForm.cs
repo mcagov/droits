@@ -8,17 +8,15 @@ public class WreckMaterialCsvForm
     public WreckMaterialCsvForm(){}
 
 
-    public WreckMaterialCsvForm(Guid droitId,String droitRef)
+    public WreckMaterialCsvForm(Guid droitId,string droitRef)
     {
         DroitRef = droitRef;
         DroitId = droitId;
     }
-
-
     public Guid DroitId { get; set; }
 
     [DisplayName("Droit Reference")]
-    public String DroitRef { get; set; }
+    public string DroitRef { get; set; }
     
     [Required(ErrorMessage= "Please select a file to upload.")]
     [DisplayName("File Upload")]

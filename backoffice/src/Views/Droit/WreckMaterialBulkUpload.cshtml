@@ -1,21 +1,39 @@
 @model WreckMaterialCsvForm
 
-<h1> @Model.DroitRef Test  </h1>
+@{
+    ViewData["Title"] = $"Upload Wreck Material CSV File - Droit ({Model.DroitRef})";
+}
 
+@{
+    await Html.RenderPartialAsync("_MessageBanner");
+}
 
-<form asp-action="UploadWmCsv" enctype="multipart/form-data" method="POST">
+<h4> @ViewData["Title"]  </h4>
 
-    @Html.HiddenFor(m => m.DroitId)
-    <div class="form-group row mt-2">
-        <div class="col-md-3">
-            @Html.LabelFor(m => m.CsvFile, new { @class = "col-form-label font-weight-bold" })
+<div class="border p-4">
+    <h5>Upload a csv, xls or xlsx file only</h5>
+    <p>Use the template file as a guide, there should be columns only with the exact headers shown</p>
+    <a href="~/downloads/wreck_material_upload_template.csv" download>
+        download the template here
+    </a>
+</div>
+
+<div class="row">
+    <form asp-action="UploadWmCsv" enctype="multipart/form-data" method="POST">
+
+        @Html.HiddenFor(m => m.DroitId)
+        @Html.HiddenFor(m => m.DroitRef)
+        <div class="form-group row mt-2">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.CsvFile, new { @class = "col-form-label font-weight-bold" })
+            </div>
+            <div class="col-md-9">
+                @Html.EditorFor(m => m.CsvFile, new { htmlAttributes = new { @class = "form-control js-file-file-input", accept = ".csv,.xls,.xlsx" , required = true} })
+                @Html.ValidationMessageFor(m => m.CsvFile, "", new { @class = "text-danger" })
+            </div>
         </div>
-        <div class="col-md-9">
-            @Html.EditorFor(m => m.CsvFile, new { htmlAttributes = new { @class = "form-control js-file-file-input", accept = "*/*" } })
-            @Html.ValidationMessageFor(m => m.CsvFile, "", new { @class = "text-danger" })
+        <div class="form-group col mt-2">
+            <button type="submit" class="btn btn-primary float-end">Upload file</button>
         </div>
-    </div>
-
-    <button type="submit">Upload file</button>
-
-</form>
+    </form>
+</div>

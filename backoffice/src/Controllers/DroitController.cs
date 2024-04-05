@@ -335,35 +335,33 @@ public class DroitController : BaseController
 
 
     [HttpGet]
-    public ActionResult WreckMaterialBulkUpload(Guid droitId ,String droitRef)
+    public ActionResult WreckMaterialBulkUpload(Guid droitId ,string droitRef)
     {
         var model = new WreckMaterialCsvForm(droitId,droitRef);
         return View(nameof(WreckMaterialBulkUpload),model);
     }
 
     [HttpPost]
-    public ActionResult UploadWmCsv(WreckMaterialCsvForm form)
+    public async Task<ActionResult> UploadWmCsv(WreckMaterialCsvForm form)
     {
         try
         {
-           
-            var reader = new StreamReader(form.CsvFile?.OpenReadStream());
+
+            var reader = new StreamReader(form.CsvFile?.OpenReadStream() ??
+                                          throw new InvalidOperationException());
             var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
             var records = csv.GetRecords<WMRowDto>().ToList();
 
-            var result = _service.UploadWmCsvForm(records);
+            await _service.UploadWmCsvForm(records, form.DroitId);
             Console.Write("records uploaded");
-            
-            // more stuff needed here to add the forms to the droit
-            
-            AddSuccessMessage($"Wreck Materials {result} uploaded");
 
-            return RedirectToAction(nameof(Edit), new {id = form.DroitId, selectedTab ="wreck-materials"});
+            return RedirectToAction(nameof(View),
+                new { id = form.DroitId, selectedTab = "wreck-materials" });
         }
         catch ( Exception e )
         {
-            Console.WriteLine(e);
-            throw;
+            HandleError(_logger, "Unable to upload file", e);
+            return View(nameof(WreckMaterialBulkUpload), new WreckMaterialCsvForm(form.DroitId,form.DroitRef) );
         }
     }
     
