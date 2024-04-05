@@ -1,8 +1,15 @@
 import Chart from 'chart.js/auto';
-
+import zoomPlugin from 'chartjs-plugin-zoom';
 function initializeGraph(data, containerId, metaData, stacked = false, type = 'bar') {
+    Chart.register(zoomPlugin);
+    
     const ctx = document.getElementById(containerId).getContext('2d');
 
+    let chartStatus = Chart.getChart(containerId); 
+    if (chartStatus !== undefined) {
+        chartStatus.destroy();
+    }
+    
     const labels = data
         .filter(entry => entry.year !== "Total")
         .map(entry => entry.group === "Total" ? `${entry.year}` : `${entry.year}-${entry.group}`);
@@ -20,24 +27,44 @@ function initializeGraph(data, containerId, metaData, stacked = false, type = 'b
         datasets: datasets
     };
 
-    const options = {
-        responsive: true,
-        maintainAspectRatio: true,
-        scales: {
-            x: { stacked: stacked },
-            y: {
-                stacked: stacked,
-                stepSize: 1
-            }
-        }
-    };
-
     new Chart(ctx, {
         type: type,
         data: chartData,
-        options: { scales: options.scales }
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                x: {stacked: stacked},
+                y: {
+                    stacked: stacked,
+                    beginAtZero: true,
+                    min: 0
+                },
+            },
+            plugins: {
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        modifierKey: 'ctrl',
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: true
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        drag: {
+                            enabled: true
+                        },
+                        mode: 'x',
+                    },
+                }
+            }
+        }
     });
 }
+
 
 export function initializeTriageGraph(data, containerId, stacked = false, type = 'bar') {
     const triageMetaData = {
