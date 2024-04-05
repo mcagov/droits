@@ -1,6 +1,6 @@
 import { createGrid } from 'ag-grid-community';
 import moment from 'moment';
-import Chart from 'chart.js/auto';
+import {initializeOpenClosedGraph, initializeStatusGraph, initializeTriageGraph} from "./metricsGraphs";
 
 function getRowStyle(params) {
     if (params.data.year === 'Total') {
@@ -160,8 +160,14 @@ export function initializeMetricsDashboard() {
                 });
 
                 // Initialize Open Closed Chart
-                initializeOpenClosedChart(yearOpenClosedData, 'openClosedYearChart');
-                initializeOpenClosedChart(monthOpenClosedData, 'openClosedMonthChart');
+                initializeOpenClosedGraph(yearOpenClosedData.reverse(), 'openClosedYearChart', false, 'bar');
+                initializeOpenClosedGraph(monthOpenClosedData.reverse(), 'openClosedMonthChart', true, 'bar');
+
+                initializeStatusGraph(yearStatusData.reverse(), 'statusYearChart', false, 'bar');
+                initializeStatusGraph(monthStatusData.reverse(), 'statusMonthChart', true, 'bar');
+
+                initializeTriageGraph(yearTriageData.reverse(), 'triageYearChart', false , 'bar');
+                initializeTriageGraph(monthTriageData.reverse(), 'triageMonthChart', true, 'line');
 
             } else {
                 console.error('Failed to fetch data: ' + xhr.status);
@@ -182,53 +188,4 @@ function exportCsv(grid, fileName = 'export') {
     };
 
     grid.exportDataAsCsv(csvExportParams);
-}
-
-function initializeOpenClosedChart(data, containerId) {
-    const ctx = document.getElementById(containerId).getContext('2d');
-
-    const labels = data.filter(entry => entry.reported>0).map(entry => entry.group==="Total"?`${entry.year}`:`${entry.year}-${entry.group}`);
-
-    const chartData = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Reported Count',
-                backgroundColor: 'rgba(0, 153, 204, 0.5)',
-                borderColor: 'rgba(0, 153, 204, 1)',
-                borderWidth: 1,
-                data: data.filter(entry => entry.reported>0).map(entry => entry.reported)
-            },
-            {
-                label: 'Open Count',
-                backgroundColor: 'rgba(255, 102, 0, 0.5)',
-                borderColor: 'rgba(255, 102, 0, 1)',
-                borderWidth: 1,
-                data: data.filter(entry => entry.reported>0).map(entry => entry.open)
-            },
-            {
-                label: 'Closed Count',
-                backgroundColor: 'rgba(51, 204, 51, 0.5)',
-                borderColor: 'rgba(51, 204, 51, 1)',
-                borderWidth: 1,
-                data: data.filter(entry => entry.reported>0).map(entry => entry.closed)
-            }
-        ]
-    };
-
-    const options = {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    };
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: chartData,
-        options: {
-            scales: options.scales
-        }
-    });
 }

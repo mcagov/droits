@@ -12,89 +12,30 @@
         </div>
     </div>
 
-    <div class="row mt-4">
+    <div class="row">
         <div class="col">
             <h3 class="display-6 text-center">@ViewData["Title"]</h3>
         </div>
     </div>
     
-    <div class="js-metrics-dashboard row row-cols-1 row-cols-lg-1 row-cols-xl-2 g-4">
+    <ul class="nav nav-pills" id="metricsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="openClosed-tab" data-bs-toggle="tab" data-bs-target="#openClosed-content" type="button" role="tab" aria-controls="openClosed-content" aria-selected="true">Open/Closed</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="status-tab" data-bs-toggle="tab" data-bs-target="#status-content" type="button" role="tab" aria-controls="status-content" aria-selected="false">Status</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="triage-tab" data-bs-toggle="tab" data-bs-target="#triage-content" type="button" role="tab" aria-controls="triage-content" aria-selected="false">Triage</button>
+        </li>
+    </ul>
+    
+    
+    <div class="js-metrics-dashboard tab-content mt-3">
         
-        <div class="col">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                     <h4 class="mb-0 text-center">Status (Year)</h4>
-                     <button id="export-csv-year-status" class="btn btn-primary">Export</button>
-                </div>
-                <div class="card-body">
-                    <div id="year-status-grid-container" class="ag-theme-alpine w-100" style="height:500px;"></div>
-                </div>
-            </div>
-        </div>
+        <partial name="_openClosedTab"/>
+        <partial name="_statusTab"/>
+        <partial name="_triageTab"/>
 
-        <div class="col">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                     <h4 class="mb-0 text-center">Status (Month)</h4>
-                     <button id="export-csv-month-status" class="btn btn-primary">Export</button>
-                </div>
-                <div class="card-body">
-                    <div id="month-status-grid-container" class="ag-theme-alpine w-100" style="height:500px;"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                     <h4 class="mb-0 text-center">Triage (Year)</h4>
-                     <button id="export-csv-year-triage" class="btn btn-primary">Export</button>
-                </div>
-                <div class="card-body">
-                    <div id="year-triage-grid-container" class="ag-theme-alpine w-100" style="height:500px;"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                     <h4 class="mb-0 text-center">Triage (Month)</h4>
-                     <button id="export-csv-month-triage" class="btn btn-primary">Export</button>
-                </div>
-                <div class="card-body">
-                    <div id="month-triage-grid-container" class="ag-theme-alpine w-100" style="height:500px;"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                     <h4 class="mb-0 text-center">Open/Closed (Year)</h4>
-                     <button id="export-csv-year-open-closed" class="btn btn-primary">Export</button>
-                </div>
-                <div class="card-body">
-                    <div id="year-open-closed-grid-container" class="ag-theme-alpine w-100" style="height:500px;"></div>
-                    <canvas id="openClosedYearChart" width="400" height="200"></canvas>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0 text-center">Open/Closed (Month)</h4>
-                    <button id="export-csv-month-open-closed" class="btn btn-primary">Export</button>
-                </div>
-                <div class="card-body">
-                    <div id="month-open-closed-grid-container" class="ag-theme-alpine w-100" style="height:500px;"></div>
-                    <canvas id="openClosedMonthChart" width="400" height="200"></canvas>
-
-                </div>
-            </div>
-        </div>
-        
     </div>
 </div>
