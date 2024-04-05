@@ -19,6 +19,7 @@ using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
+using Microsoft.CodeAnalysis.FlowAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -262,29 +263,10 @@ public class DroitService : IDroitService
     public async Task UploadWmCsvForm(List<WMRowDto> wreckMaterials,Guid droitId)
     {
 
-        foreach (var wmForm in wreckMaterials.Select(rowDto => new WreckMaterialForm
-             {
-                 DroitId = droitId,
-                 Name = rowDto.Name,
-                 Description = rowDto.Description,
-                 Quantity = Convert.ToInt32(rowDto.Quantity),
-                 SalvorValuation = Convert.ToDouble(rowDto.SalvorValuation),
-                 ReceiverValuation = Convert.ToDouble(rowDto.ReceiverValuation),
-                 ValueConfirmed = rowDto.ValueConfirmed.AsBoolean(),
-                 WreckMaterialOwner = rowDto.WreckMaterialOwner,
-                 WreckMaterialOwnerContactDetails = rowDto.WreckMaterialOwnerContactDetails,
-                 Purchaser = rowDto.Purchaser,
-                 PurchaserContactDetails = rowDto.PurchaserContactDetails,
-                 StorageAddress = new AddressForm
-                 {
-                     Line1 = rowDto.StorageLine1,
-                     Line2 = rowDto.StorageLine2,
-                     Town = rowDto.StorageCityTown,
-                     County = rowDto.StorageCounty,
-                     Postcode = rowDto.StoragePostcode
-                 }
-             }))
+        foreach (var rowDto in wreckMaterials)
         {
+            var wmForm = _mapper.Map<WreckMaterialForm>(rowDto);
+            wmForm.DroitId = droitId;
             await _wreckMaterialService.SaveWreckMaterialAsync(wmForm);
             
         }
