@@ -14,6 +14,7 @@
     "ag-grid-community": "^31.2.0",
     "bootstrap": "^5.3.1",
     "chart.js": "^4.4.2",
+    "chartjs-plugin-zoom": "^2.0.1",
     "choices.js": "^10.2.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",

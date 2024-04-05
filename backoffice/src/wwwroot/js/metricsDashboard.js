@@ -159,15 +159,16 @@ export function initializeMetricsDashboard() {
                     exportCsv(monthOpenClosedGrid, "OpenClosedMonthExport");
                 });
 
-                // Initialize Open Closed Chart
-                initializeOpenClosedGraph(yearOpenClosedData.reverse(), 'openClosedYearChart', false, 'bar');
-                initializeOpenClosedGraph(monthOpenClosedData.reverse(), 'openClosedMonthChart', true, 'bar');
+                yearStatusGrid.addEventListener('filterChanged', () => drawGraph(yearStatusGrid, 'statusYearChart'));
+                monthStatusGrid.addEventListener('filterChanged', () => drawGraph(monthStatusGrid, 'statusMonthChart'));
+                yearTriageGrid.addEventListener('filterChanged', () => drawGraph(yearTriageGrid, 'triageYearChart'));
+                monthTriageGrid.addEventListener('filterChanged', () => drawGraph(monthTriageGrid, 'triageMonthChart'));
+                yearOpenClosedGrid.addEventListener('filterChanged', () => drawGraph(yearOpenClosedGrid, 'openClosedYearChart'));
+                monthOpenClosedGrid.addEventListener('filterChanged', () => drawGraph(monthOpenClosedGrid, 'openClosedMonthChart'));
 
-                initializeStatusGraph(yearStatusData.reverse(), 'statusYearChart', false, 'bar');
-                initializeStatusGraph(monthStatusData.reverse(), 'statusMonthChart', true, 'bar');
 
-                initializeTriageGraph(yearTriageData.reverse(), 'triageYearChart', false , 'bar');
-                initializeTriageGraph(monthTriageData.reverse(), 'triageMonthChart', true, 'line');
+                // Initialize the graphs initially
+                drawGraphs();
 
             } else {
                 console.error('Failed to fetch data: ' + xhr.status);
@@ -177,7 +178,47 @@ export function initializeMetricsDashboard() {
 
     xhr.open('GET', '/Account/MetricsData', true);
     xhr.send();
+
+    function drawGraphs() {
+        drawGraph(yearStatusGrid, 'statusYearChart');
+        drawGraph(monthStatusGrid, 'statusMonthChart');
+        drawGraph(yearTriageGrid, 'triageYearChart');
+        drawGraph(monthTriageGrid, 'triageMonthChart');
+        drawGraph(yearOpenClosedGrid, 'openClosedYearChart');
+        drawGraph(monthOpenClosedGrid, 'openClosedMonthChart');
+    }
+
+    function drawGraph(grid, chartId) {
+        const data = grid.getModel().rowsToDisplay.map(row => row.data).reverse();
+
+        switch (chartId) {
+            case 'statusYearChart':
+                initializeStatusGraph(data, chartId, false, 'bar');
+                break;
+            case 'statusMonthChart':
+                initializeStatusGraph(data, chartId, true, 'bar');
+                break;
+            case 'triageYearChart':
+                initializeTriageGraph(data, chartId, false, 'bar');
+                break;
+            case 'triageMonthChart':
+                initializeTriageGraph(data, chartId, false, 'line');
+                break;
+            case 'openClosedYearChart':
+                initializeOpenClosedGraph(data, chartId, false, 'bar');
+                break;
+            case 'openClosedMonthChart':
+                initializeOpenClosedGraph(data, chartId, true, 'bar');
+                break;
+            default:
+                // Do nothing if chartId doesn't match any case
+                break;
+        }
+    }
+
+
 }
+
 
 function exportCsv(grid, fileName = 'export') {
     const timestamp = moment().format('YYYY-MM-DD_HH-mm');
