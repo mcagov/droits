@@ -96,7 +96,7 @@ public class WreckMaterialRowDTOMappingProfileUnitTests
         Assert.Equal("This is a test",wreckMaterialForm.Description);
         Assert.Equal(1,wreckMaterialForm.Quantity);
         Assert.Equal(2,wreckMaterialForm.SalvorValuation);
-        Assert.Equal(0,wreckMaterialForm.ReceiverValuation);
+        Assert.Null(wreckMaterialForm.ReceiverValuation);
         Assert.False(wreckMaterialForm.ValueConfirmed);
         Assert.Equal("",wreckMaterialForm.StorageAddress?.Line1);
         Assert.Equal("",wreckMaterialForm.StorageAddress?.Line2);
@@ -137,7 +137,7 @@ public class WreckMaterialRowDTOMappingProfileUnitTests
         Assert.Equal("This is a test",wreckMaterialForm.Description);
         Assert.Equal(1,wreckMaterialForm.Quantity);
         Assert.Equal(2,wreckMaterialForm.SalvorValuation);
-        Assert.Equal(0,wreckMaterialForm.ReceiverValuation);
+        Assert.Null(wreckMaterialForm.ReceiverValuation);
         Assert.False(wreckMaterialForm.ValueConfirmed);
         Assert.Equal("",wreckMaterialForm.StorageAddress?.Line1);
         Assert.Equal("",wreckMaterialForm.StorageAddress?.Line2);
@@ -145,36 +145,6 @@ public class WreckMaterialRowDTOMappingProfileUnitTests
         Assert.Equal("barshire",wreckMaterialForm.StorageAddress?.County);
         Assert.Equal("f008ar",wreckMaterialForm.StorageAddress?.Postcode);
         
-
-    }
-    
-    [Fact]
-    public void TestMappingWithIncorrectlyFormattedFields_WMRowDtoToWreckMaterialForm_RaisesExceptions()
-    {
-        
-        // Assemble
-        
-        var rowDto = new WMRowDto()
-        {
-            Name = "Test",
-            Description = "This is a test",
-            Quantity = "1",
-            SalvorValuation = "2",
-            ReceiverValuation = "foo",
-            ValueConfirmed = "no",
-            StorageLine1 = "",
-            StorageLine2 = "",
-            StorageCityTown = "fooville",
-            StorageCounty = "barshire",
-            StoragePostcode = "f008ar"
-        };
-        
-        // Act
-        
-        // Assert
-
-        Assert.Throws<AutoMapperMappingException>(() => _mapper.Map<WreckMaterialForm>(rowDto));
-
 
     }
 }

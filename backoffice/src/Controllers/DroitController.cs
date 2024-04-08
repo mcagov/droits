@@ -361,7 +361,7 @@ public class DroitController : BaseController
         }
         catch ( AutoMapperMappingException e )
         {
-            HandleError(_logger, "A field has the wrong format, for example a number is expected but a line of text was given",e);
+            HandleError(_logger, "A field has the wrong format",e);
             return View(nameof(WreckMaterialBulkUpload), new WreckMaterialCsvForm(form.DroitId,form.DroitRef) );
         }
         catch ( Exception e )
