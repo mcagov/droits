@@ -16,7 +16,7 @@ public class WreckMaterialCsvForm
     public Guid DroitId { get; set; }
 
     [DisplayName("Droit Reference")]
-    public string DroitRef { get; set; }
+    public string DroitRef { get; set; } = string.Empty;
     
     [Required(ErrorMessage= "Please select a file to upload.")]
     [DisplayName("File Upload")]
