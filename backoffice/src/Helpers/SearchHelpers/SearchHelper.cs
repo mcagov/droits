@@ -2,9 +2,6 @@
 namespace Droits.Helpers.SearchHelpers;
 public static class SearchHelper
 {
-    private const int MaxLevenshteinDistance = 5;
-    private const int MidLevenshteinDistance = 3;
-    private const int LowerLevenshteinDistance = 1;
     public static int GetLevenshteinDistanceThreshold(string? query)
     {
         if ( string.IsNullOrEmpty(query) )
@@ -12,12 +9,17 @@ public static class SearchHelper
             return 0;
         }
 
+        // if query <= 3 length, return 0 distance threshold
+        // ..
+        // if query <= 12 length, return 3 distance threshold
+
         return query.Length switch
         {
             <= 3 => 0,
-            <= 5 => LowerLevenshteinDistance,
-            <= 10 => MidLevenshteinDistance,
-            _ => MaxLevenshteinDistance
+            <= 6 => 1,
+            <= 9 => 2,
+            <= 12 => 3,
+            _ => 4
         };
     }
 

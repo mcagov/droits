@@ -1,0 +1,42 @@
+<div class="tab-pane fade" id="triage-content" role="tabpanel" aria-labelledby="triage-tab">
+    <div class="row">
+        <div class="mt-2 col col-sm-12 col-xl-7">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 text-center">Triage (Year)</h4>
+                <button id="export-csv-year-triage" class="btn btn-primary">Export</button>
+                </div>
+                <div id="year-triage-grid-container" class="ag-theme-alpine card-body" style="height:500px;"></div>`
+            </div>
+        </div>
+        <div class="mt-2 col col-sm-12 col-xl-5">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 text-center">Triage (Year)</h4>
+                </div>
+                <canvas id="triageYearChart" class="card-body" height="400" style="max-height:500px;"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="mt-2 col-sm-12 col-xl-7">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 text-center">Triage (Month)</h4>
+                    <button id="export-csv-month-triage" class="btn btn-primary">Export</button>
+                </div>
+                <div id="month-triage-grid-container" class="ag-theme-alpine card-body" style="height:500px;"></div>`
+            </div>
+        </div>
+                
+        <div class="mt-2 col-sm-12 col-xl-5">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 text-center">Triage (Month)</h4>
+                </div>
+                <canvas id="triageMonthChart" class="card-body" height="400" style="max-height:500px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

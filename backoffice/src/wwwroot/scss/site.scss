@@ -8,7 +8,8 @@ $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 @import '~@fortawesome/fontawesome-free/scss/brands';
 @import '~@fortawesome/fontawesome-free/scss/regular';
 @import '~@fortawesome/fontawesome-free/scss/solid';
-
+@import 'ag-grid-community/styles/ag-grid.min.css';
+@import 'ag-grid-community/styles/ag-theme-alpine.min.css';
 html {
   font-size: 14px;
   position: relative;

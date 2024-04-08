@@ -1,7 +1,11 @@
 #region
 
+using System.Globalization;
+using AutoMapper;
+using CsvHelper;
 using Droits.Exceptions;
 using Droits.Helpers.Extensions;
+using Droits.Models.DTOs.Imports;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
@@ -329,4 +333,42 @@ public class DroitController : BaseController
         
         return View(nameof(Index), model);
     }
+
+
+    [HttpGet]
+    public ActionResult WreckMaterialBulkUpload(Guid droitId ,string droitRef)
+    {
+        var model = new WreckMaterialCsvForm(droitId,droitRef);
+        return View(nameof(WreckMaterialBulkUpload),model);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> UploadWmCsv(WreckMaterialCsvForm form)
+    {
+        try
+        {
+
+            var reader = new StreamReader(form.CsvFile?.OpenReadStream() ??
+                                          throw new InvalidOperationException());
+            var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            var records = csv.GetRecords<WMRowDto>().ToList();
+
+            await _service.UploadWmCsvForm(records, form.DroitId);
+            Console.Write("records uploaded");
+
+            return RedirectToAction(nameof(View),
+                new { id = form.DroitId, selectedTab = "wreck-materials" });
+        }
+        catch ( AutoMapperMappingException e )
+        {
+            HandleError(_logger, "A field has the wrong format",e);
+            return View(nameof(WreckMaterialBulkUpload), new WreckMaterialCsvForm(form.DroitId,form.DroitRef) );
+        }
+        catch ( Exception e )
+        {
+            HandleError(_logger, "Unable to upload file", e);
+            return View(nameof(WreckMaterialBulkUpload), new WreckMaterialCsvForm(form.DroitId,form.DroitRef) );
+        }
+    }
+    
 }

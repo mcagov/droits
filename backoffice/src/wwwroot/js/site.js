@@ -8,6 +8,7 @@ import {initializeSearchBar} from './searchBar';
 import {initializeSearchForms} from './searchForms';
 import {initializeFile} from "./droitFile";
 import {initializeTinyMce} from "./tinyMCE";
+import {initializeMetricsDashboard} from "./metricsDashboard";
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     initializeComponents('.js-droit-form', initializeDroitForm);
     initializeComponents('.js-droit-view-tabs', initializeDroitView);
+    initializeComponents('.js-metrics-dashboard', initializeMetricsDashboard);
 
     initializeSearchBar();
     initializeMessageBanner();

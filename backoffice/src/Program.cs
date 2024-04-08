@@ -137,7 +137,7 @@ builder.Services.AddScoped<IDroitFileRepository, DroitFileRepository>();
 builder.Services.AddScoped<IDroitFileService, DroitFileService>();
 
 // Mappers
-builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile), typeof(PowerAppsDroitReportMappingProfile), typeof(PowerAppsWreckMaterialMappingProfile), typeof(PowerAppsNoteMappingProfile), typeof(PowerAppsUserMappingProfile), typeof(WebappSalvorInfoMappingProfile), typeof(WebappSalvorInfoDroitMappingProfile),typeof(WebappSalvorInfoWreckMaterialMappingProfile));
+builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile), typeof(PowerAppsDroitReportMappingProfile), typeof(PowerAppsWreckMaterialMappingProfile), typeof(PowerAppsNoteMappingProfile), typeof(PowerAppsUserMappingProfile), typeof(WebappSalvorInfoMappingProfile), typeof(WebappSalvorInfoDroitMappingProfile),typeof(WebappSalvorInfoWreckMaterialMappingProfile), typeof(WreckMaterialRowDtoMappingProfile));
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();
