@@ -4,6 +4,7 @@ using Droits.Models.DTOs;
 using Droits.Models.DTOs.Imports;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Droits.Data.Mappers
 {
@@ -17,9 +18,9 @@ namespace Droits.Data.Mappers
                 .ForMember(dest => dest.Quantity,
                     opt => opt.MapFrom(src => src.Quantity != null ? int.Parse(src.Quantity) : 0))
                 .ForMember(dest => dest.SalvorValuation,
-                    opt => opt.MapFrom(src => double.Parse(src.SalvorValuation ?? string.Empty)))
+                    opt => opt.MapFrom(src => src.SalvorValuation.IsNullOrEmpty() ? 0 : double.Parse(src.SalvorValuation)))
                 .ForMember(dest => dest.ReceiverValuation,
-                    opt => opt.MapFrom(src => double.Parse(src.ReceiverValuation ?? string.Empty)))
+                    opt => opt.MapFrom(src => src.ReceiverValuation.IsNullOrEmpty() ? 0 : double.Parse(src.ReceiverValuation)))
                 .ForMember(dest => dest.ValueConfirmed,
                     opt => opt.MapFrom(src => src.ValueConfirmed.AsBoolean()))
                 .ForMember(dest => dest.WreckMaterialOwner,

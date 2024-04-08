@@ -1,6 +1,7 @@
 #region
 
 using System.Globalization;
+using AutoMapper;
 using CsvHelper;
 using Droits.Exceptions;
 using Droits.Helpers.Extensions;
@@ -357,6 +358,11 @@ public class DroitController : BaseController
 
             return RedirectToAction(nameof(View),
                 new { id = form.DroitId, selectedTab = "wreck-materials" });
+        }
+        catch ( AutoMapperMappingException e )
+        {
+            HandleError(_logger, "A field has the wrong format, for example a number is expected but a line of text was given",e);
+            return View(nameof(WreckMaterialBulkUpload), new WreckMaterialCsvForm(form.DroitId,form.DroitRef) );
         }
         catch ( Exception e )
         {
