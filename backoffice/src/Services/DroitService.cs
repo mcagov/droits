@@ -8,6 +8,7 @@ using Droits.Helpers;
 using Droits.Helpers.SearchHelpers;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
+using Droits.Models.DTOs.Imports;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
@@ -41,6 +42,7 @@ public interface IDroitService
     Task<Droit> CreateDroitAsync(SubmittedReportDto report, Salvor salvor);
     Task<byte[]> ExportAsync(DroitSearchForm form);
     Task<Droit> GetDroitByReferenceAsync(string reference);
+    Task UploadWmCsvForm(List<WMRowDto> wreckMaterials, Guid droitId);
 
     Task<List<object>?> GetDroitsMetrics();
 }
@@ -251,6 +253,19 @@ public class DroitService : IDroitService
     public async Task<Droit> GetDroitByReferenceAsync(string reference)
     {
         return await _repo.GetDroitByReferenceAsync(reference);
+    }
+
+
+    public async Task UploadWmCsvForm(List<WMRowDto> wreckMaterials,Guid droitId)
+    {
+
+        foreach (var rowDto in wreckMaterials)
+        {
+            var wmForm = _mapper.Map<WreckMaterialForm>(rowDto);
+            wmForm.DroitId = droitId;
+            await _wreckMaterialService.SaveWreckMaterialAsync(wmForm);
+            
+        }
     }
 
 
