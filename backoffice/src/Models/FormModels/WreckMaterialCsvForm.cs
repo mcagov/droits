@@ -20,5 +20,5 @@ public class WreckMaterialCsvForm
     
     [Required(ErrorMessage= "Please select a file to upload.")]
     [DisplayName("File Upload")]
-    public IFormFile? CsvFile { get; set; } = null!;
+    public IFormFile? CsvFile { get; set; }
 }
