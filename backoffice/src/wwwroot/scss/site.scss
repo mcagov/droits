@@ -111,3 +111,12 @@ div.form-sections {
 .tox.tox-tinymce * {
   font-family: var(--bs-body-font-family) !important;
 }
+
+.status-Received {@extend .bg-success;}
+.status-AcknowledgementLetterSent {@extend .bg-warning;}
+.status-InitialResearch {@extend .bg-info;}
+.status-Research {@extend .bg-primary;}
+.status-NegotiatingSalvageAward {@extend .bg-secondary;}
+.status-ReadyForQc {@extend .bg-dark;}
+.status-QcApproved {@extend .bg-success;}
+.status-Closed {@extend .bg-danger;}

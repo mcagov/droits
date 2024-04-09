@@ -58,7 +58,7 @@
                 }
                 <td class="py-3 text-uppercase">@droit?.ReportedWreckInfo.ReportedWreckName</td>
                 <td class="py-3 text-uppercase">
-                    <span class="badge rounded-pill bg-primary">@droit?.TriageNumber</span>
+                    <span class="badge rounded-pill @(droit?.TriageNumber >=4 ? "bg-danger" :"bg-primary")">@droit?.TriageNumber</span>
                 </td>
                  @if (Model.IncludeAssociations)
                  {
@@ -70,7 +70,7 @@
                     <span class="text-uppercase">@droit?.AssignedUser</span>
                 </td>
                 <td class="py-3">
-                    <span class="badge rounded-pill bg-primary">@droit?.Status.GetDisplayName()</span>
+                    <span class="badge rounded-pill status-@droit?.Status">@droit?.Status.GetDisplayName()</span>
                 </td>
                 <td class="py-3">@droit?.ReportedDate.ToString("dd/MM/yyyy")</td>
                 <td class="py-3">
