@@ -45,4 +45,6 @@ public class WreckExportForm
 
     [DisplayName("Droit Count")]
     public bool DroitCount { get; set; } = true;
+    [DisplayName("Droit References")]
+    public bool DroitRefs { get; set; } = true;
 }

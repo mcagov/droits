@@ -9,13 +9,14 @@ namespace Droits.Models.DTOs.Exports
 
         public WreckExportDto(Wreck wreck)
         {
+            Id = wreck.Id;
             Created = wreck.Created;
             LastModified = wreck.LastModified;
             Name = wreck.Name;
             Type = wreck.WreckType;
             ConstructionDetails = wreck.ConstructionDetails;
             YearConstructed = wreck.YearConstructed;
-            DateOfLoss = wreck.DateOfLoss;
+            DateOfLoss = wreck.DateOfLoss?.ToString("dd/MM/yyyy");
             InUkWaters = wreck.InUkWaters;
             IsWarWreck = wreck.IsWarWreck;
             IsAnAircraft = wreck.IsAnAircraft;
@@ -29,7 +30,11 @@ namespace Droits.Models.DTOs.Exports
             OwnerAddress = wreck.OwnerAddress;
             AdditionalInformation = wreck.AdditionalInformation;
             DroitCount = wreck.Droits.Count.ToString();
+            DroitRefs = string.Join(", ",wreck.Droits.Select(droit => droit.Reference).ToList());
         }
+
+
+        public Guid Id { get; set; }
 
         public DateTime? Created { get; set; }
         [DisplayName("Last Modified")]
@@ -44,7 +49,7 @@ namespace Droits.Models.DTOs.Exports
         [DisplayName("Year Constructed")]
         public int? YearConstructed { get; set; }
         [DisplayName("Date of Loss")]
-        public DateTime? DateOfLoss { get; set; }
+        public string? DateOfLoss { get; set; }
         [DisplayName("In Uk Waters?")]
         public bool InUkWaters { get; set; }
         [DisplayName("Is War Wreck?")]
@@ -70,5 +75,7 @@ namespace Droits.Models.DTOs.Exports
         public string? OwnerAddress { get; set; }
         [DisplayName("Droit Count")]
         public string? DroitCount { get; set; }
+        [DisplayName("Droit References")]
+        public string? DroitRefs { get; set; }
     }
 }

@@ -13,7 +13,7 @@ public class LetterExportForm
     public bool DroitReference { get; set; } = true;
     [DisplayName("Quality Approved User")]
     public bool QualityApprovedUser { get; set; } = true;
-    [DisplayName("Wreck Type")]
+    [DisplayName("Status")]
     public bool Status { get; set; } = true;
     [DisplayName("Letter type")]
     public bool Type { get; set; } = true;

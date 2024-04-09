@@ -340,7 +340,7 @@ public class LetterService : ILetterService
         
         if (letters.IsNullOrEmpty())
         {
-            throw new Exception("No Salvors to export");
+            throw new Exception("No Letters to export");
         }
 
         try

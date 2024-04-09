@@ -12,6 +12,7 @@ public class SalvorExportDto
     
     public SalvorExportDto(Salvor salvor)
     {
+        Id = salvor.Id;
         Created = salvor.Created;
         LastModified = salvor.LastModified;
         Name = salvor.Name;
@@ -24,7 +25,11 @@ public class SalvorExportDto
         AddressCounty = salvor.Address.County;
         AddressPostcode = salvor.Address.Postcode;
         DroitCount = salvor.Droits.Count.ToString();
+        DroitRefs = string.Join(", ",salvor.Droits.Select(droit => droit.Reference).ToList());
     }
+
+
+    public Guid Id { get; set; }
 
     public DateTime? Created { get; set; }
     [DisplayName("Last Modified")]
@@ -48,4 +53,6 @@ public class SalvorExportDto
     public string? AddressLine2 { get; set; }
     [DisplayName("Droit Count")]
     public string? DroitCount { get; set; }
+    [DisplayName("Droit References")]
+    public string? DroitRefs { get; set; }
 }

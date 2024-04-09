@@ -150,7 +150,7 @@ public class WreckService : IWreckService
 
         try
         {
-            var wrecksData = wrecks.Select(s => new WreckExportDto(s)).ToList();        
+            var wrecksData = wrecks.Select(s => new WreckExportDto(s)).ToList();
             return await ExportHelper.ExportRecordsAsync(wrecksData, new WrecksCsvMap(form.WreckExportForm));
         }
         catch ( Exception e )
@@ -160,4 +160,5 @@ public class WreckService : IWreckService
         }
 
     }
+    
 }
