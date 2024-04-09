@@ -47,6 +47,16 @@ public static class StringExtensions
 
         return null;
     }
+    
+    public static double? AsDouble(this string? doubleString)
+    {
+        if (double.TryParse(doubleString, out var number))
+        {
+            return number;
+        }
+
+        return null;
+    }
 
     public static string Pluralize(this string? word, int count, string? pluralForm = null)
     {

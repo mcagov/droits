@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Metrics Dashboard";
+    Layout = "_WideLayout";
+}
+<div class="mt-5">
+
+    <div class="row">
+        <div class="col">
+            @{
+                await Html.RenderPartialAsync("_MessageBanner");
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <h3 class="display-6 text-center">@ViewData["Title"]</h3>
+        </div>
+    </div>
+    
+    <ul class="nav nav-pills" id="metricsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="openClosed-tab" data-bs-toggle="tab" data-bs-target="#openClosed-content" type="button" role="tab" aria-controls="openClosed-content" aria-selected="true">Open/Closed</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="status-tab" data-bs-toggle="tab" data-bs-target="#status-content" type="button" role="tab" aria-controls="status-content" aria-selected="false">Status</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="triage-tab" data-bs-toggle="tab" data-bs-target="#triage-content" type="button" role="tab" aria-controls="triage-content" aria-selected="false">Triage</button>
+        </li>
+    </ul>
+    
+    
+    <div class="js-metrics-dashboard tab-content mt-3">
+        
+        <partial name="_openClosedTab"/>
+        <partial name="_statusTab"/>
+        <partial name="_triageTab"/>
+
+    </div>
+</div>

@@ -1,8 +1,6 @@
 #region
 
-using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels;
-using Droits.Models.ViewModels.ListViews;
 using Droits.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -45,7 +43,22 @@ public class AccountController : BaseController
         
         return View(new DashboardView(droits,letters));
     }
+    
+    public IActionResult MetricsDashboard()
+    {
+        return View();
+    }
+ 
+    
+    public async Task<IActionResult> MetricsData()
+    {
+        var droitMetrics = await _droitService.GetDroitsMetrics();
+        return Json(droitMetrics);
+    }
 
+
+
+    
     public IActionResult Info()
     {
         return View();
