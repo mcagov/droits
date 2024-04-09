@@ -37,6 +37,8 @@ public sealed class SalvorsCsvMap : ClassMap<SalvorExportDto>
 
         if ( !salvorExportForm.DroitCount )
             Map(s => s.DroitCount).Ignore();
+        if ( !salvorExportForm.DroitRefs )
+            Map(s => s.DroitRefs).Ignore();
     }
 
 }
