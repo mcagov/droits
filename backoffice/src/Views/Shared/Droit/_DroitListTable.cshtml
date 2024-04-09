@@ -5,19 +5,21 @@
         <thead>
         <tr>
             <th scope="col">Reference</th>
-            <th scope="col">Assigned To</th>
-            <th scope="col">Status</th>
+
             @if (Model.IncludeAssociations)
             {
                 <th scope="col">Salvor</th>
                 <th scope="col">Verified Wreck</th>
-            }    
+            }
+            <th scope="col">Reported Wreck</th>
             <th scope="col">Triage</th>
             @if (Model.IncludeAssociations)
             {
                 <th scope="col">Items</th>
-            }   
-            <th scope="col">Created</th>
+            }
+            <th scope="col">Assigned To</th>
+            <th scope="col">Status</th>
+            <th scope="col">Reported</th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
@@ -25,20 +27,19 @@
         @foreach (DroitView droit in Model.Items)
         {
             <tr>
-                <td class="p-3 text-uppercase">
+                <td class="py-3 text-uppercase">
                     <a asp-controller="Droit" asp-action="View" asp-route-id="@droit.Id">@droit.Reference</a>
                 </td>
-                <td class="p-3 text-uppercase">
-                    @droit.AssignedUser
-                </td>
-                <td class="p-3">@Html.DisplayFor(m => droit.Status)</td>
                 @if (Model.IncludeAssociations)
                 {
-                    <td class="p-3">
+                    <td class="py-3">
                         @{
                             if (droit?.Salvor?.Name != null)
                             {
-                                @Html.ActionLink(droit?.Salvor?.Name, "View", "Salvor", new { id = droit?.Salvor?.Id })
+                                if (droit?.Salvor?.Name != null)
+                                {
+                                    @Html.ActionLink(droit?.Salvor?.Name, "View", "Salvor", new { id = droit?.Salvor?.Id })
+                                }
                             }
                             else
                             {
@@ -46,31 +47,33 @@
                             }
                         }
                     </td>
-                    <td class="p-3">
+                    <td class="py-3">
                         @{
                             if (droit?.Wreck?.Name != null)
                             {
                                 @Html.ActionLink(droit?.Wreck?.Name, "View", "Wreck", new { id = droit?.Wreck?.Id })
                             }
-                            else
-                            {
-                                <span>No Wreck</span>
-                            }
                         }
                     </td>
                 }
-               
-                <td class="p-3 text-uppercase">
+                <td class="py-3 text-uppercase">@droit?.ReportedWreckInfo.ReportedWreckName</td>
+                <td class="py-3 text-uppercase">
                     <span class="badge rounded-pill bg-primary">@droit?.TriageNumber</span>
                 </td>
                  @if (Model.IncludeAssociations)
                  {
-                    <td class="p-3">
-                        <span>@droit?.WreckMaterials.Count</span>
+                    <td class="py-3">
+                        <span class="badge rounded-pill bg-primary">@droit?.WreckMaterials.Count</span>
                     </td>
                 }
-                <td class="p-3">@droit?.Created.ToString("dd/MM/yyyy")</td>
-                <td class="p-3">
+                <td class="py-3">
+                    <span class="text-uppercase">@droit?.AssignedUser</span>
+                </td>
+                <td class="py-3">
+                    <span class="badge rounded-pill bg-primary">@droit?.Status.GetDisplayName()</span>
+                </td>
+                <td class="py-3">@droit?.ReportedDate.ToString("dd/MM/yyyy")</td>
+                <td class="py-3">
                     <div class="btn-group">
                         <a asp-action="Edit" asp-controller="Droit" asp-route-id="@droit?.Id" class="btn btn-primary">Edit</a>
                         <a asp-action="View" asp-controller="Droit" asp-route-id="@droit?.Id" class="btn btn-primary">View</a>
