@@ -1,9 +1,7 @@
-using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
-using Droits.Models.Enums;
 
-namespace Droits.Tests.UnitTests.Model.DTOs;
+namespace Droits.Tests.UnitTests.Model.DTOs.Exports;
 
 public class WreckExportDtoTests
 {
@@ -42,7 +40,7 @@ public class WreckExportDtoTests
         Assert.Equal(wreck.Name,wreckDto.Name);
         Assert.Equal(wreck.ConstructionDetails,wreckDto.ConstructionDetails);
         Assert.Equal(wreck.YearConstructed,wreckDto.YearConstructed);
-        Assert.Equal(wreck.DateOfLoss,wreckDto.DateOfLoss);
+        Assert.Equal(wreck.DateOfLoss.Value.ToString("dd/MM/yyyy"),wreckDto.DateOfLoss);
         Assert.Equal(wreck.InUkWaters,wreckDto.InUkWaters);
         Assert.Equal(wreck.IsWarWreck,wreckDto.IsWarWreck);
         Assert.Equal(wreck.IsAnAircraft,wreckDto.IsAnAircraft);
