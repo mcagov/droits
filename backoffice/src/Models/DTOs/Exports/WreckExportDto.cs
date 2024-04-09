@@ -30,6 +30,7 @@ namespace Droits.Models.DTOs.Exports
             OwnerAddress = wreck.OwnerAddress;
             AdditionalInformation = wreck.AdditionalInformation;
             DroitCount = wreck.Droits.Count.ToString();
+            DroitRefs = string.Join(", ",wreck.Droits.Select(droit => droit.Reference).ToList());
         }
 
 

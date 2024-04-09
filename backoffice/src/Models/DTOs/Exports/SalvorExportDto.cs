@@ -25,6 +25,7 @@ public class SalvorExportDto
         AddressCounty = salvor.Address.County;
         AddressPostcode = salvor.Address.Postcode;
         DroitCount = salvor.Droits.Count.ToString();
+        DroitRefs = string.Join(", ",salvor.Droits.Select(droit => droit.Reference).ToList());
     }
 
 

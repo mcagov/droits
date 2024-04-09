@@ -199,10 +199,6 @@ public class SalvorService : ISalvorService
         try
         {
             var salvorsData = salvors.Select(s => new SalvorExportDto(s)).ToList();
-            foreach ( var salvor in salvorsData )
-            {
-                salvor.DroitRefs = await GetDroitRefs(salvor.Id);
-            }
             return await ExportHelper.ExportRecordsAsync(salvorsData, new SalvorsCsvMap(form.SalvorExportForm));
         }
         catch ( Exception e )
@@ -212,13 +208,6 @@ public class SalvorService : ISalvorService
         }
 
        
-    }
-    
-    private async Task<string?> GetDroitRefs(Guid id)
-    {
-        var salvor = await GetSalvorAsync(id);
-
-        return string.Join(", ",salvor.Droits.Select(droit => droit.Reference).ToList());
     }
     
     public async Task<Salvor> GetSalvorByPowerappsIdAsync(string powerappsId) =>
