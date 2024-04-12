@@ -17,4 +17,10 @@ public static class DateTimeExtensions
     {
         return new DateTime(date.Year, date.Month, date.Day, 00, 00, 00, 000);
     }
+    
+    public static int DaysBetween(this DateTime startDate, DateTime endDate)
+    {
+        TimeSpan difference = endDate - startDate;
+        return Math.Abs((int)difference.TotalDays);
+    }
 }

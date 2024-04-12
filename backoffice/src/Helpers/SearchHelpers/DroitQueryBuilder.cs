@@ -49,6 +49,16 @@ public static class DroitQueryBuilder
             if (form.ReportedDateTo != null)
             {
                 query = query.Where(d => d.ReportedDate <= form.ReportedDateTo.Value.EndOfDay());
+            }            
+            
+            if (form.StatutoryDeadlineFrom != null)
+            {
+                query = query.Where(d => d.ReportedDate.AddYears(1) >= form.StatutoryDeadlineFrom.Value.StartOfDay());
+            }
+            
+            if (form.StatutoryDeadlineTo != null)
+            {
+                query = query.Where(d => d.ReportedDate.AddYears(1) <= form.StatutoryDeadlineTo.Value.EndOfDay());
             }
             
             if (form.DateFoundFrom != null )

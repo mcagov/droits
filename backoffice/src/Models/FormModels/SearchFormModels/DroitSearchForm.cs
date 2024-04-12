@@ -61,6 +61,16 @@ public class DroitSearchForm : SearchForm
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime? ReportedDateTo { get; set; }
+    
+    [DisplayName("Statutory Deadline From")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    public DateTime? StatutoryDeadlineFrom { get; set; }
+
+    [DisplayName("Statutory Deadline To")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    public DateTime? StatutoryDeadlineTo { get; set; }
 
     [DisplayName("Date Found From")]
     [DataType(DataType.Date)]
