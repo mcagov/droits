@@ -214,7 +214,17 @@ public class DroitController : BaseController
             droit.WreckId = await _wreckService.SaveWreckFormAsync(form.WreckForm);
         }
 
-        droit.SalvorId ??= await _salvorService.SaveSalvorFormAsync(form.SalvorForm);
+        try
+        {
+            droit.SalvorId ??= await _salvorService.SaveSalvorFormAsync(form.SalvorForm);
+
+        }
+        catch ( DuplicateSalvorException e )
+        {
+            HandleError(_logger, e.Message, e);
+            form = await PopulateDroitFormAsync(form);
+            return View(nameof(Edit), form);
+        }
 
         try
         {

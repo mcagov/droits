@@ -88,6 +88,14 @@ public class SalvorService : ISalvorService
 
     private async Task<Salvor> AddSalvorAsync(Salvor salvor)
     {
+
+        var foundSalvor = await GetSalvorByEmailAsync(salvor.Email);
+
+        if ( foundSalvor != null )
+        {
+            throw new DuplicateSalvorException("Salvor already exists with supplied email address");
+        }
+        
         return await _repo.AddAsync(salvor);
     }
 
