@@ -845,4 +845,43 @@ public class DroitQueryBuilderUnitTests
         Assert.False(result.Any(d => d.LocationDescription == "disgusting Sammich"));
 
     }
+
+    [Fact]
+    public void BuildQuery_WithDroitStatDeadlineSearchFields_ReturnsFilteredQueryWithInclusiveDates()
+    {
+        // Arrange
+        var form = new DroitSearchForm
+        {
+            StatutoryDeadlineFrom = new DateTime(2023, 10, 10),
+            StatutoryDeadlineTo = new DateTime(2023, 11, 10)
+        };
+        var droits = new List<Droit>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "Ref",
+                ReportedDate = new DateTime(2022,10,10),
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "AnotherRef" ,
+                ReportedDate = new DateTime(2022,10,14),
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Reference = "NotMatchingRef" ,
+                ReportedDate = new DateTime(2022,12,10),
+            },
+        }.AsQueryable();
+    
+        // Act
+        var result = DroitQueryBuilder.BuildQuery(form, droits, false);
+    
+        // Assert
+        Assert.Equal(2, result.Count());
+        Assert.DoesNotContain(result.ToList(), d => d.Reference == "NotMatchingRef");
+        Assert.Contains(result.ToList(), d => d.Reference == "Ref");
+        Assert.Contains(result.ToList(), d => d.Reference == "AnotherRef");
+
+    }
 }
