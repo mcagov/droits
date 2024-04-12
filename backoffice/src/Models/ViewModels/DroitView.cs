@@ -2,7 +2,6 @@
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Droits.Helpers.Extensions;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.ViewModels.ListViews;
