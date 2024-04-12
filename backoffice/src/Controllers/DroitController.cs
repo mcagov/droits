@@ -194,6 +194,14 @@ public class DroitController : BaseController
 
         var droit = new Droit();
 
+
+        if ( !form.ReportedDate.IsBetween(form.DateFound, DateTime.UtcNow) )
+        {
+            AddErrorMessage("Reported Date must be after Date Found");
+            form = await PopulateDroitFormAsync(form);
+            return View(nameof(Edit), form);
+        }
+        
         if ( form.Id != default )
         {
             try
