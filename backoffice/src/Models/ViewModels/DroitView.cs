@@ -24,6 +24,7 @@ public class DroitView : BaseEntityView
         TriageNumber = droit.TriageNumber;
         ReportedDate = droit.ReportedDate;
         DateFound = droit.DateFound;
+        ClosedDate = droit.ClosedDate;
         StatutoryDeadline = droit.ReportedDate.AddYears(1);
         DaysTakenToReport = droit.DaysTakenToReport;
 
@@ -134,6 +135,10 @@ public class DroitView : BaseEntityView
     [DisplayName("Date Found")]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime DateFound { get; }
+    
+    [DisplayName("Closed Date")]
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+    public DateTime? ClosedDate { get; }
     
     [DisplayName("Days Taken To Report")]
     public int DaysTakenToReport { get; }

@@ -133,6 +133,11 @@ public class DroitService : IDroitService
         {
             droit.Reference = await GetNextDroitReference();
         }
+        
+        if ( droit is { Status: DroitStatus.Closed, ClosedDate: null })
+        {
+            droit.ClosedDate = DateTime.UtcNow;
+        }
 
         return await _repo.AddAsync(droit, updateLastModified);
     }
@@ -146,6 +151,11 @@ public class DroitService : IDroitService
                 $"Droit Reference {droit.Reference} already exists");
         }
 
+        if ( droit is { Status: DroitStatus.Closed, ClosedDate: null })
+        {
+            droit.ClosedDate = DateTime.UtcNow;
+        }
+        
         return await _repo.UpdateAsync(droit);
     }
 
@@ -202,8 +212,15 @@ public class DroitService : IDroitService
     {
         var droit = await GetDroitAsync(id);
 
+
+        if ( droit.Status != DroitStatus.Closed && status == DroitStatus.Closed )
+        {
+            droit.ClosedDate = DateTime.UtcNow;
+        }
+        
         droit.Status = status;
 
+        
         await _repo.UpdateAsync(droit);
     }
     
