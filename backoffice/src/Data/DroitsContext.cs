@@ -109,6 +109,7 @@ public partial class DroitsContext : DbContext
             entity.Property(d => d.TriageNumber);
             entity.Property(d => d.ReportedDate);
             entity.Property(d => d.DateFound);
+            entity.Property(d => d.ClosedDate);
             entity.Property(d => d.OriginalSubmission);
             
             entity.Property(d => d.Reference).IsRequired();
