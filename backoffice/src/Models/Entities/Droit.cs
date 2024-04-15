@@ -1,6 +1,7 @@
 #region
 
 using System.ComponentModel.DataAnnotations.Schema;
+using Droits.Helpers.Extensions;
 using Droits.Models.Enums;
 
 #endregion
@@ -21,7 +22,7 @@ public class Droit : BaseEntity
     public int? TriageNumber { get; set; }
     public DateTime ReportedDate { get; set; } = DateTime.UtcNow;
     public DateTime DateFound { get; set; } = DateTime.UtcNow;
-
+    public int DaysTakenToReport => DateFound.DaysBetween(ReportedDate);
     public string OriginalSubmission { get; set; } = string.Empty;
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
     public virtual ICollection<WreckMaterial> WreckMaterials { get; set; } = new List<WreckMaterial>();

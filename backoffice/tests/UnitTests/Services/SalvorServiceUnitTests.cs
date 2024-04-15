@@ -1,4 +1,5 @@
 using AutoMapper;
+using Droits.Exceptions;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Repositories;
@@ -33,6 +34,23 @@ namespace Droits.Tests.UnitTests.Services
             Assert.Equal(newSalvor, result);
             _mockRepo.Verify(r => r.AddAsync(newSalvor, true), Times.Once);
         }
+
+
+        [Fact]
+        public async Task SaveSalvorAsync_NewSalvor_AddsSalvor_Duplicate()
+        {
+            // Given
+            var newSalvor = new Salvor { Name = "NewSalvor", Email = "email@duplicate.com" };
+            _mockRepo.Setup(r => r.AddAsync(It.IsAny<Salvor>(), It.IsAny<bool>()))
+                .ReturnsAsync(newSalvor);
+            _mockRepo.Setup(r => r.GetSalvorByEmailAddressAsync(It.IsAny<string>()))
+                .ReturnsAsync(new Salvor(){Name = "Already existing salvor", Email = "email@duplicate.com"});
+
+            // When & Assert
+            await Assert.ThrowsAsync<DuplicateSalvorException>(() =>
+                _service.SaveSalvorAsync(newSalvor));
+        }
+
 
         [Fact]
         public async Task UpdateSalvorAsync_ExistingSalvor_UpdatesSalvor()

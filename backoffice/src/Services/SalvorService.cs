@@ -88,6 +88,13 @@ public class SalvorService : ISalvorService
 
     private async Task<Salvor> AddSalvorAsync(Salvor salvor)
     {
+        var foundSalvor = await _repo.GetSalvorByEmailAddressAsync(salvor.Email.Trim().ToLower());
+
+        if ( foundSalvor != null )
+        {
+            throw new DuplicateSalvorException("Salvor already exists with supplied email address");
+        }
+        
         return await _repo.AddAsync(salvor);
     }
 
@@ -103,21 +110,22 @@ public class SalvorService : ISalvorService
         return await _repo.GetSalvorAsync(id);
     }
 
+
     public async Task<Salvor> GetSalvorByEmailAsync(string salvorEmail)
     {
-        var existingSalvor = await _repo.GetSalvorByEmailAddressWithAssociationsAsync(salvorEmail.Trim().ToLower());
         
-        
-        if ( existingSalvor == null)
+        var existingSalvor =
+            await _repo.GetSalvorByEmailAddressWithAssociationsAsync(salvorEmail.Trim().ToLower());
+
+
+        if ( existingSalvor == null )
         {
             throw new SalvorNotFoundException($"No Salvor found with email address {salvorEmail}");
         }
 
         return existingSalvor;
-        
+
     }
-
-
     public async Task<Guid> SaveSalvorFormAsync(SalvorForm form)
     {
         var salvor = form.ApplyChanges(new Salvor());

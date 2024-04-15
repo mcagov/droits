@@ -86,4 +86,20 @@ public class DateTimeExtensionsTests
         Assert.True(date.IsBetween(from,to));
     }
     
+    [Theory]
+    [InlineData("2024-04-01", "2024-04-10", 9)]
+    [InlineData("2023-12-25", "2024-01-01", 7)]
+    [InlineData("2024-02-15", "2024-02-20", 5)]
+    public void DaysBetween_ValidDates_ReturnsCorrectResult(string startDateStr, string endDateStr, int expectedDays)
+    {
+        // Arrange
+        var startDate = DateTime.Parse(startDateStr);
+        var endDate = DateTime.Parse(endDateStr);
+
+        // Act
+        var actualDays = startDate.DaysBetween(endDate);
+
+        // Assert
+        Assert.Equal(expectedDays, actualDays);
+    }
 }

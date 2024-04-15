@@ -24,6 +24,8 @@ public class DroitView : BaseEntityView
         TriageNumber = droit.TriageNumber;
         ReportedDate = droit.ReportedDate;
         DateFound = droit.DateFound;
+        StatutoryDeadline = droit.ReportedDate.AddYears(1);
+        DaysTakenToReport = droit.DaysTakenToReport;
 
         AssignedUser = droit.AssignedToUser?.Name ?? "Unassigned";
         
@@ -124,16 +126,23 @@ public class DroitView : BaseEntityView
     [DisplayName("Reported Date")]
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime ReportedDate { get; }
-
+    
+    [DisplayName("Statutory Deadline")]
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+    public DateTime StatutoryDeadline { get; }
+    
+    [DisplayName("Date Found")]
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+    public DateTime DateFound { get; }
+    
+    [DisplayName("Days Taken To Report")]
+    public int DaysTakenToReport { get; }
+    
     public ReportedWreckInfoView ReportedWreckInfo = new ();
 
     [DisplayName("Assigned To")]
     public string AssignedUser { get; } = "Unassigned";
     
-    [DisplayName("Date Found")]
-    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-    public DateTime DateFound { get; }
-
     public string? OriginalSubmission { get; set; } = string.Empty;
 
     // Wreck Material

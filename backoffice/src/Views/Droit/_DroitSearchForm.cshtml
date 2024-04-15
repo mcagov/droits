@@ -124,6 +124,21 @@
                 @Html.LabelFor(m => m.ReportedDateTo)
             </div>
         </div>
+    </div>    
+    
+    <div class="row form-row">
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.StatutoryDeadlineFrom, new { htmlAttributes = new { @type = "date", @class = "form-control", @placeholder = "" } })
+                @Html.LabelFor(m => m.StatutoryDeadlineFrom)
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating mb-3">
+                @Html.EditorFor(m => m.StatutoryDeadlineTo, new { htmlAttributes = new { @type = "date", @class = "form-control", @placeholder = "" } })
+                @Html.LabelFor(m => m.StatutoryDeadlineTo)
+            </div>
+        </div>
     </div>
 
     <div class="row form-row">

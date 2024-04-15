@@ -47,3 +47,4 @@ scripts/config/set_secrets.sh
 .vscode
 .DS_Store
 .idea
+obj/*
