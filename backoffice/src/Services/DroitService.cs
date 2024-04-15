@@ -69,11 +69,28 @@ public class DroitService : IDroitService
 
     public async Task<string> GetNextDroitReference()
     {
+        const int maxAttempts = 100; // Set a maximum number of attempts
         var yearCount = await _repo.GetYearDroitCount();
         var currentYear = DateTime.UtcNow.Year;
-        var referenceEnding = $"/{currentYear.ToString().Substring(2)}";
-        var nextReferenceNumber = (yearCount + 1).ToString().PadLeft(3, '0');
-        return $"{nextReferenceNumber}{referenceEnding}";
+        var referenceEnding = $"/{currentYear.ToString()[2..]}";
+    
+        for (var attempt = 1; attempt <= maxAttempts; attempt++)
+        {
+            var nextReferenceNumber = (yearCount + attempt).ToString().PadLeft(3, '0');
+            var droitReference = $"{nextReferenceNumber}{referenceEnding}";
+
+            try
+            {
+                var foundDroit = await GetDroitByReferenceAsync(droitReference);
+                _logger.LogError($"Droit found with reference number {droitReference} ({foundDroit.Id}), trying next Droit Number");
+            }
+            catch (DroitNotFoundException)
+            {
+                return droitReference;
+            }
+        }
+
+        throw new Exception("Maximum number of attempts reached without finding a unique droit reference.");
     }
 
 

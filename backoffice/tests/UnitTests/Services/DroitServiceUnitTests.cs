@@ -60,8 +60,9 @@ namespace Droits.Tests.UnitTests.Services
         public async Task SaveDroitAsync_NewDroit_AddsDroit()
         {
             // Given
-            var newDroit = new Droit { Reference = "Ref3" };
+            var newDroit = new Droit { Reference = "Ref3", Id = default(Guid)};
             _mockRepo.Setup(r => r.AddAsync(It.IsAny<Droit>(), true)).ReturnsAsync(newDroit);
+            _mockRepo.Setup(r => r.GetDroitByReferenceAsync(It.IsAny<string>())).Throws(new DroitNotFoundException());
 
             // When
             var result = await _service.SaveDroitAsync(newDroit);
@@ -93,9 +94,11 @@ namespace Droits.Tests.UnitTests.Services
         public async Task SaveDroitAsync_AddsDroit_WhenDroitIdIsDefault()
         {
             // Given
-            var newDroit = new Droit { Id = default(Guid) };
+            var newDroit = new Droit { Reference = "TestRef", Id = default(Guid) };
             _mockRepo.Setup(r => r.AddAsync(It.IsAny<Droit>(), true)).ReturnsAsync(newDroit);
+            _mockRepo.Setup(r => r.GetDroitByReferenceAsync(It.IsAny<string>())).Throws(new DroitNotFoundException());
 
+            
             // When
             var result = await _service.SaveDroitAsync(newDroit);
 
