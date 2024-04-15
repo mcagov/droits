@@ -52,7 +52,7 @@ export default function (app) {
         // Data obj to send to db
         const data = {
           'report-date': `${sd['report-date']['year']}-${sd['report-date']['month']}-${sd['report-date']['day']}`,
-          'wreck-find-date': `${sd['wreck-find-date']['year']}-${sd['wreck-find-date']['month']}-${sd['wreck-find-date']['day']}`,
+          'wreck-find-date': `${sd['wreck-find-date']['year']}-${sd['wreck-find-date']['month'].padStart(2, '0')}-${sd['wreck-find-date']['day'].padStart(2, '0')}`,
           latitude: sd['location']['location-standard']['latitude'],
           longitude: sd['location']['location-standard']['longitude'],
           'location-radius': sd['location']['location-standard']['radius'],
