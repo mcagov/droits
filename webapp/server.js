@@ -43,7 +43,7 @@ app.locals.serviceName = config.SERVICE_NAME;
 const env = process.env.NODE_ENV;
 
 if (env === 'production') {
-  app.use(helmet());
+  // app.use(helmet());
   app.get('/', function(req, res, next){
     if(req.hostname === 'report-wreck-material.service.gov.uk'){
       res.redirect('https://www.gov.uk/report-wreck-material/reporting-wreck-material');
