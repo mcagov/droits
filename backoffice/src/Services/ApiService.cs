@@ -23,25 +23,18 @@ public class ApiService : IApiService
     private readonly IDroitService _droitService;
     private readonly IWreckMaterialService _wreckMaterialService;
     private readonly ISalvorService _salvorService;
-    private readonly IImageService _imageService;
-    private readonly IWreckService _wreckService;
-    private readonly IDroitFileService _fileService;
-    private readonly INoteService _noteService;
-    
+    private readonly ILetterService _letterService;
+
     private readonly IMapper _mapper;
 
 
     
-    public ApiService(ILogger<ApiService> logger,  IDroitService droitService, IWreckMaterialService wreckMaterialService, ISalvorService salvorService, IImageService imageService, IDroitFileService fileService, IWreckService wreckService, INoteService noteService, IMapper mapper)
+    public ApiService(ILogger<ApiService> logger,  IDroitService droitService, IWreckMaterialService wreckMaterialService, ISalvorService salvorService, ILetterService letterService, IMapper mapper)
     {
         _logger = logger;
         _droitService = droitService;
         _wreckMaterialService = wreckMaterialService;
         _salvorService = salvorService;
-        _imageService = imageService;
-        _fileService = fileService;
-        _wreckService = wreckService;
-        _noteService = noteService;
         _mapper = mapper;
     }
 
@@ -58,8 +51,7 @@ public class ApiService : IApiService
         var droit = await MapSubmittedDataAsync(report);
 
         // Send submission confirmed email 
-        //Turned off sending submission emails for now.
-        // await _letterService.SendSubmissionConfirmationEmailAsync(droit, report);
+        await _letterService.SendSubmissionConfirmationEmailAsync(droit, report);
         
         return droit;
     }
