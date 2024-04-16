@@ -63,6 +63,11 @@ namespace Droits.Models.DTOs.Exports
             ImportedFromLegacy = droit.ImportedFromLegacy;
             if ( droit.WreckMaterials.Any() )
             {
+                WreckMaterialOutcomes = string.Join(",",droit.WreckMaterials
+                    .Where(wm => wm.Outcome.HasValue)
+                    .Select(wm => wm.Outcome?.GetDisplayName())
+                    .Distinct().ToList());
+                
                 WreckMaterials =
                     droit.WreckMaterials.Select(wm =>
                         new WreckMaterialDto(wm));
@@ -181,6 +186,9 @@ namespace Droits.Models.DTOs.Exports
 
         [DisplayName("Imported from Legacy")]
         public bool ImportedFromLegacy { get; set; }
+        
+        [DisplayName("Outcomes")]
+        public string WreckMaterialOutcomes { get; set; } = string.Empty;
 
         public IEnumerable<WreckMaterialDto> WreckMaterials { get; set; } = Array.Empty<WreckMaterialDto>();
     }
