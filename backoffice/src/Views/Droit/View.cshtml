@@ -162,6 +162,15 @@
 
     <div class="form-group row m-1">
         <div class="col-md-3">
+            @Html.LabelFor(m => m.WreckMaterialOutcomes, new { @class = "font-weight-bold" })
+        </div>
+        <div class="col-md-7">
+            @Html.DisplayFor(m => m.WreckMaterialOutcomes)
+        </div>
+    </div>
+    
+    <div class="form-group row m-1">
+        <div class="col-md-3">
             @Html.LabelFor(m => m.Created, new { @class = "font-weight-bold" })
         </div>
         <div class="col-md-7">

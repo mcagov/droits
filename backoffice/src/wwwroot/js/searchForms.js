@@ -52,6 +52,8 @@ function initializeSearchForm(formClass, toggleButtonClass) {
             initializeChoices('.js-search-droit-triage-numbers', 'Select Triage Numbers');
             initializeChoices('.js-search-droit-recovered-from', 'Select Recovered From');
             initializeChoices('.js-select-assigned-user', 'Select Assigned To');
+            initializeChoices('.js-search-droit-outcomes', 'Select Outcomes');
+
             break;
         case '.js-letter-search':
             initializeChoices('.js-search-letter-status', 'Select Status');

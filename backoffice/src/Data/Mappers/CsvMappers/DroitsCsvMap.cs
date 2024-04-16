@@ -42,6 +42,8 @@ public sealed class DroitsCsvMap : ClassMap<DroitExportDto>
             Map(d => d.DaysTakenToReport).Ignore();
         if ( !droitExportForm.DateFound )
             Map(d => d.DateFound).Ignore();
+        if ( !droitExportForm.WreckMaterialOutcomes )
+            Map(d => d.WreckMaterialOutcomes).Ignore();
         if ( !droitExportForm.IsHazardousFind )
             Map(d => d.IsHazardousFind).Ignore();
         if ( !droitExportForm.IsDredge )

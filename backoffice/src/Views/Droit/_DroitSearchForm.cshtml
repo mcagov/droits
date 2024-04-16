@@ -104,6 +104,24 @@
             }
         </select>
     </div>
+    
+    <div class="form-floating mb-3 outcomes-select">
+        <select class="form-control js-search-droit-outcomes" id="WreckMaterialOutcomesList" multiple="multiple" name="WreckMaterialOutcomesList" placeholder="">
+            @foreach (var o in Html.GetEnumSelectList(typeof(WreckMaterialOutcome)))
+            {
+                if (@Model.SelectedWreckMaterialOutcomeList.Contains(int.Parse(o.Value)))
+                {
+                    <option value="@o.Value" selected="selected">@o.Text</option>
+                }
+                else
+                {
+                    <option value="@o.Value">@o.Text</option>
+        
+                }
+            }
+        </select>
+    </div>
+        
 
     <div class="form-floating mb-3 assigned-users-select">
         @Html.DropDownListFor(m => m.AssignedToUserId, Model.AssignedToUsers, "Select RoW", new { @id = "select-user", @class = "form-control js-select-assigned-user" })
@@ -180,8 +198,8 @@
         @Html.ValidationMessageFor(m => m.IsLateReport, "", new { @class = "text-danger" })
     </div>
 </div>
-
-<div class="form-group row mb-3">
+    
+    <div class="form-group row mb-3">
     <div class="col-md-4">
         @Html.LabelFor(m => m.IsHazardousFind, new { @class = "col-form-label" })
     </div>

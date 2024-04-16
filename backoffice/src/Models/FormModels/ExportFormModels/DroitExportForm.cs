@@ -40,6 +40,10 @@ public class DroitExportForm
     
     [DisplayName("Days Taken To Report")]
     public bool DaysTakenToReport { get; set; } = true;
+    
+    [DisplayName("Outcomes")]
+    public bool WreckMaterialOutcomes { get; set; } = true;
+
 
     [DisplayName("Is Hazardous Find?")]
     public bool IsHazardousFind { get; set; } = true;

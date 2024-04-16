@@ -95,6 +95,9 @@ public class DroitSearchForm : SearchForm
     [DisplayName("Reported After 28 Days")]
     public bool? IsLateReport { get; set; }
 
+    public List<WreckMaterialOutcome> WreckMaterialOutcomesList { get; set; } = new();
+    public List<int> SelectedWreckMaterialOutcomeList => WreckMaterialOutcomesList.Select(s => ( int )s).ToList();
+    
     // Wreck
 
 
@@ -254,6 +257,7 @@ public class DroitSearchForm : SearchForm
         ReceiverValuationFrom == null,
         ReceiverValuationTo == null,
         WreckMaterialOwner.IsNullOrEmpty(),
+        WreckMaterialOutcomesList.IsNullOrEmpty(),
         ValueConfirmed == null
     }.All(result => result); 
 }

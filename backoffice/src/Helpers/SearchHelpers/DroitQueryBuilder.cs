@@ -210,7 +210,9 @@ public static class DroitQueryBuilder
             //Wreck Material Filters
             if ( !form.IgnoreWreckMaterialSearch )
             {
-              query = query.Where(d =>
+
+
+                query = query.Where(d =>
                     d.WreckMaterials.Any(wm =>
                         (string.IsNullOrEmpty(form.WreckMaterial)||
                         (!string.IsNullOrEmpty(wm.Description) &&
@@ -222,6 +224,11 @@ public static class DroitQueryBuilder
                                   wm.Description.ToLower()) ) <= SearchHelper.GetLevenshteinDistanceThreshold(form.WreckMaterial) )
                         ))
                 &&
+                        (
+                            form.WreckMaterialOutcomesList.IsNullOrEmpty() ||
+                            (wm.Outcome != null && form.WreckMaterialOutcomesList.Contains(wm.Outcome.Value))
+                        )
+                        &&
                         (string.IsNullOrEmpty(form.WreckMaterialOwner) ||
                         (!string.IsNullOrEmpty(wm.WreckMaterialOwner) &&
                         ( wm.WreckMaterialOwner.ToLower()
