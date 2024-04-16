@@ -9,7 +9,7 @@ namespace Droits.Models.Enums;
 public enum WreckMaterialOutcome
 {
     
-    [Display(Name = "Lieu of Salvage - (ie. Given the item instead of a financial award)")]
+    [Display(Name = "Lieu of Salvage")]
     LieuOfSalvage,
     [Display(Name = "Returned to Owner")]
     ReturnedToOwner,
