@@ -34,6 +34,12 @@ public sealed class DroitsCsvMap : ClassMap<DroitExportDto>
             Map(d => d.TriageNumber).Ignore();
         if ( !droitExportForm.ReportedDate )
             Map(d => d.ReportedDate).Ignore();
+        if ( !droitExportForm.ClosedDate )
+            Map(d => d.ClosedDate).Ignore();
+        if ( !droitExportForm.StatutoryDeadline )
+            Map(d => d.StatutoryDeadline).Ignore();
+        if ( !droitExportForm.DaysTakenToReport )
+            Map(d => d.DaysTakenToReport).Ignore();
         if ( !droitExportForm.DateFound )
             Map(d => d.DateFound).Ignore();
         if ( !droitExportForm.IsHazardousFind )

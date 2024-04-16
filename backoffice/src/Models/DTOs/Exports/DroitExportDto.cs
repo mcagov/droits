@@ -28,8 +28,11 @@ namespace Droits.Models.DTOs.Exports
             AssignedTo = droit.AssignedToUser?.Name ?? "Unassigned";
             Status = droit.Status.GetDisplayName();
             TriageNumber = droit.TriageNumber;
-            ReportedDate = droit.ReportedDate.ToString("dd/MM/yyyy");;
-            DateFound = droit.DateFound.ToString("dd/MM/yyyy");;
+            ReportedDate = droit.ReportedDate.ToString("dd/MM/yyyy");
+            ClosedDate = droit.ClosedDate.HasValue ? droit.ClosedDate.Value.ToString("dd/MM/yyyy") : string.Empty;
+            StatutoryDeadline = droit.ReportedDate.AddYears(1).ToString("dd/MM/yyyy");
+            DateFound = droit.DateFound.ToString("dd/MM/yyyy");
+            DaysTakenToReport = droit.DaysTakenToReport;
             IsHazardousFind = droit.IsHazardousFind;
             IsDredge = droit.IsDredge;
             ReportedWreckName = droit.ReportedWreckName;
@@ -85,9 +88,18 @@ namespace Droits.Models.DTOs.Exports
         
         [DisplayName("Reported Date")]
         public string? ReportedDate { get; set; }
+        
+        [DisplayName("Closed Date")]
+        public string? ClosedDate { get; set; }
     
         [DisplayName("Date Found")]
         public string? DateFound { get; set; }
+        
+        [DisplayName("Days Taken To Report")]
+        public int? DaysTakenToReport { get; set; }
+        
+        [DisplayName("Statutory Deadline")]
+        public string? StatutoryDeadline { get; set; }
 
         [DisplayName("Is Hazardous Find?")]
         public bool IsHazardousFind { get; set; }
