@@ -129,10 +129,17 @@ public class DroitForm : BaseEntityForm
 
     [DisplayName("Is Dredge")]
     public bool IsDredge { get; set; }
-
+    
+    [DisplayName("Reported Wreck Name")]
     public string? ReportedWreckName { get; set; }
-    public int? ReportedWreckYearSunk { get; set; }
+    
+    [DisplayName("Sunk Year")]
+    public int? ReportedWreckYearSunk { get; set; }    
+    
+    [DisplayName("Construction Year")]
     public int? ReportedWreckYearConstructed { get; set; }
+        
+    [DisplayName("Construction Details")]
     public string? ReportedWreckConstructionDetails { get; set; }
 
     public ReportedWreckInfoView ReportedWreckInfo = new ();
@@ -238,6 +245,12 @@ public class DroitForm : BaseEntityForm
         droit.LocationRadius = LocationRadius;
         droit.Depth = Depth;
         droit.LocationDescription = LocationDescription;
+
+        // Reported Wreck
+        droit.ReportedWreckName = ReportedWreckName;
+        droit.ReportedWreckConstructionDetails = ReportedWreckConstructionDetails;
+        droit.ReportedWreckYearSunk = ReportedWreckYearSunk;
+        droit.ReportedWreckYearConstructed = ReportedWreckYearConstructed;
 
         // Salvage
 
