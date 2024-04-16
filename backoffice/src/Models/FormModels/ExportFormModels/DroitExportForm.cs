@@ -28,9 +28,18 @@ public class DroitExportForm
     
     [DisplayName("Reported Date")]
     public bool ReportedDate { get; set; } = true;
+    
+    [DisplayName("Statutory Deadline")]
+    public bool StatutoryDeadline { get; set; } = true;
+    
+    [DisplayName("Closed Date")]
+    public bool ClosedDate { get; set; } = true;
 
     [DisplayName("Date Found")]
     public bool DateFound { get; set; } = true;
+    
+    [DisplayName("Days Taken To Report")]
+    public bool DaysTakenToReport { get; set; } = true;
 
     [DisplayName("Is Hazardous Find?")]
     public bool IsHazardousFind { get; set; } = true;
