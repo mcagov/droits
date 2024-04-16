@@ -35,6 +35,7 @@ public class ApiService : IApiService
         _droitService = droitService;
         _wreckMaterialService = wreckMaterialService;
         _salvorService = salvorService;
+        _letterService = letterService;
         _mapper = mapper;
     }
 
