@@ -61,7 +61,8 @@ public static class MetricsHelper
             {
                 Group = "Total",
                 CountPerStatus = GetCountPerStatus(droits, allStatuses),
-                CountPerTriage = GetCountPerTriage(droits)
+                CountPerTriage = GetCountPerTriage(droits),
+                CountLateReport = GetLateReportCount(droits)
             }
         };
 
@@ -76,7 +77,8 @@ public static class MetricsHelper
         {
             Group = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month),
             CountPerStatus = GetCountPerStatus(droits.Where(d => d.ReportedDate.Year == year && d.ReportedDate.Month == month), allStatuses),
-            CountPerTriage = GetCountPerTriage(droits.Where(d => d.ReportedDate.Year == year && d.ReportedDate.Month == month))
+            CountPerTriage = GetCountPerTriage(droits.Where(d => d.ReportedDate.Year == year && d.ReportedDate.Month == month)),
+            CountLateReport = GetLateReportCount(droits.Where(d => d.ReportedDate.Year == year && d.ReportedDate.Month == month))
         }));
 
         return groupedDroits;
@@ -139,5 +141,10 @@ public static class MetricsHelper
                 Count = droits.Count(d => d.TriageNumber == triageNumber)
             })
             .ToDictionary(x => x.TriageNumber, x => x.Count);
+    }
+    
+    private static int GetLateReportCount(IEnumerable<Droit> droits)
+    {
+        return droits.Count(d => d.DaysTakenToReport > 28);
     }
 }
