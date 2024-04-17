@@ -1,9 +1,12 @@
 using AutoMapper;
 using Droits.Exceptions;
 using Droits.Models;
+using Droits.Models.DTOs;
 using Droits.Models.DTOs.Imports;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Models.Entities;
+using Droits.Models.FormModels;
+using Newtonsoft.Json;
 
 
 namespace Droits.Services;
@@ -15,8 +18,7 @@ public interface IMigrationService
     Task<Wreck> MigrateWreckAsync(PowerappsWreckDto request);
     Task<Note> MigrateNoteAsync(PowerappsNoteDto request);
     Task<TriageUploadResultDto> HandleTriageCsvAsync(List<TriageRowDto> records);
-
-
+    Task<List<string>> HandleAccessCsvAsync(List<AccessDto> records);
 }
 
 public class MigrationService : IMigrationService
@@ -373,6 +375,48 @@ public class MigrationService : IMigrationService
     }
 
 
+    public async Task<List<string>> HandleAccessCsvAsync(List<AccessDto> records)
+    {
+        
+        var droitRefs = new List<string>();
+        
+        foreach ( var record in records )
+        {
+           try
+           {
+               var droit = _mapper.Map<Droit>(record);
 
-    
+               var isUniqueReference = await _droitService.IsReferenceUnique(droit);
+               if ( !isUniqueReference )
+               {
+                   droit.Reference = $"{droit.Reference}-AccessImportDuplicate";
+               }
+
+               var salvor = _mapper.Map<Salvor>(record);
+               
+               await _salvorService.SaveSalvorAsync(salvor);
+
+               droit.SalvorId = salvor.Id;
+
+               await _droitService.SaveDroitAsync(droit);
+               
+               var wreckMaterial = new WreckMaterialForm()
+               {
+                   DroitId = droit.Id,
+                   Description = $"{record.Description}\n{record.DescriptionContinued}"
+               };
+
+               await _wreckMaterialService.SaveWreckMaterialAsync(wreckMaterial);
+
+               droitRefs.Add(droit.Reference);
+           }
+           catch ( Exception e )
+           {
+               Console.WriteLine(e);
+               throw;
+           } 
+        }
+
+        return droitRefs;
+    }
 }

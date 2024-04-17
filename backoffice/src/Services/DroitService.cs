@@ -37,6 +37,8 @@ public interface IDroitService
     Task SaveWreckMaterialsAsync(Guid id, List<WreckMaterialForm> wreckMaterialForms);
     Task UpdateDroitStatusAsync(Guid id, DroitStatus status);
     Task<string> GetNextDroitReference();
+    Task<bool> IsReferenceUnique(Droit droit);
+
     Task<List<DroitExportDto>> SearchDroitsAsync(string query);
     Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form);
     Task<Droit> CreateDroitAsync(SubmittedReportDto report, Salvor salvor);
@@ -177,7 +179,7 @@ public class DroitService : IDroitService
     }
 
 
-    private async Task<bool> IsReferenceUnique(Droit droit) => await _repo.IsReferenceUnique(droit);
+    public async Task<bool> IsReferenceUnique(Droit droit) => await _repo.IsReferenceUnique(droit);
 
 
     public async Task<Droit> GetDroitWithAssociationsAsync(Guid id)
@@ -342,7 +344,7 @@ public class DroitService : IDroitService
         return (MetricsHelper.GetDroitsMetrics(allDroits) ?? Array.Empty<object>()).ToList();
 
     }
-
+    
 
     
 }

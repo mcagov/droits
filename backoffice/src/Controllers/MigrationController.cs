@@ -3,6 +3,7 @@ using CsvHelper;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Models;
+using Droits.Models.DTOs;
 using Droits.Models.DTOs.Imports;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Services;
@@ -202,5 +203,43 @@ public class MigrationController : BaseController
     public IActionResult UploadTriageFile()
     {
         return View(new TriageUploadResultDto());
+    }
+    
+    
+    [HttpPost]
+    public async Task<IActionResult> ProcessAccessFile(IFormFile? file)
+    {
+        if ( file == null || file.Length == 0 )
+        {
+            ModelState.AddModelError("File", "Please select a file");
+            return RedirectToAction("UploadAccessFile");
+        }
+        
+        try
+        {
+            var reader = new StreamReader(file.OpenReadStream());
+            var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            var records = csv.GetRecords<AccessDto>().ToList();
+
+            var result = await _service.HandleAccessCsvAsync(records);
+            
+            Console.Write($"records {result} uploaded");
+            
+            return View("UploadAccessFile");
+        }
+        catch ( Exception e )
+        { 
+            HandleError(_logger, "Error uploading Access File", e);
+
+            return View("UploadAccessFile");
+        }
+
+        
+    }
+    
+    [HttpGet]
+    public IActionResult UploadAccessFile()
+    {
+        return View();
     }
 }
