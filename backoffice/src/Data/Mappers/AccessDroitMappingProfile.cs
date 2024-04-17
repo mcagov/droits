@@ -1,6 +1,7 @@
 using AutoMapper;
 using Droits.Helpers.Extensions;
 using Droits.Models.DTOs;
+using Droits.Models.DTOs.Imports;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Microsoft.IdentityModel.Tokens;
@@ -16,6 +17,8 @@ namespace Droits.Data.Mappers
                 .ForMember(dest => dest.Reference,
                     opt => opt.MapFrom(src =>
                         src.DroitNumber))
+                .ForMember(dest => dest.ImportedFromLegacy,
+                    opt => opt.MapFrom(src => true))
                  .ForMember(dest => dest.OriginalSubmission,
                     opt => opt.MapFrom(src =>
                         JsonConvert.SerializeObject(src)))
@@ -25,15 +28,9 @@ namespace Droits.Data.Mappers
                 .ForMember(dest => dest.DateFound,
                     opt => opt.MapFrom(src =>
                         src.DateFound.IsNullOrEmpty() ? DateTime.MinValue.Date : DateTime.Parse(src.DateFound).Date))
-                .ForMember(dest => dest.Latitude,
-                    opt => opt.MapFrom(src =>
-                        src.LatitudeA.AsDouble()))
-                .ForMember(dest => dest.Longitude,
-                    opt => opt.MapFrom(src =>
-                        src.LongitudeA.AsDouble()))
                 .ForMember(dest => dest.LocationDescription,
                     opt => opt.MapFrom(src =>
-                        src.ExactPositionFound.ValueOrEmpty()))
+                        src.GetLocationDescription()))
                 .ForMember(dest => dest.RecoveredFromLegacy,
                     opt => opt.MapFrom(src =>
                         src.RecoveredFrom ))

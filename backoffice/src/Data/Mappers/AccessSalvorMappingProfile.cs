@@ -1,6 +1,7 @@
 using AutoMapper;
 using Droits.Helpers.Extensions;
 using Droits.Models.DTOs;
+using Droits.Models.DTOs.Imports;
 using Droits.Models.Entities;
 using Microsoft.IdentityModel.Tokens;
 

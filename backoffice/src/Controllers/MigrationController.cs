@@ -225,13 +225,13 @@ public class MigrationController : BaseController
             
             Console.Write($"records {result} uploaded");
             
-            return View("UploadAccessFile");
+            return View("UploadAccessFile", result);
         }
         catch ( Exception e )
         { 
             HandleError(_logger, "Error uploading Access File", e);
 
-            return View("UploadAccessFile");
+            return View("UploadAccessFile",new AccessUploadResultDto());
         }
 
         
@@ -240,6 +240,6 @@ public class MigrationController : BaseController
     [HttpGet]
     public IActionResult UploadAccessFile()
     {
-        return View();
+        return View(new AccessUploadResultDto());
     }
 }

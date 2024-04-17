@@ -1,6 +1,7 @@
 using CsvHelper.Configuration.Attributes;
+using Droits.Helpers.Extensions;
 
-namespace Droits.Models.DTOs;
+namespace Droits.Models.DTOs.Imports;
 
 public class AccessDto
 {
@@ -143,7 +144,33 @@ public class AccessDto
     
     [Name("File ref")]
     public string? FileRef { get; set; }
+
+
+    public string? GetLocationDescription()
+    {
+        var locationDescription = ExactPositionFound.ValueOrEmpty();
     
+        var coordinates = new[]
+        {
+            ("Longitude A", LongitudeA),
+            ("Longitude B", LongitudeB),
+            ("Longitude C", LongitudeC),
+            ("Latitude A", LatitudeA),
+            ("Latitude B", LatitudeB),
+            ("Latitude C", LatitudeC)
+        };
+
+        foreach (var (label, value) in coordinates)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                locationDescription += $"\n{label}: {value}";
+            }
+        }
+
+        return locationDescription;
+    }
+
     public string? GetAddressLine(int lineNumber)
     {
         var addressList = Address?.Split("\n");

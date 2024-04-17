@@ -18,7 +18,7 @@ public interface IMigrationService
     Task<Wreck> MigrateWreckAsync(PowerappsWreckDto request);
     Task<Note> MigrateNoteAsync(PowerappsNoteDto request);
     Task<TriageUploadResultDto> HandleTriageCsvAsync(List<TriageRowDto> records);
-    Task<List<string>> HandleAccessCsvAsync(List<AccessDto> records);
+    Task<AccessUploadResultDto> HandleAccessCsvAsync(List<AccessDto> records);
 }
 
 public class MigrationService : IMigrationService
@@ -375,10 +375,10 @@ public class MigrationService : IMigrationService
     }
 
 
-    public async Task<List<string>> HandleAccessCsvAsync(List<AccessDto> records)
+    public async Task<AccessUploadResultDto> HandleAccessCsvAsync(List<AccessDto> records)
     {
         
-        var droitRefs = new List<string>();
+        var results = new List<AccessUploadResult>();
         
         foreach ( var record in records )
         {
@@ -386,10 +386,16 @@ public class MigrationService : IMigrationService
            {
                var droit = _mapper.Map<Droit>(record);
 
+               var result = new AccessUploadResult()
+               {
+                   DroitNumber = record.DroitNumber,
+               };
+                   
                var isUniqueReference = await _droitService.IsReferenceUnique(droit);
                if ( !isUniqueReference )
                {
                    droit.Reference = $"{droit.Reference}-AccessImportDuplicate";
+                   result.DuplicateDroitReference = true;
                }
 
                var salvor = _mapper.Map<Salvor>(record);
@@ -408,15 +414,24 @@ public class MigrationService : IMigrationService
 
                await _wreckMaterialService.SaveWreckMaterialAsync(wreckMaterial);
 
-               droitRefs.Add(droit.Reference);
+               result.IsSuccess = true;
+               result.SavedDroitReference = droit.Reference;
+               result.DroitId = droit.Id;
+
+               results.Add(result);
            }
            catch ( Exception e )
            {
+               results.Add(new AccessUploadResult()
+               {
+                   IsSuccess = false,
+                   DroitNumber = record.DroitNumber,
+                   ErrorMessage = e.Message
+               });
                Console.WriteLine(e);
-               throw;
            } 
         }
 
-        return droitRefs;
+        return new AccessUploadResultDto(results);
     }
 }
