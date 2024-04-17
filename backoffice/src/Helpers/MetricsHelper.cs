@@ -36,17 +36,15 @@ public static class MetricsHelper
   
     public static IEnumerable<object>? GetClosedDroitsMetrics(List<Droit> droits)
     {
-        var allStatuses = Enum.GetValues(typeof(DroitStatus)).Cast<DroitStatus>().ToList();
-
         // Find the earliest and latest years
-        var minYear = droits.Min(d => d.ClosedDate?.Year) ?? 1990;
+        var minYear = droits.Min(d => d.ClosedDate?.Year) ?? DateTime.MinValue.Year;
         var maxYear = DateTime.Now.Year;
 
         var groupedDroits = Enumerable.Range(minYear, maxYear - minYear + 1).Reverse()
             .Select(year => new
             {
                 Year = year,
-                Groups = GetGroupedClosedDroits(droits, allStatuses, year)
+                Groups = GetGroupedClosedDroits(droits, year)
             });
         
         return groupedDroits;
@@ -84,7 +82,7 @@ public static class MetricsHelper
         return groupedDroits;
     }
     
-    private static IEnumerable<object> GetGroupedClosedDroits(IEnumerable<Droit> droits, IEnumerable<DroitStatus> allStatuses, int year = 0)
+    private static IEnumerable<object> GetGroupedClosedDroits(IEnumerable<Droit> droits, int year = 0)
     {
         var groupedDroits = new List<object>
         {
