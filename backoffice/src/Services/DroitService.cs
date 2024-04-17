@@ -47,6 +47,7 @@ public interface IDroitService
     Task UploadWmCsvForm(List<WMRowDto> wreckMaterials, Guid droitId);
 
     Task<List<object>?> GetDroitsMetrics();
+    Task<List<object>?> GetClosedDroitsMetrics();
 }
 
 public class DroitService : IDroitService
@@ -344,7 +345,14 @@ public class DroitService : IDroitService
         return (MetricsHelper.GetDroitsMetrics(allDroits) ?? Array.Empty<object>()).ToList();
 
     }
-    
 
+
+    public async Task<List<object>?> GetClosedDroitsMetrics()
+    {
+        var allDroits = await GetDroitsAsync();
+
+        return (MetricsHelper.GetClosedDroitsMetrics(allDroits) ?? Array.Empty<object>()).ToList();
+
+    }
     
 }
