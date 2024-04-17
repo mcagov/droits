@@ -33,6 +33,22 @@ public static class MetricsHelper
 
         return groupedDroits;
     }
+  
+    public static IEnumerable<object>? GetClosedDroitsMetrics(List<Droit> droits)
+    {
+        // Find the earliest and latest years
+        var minYear = droits.Min(d => d.ClosedDate?.Year) ?? DateTime.MinValue.Year;
+        var maxYear = DateTime.Now.Year;
+
+        var groupedDroits = Enumerable.Range(minYear, maxYear - minYear + 1).Reverse()
+            .Select(year => new
+            {
+                Year = year,
+                Groups = GetGroupedClosedDroits(droits, year)
+            });
+        
+        return groupedDroits;
+    }
 
     private static IEnumerable<object> GetGroupedDroits(IEnumerable<Droit> droits, IEnumerable<DroitStatus> allStatuses, int year = 0)
     {
@@ -43,7 +59,8 @@ public static class MetricsHelper
             {
                 Group = "Total",
                 CountPerStatus = GetCountPerStatus(droits, allStatuses),
-                CountPerTriage = GetCountPerTriage(droits)
+                CountPerTriage = GetCountPerTriage(droits),
+                CountLateReport = GetLateReportCount(droits)
             }
         };
 
@@ -58,7 +75,39 @@ public static class MetricsHelper
         {
             Group = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month),
             CountPerStatus = GetCountPerStatus(droits.Where(d => d.ReportedDate.Year == year && d.ReportedDate.Month == month), allStatuses),
-            CountPerTriage = GetCountPerTriage(droits.Where(d => d.ReportedDate.Year == year && d.ReportedDate.Month == month))
+            CountPerTriage = GetCountPerTriage(droits.Where(d => d.ReportedDate.Year == year && d.ReportedDate.Month == month)),
+            CountLateReport = GetLateReportCount(droits.Where(d => d.ReportedDate.Year == year && d.ReportedDate.Month == month))
+        }));
+
+        return groupedDroits;
+    }
+    
+    private static IEnumerable<object> GetGroupedClosedDroits(IEnumerable<Droit> droits, int year = 0)
+    {
+        var groupedDroits = new List<object>
+        {
+            // Group by total
+            new
+            {
+                Group = "Total",
+                ClosedTotalAllTime = droits.Count(d => d.ClosedDate.HasValue && d.ClosedDate.Value.Year <= year),
+                ClosedTotal = droits.Count(d => d.ClosedDate.HasValue && d.ClosedDate.Value.Year == year)
+            }
+        };
+
+        // Group by months
+        if ( year == 0 ) return groupedDroits;
+        
+        var months = year < DateTime.Now.Year
+            ? Enumerable.Range(1, 12)
+            : Enumerable.Range(1, DateTime.Now.Month);
+            
+        groupedDroits.AddRange(months.Reverse().Select(month => new
+        {
+            Group = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month),
+            ClosedTotalAllTime = droits.Count(d => d.ClosedDate.HasValue && d.ClosedDate.Value.Year <= year &&
+                                                   ( d.ClosedDate.Value.Month <= month || d.ClosedDate.Value.Year < year)),
+            ClosedTotal = droits.Count(d => d.ClosedDate.HasValue && d.ClosedDate.Value.Year == year && d.ClosedDate.Value.Month == month)
         }));
 
         return groupedDroits;
@@ -90,5 +139,10 @@ public static class MetricsHelper
                 Count = droits.Count(d => d.TriageNumber == triageNumber)
             })
             .ToDictionary(x => x.TriageNumber, x => x.Count);
+    }
+    
+    private static int GetLateReportCount(IEnumerable<Droit> droits)
+    {
+        return droits.Count(d => d.DaysTakenToReport > 28);
     }
 }
