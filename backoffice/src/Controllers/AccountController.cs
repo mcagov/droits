@@ -56,8 +56,12 @@ public class AccountController : BaseController
         return Json(droitMetrics);
     }
 
-
-
+    public async Task<IActionResult> ClosureMetricsData()
+    {
+        var droitMetrics = await _droitService.GetClosedDroitsMetrics();
+        
+        return Json(droitMetrics);
+    }
     
     public IActionResult Info()
     {
