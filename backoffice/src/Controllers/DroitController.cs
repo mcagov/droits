@@ -201,6 +201,13 @@ public class DroitController : BaseController
             form = await PopulateDroitFormAsync(form);
             return View(nameof(Edit), form);
         }
+
+        if ( form.ClosedDate != null && form.Status != DroitStatus.Closed )
+        {
+            AddErrorMessage("Status must be Closed to edit Date Closed");
+            form = await PopulateDroitFormAsync(form);
+            return View(nameof(Edit), form);
+        }
         
         if ( form.Id != default )
         {

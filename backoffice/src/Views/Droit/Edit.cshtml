@@ -100,6 +100,12 @@
                 @Html.EditorFor(m => m.DateFound, new { htmlAttributes = new { @type = "date", @class = "form-control" } })
                 @Html.ValidationMessageFor(m => m.DateFound, "", new { @class = "text-danger" })
             </div>
+            
+            <div class="form-group">
+                @Html.LabelFor(m => m.ClosedDate, new { @class = "col-form-label" })
+                @Html.EditorFor(m => m.ClosedDate, new { htmlAttributes = new { @type = "date", @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.ClosedDate, "", new { @class = "text-danger" })
+            </div>
 
             <div class="form-group">
                 @Html.LabelFor(m => m.IsHazardousFind, new { @class = "col-form-label" })

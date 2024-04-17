@@ -28,6 +28,7 @@ public class DroitForm : BaseEntityForm
         TriageNumber = droit.TriageNumber;
         ReportedDate = droit.ReportedDate;
         DateFound = droit.DateFound;
+        ClosedDate = droit.ClosedDate;
 
         IsIsolatedFind = droit.WreckId == default;
         
@@ -116,6 +117,11 @@ public class DroitForm : BaseEntityForm
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime DateFound { get; set; } = DateTime.UtcNow;
+    
+    [DisplayName("Date Closed")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    public DateTime? ClosedDate { get; set; }
 
     public string? OriginalSubmission { get; set; } = string.Empty;
 
@@ -234,6 +240,7 @@ public class DroitForm : BaseEntityForm
         droit.RecoveredFrom = RecoveredFrom;
         droit.ReportedDate = ReportedDate;
         droit.DateFound = DateFound;
+        droit.ClosedDate = ClosedDate;
         droit.Reference = Reference;
         droit.IsHazardousFind = IsHazardousFind;
         droit.IsDredge = IsDredge;
