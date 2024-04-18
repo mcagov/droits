@@ -8,6 +8,7 @@ using Droits.Models.DTOs.Imports;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Diagnostics;
 using MissingFieldException = CsvHelper.MissingFieldException;
@@ -169,6 +170,7 @@ public class MigrationController : BaseController
 
 
     [HttpPost]
+    [RequestTimeout(600000)]
     public async Task<IActionResult> ProcessTriageFile(IFormFile? file)
     {
         if ( file == null || file.Length == 0 )
