@@ -21,6 +21,8 @@ namespace Droits.Data.Mappers.Powerapps
                         src.ReportReference))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src =>
                     src.GetDroitStatus()))
+                .ForMember(dest => dest.ClosedDate, opt => opt.MapFrom(src =>
+                    src.ClosedDate))
                 .ForMember(dest => dest.Created, opt => opt.MapFrom(src =>
                             src.CreatedOn))
                 .ForMember(dest => dest.ReportedDate,

@@ -45,6 +45,7 @@ public interface IDroitService
     Task UploadWmCsvForm(List<WMRowDto> wreckMaterials, Guid droitId);
 
     Task<List<object>?> GetDroitsMetrics();
+    Task<List<object>?> GetClosedDroitsMetrics();
 }
 
 public class DroitService : IDroitService
@@ -69,11 +70,28 @@ public class DroitService : IDroitService
 
     public async Task<string> GetNextDroitReference()
     {
+        const int maxAttempts = 100; // Set a maximum number of attempts
         var yearCount = await _repo.GetYearDroitCount();
         var currentYear = DateTime.UtcNow.Year;
-        var referenceEnding = $"/{currentYear.ToString().Substring(2)}";
-        var nextReferenceNumber = (yearCount + 1).ToString().PadLeft(3, '0');
-        return $"{nextReferenceNumber}{referenceEnding}";
+        var referenceEnding = $"/{currentYear.ToString()[2..]}";
+    
+        for (var attempt = 1; attempt <= maxAttempts; attempt++)
+        {
+            var nextReferenceNumber = (yearCount + attempt).ToString().PadLeft(3, '0');
+            var droitReference = $"{nextReferenceNumber}{referenceEnding}";
+
+            try
+            {
+                var foundDroit = await GetDroitByReferenceAsync(droitReference);
+                _logger.LogError($"Droit found with reference number {droitReference} ({foundDroit.Id}), trying next Droit Number");
+            }
+            catch (DroitNotFoundException)
+            {
+                return droitReference;
+            }
+        }
+
+        throw new Exception("Maximum number of attempts reached without finding a unique droit reference.");
     }
 
 
@@ -133,6 +151,11 @@ public class DroitService : IDroitService
         {
             droit.Reference = await GetNextDroitReference();
         }
+        
+        if ( droit is { Status: DroitStatus.Closed, ClosedDate: null })
+        {
+            droit.ClosedDate = DateTime.UtcNow;
+        }
 
         return await _repo.AddAsync(droit, updateLastModified);
     }
@@ -146,6 +169,11 @@ public class DroitService : IDroitService
                 $"Droit Reference {droit.Reference} already exists");
         }
 
+        if ( droit is { Status: DroitStatus.Closed, ClosedDate: null })
+        {
+            droit.ClosedDate = DateTime.UtcNow;
+        }
+        
         return await _repo.UpdateAsync(droit);
     }
 
@@ -202,8 +230,15 @@ public class DroitService : IDroitService
     {
         var droit = await GetDroitAsync(id);
 
+
+        if ( droit.Status != DroitStatus.Closed && status == DroitStatus.Closed )
+        {
+            droit.ClosedDate = DateTime.UtcNow;
+        }
+        
         droit.Status = status;
 
+        
         await _repo.UpdateAsync(droit);
     }
     
@@ -309,6 +344,12 @@ public class DroitService : IDroitService
 
     }
 
+    public async Task<List<object>?> GetClosedDroitsMetrics()
+    {
+        var allDroits = await GetDroitsAsync();
 
+        return (MetricsHelper.GetClosedDroitsMetrics(allDroits) ?? Array.Empty<object>()).ToList();
+
+    }
     
 }

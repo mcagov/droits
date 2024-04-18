@@ -12,9 +12,9 @@ db_storage_encrypted = false
 
 aws_region = "eu-west-2"
 
-root_domain_name    = "droits.uk"
+root_domain_name    = "report-wreck-material.service.gov.uk"
 lb_ssl_policy       = "ELBSecurityPolicy-FS-1-2-2019-08"
-ssl_certificate_arn = "arn:aws:acm:eu-west-2:842544458664:certificate/3d9820a3-3e15-46ee-a614-5881a2e9f381"
+ssl_certificate_arn = "arn:aws:acm:eu-west-2:842544458664:certificate/24e37f5d-35cb-46ff-a087-4085764ca82c"
 
 enable_alerts                                      = true
 percentage_cpu_utilization_high_threshold          = 90

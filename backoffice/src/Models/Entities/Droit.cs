@@ -22,6 +22,7 @@ public class Droit : BaseEntity
     public int? TriageNumber { get; set; }
     public DateTime ReportedDate { get; set; } = DateTime.UtcNow;
     public DateTime DateFound { get; set; } = DateTime.UtcNow;
+    public DateTime? ClosedDate { get; set; }
     public int DaysTakenToReport => DateFound.DaysBetween(ReportedDate);
     public string OriginalSubmission { get; set; } = string.Empty;
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();

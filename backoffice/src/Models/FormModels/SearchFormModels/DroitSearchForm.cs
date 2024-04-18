@@ -40,6 +40,16 @@ public class DroitSearchForm : SearchForm
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime? LastModifiedTo { get; set; }
+    
+    [DisplayName("Closed From")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    public DateTime? ClosedFrom { get; set; }
+
+    [DisplayName("Closed To")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    public DateTime? ClosedTo { get; set; }
 
     public List<int> TriageNumberList = new() { 1, 2, 3, 4, 5 };
     public List<int> TriageNumbers { get; set; } = new(); 
@@ -82,8 +92,12 @@ public class DroitSearchForm : SearchForm
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime? DateFoundTo { get; set; }
 
+    [DisplayName("Reported After 28 Days")]
+    public bool? IsLateReport { get; set; }
 
-
+    public List<WreckMaterialOutcome> WreckMaterialOutcomesList { get; set; } = new();
+    public List<int> SelectedWreckMaterialOutcomeList => WreckMaterialOutcomesList.Select(s => ( int )s).ToList();
+    
     // Wreck
 
 
@@ -130,7 +144,7 @@ public class DroitSearchForm : SearchForm
 
     [DisplayName("In UK Waters")]
     public bool? InUkWaters { get; set; }
-
+ 
     [DisplayName("Location Radius")]
     public int? LocationRadius { get; set; }
 
@@ -243,6 +257,7 @@ public class DroitSearchForm : SearchForm
         ReceiverValuationFrom == null,
         ReceiverValuationTo == null,
         WreckMaterialOwner.IsNullOrEmpty(),
+        WreckMaterialOutcomesList.IsNullOrEmpty(),
         ValueConfirmed == null
     }.All(result => result); 
 }

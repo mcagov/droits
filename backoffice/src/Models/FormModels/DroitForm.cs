@@ -28,6 +28,7 @@ public class DroitForm : BaseEntityForm
         TriageNumber = droit.TriageNumber;
         ReportedDate = droit.ReportedDate;
         DateFound = droit.DateFound;
+        ClosedDate = droit.ClosedDate;
 
         IsIsolatedFind = droit.WreckId == default;
         
@@ -116,6 +117,11 @@ public class DroitForm : BaseEntityForm
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime DateFound { get; set; } = DateTime.UtcNow;
+    
+    [DisplayName("Date Closed")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    public DateTime? ClosedDate { get; set; }
 
     public string? OriginalSubmission { get; set; } = string.Empty;
 
@@ -129,10 +135,17 @@ public class DroitForm : BaseEntityForm
 
     [DisplayName("Is Dredge")]
     public bool IsDredge { get; set; }
-
+    
+    [DisplayName("Reported Wreck Name")]
     public string? ReportedWreckName { get; set; }
-    public int? ReportedWreckYearSunk { get; set; }
+    
+    [DisplayName("Sunk Year")]
+    public int? ReportedWreckYearSunk { get; set; }    
+    
+    [DisplayName("Construction Year")]
     public int? ReportedWreckYearConstructed { get; set; }
+        
+    [DisplayName("Construction Details")]
     public string? ReportedWreckConstructionDetails { get; set; }
 
     public ReportedWreckInfoView ReportedWreckInfo = new ();
@@ -227,6 +240,7 @@ public class DroitForm : BaseEntityForm
         droit.RecoveredFrom = RecoveredFrom;
         droit.ReportedDate = ReportedDate;
         droit.DateFound = DateFound;
+        droit.ClosedDate = ClosedDate;
         droit.Reference = Reference;
         droit.IsHazardousFind = IsHazardousFind;
         droit.IsDredge = IsDredge;
@@ -238,6 +252,12 @@ public class DroitForm : BaseEntityForm
         droit.LocationRadius = LocationRadius;
         droit.Depth = Depth;
         droit.LocationDescription = LocationDescription;
+
+        // Reported Wreck
+        droit.ReportedWreckName = ReportedWreckName;
+        droit.ReportedWreckConstructionDetails = ReportedWreckConstructionDetails;
+        droit.ReportedWreckYearSunk = ReportedWreckYearSunk;
+        droit.ReportedWreckYearConstructed = ReportedWreckYearConstructed;
 
         // Salvage
 

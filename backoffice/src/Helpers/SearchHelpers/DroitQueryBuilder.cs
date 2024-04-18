@@ -41,6 +41,16 @@ public static class DroitQueryBuilder
                 query = query.Where(d => d.LastModified <= form.LastModifiedTo.Value.EndOfDay());
             }
             
+            if (form.ClosedFrom != null)
+            {
+                query = query.Where(d => d.ClosedDate.HasValue && d.ClosedDate >= form.ClosedFrom.Value.StartOfDay());
+            }
+            
+            if (form.ClosedTo != null)
+            {
+                query = query.Where(d => d.ClosedDate.HasValue && d.ClosedDate <= form.ClosedTo.Value.EndOfDay());
+            }
+
             if (form.ReportedDateFrom != null)
             {
                 query = query.Where(d => d.ReportedDate >= form.ReportedDateFrom.Value.StartOfDay());
@@ -71,6 +81,13 @@ public static class DroitQueryBuilder
                 query = query.Where(d => d.DateFound <= form.DateFoundTo.Value.EndOfDay());
             }
             
+            
+            if (form.IsLateReport != null)
+            {
+                query = query.Where(d => d.ReportedDate >= d.DateFound.AddDays(28));
+            }
+
+
             query = query.Where(d =>
                 (form.IsHazardousFind == null || d.IsHazardousFind == form.IsHazardousFind) &&
                 (form.IsDredge == null || d.IsDredge == form.IsDredge) &&
@@ -193,7 +210,9 @@ public static class DroitQueryBuilder
             //Wreck Material Filters
             if ( !form.IgnoreWreckMaterialSearch )
             {
-              query = query.Where(d =>
+
+
+                query = query.Where(d =>
                     d.WreckMaterials.Any(wm =>
                         (string.IsNullOrEmpty(form.WreckMaterial)||
                         (!string.IsNullOrEmpty(wm.Description) &&
@@ -205,6 +224,11 @@ public static class DroitQueryBuilder
                                   wm.Description.ToLower()) ) <= SearchHelper.GetLevenshteinDistanceThreshold(form.WreckMaterial) )
                         ))
                 &&
+                        (
+                            form.WreckMaterialOutcomesList.IsNullOrEmpty() ||
+                            (wm.Outcome != null && form.WreckMaterialOutcomesList.Contains(wm.Outcome.Value))
+                        )
+                        &&
                         (string.IsNullOrEmpty(form.WreckMaterialOwner) ||
                         (!string.IsNullOrEmpty(wm.WreckMaterialOwner) &&
                         ( wm.WreckMaterialOwner.ToLower()

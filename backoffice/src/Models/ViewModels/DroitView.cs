@@ -2,6 +2,7 @@
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Droits.Helpers.Extensions;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.ViewModels.ListViews;
@@ -24,6 +25,7 @@ public class DroitView : BaseEntityView
         TriageNumber = droit.TriageNumber;
         ReportedDate = droit.ReportedDate;
         DateFound = droit.DateFound;
+        ClosedDate = droit.ClosedDate;
         StatutoryDeadline = droit.ReportedDate.AddYears(1);
         DaysTakenToReport = droit.DaysTakenToReport;
 
@@ -66,6 +68,10 @@ public class DroitView : BaseEntityView
         if ( droit.WreckMaterials.Any() )
         {
             WreckMaterials = droit.WreckMaterials.Select(wm => new WreckMaterialView(wm)).OrderBy(w => w.Created).ToList();
+            WreckMaterialOutcomes = string.Join(",",droit.WreckMaterials
+                .Where(wm => wm.Outcome.HasValue)
+                .Select(wm => wm.Outcome?.GetDisplayName())
+                .Distinct().ToList());
         }
 
         if ( droit.Letters.Any() )
@@ -135,6 +141,10 @@ public class DroitView : BaseEntityView
     [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime DateFound { get; }
     
+    [DisplayName("Closed Date")]
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+    public DateTime? ClosedDate { get; }
+    
     [DisplayName("Days Taken To Report")]
     public int DaysTakenToReport { get; }
     
@@ -146,7 +156,9 @@ public class DroitView : BaseEntityView
     public string? OriginalSubmission { get; set; } = string.Empty;
 
     // Wreck Material
-
+    
+    [DisplayName("Outcomes")]
+    public string WreckMaterialOutcomes { get; set; } = string.Empty;
     public List<WreckMaterialView> WreckMaterials { get; } = new();
 
     // Letters
