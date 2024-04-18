@@ -24,17 +24,8 @@ namespace Droits.Middleware
 
             if (result is { Succeeded: true, Principal: not null })
             {
-                var principal = result.Principal;
-                var identity = principal.Identity as ClaimsIdentity;
-
-                var adGroupId = context.RequestServices.GetRequiredService<IConfiguration>().GetSection("AzureAd:GroupId").Value ?? "";
-
-                // Filter out and remove 'groups' claims where the groupId isn't equal to adGroupId
-                var filteredClaims = identity?.Claims.Where(c => c.Type != "groups" || c.Value == adGroupId).ToList();
-
-                // Clear existing claims and add filtered claims back to the identity
-                identity?.Claims.ToList().ForEach(c => identity.RemoveClaim(c));
-                filteredClaims?.ForEach(c => identity?.AddClaim(c));
+                var identity = result.Principal.Identity as ClaimsIdentity;
+                await tokenValidationService.OnTokenValidated(identity);
             }
 
             await _next(context);
