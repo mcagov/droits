@@ -58,7 +58,7 @@
                 }
                 <td class="py-3 text-uppercase">@droit?.ReportedWreckInfo.ReportedWreckName</td>
                 <td class="py-3 text-uppercase">
-                    <span class="badge rounded-pill @(droit?.TriageNumber >=4 ? "bg-danger" :"bg-primary")">@droit?.TriageNumber</span>
+                    <span class="badge rounded-pill @(droit?.TriageNumber >0 ? "bg-primary" : "bg-dark")">@droit?.TriageNumber</span>
                 </td>
                  @if (Model.IncludeAssociations)
                  {
