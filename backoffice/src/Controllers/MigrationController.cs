@@ -74,7 +74,7 @@ public class MigrationController : BaseController
     [AllowAnonymous]
     public async Task<IActionResult> MigrateWreck([FromBody] PowerappsWreckDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
-        if (DisablePowerappsMigrationEndpoints)
+        if (ShouldDisableEndpoint(DisablePowerappsMigrationEndpoints))
         {
             return StatusCode(405, "Endpoint is disabled");
         }
@@ -110,7 +110,7 @@ public class MigrationController : BaseController
     [AllowAnonymous]
     public async Task<IActionResult> MigrateNote([FromBody] PowerappsNoteDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
-        if (DisablePowerappsMigrationEndpoints)
+        if (ShouldDisableEndpoint(DisablePowerappsMigrationEndpoints))
         {
             return StatusCode(405, "Endpoint is disabled");
         }
@@ -150,7 +150,7 @@ public class MigrationController : BaseController
     public async Task<IActionResult> MigrateDroit([FromBody] PowerappsDroitReportDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
         
-        if (DisablePowerappsMigrationEndpoints)
+        if (ShouldDisableEndpoint(DisablePowerappsMigrationEndpoints))
         {
             return StatusCode(405, "Endpoint is disabled");
         }
@@ -191,7 +191,7 @@ public class MigrationController : BaseController
         [FromBody] PowerappsWreckMaterialDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
         
-        if (DisablePowerappsMigrationEndpoints)
+        if (ShouldDisableEndpoint(DisablePowerappsMigrationEndpoints))
         {
             return StatusCode(405, "Endpoint is disabled");
         }
