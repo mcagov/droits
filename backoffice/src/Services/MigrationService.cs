@@ -421,7 +421,9 @@ public class MigrationService : IMigrationService
                    DroitId = droit.Id,
                    Description = $"{record.Description} \n{record.DescriptionContinued}",
                    SalvorValuation = record.Value.AsDouble(),
-                   Purchaser = record.Purchaser
+                   Purchaser = record.Purchaser,
+                   Outcome = record.Outcome?.AsWreckMaterialOutcomeEnum(),
+                   OutcomeRemarks = record.Outcome,
                };
 
                await _wreckMaterialService.SaveWreckMaterialAsync(wreckMaterial);

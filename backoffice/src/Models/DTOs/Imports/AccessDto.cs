@@ -1,5 +1,6 @@
 using CsvHelper.Configuration.Attributes;
 using Droits.Helpers.Extensions;
+using Droits.Models.Enums;
 
 namespace Droits.Models.DTOs.Imports;
 
@@ -144,7 +145,7 @@ public class AccessDto
     
     [Name("File ref")]
     public string? FileRef { get; set; }
-
+    
 
     public string? GetLocationDescription()
     {

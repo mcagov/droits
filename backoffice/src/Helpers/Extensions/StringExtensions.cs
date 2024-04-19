@@ -1,4 +1,5 @@
 using System.Globalization;
+using Droits.Models.Enums;
 
 namespace Droits.Helpers.Extensions;
 
@@ -68,6 +69,45 @@ public static class StringExtensions
             ? word
             : pluralForm ?? (word.EndsWith("y", StringComparison.OrdinalIgnoreCase) ? string.Concat(word.AsSpan(0, word.Length - 1), "ies") : word + "s");
     }
+    
+    public static RecoveredFrom? AsRecoveredFromEnum(this string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        var normalizedValue = value.Replace(" ", "").ToLower();
+
+        return normalizedValue switch
+        {
+            "shipwreck" => RecoveredFrom.Shipwreck,
+            "seabed" => RecoveredFrom.Seabed,
+            "afloat" => RecoveredFrom.Afloat,
+            "seashore" => RecoveredFrom.SeaShore,
+            _ => null
+        };
+    }
+    
+    public static WreckMaterialOutcome? AsWreckMaterialOutcomeEnum(this string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        var normalizedValue = value.Replace(" ", "").ToLower();
+
+        return normalizedValue switch
+        {
+            "lieuofsalvage" => WreckMaterialOutcome.LieuOfSalvage,
+            "returnedtoowner" => WreckMaterialOutcome.ReturnedToOwner,
+            "donatedtomuseum" => WreckMaterialOutcome.DonatedToMuseum,
+            "soldtomuseum" => WreckMaterialOutcome.SoldToMuseum,
+            _ => WreckMaterialOutcome.Other
+        };
+    }
+    
     
     public static string ConvertToProperCase(this string input) =>
         string.IsNullOrEmpty(input) ? input : char.ToUpper(input[0]) +
