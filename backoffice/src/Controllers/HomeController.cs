@@ -3,6 +3,7 @@
 using System.Diagnostics;
 using Droits.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 #endregion
@@ -36,7 +37,11 @@ public class HomeController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
+        var errorDetails = HttpContext.Features.Get<IExceptionHandlerFeature>();
         return View(new ErrorView
-            { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        {
+            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+            Error = errorDetails?.Error.ToString()
+        });
     }
 }

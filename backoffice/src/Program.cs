@@ -183,10 +183,16 @@ builder.Services.Configure<KestrelServerOptions>(options =>
 var app = builder.Build();
 
 // Error handling
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
+
 
 // Seeding the database
 using (var scope = app.Services.CreateScope())
