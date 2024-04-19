@@ -99,7 +99,13 @@ public static class DroitQueryBuilder
                   form.StatusList.Contains(d.Status) ));
             query = query.Where(d =>
                 ( form.TriageNumbers.IsNullOrEmpty() ||
-                  (d.TriageNumber!= null && form.TriageNumbers.Contains(d.TriageNumber.Value) )));
+                  ((d.TriageNumber == null && form.TriageNumbers.Contains(0)) ||
+                   (d.TriageNumber!= null && form.TriageNumbers.Contains(d.TriageNumber.Value)
+                   ) 
+                   
+                   )));
+            
+            
             
             //Wreck Filters
             
