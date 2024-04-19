@@ -7,7 +7,7 @@ public static class NumberExtensions
     {
         if (doubleNumber is >= int.MinValue and <= int.MaxValue)
         {
-            return (int)doubleNumber.Value;
+            return (int)Math.Round(doubleNumber.Value);
         }
 
         return null;
