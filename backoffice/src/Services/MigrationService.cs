@@ -1,5 +1,6 @@
 using AutoMapper;
 using Droits.Exceptions;
+using Droits.Helpers.Extensions;
 using Droits.Models;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Imports;
@@ -386,17 +387,26 @@ public class MigrationService : IMigrationService
            {
                var droit = _mapper.Map<Droit>(record);
 
-               var result = new AccessUploadResult()
+               var result = new AccessUploadResult()  
                {
                    DroitNumber = record.DroitNumber,
                };
                    
-               var isUniqueReference = await _droitService.IsReferenceUnique(droit);
-               if ( !isUniqueReference )
+              var isUniqueReference = await _droitService.IsReferenceUnique(droit);
+
+               if (!isUniqueReference)
                {
-                   droit.Reference = $"{droit.Reference}-AccessImportDuplicate";
+                   var count = 1;
+                   while (!isUniqueReference)
+                   {
+                       droit.Reference = $"{record.DroitNumber}-AccessImportDuplicate{(count > 1 ? count.ToString() : string.Empty)}";
+                       isUniqueReference = await _droitService.IsReferenceUnique(droit);
+                       count++;
+                   }
+
                    result.DuplicateDroitReference = true;
                }
+
 
                var salvor = _mapper.Map<Salvor>(record);
                
@@ -409,7 +419,9 @@ public class MigrationService : IMigrationService
                var wreckMaterial = new WreckMaterialForm()
                {
                    DroitId = droit.Id,
-                   Description = $"{record.Description}\n{record.DescriptionContinued}"
+                   Description = $"{record.Description} \n{record.DescriptionContinued}",
+                   SalvorValuation = record.Value.AsDouble(),
+                   Purchaser = record.Purchaser
                };
 
                await _wreckMaterialService.SaveWreckMaterialAsync(wreckMaterial);

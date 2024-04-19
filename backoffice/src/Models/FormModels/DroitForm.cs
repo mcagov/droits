@@ -35,6 +35,7 @@ public class DroitForm : BaseEntityForm
         Reference = droit.Reference;
         IsHazardousFind = droit.IsHazardousFind;
         IsDredge = droit.IsDredge;
+        RecoveredFrom = droit.RecoveredFrom;
         
         OriginalSubmission = droit.OriginalSubmission;
         
@@ -72,7 +73,7 @@ public class DroitForm : BaseEntityForm
         GoodsDischargedBy = droit.GoodsDischargedBy;
         DateDelivered = droit.DateDelivered;
         Agent = droit.Agent;
-        RecoveredFrom = droit.RecoveredFrom;
+        RecoveredFromLegacy = droit.RecoveredFromLegacy;
         ImportedFromLegacy = droit.ImportedFromLegacy;
         LegacyRemarks = droit.LegacyRemarks;
 

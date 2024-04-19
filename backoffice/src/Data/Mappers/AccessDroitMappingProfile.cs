@@ -43,6 +43,9 @@ namespace Droits.Data.Mappers
                 .ForMember(dest => dest.ReportedWreckName,
                     opt => opt.MapFrom(src =>
                         src.WreckName))
+                .ForMember(dest => dest.ReportedWreckYearSunk,
+                    opt => opt.MapFrom(src =>
+                        src.YearOfLoss))
                 .ForMember(dest => dest.ReportedWreckConstructionDetails,
                     opt => opt.MapFrom(src =>
                         src.WreckConstructionDetails))
@@ -61,6 +64,15 @@ namespace Droits.Data.Mappers
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => 
                     src.ClosureOfDroits.IsNullOrEmpty() ? DroitStatus.Received : DroitStatus.Closed
                 ))
+                .ForMember(dest => dest.LegacyRemarks,
+                    opt => opt.MapFrom(src =>
+                        src.Remarks))
+                .ForMember(dest => dest.LegacyFileReference,
+                    opt => opt.MapFrom(src =>
+                        src.FileRef))
+                .ForMember(dest => dest.RecoveredFromLegacy,
+                    opt => opt.MapFrom(src =>
+                        src.RecoveredFrom))
                 .ForMember(dest => dest.WreckMaterials, opt => opt.Ignore())
                 .ForMember(dest => dest.RecoveredFrom, opt => opt.Ignore());
 
