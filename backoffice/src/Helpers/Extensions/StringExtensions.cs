@@ -34,7 +34,7 @@ public static class StringExtensions
 
         if ( string.IsNullOrEmpty(dateString) )
         {
-            return null;
+            return null; 
         }
         
         if (DateTime.TryParseExact(dateString, "yyyy-MM-dd", null, DateTimeStyles.None, out var fixedFormatResult))
@@ -48,6 +48,12 @@ public static class StringExtensions
         }
         return null;
     }
+    
+    public static string RemoveWhitespace(this string input)
+    {
+        return string.IsNullOrEmpty(input) ? input : new string(input.Where(c => !char.IsWhiteSpace(c)).ToArray());
+    }
+        
     
     public static int? AsInt(this string? intString)
     {

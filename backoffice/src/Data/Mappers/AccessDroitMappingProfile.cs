@@ -69,7 +69,7 @@ namespace Droits.Data.Mappers
                         src.ClosureOfDroits.IsNullOrEmpty() ? DateTime.MinValue.Date : src.ClosureOfDroits.AsDateTime()))
                 .ForMember(dest => dest.Depth,
                     opt => opt.MapFrom(src =>
-                        src.Depth.AsInt()))
+                        src.GetDepth()))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => 
                     src.ClosureOfDroits.AsDateTime() == null ? DroitStatus.Received : DroitStatus.Closed
                 ))

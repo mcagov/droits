@@ -1,3 +1,4 @@
+using System.Globalization;
 using CsvHelper.Configuration.Attributes;
 using Droits.Helpers.Extensions;
 using Droits.Models.Enums;
@@ -181,4 +182,41 @@ public class AccessDto
         }
         return addressList?.ElementAt(lineNumber - 1) ?? string.Empty;
     }
+
+
+    public int? GetDepth()
+{
+    if (string.IsNullOrEmpty(Depth))
+    {
+        return null;
+    }
+
+    var cleanedDepth = new string(Depth.RemoveWhitespace().Where(c => !char.IsLetter(c)).ToArray());
+
+    if (!cleanedDepth.Contains('-'))
+    {
+        if (double.TryParse(cleanedDepth, out var depth) && depth > 0d)
+        {
+            return (int)Math.Round(depth);
+        }
+        else
+        {
+            return null;
+        }
+    }
+    else
+    {
+        var depthArray = cleanedDepth.Split('-');
+        try
+        {
+            var depths = Array.ConvertAll(depthArray, double.Parse);
+            var averageDepth = depths.Average();
+            return (int)Math.Round(averageDepth);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+}
 }
