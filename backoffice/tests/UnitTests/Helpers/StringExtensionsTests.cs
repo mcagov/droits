@@ -30,7 +30,27 @@ public class StringExtensionsTests
         // Assert
         Assert.Equal(expected, result);
     }
+    
+    [Theory]
+    [InlineData(null, null)]
+    [InlineData("", null)]
+    [InlineData("123", 123)]
+    [InlineData("-456", -456)]
+    [InlineData("0", 0)]
+    [InlineData("123.45", null)] 
+    [InlineData("-789.12", null)]
+    [InlineData("abc", null)]
+    [InlineData("123abc", null)]
+    public void TestAsInt(string? intString, int? expected)
+    {
+        // Act
+        var result = intString.AsInt();
 
+        // Assert
+        Assert.Equal(expected, result);
+    }
+    
+    
     [Theory]
     [InlineData(null, false)]
     [InlineData("", false)]

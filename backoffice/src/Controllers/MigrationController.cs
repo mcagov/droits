@@ -1,17 +1,13 @@
 ﻿using System.Globalization;
 using CsvHelper;
-using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Models;
-using Droits.Models.DTOs;
 using Droits.Models.DTOs.Imports;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
-using MissingFieldException = CsvHelper.MissingFieldException;
 
 namespace Droits.Controllers;
 public class MigrationController : BaseController
@@ -20,8 +16,7 @@ public class MigrationController : BaseController
 
     private readonly IMigrationService _service;
     private readonly IConfiguration _configuration;
-    private const bool DisablePowerappsMigrationEndpoint = true;
-
+    private const bool DisablePowerappsMigrationEndpoints = true;
 
     public MigrationController(ILogger<MigrationController> logger, IMigrationService migrationService, IConfiguration configuration)
     {
@@ -42,12 +37,7 @@ public class MigrationController : BaseController
     [AllowAnonymous]
     public async Task<IActionResult> MigrateWreck([FromBody] PowerappsWreckDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
-        if (DisablePowerappsMigrationEndpoint)
-        {
-            return StatusCode(405, "Endpoint is disabled");
-        }
 
-        
         if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
         {
             return Unauthorized("Invalid API key");
@@ -79,11 +69,6 @@ public class MigrationController : BaseController
     [AllowAnonymous]
     public async Task<IActionResult> MigrateNote([FromBody] PowerappsNoteDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
-        if (DisablePowerappsMigrationEndpoint)
-        {
-            return StatusCode(405, "Endpoint is disabled");
-        }
-        
         if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
         {
             return Unauthorized("Invalid API key");
@@ -119,11 +104,6 @@ public class MigrationController : BaseController
     public async Task<IActionResult> MigrateDroit([FromBody] PowerappsDroitReportDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
 
-        if (DisablePowerappsMigrationEndpoint)
-        {
-            return StatusCode(405, "Endpoint is disabled");
-        }
-        
         if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
         {
             return Unauthorized("Invalid API key");
@@ -158,12 +138,7 @@ public class MigrationController : BaseController
     public async Task<IActionResult> MigrateWreckMaterial(
         [FromBody] PowerappsWreckMaterialDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
-        if (DisablePowerappsMigrationEndpoint)
-        {
-            return StatusCode(405, "Endpoint is disabled");
-        }
         
-
         if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
         {
             return Unauthorized("Invalid API key");
@@ -190,8 +165,7 @@ public class MigrationController : BaseController
         }
 
     }
-
-
+    
     [HttpPost]
     [RequestTimeout(600000)]
     public async Task<IActionResult> ProcessTriageFile(IFormFile? file)

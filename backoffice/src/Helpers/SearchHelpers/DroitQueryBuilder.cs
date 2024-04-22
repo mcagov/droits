@@ -94,12 +94,15 @@ public static class DroitQueryBuilder
                 (form.IsIsolatedFind == null || d.WreckId == null == form.IsIsolatedFind) &&
                 (form.AssignedToUserId == null || d.AssignedToUserId == form.AssignedToUserId)
             );
+            query = query.Where(d => 
+                form.StatusList.IsNullOrEmpty() ||
+                form.StatusList.Contains(d.Status));
+            
             query = query.Where(d =>
-                ( form.StatusList.IsNullOrEmpty() ||
-                  form.StatusList.Contains(d.Status) ));
-            query = query.Where(d =>
-                ( form.TriageNumbers.IsNullOrEmpty() ||
-                  (d.TriageNumber!= null && form.TriageNumbers.Contains(d.TriageNumber.Value) )));
+                form.TriageNumbers.IsNullOrEmpty() ||
+                (d.TriageNumber == null ? form.TriageNumbers.Contains(0) : form.TriageNumbers.Contains(d.TriageNumber.Value)));
+            
+            
             
             //Wreck Filters
             

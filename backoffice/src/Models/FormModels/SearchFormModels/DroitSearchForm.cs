@@ -51,7 +51,7 @@ public class DroitSearchForm : SearchForm
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime? ClosedTo { get; set; }
 
-    public List<int> TriageNumberList = new() { 1, 2, 3, 4, 5 };
+    public List<int> TriageNumberList = new() { 0, 1, 2, 3, 4, 5 };
     public List<int> TriageNumbers { get; set; } = new(); 
         
     public List<DroitStatus> StatusList { get; set; } = new();

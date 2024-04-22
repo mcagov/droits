@@ -29,7 +29,10 @@ namespace Droits.Data.Mappers
                     opt => opt.MapFrom(src =>
                         src.LocationDescription == null
                             ? string.Empty
-                            : src.LocationDescription.ValueOrEmpty())) 
+                            : src.LocationDescription.ValueOrEmpty()))
+                .ForMember(dest => dest.Depth,
+                    opt => opt.MapFrom(src =>
+                        src.VesselDepth.AsInt()))
                 .ForMember(dest => dest.RecoveredFrom,
                     opt => opt.MapFrom(src =>
                         src.RemovedFrom != null ? src.RemovedFrom.AsRecoveredFromEnum() : null))

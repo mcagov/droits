@@ -30,6 +30,7 @@ namespace Droits.Tests.UnitTests.Data.Mappers
                 Longitude = null,
                 LocationRadius = null,
                 LocationDescription = null,
+                VesselDepth = null,
                 RemovedFrom = null,
                 ClaimSalvage = null,
                 SalvageServices = null
@@ -44,6 +45,7 @@ namespace Droits.Tests.UnitTests.Data.Mappers
             Assert.Null(droit.LocationRadius);
             Assert.Equal("",droit.LocationDescription);
             Assert.Null(droit.RecoveredFrom);
+            Assert.Null(droit.Depth);
             Assert.Null(droit.RecoveredFromLegacy);
             Assert.False(droit.SalvageAwardClaimed);
             Assert.Null(droit.ServicesDescription);
@@ -63,6 +65,7 @@ namespace Droits.Tests.UnitTests.Data.Mappers
                 Longitude = -49.9469, 
                 LocationRadius = 50, 
                 LocationDescription = "Some place in water",
+                VesselDepth = 50d,
                 RemovedFrom = "afloat",
                 ClaimSalvage = "true", 
                 SalvageServices = "Salvage services description",
@@ -76,6 +79,7 @@ namespace Droits.Tests.UnitTests.Data.Mappers
             Assert.Equal(new DateTime(2023,01,01), droit.ReportedDate);
             Assert.Equal(new DateTime(2022,01,01), droit.DateFound);
             Assert.Equal(submittedReportDto.Latitude, droit.Latitude);
+            Assert.Equal(50, droit.Depth);
             Assert.Equal(submittedReportDto.Longitude, droit.Longitude);
             Assert.Equal(submittedReportDto.LocationRadius, droit.LocationRadius);
             Assert.Equal(submittedReportDto.LocationDescription, droit.LocationDescription);
@@ -85,6 +89,28 @@ namespace Droits.Tests.UnitTests.Data.Mappers
             Assert.Equal(submittedReportDto.SalvageServices, droit.ServicesDescription);
             Assert.Empty(droit.WreckMaterials);
         }
+        
+        
+        [Fact]
+        public void TestDroitMapping_SubmittedReportDtoWithValidValues_ParsedDoubleToInt()
+        {
+            // Arrange
+            var submittedReportDto = new SubmittedReportDto
+            {
+                ReportDate = "2023-01-01",
+                WreckFindDate = "2022-01-01",
+                VesselDepth = 50.2,
+            };
+
+            // Act
+            var droit = _mapper.Map<Droit>(submittedReportDto);
+
+            // Assert
+            Assert.Equal(new DateTime(2023,01,01), droit.ReportedDate);
+            Assert.Equal(new DateTime(2022,01,01), droit.DateFound);
+            Assert.Equal(50, droit.Depth);
+        }
+        
         
         [Theory]
         [InlineData("afloat", RecoveredFrom.Afloat)]
