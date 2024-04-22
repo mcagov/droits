@@ -68,7 +68,7 @@ public class NoteController : BaseController
                 return RedirectToAction("View", new { id = note.Id });
             }
             
-            AddSuccessMessage("Note has ben successfully deleted.");
+            AddSuccessMessage("Note has been successfully deleted.");
             if (!string.IsNullOrEmpty(controllerName) && entityId.HasValue)
             {
                 return RedirectToAction("View", controllerName, new { id = entityId.Value });
