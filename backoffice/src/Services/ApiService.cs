@@ -1,11 +1,8 @@
 using AutoMapper;
 using Droits.Exceptions;
-using Droits.Helpers.SearchHelpers;
 using Droits.Models.DTOs;
-using Droits.Models.DTOs.Powerapps;
 using Droits.Models.DTOs.Webapp;
 using Droits.Models.Entities;
-
 
 namespace Droits.Services;
 
@@ -23,13 +20,11 @@ public class ApiService : IApiService
     private readonly IDroitService _droitService;
     private readonly IWreckMaterialService _wreckMaterialService;
     private readonly ISalvorService _salvorService;
+    private readonly IMapper _mapper;
     private readonly ILetterService _letterService;
 
-    private readonly IMapper _mapper;
-
-
     
-    public ApiService(ILogger<ApiService> logger,  IDroitService droitService, IWreckMaterialService wreckMaterialService, ISalvorService salvorService, ILetterService letterService, IMapper mapper)
+    public ApiService(ILogger<ApiService> logger,  IDroitService droitService, IWreckMaterialService wreckMaterialService, ISalvorService salvorService, ILetterService letterService, IMapper mapper )
     {
         _logger = logger;
         _droitService = droitService;
@@ -37,6 +32,7 @@ public class ApiService : IApiService
         _salvorService = salvorService;
         _letterService = letterService;
         _mapper = mapper;
+
     }
 
 
@@ -60,6 +56,8 @@ public class ApiService : IApiService
     private async Task<Droit> MapSubmittedDataAsync(SubmittedReportDto report)
     {
         var mappedSalvor = _mapper.Map<Salvor>(report);
+        
+        
         var salvor = await _salvorService.GetOrCreateAsync(mappedSalvor);
         
         var droit = await _droitService.CreateDroitAsync(report, salvor);
@@ -90,8 +88,7 @@ public class ApiService : IApiService
         }
         
     }
-
-
+    
     public async Task<SalvorInfoReportDto> GetReportByIdAsync(Guid id)
     {
         var droit = await _droitService.GetDroitAsync(id);
@@ -100,12 +97,4 @@ public class ApiService : IApiService
         return report;
     }
 
-
-    public async Task<WreckMaterial> GetWreckMaterialAsync(Guid wmId)
-    {
-        var wm = await _wreckMaterialService.GetWreckMaterialAsync(wmId);
-
-        return wm;
-    }
-    
 }

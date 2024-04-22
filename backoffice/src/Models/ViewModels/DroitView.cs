@@ -28,6 +28,7 @@ public class DroitView : BaseEntityView
         ClosedDate = droit.ClosedDate;
         StatutoryDeadline = droit.ReportedDate.AddYears(1);
         DaysTakenToReport = droit.DaysTakenToReport;
+        RecoveredFrom = droit.RecoveredFrom;
 
         AssignedUser = droit.AssignedToUser?.Name ?? "Unassigned";
         
@@ -111,7 +112,7 @@ public class DroitView : BaseEntityView
         GoodsDischargedBy = droit.GoodsDischargedBy;
         DateDelivered = droit.DateDelivered;
         Agent = droit.Agent;
-        RecoveredFrom = droit.RecoveredFrom;
+        RecoveredFromLegacy = droit.RecoveredFromLegacy;
         ImportedFromLegacy = droit.ImportedFromLegacy;
         LegacyRemarks = droit.LegacyRemarks;
     }

@@ -1,9 +1,13 @@
 using AutoMapper;
 using Droits.Exceptions;
+using Droits.Helpers.Extensions;
 using Droits.Models;
+using Droits.Models.DTOs;
 using Droits.Models.DTOs.Imports;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Models.Entities;
+using Droits.Models.FormModels;
+using Newtonsoft.Json;
 
 
 namespace Droits.Services;
@@ -15,8 +19,7 @@ public interface IMigrationService
     Task<Wreck> MigrateWreckAsync(PowerappsWreckDto request);
     Task<Note> MigrateNoteAsync(PowerappsNoteDto request);
     Task<TriageUploadResultDto> HandleTriageCsvAsync(List<TriageRowDto> records);
-
-
+    Task<AccessUploadResultDto> HandleAccessCsvAsync(List<AccessDto> records);
 }
 
 public class MigrationService : IMigrationService
@@ -373,6 +376,77 @@ public class MigrationService : IMigrationService
     }
 
 
+    public async Task<AccessUploadResultDto> HandleAccessCsvAsync(List<AccessDto> records)
+    {
+        
+        var results = new List<AccessUploadResult>();
+        
+        foreach ( var record in records )
+        {
+           try
+           {
+               var droit = _mapper.Map<Droit>(record);
 
-    
+               var result = new AccessUploadResult()  
+               {
+                   DroitNumber = record.DroitNumber,
+               };
+                   
+              var isUniqueReference = await _droitService.IsReferenceUnique(droit);
+
+               if (!isUniqueReference)
+               {
+                   var count = 1;
+                   while (!isUniqueReference)
+                   {
+                       droit.Reference = $"{record.DroitNumber}-AccessImportDuplicate{(count > 1 ? count.ToString() : string.Empty)}";
+                       isUniqueReference = await _droitService.IsReferenceUnique(droit);
+                       count++;
+                   }
+
+                   result.DuplicateDroitReference = true;
+               }
+
+
+               var salvor = _mapper.Map<Salvor>(record);
+               
+               await _salvorService.SaveSalvorAsync(salvor);
+
+               droit.SalvorId = salvor.Id;
+
+               await _droitService.SaveDroitAsync(droit);
+               
+               var wreckMaterial = new WreckMaterialForm()
+               {
+                   DroitId = droit.Id,
+                   Name = $"{record.DroitNumber} Access Import",
+                   Description = $"{record.Description} \n{record.DescriptionContinued}",
+                   SalvorValuation = record.Value.AsDouble(),
+                   Purchaser = record.Purchaser,
+                   Outcome = record.Outcome?.AsWreckMaterialOutcomeEnum(),
+                   OutcomeRemarks = record.Outcome,
+               };
+
+               await _wreckMaterialService.SaveWreckMaterialAsync(wreckMaterial);
+
+               result.IsSuccess = true;
+               result.SavedDroitReference = droit.Reference;
+               result.DroitId = droit.Id;
+
+               results.Add(result);
+           }
+           catch ( Exception e )
+           {
+               results.Add(new AccessUploadResult()
+               {
+                   IsSuccess = false,
+                   DroitNumber = record.DroitNumber,
+                   ErrorMessage = e.Message
+               });
+               Console.WriteLine(e);
+           } 
+        }
+
+        return new AccessUploadResultDto(results);
+    }
 }

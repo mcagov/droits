@@ -1,4 +1,5 @@
 using System.Globalization;
+using Droits.Models.Enums;
 
 namespace Droits.Helpers.Extensions;
 
@@ -28,15 +29,31 @@ public static class StringExtensions
         return value.StartsWith("y") || value.StartsWith("t");
     }
     
-    public static DateTime AsDateTime(this string? dateString)
+    public static DateTime? AsDateTime(this string? dateString)
     {
-        if (DateTime.TryParseExact(dateString, "yyyy-MM-dd", null, DateTimeStyles.None, out var result))
+
+        if ( string.IsNullOrEmpty(dateString) )
         {
-            return result;
+            return null; 
+        }
+        
+        if (DateTime.TryParseExact(dateString, "yyyy-MM-dd", null, DateTimeStyles.None, out var fixedFormatResult))
+        {
+            return fixedFormatResult;
         }
 
-        throw new ArgumentException("Invalid date string", nameof(dateString));
+        if (DateTime.TryParse(dateString, null, DateTimeStyles.None, out var anyFormatResult))
+        {
+            return anyFormatResult;
+        }
+        return null;
     }
+    
+    public static string RemoveWhitespace(this string input)
+    {
+        return string.IsNullOrEmpty(input) ? input : new string(input.Where(c => !char.IsWhiteSpace(c)).ToArray());
+    }
+        
     
     public static int? AsInt(this string? intString)
     {
@@ -68,6 +85,45 @@ public static class StringExtensions
             ? word
             : pluralForm ?? (word.EndsWith("y", StringComparison.OrdinalIgnoreCase) ? string.Concat(word.AsSpan(0, word.Length - 1), "ies") : word + "s");
     }
+    
+    public static RecoveredFrom? AsRecoveredFromEnum(this string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        var normalizedValue = value.Replace(" ", "").ToLower();
+
+        return normalizedValue switch
+        {
+            "shipwreck" => RecoveredFrom.Shipwreck,
+            "seabed" => RecoveredFrom.Seabed,
+            "afloat" => RecoveredFrom.Afloat,
+            "seashore" => RecoveredFrom.SeaShore,
+            _ => null
+        };
+    }
+    
+    public static WreckMaterialOutcome? AsWreckMaterialOutcomeEnum(this string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        var normalizedValue = value.Replace(" ", "").ToLower();
+
+        return normalizedValue switch
+        {
+            "lieuofsalvage" => WreckMaterialOutcome.LieuOfSalvage,
+            "returnedtoowner" => WreckMaterialOutcome.ReturnedToOwner,
+            "donatedtomuseum" => WreckMaterialOutcome.DonatedToMuseum,
+            "soldtomuseum" => WreckMaterialOutcome.SoldToMuseum,
+            _ => WreckMaterialOutcome.Other
+        };
+    }
+    
     
     public static string ConvertToProperCase(this string input) =>
         string.IsNullOrEmpty(input) ? input : char.ToUpper(input[0]) +

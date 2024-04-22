@@ -1,4 +1,5 @@
 using Droits.Helpers.Extensions;
+using Droits.Models.Enums;
 
 namespace Droits.Tests.UnitTests.Helpers;
 
@@ -110,10 +111,9 @@ public class StringExtensionsTests
     public void AsDateTime_InvalidDates(string dateString)
     {
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => dateString.AsDateTime());
-
-        Assert.StartsWith("Invalid date string", exception.Message);
-        Assert.Equal(nameof(dateString), exception.ParamName);
+        var result = dateString.AsDateTime();
+        
+        Assert.Null(result);
     }
     
     [Theory]
@@ -149,4 +149,44 @@ public class StringExtensionsTests
         // Assert
         Assert.Equal(expected, result);
     }
+    
+    [Theory]
+    [InlineData(null, null)]
+    [InlineData("", null)]
+    [InlineData(" ", null)]
+    [InlineData("Shipwreck", RecoveredFrom.Shipwreck)]
+    [InlineData("Ship Wreck", RecoveredFrom.Shipwreck)]
+    [InlineData("seabed", RecoveredFrom.Seabed)]
+    [InlineData("AFLOAT", RecoveredFrom.Afloat)]
+    [InlineData("Sea Shore", RecoveredFrom.SeaShore)]
+    [InlineData("UnknownValue", null)]
+    public void AsRecoveredFromEnum_ShouldConvertStringToEnum(string input, RecoveredFrom? expected)
+    {
+        // Act
+        var result = input.AsRecoveredFromEnum();
+
+        // Assert
+        Assert.Equal(expected, result);
+    }
+
+    [Theory]
+    [InlineData(null, null)]
+    [InlineData("", null)]
+    [InlineData(" ", null)]
+    [InlineData("LieuOfSalvage", WreckMaterialOutcome.LieuOfSalvage)]
+    [InlineData("Lieu Of Salvage", WreckMaterialOutcome.LieuOfSalvage)]
+    [InlineData("RETURNEDTOOWNER", WreckMaterialOutcome.ReturnedToOwner)]
+    [InlineData("Donated to Museum", WreckMaterialOutcome.DonatedToMuseum)]
+    [InlineData("SoldToMuseum", WreckMaterialOutcome.SoldToMuseum)]
+    [InlineData("UnknownValue", WreckMaterialOutcome.Other)]
+    public void AsWreckMaterialOutcomeEnum_ShouldConvertStringToEnum(string input, WreckMaterialOutcome? expected)
+    {
+        // Act
+        var result = input.AsWreckMaterialOutcomeEnum();
+
+        // Assert
+        Assert.Equal(expected, result);
+    }
+
+
 }
