@@ -18,38 +18,9 @@ namespace Droits.Data.Mappers
                 .ForMember(dest => dest.Email,
                     opt => opt.MapFrom(src =>
                         $"{Guid.NewGuid()}@GeneratedSalvorEmail.com"))
-                .ForPath(dest => dest.Address.Line1,
-                    opt => opt.MapFrom(src =>
-                        src.GetAddressLine(1).IsNullOrEmpty() ? "" :
-                        src.GetAddressLine(5).IsNullOrEmpty()
-                            ? src.GetAddressLine(1)
-                            : src.GetAddressLine(1) + " " + src.GetAddressLine(2)
+                .ForMember(dest => dest.Address,
+                    opt => opt.MapFrom(src => src.GetAddress()
                     ))
-                .ForPath(dest => dest.Address.Line2,
-                    opt => opt.MapFrom(src =>
-                        src.GetAddressLine(2).IsNullOrEmpty() ? "" :
-                            src.GetAddressLine(3).IsNullOrEmpty() ? src.GetAddressLine(2) :
-                        src.GetAddressLine(5).IsNullOrEmpty()
-                            ? src.GetAddressLine(4).IsNullOrEmpty() ? "" : src.GetAddressLine(2)
-                            : src.GetAddressLine(3)
-                    ))
-                .ForPath(dest => dest.Address.Town,
-                    opt => opt.MapFrom(src =>
-                        src.GetAddressLine(2).IsNullOrEmpty() ? "" :
-                        src.GetAddressLine(4).IsNullOrEmpty()
-                            ? src.GetAddressLine(5).IsNullOrEmpty()
-                                ? src.GetAddressLine(2)
-                                : src.GetAddressLine(3)
-                            : src.GetAddressLine(4)
-                    ))
-                .ForPath(dest => dest.Address.County,
-                    opt => opt.MapFrom(src =>
-                        src.GetAddressLine(2).IsNullOrEmpty() ? "" :
-                        src.GetAddressLine(4).IsNullOrEmpty()
-                            ? src.GetAddressLine(5).IsNullOrEmpty()
-                                ? src.GetAddressLine(3)
-                                : src.GetAddressLine(4)
-                            : src.GetAddressLine(5)))
                 .ForPath(dest => dest.Address.Postcode,
                     opt => opt.MapFrom(src => src.PostCode.ValueOrEmpty()));
 
