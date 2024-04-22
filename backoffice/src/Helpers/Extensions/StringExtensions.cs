@@ -29,14 +29,24 @@ public static class StringExtensions
         return value.StartsWith("y") || value.StartsWith("t");
     }
     
-    public static DateTime AsDateTime(this string? dateString)
+    public static DateTime? AsDateTime(this string? dateString)
     {
-        if (DateTime.TryParseExact(dateString, "yyyy-MM-dd", null, DateTimeStyles.None, out var result))
+
+        if ( string.IsNullOrEmpty(dateString) )
         {
-            return result;
+            return null;
+        }
+        
+        if (DateTime.TryParseExact(dateString, "yyyy-MM-dd", null, DateTimeStyles.None, out var fixedFormatResult))
+        {
+            return fixedFormatResult;
         }
 
-        throw new ArgumentException("Invalid date string", nameof(dateString));
+        if (DateTime.TryParse(dateString, null, DateTimeStyles.None, out var anyFormatResult))
+        {
+            return anyFormatResult;
+        }
+        return null;
     }
     
     public static int? AsInt(this string? intString)

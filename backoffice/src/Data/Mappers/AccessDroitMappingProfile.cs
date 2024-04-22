@@ -24,28 +24,37 @@ namespace Droits.Data.Mappers
                         JsonConvert.SerializeObject(src)))
                 .ForMember(dest => dest.ReportedDate,
                     opt => opt.MapFrom(src =>
-                        src.DateReported.IsNullOrEmpty() ? DateTime.MinValue.Date : DateTime.Parse(src.DateReported).Date))
+                        src.DateReported.IsNullOrEmpty() ? DateTime.MinValue.Date : src.DateReported.AsDateTime()))
                 .ForMember(dest => dest.DateFound,
                     opt => opt.MapFrom(src =>
-                        src.DateFound.IsNullOrEmpty() ? DateTime.MinValue.Date : DateTime.Parse(src.DateFound).Date))
+                        src.DateFound.IsNullOrEmpty() ? DateTime.MinValue.Date : src.DateFound.AsDateTime()))
                 .ForMember(dest => dest.LocationDescription,
                     opt => opt.MapFrom(src =>
                         src.GetLocationDescription()))
+                .ForMember(dest => dest.InUkWaters,
+                    opt => opt.MapFrom(src =>
+                        src.UkWaters.AsBoolean()))
                 .ForMember(dest => dest.RecoveredFromLegacy,
                     opt => opt.MapFrom(src =>
                         src.RecoveredFrom ))
                 .ForMember(dest => dest.SalvageAwardClaimed,
                     opt => opt.MapFrom(src =>
-                        src.SalvageAwardClaimed))
+                        src.SalvageAwardClaimed.AsBoolean()))
                 .ForMember(dest => dest.ServicesDescription,
                     opt => opt.MapFrom(src =>
                         src.NatureOfServices))
+                .ForMember(dest => dest.ServicesDuration,
+                    opt => opt.MapFrom(src =>
+                        src.Duration))
+                .ForMember(dest => dest.ServicesEstimatedCost,
+                    opt => opt.MapFrom(src =>
+                        src.EstimatedCostOfServices.AsDouble()))
                 .ForMember(dest => dest.ReportedWreckName,
                     opt => opt.MapFrom(src =>
                         src.WreckName))
                 .ForMember(dest => dest.ReportedWreckYearSunk,
                     opt => opt.MapFrom(src =>
-                        src.YearOfLoss))
+                        src.YearOfLoss.AsInt()))
                 .ForMember(dest => dest.ReportedWreckConstructionDetails,
                     opt => opt.MapFrom(src =>
                         src.WreckConstructionDetails))
@@ -57,12 +66,12 @@ namespace Droits.Data.Mappers
                         src.District))
                 .ForMember(dest => dest.ClosedDate,
                     opt => opt.MapFrom(src =>
-                        src.ClosureOfDroits.IsNullOrEmpty() ? DateTime.MinValue.Date : DateTime.Parse(src.ClosureOfDroits).Date))
+                        src.ClosureOfDroits.IsNullOrEmpty() ? DateTime.MinValue.Date : src.ClosureOfDroits.AsDateTime()))
                 .ForMember(dest => dest.Depth,
                     opt => opt.MapFrom(src =>
                         src.Depth.AsInt()))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => 
-                    src.ClosureOfDroits.IsNullOrEmpty() ? DroitStatus.Received : DroitStatus.Closed
+                    src.ClosureOfDroits.AsDateTime() == null ? DroitStatus.Received : DroitStatus.Closed
                 ))
                 .ForMember(dest => dest.LegacyRemarks,
                     opt => opt.MapFrom(src =>

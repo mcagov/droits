@@ -419,6 +419,7 @@ public class MigrationService : IMigrationService
                var wreckMaterial = new WreckMaterialForm()
                {
                    DroitId = droit.Id,
+                   Name = $"{record.DroitNumber} Access Import",
                    Description = $"{record.Description} \n{record.DescriptionContinued}",
                    SalvorValuation = record.Value.AsDouble(),
                    Purchaser = record.Purchaser,
