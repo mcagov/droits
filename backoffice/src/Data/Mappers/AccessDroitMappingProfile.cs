@@ -19,24 +19,25 @@ namespace Droits.Data.Mappers
                         src.DroitNumber))
                 .ForMember(dest => dest.ImportedFromLegacy,
                     opt => opt.MapFrom(src => true))
-                 .ForMember(dest => dest.OriginalSubmission,
+                .ForMember(dest => dest.OriginalSubmission,
                     opt => opt.MapFrom(src =>
                         JsonConvert.SerializeObject(src)))
                 .ForMember(dest => dest.ReportedDate,
                     opt => opt.MapFrom(src =>
-                        src.DateReported.IsNullOrEmpty() ? DateTime.MinValue.Date : src.DateReported.AsDateTime()))
+                        src.DateReported.IsNullOrEmpty()
+                            ? DateTime.MinValue.Date
+                            : src.DateReported.AsDateTime()))
                 .ForMember(dest => dest.DateFound,
                     opt => opt.MapFrom(src =>
-                        src.DateFound.IsNullOrEmpty() ? DateTime.MinValue.Date : src.DateFound.AsDateTime()))
+                        src.DateFound.IsNullOrEmpty()
+                            ? DateTime.MinValue.Date
+                            : src.DateFound.AsDateTime()))
                 .ForMember(dest => dest.LocationDescription,
                     opt => opt.MapFrom(src =>
                         src.GetLocationDescription()))
                 .ForMember(dest => dest.InUkWaters,
                     opt => opt.MapFrom(src =>
                         src.UkWaters.AsBoolean()))
-                .ForMember(dest => dest.RecoveredFromLegacy,
-                    opt => opt.MapFrom(src =>
-                        src.RecoveredFrom ))
                 .ForMember(dest => dest.SalvageAwardClaimed,
                     opt => opt.MapFrom(src =>
                         src.SalvageAwardClaimed.AsBoolean()))
@@ -66,12 +67,16 @@ namespace Droits.Data.Mappers
                         src.District))
                 .ForMember(dest => dest.ClosedDate,
                     opt => opt.MapFrom(src =>
-                        src.ClosureOfDroits.IsNullOrEmpty() ? DateTime.MinValue.Date : src.ClosureOfDroits.AsDateTime()))
+                        src.ClosureOfDroits.IsNullOrEmpty()
+                            ? DateTime.MinValue.Date
+                            : src.ClosureOfDroits.AsDateTime()))
                 .ForMember(dest => dest.Depth,
                     opt => opt.MapFrom(src =>
                         src.GetDepth()))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => 
-                    src.ClosureOfDroits.AsDateTime() == null ? DroitStatus.Received : DroitStatus.Closed
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src =>
+                    src.ClosureOfDroits.AsDateTime() == null
+                        ? DroitStatus.Received
+                        : DroitStatus.Closed
                 ))
                 .ForMember(dest => dest.LegacyRemarks,
                     opt => opt.MapFrom(src =>
@@ -82,10 +87,11 @@ namespace Droits.Data.Mappers
                 .ForMember(dest => dest.RecoveredFromLegacy,
                     opt => opt.MapFrom(src =>
                         src.RecoveredFrom))
-                .ForMember(dest => dest.WreckMaterials, opt => opt.Ignore())
-                .ForMember(dest => dest.RecoveredFrom, opt => opt.Ignore());
+                .ForMember(dest => dest.RecoveredFrom,
+                    opt => opt.MapFrom(src =>
+                        src.RecoveredFrom != null ? src.RecoveredFrom.AsRecoveredFromEnum() : null))
+                .ForMember(dest => dest.WreckMaterials, opt => opt.Ignore());
 
-            
 
         }
     }
