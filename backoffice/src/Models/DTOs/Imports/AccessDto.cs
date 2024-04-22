@@ -1,7 +1,9 @@
 using System.Globalization;
 using CsvHelper.Configuration.Attributes;
 using Droits.Helpers.Extensions;
+using Droits.Models.Entities;
 using Droits.Models.Enums;
+using Droits.Models.FormModels;
 
 namespace Droits.Models.DTOs.Imports;
 
@@ -172,51 +174,66 @@ public class AccessDto
 
         return locationDescription;
     }
-
-    public string? GetAddressLine(int lineNumber)
+    
+    public Address? GetAddress()
     {
-        var addressList = Address?.Split("\n");
-        if ( string.IsNullOrEmpty(Address) || addressList?.Length < lineNumber)
-        {
-            return string.Empty;
-        }
-        return addressList?.ElementAt(lineNumber - 1) ?? string.Empty;
-    }
 
-
-    public int? GetDepth()
-{
-    if (string.IsNullOrEmpty(Depth))
-    {
-        return null;
-    }
-
-    var cleanedDepth = new string(Depth.RemoveWhitespace().Where(c => !char.IsLetter(c)).ToArray());
-
-    if (!cleanedDepth.Contains('-'))
-    {
-        if (double.TryParse(cleanedDepth, out var depth) && depth > 0d)
-        {
-            return (int)Math.Round(depth);
-        }
-        else
+        if ( string.IsNullOrEmpty(Address) )
         {
             return null;
         }
+        
+        var address = Address.AsAddress();
+
+        if ( address != null )
+        {
+            address.Postcode = PostCode;
+        }
+        
+        return address;
     }
-    else
+    
+
+    public AddressForm? GetStorageAddress()
     {
+        if ( string.IsNullOrEmpty(WhereSecured) )
+        {
+            return null;
+        }
+
+        var storageAddress = WhereSecured.AsAddress();
+        
+        return storageAddress!=null ? new AddressForm(storageAddress) : null;
+    }
+    
+ 
+    
+    public int? GetDepth()
+    {
+        if ( string.IsNullOrEmpty(Depth) )
+        {
+            return null;
+        }
+
+        var cleanedDepth =
+            new string(Depth.RemoveWhitespace().Where(c => !char.IsLetter(c)).ToArray());
+
+        if ( !cleanedDepth.Contains('-') )
+        {
+            double.TryParse(cleanedDepth, out var depth);
+            return depth > 0d ? ( int )Math.Round(depth) : null;
+        }
+
         var depthArray = cleanedDepth.Split('-');
         try
         {
             var depths = Array.ConvertAll(depthArray, double.Parse);
             var averageDepth = depths.Average();
-            return (int)Math.Round(averageDepth);
+            return ( int )Math.Round(averageDepth);
         }
-        catch (Exception)
+        catch ( Exception )
         {
             return null;
         }
     }
-}
 }
