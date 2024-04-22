@@ -185,7 +185,7 @@ public class AccessDto
         
         var address = Address.AsAddress();
 
-        if ( address != null )
+        if ( address != null && !string.IsNullOrEmpty(PostCode))
         {
             address.Postcode = PostCode;
         }
