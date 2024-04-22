@@ -53,6 +53,38 @@ public class NoteController : BaseController
     }
     
     [HttpGet]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        try
+        {
+            var note = await _service.GetNoteAsync(id);
+            var (controllerName, entityId) = new NoteView(note).GetAssociatedEntityInfo();
+            
+            var result = await _service.DeleteNoteAsync(note.Id);
+
+            if ( !result )
+            {
+                AddErrorMessage("Note could not be deleted");
+                return RedirectToAction("View", new { id = note.Id });
+            }
+            
+            AddSuccessMessage("Note has ben successfully deleted.");
+            if (!string.IsNullOrEmpty(controllerName) && entityId.HasValue)
+            {
+                return RedirectToAction("View", controllerName, new { id = entityId.Value });
+            }
+            AddErrorMessage("No associated entity found for the note.");
+            return RedirectToAction(nameof(Index));
+        }
+        catch ( NoteNotFoundException e )
+        {
+            HandleError(_logger, "Note not found", e);
+            return RedirectToAction(nameof(Index));
+        }
+    }
+    
+    
+    [HttpGet]
     public IActionResult Add(NoteForm noteForm)
     {
         ModelState.Remove("Title");

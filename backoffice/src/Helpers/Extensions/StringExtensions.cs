@@ -15,12 +15,7 @@ public static class StringExtensions
     {
         return string.IsNullOrEmpty(value) ? string.Empty : value;
     }
-    
-    public static string RemoveWhitespace(this string input)
-    {
-        return string.IsNullOrEmpty(input) ? input : new string(input.Where(c => !char.IsWhiteSpace(c)).ToArray());
-    }
-    
+
     public static string Pluralize(this string? word, int count, string? pluralForm = null)
     {
         if ( string.IsNullOrEmpty(word) )

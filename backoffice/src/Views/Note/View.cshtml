@@ -68,7 +68,13 @@
                     {
                         <a type="button" class="btn btn-secondary" asp-action="Index">Back</a>
                     }
-                    <a asp-controller="Note" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                     <a asp-controller="Note" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                    @if (Model.Id != default)
+                    {
+                        <a href="#" class="btn btn-danger" onclick="confirmDelete('note', '@Url.Action("Delete", "Note", new { id = Model.Id })');">
+                            Delete
+                        </a>
+                    }
 
                 </div>
             </div>

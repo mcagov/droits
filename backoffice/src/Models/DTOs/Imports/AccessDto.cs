@@ -215,9 +215,13 @@ public class AccessDto
             return null;
         }
 
-        var cleanedDepth =
-            new string(Depth.RemoveWhitespace().Where(c => !char.IsLetter(c)).ToArray());
+        var cleanedDepth = new string(Depth.Where(c => char.IsDigit(c) || c == '-' || c == '.').ToArray());
 
+        if ( string.IsNullOrEmpty(cleanedDepth) )
+        {
+            return null;
+        }
+        
         if ( !cleanedDepth.Contains('-') )
         {
             double.TryParse(cleanedDepth, out var depth);
