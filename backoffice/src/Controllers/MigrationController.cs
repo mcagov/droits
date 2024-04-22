@@ -31,12 +31,95 @@ public class MigrationController : BaseController
         return RedirectToAction("Index", "Home");
     }
     
+    [HttpGet]
+    public IActionResult UploadTriageFile()
+    {
+        return View(new TriageUploadResultDto());
+    }
+
+    
+    
+    [HttpPost]
+    [RequestTimeout(600000)]
+    public async Task<IActionResult> ProcessTriageFile(IFormFile? file)
+    {
+        if ( file == null || file.Length == 0 )
+        {
+            ModelState.AddModelError("File", "Please select a file");
+            return RedirectToAction("UploadTriageFile");
+        }
+        
+        try
+        {
+            var reader = new StreamReader(file.OpenReadStream());
+            var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            var records = csv.GetRecords<TriageRowDto>().ToList();
+
+            var result = await _service.HandleTriageCsvAsync(records);
+            Console.Write("records uploaded");
+            
+            return View("UploadTriageFile", result);
+        }
+        catch ( Exception e )
+        { 
+            HandleError(_logger, "Error updating triage numbers", e);
+
+            return View("UploadTriageFile", new TriageUploadResultDto());
+        }
+
+        
+    }
+
+    
+    [HttpGet]
+    public IActionResult UploadAccessFile()
+    {
+        return View(new AccessUploadResultDto());
+    }
+    
+    
+    [HttpPost]
+    public async Task<IActionResult> ProcessAccessFile(IFormFile? file)
+    {
+        if ( file == null || file.Length == 0 )
+        {
+            ModelState.AddModelError("File", "Please select a file");
+            return RedirectToAction("UploadAccessFile");
+        }
+        
+        try
+        {
+            var reader = new StreamReader(file.OpenReadStream());
+            var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            var records = csv.GetRecords<AccessDto>().ToList();
+
+            var result = await _service.HandleAccessCsvAsync(records);
+            
+            Console.Write($"records {result} uploaded");
+            
+            return View("UploadAccessFile", result);
+        }
+        catch ( Exception e )
+        { 
+            HandleError(_logger, "Error uploading Access File", e);
+
+            return View("UploadAccessFile",new AccessUploadResultDto());
+        }
+
+        
+    }
+    
+
     
     
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> MigrateWreck([FromBody] PowerappsWreckDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
+        if (ShouldDisableEndpoint(DisablePowerappsMigrationEndpoints))	
+        {	
+            return StatusCode(405, "Endpoint is disabled");	
+        }
 
         if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
         {
@@ -69,6 +152,11 @@ public class MigrationController : BaseController
     [AllowAnonymous]
     public async Task<IActionResult> MigrateNote([FromBody] PowerappsNoteDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
+        if (ShouldDisableEndpoint(DisablePowerappsMigrationEndpoints))	
+        {	
+            return StatusCode(405, "Endpoint is disabled");	
+        }
+        
         if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
         {
             return Unauthorized("Invalid API key");
@@ -103,6 +191,11 @@ public class MigrationController : BaseController
     [AllowAnonymous]
     public async Task<IActionResult> MigrateDroit([FromBody] PowerappsDroitReportDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
+        
+        if (ShouldDisableEndpoint(DisablePowerappsMigrationEndpoints))	
+        {	
+            return StatusCode(405, "Endpoint is disabled");	
+        }
 
         if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
         {
@@ -139,6 +232,11 @@ public class MigrationController : BaseController
         [FromBody] PowerappsWreckMaterialDto request, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
         
+        if (ShouldDisableEndpoint(DisablePowerappsMigrationEndpoints))	
+        {	
+            return StatusCode(405, "Endpoint is disabled");	
+        }
+        
         if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
         {
             return Unauthorized("Invalid API key");
@@ -164,81 +262,5 @@ public class MigrationController : BaseController
             return NotFound();
         }
 
-    }
-    
-    [HttpPost]
-    [RequestTimeout(600000)]
-    public async Task<IActionResult> ProcessTriageFile(IFormFile? file)
-    {
-        if ( file == null || file.Length == 0 )
-        {
-            ModelState.AddModelError("File", "Please select a file");
-            return RedirectToAction("UploadTriageFile");
-        }
-        
-        try
-        {
-            var reader = new StreamReader(file.OpenReadStream());
-            var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-            var records = csv.GetRecords<TriageRowDto>().ToList();
-
-            var result = await _service.HandleTriageCsvAsync(records);
-            Console.Write("records uploaded");
-            
-            return View("UploadTriageFile", result);
-        }
-        catch ( Exception e )
-        { 
-            HandleError(_logger, "Error updating triage numbers", e);
-
-            return View("UploadTriageFile", new TriageUploadResultDto());
-        }
-
-        
-    }
-
-
-    [HttpGet]
-    public IActionResult UploadTriageFile()
-    {
-        return View(new TriageUploadResultDto());
-    }
-    
-    
-    [HttpPost]
-    public async Task<IActionResult> ProcessAccessFile(IFormFile? file)
-    {
-        if ( file == null || file.Length == 0 )
-        {
-            ModelState.AddModelError("File", "Please select a file");
-            return RedirectToAction("UploadAccessFile");
-        }
-        
-        try
-        {
-            var reader = new StreamReader(file.OpenReadStream());
-            var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-            var records = csv.GetRecords<AccessDto>().ToList();
-
-            var result = await _service.HandleAccessCsvAsync(records);
-            
-            Console.Write($"records {result} uploaded");
-            
-            return View("UploadAccessFile", result);
-        }
-        catch ( Exception e )
-        { 
-            HandleError(_logger, "Error uploading Access File", e);
-
-            return View("UploadAccessFile",new AccessUploadResultDto());
-        }
-
-        
-    }
-    
-    [HttpGet]
-    public IActionResult UploadAccessFile()
-    {
-        return View(new AccessUploadResultDto());
     }
 }
