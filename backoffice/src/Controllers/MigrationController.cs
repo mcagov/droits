@@ -79,6 +79,7 @@ public class MigrationController : BaseController
     
     
     [HttpPost]
+    [RequestTimeout(600000)]
     public async Task<IActionResult> ProcessAccessFile(IFormFile? file)
     {
         if ( file == null || file.Length == 0 )
