@@ -114,7 +114,7 @@ public class StringMapperExtensionsTests
     [InlineData("123 Main St\nSpringfield\nIL\nUSA\n12345", "123 Main St", "Springfield", "IL", "USA", "12345")]
     [InlineData("456 Elm St\nShelbyville\nKY\nUSA", "456 Elm St", "Shelbyville", "KY", "USA", "")]
     [InlineData("789 Oak St\nRivertown\nCA", "789 Oak St", "Rivertown", "CA", "", "")]
-    [InlineData("SingleLineCSV,Data1,Data2", "SingleLineCSV,Data1,Data2", "", "", "", "")]
+    [InlineData("SingleLineCSV,Data1,Data2", "SingleLineCSV", "Data1", "Data2", "", "")]
     public void AsAddress_ShouldReturnExpectedAddress(string? addressString, string? line1, string? line2, string? town, string? county, string? postcode)
     {
         // Act

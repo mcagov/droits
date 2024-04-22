@@ -103,11 +103,13 @@ public static class StringMapperExtensions
         {
             return null;
         }
-
-        var lines = addressString.Split('\n')
+        
+        var separator = addressString.Contains(",") ? ',' : '\n';
+        var lines = addressString.Split(separator)
             .Select(line => line.Trim())
             .Where(line => !string.IsNullOrEmpty(line))
             .ToList();
+
 
         return new Address
         {
