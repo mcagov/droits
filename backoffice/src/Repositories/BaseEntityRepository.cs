@@ -50,6 +50,31 @@ public class BaseEntityRepository<TEntity> where TEntity : BaseEntity
         return savedEntity;
     }
     
+    public virtual async Task<bool> DeleteAsync(TEntity entity)
+    {
+        if (entity.Id == default)
+        {
+            return false; 
+        }
+
+        // Define allowed TEntity types
+        var allowedEntityTypes = new List<Type>
+        {
+            typeof(Note),
+        };
+
+        if (!allowedEntityTypes.Contains(entity.GetType()))
+        {
+            throw new InvalidOperationException("This entity type is not allowed to be deleted.");
+        }
+        
+        Context.Set<TEntity>().Remove(entity);
+        await Context.SaveChangesAsync();
+
+        return true;
+    }
+    
+    
     
     
    

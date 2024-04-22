@@ -31,4 +31,13 @@ public class Note : BaseEntity
     public virtual ICollection<DroitFile> Files { get; set; } = new List<DroitFile>();
 
 
+    public (string EntityController, Guid? EntityId) GetAssociatedEntityInfo()
+    {
+        if (DroitId.HasValue) return ("Droit", DroitId.Value);
+        if (WreckId.HasValue) return ("Wreck", WreckId.Value);
+        if (SalvorId.HasValue) return ("Salvor", SalvorId.Value);
+        if (LetterId.HasValue) return ("Letter", LetterId.Value);
+        return ("Note", null);
+    }
+    
 }

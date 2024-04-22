@@ -20,3 +20,5 @@ export function confirmDialog(message, callback) {
 
     modalInstance.show();
 }
+
+
