@@ -22,6 +22,7 @@ public class AccessDtoUnitTests
     [InlineData("test", null)]
     [InlineData("40metres-unknown", null)]
     [InlineData("quite deep", null)]
+    [InlineData("10 (assume m)",10)]
     public void TestAsInt(string? depthInput, int? expected)
     {
         var dto = new AccessDto()

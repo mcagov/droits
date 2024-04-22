@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.RegularExpressions;
 using CsvHelper.Configuration.Attributes;
 using Droits.Helpers.Extensions;
 using Droits.Models.Enums;
@@ -186,37 +187,30 @@ public class AccessDto
 
     public int? GetDepth()
 {
-    if (string.IsNullOrEmpty(Depth))
+    if ( string.IsNullOrEmpty(Depth) )
     {
         return null;
     }
-
-    var cleanedDepth = new string(Depth.RemoveWhitespace().Where(c => !char.IsLetter(c)).ToArray());
-
-    if (!cleanedDepth.Contains('-'))
+    var cleanedDepth = new string(Depth.Where(c => char.IsDigit(c) || c == '-' || c == '.').ToArray());
+    if ( string.IsNullOrEmpty(cleanedDepth) )
     {
-        if (double.TryParse(cleanedDepth, out var depth) && depth > 0d)
-        {
-            return (int)Math.Round(depth);
-        }
-        else
-        {
-            return null;
-        }
+        return null;
     }
-    else
+    if ( !cleanedDepth.Contains('-') )
     {
-        var depthArray = cleanedDepth.Split('-');
-        try
-        {
-            var depths = Array.ConvertAll(depthArray, double.Parse);
-            var averageDepth = depths.Average();
-            return (int)Math.Round(averageDepth);
-        }
-        catch (Exception)
-        {
-            return null;
-        }
+        double.TryParse(cleanedDepth, out var depth);
+        return depth > 0d ? ( int )Math.Round(depth) : null;
+    }
+    var depthArray = cleanedDepth.Split('-');
+    try
+    {
+        var depths = Array.ConvertAll(depthArray, double.Parse);
+        var averageDepth = depths.Average();
+        return ( int )Math.Round(averageDepth);
+    }
+    catch ( Exception )
+    {
+        return null;
     }
 }
 }
