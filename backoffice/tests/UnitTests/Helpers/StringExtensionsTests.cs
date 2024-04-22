@@ -111,10 +111,9 @@ public class StringExtensionsTests
     public void AsDateTime_InvalidDates(string dateString)
     {
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => dateString.AsDateTime());
-
-        Assert.StartsWith("Invalid date string", exception.Message);
-        Assert.Equal(nameof(dateString), exception.ParamName);
+        var result = dateString.AsDateTime();
+        
+        Assert.Null(result);
     }
     
     [Theory]
