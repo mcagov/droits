@@ -73,7 +73,7 @@ public class NoteController : BaseController
             {
                 return RedirectToAction("View", controllerName, new { id = entityId.Value });
             }
-            AddErrorMessage("No associated entity found for the note.");
+            
             return RedirectToAction(nameof(Index));
         }
         catch ( NoteNotFoundException e )
