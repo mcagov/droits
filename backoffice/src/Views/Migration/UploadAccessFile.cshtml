@@ -9,6 +9,14 @@
 
 <h4>@ViewData["Title"]</h4>
 
+<div class="border p-4">
+    <h5>Upload a csv, xls or xlsx file only</h5>
+    <p>Use the template file below as a guide - Headers must be kept the same</p>
+    <a href="~/downloads/access_upload_template.csv" download>
+        download the template here
+    </a>
+</div>
+
 <div class="row">
     <form method="post" class="mt-2" action="@Url.Action("ProcessAccessFile", "Migration")" enctype="multipart/form-data">
         <div class="form-group col mt-2">
@@ -19,6 +27,8 @@
         </div>
     </form>
 </div>
+
+
 
 @if (Model.SuccessfulUploads.Any())
 {
