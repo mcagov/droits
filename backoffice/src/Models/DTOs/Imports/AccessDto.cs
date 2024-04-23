@@ -194,16 +194,16 @@ public class AccessDto
     }
     
 
-    public AddressForm? GetStorageAddress()
+    public Address? GetStorageAddress()
     {
         if ( string.IsNullOrEmpty(WhereSecured) )
         {
-            return null;
+            return new Address();
         }
 
         var storageAddress = WhereSecured.AsAddress();
         
-        return storageAddress!=null ? new AddressForm(storageAddress) : null;
+        return storageAddress;
     }
     
  

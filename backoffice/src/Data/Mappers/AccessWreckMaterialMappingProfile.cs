@@ -25,7 +25,7 @@ namespace Droits.Data.Mappers
                         src.Purchaser))
                 .ForMember(dest => dest.Outcome,
                     opt => opt.MapFrom(src =>
-                        (src.Outcome ?? string.Empty).AsWreckMaterialOutcomeEnum()))
+                        src.Outcome != null? src.Outcome.AsWreckMaterialOutcomeEnum(): null))
                 .ForMember(dest => dest.OutcomeRemarks,
                     opt => opt.MapFrom(src =>
                         src.Outcome))

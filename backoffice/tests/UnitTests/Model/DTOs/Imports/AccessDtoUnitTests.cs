@@ -75,7 +75,7 @@ public class AccessDtoUnitTests
     }
 
     [Fact]
-    public void TestMappingHappyDto()
+    public void TestMappingHappyDto_ToDroit()
     {
         var dto = new AccessDto()
         {
@@ -130,7 +130,7 @@ public class AccessDtoUnitTests
     }
     
     [Fact]
-    public void TestMappingDifficultDto()
+    public void TestMappingDifficultDtoTo_Droit()
     {
         var dto = new AccessDto()
         {

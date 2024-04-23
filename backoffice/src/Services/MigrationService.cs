@@ -415,20 +415,11 @@ public class MigrationService : IMigrationService
                droit.SalvorId = salvor.Id;
 
                await _droitService.SaveDroitAsync(droit);
-               
-               var wreckMaterial = new WreckMaterialForm()
-               {
-                   DroitId = droit.Id,
-                   Name = $"{record.DroitNumber} Access Import",
-                   Description = $"{record.Description} \n{record.DescriptionContinued}",
-                   SalvorValuation = record.Value.AsDouble(),
-                   Purchaser = record.Purchaser,
-                   Outcome = record.Outcome?.AsWreckMaterialOutcomeEnum(),
-                   OutcomeRemarks = record.Outcome,
-                   StorageAddress = record.GetStorageAddress()
-               };
 
-               await _wreckMaterialService.SaveWreckMaterialAsync(wreckMaterial);
+               var wreckMaterial = _mapper.Map<WreckMaterial>(record);
+               wreckMaterial.DroitId = droit.Id;
+
+               await _wreckMaterialService.SaveWreckMaterialAsync(new WreckMaterialForm(wreckMaterial));
 
                result.IsSuccess = true;
                result.SavedDroitReference = droit.Reference;
