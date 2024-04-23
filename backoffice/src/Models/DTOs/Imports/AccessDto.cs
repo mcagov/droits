@@ -1,7 +1,9 @@
 using System.Globalization;
 using CsvHelper.Configuration.Attributes;
 using Droits.Helpers.Extensions;
+using Droits.Models.Entities;
 using Droits.Models.Enums;
+using Droits.Models.FormModels;
 
 namespace Droits.Models.DTOs.Imports;
 
@@ -173,19 +175,39 @@ public class AccessDto
         return locationDescription;
     }
 
-
-    public string? GetAddressLine(int lineNumber)
+    public Address? GetAddress()
     {
-        var addressList = Address?.Split("\n");
-        if ( string.IsNullOrEmpty(Address) || addressList?.Length < lineNumber )
+
+        if ( string.IsNullOrEmpty(Address) )
         {
-            return string.Empty;
+            return null;
+        }
+        
+        var address = Address.AsAddress();
+
+        if ( address != null && !string.IsNullOrEmpty(PostCode))
+        {
+            address.Postcode = PostCode;
+        }
+       
+        return address;
+    }
+    
+
+    public AddressForm? GetStorageAddress()
+    {
+        if ( string.IsNullOrEmpty(WhereSecured) )
+        {
+            return null;
         }
 
-        return addressList?.ElementAt(lineNumber - 1) ?? string.Empty;
+        var storageAddress = WhereSecured.AsAddress();
+        
+        return storageAddress!=null ? new AddressForm(storageAddress) : null;
     }
-
-
+    
+ 
+    
     public int? GetDepth()
     {
         if ( string.IsNullOrEmpty(Depth) )
@@ -209,8 +231,17 @@ public class AccessDto
             new string(input.Where(c => char.IsDigit(c) || c == '-' || c == '.').ToArray());
 
         if ( string.IsNullOrEmpty(cleanedDepth) )
+        var cleanedDepth = new string(Depth.Where(c => char.IsDigit(c) || c == '-' || c == '.').ToArray());
+
+        if ( string.IsNullOrEmpty(cleanedDepth) )
         {
             return null;
+        }
+        
+        if ( !cleanedDepth.Contains('-') )
+        {
+            double.TryParse(cleanedDepth, out var depth);
+            return depth > 0d ? ( int )Math.Round(depth) : null;
         }
 
         if ( !cleanedDepth.Contains('-') || cleanedDepth.StartsWith('-') )

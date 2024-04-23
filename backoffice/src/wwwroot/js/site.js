@@ -16,6 +16,14 @@ document.addEventListener('DOMContentLoaded', function () {
         confirmDialog(message, callback);
     };
 
+    window.confirmDelete = function (entityType, deleteUrl) {
+        const confirmMessage = `Are you sure you want to delete this ${entityType}?`;
+        confirmDialog(confirmMessage, function() {
+            window.location.href = deleteUrl;
+        });
+    };
+    
+
     initializeComponents('.js-droit-form', initializeDroitForm);
     initializeComponents('.js-droit-view-tabs', initializeDroitView);
     initializeComponents('.js-metrics-dashboard', initializeMetricsDashboard);

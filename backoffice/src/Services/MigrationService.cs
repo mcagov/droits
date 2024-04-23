@@ -425,6 +425,7 @@ public class MigrationService : IMigrationService
                    Purchaser = record.Purchaser,
                    Outcome = record.Outcome?.AsWreckMaterialOutcomeEnum(),
                    OutcomeRemarks = record.Outcome,
+                   StorageAddress = record.GetStorageAddress()
                };
 
                await _wreckMaterialService.SaveWreckMaterialAsync(wreckMaterial);
