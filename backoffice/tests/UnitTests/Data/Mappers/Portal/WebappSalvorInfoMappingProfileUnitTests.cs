@@ -1,6 +1,5 @@
 using System.Globalization;
 using AutoMapper;
-using Droits.Data.Mappers;
 using Droits.Data.Mappers.Portal;
 using Droits.Models.DTOs.Webapp;
 using Droits.Models.Entities;

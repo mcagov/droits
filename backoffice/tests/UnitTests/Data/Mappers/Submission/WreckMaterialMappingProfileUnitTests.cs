@@ -1,5 +1,5 @@
 using AutoMapper;
-using Droits.Data.Mappers;
+using Droits.Data.Mappers.Submission;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
 
