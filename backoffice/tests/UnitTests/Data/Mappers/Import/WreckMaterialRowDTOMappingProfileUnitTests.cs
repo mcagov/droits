@@ -1,16 +1,15 @@
 using AutoMapper;
 using Droits.Data.Mappers;
+using Droits.Data.Mappers.Imports;
 using Droits.Models.DTOs.Imports;
 using Droits.Models.FormModels;
 
-namespace Droits.Tests.UnitTests.Data.Mappers;
+namespace Droits.Tests.UnitTests.Data.Mappers.Import;
 
-public class WreckMaterialRowDTOMappingProfileUnitTests
+public class WreckMaterialRowDtoMappingProfileUnitTests
 {
-        private readonly IMapper _mapper;
-        
-
-    public WreckMaterialRowDTOMappingProfileUnitTests()
+    private readonly IMapper _mapper;
+    public WreckMaterialRowDtoMappingProfileUnitTests()
     {
         var profile = new WreckMaterialRowDtoMappingProfile();
         var configuration = new MapperConfiguration(cfg =>

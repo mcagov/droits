@@ -1,13 +1,12 @@
 using AutoMapper;
 using Droits.Helpers.Extensions;
-using Droits.Models.DTOs;
 using Droits.Models.DTOs.Imports;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
-namespace Droits.Data.Mappers
+namespace Droits.Data.Mappers.Imports
 {
     public class AccessDroitMappingProfile : Profile
     {

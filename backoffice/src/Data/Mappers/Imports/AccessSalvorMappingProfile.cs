@@ -1,11 +1,9 @@
 using AutoMapper;
 using Droits.Helpers.Extensions;
-using Droits.Models.DTOs;
 using Droits.Models.DTOs.Imports;
 using Droits.Models.Entities;
-using Microsoft.IdentityModel.Tokens;
 
-namespace Droits.Data.Mappers
+namespace Droits.Data.Mappers.Imports
 {
     public class AccessSalvorMappingProfile : Profile
     {
