@@ -203,9 +203,39 @@ public class AccessDto
         {
             return null;
         }
+<<<<<<< Updated upstream
     }
     else
     {
+=======
+
+        var input = Depth.ToLower();
+
+        input = input.Replace("to", "-").Replace("c.","");
+        
+        var excludeDepthsContaining = new List<string>
+            { "fathom", "ft", "feet", "inches", "in", "&", "MSW", "BCD","MHWS"};
+
+        if (excludeDepthsContaining.Any(exclude => input.Contains(exclude.ToLower())))
+        {
+            return null;
+        }
+        
+        var cleanedDepth = new string(input.Where(c => char.IsDigit(c) || c == '-' || c == '.').ToArray());
+
+        if ( string.IsNullOrEmpty(cleanedDepth) )
+        {
+            return null;
+        }
+        
+        if ( !cleanedDepth.Contains('-') || cleanedDepth.StartsWith('-') )
+        {
+            cleanedDepth = cleanedDepth.Replace("-","");
+            double.TryParse(cleanedDepth, out var depth);
+            return depth > 0d ? ( int )Math.Round(depth) : null;
+        }
+
+>>>>>>> Stashed changes
         var depthArray = cleanedDepth.Split('-');
         try
         {
