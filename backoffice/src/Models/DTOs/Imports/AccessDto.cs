@@ -180,7 +180,7 @@ public class AccessDto
 
         if ( string.IsNullOrEmpty(Address) )
         {
-            return null;
+            return new Address();
         }
         
         var address = Address.AsAddress();

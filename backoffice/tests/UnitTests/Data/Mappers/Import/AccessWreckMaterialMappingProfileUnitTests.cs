@@ -6,11 +6,11 @@ using Droits.Models.Enums;
 
 namespace Droits.Tests.UnitTests.Data.Mappers.Import;
 
-public class WreckMaterialMappingDtoProfileTests
+public class AccessWreckMaterialMappingProfileTests
 {
     private readonly IMapper _mapper;
 
-    public WreckMaterialMappingDtoProfileTests()
+    public AccessWreckMaterialMappingProfileTests()
     {
         var profile = new AccessWreckMaterialMappingProfile();
         var configuration = new MapperConfiguration(cfg => cfg.AddProfile(profile));

@@ -12,16 +12,13 @@ namespace Droits.Data.Mappers.Imports
             CreateMap<AccessDto, Salvor>()
                 .ForMember(dest => dest.Name,
                     opt => opt.MapFrom(src =>
-                        src.SalvorName))
+                        src.SalvorName.ValueOrEmpty() ?? string.Empty))
                 .ForMember(dest => dest.Email,
                     opt => opt.MapFrom(src =>
                         $"{Guid.NewGuid()}@GeneratedSalvorEmail.com"))
                 .ForMember(dest => dest.Address,
                     opt => opt.MapFrom(src => src.GetAddress()
-                    ))
-                .ForPath(dest => dest.Address.Postcode,
-                    opt => opt.MapFrom(src => src.PostCode.ValueOrEmpty()));
-
+                    ));
         }
         
     }
