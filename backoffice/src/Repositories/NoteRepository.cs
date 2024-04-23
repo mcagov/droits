@@ -17,6 +17,8 @@ namespace Droits.Repositories
         Task<Note> AddAsync(Note note, bool updateLastModified = true);
         Task<Note> UpdateAsync(Note note, bool updateLastModified = true);
         Task<Note> GetNoteAsync(Guid id);
+        Task<bool> DeleteNoteAsync(Guid id);
+
     }
 
     public class NoteRepository : BaseEntityRepository<Note>, INoteRepository
@@ -34,6 +36,18 @@ namespace Droits.Repositories
                 throw new NoteNotFoundException();
             }
             return note;
+        }
+        
+        public async Task<bool> DeleteNoteAsync(Guid id)
+        {
+            var note = await Context.Notes.FirstOrDefaultAsync(n => n.Id == id);
+
+            if (note == null)
+            {
+                throw new NoteNotFoundException();
+            }
+
+            return await DeleteAsync(note);
         }
     }
 }

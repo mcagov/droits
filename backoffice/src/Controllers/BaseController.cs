@@ -26,4 +26,11 @@ public class BaseController : Controller
         log.LogError(message, e);
         AddErrorMessage(message);
     }
+
+
+    protected bool ShouldDisableEndpoint(bool disableFlag)
+    {
+        return disableFlag;
+    }
+    
 }

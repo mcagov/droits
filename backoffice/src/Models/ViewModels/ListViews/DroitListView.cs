@@ -17,6 +17,11 @@ public class DroitListView : ListView<object>
     {
         Items = droits.Cast<object>().ToList();
         SearchForm = new DroitSearchForm();
+        AnyVerifiedWrecks = droits.Any(d => d.Wreck?.Name != null);
     }
-    
+
+
+    public bool AnyVerifiedWrecks { get; } = false;
+
+
 }

@@ -1,0 +1,86 @@
+@model Droits.Models.DTOs.Imports.AccessUploadResultDto
+@{
+    ViewData["Title"] = "Droit Access File Upload";
+}
+
+@{
+    await Html.RenderPartialAsync("_MessageBanner");
+}
+
+<h4>@ViewData["Title"]</h4>
+
+<div class="border p-4">
+    <h5>Upload a csv, xls or xlsx file only</h5>
+    <p>Use the template file below as a guide - Headers must be kept the same</p>
+    <a href="~/downloads/access_upload_template.csv" download>
+        download the template here
+    </a>
+</div>
+
+<div class="row">
+    <form method="post" class="mt-2" action="@Url.Action("ProcessAccessFile", "Migration")" enctype="multipart/form-data">
+        <div class="form-group col mt-2">
+            <input type="file" name="file" id="file" accept=".csv,.xls,.xlsx" class="form-control js-file-file-input text-box single-line" required />
+        </div>
+        <div class="form-group col mt-2">
+            <button class="btn btn-primary mt-2 float-end" type="submit">Upload</button>
+        </div>
+    </form>
+</div>
+
+
+
+@if (Model.SuccessfulUploads.Any())
+{
+    <div class="alert alert-success mt-2 p-4" role="alert">
+
+        <h5>The following @Model.SuccessfulUploads.Count() droits uploaded successfully:</h5>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Access Droit Number</th>
+                <th scope="col">Saved Droit Reference</th>
+            </tr>
+            </thead>
+            @foreach (var result in Model.SuccessfulUploads)
+            {
+                <tr>
+                    <td class="py-3 text-uppercase">
+                        @result.DroitNumber
+                    </td>
+                    <td class="py-3 text-uppercase">
+                        <a asp-controller="Droit" asp-action="View" asp-route-id="@result.DroitId">@result.SavedDroitReference</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+
+@if (Model.FailedUploads.Any())
+{
+    <div class="alert alert-danger mt-2 p-4" role="alert">
+
+        <h5>The following @Model.FailedUploads.Count() droits failed to upload:</h5>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Access Droit Number</th>
+                <th scope="col">Error Message</th>
+            </tr>
+            </thead>
+            @foreach (var result in Model.FailedUploads)
+            {
+                <tr>
+                    <td class="py-3 text-uppercase">
+                        @result.DroitNumber
+                    </td>
+                    <td class="py-3">
+                        @result.ErrorMessage
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
