@@ -51,8 +51,8 @@ public class AccessDroitMappingProfileUnitTests
         Assert.Equal(dto.DroitNumber, droit.Reference);
         Assert.True(droit.ImportedFromLegacy);
         Assert.Equal(JsonConvert.SerializeObject(dto), droit.OriginalSubmission);
-        Assert.Equal(DateTime.Parse(dto.DateReported), droit.ReportedDate);
-        Assert.Equal(DateTime.Parse(dto.DateFound), droit.DateFound);
+        Assert.Equal(dto.DateReported.AsDateTime(), droit.ReportedDate);
+        Assert.Equal(dto.DateFound.AsDateTime(), droit.DateFound);
         Assert.Equal(dto.GetLocationDescription(), droit.LocationDescription);
         Assert.True(droit.InUkWaters);
         Assert.False(droit.SalvageAwardClaimed);
@@ -64,7 +64,7 @@ public class AccessDroitMappingProfileUnitTests
         Assert.Equal(dto.WreckConstructionDetails, droit.ReportedWreckConstructionDetails);
         Assert.Equal(dto.Agent, droit.Agent);
         Assert.Equal(dto.District, droit.District);
-        Assert.Equal(DateTime.Parse(dto.ClosureOfDroits), droit.ClosedDate);
+        Assert.Equal(dto.ClosureOfDroits.AsDateTime(), droit.ClosedDate);
         Assert.Equal(dto.GetDepth(), droit.Depth);
         Assert.Equal(DroitStatus.Closed, droit.Status); // Assuming Closed if ClosureOfDroits is not null
         Assert.Equal(dto.Remarks, droit.LegacyRemarks);
