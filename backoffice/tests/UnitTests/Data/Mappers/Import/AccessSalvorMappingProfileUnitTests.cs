@@ -1,9 +1,7 @@
-using System.Diagnostics;
 using AutoMapper;
 using Droits.Data.Mappers.Imports;
 using Droits.Models.DTOs.Imports;
 using Droits.Models.Entities;
-using Droits.Models.Enums;
 
 namespace Droits.Tests.UnitTests.Data.Mappers.Import;
 
