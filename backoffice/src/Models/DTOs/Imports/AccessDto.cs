@@ -1,8 +1,9 @@
 using System.Globalization;
-using System.Text.RegularExpressions;
 using CsvHelper.Configuration.Attributes;
 using Droits.Helpers.Extensions;
+using Droits.Models.Entities;
 using Droits.Models.Enums;
+using Droits.Models.FormModels;
 
 namespace Droits.Models.DTOs.Imports;
 
@@ -173,44 +174,70 @@ public class AccessDto
 
         return locationDescription;
     }
-
-    public string? GetAddressLine(int lineNumber)
+    
+    public Address? GetAddress()
     {
-        var addressList = Address?.Split("\n");
-        if ( string.IsNullOrEmpty(Address) || addressList?.Length < lineNumber)
+
+        if ( string.IsNullOrEmpty(Address) )
         {
-            return string.Empty;
+            return null;
         }
-        return addressList?.ElementAt(lineNumber - 1) ?? string.Empty;
+        
+        var address = Address.AsAddress();
+
+        if ( address != null && !string.IsNullOrEmpty(PostCode))
+        {
+            address.Postcode = PostCode;
+        }
+        
+        return address;
     }
+    
 
+    public AddressForm? GetStorageAddress()
+    {
+        if ( string.IsNullOrEmpty(WhereSecured) )
+        {
+            return null;
+        }
 
+        var storageAddress = WhereSecured.AsAddress();
+        
+        return storageAddress!=null ? new AddressForm(storageAddress) : null;
+    }
+    
+ 
+    
     public int? GetDepth()
-{
-    if ( string.IsNullOrEmpty(Depth) )
     {
-        return null;
+        if ( string.IsNullOrEmpty(Depth) )
+        {
+            return null;
+        }
+
+        var cleanedDepth = new string(Depth.Where(c => char.IsDigit(c) || c == '-' || c == '.').ToArray());
+
+        if ( string.IsNullOrEmpty(cleanedDepth) )
+        {
+            return null;
+        }
+        
+        if ( !cleanedDepth.Contains('-') )
+        {
+            double.TryParse(cleanedDepth, out var depth);
+            return depth > 0d ? ( int )Math.Round(depth) : null;
+        }
+
+        var depthArray = cleanedDepth.Split('-');
+        try
+        {
+            var depths = Array.ConvertAll(depthArray, double.Parse);
+            var averageDepth = depths.Average();
+            return ( int )Math.Round(averageDepth);
+        }
+        catch ( Exception )
+        {
+            return null;
+        }
     }
-    var cleanedDepth = new string(Depth.Where(c => char.IsDigit(c) || c == '-' || c == '.').ToArray());
-    if ( string.IsNullOrEmpty(cleanedDepth) )
-    {
-        return null;
-    }
-    if ( !cleanedDepth.Contains('-') )
-    {
-        double.TryParse(cleanedDepth, out var depth);
-        return depth > 0d ? ( int )Math.Round(depth) : null;
-    }
-    var depthArray = cleanedDepth.Split('-');
-    try
-    {
-        var depths = Array.ConvertAll(depthArray, double.Parse);
-        var averageDepth = depths.Average();
-        return ( int )Math.Round(averageDepth);
-    }
-    catch ( Exception )
-    {
-        return null;
-    }
-}
 }

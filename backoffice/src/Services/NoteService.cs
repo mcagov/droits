@@ -18,6 +18,8 @@ namespace Droits.Services
             List<DroitFileForm> fileForms);
         Task<Note> GetNoteAsync(Guid id);
         Task<Note> AddNoteAsync(Note note, bool updateLastModified = true);
+        Task<bool> DeleteNoteAsync(Guid id);
+
     }
 
     public class NoteService : INoteService
@@ -102,5 +104,11 @@ namespace Droits.Services
             return await _repo.GetNoteAsync(id);
         }
 
+
+        public async Task<bool> DeleteNoteAsync(Guid id)
+        {
+            return await _repo.DeleteNoteAsync(id);
+
+        }
     }
 }
