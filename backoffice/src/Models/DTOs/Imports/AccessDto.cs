@@ -231,9 +231,6 @@ public class AccessDto
             new string(input.Where(c => char.IsDigit(c) || c == '-' || c == '.').ToArray());
 
         if ( string.IsNullOrEmpty(cleanedDepth) )
-        var cleanedDepth = new string(Depth.Where(c => char.IsDigit(c) || c == '-' || c == '.').ToArray());
-
-        if ( string.IsNullOrEmpty(cleanedDepth) )
         {
             return null;
         }
