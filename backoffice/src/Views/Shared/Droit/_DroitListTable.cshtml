@@ -1,5 +1,8 @@
 @model DroitListView
 
+@{
+    var anyVerifiedWrecks = Model.Items.Any(item => ((DroitView)item)?.Wreck?.Name != null);
+}
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
@@ -9,15 +12,19 @@
             @if (Model.IncludeAssociations)
             {
                 <th scope="col">Salvor</th>
-                <th scope="col">Verified Wreck</th>
+                @if (Model.AnyVerifiedWrecks)
+                {
+                    <th scope="col" class="text-nowrap">Verified Wreck</th>
+
+                }
             }
-            <th scope="col">Reported Wreck</th>
+            <th scope="col" class="text-nowrap">Reported Wreck</th>
             <th scope="col">Triage</th>
             @if (Model.IncludeAssociations)
             {
                 <th scope="col">Items</th>
             }
-            <th scope="col">Assigned To</th>
+            <th scope="col">RoW</th>
             <th scope="col">Status</th>
             <th scope="col">Reported</th>
             <th scope="col">Actions</th>
@@ -47,14 +54,17 @@
                             }
                         }
                     </td>
-                    <td class="py-3">
-                        @{
-                            if (droit?.Wreck?.Name != null)
-                            {
-                                @Html.ActionLink(droit?.Wreck?.Name, "View", "Wreck", new { id = droit?.Wreck?.Id })
+                    @if (Model.AnyVerifiedWrecks)
+                    {
+                        <td class="py-3">
+                            @{
+                                if (droit?.Wreck?.Name != null)
+                                {
+                                    @Html.ActionLink(droit?.Wreck?.Name, "View", "Wreck", new { id = droit?.Wreck?.Id })
+                                }
                             }
-                        }
-                    </td>
+                        </td>
+                    }
                 }
                 <td class="py-3 text-uppercase">@droit?.ReportedWreckInfo.ReportedWreckName</td>
                 <td class="py-3 text-uppercase">
