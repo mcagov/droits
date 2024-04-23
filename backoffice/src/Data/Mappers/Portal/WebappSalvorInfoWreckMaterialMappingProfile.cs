@@ -3,7 +3,7 @@ using Droits.Helpers.Extensions;
 using Droits.Models.DTOs.Webapp;
 using Droits.Models.Entities;
 
-namespace Droits.Data.Mappers
+namespace Droits.Data.Mappers.Portal
 {
     public class WebappSalvorInfoWreckMaterialMappingProfile : Profile
     {

@@ -69,7 +69,7 @@ public class Droit : BaseEntity
 
     public bool SalvageAwardClaimed { get; set; }
     public string? ServicesDescription { get; set; }
-    public string? ServicesDuration { get; set; } //Units? Unknown.
+    public string? ServicesDuration { get; set; }
     public double? ServicesEstimatedCost { get; set; }
     public bool MmoLicenceRequired { get; set; }
     public bool MmoLicenceProvided { get; set; }

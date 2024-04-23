@@ -1,12 +1,12 @@
 using System.Globalization;
 using AutoMapper;
-using Droits.Data.Mappers;
+using Droits.Data.Mappers.Portal;
 using Droits.Models.DTOs.Webapp;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 
-namespace Droits.Tests.UnitTests.Data.Mappers
-{
+namespace Droits.Tests.UnitTests.Data.Mappers.Portal;
+
     public class WebappSalvorInfoMappingProfileTests
     {
         private readonly IMapper _mapper;
@@ -123,29 +123,7 @@ public WebappSalvorInfoMappingProfileTests()
             Assert.Contains(wreckMaterials, wm => wm.Outcome == "DonatedToMuseum");
             
         }
-        //
-        //     [Fact]
-        //     public void TestMapping_SubmittedReportDtoWithNullValues()
-        //     {
-        //         // Arrange
-        //         var submittedReportDto = new SubmittedReportDto
-        //         {
-        //             Personal = null
-        //         };
-        //
-        //         // Act
-        //         var salvor = _mapper.Map<Salvor>(submittedReportDto);
-        //
-        //         // Assert
-        //         Assert.Equal(string.Empty, salvor.Email);
-        //         Assert.Equal(string.Empty, salvor.Name);
-        //         Assert.Equal(string.Empty, salvor.TelephoneNumber);
-        //         Assert.Equal(string.Empty, salvor.Address.Line1);
-        //         Assert.Equal(string.Empty, salvor.Address.Line2);
-        //         Assert.Equal(string.Empty, salvor.Address.Town);
-        //         Assert.Equal(string.Empty, salvor.Address.County);
-        //         Assert.Equal(string.Empty, salvor.Address.Postcode);
-        //     }
+        
     }
-}
+
     

@@ -3,7 +3,9 @@ using Amazon.Runtime;
 using Amazon.S3;
 using Droits.Clients;
 using Droits.Data;
-using Droits.Data.Mappers;
+using Droits.Data.Mappers.Submission;
+using Droits.Data.Mappers.Imports;
+using Droits.Data.Mappers.Portal;
 using Droits.Data.Mappers.Powerapps;
 using Droits.Middleware;
 using Droits.ModelBinders;
@@ -137,7 +139,7 @@ builder.Services.AddScoped<IDroitFileRepository, DroitFileRepository>();
 builder.Services.AddScoped<IDroitFileService, DroitFileService>();
 
 // Mappers
-builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile), typeof(PowerAppsDroitReportMappingProfile), typeof(PowerAppsWreckMaterialMappingProfile), typeof(PowerAppsNoteMappingProfile), typeof(PowerAppsUserMappingProfile), typeof(WebappSalvorInfoMappingProfile), typeof(WebappSalvorInfoDroitMappingProfile),typeof(WebappSalvorInfoWreckMaterialMappingProfile), typeof(WreckMaterialRowDtoMappingProfile));
+builder.Services.AddAutoMapper(typeof(DroitMappingProfile),typeof(SalvorMappingProfile),typeof(WreckMaterialMappingProfile),typeof(PowerAppsWreckMappingProfile), typeof(PowerAppsContactMappingProfile), typeof(PowerAppsDroitReportMappingProfile), typeof(PowerAppsWreckMaterialMappingProfile), typeof(PowerAppsNoteMappingProfile), typeof(PowerAppsUserMappingProfile), typeof(WebappSalvorInfoMappingProfile), typeof(WebappSalvorInfoDroitMappingProfile),typeof(WebappSalvorInfoWreckMaterialMappingProfile), typeof(WreckMaterialRowDtoMappingProfile), typeof(AccessDroitMappingProfile), typeof(AccessSalvorMappingProfile),typeof(AccessWreckMaterialMappingProfile));
 
 // GovUK Frontend
 builder.Services.AddGovUkFrontend();
