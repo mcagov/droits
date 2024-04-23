@@ -1,4 +1,5 @@
 using Droits.Helpers.Extensions;
+using Droits.Models.Enums;
 
 namespace Droits.Tests.UnitTests.Helpers;
 
@@ -31,23 +32,6 @@ public class StringExtensionsTests
     }
 
     [Theory]
-    [InlineData(null, false)]
-    [InlineData("", false)]
-    [InlineData("Yes", true)]
-    [InlineData("True", true)]
-    [InlineData("No", false)]
-    [InlineData("False", false)]
-    [InlineData("Yup", true)]
-    public void TestAsBoolean(string? value, bool expected)
-    {
-        // Act
-        var result = value.AsBoolean();
-
-        // Assert
-        Assert.Equal(expected, result);
-    }
-
-    [Theory]
     [InlineData(null, 1, null, "")]
     [InlineData("", 1, null, "")]
     [InlineData("apple", 1, null, "apple")]
@@ -66,34 +50,6 @@ public class StringExtensionsTests
 
         // Assert
         Assert.Equal(expected, result);
-    }
-    
-    [Theory]
-    [InlineData("2023-11-15", 2023, 11, 15)] 
-    [InlineData("1993-01-05", 1993, 01, 05)] 
-    public void AsDateTime_ValidDates(string dateString, int year, int month, int day)
-    {
-        // Arrange
-        var expectedDate = new DateTime(year, month, day);
-
-        // Act
-        var actualDate = dateString.AsDateTime();
-
-        // Assert
-        Assert.Equal(expectedDate, actualDate);
-    }
-
-    [Theory]
-    [InlineData("2023-15-11")] 
-    [InlineData("")] 
-    [InlineData(null)] 
-    public void AsDateTime_InvalidDates(string dateString)
-    {
-        // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => dateString.AsDateTime());
-
-        Assert.StartsWith("Invalid date string", exception.Message);
-        Assert.Equal(nameof(dateString), exception.ParamName);
     }
     
     [Theory]

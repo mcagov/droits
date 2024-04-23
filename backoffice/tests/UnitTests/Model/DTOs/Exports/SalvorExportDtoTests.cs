@@ -1,9 +1,7 @@
-using Droits.Models.DTOs;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
-using Droits.Models.Enums;
 
-namespace Droits.Tests.UnitTests.Model.DTOs;
+namespace Droits.Tests.UnitTests.Model.DTOs.Exports;
 
 public class SalvorExportDtoTests
 {
