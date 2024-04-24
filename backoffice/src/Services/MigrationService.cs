@@ -2,16 +2,11 @@ using System.Globalization;
 using AutoMapper;
 using CsvHelper;
 using Droits.Exceptions;
-using Droits.Helpers.Extensions;
 using Droits.Models;
-using Droits.Models.DTOs;
 using Droits.Models.DTOs.Imports;
 using Droits.Models.DTOs.Powerapps;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
-using Newtonsoft.Json;
-using MissingFieldException = System.MissingFieldException;
-
 
 namespace Droits.Services;
 
@@ -341,7 +336,7 @@ public class MigrationService : IMigrationService
                 
                 if ( string.IsNullOrEmpty(record.TriageNumber) )
                 {
-                    throw new MissingFieldException("Triage number not supplied");
+                    throw new System.MissingFieldException("Triage number not supplied");
                 }
                 
                 var droit = await _droitService.GetDroitByReferenceAsync(record.DroitReference);
@@ -358,7 +353,7 @@ public class MigrationService : IMigrationService
                 }
                 else
                 {
-                 throw new MissingFieldException("Invalid triage number");
+                 throw new System.MissingFieldException("Invalid triage number");
                 }
 
                 
@@ -368,7 +363,7 @@ public class MigrationService : IMigrationService
                 result.InvalidDroitReferences.Add(new KeyValuePair<string, string?>(record.DroitReference??"",record.TriageNumber));
                 _logger.LogError($"Droit not found - {e}");
             }
-            catch ( MissingFieldException e )
+            catch ( System.MissingFieldException e )
             {               
                 result.InvalidTriageNumberValues.Add(new KeyValuePair<string, string?>(record.DroitReference??"",record.TriageNumber));
                 _logger.LogError($"Triage number not found - {e}");

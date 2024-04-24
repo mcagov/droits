@@ -5,7 +5,7 @@ file_path = './data/Access-Closed-Droits.csv'
 df = pd.read_csv(file_path, encoding='ISO-8859-1')
 
 # Split the DataFrame into batches
-batch_size = 50
+batch_size = 500
 num_batches = len(df) // batch_size + (len(df) % batch_size > 0)
 
 # Write headers to the first batch file
