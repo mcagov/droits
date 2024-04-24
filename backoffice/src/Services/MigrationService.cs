@@ -1,4 +1,6 @@
+using System.Globalization;
 using AutoMapper;
+using CsvHelper;
 using Droits.Exceptions;
 using Droits.Helpers.Extensions;
 using Droits.Models;
@@ -8,6 +10,7 @@ using Droits.Models.DTOs.Powerapps;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Newtonsoft.Json;
+using MissingFieldException = System.MissingFieldException;
 
 
 namespace Droits.Services;
@@ -19,7 +22,8 @@ public interface IMigrationService
     Task<Wreck> MigrateWreckAsync(PowerappsWreckDto request);
     Task<Note> MigrateNoteAsync(PowerappsNoteDto request);
     Task<TriageUploadResultDto> HandleTriageCsvAsync(List<TriageRowDto> records);
-    Task<AccessUploadResultDto> HandleAccessCsvAsync(List<AccessDto> records);
+    Task<AccessUploadResultDto?> ProcessAccessFile(IFormFile file);
+
 }
 
 public class MigrationService : IMigrationService
@@ -376,7 +380,21 @@ public class MigrationService : IMigrationService
     }
 
 
-    public async Task<AccessUploadResultDto> HandleAccessCsvAsync(List<AccessDto> records)
+    public async Task<AccessUploadResultDto?> ProcessAccessFile(IFormFile file)
+    {
+        var reader = new StreamReader(file.OpenReadStream());
+        var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        var records = csv.GetRecords<AccessDto>().ToList();
+
+        var result = await HandleAccessCsvAsync(records);
+            
+        Console.Write($"records {result} uploaded");
+
+        return result;
+    }
+
+    
+    private async Task<AccessUploadResultDto> HandleAccessCsvAsync(List<AccessDto> records)
     {
         
         var results = new List<AccessUploadResult>();
@@ -409,10 +427,20 @@ public class MigrationService : IMigrationService
 
 
                var salvor = _mapper.Map<Salvor>(record);
-               
-               await _salvorService.SaveSalvorAsync(salvor);
 
-               droit.SalvorId = salvor.Id;
+               var foundSalvor = await _salvorService.GetSalvorByNameAndAddressAsync(salvor);
+
+               if ( foundSalvor != null )
+               {
+                   droit.SalvorId = foundSalvor.Id;
+               }
+               else
+               {
+                   salvor = await _salvorService.SaveSalvorAsync(salvor);
+                   droit.SalvorId = salvor.Id;   
+               }
+               
+
 
                await _droitService.SaveDroitAsync(droit);
 

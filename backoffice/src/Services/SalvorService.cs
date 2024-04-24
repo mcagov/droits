@@ -35,6 +35,8 @@ public interface ISalvorService
     Task<byte[]> ExportAsync(SalvorSearchForm form);
     Task<Salvor> GetSalvorByEmailAsync(string salvorEmail);
     Task<Salvor> GetSalvorByPowerappsIdAsync(string powerappsId);
+    Task<Salvor?> GetSalvorByNameAndAddressAsync(Salvor salvor);
+
 }
 
 public class SalvorService : ISalvorService
@@ -175,6 +177,10 @@ public class SalvorService : ISalvorService
 
         return salvor;
     }
+
+
+    public async Task<Salvor?> GetSalvorByNameAndAddressAsync(Salvor salvor) => await _repo.GetSalvorByNameAndAddressAsync(salvor.Name, salvor.Address);
+
     private IQueryable<Salvor> QueryFromForm(SalvorSearchForm form)
     {
 
