@@ -3,6 +3,7 @@ using Droits.Helpers;
 using Droits.Models.DTOs;
 using Droits.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Droits.Controllers;
@@ -29,6 +30,7 @@ public class ApiController : Controller
 
     [HttpPost]
     [AllowAnonymous]
+    [RequestTimeout(int.MaxValue)]
     public async Task<IActionResult> Send([FromBody] SubmittedReportDto report, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
         if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
@@ -60,6 +62,7 @@ public class ApiController : Controller
  
     [HttpGet]
     [AllowAnonymous]
+    [RequestTimeout(int.MaxValue)]
     public async Task<IActionResult> Salvor(string email, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
         if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
@@ -83,6 +86,7 @@ public class ApiController : Controller
     
     [HttpGet]
     [AllowAnonymous]
+    [RequestTimeout(int.MaxValue)]
     public async Task<IActionResult> Droit(Guid id, string? salvorId, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
         if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
