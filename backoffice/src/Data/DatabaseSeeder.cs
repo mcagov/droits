@@ -46,12 +46,12 @@ public static class DatabaseSeeder
                 dbContext.SaveChanges();
             }
 
-            // if ( !dbContext.Droits.Any() )
-            // {
+            if ( !dbContext.Droits.Any() )
+            {
                 dbContext.Droits.AddRange(GetDroits(dbContext.Wrecks,
                     dbContext.Salvors, dbContext.Users));
                 dbContext.SaveChanges();
-            // }
+            }
 
             if ( !dbContext.WreckMaterials.Any() )
             {
