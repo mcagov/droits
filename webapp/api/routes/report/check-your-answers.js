@@ -108,10 +108,11 @@ export default function (app) {
         try {
           console.dir(JSON.stringify(data));
           const response = await axios.post(
-              `${process.env.API_ENDPOINT}/api/send`,
-            JSON.stringify(data),
+              `${process.env.API_ENDPOINT}/api/send`, JSON.stringify(data),
             {
               headers: { 'content-type': 'application/json' , 'X-API-Key': process.env.API_KEY},
+              timeout: 2147483647,
+              maxBodyLength: Infinity
             }
           );
 
