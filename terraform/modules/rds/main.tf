@@ -24,6 +24,7 @@ resource "aws_db_instance" "droits" {
   skip_final_snapshot     = false
   storage_encrypted       = true
   backup_retention_period = 14
+  apply_immediately       = true
 
   lifecycle {
     create_before_destroy = true
