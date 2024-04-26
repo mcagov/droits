@@ -16,6 +16,7 @@ resource "aws_alb" "alb" {
     prefix  = "${var.application_name}_alb"
     enabled = true
   }
+  idle_timeout = 600
 }
 
 
