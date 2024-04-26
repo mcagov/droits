@@ -7,7 +7,7 @@
 The Droits reporting service enables:
 
 - Salvage owners to report their findings with the Maritime & CoastGuard Agency
-- Recievers of Wreck to manage these reports 
+- Receivers of Wreck to manage these reports 
 
 It comprises two applications
 
