@@ -48,11 +48,15 @@ for the development environment are ephemeral and not used anywhere else.
 
 ### Staging environment
 
-todo
+A build and deployment to the staging environment is triggered on a manual release set to "pre-release". Docker images are tagged
+with the hash of the triggering commit and published to AWS Elastic Container Registry. Images built and deployed to
+for the staging environment are ephemeral and not used anywhere else.
 
 ### Production environment
 
-todo
+A build and deployment to the production environment is triggered on a manual release set to "release". Docker images are tagged
+with the hash of the triggering commit and published to AWS Elastic Container Registry. Images built and deployed to
+for the production environment are ephemeral and not used anywhere else.
 
 ## Secrets
 
