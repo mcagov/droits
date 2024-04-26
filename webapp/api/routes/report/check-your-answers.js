@@ -136,6 +136,7 @@ export default function (app) {
                 'X-API-Key': process.env.API_KEY,
               },
               maxBodyLength: Infinity,
+              timeout: 300000
             }
           );
 
@@ -160,6 +161,7 @@ export default function (app) {
                       'X-API-Key': process.env.API_KEY,
                     },
                     maxBodyLength: Infinity,
+                    timeout: 300000
                   }
                 );
 
@@ -184,6 +186,7 @@ export default function (app) {
                   'X-API-Key': process.env.API_KEY,
                 },
                 maxBodyLength: Infinity,
+                timeout: 300000
               }
             );
 
