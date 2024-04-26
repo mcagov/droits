@@ -14,6 +14,7 @@ public interface IApiService
     
     Task<SalvorInfoDto> GetSalvorInfoAsync(string salvorEmail);
     Task<SalvorInfoReportDto> GetReportByIdAsync(Guid droitId);
+    Task SendConfirmationEmail(Guid droitId);
 }
 
 public class ApiService : IApiService
@@ -49,12 +50,26 @@ public class ApiService : IApiService
         
         var droit = await MapSubmittedDataAsync(report);
 
-        // Send submission confirmed email 
-        await _letterService.SendSubmissionConfirmationEmailAsync(droit, report);
-        
         return droit;
     }
 
+    
+        public async Task SendConfirmationEmail(Guid droitId)
+        {
+    
+            if ( droitId == default )
+            {
+                _logger.LogError("Droitid is null");
+                throw new DroitNotFoundException();
+            }
+            
+            var droit = await _droitService.GetDroitAsync(droitId);
+    
+            // Send submission confirmed email 
+            await _letterService.SendSubmissionConfirmationEmailAsync(droit);
+        }
+
+        
 
     public async Task<WreckMaterial?> SaveWreckMaterialReportAsync(
         SubmittedWreckMaterialDto wmReport)

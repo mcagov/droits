@@ -8,10 +8,10 @@ namespace Droits.Helpers;
 public static class LetterContentHelper
 { 
     
-    public static string GetReportConfirmedEmailBodyAsync(Droit droit, SubmittedReportDto report, string templateBody)
+    public static string GetReportConfirmedEmailBodyAsync(Droit droit, string templateBody)
     {
 
-        var submittedWreckName = report.VesselName.ValueOrEmpty();
+        var submittedWreckName = droit.ReportedWreckName.ValueOrEmpty();
 
         var itemsReportedSection = BuildItemsReportedSection(droit, submittedWreckName ?? string.Empty);
 

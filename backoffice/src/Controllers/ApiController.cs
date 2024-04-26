@@ -31,7 +31,7 @@ public class ApiController : Controller
     [HttpPost]
     [AllowAnonymous]
     [RequestTimeout(int.MaxValue)]
-    public async Task<IActionResult> Send([FromBody] SubmittedReportDto report, [FromHeader(Name = "X-API-Key")] string apiKey)
+    public async Task<IActionResult> SubmitDroit([FromBody] SubmittedReportDto report, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
         if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
         {
@@ -62,7 +62,7 @@ public class ApiController : Controller
     
     [HttpPost]
     [AllowAnonymous]
-    public async Task<IActionResult> SendWreckMaterial([FromBody] SubmittedWreckMaterialDto wreckMaterialReport, [FromHeader(Name = "X-API-Key")] string apiKey)
+    public async Task<IActionResult> SubmitWreckMaterial([FromBody] SubmittedWreckMaterialDto wreckMaterialReport, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
         if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
         {
@@ -94,6 +94,30 @@ public class ApiController : Controller
 
     }
  
+    
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> SendConfirmationEmail([FromBody] Guid droitId, [FromHeader(Name = "X-API-Key")] string apiKey)
+        {
+            if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
+            {
+                return Unauthorized("Invalid API key");
+            }
+            
+            try
+            {
+                await _service.SendConfirmationEmail(droitId);
+            }
+            catch ( Exception e )
+            {
+                _logger.LogError($"Confirmation email could not be send for droit {droitId}. - {e}");
+                return BadRequest(new { error = $"Error sending Confirmation email - {e.Message}" });
+            }
+
+            return Ok();
+        }
+     
+        
     [HttpGet]
     [AllowAnonymous]
     [RequestTimeout(int.MaxValue)]
