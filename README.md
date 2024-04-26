@@ -7,7 +7,7 @@
 The Droits reporting service enables:
 
 - Salvage owners to report their findings with the Maritime & CoastGuard Agency
-- Receivers of Wreck to manage these reports 
+- Receivers of Wreck to manage these reports
 
 It comprises two applications
 
@@ -27,12 +27,13 @@ unsure.
 |-------------------------------------------------------------------|-------------|
 | [dotnet](https://learn.microsoft.com/en-us/dotnet/)               | 8.x         |
 | [nvm](https://github.com/nvm-sh/nvm)                              | 0.39.5      |
+| [node](https://github.com/nvm-sh/nvm)                             | 14.19.2     |
 | [terraform](https://www.terraform.io/)                            | 1.4.6       |
 | [Docker desktop](https://www.docker.com/products/docker-desktop/) | Latest      |
 
 ## Infrastructure-as-code
 
-The [Terraform](./terraform) directory contains the Terraform code for managing the infrastructure for the Droits 
+The [Terraform](./terraform) directory contains the Terraform code for managing the infrastructure for the Droits
 reporting service.
 
 ## Deployment
