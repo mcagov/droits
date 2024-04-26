@@ -1,14 +1,14 @@
 ecs_cluster_name          = "droits-cluster"
 webapp_fargate_cpu        = 512
 webapp_fargate_memory     = 1024
-backoffice_fargate_cpu    = 512
-backoffice_fargate_memory = 1024
+backoffice_fargate_cpu    = 1024
+backoffice_fargate_memory = 2048
 
 db_name              = "droits-db"
 db_allocated_storage = 50
-db_delete_protection = false
-db_instance_class    = "db.t3.micro"
-db_storage_encrypted = false
+db_delete_protection = true
+db_instance_class    = "db.t3.medium"
+db_storage_encrypted = true
 
 aws_region = "eu-west-2"
 
