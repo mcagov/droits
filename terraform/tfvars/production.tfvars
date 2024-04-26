@@ -7,7 +7,7 @@ backoffice_fargate_memory = 6144
 db_name              = "droits-db"
 db_allocated_storage = 150
 db_delete_protection = true
-db_instance_class    = "db.t3.medium"
+db_instance_class    = "db.t3.large"
 db_storage_encrypted = true
 
 aws_region = "eu-west-2"
