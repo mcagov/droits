@@ -21,21 +21,25 @@ public static class StringMapperExtensions
     
     public static DateTime? AsDateTime(this string? dateString)
     {
-
-        if ( string.IsNullOrEmpty(dateString) )
+        if (string.IsNullOrEmpty(dateString))
         {
-            return null; 
+            return null;
         }
-        
-        if (DateTime.TryParseExact(dateString, "yyyy-MM-dd", null, DateTimeStyles.None, out var fixedFormatResult))
-        {
-            return fixedFormatResult;
-        }
+        string[] formats = { "yyyy-MM-dd", "dd/MM/yyyy", "dd/MM/yy"};
 
-        if (DateTime.TryParse(dateString, null, DateTimeStyles.None, out var anyFormatResult))
+        foreach (var format in formats)
+        {
+            if (DateTime.TryParseExact(dateString, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out var result))
+            {
+                return result;
+            }
+        }
+       
+        if (DateTime.TryParse(dateString, CultureInfo.InvariantCulture, DateTimeStyles.None, out var anyFormatResult))
         {
             return anyFormatResult;
         }
+
         return null;
     }
 

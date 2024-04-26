@@ -4,7 +4,7 @@ using Droits.Models.DTOs.Imports;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 
-namespace Droits.Data.Mappers
+namespace Droits.Data.Mappers.Imports
 {
     public class WreckMaterialRowDtoMappingProfile : Profile
     {

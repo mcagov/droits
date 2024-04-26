@@ -20,6 +20,8 @@ public interface ISalvorRepository
     Task<Salvor?> GetSalvorByEmailAddressWithAssociationsAsync(string? salvorInfoEmail);
     Task<Salvor?> GetSalvorByEmailAddressAsync(string? salvorInfoEmail);
     Task<Salvor> GetSalvorByPowerappsIdAsync(string powerappsId);
+    Task<Salvor?> GetSalvorByNameAndAddressAsync(string? name, Address? address);
+
 }
 
 public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
@@ -78,5 +80,27 @@ public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
 
         return salvor;
     }
+    
+    
+    public async Task<Salvor?> GetSalvorByNameAndAddressAsync(string? name, Address? address)
+    {
+        if (string.IsNullOrEmpty(name) || address == null || string.IsNullOrWhiteSpace(address.Line1))
+        {
+            return null;
+        }
+
+        var foundSalvor = await Context.Salvors
+            .FirstOrDefaultAsync(s =>
+                string.Equals(s.Name.Trim().ToLower(), name.Trim().ToLower()) &&
+                !string.IsNullOrWhiteSpace(s.Address.Line1) &&
+               s.Address.Line1.Equals(s.Address.Line1)
+                &&
+                !string.IsNullOrWhiteSpace(s.Address.Postcode) &&
+                s.Address.Postcode.Equals(s.Address.Postcode)
+            );
+
+        return foundSalvor;
+    }
+
 
 }

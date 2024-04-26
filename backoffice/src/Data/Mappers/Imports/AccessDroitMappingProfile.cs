@@ -1,13 +1,12 @@
 using AutoMapper;
 using Droits.Helpers.Extensions;
-using Droits.Models.DTOs;
 using Droits.Models.DTOs.Imports;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
-namespace Droits.Data.Mappers
+namespace Droits.Data.Mappers.Imports
 {
     public class AccessDroitMappingProfile : Profile
     {
@@ -43,28 +42,28 @@ namespace Droits.Data.Mappers
                         src.SalvageAwardClaimed.AsBoolean()))
                 .ForMember(dest => dest.ServicesDescription,
                     opt => opt.MapFrom(src =>
-                        src.NatureOfServices))
+                        src.NatureOfServices.ValueOrEmpty()))
                 .ForMember(dest => dest.ServicesDuration,
                     opt => opt.MapFrom(src =>
-                        src.Duration))
+                        src.Duration.ValueOrEmpty()))
                 .ForMember(dest => dest.ServicesEstimatedCost,
                     opt => opt.MapFrom(src =>
                         src.EstimatedCostOfServices.AsDouble()))
                 .ForMember(dest => dest.ReportedWreckName,
                     opt => opt.MapFrom(src =>
-                        src.WreckName))
+                        src.WreckName.ValueOrEmpty()))
                 .ForMember(dest => dest.ReportedWreckYearSunk,
                     opt => opt.MapFrom(src =>
                         src.YearOfLoss.AsInt()))
                 .ForMember(dest => dest.ReportedWreckConstructionDetails,
                     opt => opt.MapFrom(src =>
-                        src.WreckConstructionDetails))
+                        src.WreckConstructionDetails.ValueOrEmpty()))
                 .ForMember(dest => dest.Agent,
                     opt => opt.MapFrom(src =>
-                        src.Agent))
+                        src.Agent.ValueOrEmpty()))
                 .ForMember(dest => dest.District,
                     opt => opt.MapFrom(src =>
-                        src.District))
+                        src.District.ValueOrEmpty()))
                 .ForMember(dest => dest.ClosedDate,
                     opt => opt.MapFrom(src =>
                         src.ClosureOfDroits.IsNullOrEmpty()
@@ -80,13 +79,13 @@ namespace Droits.Data.Mappers
                 ))
                 .ForMember(dest => dest.LegacyRemarks,
                     opt => opt.MapFrom(src =>
-                        src.Remarks))
+                        src.Remarks.ValueOrEmpty()))
                 .ForMember(dest => dest.LegacyFileReference,
                     opt => opt.MapFrom(src =>
-                        src.FileRef))
+                        src.FileRef.ValueOrEmpty()))
                 .ForMember(dest => dest.RecoveredFromLegacy,
                     opt => opt.MapFrom(src =>
-                        src.RecoveredFrom))
+                        src.RecoveredFrom.ValueOrEmpty()))
                 .ForMember(dest => dest.RecoveredFrom,
                     opt => opt.MapFrom(src =>
                         src.RecoveredFrom != null ? src.RecoveredFrom.AsRecoveredFromEnum() : null))

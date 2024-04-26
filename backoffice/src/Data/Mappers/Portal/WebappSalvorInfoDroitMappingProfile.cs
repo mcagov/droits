@@ -3,7 +3,7 @@ using Droits.Helpers.Extensions;
 using Droits.Models.DTOs.Webapp;
 using Droits.Models.Entities;
 
-namespace Droits.Data.Mappers
+namespace Droits.Data.Mappers.Portal
 {
     public class WebappSalvorInfoDroitMappingProfile : Profile
     {
@@ -47,7 +47,7 @@ namespace Droits.Data.Mappers
                     opt => opt.MapFrom(src => src.ServicesDescription))
                 .ForMember(dest => dest.SalvageAwardClaimed,
                     opt => opt.MapFrom(src => src.SalvageAwardClaimed))
-            .ForPath(dest => dest.WreckMaterials, opt => opt.MapFrom(src => src.WreckMaterials));
+                .ForPath(dest => dest.WreckMaterials, opt => opt.MapFrom(src => src.WreckMaterials));
         }
     }
 }

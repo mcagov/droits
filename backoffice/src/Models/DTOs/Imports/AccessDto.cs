@@ -180,7 +180,7 @@ public class AccessDto
 
         if ( string.IsNullOrEmpty(Address) )
         {
-            return null;
+            return new Address();
         }
         
         var address = Address.AsAddress();
@@ -194,16 +194,16 @@ public class AccessDto
     }
     
 
-    public AddressForm? GetStorageAddress()
+    public Address? GetStorageAddress()
     {
         if ( string.IsNullOrEmpty(WhereSecured) )
         {
-            return null;
+            return new Address();
         }
 
         var storageAddress = WhereSecured.AsAddress();
         
-        return storageAddress!=null ? new AddressForm(storageAddress) : null;
+        return storageAddress;
     }
     
  
@@ -229,9 +229,6 @@ public class AccessDto
 
         var cleanedDepth =
             new string(input.Where(c => char.IsDigit(c) || c == '-' || c == '.').ToArray());
-
-        if ( string.IsNullOrEmpty(cleanedDepth) )
-        var cleanedDepth = new string(Depth.Where(c => char.IsDigit(c) || c == '-' || c == '.').ToArray());
 
         if ( string.IsNullOrEmpty(cleanedDepth) )
         {
