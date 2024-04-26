@@ -92,8 +92,11 @@ public class ApiService : IApiService
             return null;
             
         }
-        
-        // await AppendWreckMaterialToDroitOriginalSubmissionAsync(wreckMaterial, wmReport);
+
+        if ( wmReport.AppendToOriginalSubmission )
+        {
+            await AppendWreckMaterialToDroitOriginalSubmissionAsync(wreckMaterial, wmReport);
+        }
 
         return wreckMaterial;
     }

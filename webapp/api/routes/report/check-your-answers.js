@@ -121,6 +121,10 @@ export default function (app) {
 
         var wreckMaterials = data['wreck-materials'];
 
+        const appendToOriginalSubmission = wreckMaterials && wreckMaterials.length <= 5;
+
+        console.log(`appending to original submission: ${appendToOriginalSubmission}`);
+
         console.dir(wreckMaterials);
 
         data['wreck-materials'] = [];
@@ -149,7 +153,7 @@ export default function (app) {
 
             for (const wreckMaterial of wreckMaterials) {
               wreckMaterial['droit-id'] = droitId;
-
+              wreckMaterial['append-to-original-submission'] = appendToOriginalSubmission;
               console.log("Sending wm");
               try {
                 const wmResponse = await axios.post(
