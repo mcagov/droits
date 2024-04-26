@@ -1,10 +1,14 @@
 # DROITS CI/CD Workflows
 
-- Explain that each  env is in different AWS account so there's not promotion of dcker images e.g from staging to prd
-- Each pipeline generates fresh docker images and pushes them to env/account specific ECR repository
-- Reuse of pipeline.yml
-- Explain inputs
-- Explain secrets
+Each environment has it's own workflow dispatch trigger
+- Dev pipeline deploys on a push into main
+- Staging on a release set to "pre-release" (see handbook for further details)
+- Production on a release set to "release"
+
+Each pipeline generates fresh docker images and pushes them to env/account specific ECR repository
+
+The environments set their own input variables (telling the shared pipeline workflow what environment to use) and
+inject the secrets from their own environment in github secrets (under Settings/Environment in the repository)
 
 Step 1 : Terraform lint (checks terraform before starting)
 Stage 2: Trigger webapp & backoffice pipelines concurrently :
