@@ -62,6 +62,7 @@ public class ApiController : Controller
     
     [HttpPost]
     [AllowAnonymous]
+    [RequestTimeout(int.MaxValue)]
     public async Task<IActionResult> SubmitWreckMaterial([FromBody] SubmittedWreckMaterialDto wreckMaterialReport, [FromHeader(Name = "X-API-Key")] string apiKey)
     {
         if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
@@ -97,6 +98,7 @@ public class ApiController : Controller
     
         [HttpPost]
         [AllowAnonymous]
+        [RequestTimeout(int.MaxValue)]
         public async Task<IActionResult> SendConfirmationEmail([FromBody] Guid droitId, [FromHeader(Name = "X-API-Key")] string apiKey)
         {
             if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
