@@ -150,6 +150,12 @@ public class WreckMaterialService : IWreckMaterialService
              return null;
          }
 
+         if ( wmReport.DroitId == null)
+         {            
+             _logger.LogError("No Droit for Wreck Material Submitted");
+             return null;
+         }
+         
          var wreckMaterial = _mapper.Map<WreckMaterial>(wmReport);
           wreckMaterial.DroitId = wmReport.DroitId.Value;
 

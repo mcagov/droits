@@ -59,11 +59,10 @@ public class ApiService : IApiService
     
             if ( droitId == default )
             {
-                _logger.LogError("Droitid is null");
-                throw new DroitNotFoundException();
+                throw new DroitNotFoundException("Invalid Droit id for Confirmation email");
             }
             
-            var droit = await _droitService.GetDroitAsync(droitId);
+            var droit = await _droitService.GetDroitWithAssociationsAsync(droitId);
     
             // Send submission confirmed email 
             await _letterService.SendSubmissionConfirmationEmailAsync(droit);
