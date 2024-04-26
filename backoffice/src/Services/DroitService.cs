@@ -157,6 +157,7 @@ public class DroitService : IDroitService
         if ( droit is { Status: DroitStatus.Closed, ClosedDate: null })
         {
             droit.ClosedDate = DateTime.UtcNow;
+            droit.TriageNumber = null;
         }
 
         return await _repo.AddAsync(droit, updateLastModified);
@@ -174,6 +175,8 @@ public class DroitService : IDroitService
         if ( droit is { Status: DroitStatus.Closed, ClosedDate: null })
         {
             droit.ClosedDate = DateTime.UtcNow;
+            droit.TriageNumber = null;
+
         }
         
         return await _repo.UpdateAsync(droit);
@@ -236,6 +239,8 @@ public class DroitService : IDroitService
         if ( droit.Status != DroitStatus.Closed && status == DroitStatus.Closed )
         {
             droit.ClosedDate = DateTime.UtcNow;
+            droit.TriageNumber = null;
+
         }
         
         droit.Status = status;
