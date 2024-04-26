@@ -112,7 +112,7 @@ public class ApiService : IApiService
         
         if ( droitReport == null ) return;
 
-        droitReport.WreckMaterials = droitReport.WreckMaterials ??= new List<SubmittedWreckMaterialDto>();
+        droitReport.WreckMaterials ??= new List<SubmittedWreckMaterialDto>();
         droitReport.WreckMaterials.Add(wmReport);
         
         droit.OriginalSubmission = JsonConvert.SerializeObject(droitReport);
