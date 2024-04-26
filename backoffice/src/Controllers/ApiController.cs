@@ -113,7 +113,7 @@ public class ApiController : Controller
             catch ( Exception e )
             {
                 _logger.LogError($"Confirmation email could not be send for droit {droitId}. - {e}");
-                return BadRequest(new { error = $"Error sending Confirmation email - {e.Message}" });
+                return Ok(new { error = $"Error sending Confirmation email - {e.Message}" });
             }
 
             return Ok();

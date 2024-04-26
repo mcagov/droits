@@ -87,11 +87,14 @@ public class ApiService : IApiService
         
         var wreckMaterial = await _wreckMaterialService.CreateWreckMaterialAsync(wmReport);
 
-        if ( wreckMaterial == null ) return wreckMaterial;
+        if ( wreckMaterial == null )
+        {
+            return null;
+            
+        }
+        
+        // await AppendWreckMaterialToDroitOriginalSubmissionAsync(wreckMaterial, wmReport);
 
-        await AppendWreckMaterialToDroitOriginalSubmissionAsync(wreckMaterial, wmReport);
-        
-        
         return wreckMaterial;
     }
 
