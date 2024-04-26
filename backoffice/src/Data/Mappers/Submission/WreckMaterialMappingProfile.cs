@@ -10,6 +10,7 @@ namespace Droits.Data.Mappers.Submission
         public WreckMaterialMappingProfile()
         {
             CreateMap<SubmittedWreckMaterialDto, WreckMaterial>()
+                .ForMember(dest => dest.DroitId, opt => opt.MapFrom(src => src.DroitId))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Description == null ? string.Empty : src.Description.ValueOrEmpty()))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity!= null? int.Parse(src.Quantity): 0))
                 .ForMember(dest => dest.SalvorValuation, opt => opt.MapFrom(src => src.Value ?? 0.0d))

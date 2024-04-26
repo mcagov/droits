@@ -15,7 +15,7 @@ public interface IWreckMaterialService
 {
     Task<WreckMaterial> SaveWreckMaterialAsync(WreckMaterialForm wmForm);
     Task<WreckMaterial> AddWreckMaterialAsync(WreckMaterial wreckMaterial);
-
+    Task<WreckMaterial?> CreateWreckMaterialAsync(SubmittedWreckMaterialDto? wmReport);
     Task<WreckMaterial>  GetWreckMaterialAsync(Guid id);
     Task DeleteWreckMaterialForDroitAsync(Guid droitId, IEnumerable<Guid> wmToKeep);
     Task CreateWreckMaterialsAsync(SubmittedReportDto report, Guid droitId);
@@ -142,6 +142,27 @@ public class WreckMaterialService : IWreckMaterialService
          }
      }
 
+     public async Task<WreckMaterial?> CreateWreckMaterialAsync(SubmittedWreckMaterialDto? wmReport)
+     {
+         if ( wmReport == null )
+         {
+             _logger.LogError("No Wreck Material Submitted");
+             return null;
+         }
+
+         var wreckMaterial = _mapper.Map<WreckMaterial>(wmReport);
+          wreckMaterial.DroitId = wmReport.DroitId.Value;
+
+          wreckMaterial = await AddWreckMaterialAsync(wreckMaterial);
+
+             if ( wmReport.Image != null )
+             {
+                 await SaveSubmittedImageAsync(wreckMaterial.Id, wmReport.Image);
+             }
+
+             return wreckMaterial;
+     }
+     
      public async Task CreateWreckMaterialsAsync(SubmittedReportDto report, Guid droitId)
      {
          if ( report.WreckMaterials == null || !report.WreckMaterials.Any() )
@@ -152,6 +173,8 @@ public class WreckMaterialService : IWreckMaterialService
 
          foreach (var wreckMaterialSubmission in report.WreckMaterials)
          {
+             wreckMaterialSubmission.DroitId = droitId;
+             await CreateWreckMaterialAsync(wreckMaterialSubmission);
              var wreckMaterial = _mapper.Map<WreckMaterial>(wreckMaterialSubmission);
              wreckMaterial.DroitId = droitId;
 

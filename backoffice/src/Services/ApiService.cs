@@ -10,6 +10,8 @@ public interface IApiService
 {
 
     Task<Droit> SaveDroitReportAsync(SubmittedReportDto report);
+    Task<WreckMaterial?> SaveWreckMaterialReportAsync(SubmittedWreckMaterialDto wmReport);
+    
     Task<SalvorInfoDto> GetSalvorInfoAsync(string salvorEmail);
     Task<SalvorInfoReportDto> GetReportByIdAsync(Guid droitId);
 }
@@ -52,6 +54,19 @@ public class ApiService : IApiService
         
         return droit;
     }
+
+
+    public async Task<WreckMaterial?> SaveWreckMaterialReportAsync(
+        SubmittedWreckMaterialDto wmReport)
+    {
+        if ( wmReport.DroitId == default )
+        {
+            throw new DroitNotFoundException("Invalid Droit id for Wreck Material");
+        }
+        
+        return await _wreckMaterialService.CreateWreckMaterialAsync(wmReport);
+    }
+
     
     private async Task<Droit> MapSubmittedDataAsync(SubmittedReportDto report)
     {

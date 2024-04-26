@@ -47,14 +47,48 @@ public class ApiController : Controller
                 new
                 {
                     reference = savedDroit.Reference,
-                    salvorId = savedDroit.SalvorId,
-                    originalSubmission = savedDroit.OriginalSubmission
+                    droitId = savedDroit.Id,
+                    salvorId = savedDroit.SalvorId
                 }
             );
         }
         catch ( Exception e )
         {
             _logger.LogError("Droit could not be saved" + e);
+            return NotFound();
+        }
+
+    }
+    
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> SendWreckMaterial([FromBody] SubmittedWreckMaterialDto wreckMaterialReport, [FromHeader(Name = "X-API-Key")] string apiKey)
+    {
+        if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
+        {
+            return Unauthorized("Invalid API key");
+        }
+        
+        try
+        {
+            var savedWm = await _service.SaveWreckMaterialReportAsync(wreckMaterialReport);
+
+            if ( savedWm == null )
+            {
+                throw new WreckMaterialNotFoundException("Wreck material could not be saved.");
+            }
+            return Json
+            (
+                new
+                {
+                    wreckMaterialId = savedWm.Id,
+                    droitId = savedWm.DroitId
+                }
+            );
+        }
+        catch ( Exception e )
+        {
+            _logger.LogError($"Wreck material could not be saved. - {e}");
             return NotFound();
         }
 
