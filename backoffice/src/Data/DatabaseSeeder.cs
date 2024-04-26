@@ -137,30 +137,41 @@ public static class DatabaseSeeder
 
     private static IEnumerable<Droit> GetDroits(IEnumerable<Wreck> wrecks, IEnumerable<Salvor> salvors, IEnumerable<ApplicationUser> users)
     {
-        return Enumerable.Range(0, 50)
-            .Select(i => SeedDroit(wrecks.Any()?Faker.Random.ArrayElement(wrecks.ToArray()):null,
+        var droitReferences = new HashSet<string>();
+        return Enumerable.Range(0, 15000)
+            .Select(i => SeedDroit(droitReferences, wrecks.Any()?Faker.Random.ArrayElement(wrecks.ToArray()):null,
                 Faker.Random.ArrayElement(salvors.ToArray()),Faker.Random.ArrayElement(users.ToArray()) ))
             .ToList();
     }
-
-
-    private static Droit SeedDroit(Wreck? wreck, Salvor salvor, ApplicationUser user)
+    
+    private static Droit SeedDroit(HashSet<string> droitReferences, Wreck? wreck, Salvor salvor, ApplicationUser user)
     {
-        var reportedDate = Faker.Date.Past(3, DateTime.UtcNow);
 
+        var reportedDate = Faker.Date.Past(50, DateTime.UtcNow);
+        var status = Enum.GetValues(typeof(DroitStatus))
+            .OfType<DroitStatus>()
+            .MinBy(x => Guid.NewGuid());
+
+        var reference = $"{Faker.Random.Int(0, 9999):000}/{reportedDate:yy}";
+        
+        while ( string.IsNullOrEmpty(reference) || droitReferences.Contains(reference) )
+        {
+            reference = $"{Faker.Random.Int(0, 9999):000}/{reportedDate:yy}";
+        }
+
+        droitReferences.Add(reference);
+        
         return new Droit
         {
             Id = Guid.NewGuid(),
             AssignedToUserId = user.Id,
-            Reference = $"{Faker.Random.Int(0, 99999):000}/" +
-                        $"{reportedDate:yy}",
-            Status = Enum.GetValues(typeof(DroitStatus))
-                .OfType<DroitStatus>()
-                .MinBy(x => Guid.NewGuid()),
-            TriageNumber = Faker.Random.Int(1, 5).OrNull(Faker, 0.3f),
+            Reference = reference,
+            Status = status,
+            TriageNumber = Faker.Random.Int(1, 5).OrNull(Faker, 0.1f),
             ReportedDate = reportedDate,
             OriginalSubmission = GenerateOriginalSubmission(),
             DateFound = Faker.Date.Past(2, reportedDate),
+            ClosedDate = status == DroitStatus.Closed ? Faker.Date.Between(reportedDate, DateTime.Now): null,
             Created = DateTime.UtcNow,
             LastModified = DateTime.UtcNow,
             LastModifiedByUserId = user.Id,

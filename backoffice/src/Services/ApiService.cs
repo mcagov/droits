@@ -3,6 +3,7 @@ using Droits.Exceptions;
 using Droits.Models.DTOs;
 using Droits.Models.DTOs.Webapp;
 using Droits.Models.Entities;
+using Newtonsoft.Json;
 
 namespace Droits.Services;
 
@@ -10,8 +11,11 @@ public interface IApiService
 {
 
     Task<Droit> SaveDroitReportAsync(SubmittedReportDto report);
+    Task<WreckMaterial?> SaveWreckMaterialReportAsync(SubmittedWreckMaterialDto wmReport);
+    
     Task<SalvorInfoDto> GetSalvorInfoAsync(string salvorEmail);
     Task<SalvorInfoReportDto> GetReportByIdAsync(Guid droitId);
+    Task SendConfirmationEmail(Guid droitId);
 }
 
 public class ApiService : IApiService
@@ -47,10 +51,72 @@ public class ApiService : IApiService
         
         var droit = await MapSubmittedDataAsync(report);
 
-        // Send submission confirmed email 
-        await _letterService.SendSubmissionConfirmationEmailAsync(droit, report);
-        
         return droit;
+    }
+
+    
+        public async Task SendConfirmationEmail(Guid droitId)
+        {
+    
+            if ( droitId == default )
+            {
+                throw new DroitNotFoundException("Invalid Droit id for Confirmation email");
+            }
+            
+            var droit = await _droitService.GetDroitWithAssociationsAsync(droitId);
+    
+            // Send submission confirmed email 
+            await _letterService.SendSubmissionConfirmationEmailAsync(droit);
+        }
+
+        
+
+    public async Task<WreckMaterial?> SaveWreckMaterialReportAsync(
+        SubmittedWreckMaterialDto wmReport)
+    {
+
+        if ( wmReport == null )
+        {
+            throw new WreckMaterialNotFoundException("Wreck Material Submission is Null");
+        }
+        
+        if ( wmReport.DroitId == default )
+        {
+            throw new DroitNotFoundException("Invalid Droit id for Wreck Material");
+        }
+        
+        var wreckMaterial = await _wreckMaterialService.CreateWreckMaterialAsync(wmReport);
+
+        if ( wreckMaterial == null ) return wreckMaterial;
+
+        await AppendWreckMaterialToDroitOriginalSubmissionAsync(wreckMaterial, wmReport);
+        
+        
+        return wreckMaterial;
+    }
+
+
+    private async Task AppendWreckMaterialToDroitOriginalSubmissionAsync(
+        WreckMaterial wreckMaterial, SubmittedWreckMaterialDto wmReport)
+    {
+        var droit = await _droitService.GetDroitAsync(wreckMaterial.DroitId);
+
+        var originalSubmission = droit.OriginalSubmission;
+        
+        if (string.IsNullOrEmpty(originalSubmission))
+        {
+            return;
+        }
+
+        var droitReport = JsonConvert.DeserializeObject<SubmittedReportDto>(originalSubmission);
+        
+        if ( droitReport == null ) return;
+
+        droitReport.WreckMaterials ??= new List<SubmittedWreckMaterialDto>();
+        droitReport.WreckMaterials.Add(wmReport);
+        
+        droit.OriginalSubmission = JsonConvert.SerializeObject(droitReport);
+        await _droitService.SaveDroitAsync(droit);
     }
     
     private async Task<Droit> MapSubmittedDataAsync(SubmittedReportDto report)

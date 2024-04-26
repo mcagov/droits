@@ -40,7 +40,7 @@ public class MigrationController : BaseController
     
     
     [HttpPost]
-    [RequestTimeout(600000)]
+    [RequestTimeout(int.MaxValue)]
     public async Task<IActionResult> ProcessTriageFile(IFormFile? file)
     {
         if ( file == null || file.Length == 0 )
@@ -79,8 +79,8 @@ public class MigrationController : BaseController
     
     
     [HttpPost]
-    [RequestTimeout(600000)]
-    public async Task<IActionResult> ProcessAccessFile(IFormFile? file)
+    [RequestTimeout(int.MaxValue)]
+    public async Task<IActionResult> ProcessAccessFileUpload(IFormFile? file)
     {
         if ( file == null || file.Length == 0 )
         {
@@ -90,14 +90,7 @@ public class MigrationController : BaseController
         
         try
         {
-            var reader = new StreamReader(file.OpenReadStream());
-            var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-            var records = csv.GetRecords<AccessDto>().ToList();
-
-            var result = await _service.HandleAccessCsvAsync(records);
-            
-            Console.Write($"records {result} uploaded");
-            
+            var result = await _service.ProcessAccessFile(file);
             return View("UploadAccessFile", result);
         }
         catch ( Exception e )
@@ -107,7 +100,34 @@ public class MigrationController : BaseController
             return View("UploadAccessFile",new AccessUploadResultDto());
         }
 
+    }
+    
+    [HttpPost]
+    [AllowAnonymous]
+    [RequestTimeout(int.MaxValue)]
+    public async Task<IActionResult> ProcessAccessFileApi(IFormFile? file, [FromHeader(Name = "X-API-Key")] string apiKey)
+    {
         
+        if (!RequestHelper.IsValidApiKey(apiKey, _configuration))
+        {
+            return Unauthorized("Invalid API key");
+        }
+        
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest(new { error = "Please select a file" });
+        }
+
+        try
+        {
+            var result = await _service.ProcessAccessFile(file);
+            return Json(result);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError($"Error uploading Access File - {e.Message}");
+            return BadRequest(new { error = $"Error uploading Access File - {e.Message}" });
+        }
     }
     
     

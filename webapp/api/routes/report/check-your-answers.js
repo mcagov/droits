@@ -1,7 +1,7 @@
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
-import {formatValidationErrors} from '../../../utilities';
+import { formatValidationErrors } from '../../../utilities';
 
 const { body, validationResult } = require('express-validator');
 var cloneDeep = require('lodash.clonedeep');
@@ -42,17 +42,28 @@ export default function (app) {
         // If user has chosen to provide the location in text form rather than coordinates,
         // format the text so it can be concatenated with any (optional) additional details/description text
         if (textLocation.length) {
-          formattedTextLocation = textLocation.endsWith(".") ? textLocation : textLocation + ".";
+          formattedTextLocation = textLocation.endsWith('.')
+            ? textLocation
+            : textLocation + '.';
         }
-        let concatenatedText = formattedTextLocation + " " + locationDescription;
-        const locationDetails = formattedTextLocation !== undefined ? concatenatedText : locationDescription;
+        let concatenatedText =
+          formattedTextLocation + ' ' + locationDescription;
+        const locationDetails =
+          formattedTextLocation !== undefined
+            ? concatenatedText
+            : locationDescription;
 
         console.dir(req.session.data);
         console.dir(sd);
         // Data obj to send to db
         const data = {
           'report-date': `${sd['report-date']['year']}-${sd['report-date']['month']}-${sd['report-date']['day']}`,
-          'wreck-find-date': `${sd['wreck-find-date']['year']}-${sd['wreck-find-date']['month'].padStart(2, '0')}-${sd['wreck-find-date']['day'].padStart(2, '0')}`,
+          'wreck-find-date': `${sd['wreck-find-date']['year']}-${sd[
+            'wreck-find-date'
+          ]['month'].padStart(2, '0')}-${sd['wreck-find-date']['day'].padStart(
+            2,
+            '0'
+          )}`,
           latitude: sd['location']['location-standard']['latitude'],
           longitude: sd['location']['location-standard']['longitude'],
           'location-radius': sd['location']['location-standard']['radius'],
@@ -82,17 +93,21 @@ export default function (app) {
         for (const prop in sd['property']) {
           if (sd['property'].hasOwnProperty(prop)) {
             const innerObj = sd['property'][prop];
-            const filePath = path.resolve(__dirname, '../../../uploads/', innerObj.image);
+            const filePath = path.resolve(
+              __dirname,
+              '../../../uploads/',
+              innerObj.image
+            );
 
             try {
               const imageData = await fs.promises.readFile(filePath, 'base64');
 
               innerObj.image = {
                 filename: innerObj.originalFilename,
-                data: imageData
+                data: imageData,
               };
-              
-              if(innerObj.value === ""){
+
+              if (innerObj.value === '') {
                 innerObj.value = null;
               }
 
@@ -103,29 +118,86 @@ export default function (app) {
             }
           }
         }
-        
+
+        var wreckMaterials = data['wreck-materials'];
+
+        console.dir(wreckMaterials);
+
+        data['wreck-materials'] = [];
 
         try {
-          console.dir(JSON.stringify(data));
+          console.dir(data);
           const response = await axios.post(
-              `${process.env.API_ENDPOINT}/api/send`,
-            JSON.stringify(data),
+            `${process.env.API_ENDPOINT}/Api/SubmitDroit`,
+            data,
             {
-              headers: { 'content-type': 'application/json' , 'X-API-Key': process.env.API_KEY},
+              headers: {
+                'content-type': 'application/json',
+                'X-API-Key': process.env.API_KEY,
+              },
+              maxBodyLength: Infinity,
+              timeout: 300000
             }
           );
 
+
           if (response.status === 200) {
-
             let reference = response.data.reference;
+            let droitId = response.data.droitId;
+            console.log("Report submitted - " + reference + " - " + droitId);
 
-            console.dir(reference);
+
+            for (const wreckMaterial of wreckMaterials) {
+              wreckMaterial['droit-id'] = droitId;
+
+              console.log("Sending wm");
+              try {
+                const wmResponse = await axios.post(
+                  `${process.env.API_ENDPOINT}/Api/SubmitWreckMaterial`,
+                  wreckMaterial,
+                  {
+                    headers: {
+                      'content-type': 'application/json',
+                      'X-API-Key': process.env.API_KEY,
+                    },
+                    maxBodyLength: Infinity,
+                    timeout: 300000
+                  }
+                );
+
+                if (wmResponse.status !== 200) {
+                  console.error(
+                    `Posting Wreck Material to API failed for droitId ${droitId}! - ${wmResponse.status}`
+                  );
+                }
+              } catch (error) {
+                console.error(`Error posting wreck material to API: ${error}`);
+              }
+            }
+
+            console.log("Sending confirmation email");
+
+            await axios.post(
+              `${process.env.API_ENDPOINT}/Api/SendConfirmationEmail`,
+              droitId,
+              {
+                headers: {
+                  'content-type': 'application/json',
+                  'X-API-Key': process.env.API_KEY,
+                },
+                maxBodyLength: Infinity,
+                timeout: 300000
+              }
+            );
+
             // Clear session data
             req.session.data = {};
 
             return res.render('report/confirmation', { reference });
+          } else {
+            console.error(`Posting Droit to API failed! - ${response.status}`);
+            res.redirect('/error');
           }
-
         } catch (err) {
           console.error(err);
         }

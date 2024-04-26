@@ -3,7 +3,7 @@ using Droits.Helpers.Extensions;
 using Droits.Models.DTOs;
 using Droits.Models.Entities;
 
-namespace Droits.Data.Mappers
+namespace Droits.Data.Mappers.Submission
 {
     public class SalvorMappingProfile : Profile
     {
