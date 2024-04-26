@@ -10,8 +10,11 @@ public interface IApiService
 {
 
     Task<Droit> SaveDroitReportAsync(SubmittedReportDto report);
+    Task<WreckMaterial?> SaveWreckMaterialReportAsync(SubmittedWreckMaterialDto wmReport);
+    
     Task<SalvorInfoDto> GetSalvorInfoAsync(string salvorEmail);
     Task<SalvorInfoReportDto> GetReportByIdAsync(Guid droitId);
+    Task SendConfirmationEmail(Guid droitId);
 }
 
 public class ApiService : IApiService
@@ -47,11 +50,37 @@ public class ApiService : IApiService
         
         var droit = await MapSubmittedDataAsync(report);
 
-        // Send submission confirmed email 
-        await _letterService.SendSubmissionConfirmationEmailAsync(droit, report);
-        
         return droit;
     }
+
+    
+        public async Task SendConfirmationEmail(Guid droitId)
+        {
+    
+            if ( droitId == default )
+            {
+                throw new DroitNotFoundException("Invalid Droit id for Confirmation email");
+            }
+            
+            var droit = await _droitService.GetDroitWithAssociationsAsync(droitId);
+    
+            // Send submission confirmed email 
+            await _letterService.SendSubmissionConfirmationEmailAsync(droit);
+        }
+
+        
+
+    public async Task<WreckMaterial?> SaveWreckMaterialReportAsync(
+        SubmittedWreckMaterialDto wmReport)
+    {
+        if ( wmReport.DroitId == default )
+        {
+            throw new DroitNotFoundException("Invalid Droit id for Wreck Material");
+        }
+        
+        return await _wreckMaterialService.CreateWreckMaterialAsync(wmReport);
+    }
+
     
     private async Task<Droit> MapSubmittedDataAsync(SubmittedReportDto report)
     {

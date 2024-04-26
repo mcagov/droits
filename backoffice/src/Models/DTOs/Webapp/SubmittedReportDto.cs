@@ -81,6 +81,9 @@ public class SubmittedPersonalDto
 
 public class SubmittedWreckMaterialDto
 {
+    [JsonPropertyName("droit-id")]
+    public Guid? DroitId { get; set; }
+    
     [JsonPropertyName("description")]
     public string? Description { get; set; }
     

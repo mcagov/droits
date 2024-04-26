@@ -32,7 +32,7 @@ public interface ILetterService
     Task<Letter> SaveLetterAsync(LetterForm form);
     Task<LetterListView> GetApprovedUnsentLettersListViewForCurrentUserAsync(SearchOptions searchOptions);
     Task<LetterListView> AdvancedSearchAsync(LetterSearchForm form);
-    Task SendSubmissionConfirmationEmailAsync(Droit droit, SubmittedReportDto report);
+    Task SendSubmissionConfirmationEmailAsync(Droit droit);
     Task<byte[]> ExportAsync(LetterSearchForm form);
 }
 
@@ -281,7 +281,7 @@ public class LetterService : ILetterService
     }
 
 
-    public async Task SendSubmissionConfirmationEmailAsync(Droit droit, SubmittedReportDto report)
+    public async Task SendSubmissionConfirmationEmailAsync(Droit droit)
     {
 
         var salvor = droit.Salvor;
@@ -308,7 +308,7 @@ public class LetterService : ILetterService
         var templateBody = await GetTemplateBodyAsync(LetterType.ReportConfirmed, droit);
 
         confirmationLetter.Body =
-            LetterContentHelper.GetReportConfirmedEmailBodyAsync(droit, report, templateBody);
+            LetterContentHelper.GetReportConfirmedEmailBodyAsync(droit, templateBody);
 
         confirmationLetter = await _repo.AddAsync(confirmationLetter);
         await SendLetterAsync(confirmationLetter.Id);
