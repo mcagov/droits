@@ -25,7 +25,7 @@ public static class DatabaseSeeder
     public static void SeedData(DroitsContext dbContext)
     {
         dbContext.Database.EnsureCreated();
-        
+
             if ( !dbContext.Users.Any() )
             {
                 dbContext.Users.AddRange(GetUsers());
@@ -59,10 +59,10 @@ public static class DatabaseSeeder
                 {
                     dbContext.WreckMaterials.AddRange(GenerateWreckMaterials(droit.Id));
                 }
-                
+
                 dbContext.SaveChanges();
             }
-            
+
             if ( !dbContext.Letters.Any() )
             {
                 dbContext.Letters.AddRange(GetLetters(dbContext.Droits,
@@ -86,7 +86,7 @@ public static class DatabaseSeeder
 
     private static IEnumerable<Letter> GetLetters(IEnumerable<Droit> droits, ApplicationUser user)
     {
-        return Enumerable.Range(0, 15)
+        return Enumerable.Range(0, 1000)
             .Select(i => new Letter
             {
                 Id = new Guid(),
@@ -99,7 +99,7 @@ public static class DatabaseSeeder
                     .MinBy(x => Guid.NewGuid()),
                 Status = Enum.GetValues(typeof(LetterStatus))
                     .OfType<LetterStatus>()
-                    .Where(s => s != LetterStatus.Sent) 
+                    .Where(s => s != LetterStatus.Sent)
                     .MinBy(x => Guid.NewGuid()),
                 SenderUserId = new Guid(),
                 Created = DateTime.UtcNow,
@@ -112,7 +112,7 @@ public static class DatabaseSeeder
 
     private static IEnumerable<Salvor> GetSalvors(ApplicationUser user)
     {
-        return Enumerable.Range(0, 1)
+        return Enumerable.Range(0, 1000)
             .Select(i => new Salvor
             {
                 Id = Guid.NewGuid(),
@@ -138,12 +138,12 @@ public static class DatabaseSeeder
     private static IEnumerable<Droit> GetDroits(IEnumerable<Wreck> wrecks, IEnumerable<Salvor> salvors, IEnumerable<ApplicationUser> users)
     {
         var droitReferences = new HashSet<string>();
-        return Enumerable.Range(0, 15000)
+        return Enumerable.Range(0, 2000)
             .Select(i => SeedDroit(droitReferences, wrecks.Any()?Faker.Random.ArrayElement(wrecks.ToArray()):null,
                 Faker.Random.ArrayElement(salvors.ToArray()),Faker.Random.ArrayElement(users.ToArray()) ))
             .ToList();
     }
-    
+
     private static Droit SeedDroit(HashSet<string> droitReferences, Wreck? wreck, Salvor salvor, ApplicationUser user)
     {
 
@@ -153,14 +153,14 @@ public static class DatabaseSeeder
             .MinBy(x => Guid.NewGuid());
 
         var reference = $"{Faker.Random.Int(0, 9999):000}/{reportedDate:yy}";
-        
+
         while ( string.IsNullOrEmpty(reference) || droitReferences.Contains(reference) )
         {
             reference = $"{Faker.Random.Int(0, 9999):000}/{reportedDate:yy}";
         }
 
         droitReferences.Add(reference);
-        
+
         return new Droit
         {
             Id = Guid.NewGuid(),
@@ -179,12 +179,12 @@ public static class DatabaseSeeder
             WreckId = wreck?.Id,
             IsHazardousFind = Faker.Random.Bool(),
             IsDredge = Faker.Random.Bool(),
-            
+
             ReportedWreckName = Faker.Name.FullName(),
             ReportedWreckYearConstructed = Faker.Random.Int(1000,2000),
             ReportedWreckConstructionDetails = Faker.Lorem.Sentence(),
             ReportedWreckYearSunk = Faker.Random.Int(2000,2023),
-            
+
             SalvorId = salvor.Id,
 
             Latitude = wreck?.Latitude,
@@ -277,7 +277,7 @@ public static class DatabaseSeeder
                 AddressCounty = f.Address.County(),
                 AddressPostcode = f.Address.ZipCode()
             });
-        
+
         var originalSubmission = fakeData.Generate();
         return JsonConvert.SerializeObject(originalSubmission, Formatting.Indented);
 
@@ -286,7 +286,7 @@ public static class DatabaseSeeder
 
     private static IEnumerable<Wreck> GetWrecks(ApplicationUser user)
     {
-        return Enumerable.Range(0, 50)
+        return Enumerable.Range(0, 1000)
             .Select(i => new Wreck
             {
                 Id = Guid.NewGuid(),
@@ -318,8 +318,8 @@ public static class DatabaseSeeder
             })
             .ToList();
     }
-    
-    
+
+
     private static IEnumerable<ApplicationUser> GetUsers()
     {
         return Enumerable.Range(0, 5)
@@ -334,7 +334,7 @@ public static class DatabaseSeeder
             })
             .ToList();
     }
-    
+
     private static void SeedNotes(DroitsContext dbContext)
     {
         var notes = new List<Note>();
@@ -343,10 +343,10 @@ public static class DatabaseSeeder
         notes.AddRange(GenerateNotesForEntities(dbContext, dbContext.Wrecks, nameof(Note.WreckId)));
         notes.AddRange(GenerateNotesForEntities(dbContext, dbContext.Salvors, nameof(Note.SalvorId)));
         notes.AddRange(GenerateNotesForEntities(dbContext, dbContext.Letters, nameof(Note.LetterId)));
-    
+
         dbContext.Notes.AddRange(notes);
     }
-    
+
 
     private static IEnumerable<Note> GenerateNotesForEntities<T>(DroitsContext dbContext,
         IEnumerable<T> entities, string propertyName) where T : BaseEntity

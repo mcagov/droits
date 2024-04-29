@@ -40,9 +40,9 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 builder.Services.AddControllersWithViews(options =>
     {
         options.ModelBinderProviders.Insert(0, new DateTimeModelBinderProvider());
-        
+
         var adGroupId = builder.Configuration.GetSection("AzureAd:GroupId").Value ?? "";
-        
+
         var policy = new AuthorizationPolicyBuilder()
             .RequireAuthenticatedUser()
             .RequireClaim("groups", adGroupId)
@@ -149,7 +149,7 @@ builder.Services.AddLogging(loggingBuilder =>
 {
     loggingBuilder.AddConsole();
     loggingBuilder.SetMinimumLevel(LogLevel.Debug);
-    
+
 });
 
 // Forwarded Headers
@@ -202,9 +202,9 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<DroitsContext>();
     //This line drops the db, make sure this doesn't get released!!!
     // dbContext.Database.EnsureDeleted();
-    
+
     dbContext.Database.EnsureCreated();
-    // DatabaseSeeder.SeedData(dbContext);
+    DatabaseSeeder.SeedData(dbContext);
 }
 
 // Middleware Pipeline
