@@ -1,10 +1,6 @@
-using System.Collections;
 using System.Globalization;
-using AutoMapper;
 using CsvHelper.Configuration;
 using Droits.Models.DTOs.Exports;
-using Droits.Models.Entities;
-using Droits.Models.FormModels;
 using Droits.Models.FormModels.ExportFormModels;
 
 namespace Droits.Data.Mappers.CsvMappers;
@@ -24,6 +20,8 @@ public sealed class DroitsCsvMap : ClassMap<DroitExportDto>
             Map(d => d.LastModified).Ignore();
         if ( !droitExportForm.WreckName )
             Map(d => d.WreckName).Ignore();
+        if ( !droitExportForm.WreckOwner )
+            Map(d => d.WreckOwner).Ignore();
         if ( !droitExportForm.SalvorName )
             Map(d => d.SalvorName).Ignore();
         if ( !droitExportForm.AssignedTo )

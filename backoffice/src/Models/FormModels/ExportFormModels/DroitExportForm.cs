@@ -17,6 +17,10 @@ public class DroitExportForm
     public bool LastModified { get; set; } = true;
     [DisplayName("Verified Wreck Name")]
     public bool WreckName { get; set; } = true;
+    
+    [DisplayName("Verified Wreck Owner")]
+    public bool WreckOwner { get; set; } = true;
+    
     [DisplayName("Salvor Name")]
     public bool SalvorName { get; set; } = true;
     [DisplayName("Assigned To")]

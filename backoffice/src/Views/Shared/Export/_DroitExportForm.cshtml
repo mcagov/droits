@@ -44,16 +44,6 @@
 
     <div class="form-group row">
         <div class="col-md-8">
-            @Html.LabelFor(m => m.WreckName, new { @class = "col-form-label" })
-        </div>
-        <div class="col-md-4 form-switch">
-            @Html.CheckBoxFor(m => m.WreckName, new { @class = "form-check-input font-weight-bold" })
-        </div>
-    </div>
-
-
-    <div class="form-group row">
-        <div class="col-md-8">
             @Html.LabelFor(m => m.SalvorName, new { @class = "col-form-label" })
         </div>
         <div class="col-md-4 form-switch">
@@ -172,6 +162,25 @@
 <div class="col-md-4">
     
     <h6>Wreck</h6>
+    
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.WreckName, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.WreckName, new { @class = "form-check-input font-weight-bold" })
+        </div>
+    </div>
+        
+    <div class="form-group row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.WreckOwner, new { @class = "col-form-label" })
+        </div>
+        <div class="col-md-4 form-switch">
+            @Html.CheckBoxFor(m => m.WreckOwner, new { @class = "form-check-input font-weight-bold" })
+        </div>
+    </div>
+    
     <div class="form-group row">
         <div class="col-md-8">
             @Html.LabelFor(m => m.ReportedWreckName, new { @class = "col-form-label" })
