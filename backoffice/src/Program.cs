@@ -200,11 +200,15 @@ else
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<DroitsContext>();
-    //This line drops the db, make sure this doesn't get released!!!
-    // dbContext.Database.EnsureDeleted();
 
     dbContext.Database.EnsureCreated();
-    // DatabaseSeeder.SeedData(dbContext);
+
+    var shouldSeedDatabase = builder.Environment.IsDevelopment() && false;
+
+    if (shouldSeedDatabase)
+    {
+        DatabaseSeeder.SeedData(dbContext);
+    }
 }
 
 // Middleware Pipeline

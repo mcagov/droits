@@ -23,7 +23,8 @@ namespace Droits.Models.DTOs.Exports
             Reference = droit.Reference;
             Created = droit.Created.ToString("dd/MM/yyyy");
             LastModified = droit.LastModified.ToString("dd/MM/yyyy");
-            WreckName = droit.Wreck?.Name ?? "---";
+            WreckName = droit.Wreck?.Name ?? string.Empty;
+            WreckOwner = droit.Wreck != null ? $"{droit.Wreck?.OwnerName} {(!string.IsNullOrEmpty(droit.Wreck?.OwnerEmail) ? $"({droit.Wreck?.OwnerEmail})" : string.Empty)}" : string.Empty;
             SalvorName = droit.Salvor?.Name ?? "Unknown";
             AssignedTo = droit.AssignedToUser?.Name ?? "Unassigned";
             Status = droit.Status.GetDisplayName();
@@ -80,8 +81,7 @@ namespace Droits.Models.DTOs.Exports
         public string? Created { get; set; }
         [DisplayName("Last Modified")]
         public string? LastModified { get; set; }
-        [DisplayName("Verified Wreck Name")]
-        public string? WreckName { get; set; }
+
         [DisplayName("Salvor Name")]
         public string? SalvorName { get; set; }
         [DisplayName("Assigned To")]
@@ -111,7 +111,13 @@ namespace Droits.Models.DTOs.Exports
         
         [DisplayName("Is Dredge?")]
         public bool IsDredge { get; set; }
-
+        
+        [DisplayName("Verified Wreck Name")]
+        public string? WreckName { get; set; }
+        
+        [DisplayName("Verified Wreck Owner")]
+        public string? WreckOwner { get; set; }
+        
         [DisplayName("Reported Wreck Name")]
         public string? ReportedWreckName { get; set; }
 
