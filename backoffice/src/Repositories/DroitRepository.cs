@@ -47,7 +47,7 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
 
     public IQueryable<Droit> GetDroitsWithAssociations()
     {
-        return GetDroits()
+        return Context.Droits.OrderByDescending(d => d.ReportedDate).ThenByDescending(d => d.Id)
             .Include(d => d.AssignedToUser).AsNoTracking()
             .Include(d => d.Letters).AsNoTracking()
             .Include(d => d.Wreck).AsNoTracking()
