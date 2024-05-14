@@ -26,7 +26,7 @@ public class WreckView : BaseEntityView
         ConstructionDetails = wreck.ConstructionDetails;
         YearConstructed = wreck.YearConstructed;
 
-        DateOfLoss = wreck.DateOfLoss;
+        DateOfLoss = wreck.DateOfLoss?.ToUniversalTime();
         InUkWaters = wreck.InUkWaters;
         IsWarWreck = wreck.IsWarWreck;
         IsAnAircraft = wreck.IsAnAircraft;
