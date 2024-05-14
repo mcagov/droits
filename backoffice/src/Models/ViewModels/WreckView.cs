@@ -65,7 +65,7 @@ public class WreckView : BaseEntityView
     public int? YearConstructed { get; }
 
     [DisplayName("Date Of Loss")]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
     public DateTime? DateOfLoss { get; }
 
     [DisplayName("In UK Waters")]
