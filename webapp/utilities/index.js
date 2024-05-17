@@ -8,4 +8,4 @@ export { GT_OSGB as default } from './geotools';
 export { assignReportStatus } from './assignReportStatus';
 export { assignSalvageLocation } from './assignSalvageLocation';
 export { assignOutcome } from './assignOutcome';
-
+export { allWmContainImages } from './allWmContainImages';
