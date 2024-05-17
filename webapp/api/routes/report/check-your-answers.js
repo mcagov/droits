@@ -1,7 +1,7 @@
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
-import { formatValidationErrors } from '../../../utilities';
+import {allWmContainImages, formatValidationErrors} from '../../../utilities';
 
 const { body, validationResult } = require('express-validator');
 var cloneDeep = require('lodash.clonedeep');
@@ -22,6 +22,11 @@ export default function (app) {
         .not()
         .isEmpty()
         .withMessage('Select to confirm you are happy with the declaration'),
+      body('change-wm-link')
+          .custom((value, {req}) => {
+            return allWmContainImages(req.session.data['property']);
+          })
+          .withMessage('An image is required for each wreck material')
     ],
     async function (req, res) {
       const errors = formatValidationErrors(validationResult(req));
