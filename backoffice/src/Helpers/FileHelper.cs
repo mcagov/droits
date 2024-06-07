@@ -12,9 +12,6 @@ public static class FileHelper
         "image/jpeg", "image/png", "image/gif", "image/bmp", "image/svg+xml",
         "text/plain", "text/html", "text/css", "application/javascript",
         "audio/mpeg", "audio/mp4", "video/webm", "audio/ogg",
-        // "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", - this prevents .doc and .docx files being auto downloaded
-        "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation",
         "application/json"
     };
     
