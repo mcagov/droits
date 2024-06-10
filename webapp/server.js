@@ -122,12 +122,14 @@ app.use('/assets/css', (req, res, next) => {
 app.use(session({
   secret: process.env.CSRFT_SESSION_SECRET,
   store: new redisStore({
-      client: redisClient
+      client: redisClient,
+      ttl: 3600
   }),
   sameSite: 'none',
   saveUninitialized: false,
   resave: false,
-  cookie: { httpOnly: true , secure: isSecure}
+  cookie: { httpOnly: true , secure: isSecure},
+  unset: 'destroy'
 }));
 
 // Manage session data. Assigns default values to data
