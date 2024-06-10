@@ -200,8 +200,8 @@ export default function (app) {
             );
 
             // Clear session data
-            req.session.data = {};
-
+            req.session.destroy();
+            
             return res.render('report/confirmation', { reference });
           } else {
             console.error(`Posting Droit to API failed! - ${response.status}`);
