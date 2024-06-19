@@ -1,4 +1,5 @@
 const { body, validationResult } = require('express-validator');
+import sessionDataDefaults from '../../../api/data/session-data-defaults';
 
 import { formatValidationErrors } from '../../../utilities';
 
@@ -15,6 +16,9 @@ export default function (app) {
     function (req, res) {
 
       const errors = formatValidationErrors(validationResult(req));
+
+      req.session.data = sessionDataDefaults;
+      res.locals.data = sessionDataDefaults;
 
       if (!errors) {
         req.session.data['removed-property'] = req.body['removed-property'];
