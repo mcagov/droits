@@ -128,7 +128,7 @@ app.use(session({
   sameSite: 'none',
   saveUninitialized: false,
   resave: false,
-  cookie: { httpOnly: true , secure: isSecure, sameSite: 'none'},
+  cookie: { httpOnly: true , secure: isSecure},
   unset: 'destroy'
 }));
 

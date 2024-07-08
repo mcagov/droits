@@ -51,6 +51,7 @@ export default function (app) {
         useCookieInsteadOfSession: false,
         cookieSameSite: false,
         loggingLevel: 'info',
+        loggingNoPII: false,
         scope: process.env.B2C_CLIENT_ID,
       },
       function (iss, sub, profile, accessToken, refreshToken, params, done) {
