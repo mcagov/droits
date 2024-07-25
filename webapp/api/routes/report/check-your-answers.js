@@ -157,12 +157,12 @@ export default function (app) {
 
 
             for (const wreckMaterial of wreckMaterials) {
-              const wreckMaterialNumber = wreckMaterials.indexOf(wreckMaterial) + 1
+              const wreckMaterialNumber = wreckMaterials.indexOf(wreckMaterial) + 1;
               const wreckMaterialName = `${reference}-${ wreckMaterialNumber <= 9 ? String(wreckMaterialNumber).padStart(2, '0') : wreckMaterialNumber }`;
               
               wreckMaterial['droit-id'] = droitId;
               wreckMaterial['append-to-original-submission'] = appendToOriginalSubmission;
-              wreckMaterial['name'] = wreckMaterialName
+              wreckMaterial['name'] = wreckMaterialName;
               
               console.log(`Sending wm - ${wreckMaterialName}`);
               
