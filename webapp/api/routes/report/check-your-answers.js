@@ -130,7 +130,7 @@ export default function (app) {
 
         console.log(`appending to original submission: ${appendToOriginalSubmission}`);
 
-        // console.dir(wreckMaterials);
+        console.dir(wreckMaterials);
 
         data['wreck-materials'] = [];
 
