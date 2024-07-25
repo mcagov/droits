@@ -22,6 +22,7 @@ public class WreckMaterialMappingProfileTests
         // Arrange
         var submittedWreckMaterialDto = new SubmittedWreckMaterialDto
         {
+            Name = "123/24-01",
             Description = "Sample Material",
             Quantity = "10",
             Value = 99.99d,
@@ -40,7 +41,7 @@ public class WreckMaterialMappingProfileTests
         var wreckMaterial = _mapper.Map<WreckMaterial>(submittedWreckMaterialDto);
 
         // Assert
-        Assert.Equal("Sample Material", wreckMaterial.Name);
+        Assert.Equal("123/24-01", wreckMaterial.Name);
         Assert.Equal(10, wreckMaterial.Quantity);
         Assert.Equal(99.99d, wreckMaterial.SalvorValuation);
         Assert.True(wreckMaterial.ValueKnown);

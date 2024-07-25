@@ -87,6 +87,9 @@ public class SubmittedWreckMaterialDto
     [JsonPropertyName("append-to-original-submission")]
     public bool AppendToOriginalSubmission { get; set; } = false;
     
+    [JsonPropertyName("name")]
+    public string? Name { get; set; }
+    
     [JsonPropertyName("description")]
     public string? Description { get; set; }
     
