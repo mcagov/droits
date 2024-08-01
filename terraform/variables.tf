@@ -70,6 +70,42 @@ variable "root_domain_name" {
   description = "The root domain name for DROITS"
 }
 
+variable "create_hosted_zone" {
+  type = bool
+  description = "Flag to create hosted zone"
+  default = false
+}
+
+variable "production_webapp_alb_dns" {
+  description = "The DNS name of the production webapp ALB"
+  type        = string
+}
+
+variable "production_backoffice_alb_dns" {
+  description = "The DNS name of the production backoffice ALB"
+  type        = string
+}
+
+variable "staging_webapp_alb_dns" {
+  description = "The DNS name of the staging webapp ALB"
+  type        = string
+}
+
+variable "staging_backoffice_alb_dns" {
+  description = "The DNS name of the staging backoffice ALB"
+  type        = string
+}
+
+variable "dev_webapp_alb_dns" {
+  description = "The DNS name of the dev webapp ALB"
+  type        = string
+}
+
+variable "dev_backoffice_alb_dns" {
+  description = "The DNS name of the dev backoffice ALB"
+  type        = string
+}
+
 variable "lb_ssl_policy" {
   type        = string
   description = "Security policy for the SSL certificate"

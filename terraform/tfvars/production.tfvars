@@ -13,6 +13,14 @@ db_storage_encrypted = true
 aws_region = "eu-west-2"
 
 root_domain_name    = "report-wreck-material.service.gov.uk"
+create_hosted_zone  = true
+production_webapp_alb_dns = "webapp-alb-2123332444.eu-west-2.elb.amazonaws.com"
+production_backoffice_alb_dns = "backoffice-alb-2102331477.eu-west-2.elb.amazonaws.com"
+staging_webapp_alb_dns = "webapp-alb-614194714.eu-west-2.elb.amazonaws.com"
+staging_backoffice_alb_dns = "backoffice-alb-1524165112.eu-west-2.elb.amazonaws.com"
+dev_webapp_alb_dns = "webapp-alb-1338878440.eu-west-2.elb.amazonaws.com"
+dev_backoffice_alb_dns = "backoffice-alb-469192954.eu-west-2.elb.amazonaws.com"
+
 lb_ssl_policy       = "ELBSecurityPolicy-FS-1-2-2019-08"
 ssl_certificate_arn = "arn:aws:acm:eu-west-2:257298404318:certificate/b53f260b-bdb1-416f-80df-7c558e1ddb73"
 

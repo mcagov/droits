@@ -245,4 +245,14 @@ module "webapp-logs-s3" {
   application_name    = "webapp"
 }
 
-
+module "route53" {
+  source = "./modules/route53"
+  root_domain_name = var.root_domain_name
+  create_hosted_zone = var.create_hosted_zone
+  production_webapp_alb_dns = var.production_webapp_alb_dns
+  production_backoffice_alb_dns = var.production_backoffice_alb_dns
+  staging_webapp_alb_dns = var.staging_webapp_alb_dns
+  staging_backoffice_alb_dns = var.staging_backoffice_alb_dns
+  dev_webapp_alb_dns = var.dev_webapp_alb_dns
+  dev_backoffice_alb_dns = var.dev_backoffice_alb_dns
+}
