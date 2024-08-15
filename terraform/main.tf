@@ -247,6 +247,7 @@ module "webapp-logs-s3" {
 
 module "route53" {
   source                                       = "./modules/route53"
+  count                                        = var.create_hosted_zone ? 1 : 0
   root_domain_name                             = var.root_domain_name
   create_hosted_zone                           = var.create_hosted_zone
   production_webapp_alb_dns                    = var.production_webapp_alb_dns
