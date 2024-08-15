@@ -246,13 +246,25 @@ module "webapp-logs-s3" {
 }
 
 module "route53" {
-  source = "./modules/route53"
-  root_domain_name = var.root_domain_name
-  create_hosted_zone = var.create_hosted_zone
-  production_webapp_alb_dns = var.production_webapp_alb_dns
-  production_backoffice_alb_dns = var.production_backoffice_alb_dns
-  staging_webapp_alb_dns = var.staging_webapp_alb_dns
-  staging_backoffice_alb_dns = var.staging_backoffice_alb_dns
-  dev_webapp_alb_dns = var.dev_webapp_alb_dns
-  dev_backoffice_alb_dns = var.dev_backoffice_alb_dns
+  source                                       = "./modules/route53"
+  root_domain_name                             = var.root_domain_name
+  create_hosted_zone                           = var.create_hosted_zone
+  production_webapp_alb_dns                    = var.production_webapp_alb_dns
+  production_backoffice_alb_dns                = var.production_backoffice_alb_dns
+  staging_webapp_alb_dns                       = var.staging_webapp_alb_dns
+  staging_backoffice_alb_dns                   = var.staging_backoffice_alb_dns
+  dev_webapp_alb_dns                           = var.dev_webapp_alb_dns
+  dev_backoffice_alb_dns                       = var.dev_backoffice_alb_dns
+  dev_backoffice_ssl_verification_name         = var.dev_backoffice_ssl_verification_name
+  dev_backoffice_ssl_verification_value        = var.dev_backoffice_ssl_verification_value
+  dev_webapp_ssl_verification_name             = var.dev_webapp_ssl_verification_name
+  dev_webapp_ssl_verification_value            = var.dev_webapp_ssl_verification_value
+  production_backoffice_ssl_verification_name  = var.production_backoffice_ssl_verification_name
+  production_backoffice_ssl_verification_value = var.production_backoffice_ssl_verification_value
+  production_webapp_ssl_verification_name      = var.production_webapp_ssl_verification_name
+  production_webapp_ssl_verification_value     = var.production_webapp_ssl_verification_value
+  staging_backoffice_ssl_verification_name     = var.staging_backoffice_ssl_verification_name
+  staging_backoffice_ssl_verification_value    = var.staging_backoffice_ssl_verification_value
+  staging_webapp_ssl_verification_name         = var.staging_webapp_ssl_verification_name
+  staging_webapp_ssl_verification_value        = var.staging_webapp_ssl_verification_value
 }
