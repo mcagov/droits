@@ -17,7 +17,6 @@ provider "aws" {
   region = var.aws_region
 }
 
-
 module "vpc" {
   source = "./modules/vpc"
 }
@@ -61,7 +60,7 @@ module "backoffice-alb" {
   private_subnets = module.vpc.private_subnets
 
   lb_ssl_policy       = var.lb_ssl_policy
-  ssl_certificate_arn = var.ssl_certificate_arn
+  ssl_certificate_arn = module.acm.ssl_certificate_arn
 
   port             = var.backoffice_port
   protocol         = "HTTP"
@@ -69,7 +68,7 @@ module "backoffice-alb" {
   lb_log_bucket    = module.backoffice-logs-s3.alb-log-bucket
   application_name = "backoffice"
 
-  depends_on = [module.vpc, module.security-groups, module.backoffice-logs-s3]
+  depends_on = [module.vpc, module.security-groups, module.backoffice-logs-s3, module.acm]
 }
 
 module "webapp-alb" {
@@ -80,7 +79,7 @@ module "webapp-alb" {
   private_subnets = module.vpc.private_subnets
 
   lb_ssl_policy       = var.lb_ssl_policy
-  ssl_certificate_arn = var.ssl_certificate_arn
+  ssl_certificate_arn = module.acm.ssl_certificate_arn
 
   port             = var.webapp_port
   protocol         = "HTTP"
@@ -88,7 +87,7 @@ module "webapp-alb" {
   lb_log_bucket    = module.webapp-logs-s3.alb-log-bucket
   application_name = "webapp"
 
-  depends_on = [module.vpc, module.security-groups, module.webapp-logs-s3]
+  depends_on = [module.vpc, module.security-groups, module.webapp-logs-s3, module.acm]
 }
 
 module "droits-ecs-cluster" {
@@ -245,27 +244,17 @@ module "webapp-logs-s3" {
   application_name    = "webapp"
 }
 
+module "acm" {
+  source      = "./modules/acm"
+  ssl_domains = var.ssl_domains
+}
+
 module "route53" {
-  source                                       = "./modules/route53"
-  count                                        = var.create_hosted_zone ? 1 : 0
-  root_domain_name                             = var.root_domain_name
-  create_hosted_zone                           = var.create_hosted_zone
-  production_webapp_alb_dns                    = var.production_webapp_alb_dns
-  production_backoffice_alb_dns                = var.production_backoffice_alb_dns
-  staging_webapp_alb_dns                       = var.staging_webapp_alb_dns
-  staging_backoffice_alb_dns                   = var.staging_backoffice_alb_dns
-  dev_webapp_alb_dns                           = var.dev_webapp_alb_dns
-  dev_backoffice_alb_dns                       = var.dev_backoffice_alb_dns
-  dev_backoffice_ssl_verification_name         = var.dev_backoffice_ssl_verification_name
-  dev_backoffice_ssl_verification_value        = var.dev_backoffice_ssl_verification_value
-  dev_webapp_ssl_verification_name             = var.dev_webapp_ssl_verification_name
-  dev_webapp_ssl_verification_value            = var.dev_webapp_ssl_verification_value
-  production_backoffice_ssl_verification_name  = var.production_backoffice_ssl_verification_name
-  production_backoffice_ssl_verification_value = var.production_backoffice_ssl_verification_value
-  production_webapp_ssl_verification_name      = var.production_webapp_ssl_verification_name
-  production_webapp_ssl_verification_value     = var.production_webapp_ssl_verification_value
-  staging_backoffice_ssl_verification_name     = var.staging_backoffice_ssl_verification_name
-  staging_backoffice_ssl_verification_value    = var.staging_backoffice_ssl_verification_value
-  staging_webapp_ssl_verification_name         = var.staging_webapp_ssl_verification_name
-  staging_webapp_ssl_verification_value        = var.staging_webapp_ssl_verification_value
+  source                    = "./modules/route53"
+  root_domain_name          = var.root_domain_name
+  a_records                 = var.a_records
+  domain_validation_options = module.acm.domain_validation_options
+  ssl_certificate_arn       = module.acm.ssl_certificate_arn
+
+  depends_on = [module.acm]
 }
