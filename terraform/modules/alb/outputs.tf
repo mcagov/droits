@@ -13,3 +13,6 @@ output "alb-arn-suffix" {
 output "target-group-id" {
   value = aws_alb_target_group.target-group.id
 }
+output "alb-dns" {
+  value = aws_alb.alb.dns_name
+}
