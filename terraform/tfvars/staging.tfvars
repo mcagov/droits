@@ -16,12 +16,12 @@ root_domain_name = "report-wreck-material.service.gov.uk"
 
 a_records = [
   {
-    name    = "staging.report-wreck-material.service.gov.uk"
-    alb_dns = "webapp-alb-614194714.eu-west-2.elb.amazonaws.com"
+    name = "staging.report-wreck-material.service.gov.uk"
+    type = "webapp"
   },
   {
-    name    = "staging.backoffice.report-wreck-material.service.gov.uk"
-    alb_dns = "backoffice-alb-1524165112.eu-west-2.elb.amazonaws.com"
+    name = "staging.backoffice.report-wreck-material.service.gov.uk"
+    type = "backoffice"
   }
 ]
 

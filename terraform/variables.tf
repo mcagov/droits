@@ -72,8 +72,8 @@ variable "root_domain_name" {
 
 variable "a_records" {
   type = list(object({
-    name    = string
-    alb_dns = string
+    name = string
+    type = string
   }))
   description = "List of A records for Route 53 DNS"
 }
