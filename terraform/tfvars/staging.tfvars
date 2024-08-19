@@ -12,9 +12,25 @@ db_storage_encrypted = true
 
 aws_region = "eu-west-2"
 
-root_domain_name    = "report-wreck-material.service.gov.uk"
-lb_ssl_policy       = "ELBSecurityPolicy-FS-1-2-2019-08"
-ssl_certificate_arn = "arn:aws:acm:eu-west-2:703203758589:certificate/85df4513-01ad-45b2-8520-50e7c56f6bf5"
+root_domain_name = "report-wreck-material.service.gov.uk"
+
+a_records = [
+  {
+    name    = "staging.report-wreck-material.service.gov.uk"
+    alb_dns = "webapp-alb-614194714.eu-west-2.elb.amazonaws.com"
+  },
+  {
+    name    = "staging.backoffice.report-wreck-material.service.gov.uk"
+    alb_dns = "backoffice-alb-1524165112.eu-west-2.elb.amazonaws.com"
+  }
+]
+
+ssl_domains = [
+  "staging.report-wreck-material.service.gov.uk",
+  "staging.backoffice.report-wreck-material.service.gov.uk"
+]
+
+lb_ssl_policy = "ELBSecurityPolicy-FS-1-2-2019-08"
 
 enable_alerts                                      = false
 percentage_cpu_utilization_high_threshold          = 90
