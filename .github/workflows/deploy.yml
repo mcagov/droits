@@ -92,16 +92,4 @@ jobs:
           TF_VAR_alert_email_address: ${{secrets.alert_email_address}}
           TF_VAR_backoffice_environment_file: ${{ secrets.backoffice_env_file }}
           TF_VAR_webapp_environment_file: ${{ secrets.webapp_env_file }}
-          TF_VAR_production_webapp_ssl_verification_name: ${{ secrets.production_webapp_ssl_verification_name }}
-          TF_VAR_production_webapp_ssl_verification_value: ${{ secrets.production_webapp_ssl_verification_value }}
-          TF_VAR_production_backoffice_ssl_verification_name: ${{ secrets.production_backoffice_ssl_verification_name }}
-          TF_VAR_production_backoffice_ssl_verification_value: ${{ secrets.production_backoffice_ssl_verification_value }}
-          TF_VAR_staging_webapp_ssl_verification_name: ${{ secrets.staging_webapp_ssl_verification_name }}
-          TF_VAR_staging_webapp_ssl_verification_value: ${{ secrets.staging_webapp_ssl_verification_value }}
-          TF_VAR_staging_backoffice_ssl_verification_name: ${{ secrets.staging_backoffice_ssl_verification_name }}
-          TF_VAR_staging_backoffice_ssl_verification_value: ${{ secrets.staging_backoffice_ssl_verification_value }}
-          TF_VAR_dev_webapp_ssl_verification_name: ${{ secrets.dev_webapp_ssl_verification_name }}
-          TF_VAR_dev_webapp_ssl_verification_value: ${{ secrets.dev_webapp_ssl_verification_value }}
-          TF_VAR_dev_backoffice_ssl_verification_name: ${{ secrets.dev_backoffice_ssl_verification_name }}
-          TF_VAR_dev_backoffice_ssl_verification_value: ${{ secrets.dev_backoffice_ssl_verification_value }}
         run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ inputs.terraform_workspace }}.tfvars
