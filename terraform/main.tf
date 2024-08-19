@@ -253,8 +253,10 @@ module "route53" {
   source                    = "./modules/route53"
   root_domain_name          = var.root_domain_name
   a_records                 = var.a_records
+  webapp_alb_dns            = module.webapp-alb.alb-dns
+  backoffice_alb_dns        = module.backoffice-alb.alb-dns
   domain_validation_options = module.acm.domain_validation_options
   ssl_certificate_arn       = module.acm.ssl_certificate_arn
 
-  depends_on = [module.acm]
+  depends_on = [module.acm, module.webapp-alb, module.backoffice-alb]
 }
