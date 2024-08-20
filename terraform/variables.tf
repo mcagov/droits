@@ -83,6 +83,11 @@ variable "ssl_domains" {
   description = "List of domains for SSL certificate"
 }
 
+variable "current_ssl_certificate_arn" {
+  type        = string
+  description = "SSL certificate arn for the existing cert"
+}
+
 variable "lb_ssl_policy" {
   type        = string
   description = "Security policy for the SSL certificate"

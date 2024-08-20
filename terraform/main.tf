@@ -60,15 +60,16 @@ module "backoffice-alb" {
   private_subnets = module.vpc.private_subnets
 
   lb_ssl_policy       = var.lb_ssl_policy
-  ssl_certificate_arn = module.acm.ssl_certificate_arn
-
+#  ssl_certificate_arn = module.acm.ssl_certificate_arn
+  ssl_certificate_arn = var.current_ssl_certificate_arn
+  
   port             = var.backoffice_port
   protocol         = "HTTP"
   security_groups  = [module.security-groups.backoffice-lb-security-group-id]
   lb_log_bucket    = module.backoffice-logs-s3.alb-log-bucket
   application_name = "backoffice"
 
-  depends_on = [module.vpc, module.security-groups, module.backoffice-logs-s3, module.acm]
+  depends_on = [module.vpc, module.security-groups, module.backoffice-logs-s3]
 }
 
 module "webapp-alb" {
@@ -79,7 +80,9 @@ module "webapp-alb" {
   private_subnets = module.vpc.private_subnets
 
   lb_ssl_policy       = var.lb_ssl_policy
-  ssl_certificate_arn = module.acm.ssl_certificate_arn
+#  ssl_certificate_arn = module.acm.ssl_certificate_arn
+  ssl_certificate_arn = var.current_ssl_certificate_arn
+
 
   port             = var.webapp_port
   protocol         = "HTTP"
@@ -87,7 +90,7 @@ module "webapp-alb" {
   lb_log_bucket    = module.webapp-logs-s3.alb-log-bucket
   application_name = "webapp"
 
-  depends_on = [module.vpc, module.security-groups, module.webapp-logs-s3, module.acm]
+  depends_on = [module.vpc, module.security-groups, module.webapp-logs-s3]
 }
 
 module "droits-ecs-cluster" {
@@ -257,6 +260,4 @@ module "route53" {
   backoffice_alb_dns        = module.backoffice-alb.alb-dns
   domain_validation_options = module.acm.domain_validation_options
   ssl_certificate_arn       = module.acm.ssl_certificate_arn
-
-  depends_on = [module.acm, module.webapp-alb, module.backoffice-alb]
 }

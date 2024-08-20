@@ -4,13 +4,12 @@ resource "aws_route53_zone" "report_wreck_material" {
 
 resource "aws_route53_record" "dns_a_records" {
   for_each = { for record in var.a_records : record.name => record }
+  
   name     = each.value.name
   type     = "A"
   ttl      = 300
   records  = [each.value.type == "webapp" ? var.webapp_alb_dns : var.backoffice_alb_dns]
   zone_id  = aws_route53_zone.report_wreck_material.zone_id
-
-  depends_on = [aws_route53_zone.report_wreck_material]
 }
 
 resource "aws_route53_record" "dns_ssl_validation" {
@@ -21,8 +20,6 @@ resource "aws_route53_record" "dns_ssl_validation" {
   ttl     = 60
   records = [each.value.resource_record_value]
   zone_id = aws_route53_zone.report_wreck_material.zone_id
-
-  depends_on = [aws_route53_zone.report_wreck_material]
 }
 
 resource "aws_acm_certificate_validation" "cert_validation" {
