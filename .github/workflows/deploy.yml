@@ -74,7 +74,7 @@ jobs:
           aws-region: eu-west-2
       - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.4.2
+          terraform_version: ">=1.5.0"
       - name: Terraform init
         run: terraform init -backend-config=tfvars/${{ inputs.terraform_workspace }}-backend.tfvars
       - name: Terraform validate
