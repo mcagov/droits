@@ -4,13 +4,19 @@ variable "root_domain_name" {
 }
 
 variable "webapp_alb_dns" {
-  type        = string
-  description = "DNS URL of webapp ALB"
+  type = object({
+    zone_id  = string
+    dns_name = string
+  })
+  description = "DNS information for webapp ALB"
 }
 
 variable "backoffice_alb_dns" {
-  type        = string
-  description = "DNS URL of backoffice ALB"
+  type = object({
+    zone_id  = string
+    dns_name = string
+  })
+  description = "DNS information for backoffice ALB"
 }
 
 variable "a_records" {

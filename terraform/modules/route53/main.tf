@@ -7,9 +7,13 @@ resource "aws_route53_record" "dns_a_records" {
 
   name    = each.value.name
   type    = "A"
-  ttl     = 300
-  records = [each.value.application == "webapp" ? var.webapp_alb_dns : (each.value.application == "backoffice" ? var.backoffice_alb_dns : "")]
   zone_id = aws_route53_zone.report_wreck_material.zone_id
+
+  alias {
+    evaluate_target_health = false
+    name                   = each.value.application == "webapp" ? var.webapp_alb_dns.dns_name : (each.value.application == "backoffice" ? var.backoffice_alb_dns.dns_name : "")
+    zone_id                = each.value.application == "webapp" ? var.webapp_alb_dns.zone_id : (each.value.application == "backoffice" ? var.backoffice_alb_dns.zone_id : "")
+  }
 }
 
 resource "aws_route53_record" "dns_ssl_validation" {
