@@ -70,13 +70,27 @@ variable "root_domain_name" {
   description = "The root domain name for DROITS"
 }
 
+variable "a_records" {
+  type = list(object({
+    name        = string
+    application = string
+  }))
+  description = "List of A records for Route 53 DNS"
+}
+
+variable "ssl_domains" {
+  type        = list(string)
+  description = "List of domains for SSL certificate"
+}
+
+variable "current_ssl_certificate_arn" {
+  type        = string
+  description = "SSL certificate arn for the existing cert"
+}
+
 variable "lb_ssl_policy" {
   type        = string
   description = "Security policy for the SSL certificate"
-}
-variable "ssl_certificate_arn" {
-  type        = string
-  description = "ARN of ssl certificate"
 }
 
 variable "backoffice_image" {
