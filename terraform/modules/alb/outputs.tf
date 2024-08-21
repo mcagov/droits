@@ -14,5 +14,8 @@ output "target-group-id" {
   value = aws_alb_target_group.target-group.id
 }
 output "alb-dns" {
-  value = aws_alb.alb.dns_name
+  value = {
+    zone_id : aws_alb.alb.zone_id,
+    dns_name : aws_alb.alb.dns_name
+  }
 }
