@@ -1,3 +1,8 @@
+import {
+  id = var.current_ssl_certificate_arn
+  to = module.acm.aws_acm_certificate.imported_certificate
+}
+
 terraform {
   required_providers {
     aws = {
@@ -38,6 +43,11 @@ module "iam" {
   depends_on = [module.s3-images]
 }
 
+module "acm" {
+  source      = "./modules/acm"
+  ssl_domains = var.ssl_domains
+}
+
 module "rds" {
   source               = "./modules/rds"
   vpc_id               = module.vpc.vpc_id
@@ -59,10 +69,10 @@ module "backoffice-alb" {
   public_subnets  = module.vpc.public_subnets
   private_subnets = module.vpc.private_subnets
 
-  lb_ssl_policy       = var.lb_ssl_policy
-#  ssl_certificate_arn = module.acm.ssl_certificate_arn
-  ssl_certificate_arn = var.current_ssl_certificate_arn
-  
+  lb_ssl_policy = var.lb_ssl_policy
+  #  ssl_certificate_arn = module.acm.ssl_certificate_arn
+  ssl_certificate_arn = module.acm.imported_certificate.arn
+
   port             = var.backoffice_port
   protocol         = "HTTP"
   security_groups  = [module.security-groups.backoffice-lb-security-group-id]
@@ -79,9 +89,9 @@ module "webapp-alb" {
   public_subnets  = module.vpc.public_subnets
   private_subnets = module.vpc.private_subnets
 
-  lb_ssl_policy       = var.lb_ssl_policy
-#  ssl_certificate_arn = module.acm.ssl_certificate_arn
-  ssl_certificate_arn = var.current_ssl_certificate_arn
+  lb_ssl_policy = var.lb_ssl_policy
+  #  ssl_certificate_arn = module.acm.ssl_certificate_arn
+  ssl_certificate_arn = module.acm.imported_certificate.arn
 
 
   port             = var.webapp_port
@@ -247,17 +257,14 @@ module "webapp-logs-s3" {
   application_name    = "webapp"
 }
 
-module "acm" {
-  source      = "./modules/acm"
-  ssl_domains = var.ssl_domains
-}
-
 module "route53" {
-  source                    = "./modules/route53"
-  root_domain_name          = var.root_domain_name
-  a_records                 = var.a_records
-  webapp_alb_dns            = module.webapp-alb.alb-dns
-  backoffice_alb_dns        = module.backoffice-alb.alb-dns
-  domain_validation_options = module.acm.domain_validation_options
-  ssl_certificate_arn       = module.acm.ssl_certificate_arn
+  source             = "./modules/route53"
+  root_domain_name   = var.root_domain_name
+  a_records          = var.a_records
+  webapp_alb_dns     = module.webapp-alb.alb-dns
+  backoffice_alb_dns = module.backoffice-alb.alb-dns
+  #  domain_validation_options = module.acm.domain_validation_options
+  domain_validation_options = module.acm.imported_certificate.domain_validation_options
+  #  ssl_certificate_arn       = module.acm.ssl_certificate_arn
+  ssl_certificate_arn = module.acm.imported_certificate.arn
 }

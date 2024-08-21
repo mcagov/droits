@@ -35,6 +35,7 @@ a_records = [
 
 ssl_domains = [
   "*.report-wreck-material.service.gov.uk",
+  "*.backoffice.report-wreck-material.service.gov.uk",
   "report-wreck-material.service.gov.uk"
 ]
 
