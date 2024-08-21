@@ -15,8 +15,8 @@ variable "backoffice_alb_dns" {
 
 variable "a_records" {
   type = list(object({
-    name = string
-    type = string
+    name        = string
+    application = string
   }))
   description = "List of A records for Route 53 DNS"
 }

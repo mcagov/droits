@@ -16,20 +16,20 @@ root_domain_name = "report-wreck-material.service.gov.uk"
 
 a_records = [
   {
-    name = "report-wreck-material.service.gov.uk"
-    type = "webapp"
+    name        = "report-wreck-material.service.gov.uk"
+    application = "webapp"
   },
   {
-    name = "www.report-wreck-material.service.gov.uk"
-    type = "webapp"
+    name        = "www.report-wreck-material.service.gov.uk"
+    application = "webapp"
   },
   {
-    name = "webapp.report-wreck-material.service.gov.uk"
-    type = "webapp"
+    name        = "webapp.report-wreck-material.service.gov.uk"
+    application = "webapp"
   },
   {
-    name = "backoffice.report-wreck-material.service.gov.uk"
-    type = "backoffice"
+    name        = "backoffice.report-wreck-material.service.gov.uk"
+    application = "backoffice"
   }
 ]
 
