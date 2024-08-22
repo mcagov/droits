@@ -1,8 +1,3 @@
-import {
-  id = var.current_ssl_certificate_arn
-  to = module.acm.aws_acm_certificate.imported_certificate
-}
-
 terraform {
   required_providers {
     aws = {
@@ -71,7 +66,7 @@ module "backoffice-alb" {
 
   lb_ssl_policy = var.lb_ssl_policy
   #  ssl_certificate_arn = module.acm.ssl_certificate_arn
-  ssl_certificate_arn = module.acm.imported_certificate.arn
+  ssl_certificate_arn = var.current_ssl_certificate_arn
 
   port             = var.backoffice_port
   protocol         = "HTTP"
@@ -91,7 +86,7 @@ module "webapp-alb" {
 
   lb_ssl_policy = var.lb_ssl_policy
   #  ssl_certificate_arn = module.acm.ssl_certificate_arn
-  ssl_certificate_arn = module.acm.imported_certificate.arn
+  ssl_certificate_arn = var.current_ssl_certificate_arn
 
 
   port             = var.webapp_port
