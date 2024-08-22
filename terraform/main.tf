@@ -256,6 +256,7 @@ module "route53" {
   source                    = "./modules/route53"
   root_domain_name          = var.root_domain_name
   a_records                 = var.a_records
+  delegated_hosted_zones    = var.delegated_hosted_zones
   webapp_alb_dns            = module.webapp-alb.alb-dns
   backoffice_alb_dns        = module.backoffice-alb.alb-dns
   domain_validation_options = module.acm.domain_validation_options

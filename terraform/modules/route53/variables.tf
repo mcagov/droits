@@ -27,6 +27,12 @@ variable "a_records" {
   description = "List of A records for Route 53 DNS"
 }
 
+variable "delegated_hosted_zones" {
+  type        = map(list(string))
+  default     = {}
+  description = "Map of delegated hosted zones for dev and staging. Eg {domain_name: nameservers}"
+}
+
 variable "ssl_certificate_arn" {
   type        = string
   description = "ACM SSL certificate arn"

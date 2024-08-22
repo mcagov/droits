@@ -38,6 +38,21 @@ ssl_domains = [
   "backoffice.report-wreck-material.service.gov.uk"
 ]
 
+delegated_hosted_zones = {
+  "dev.report-wreck-material.service.gov.uk" : [
+    "ns-2029.awsdns-61.co.uk.",
+    "ns-592.awsdns-10.net.",
+    "ns-156.awsdns-19.com.",
+    "ns-1326.awsdns-37.org."
+  ],
+  "staging.report-wreck-material.service.gov.uk" : [
+    "ns-1035.awsdns-01.org.",
+    "ns-1889.awsdns-44.co.uk.",
+    "ns-980.awsdns-58.net.",
+    "ns-427.awsdns-53.com."
+  ]
+}
+
 current_ssl_certificate_arn = "arn:aws:acm:eu-west-2:257298404318:certificate/b53f260b-bdb1-416f-80df-7c558e1ddb73"
 lb_ssl_policy               = "ELBSecurityPolicy-FS-1-2-2019-08"
 
