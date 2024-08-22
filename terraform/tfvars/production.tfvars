@@ -45,7 +45,19 @@ delegated_hosted_zones = {
     "ns-156.awsdns-19.com.",
     "ns-1326.awsdns-37.org."
   ],
+  "dev.backoffice.report-wreck-material.service.gov.uk" : [
+    "ns-2029.awsdns-61.co.uk.",
+    "ns-592.awsdns-10.net.",
+    "ns-156.awsdns-19.com.",
+    "ns-1326.awsdns-37.org."
+  ],
   "staging.report-wreck-material.service.gov.uk" : [
+    "ns-1035.awsdns-01.org.",
+    "ns-1889.awsdns-44.co.uk.",
+    "ns-980.awsdns-58.net.",
+    "ns-427.awsdns-53.com."
+  ],
+  "staging.backoffice.report-wreck-material.service.gov.uk" : [
     "ns-1035.awsdns-01.org.",
     "ns-1889.awsdns-44.co.uk.",
     "ns-980.awsdns-58.net.",
