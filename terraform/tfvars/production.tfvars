@@ -34,9 +34,8 @@ a_records = [
 ]
 
 ssl_domains = [
-  "*.report-wreck-material.service.gov.uk",
-  "*.backoffice.report-wreck-material.service.gov.uk",
-  "report-wreck-material.service.gov.uk"
+  "report-wreck-material.service.gov.uk",
+  "backoffice.report-wreck-material.service.gov.uk"
 ]
 
 current_ssl_certificate_arn = "arn:aws:acm:eu-west-2:257298404318:certificate/b53f260b-bdb1-416f-80df-7c558e1ddb73"
