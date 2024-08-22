@@ -16,6 +16,15 @@ resource "aws_route53_record" "dns_a_records" {
   }
 }
 
+resource "aws_route53_record" "delegation_records" {
+  for_each = var.delegated_hosted_zones
+
+  name    = each.key
+  records = each.value
+  type    = "NS"
+  zone_id = aws_route53_zone.report_wreck_material.zone_id
+}
+
 resource "aws_route53_record" "dns_ssl_validation" {
   for_each = { for dvo in var.domain_validation_options : dvo.domain_name => dvo }
 
