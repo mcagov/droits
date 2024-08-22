@@ -22,6 +22,7 @@ resource "aws_route53_record" "delegation_records" {
   name    = each.key
   records = each.value
   type    = "NS"
+  ttl     = 300
   zone_id = aws_route53_zone.report_wreck_material.zone_id
 }
 
