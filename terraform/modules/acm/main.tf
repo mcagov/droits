@@ -11,11 +11,3 @@ resource "aws_acm_certificate" "ssl_cert" {
     Name = "DroitsACMCertificate"
   }
 }
-
-resource "aws_acm_certificate" "imported_certificate" {
-  domain_name = "*.report-wreck-material.service.gov.uk"
-  subject_alternative_names = [
-    "*.backoffice.report-wreck-material.service.gov.uk",
-    "report-wreck-material.service.gov.uk"
-  ]
-}
