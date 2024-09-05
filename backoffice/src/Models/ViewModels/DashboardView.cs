@@ -20,7 +20,7 @@ public class DashboardView
 
     public DashboardView(DroitListView droits, LetterListView letters)
     {
-        Droits = FilterClosedDroits(droits);;
+        Droits = FilterClosedDroits(droits);
         Letters = letters;
         DashboardSearchForm = new DashboardSearchForm()
         {
