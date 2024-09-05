@@ -45,7 +45,7 @@
                             {
                                 if (droit?.Salvor?.Name != null)
                                 {
-                                    @Html.ActionLink(droit?.Salvor?.Name, "View", "Salvor", new { id = droit?.Salvor?.Id })
+                                    @Html.ActionLink(droit?.Salvor?.Name, "View", "Salvor", new { id = droit?.Salvor?.Id }, new { target="_blank" })
                                 }
                             }
                             else
@@ -60,7 +60,7 @@
                             @{
                                 if (droit?.Wreck?.Name != null)
                                 {
-                                    @Html.ActionLink(droit?.Wreck?.Name, "View", "Wreck", new { id = droit?.Wreck?.Id })
+                                    @Html.ActionLink(droit?.Wreck?.Name, "View", "Wreck", new { id = droit?.Wreck?.Id }, new { target="_blank" })
                                 }
                             }
                         </td>
