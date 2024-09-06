@@ -33,6 +33,7 @@ public class AccountController : BaseController
         
         searchOptions.IncludeAssociations = true;
         searchOptions.FilterByAssignedUser = true;
+        searchOptions.ExcludeClosedDroits = true;
 
 
         searchOptions.PageNumber = searchOptions.DroitsPageNumber;
