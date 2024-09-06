@@ -111,6 +111,11 @@ public class DroitService : IDroitService
                 d.AssignedToUserId.HasValue && d.AssignedToUserId == currentUserId);
         }
 
+        if ( searchOptions.ExcludeClosedDroits )
+        {
+            query = query.Where(d => d.Status != DroitStatus.Closed);
+        }
+
         var pagedDroits =
             await ServiceHelper.GetPagedResult(query.Select(d => new DroitView(d)), searchOptions);
 

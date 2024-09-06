@@ -1,6 +1,5 @@
 #region
 
-using Droits.Models.Enums;
 using Droits.Models.FormModels.SearchFormModels;
 using Droits.Models.ViewModels.ListViews;
 
@@ -20,7 +19,7 @@ public class DashboardView
 
     public DashboardView(DroitListView droits, LetterListView letters)
     {
-        Droits = FilterClosedDroits(droits);
+        Droits = droits;
         Letters = letters;
         DashboardSearchForm = new DashboardSearchForm()
         {
@@ -32,16 +31,4 @@ public class DashboardView
     public DroitListView Droits { get; set; }
     public LetterListView Letters { get; set; }
     public DashboardSearchForm DashboardSearchForm { get; set; }
-    private DroitListView FilterClosedDroits(DroitListView droitsList)
-    {
-        var filteredDroits = droitsList.Items
-            .Cast<DroitView>()
-            .Where(droit => droit.Status != DroitStatus.Closed)
-            .ToList();
-
-        return new DroitListView(filteredDroits)
-        {
-            TotalCount = filteredDroits.Count
-        };
-    }
 }
