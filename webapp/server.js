@@ -94,8 +94,6 @@ app.use('/assets/css', (req, res, next) => {
   next();
 }, express.static(path.join(__dirname, './dist/assets/css')));
 
-// app.use(forceHttps);
-
 if (config.SERVICE_UNAVAILABLE === true) {
   app.all('*', (req, res) => {
     console.log('Service Unavailable.');
@@ -103,8 +101,6 @@ if (config.SERVICE_UNAVAILABLE === true) {
     res.sendFile(path.join(__dirname, '/app/static/service-unavailable.html'))
   });
 } else {
-
-// useHttps = 'true'
 
 // Production session data
   const session = require('express-session');
@@ -116,7 +112,7 @@ if (config.SERVICE_UNAVAILABLE === true) {
   });
 
   const isSecure = env === 'production' && useHttps === 'true';
-// const isSecure = true;
+
   if (isSecure) {
     app.use(forceHttps);
   }
@@ -187,7 +183,6 @@ if (config.SERVICE_UNAVAILABLE === true) {
 
 // Logs req.session data
 // if (env === 'development') edt(app, { panels: ['session'] });
-  edt(app, { panels: ['session'] });
 
 
 
