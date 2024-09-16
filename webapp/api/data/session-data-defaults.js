@@ -52,4 +52,9 @@ const defaultData= {
   submittedFiles: []
 };
 
- export default () => defaultData;
+const getDefaults = () => {
+  // use JSON serialisation to create a deep clone of the defaults object
+  return JSON.parse(JSON.stringify(defaultData))
+}
+
+ export default getDefaults;
