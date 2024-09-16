@@ -15,7 +15,6 @@ export default function (app) {
   app
     .get('/portal/dashboard', ensureAuthenticated, function (req, res) {
       const currentUserEmail = req.user.emails[0] || req.session.user.emails[0];
-      console.log(currentUserEmail);
 
       let userReports = [];
 
@@ -37,7 +36,6 @@ const fetchSalvorInfo = (url, currentUserEmail, userReports, res, req) => {
         })
         .then((res) => {
           
-          console.dir(res);
           const reportData = res.data.reports;
           const session = req.session.data;
           session.userId = res.data.id || "";
