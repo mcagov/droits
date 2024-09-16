@@ -45,4 +45,10 @@ describe("session-data-defaults", () => {
     const defaults2 = sessionDataDefaults()
     expect(defaults2.personal["full-name"]).toBe("")
   })
+
+  it("should return a different object each time it is called", () => {
+    const defaults1 = sessionDataDefaults()
+    const defaults2 = sessionDataDefaults()
+    expect(defaults1 === defaults2).toBeFalsy()
+  })
 })
