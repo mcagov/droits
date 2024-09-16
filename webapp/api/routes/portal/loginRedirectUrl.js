@@ -33,8 +33,6 @@ export default function (app) {
       },
       function (req, res) {
 
-        console.log("logged in user...:")
-        console.dir(req.user);
         const currentUserEmail = req.user.emails[0];
 
         req.session.user = req.user;

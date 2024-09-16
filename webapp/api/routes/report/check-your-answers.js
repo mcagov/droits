@@ -58,8 +58,6 @@ export default function (app) {
             ? concatenatedText
             : locationDescription;
 
-        console.dir(req.session.data);
-        console.dir(sd);
         // Data obj to send to db
         const data = {
           'report-date': `${sd['report-date']['year']}-${sd['report-date']['month']}-${sd['report-date']['day']}`,
@@ -128,14 +126,9 @@ export default function (app) {
 
         const appendToOriginalSubmission = wreckMaterials && wreckMaterials.length <= 5;
 
-        console.log(`appending to original submission: ${appendToOriginalSubmission}`);
-
-        console.dir(wreckMaterials);
-
         data['wreck-materials'] = [];
 
         try {
-          console.dir(data);
           const response = await axios.post(
             `${process.env.API_ENDPOINT}/Api/SubmitDroit`,
             data,
@@ -164,8 +157,6 @@ export default function (app) {
               wreckMaterial['append-to-original-submission'] = appendToOriginalSubmission;
               wreckMaterial['name'] = wreckMaterialName;
               
-              console.log(`Sending wm - ${wreckMaterialName}`);
-              
               try {
                 const wmResponse = await axios.post(
                   `${process.env.API_ENDPOINT}/Api/SubmitWreckMaterial`,
@@ -186,7 +177,7 @@ export default function (app) {
                   );
                 }
               } catch (error) {
-                console.error(`Error posting wreck material to API: ${error}`);
+                console.error(`Error posting wreck material to API: ${error.status}`);
               }
             }
 
@@ -215,7 +206,7 @@ export default function (app) {
             res.redirect('/error');
           }
         } catch (err) {
-          console.error(err);
+          console.error(`Issue submitting droit report: ${err.code} - ${err.config.method} - ${err.config.url}`);
         }
       }
     }

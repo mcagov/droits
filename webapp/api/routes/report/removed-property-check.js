@@ -17,8 +17,10 @@ export default function (app) {
 
       const errors = formatValidationErrors(validationResult(req));
 
-      req.session.data = sessionDataDefaults;
-      res.locals.data = sessionDataDefaults;
+      // reset session data to defaults at the form entrypoint
+      const defaults = sessionDataDefaults();
+      req.session.data = defaults;
+      res.locals.data = defaults;
 
       if (!errors) {
         req.session.data['removed-property'] = req.body['removed-property'];

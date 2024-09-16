@@ -62,7 +62,6 @@ export default function (app) {
           ).then((response) => {
             return res.render('report/send-sample',{data: JSON.stringify(response.data)});
           }, (error) => {
-            console.error(error);
             return res.status(500).send('Error sending sample report - '+error);
           });
     });
