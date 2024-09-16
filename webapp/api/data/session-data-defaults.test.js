@@ -1,5 +1,21 @@
 import sessionDataDefaults from "./session-data-defaults"
 
+// recursively check whether two arguments share any references
+// note: will infinite loop if obj1 has any circular references
+const haveAnySharedReferences = (a, b) => {
+  // ignore arguments with a value of null, the typeof these are objects
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#typeof_null
+  if (a === null) {
+    return false
+  } else if (typeof a !== "object") {
+    return a === b
+  } else {
+    return Object.keys(a).every((property) => {
+      haveAnySharedReferences(a[property], b[property])
+    })
+  }
+}
+
 describe("session-data-defaults", () => {
   it("should return an object with expected defaults", () => {
     const defaults = sessionDataDefaults()
@@ -52,13 +68,6 @@ describe("session-data-defaults", () => {
 
     expect(defaults1 === defaults2).toBeFalsy()
     
-    // check every nested object is different on both default objects
-    for (const property of Object.keys(defaults1)) {
-      // ignore properties with a value of null, the typeof these are objects
-      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#typeof_null
-      if (typeof defaults1[property] == "object" && defaults1[property] !== null) {
-        expect(defaults1[property] === defaults2[property]).toBeFalsy()
-      }
-    }
+    expect(haveAnySharedReferences(defaults1, defaults2)).toBeFalsy()
   })
 })
