@@ -177,7 +177,7 @@ export default function (app) {
                   );
                 }
               } catch (error) {
-                console.error(`Error posting wreck material to API: ${error}`);
+                console.error(`Error posting wreck material to API: ${error.status}`);
               }
             }
 
@@ -206,7 +206,7 @@ export default function (app) {
             res.redirect('/error');
           }
         } catch (err) {
-          console.error(err);
+          console.error(err.status);
         }
       }
     }

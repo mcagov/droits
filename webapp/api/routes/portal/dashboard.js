@@ -55,7 +55,6 @@ const fetchSalvorInfo = (url, currentUserEmail, userReports, res, req) => {
           resolve();
         })
         .catch((err) => {
-          console.log('[Report data error]:' + err);
           if (err.response.status === 401) {
             req.logOut();
             res.redirect('/error');
