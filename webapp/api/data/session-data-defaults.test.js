@@ -38,4 +38,11 @@ describe("session-data-defaults", () => {
     expect(defaults).toHaveProperty("salvage-services", "")
     expect(defaults).toHaveProperty("submittedFiles", [])
   })
+
+  it("shouldn't return information saved to the defaults object to a later call", () => {
+    const defaults1 = sessionDataDefaults()
+    defaults1.personal["full-name"] = "Alice"
+    const defaults2 = sessionDataDefaults()
+    expect(defaults2.personal["full-name"]).toBe("")
+  })
 })
