@@ -46,9 +46,19 @@ describe("session-data-defaults", () => {
     expect(defaults2.personal["full-name"]).toBe("")
   })
 
-  it("should return a different object each time it is called", () => {
+  it("should return a different object with different nested objects each time it is called", () => {
     const defaults1 = sessionDataDefaults()
     const defaults2 = sessionDataDefaults()
+
     expect(defaults1 === defaults2).toBeFalsy()
+    
+    // check every nested object is different on both default objects
+    for (const property of Object.keys(defaults1)) {
+      // ignore properties with a value of null, the typeof these are objects
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#typeof_null
+      if (typeof defaults1[property] == "object" && defaults1[property] !== null) {
+        expect(defaults1[property] === defaults2[property]).toBeFalsy()
+      }
+    }
   })
 })
