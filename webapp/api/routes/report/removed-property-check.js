@@ -17,7 +17,8 @@ export default function (app) {
 
       const errors = formatValidationErrors(validationResult(req));
 
-      const defaults = sessionDataDefaults()
+      // reset session data to defaults at the form entrypoint
+      const defaults = sessionDataDefaults();
       req.session.data = defaults;
       res.locals.data = defaults;
 
