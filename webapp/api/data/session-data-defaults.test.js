@@ -1,9 +1,9 @@
 import sessionDataDefaults from "./session-data-defaults"
 
 // recursively check whether two arguments share any references
-// note: will infinite loop if obj1 has any circular references
+// note: will infinite loop if a has any circular references
 const haveAnySharedReferences = (a, b) => {
-  // ignore arguments with a value of null, the typeof these are objects
+  // ignore null values, the typeof these are objects
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#typeof_null
   if (a === null) {
     return false
