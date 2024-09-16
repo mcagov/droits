@@ -1,5 +1,3 @@
-import deepFreeze from "../../utilities/deepFreeze";
-
 /*
 
 Provide default values for user session data. These are automatically added
@@ -54,17 +52,4 @@ const defaultData= {
   submittedFiles: []
 };
 
-// const frozenDefaultData = deepFreeze(defaultData);
-
-// Object.freeze(defaultData["report-date"])
-// Object.freeze(defaultData["wreck-find-date"])
-// Object.freeze(defaultData.personal)
-// Object.freeze(defaultData.location)
-// Object.freeze(defaultData.location["location-standard"])
-// Object.freeze(defaultData.location["location-given"])
-// Object.freeze(defaultData.property)
-// Object.freeze(defaultData["vessel-information"])
-// Object.freeze(defaultData.submittedFiles)
-
-
- export default defaultData;
+ export default () => defaultData;
