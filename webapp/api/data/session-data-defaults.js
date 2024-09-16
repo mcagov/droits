@@ -17,44 +17,41 @@ Example usage:
 
 */
 
-const defaultData= {
-  'report-date': {},
-  'wreck-find-date': {
-    day: '',
-    month: '',
-    year: ''
-  },
-  personal: {
-    'full-name': '',
-    email: '',
-    'telephone-number': '',
-    'address-line-1': '',
-    'address-line-2': '',
-    'address-town': '',
-    'address-county': '',
-    'address-postcode': ''
-  },
-  location: {
-    'location-standard': {},
-    'location-given': {},
-    'text-location': '',
-    'location-description': ''
-  },
-  property: {},
-  'vessel-information': {
-    'vessel-name': '',
-    'vessel-construction-year': '',
-    'vessel-sunk-year': ''
-  },
-  'vessel-depth': null,
-  'wreck-description': '',
-  'salvage-services': '',
-  submittedFiles: []
-};
-
 const getDefaults = () => {
-  // use JSON serialisation to create a deep clone of the defaults object
-  return JSON.parse(JSON.stringify(defaultData))
+  return {
+    'report-date': {},
+    'wreck-find-date': {
+      day: '',
+      month: '',
+      year: ''
+    },
+    personal: {
+      'full-name': '',
+      email: '',
+      'telephone-number': '',
+      'address-line-1': '',
+      'address-line-2': '',
+      'address-town': '',
+      'address-county': '',
+      'address-postcode': ''
+    },
+    location: {
+      'location-standard': {},
+      'location-given': {},
+      'text-location': '',
+      'location-description': ''
+    },
+    property: {},
+    'vessel-information': {
+      'vessel-name': '',
+      'vessel-construction-year': '',
+      'vessel-sunk-year': ''
+    },
+    'vessel-depth': null,
+    'wreck-description': '',
+    'salvage-services': '',
+    submittedFiles: []
+  }
 }
 
  export default getDefaults;
