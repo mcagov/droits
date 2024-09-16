@@ -206,7 +206,7 @@ export default function (app) {
             res.redirect('/error');
           }
         } catch (err) {
-          console.error(err.status);
+          console.error(`Issue submitting droit report: ${err.code} - ${err.config.method} - ${err.config.url}`);
         }
       }
     }
