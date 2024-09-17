@@ -10,8 +10,6 @@ export default function (app) {
           failureRedirect: '/error',
         })(req, res, function (err) {
           if (err) {
-            // Save the error message in the session
-            req.session.errorMessage = err.message;
             // Redirect to the error page
             return res.redirect('/error');
           }

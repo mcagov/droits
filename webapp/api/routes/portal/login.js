@@ -26,7 +26,7 @@ export default function (app) {
   var findByOid = function (oid, fn) {
     for (var i = 0, len = users.length; i < len; i++) {
       var user = users[i];
-      log.info('we are using user: ', user);
+      log.info('User logged in.');
       if (user.oid === oid) {
         return fn(null, user);
       }
@@ -51,7 +51,7 @@ export default function (app) {
         useCookieInsteadOfSession: false,
         cookieSameSite: false,
         loggingLevel: 'info',
-        loggingNoPII: false,
+        loggingNoPII: true,
         scope: process.env.B2C_CLIENT_ID,
       },
       function (iss, sub, profile, accessToken, refreshToken, params, done) {
