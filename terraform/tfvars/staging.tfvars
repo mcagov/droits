@@ -30,7 +30,7 @@ ssl_domains = [
   "staging.backoffice.report-wreck-material.service.gov.uk"
 ]
 
-lb_ssl_policy               = "ELBSecurityPolicy-FS-1-2-2019-08"
+lb_ssl_policy = "ELBSecurityPolicy-FS-1-2-2019-08"
 
 enable_alerts                                      = false
 percentage_cpu_utilization_high_threshold          = 90
