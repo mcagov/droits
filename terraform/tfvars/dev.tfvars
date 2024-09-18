@@ -30,8 +30,7 @@ ssl_domains = [
   "dev.backoffice.report-wreck-material.service.gov.uk"
 ]
 
-current_ssl_certificate_arn = "arn:aws:acm:eu-west-2:842544458664:certificate/24e37f5d-35cb-46ff-a087-4085764ca82c"
-lb_ssl_policy               = "ELBSecurityPolicy-FS-1-2-2019-08"
+lb_ssl_policy = "ELBSecurityPolicy-FS-1-2-2019-08"
 
 enable_alerts                                      = true
 percentage_cpu_utilization_high_threshold          = 90

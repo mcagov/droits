@@ -64,9 +64,8 @@ module "backoffice-alb" {
   public_subnets  = module.vpc.public_subnets
   private_subnets = module.vpc.private_subnets
 
-  lb_ssl_policy = var.lb_ssl_policy
-  #  ssl_certificate_arn = module.acm.ssl_certificate_arn
-  ssl_certificate_arn = var.current_ssl_certificate_arn
+  lb_ssl_policy       = var.lb_ssl_policy
+  ssl_certificate_arn = module.acm.ssl_certificate_arn
 
   port             = var.backoffice_port
   protocol         = "HTTP"
@@ -84,9 +83,8 @@ module "webapp-alb" {
   public_subnets  = module.vpc.public_subnets
   private_subnets = module.vpc.private_subnets
 
-  lb_ssl_policy = var.lb_ssl_policy
-  #  ssl_certificate_arn = module.acm.ssl_certificate_arn
-  ssl_certificate_arn = var.current_ssl_certificate_arn
+  lb_ssl_policy       = var.lb_ssl_policy
+  ssl_certificate_arn = module.acm.ssl_certificate_arn
 
 
   port             = var.webapp_port
