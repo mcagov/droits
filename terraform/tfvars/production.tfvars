@@ -65,7 +65,6 @@ delegated_hosted_zones = {
   ]
 }
 
-current_ssl_certificate_arn = "arn:aws:acm:eu-west-2:257298404318:certificate/b53f260b-bdb1-416f-80df-7c558e1ddb73"
 lb_ssl_policy               = "ELBSecurityPolicy-FS-1-2-2019-08"
 
 enable_alerts                                      = false
