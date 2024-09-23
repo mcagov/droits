@@ -21,8 +21,6 @@ require("dotenv-json")();
 const app = express();
 app.options('*', cors());
 
-const PORT = process.env.PORT || config.PORT;
-
 // Global vars
 app.locals.serviceName = config.SERVICE_NAME;
 
@@ -178,9 +176,4 @@ if (config.SERVICE_UNAVAILABLE) {
   });
 }
 
-app.listen(PORT, () => {
-  console.log(`App listening on ${PORT} - url: http://localhost:${PORT}`);
-  console.log('Press Ctrl+C to quit.');
-});
-
-// export default app;
+export {app, redisClient};
