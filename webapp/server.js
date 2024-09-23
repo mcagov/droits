@@ -176,4 +176,4 @@ if (config.SERVICE_UNAVAILABLE) {
   });
 }
 
-export {app, redisClient};
+export default app;
