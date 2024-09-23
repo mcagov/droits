@@ -12,7 +12,7 @@
     "dev": "cross-env NODE_ENV=development concurrently \"nodemon -r esm server.js\" \"npm run watch\"",
     "local": "cross-env NODE_ENV=production concurrently \"nodemon -r esm server.js\" \"npm run watch\"",
     "prod": "cross-env NODE_ENV=production concurrently \"node -r esm server.js\"",
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   },
   "repository": {
     "type": "git",
@@ -95,6 +95,7 @@
     "cross-env": "^7.0.3",
     "jest": "^29.7.0",
     "nodemon": "^2.0.7",
+    "redis-mock": "^0.56.3",
     "supertest": "^7.0.0"
   }
 }
