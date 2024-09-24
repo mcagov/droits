@@ -23,7 +23,7 @@ jobs:
           
       - name: Set up env vars
         env:
-          TEST_ENV_JSON: ${{ secrets.WEBAPP_ENV_FILE }}
+          WEBAPP_ENV_FILE: ${{ secrets.WEBAPP_ENV_FILE }}
         run: |
           cd webapp
           echo -e "$WEBAPP_ENV_FILE" > .env.json
