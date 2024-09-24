@@ -9,9 +9,9 @@
     "start": "cross-env NODE_ENV=production node -r esm start.js",
     "watch": "webpack --watch",
     "build": "webpack --env.production",
-    "dev": "cross-env NODE_ENV=development concurrently \"nodemon -r esm server.js\" \"npm run watch\"",
-    "local": "cross-env NODE_ENV=production concurrently \"nodemon -r esm server.js\" \"npm run watch\"",
-    "prod": "cross-env NODE_ENV=production concurrently \"node -r esm server.js\"",
+    "dev": "cross-env NODE_ENV=development concurrently \"nodemon -r esm start.js\" \"npm run watch\"",
+    "local": "cross-env NODE_ENV=production concurrently \"nodemon -r esm start.js\" \"npm run watch\"",
+    "prod": "cross-env NODE_ENV=production concurrently \"node -r esm start.js\"",
     "test": "jest --detectOpenHandles"
   },
   "repository": {

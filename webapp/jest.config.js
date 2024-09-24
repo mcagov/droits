@@ -1,3 +1,6 @@
 module.exports = {
-    setupFilesAfterEnv: ['./jest.setup.redis-mock.js'],
+    setupFilesAfterEnv: [
+        './test-mocks/jest.setup.redis-mock.js', 
+        './test-mocks/jest.setup.passport-mock.js'
+    ],
 };
