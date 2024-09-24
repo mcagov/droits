@@ -26,7 +26,7 @@ jobs:
           WEBAPP_ENV_FILE: ${{ secrets.WEBAPP_ENV_FILE }}
         run: |
           cd webapp
-          echo -e "$WEBAPP_ENV_FILE" > .env.json
+          echo "$WEBAPP_ENV_FILE" > .env.json
 
       - name: Install NPM dependencies
         run: |
