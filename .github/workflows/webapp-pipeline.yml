@@ -24,6 +24,9 @@ on:
       env_file:
         description: The contents of the environment file
         required: true
+      testing_webapp_env_file:
+        description: The contents of the testing environment file
+        required: true
 
 jobs:
   test:
@@ -31,6 +34,8 @@ jobs:
     uses: ./.github/workflows/webapp-test.yml
     with:
       working-directory: webapp
+    secrets:
+      testing_webapp_env_file: ${{ secrets.testing_webapp_env_file }}
 
   publish:
     name: Publish webapp
