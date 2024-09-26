@@ -24,7 +24,7 @@ on:
       env_file:
         description: The contents of the environment file
         required: true
-      testing_env_file:
+      testing_webapp_env_file:
         description: The contents of the testing environment file
         required: true
 
@@ -35,7 +35,7 @@ jobs:
     with:
       working-directory: webapp
     secrets:
-      testing_env_file: ${{ secrets.testing_env_file }}
+      testing_webapp_env_file: ${{ secrets.testing_webapp_env_file }}
 
   publish:
     name: Publish webapp
