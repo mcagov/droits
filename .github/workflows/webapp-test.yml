@@ -22,6 +22,8 @@ jobs:
           node-version: 14.19.2
           
       - name: Set up env vars
+        with:
+          environment: development
         env:
           WEBAPP_ENV_FILE: ${{ secrets.WEBAPP_ENV_FILE }}
         run: |
