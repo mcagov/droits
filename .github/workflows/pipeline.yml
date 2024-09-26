@@ -42,6 +42,9 @@ on:
       webapp_env_file:
         description: The contents of the environment file
         required: true
+      testing_webapp_env_file:
+        description: The contents of the testing environment file
+        required: true
       backoffice_env_file:
         description: The contents of the environment file
         required: true
