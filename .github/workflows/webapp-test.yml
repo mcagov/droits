@@ -7,6 +7,10 @@ on:
         description: The directory to publish
         type: string
         required: true
+    secrets:
+      testing_env_file:
+        description: The contents of the testing environment file
+        required: true
   pull_request:
     branches:
       - main
@@ -23,7 +27,7 @@ jobs:
           
       - name: Set up env vars
         env:
-          WEBAPP_ENV_FILE: ${{ secrets.TESTING_WEBAPP_ENV_FILE }}
+          WEBAPP_ENV_FILE: ${{ secrets.testing_env_file }}
         run: |
           cd webapp
           echo "$WEBAPP_ENV_FILE" > .env.json
