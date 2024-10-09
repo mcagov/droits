@@ -113,6 +113,14 @@ div.form-sections {
   font-family: var(--bs-body-font-family) !important;
 }
 
+.sort-link {
+  text-decoration: none;
+}
+
+.sort-arrow {
+  margin-left: 0.25rem;
+}
+
 .status-Received {@extend .bg-success;}
 .status-AcknowledgementLetterSent {@extend .bg-warning;}
 .status-InitialResearch {@extend .bg-info;}

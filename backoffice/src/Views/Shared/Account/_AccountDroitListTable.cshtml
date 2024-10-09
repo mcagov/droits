@@ -1,0 +1,100 @@
+@model DroitListView
+
+@{
+    var anyVerifiedWrecks = Model.Items.Any(item => ((DroitView)item)?.Wreck?.Name != null);
+}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Reference</th>
+
+            @if (Model.IncludeAssociations)
+            {
+                <th scope="col">Salvor</th>
+                @if (Model.AnyVerifiedWrecks)
+                {
+                    <th scope="col" class="text-nowrap">Verified Wreck</th>
+
+                }
+            }
+            <th scope="col" class="text-nowrap">Reported Wreck</th>
+            <th scope="col">Triage</th>
+            @if (Model.IncludeAssociations)
+            {
+                <th scope="col">Items</th>
+            }
+            <th scope="col">RoW</th>
+            <th role="button" scope="col">
+                <a class="sort-link" data-sort-col="Status">Status</a>
+            </th>
+            <th role="button" scope="col">
+                <a class="sort-link" data-sort-col="ReportedDate">Reported</a>
+            </th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (DroitView droit in Model.Items)
+        {
+            <tr>
+                <td class="py-3 text-uppercase">
+                    <a target="_blank" asp-controller="Droit" asp-action="View" asp-route-id="@droit.Id">@droit.Reference</a>
+                </td>
+                @if (Model.IncludeAssociations)
+                {
+                    <td class="py-3">
+                        @{
+                            if (droit?.Salvor?.Name != null)
+                            {
+                                if (droit?.Salvor?.Name != null)
+                                {
+                                    @Html.ActionLink(droit?.Salvor?.Name, "View", "Salvor", new { id = droit?.Salvor?.Id }, new { target="_blank" })
+                                }
+                            }
+                            else
+                            {
+                                <span>Unknown Salvor</span>
+                            }
+                        }
+                    </td>
+                    @if (Model.AnyVerifiedWrecks)
+                    {
+                        <td class="py-3">
+                            @{
+                                if (droit?.Wreck?.Name != null)
+                                {
+                                    @Html.ActionLink(droit?.Wreck?.Name, "View", "Wreck", new { id = droit?.Wreck?.Id }, new { target="_blank" })
+                                }
+                            }
+                        </td>
+                    }
+                }
+                <td class="py-3 text-uppercase">@droit?.ReportedWreckInfo.ReportedWreckName</td>
+                <td class="py-3 text-uppercase">
+                    <span class="badge rounded-pill @(droit?.TriageNumber >0 ? "bg-primary" : "bg-dark")">@droit?.TriageNumber</span>
+                </td>
+                 @if (Model.IncludeAssociations)
+                 {
+                    <td class="py-3">
+                        <span class="badge rounded-pill bg-primary">@droit?.WreckMaterials.Count</span>
+                    </td>
+                }
+                <td class="py-3">
+                    <span class="text-uppercase">@droit?.AssignedUser</span>
+                </td>
+                <td class="py-3">
+                    <span class="badge rounded-pill status-@droit?.Status">@droit?.Status.GetDisplayName()</span>
+                </td>
+                <td class="py-3">@droit?.ReportedDate.ToString("dd/MM/yyyy")</td>
+                <td class="py-3">
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-controller="Droit" asp-route-id="@droit?.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="View" asp-controller="Droit" asp-route-id="@droit?.Id" class="btn btn-primary">View</a>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
