@@ -35,7 +35,9 @@ public class AccountController : BaseController
         searchOptions.FilterByAssignedUser = true;
         searchOptions.ExcludeClosedDroits = true;
 
-
+        searchOptions.OrderColumn = searchOptions.OrderColumn;
+        searchOptions.OrderDescending = searchOptions.OrderDescending;
+        
         searchOptions.PageNumber = searchOptions.DroitsPageNumber;
         var droits = await _droitService.GetDroitsListViewAsync(searchOptions);
         

@@ -1,10 +1,12 @@
 #region
 
+using System.Linq.Expressions;
 using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Models.ViewModels.ListViews;
 using Droits.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +18,7 @@ public interface IDroitRepository
 {
     IQueryable<Droit> GetDroits();
     IQueryable<Droit> GetDroitsWithAssociations();
+    IQueryable<Droit> GetOrderedDroitsWithAssociations(Expression<Func<Droit, object>> orderColumnExpression, bool orderDescending);
     Task<Droit> GetDroitWithAssociationsAsync(Guid id);
     Task<Droit> GetDroitAsync(Guid id);
     Task<Droit> GetDroitByPowerappsIdAsync(string powerappsId);
@@ -48,6 +51,20 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
     public IQueryable<Droit> GetDroitsWithAssociations()
     {
         return Context.Droits.OrderByDescending(d => d.ReportedDate).ThenByDescending(d => d.Id)
+            .Include(d => d.AssignedToUser).AsNoTracking()
+            .Include(d => d.Letters).AsNoTracking()
+            .Include(d => d.Wreck).AsNoTracking()
+            .Include(d => d.Salvor).AsNoTracking()
+            .Include(d => d.WreckMaterials.OrderBy(wm => wm.Created)).AsNoTracking();
+    }
+    
+    public IQueryable<Droit> GetOrderedDroitsWithAssociations(Expression<Func<Droit, object>> orderColumnExpression, bool orderDescending)
+    {
+        var query = orderDescending
+            ? Context.Droits.OrderByDescending(orderColumnExpression).ThenByDescending(d => d.Id)
+            : Context.Droits.OrderBy(orderColumnExpression).ThenByDescending(d => d.Id);
+        
+        return query
             .Include(d => d.AssignedToUser).AsNoTracking()
             .Include(d => d.Letters).AsNoTracking()
             .Include(d => d.Wreck).AsNoTracking()
