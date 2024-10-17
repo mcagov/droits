@@ -1,6 +1,7 @@
 import request from 'supertest';
 import app from './server';
 import config from './app/config';
+import {body} from "express-validator";
 
 describe('GET /', () => {
     it('responds with status 200', () => {
@@ -27,6 +28,22 @@ describe('Service Shutter Tests', () => {
             request(app).get('/test-route').expect(503)
             .end((err) => {
                 if (err) throw err;
+            });
+        });
+
+        it('should return Service Unavailable in the response body', () => {
+            request(app).get('/test-route')
+            .expect(body(/Service Unavailable/gi))
+            .end((err) => {
+                if (err) throw err;
+            });
+        });
+
+        it('should return the ROW contact email in the response body', () => {
+            request(app).get('/test-route')
+                .expect(body(/row@mcga.gov.uk/gi))
+                .end((err) => {
+                    if (err) throw err;
             });
         });
     });
