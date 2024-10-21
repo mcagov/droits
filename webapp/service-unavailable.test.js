@@ -10,26 +10,28 @@ jest.mock('./app/config', () => ({
         'GOV.UK uses cookies to make the site simpler. <a href="#">Find out more about cookies</a>',
     SERVICE_UNAVAILABLE: true
 }));
-
-const testRoutes = [
-    // Valid routes
-    '/',
-    '/report/removed-property-check',
-    '/portal/login',
-
-    // Invalid route
-    '/test-route',
-
-    // Routes with dots
-    '/some.route',
-    '/file.js',
-    '/folder/index.html'
-]
     
 describe('When config.SERVICE_UNAVAILABLE is true', () => {
+
+    const testRoutes = [
+        // Valid routes
+        '/',
+        '/report/removed-property-check',
+        '/portal/login',
+
+        // Invalid route
+        '/test-route',
+
+        // Routes with dots
+        '/some.route',
+        '/file.js',
+        '/folder/index.html'
+    ]
+    
     afterAll(() => {
         jest.resetModules(); // Reset modules to ensure the original config is used for other tests
     });
+    
     for (const route of testRoutes) {
         it('should return 503', async () => {
             const res = await request(app).get(route);
