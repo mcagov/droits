@@ -18,53 +18,44 @@ const testRoutes = [
     '/portal/login',
 
     // Invalid route
-    '/test-route'
+    '/test-route',
+
+    // Routes with dots
+    '/some.route',
+    '/file.js',
+    '/folder/index.html'
 ]
     
 describe('When config.SERVICE_UNAVAILABLE is true', () => {
     afterAll(() => {
         jest.resetModules(); // Reset modules to ensure the original config is used for other tests
     });
+    for (const route of testRoutes) {
+        it('should return 503', async () => {
+            const res = await request(app).get(route);
+            try {
+                expect(res.statusCode).toEqual(503);
+            } catch (err) {
+                throw new Error(`${err.matcherResult.message}\nRoute: ${route}`)
+            }
+        });
     
-    it('should return 503', (done) => {
-        for (const route of testRoutes) {
-            request(app).get(route)
-                .expect(503)
-                .end((err, res) => {
-                    if (err) {
-                        console.log(route, res.statusCode)
-                        return done(err);
-                    }
-                    return done();
-                });
-        }
-    });
-
-    it('should return Service Unavailable in the response body', (done) => {
-        for (const route of testRoutes) {
-            request(app).get(route)
-                .expect(/Service Unavailable/gi)
-                .end((err, res) => {
-                    if (err) {
-                        console.log(route, res.statusCode)
-                        return done(err);
-                    }
-                    return done();
-                });
-        }
-    });
-
-    it('should return the ROW contact email in the response body', (done) => {
-        for (const route of testRoutes) {
-            request(app).get(route)
-                .expect(/row@mcga.gov.uk/gi)
-                .end((err, res) => {
-                    if (err) {
-                        console.log(route, res.statusCode)
-                        return done(err);
-                    }
-                    return done();
-                });
-        }
-    });
+        it('should return Service Unavailable in the response body', async () => {
+            const res = await request(app).get(route);
+            try {
+                expect(res.text).toMatch(/Service Unavailable/gi);
+            } catch (err) {
+                throw new Error(`${err.matcherResult.message}\nRoute: ${route}`)
+            }
+        });
+    
+        it('should return the ROW contact email in the response body', async () => {
+            const res = await request(app).get(route);
+            try {
+                expect(res.text).toMatch(/row@mcga.gov.uk/gi);
+            } catch (err) {
+                throw new Error(`${err.matcherResult.message}\nRoute: ${route}`)
+            }
+        });
+    }
 });
