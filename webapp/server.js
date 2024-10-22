@@ -56,7 +56,7 @@ if (isSecure) {
 }
 
 if (config.SERVICE_UNAVAILABLE) {
-  app.get(/^([^.]+)$/, (req, res, next) => {
+  app.all('*', (req, res, next) => {
     console.log('Service Unavailable.');
     res.status('503');
     res.sendFile(path.join(__dirname, '/app/static/service-unavailable.html'));
