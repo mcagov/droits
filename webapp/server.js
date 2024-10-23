@@ -56,11 +56,16 @@ if (isSecure) {
 }
 
 if (config.SERVICE_UNAVAILABLE) {
+  nunjucks.configure('./app/static/', {
+    autoescape: true,
+    express: app
+  });
+  
   app.all('*', (req, res, next) => {
     console.log('Service Unavailable.');
     res.status('503');
-    res.sendFile(path.join(__dirname, '/app/static/service-unavailable.html'));
-  })
+    res.render('service-unavailable.html');
+  });
 } else {
   // Support for parsing data in POSTs
   app.use(bodyParser.json());
