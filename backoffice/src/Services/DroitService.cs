@@ -1,6 +1,7 @@
 
 #region
 
+using System.Linq.Expressions;
 using AutoMapper;
 using Droits.Data.Mappers.CsvMappers;
 using Droits.Exceptions;
@@ -99,10 +100,13 @@ public class DroitService : IDroitService
 
     public async Task<DroitListView> GetDroitsListViewAsync(SearchOptions searchOptions)
     {
-        var query = searchOptions.IncludeAssociations
-            ? _repo.GetDroitsWithAssociations()
+        var orderColumnExpression = ServiceHelper.GetOrderColumnExpression(searchOptions);
+        
+        IQueryable<Droit> query =
+            searchOptions.IncludeAssociations
+            ? _repo.GetOrderedDroitsWithAssociations(orderColumnExpression, searchOptions.OrderDescending)
             : _repo.GetDroits();
-
+        
         if ( searchOptions.FilterByAssignedUser )
         {
             var currentUserId = _accountService.GetCurrentUserId();

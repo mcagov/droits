@@ -12,6 +12,38 @@ function initializeSearchForm(formClass, toggleButtonClass) {
         const searchForm = document.querySelector(formClass);
         searchForm.classList.toggle('d-none');
     })});
+    
+    const sortButtons = document.querySelectorAll(".sort-link");
+    
+    if (sortButtons.length > 0) {
+        const orderColumnField = document.querySelector(".js-order-column-field");
+        const orderDescendingField = document.querySelector(".js-order-descending-field");
+        const sortArrow = document.createElement("span");
+        sortArrow.className = "sort-arrow";
+        sortArrow.textContent = orderDescendingField.checked ? "\u2193" : "\u2191";
+
+        sortButtons.forEach((button) => {
+            const currentButtonDataField = button.getAttribute("data-sort-col");
+
+            if (orderColumnField.value === currentButtonDataField) {
+                button.appendChild(sortArrow);
+            }
+
+            button.addEventListener('click', (ev) => {
+                ev.preventDefault();
+
+                if (orderColumnField.value === currentButtonDataField) {
+                    orderDescendingField.checked = !orderDescendingField.checked;
+                } else {
+                    orderDescendingField.checked = true;
+                }
+
+                orderColumnField.value = currentButtonDataField;
+
+                orderColumnField.closest("form").submit();
+            })
+        })
+    }
 
     const paginationButtons = document.querySelectorAll(".js-page-link");
     paginationButtons.forEach((button) => {

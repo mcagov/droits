@@ -9,5 +9,7 @@ public class SearchOptions
     public bool FilterByAssignedUser { get; set; }
     public bool ExcludeClosedDroits { get; set; }
     public bool SearchOpen { get; set; } = false;
+    public string OrderColumn { get; set; } = "ReportedDate";
+    public bool OrderDescending { get; set; } = true;
 }
 
