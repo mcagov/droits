@@ -1,13 +1,16 @@
+Dear ((Title??Mr/Ms)) ((full name)),
+
 ((custom message))
 
-Next steps
-The Receiver of Wreck’s responsibility for this item is now discharged and report reference ((reference)) is now officially closed. Please look after this piece of Britain’s maritime heritage.
+The Receiver of Wreck's responsibility for ((this pluralised)) ((item pluralised)) is now discharged and report reference ((reference)) is now officially closed. Please look after ((this pluralised)) ((item pluralised)) of Britain's maritime heritage.
 
-Please keep this email as it is your proof of ownership. You can also access this outcome notice by checking the status of wreck material you have reported online: https://report-wreck-material.service.gov.uk/portal/start
+Please keep this email as it is your proof of ownership.
+
+You can also access this outcome notice by checking the status of wreck material you have reported online: https://report-wreck-material.service.gov.uk/portal/start
 
 You can also use this service to:
+* Check the status of any reports of wreck material you have submitted to the Receiver of Wreck
 
-Check the status of any reports of wreck material you have submitted to the Receiver of Wreck
-See any correspondence you have had with the Receiver of Wreck team
-Message the Receiver of Wreck if you have any further information to add or any questions you have relating to your report
 If you have any questions do not hesitate to contact the Receiver of Wreck using the email address row@mcga.gov.uk and quoting ((reference)).
+
+Yours sincerely,

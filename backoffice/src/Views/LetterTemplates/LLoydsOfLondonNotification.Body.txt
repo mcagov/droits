@@ -1,10 +1,15 @@
+To Whom It May Concern,
+
 The Receiver of Wreck received a report of wreck material on ((date)) which we have given the reference number ((reference)).
 
 ((wreck unknown??We do not currently know the name of the wreck this material was salvaged from.))
 
-((wreck known??At the moment, we believe this wreck was salvaged from ))((wreck))((wreck known?? however, investigations are ongoing to confirm this.))
+((wreck known??At the moment, we believe ((this pluralised)) wreck ((item pluralised)) ((was pluralised)) salvaged from ((wreck))((wreck known?? however, investigations are ongoing to confirm this.))
 
 The ((item pluralised)), as reported by the finder are as follows:
 ((items))
 
 If you require any further information on this report, please contact the Receiver of Wreck at row@mcga.gov.uk quoting the reference ((reference)).
+
+Yours sincerely,
+

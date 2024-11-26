@@ -1,6 +1,8 @@
+Dear ((Title??Mr / Ms)) ((full name)),
+
 Thank you for providing additional information to the Receiver of Wreck on your report reference number ((reference)).
 
-We have now received all of the information required from you in order to undertake our investigation to determine the owner of the wreck material reported.
+We have now received all the information required from you in order to undertake our investigation to determine the owner of the wreck material reported.
 
 Next steps
 The Receiver of Wreck will investigate your report and contact you if any further information is required.
@@ -8,8 +10,8 @@ The Receiver of Wreck will investigate your report and contact you if any furthe
 You can check the status of wreck material you have reported online: https://report-wreck-material.service.gov.uk/portal/start
 
 You can use this service to:
+* Check the status of any reports of wreck material you have submitted to the Receiver of Wreck
 
-Check the status of any reports of wreck material you have submitted to the Receiver of Wreck
-See any correspondence you have had with the Receiver of Wreck team
-Message the Receiver of Wreck if you have any further information to add or any questions you have relating to your report
 If you have any questions do not hesitate to contact the Receiver of Wreck using the email address row@mcga.gov.uk and quoting ((reference)).
+
+Yours sincerely,

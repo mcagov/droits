@@ -25,10 +25,25 @@ public enum LetterType
 
     [Display(Name = "Closure Owner Waives Rights")]
     ClosureOwnerWaivesRights,
+    
+    [Display(Name = "Closure Dredge Find Owner Not Found")]
+    ClosureDredgeFindOwnerNotFound,
+    
+    [Display(Name = "Closure Dredge Find Owner Waives Rights")]
+    ClosureDredgeFindOwnerWaivesRights,
+    
+    [Display(Name = "Closure Wessex Archaeology")]
+    ClosureWessexArchaeology,
 
     [Display(Name = "Custom Closure")]
     ClosureCustom,
+    
+    [Display(Name = "Dredge Find EOD")]
+    DredgeFindEod,
 
     [Display(Name = "Custom Letter")]
-    CustomLetter
+    CustomLetter,
+    
+    [Display(Name = "Custom Email")]
+    CustomEmail
 }
