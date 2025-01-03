@@ -11,6 +11,7 @@ public static class StringHelper
         }
         return string.Join(separator, values.Where(s => !string.IsNullOrEmpty(s)));
     }
+    
     public static string FormatUrl(string url)
     {
         if ( string.IsNullOrWhiteSpace(url) ) return url;
@@ -20,5 +21,11 @@ public static class StringHelper
         }
         return url;
     }
-    
+
+    public static string CapitalizeFirstLetter(string input)
+    {
+        if (string.IsNullOrEmpty(input)) return input;
+        var firstChar = input.Substring(0, 1).ToUpper();
+        return string.Concat(firstChar, input.AsSpan(1, input.Length - 1));
+    }
 }
