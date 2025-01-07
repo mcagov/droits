@@ -51,36 +51,91 @@ public class LetterPersonalisationViewUnitTests
     public void ShouldReturnCorrectLetterContent()
     {
         var letterView = new LetterPersonalisationView(_droit);
-        var response = letterView.SubstituteContent("((reference)) ((wreck)) ((foobar)) ((date)) ((full name)) ((items))");
+        
+        var content = """
+                      Droit reference: ((reference))
+                      Wreck name: ((wreck))
+                      Invalid personalisation: ((foobar))
+                      Reported date: ((date))
+                      Salvor name: ((full name))
+                      List of wreck items:
+                      ((items))
+                      """;
+        
+        var expectedContent = """
+                              Droit reference: 111/11
+                              Wreck name: Sinky
+                              Invalid personalisation: ((foobar))
+                              Reported date: 14/07/1971
+                              Salvor name: Mr Salvor
+                              List of wreck items:
+                              * Rusty Tap
+                              """;
+        
+        var response = letterView.SubstituteContent(content);
 
-        Assert.Equal("111/11 Sinky ((foobar)) 14/07/1971 Mr Salvor * Rusty Tap", response);
+        Assert.Equal(expectedContent, response);
     }
     
     [Fact]
     public void ShouldReturnCorrectSingularContent()
     {
         var letterView = new LetterPersonalisationView(_droit);
-        var response = letterView.SubstituteContent("((item pluralised)) ((has pluralised)) ((this pluralised)) ((is pluralised)) ((piece pluralised))");
 
-        Assert.Equal("item has this is piece", response);
+        var content = """
+                      The ((item pluralised)) ((has pluralised)) been received.
+                      Please look after ((this pluralised)) ((piece pluralised)).
+                      """;
+        
+        var expectedContent = """
+                              The item has been received.
+                              Please look after this piece.
+                              """;
+        
+        var response = letterView.SubstituteContent(content);
+
+        Assert.Equal(expectedContent, response);
     }
     
     [Fact]
     public void ShouldReturnCorrectPluralContent()
     {
         var letterView = new LetterPersonalisationView(_droitPlural);
-        var response = letterView.SubstituteContent("((item pluralised)) ((has pluralised)) ((this pluralised)) ((is pluralised)) ((piece pluralised))");
+        
+        var content = """
+                      The ((item pluralised)) ((has pluralised)) been received.
+                      Please look after ((this pluralised)) ((piece pluralised)).
+                      """;
+        
+        var expectedContent = """
+                              The items have been received.
+                              Please look after these pieces.
+                              """;
+        
+        var response = letterView.SubstituteContent(content);
 
-        Assert.Equal("items have these are pieces", response);
+        Assert.Equal(expectedContent, response);
     }
     
     [Fact]
     public void ShouldReturnListOfMultipleItems()
     {
         var letterView = new LetterPersonalisationView(_droitPlural);
-        var response = letterView.SubstituteContent("((items))");
+        
+        var content = """
+                      List of wreck items:
+                      ((items))
+                      """;
+        
+        var expectedContent = """
+                              List of wreck items:
+                              * Oar
+                              * Gold
+                              """;
+        
+        var response = letterView.SubstituteContent(content);
 
-        Assert.Equal("* Oar\n* Gold", response);
+        Assert.Equal(expectedContent, response);
     }
     
     [Fact]
