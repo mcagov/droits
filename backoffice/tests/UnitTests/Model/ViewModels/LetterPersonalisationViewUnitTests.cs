@@ -142,31 +142,34 @@ public class LetterPersonalisationViewUnitTests
     public void ShouldCapitalizePluralisedWordAtStartOfSentence()
     {
         var letterView = new LetterPersonalisationView(_droitPlural);
-        var response = letterView.SubstituteContent
-            (
-                "((item pluralised)) described by you. " +
-                "((item pluralised)) described by you: " +
-                "((item pluralised)) described by you? " +
-                "((item pluralised)) described by you! " +
-                "The ((item pluralised)) described by you. " +
-                "The Receiver of Wreck's responsibility for ((this pluralised)) ((item pluralised)) ((is pluralised)) now discharged. " +
-                "As discussed, ((this pluralised)) ((is pluralised)) now discharged. " +
-                "There is something in the water (treasure?) ((this pluralised)) ((is pluralised)) now discharged." +
-                "There is something in the water (treasure)? ((this pluralised)) ((is pluralised)) now discharged."
-            );
+        
+        var content = """
+                      ((item pluralised)) described by you.
+                      ((item pluralised)) described by you:
+                      ((item pluralised)) described by you?
+                      ((item pluralised)) described by you!
+                      The ((item pluralised)) described by you.
+                      The Receiver of Wreck's responsibility for ((this pluralised)) ((item pluralised)) ((is pluralised)) now discharged.
+                      As discussed, ((this pluralised)) ((is pluralised)) now discharged.
+                      There is something in the water (treasure?) ((this pluralised)) ((is pluralised)) now discharged.
+                      There is something in the water (treasure)? ((this pluralised)) ((is pluralised)) now discharged.
+                      """;
+        
+        var expectedContent = """
+                              Items described by you.
+                              Items described by you:
+                              Items described by you?
+                              Items described by you!
+                              The items described by you.
+                              The Receiver of Wreck's responsibility for these items are now discharged.
+                              As discussed, these are now discharged.
+                              There is something in the water (treasure?) These are now discharged.
+                              There is something in the water (treasure)? These are now discharged.
+                              """;
+        
+        var response = letterView.SubstituteContent(content);
 
-        Assert.Equal
-            (                
-                "Items described by you. " +
-                "Items described by you: " +
-                "Items described by you? " +
-                "Items described by you! " +
-                "The items described by you. " +
-                "The Receiver of Wreck's responsibility for these items are now discharged. " +
-                "As discussed, these are now discharged. " +
-                "There is something in the water (treasure?) These are now discharged." +
-                "There is something in the water (treasure)? These are now discharged."
-            , response);
+        Assert.Equal(expectedContent, response);
     }
     
     [Fact]
