@@ -1,4 +1,4 @@
-Dear ((Title??Mr / Ms)) ((full name)),
+Dear ((full name)),
 
 Thank you for providing additional information to the Receiver of Wreck on your report reference number ((reference)).
 

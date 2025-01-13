@@ -1,4 +1,4 @@
-Dear ((Title??Mr / Ms)) ((full name)),
+Dear ((full name)),
 
 Your report of wreck material with the reference ((reference)) has been reviewed by the Receiver of Wreck.
 
