@@ -1,4 +1,4 @@
-Dear ((Title??Mr / Ms)) ((full name)),
+Dear ((full name)),
 
 ((custom message))
 

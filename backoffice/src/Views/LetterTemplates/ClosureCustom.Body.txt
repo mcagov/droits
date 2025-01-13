@@ -1,6 +1,8 @@
-Dear ((Title??Mr/Ms)) ((full name)),
+Dear ((full name)),
 
 ((custom message))
+
+If you intend to sell or donate the item(s), please include a copy of this email along with the receipt so that any future owner has proof that this wreck material has been through the legal reporting process.
 
 The Receiver of Wreck's responsibility for ((this pluralised)) ((item pluralised)) is now discharged and report reference ((reference)) is now officially closed. Please look after ((this pluralised)) ((item pluralised)) of Britain's maritime heritage.
 
