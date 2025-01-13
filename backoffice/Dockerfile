@@ -32,7 +32,7 @@ RUN RUN set -uex; \
     npm install --production
 
 # Build .NET app
-RUN dotnet restore
+#RUN dotnet restore
 RUN dotnet build
 
 
