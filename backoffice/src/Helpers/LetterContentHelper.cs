@@ -46,9 +46,11 @@ public static class LetterContentHelper
 
         if ( !isLateSubmission ) return lateReportSection;
         
-        lateReportSection += @"#Report submitted late";
+        lateReportSection += @"Report submitted late";
         lateReportSection += @"
-                You have not submitted this Report of wreck material within 28 days of the wreck material being recovered. For all future recoveries, please note that all recovered wreck material should be reported to the Receiver of Wreck within 28 days of recovery.";
+                You have not submitted this Report of wreck material within 28 days of the wreck material being recovered. For all future recoveries, please note that all recovered wreck material should be reported to the Receiver of Wreck within 28 days of recovery.
+
+";
 
         return lateReportSection;
     }
