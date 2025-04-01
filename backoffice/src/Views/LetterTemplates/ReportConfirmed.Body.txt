@@ -4,11 +4,9 @@ Items reported
 The following ((item pluralised)) ((has pluralised)) been reported((wreck known?? from the wreck named)) ((wreck)):
 ((items))
 
-We recommend that you download a copy of your report submission which is available here: ((link_to_file)).
+We recommend that you download a copy of your report submission which is available here: https://report-wreck-material.service.gov.uk/portal/start
 
-((late report??
-Report submitted late
-You have not submitted this Report of wreck material within 28 days of the wreck material being recovered. For all future recoveries, please note that all recovered wreck material should be reported to the Receiver of Wreck within 28 days of recovery.))
+((late_report_section))
 
 Your responsibilities
 The recovered ((item pluralised)) ((is pluralised)) now held by you on indemnity to the Receiver of Wreck whilst investigations into legal ownership are undertaken.
