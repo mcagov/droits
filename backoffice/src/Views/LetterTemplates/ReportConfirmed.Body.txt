@@ -1,7 +1,7 @@
 Thank you for reporting wreck material to the Receiver of Wreck. Your report has been recorded with the reference number ((reference)).
 
 Items reported
-The following ((item pluralised)) ((has pluralised)) been reported ((wreck?? from the wreck named ((wreck)))):
+The following ((item pluralised)) ((has pluralised)) been reported:
 ((items))
 
 We recommend that you download a copy of your report submission which is available here: https://report-wreck-material.service.gov.uk/portal/start
