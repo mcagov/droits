@@ -1,7 +1,7 @@
 Thank you for reporting wreck material to the Receiver of Wreck. Your report has been recorded with the reference number ((reference)).
 
 Items reported
-The following ((item pluralised)) ((has pluralised)) been reported((wreck known?? from the wreck named)) ((wreck)):
+The following ((item pluralised)) ((has pluralised)) been reported ((wreck?? from the wreck named ((wreck)))):
 ((items))
 
 We recommend that you download a copy of your report submission which is available here: https://report-wreck-material.service.gov.uk/portal/start
@@ -10,6 +10,7 @@ We recommend that you download a copy of your report submission which is availab
 
 Your responsibilities
 The recovered ((item pluralised)) ((is pluralised)) now held by you on indemnity to the Receiver of Wreck whilst investigations into legal ownership are undertaken.
+
 You do not own the reported ((item pluralised)) until advised by the Receiver of Wreck. You must not sell or otherwise dispose of the ((item pluralised)) until advised by the Receiver of Wreck.
 
 All finds from a maritime context are subject to various physical and chemical processes once raised. Conservators advise that finds should be kept wet, cool and dark until more specific advice can be sought.
