@@ -11,7 +11,7 @@ The Droits reporting service enables:
 
 It comprises two applications
 
-1. A public facing frontend etc in the `webapp/` directory
+1. A public facing frontend etc. in the `webapp/` directory
 2. The backoffice API which handles the incoming registrations and is an admin application to handle the reports
 
 ## Architecture
