@@ -17,6 +17,7 @@ on:
       env_file:
         description: The contents of the environment file
         required: true
+  push:
 
 defaults:
   run:
