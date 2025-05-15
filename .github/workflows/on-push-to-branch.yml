@@ -24,14 +24,15 @@ jobs:
       - name: Terraform Lint
         run: terraform fmt --recursive --check
         
-  test-backoffice:
-    name: Test backoffice
-    uses: ./.github/workflows/_reusable-backoffice-test.yml
-    with:
-      environment: development
-      dotnet-version: "8.0.x"
-    secrets:
-      env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
+  # Todo: Get this working once we have acces to add the required secret
+  # test-backoffice:
+  #   name: Test backoffice
+  #   uses: ./.github/workflows/_reusable-backoffice-test.yml
+  #   with:
+  #     environment: development
+  #     dotnet-version: "8.0.x"
+  #   secrets:
+  #     env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
 
   test-webapp:
     name: Test webapp
