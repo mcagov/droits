@@ -1,4 +1,9 @@
 name: Backoffice pipeline
+
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   workflow_call:
     inputs:
@@ -28,7 +33,7 @@ on:
 jobs:
   test:
     name: Test backoffice
-    uses: ./.github/workflows/backoffice-test.yml
+    uses: ./.github/workflows/_reusable-backoffice-test.yml
     with:
       environment: ${{ inputs.environment }}
       dotnet-version: "8.0.x"
@@ -39,7 +44,7 @@ jobs:
   publish:
     name: Publish backoffice
     needs: [test]
-    uses: ./.github/workflows/publish.yml
+    uses: ./.github/workflows/_reusable-publish.yml
     with:
       image_tag: ${{ inputs.image_tag }}
       environment: ${{ inputs.environment }}

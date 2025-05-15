@@ -1,5 +1,10 @@
 name: Destroy terraform
 
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
 on:
   workflow_call:
     inputs:
@@ -49,9 +54,7 @@ on:
 defaults:
   run:
     working-directory: terraform
-permissions:
-  id-token: write
-  contents: read
+    
 jobs:
   destroy:
     name: Destroy

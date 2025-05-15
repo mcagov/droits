@@ -1,6 +1,7 @@
 # DROITS CI/CD Workflows
 
-Each environment has it's own workflow dispatch trigger
+Each environment has its own workflow dispatch trigger:
+
 - Dev pipeline deploys on a push into main
 - Staging on a release set to "pre-release" (see handbook for further details)
 - Production on a release set to "release"

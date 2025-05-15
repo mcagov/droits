@@ -1,5 +1,9 @@
 name: Testing backoffice
 
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   workflow_call:
     inputs:
@@ -17,14 +21,12 @@ on:
       env_file:
         description: The contents of the environment file
         required: true
-  push:
 
 defaults:
   run:
     working-directory: backoffice
 
 jobs:
-
   unit_tests:
     name: Backoffice unit tests
     runs-on: ubuntu-latest

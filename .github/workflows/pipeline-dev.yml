@@ -8,7 +8,7 @@ on:
 jobs:
   run_pipeline:
     name: Deploying to Development
-    uses: ./.github/workflows/pipeline.yml
+    uses: ./.github/workflows/_reusable-pipeline.yml
     with:
       environment: development
       terraform_workspace: dev
