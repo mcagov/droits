@@ -14,14 +14,14 @@ jobs:
       terraform_workspace: dev
       image_tag: ${{ github.sha }}
     secrets:
-      registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
-      backoffice_repository_name: ${{ secrets.BACKOFFICE_ECR_REPOSITORY_NAME }}
-      webapp_repository_name: ${{ secrets.WEBAPP_ECR_REPOSITORY_NAME }}
-      aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
-      aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
-      db_username: ${{ secrets.DB_USERNAME }}
-      db_password: ${{ secrets.DB_PASSWORD }}
-      webapp_env_file: ${{ secrets.WEBAPP_ENV_FILE }}
-      testing_webapp_env_file: ${{ secrets.TESTING_WEBAPP_ENV_FILE }}
-      backoffice_env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
       alerts_email: ${{ secrets.ALERTS_EMAIL }}
+      aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
+      aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
+      backoffice_env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
+      backoffice_repository_name: ${{ secrets.BACKOFFICE_ECR_REPOSITORY_NAME }}
+      db_password: ${{ secrets.DB_PASSWORD }}
+      db_username: ${{ secrets.DB_USERNAME }}
+      registry_url: ${{ secrets.ECR_REPOSITORY_URL }}
+      testing_webapp_env_file: ${{ secrets.TESTING_WEBAPP_ENV_FILE }}
+      webapp_env_file: ${{ secrets.WEBAPP_ENV_FILE }}
+      webapp_repository_name: ${{ secrets.WEBAPP_ECR_REPOSITORY_NAME }}

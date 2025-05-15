@@ -31,7 +31,7 @@ jobs:
       environment: ${{ inputs.environment }}
       dotnet-version: "8.0.x"
     secrets:
-      env_file: ${{secrets.env_file}}
+      env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
 
   test-webapp:
     name: Test webapp
