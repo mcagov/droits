@@ -6,6 +6,31 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
+    directories:
+      - "/backoffice"
+      - "/webapp"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "dotnet-sdk"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "terraform"
+    directories:
+      - "/terraform"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "docker"
+    directories:
+      - "/backoffice"
+      - "/webapp"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
