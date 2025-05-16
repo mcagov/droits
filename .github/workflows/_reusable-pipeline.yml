@@ -1,4 +1,9 @@
 name: Pipeline for environment
+
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   workflow_call:
     inputs:
@@ -51,6 +56,7 @@ on:
       alerts_email:
         description: Email that will receive alarm alerts
         required: true
+
 jobs:
   terraform_lint:
     name: Terraform lint
@@ -68,7 +74,7 @@ jobs:
 
   backoffice_pipeline:
     name: Run backoffice pipeline
-    uses: ./.github/workflows/backoffice-pipeline.yml
+    uses: ./.github/workflows/_reusable-backoffice-pipeline.yml
     needs: [terraform_lint]
     with:
       environment: ${{ inputs.environment }}
@@ -81,7 +87,7 @@ jobs:
 
   webapp_pipeline:
     name: Run webapp pipeline
-    uses: ./.github/workflows/webapp-pipeline.yml
+    uses: ./.github/workflows/_reusable-webapp-pipeline.yml
     needs: [terraform_lint]
     with:
       environment: ${{ inputs.environment }}
@@ -96,7 +102,7 @@ jobs:
   deploy:
     name: Deploy changes
     needs: [backoffice_pipeline,webapp_pipeline]
-    uses: ./.github/workflows/deploy.yml
+    uses: ./.github/workflows/_reusable-deploy.yml
     with:
       environment: ${{ inputs.environment }}
       terraform_workspace: ${{ inputs.terraform_workspace }}

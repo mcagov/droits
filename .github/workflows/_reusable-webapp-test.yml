@@ -1,5 +1,9 @@
 name: Testing webapp
 
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   workflow_call:
     inputs:
@@ -11,9 +15,6 @@ on:
       testing_webapp_env_file:
         description: The contents of the testing environment file
         required: true
-  pull_request:
-    branches:
-      - main
 
 jobs:
   unit_tests:

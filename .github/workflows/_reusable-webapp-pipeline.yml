@@ -1,4 +1,9 @@
 name: Webapp pipeline
+
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   workflow_call:
     inputs:
@@ -31,7 +36,7 @@ on:
 jobs:
   test:
     name: Test webapp
-    uses: ./.github/workflows/webapp-test.yml
+    uses: ./.github/workflows/_reusable-webapp-test.yml
     with:
       working-directory: webapp
     secrets:
@@ -40,7 +45,7 @@ jobs:
   publish:
     name: Publish webapp
     needs: [test]
-    uses: ./.github/workflows/publish.yml
+    uses: ./.github/workflows/_reusable-publish.yml
     with:
       image_tag: ${{ inputs.image_tag }}
       environment: ${{ inputs.environment }}

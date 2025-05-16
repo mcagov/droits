@@ -1,5 +1,9 @@
 name: Testing backoffice
 
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   workflow_call:
     inputs:
@@ -23,7 +27,6 @@ defaults:
     working-directory: backoffice
 
 jobs:
-
   unit_tests:
     name: Backoffice unit tests
     runs-on: ubuntu-latest
@@ -53,5 +56,8 @@ jobs:
       run: |
           echo -e "${APPSETTINGS_JSON}" > src/appsettings.json
 
-    - name: Run tests
-      run: dotnet test
+    - name: Run unit tests
+      run: dotnet test --filter FullyQualifiedName\~UnitTests
+
+    - name: Run integration tests
+      run: dotnet test --filter FullyQualifiedName\~IntegrationTests

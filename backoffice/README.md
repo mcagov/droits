@@ -13,10 +13,10 @@ Before diving into the application, there are a few prerequisites you need to se
 2. **.NET SDK**: This application is developed using .NET. Ensure you have the [.NET SDK](https://dotnet.microsoft.com/download) installed.
 
 3. **Development Certificate**: To run the application locally with HTTPS, you'll need a development certificate. Follow the instructions below to set one up:
-
-```bash
-dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p password
-```
+    ```bash
+    dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p password
+    ```
+4. Create a `src/appsettings.json` file and populate it with the contents of the "Backoffice Local- appsettings.json" secret from 1Password.
 
 This command will create a local development certificate for HTTPS and store it in the specified location.
 
