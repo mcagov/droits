@@ -8,7 +8,7 @@
     "progress"
   ],
   "mutate": [
-    "{api,app,lib,utilities}/**/*.js",
+    "{lib,utilities}/**/*.js",
     "!**/*.test.js"
   ],
   "testRunner": "jest",
