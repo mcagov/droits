@@ -54,13 +54,17 @@
 
 ## Install prerequisites
 
-- [Node](https://nodejs.org/en/)
+We recommend using [asdf](https://asdf-vm.com/guide/getting-started.html) to install the required tools specified in [.tool-versions](../.tool-versions).
 
 ## Install dependencies
 
 ```bash
  npm install
 ```
+
+## Create a `.env.json` file
+
+Populate it with the contents of the "Webapp .env.dev.json" in 1Password.
 
 ### With those installed, you can then run the app in one of the following ways!
 
