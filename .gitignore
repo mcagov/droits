@@ -53,4 +53,5 @@ obj/*
 # Mutation testing
 .stryker-tmp
 stryker.log
+StrykerOutput
 */reports/mutation
