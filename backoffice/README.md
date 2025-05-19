@@ -37,7 +37,14 @@ This command will build the application's Docker images and start the necessary 
 ```shell
 # From the backoffice directory...
 
-dotnet test --filter FullyQualifiedName\~UnitTests
+dotnet test --filter FullyQualifiedName~UnitTests
+
+### Run the integration tests
+
+```shell
+# From the backoffice directory...
+
+dotnet test --filter FullyQualifiedName~IntegrationTests
 ```
 
 ### Mutation testing
