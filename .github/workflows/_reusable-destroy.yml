@@ -1,4 +1,5 @@
 name: Destroy terraform
+# This is currently unused
 
 permissions:
   contents: read
