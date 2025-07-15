@@ -2,7 +2,7 @@
   "name": "@mca/droits",
   "version": "1.0.0",
   "engines": {
-    "node": "14"
+    "node": "16"
   },
   "description": "Maritime and Coastguard Agency - Receiver of Wreck web application for reporting wreck material recovered from the sea and shores of the UK",
   "scripts": {
@@ -59,7 +59,7 @@
     "fast-csv": "^4.3.6",
     "file-loader": "^6.1.0",
     "glightbox": "^3.0.7",
-    "govuk-frontend": "^4.8.0",
+    "govuk-frontend": "^4.10.0",
     "helmet": "^4.4.1",
     "keypather": "^3.1.0",
     "lodash.clonedeep": "^4.5.0",
@@ -90,6 +90,8 @@
     "webpack-cli": "^3.3.12"
   },
   "devDependencies": {
+    "@stryker-mutator/core": "^7.3.0",
+    "@stryker-mutator/jest-runner": "^7.3.0",
     "@types/jest": "^29.5.13",
     "babel-jest": "^29.7.0",
     "cross-env": "^7.0.3",

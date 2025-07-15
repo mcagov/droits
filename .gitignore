@@ -2,7 +2,6 @@
 ##Webapp
 *webapp/node_modules
 *webapp/dist/**/*
-*webapp/package-lock.json
 *webapp/.DS_Store
 *webapp/config/keys_dev.js
 *webapp/uploads/**/*
@@ -17,7 +16,6 @@ backoffice/src/wwwroot/dist/
 backoffice/src/wwwroot/scss/site.css.map
 backoffice/src/wwwroot/scss/site.css
 backoffice/src/node_modules
-backoffice/src/package-lock.json
 
 backoffice/tests/bin/
 backoffice/tests/obj/
@@ -51,3 +49,9 @@ scripts/access-migration/results
 .DS_Store
 .idea
 obj/*
+
+# Mutation testing
+.stryker-tmp
+stryker.log
+StrykerOutput
+*/reports/mutation
