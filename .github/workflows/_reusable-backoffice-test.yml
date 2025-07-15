@@ -57,7 +57,7 @@ jobs:
           echo -e "${APPSETTINGS_JSON}" > src/appsettings.json
 
     - name: Run unit tests
-      run: dotnet test --filter FullyQualifiedName\~UnitTests
+      run: dotnet test --filter FullyQualifiedName~UnitTests
 
     - name: Run integration tests
-      run: dotnet test --filter FullyQualifiedName\~IntegrationTests
+      run: dotnet test --filter FullyQualifiedName~IntegrationTests
