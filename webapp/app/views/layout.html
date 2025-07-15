@@ -1,5 +1,6 @@
 {#- We can't mount GOV.UK Frontend's assets at root as it's done automatically by the extensions framework. -#}
 {%- set assetPath = '/assets' -%}
+{% set govukRebrand = true %}
 
 {% extends "govuk/template.njk" %}
 
@@ -50,7 +51,8 @@
     serviceUrl: "/",
     containerClasses: "govuk-width-container",
     attributes: {"id" : "page-header"},
-    useTudorCrown: true
+    useTudorCrown: true,
+    rebrand: true
   }) }}
 {% endblock %}
 
@@ -74,7 +76,8 @@
             text: "Privacy statement"
           }
         ]
-      }
+      },
+    rebrand: true
     }) }}
   {% endblock %}
 {% endif %}
