@@ -24,7 +24,7 @@ jobs:
       - name: Terraform Lint
         run: terraform fmt --recursive --check
         
-  # Todo: Get this working once we have acces to add the required secret
+  # Todo: Get this working once we have access to add the required secret
   # test-backoffice:
   #   name: Test backoffice
   #   uses: ./.github/workflows/_reusable-backoffice-test.yml
