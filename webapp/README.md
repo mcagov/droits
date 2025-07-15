@@ -58,7 +58,9 @@ We recommend using [asdf](https://asdf-vm.com/guide/getting-started.html) to ins
 
 ## Install dependencies
 
-```bash
+```shell
+# From the webapp directory...
+
  npm install
 ```
 
@@ -66,31 +68,59 @@ We recommend using [asdf](https://asdf-vm.com/guide/getting-started.html) to ins
 
 Populate it with the contents of the "Webapp .env.dev.json" in 1Password.
 
-### With those installed, you can then run the app in one of the following ways!
-
-#### Starts server
+## Run the app
 
 ### Start the Express server
 
-```bash
+```shell
+# From the webapp directory...
+
  npm run start
 ```
 
-#### Starts both express server and frontend
-
 ### Start both the Express server and frontend
 
-```bash
+```shell
+# From the webapp directory...
+
  npm run dev
 ```
 
-#### Build static assets for production
-
 ### Build static assets for production
 
-```bash
+```shell
+# From the webapp directory...
+
  npm run build
 ```
+
+## Testing
+
+### Run the unit tests
+
+```shell
+# From the webapp directory...
+
+npm run test
+```
+
+### Mutation testing
+
+We use [Stryker Mutator](https://stryker-mutator.io/docs/stryker-js/introduction/) as a tool to help us understand how much we can trust our unit tests.
+
+Every mutation that survives is a line of code that we can change without it being picked up by our unit tests.
+
+To run the mutation tests:
+
+```shell
+# From the webapp directory...
+
+stryker run
+```
+
+This will take a while, so you are not going to be running it after every commit.
+
+Once it completes, there should be an HTML report in `reports/mutation/mutation.html`.
 
 ## Access the back office component
 

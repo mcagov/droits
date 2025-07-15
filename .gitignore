@@ -49,3 +49,9 @@ scripts/access-migration/results
 .DS_Store
 .idea
 obj/*
+
+# Mutation testing
+.stryker-tmp
+stryker.log
+StrykerOutput
+*/reports/mutation
