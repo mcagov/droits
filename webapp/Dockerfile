@@ -1,10 +1,10 @@
-FROM node:16 AS build
+FROM node:24 AS build
 
 WORKDIR /srv
 ADD . .
 RUN rm -rf node_modules && npm install --cache /tmp/empty-cache
 
-FROM node:16-slim
+FROM node:24-slim
 
 WORKDIR /srv
 COPY --from=build /srv .
