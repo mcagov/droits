@@ -5,8 +5,7 @@ services:
       context: ./backoffice
     image: droits-backoffice
     ports:
-      - "5000:5000"
-      - "5001:5001"
+      - "3001:80"
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Password: "password"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
