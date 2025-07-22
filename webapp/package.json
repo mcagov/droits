@@ -2,7 +2,7 @@
   "name": "@mca/droits",
   "version": "1.0.0",
   "engines": {
-    "node": "16"
+    "node": "18"
   },
   "description": "Maritime and Coastguard Agency - Receiver of Wreck web application for reporting wreck material recovered from the sea and shores of the UK",
   "scripts": {
@@ -68,11 +68,10 @@
     "mime-types": "^2.1.28",
     "mini-css-extract-plugin": "^0.11.2",
     "morgan": "^1.10.0",
-    "multer": "^1.4.2",
-    "node-sass": "^6.0.0",
+    "multer": "^2.0.2",
     "nunjucks": "^3.2.2",
     "optimize-css-assets-webpack-plugin": "^5.0.4",
-    "passport": "^0.4.1",
+    "passport": "^0.6.0",
     "passport-azure-ad": "^4.3.0",
     "postcss": "^8.0.5",
     "postcss-loader": "^4.0.2",
@@ -80,6 +79,7 @@
     "precss": "^4.0.0",
     "prettier": "^2.2.1",
     "redis": "^3.0.2",
+    "sass": "^1.89.2",
     "sass-loader": "^10.0.2",
     "style-loader": "^1.2.1",
     "terser-webpack-plugin": "^4.2.1",
