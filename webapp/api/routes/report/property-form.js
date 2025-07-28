@@ -46,6 +46,11 @@ export default function (app) {
       req.body.property[rawPropertyID].quantity;
     req.session.data.property[rawPropertyID]['value-known'] =
       req.body['value-known'];
+    
+    const forbiddenKeys = ['__proto__', 'constructor', 'prototype'];
+    if (forbiddenKeys.includes(rawPropertyID)) {
+      return res.status(400).send('Invalid property ID');
+    }
     req.session.data.property[rawPropertyID]['value'] =
       req.body.property[rawPropertyID].value;
 
