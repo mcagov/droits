@@ -44,16 +44,12 @@ export default function (app) {
       req.session.data.property[rawPropertyID] =
         req.body.property[rawPropertyID];
     }
-    
     req.session.data.property[rawPropertyID].description =
       req.body.property[rawPropertyID].description;
-    
     req.session.data.property[rawPropertyID]['quantity'] =
       req.body.property[rawPropertyID].quantity;
-
     req.session.data.property[rawPropertyID]['value-known'] =
       req.body['value-known'];
-    
     req.session.data.property[rawPropertyID]['value'] =
       req.body.property[rawPropertyID].value;
 
