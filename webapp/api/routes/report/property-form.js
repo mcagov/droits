@@ -35,35 +35,25 @@ export default function (app) {
   app.post('/report/property-form-image/:prop_id', async (req, res, next) => {
     var rawPropertyID = req.params.prop_id;
 
-    if (!req.session.data.property[rawPropertyID]) {
-      req.session.data.property[rawPropertyID] =
-        req.body.property[rawPropertyID];
-    }
-    const forbiddenDescription = ['__proto__', 'constructor', 'prototype'];
-    if (forbiddenDescription.includes(rawPropertyID)) {
-      return res.sendStatus(403);
-    }
-    req.session.data.property[rawPropertyID].description =
-      req.body.property[rawPropertyID].description;
-
-    const forbiddenQuantity = ['__proto__', 'constructor', 'prototype'];
-    if (forbiddenQuantity.includes(rawPropertyID)) {
-      return res.sendStatus(403);
-    }
-    req.session.data.property[rawPropertyID]['quantity'] =
-      req.body.property[rawPropertyID].quantity;
-
-    const forbiddenBody = ['__proto__', 'constructor', 'prototype'];
-    if (forbiddenBody.includes(rawPropertyID)) {
-      return res.sendStatus(403);
-    }
-    req.session.data.property[rawPropertyID]['value-known'] =
-      req.body['value-known'];
-    
     const forbiddenKeys = ['__proto__', 'constructor', 'prototype'];
     if (forbiddenKeys.includes(rawPropertyID)) {
       return res.sendStatus(403);
     }
+    
+    if (!req.session.data.property[rawPropertyID]) {
+      req.session.data.property[rawPropertyID] =
+        req.body.property[rawPropertyID];
+    }
+    
+    req.session.data.property[rawPropertyID].description =
+      req.body.property[rawPropertyID].description;
+    
+    req.session.data.property[rawPropertyID]['quantity'] =
+      req.body.property[rawPropertyID].quantity;
+
+    req.session.data.property[rawPropertyID]['value-known'] =
+      req.body['value-known'];
+    
     req.session.data.property[rawPropertyID]['value'] =
       req.body.property[rawPropertyID].value;
 
