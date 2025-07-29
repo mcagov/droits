@@ -34,11 +34,16 @@ export default function (app) {
           req.body.property[rawPropertyID];
       }
 
+        const forbiddenKeys = ['__proto__', 'constructor', 'prototype'];
+        if (forbiddenKeys.includes(id)) {
+            return res.sendStatus(403);
+        }
+        
       req.session.data.property[rawPropertyID]['address-details'] = {};
 
       var propertyID;
       var propertyItem;
-
+      
       property[rawPropertyID]['storage-address'] =
         req.body.property[rawPropertyID]['storage-address'];
 

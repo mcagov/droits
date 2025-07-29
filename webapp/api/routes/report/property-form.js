@@ -52,7 +52,6 @@ export default function (app) {
       req.body['value-known'];
     req.session.data.property[rawPropertyID]['value'] =
       req.body.property[rawPropertyID].value;
-
     var property = req.session.data.property;
     var propertyID;
     var propertyItem;
