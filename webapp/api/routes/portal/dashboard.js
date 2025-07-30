@@ -11,9 +11,18 @@ import req from "express/lib/request";
 require("dotenv-json")();
 
 const url = `${process.env.API_ENDPOINT}/api/salvor`
+
+const propertyFormImageDeleteLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  message: { error: "Too many requests, please try again later." }
+});
 export default function (app) {
   app
-    .get('/portal/dashboard', ensureAuthenticated, function (req, res) {
+    .get('/portal/dashboard', 
+        propertyFormImageDeleteLimiter,
+        ensureAuthenticated,
+        function (req, res) {
       const currentUserEmail = req.user.emails[0] || req.session.user.emails[0];
 
       let userReports = [];
