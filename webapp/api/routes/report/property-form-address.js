@@ -43,7 +43,6 @@ export default function (app) {
 
       var propertyID;
       var propertyItem;
-      
       property[rawPropertyID]['storage-address'] =
         req.body.property[rawPropertyID]['storage-address'];
 
