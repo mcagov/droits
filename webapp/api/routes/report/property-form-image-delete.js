@@ -16,6 +16,7 @@ export default function (app) {
     if (forbiddenKeys.includes(id)) {
       return res.sendStatus(403);
     }
+    
     req.session.data.property[id].image = '';
     req.session.save();
     res.json();

@@ -78,6 +78,7 @@ export default function (app) {
             if (forbiddenKeys.includes(id)) {
               return res.sendStatus(403);
             }
+            
             req.session.data.property[id].image = req.file.filename;
             req.session.data.property[id].originalFilename = req.file.originalname;
             req.session.save();
