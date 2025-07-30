@@ -35,7 +35,7 @@ export default function (app) {
       }
 
         const forbiddenKeys = ['__proto__', 'constructor', 'prototype'];
-        if (forbiddenKeys.includes(id)) {
+        if (forbiddenKeys.includes(rawPropertyID)) {
             return res.sendStatus(403);
         }
         
