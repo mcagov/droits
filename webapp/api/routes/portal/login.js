@@ -1,3 +1,5 @@
+import rateLimit from 'express-rate-limit';
+
 require("dotenv-json")();
 
 const passport = require('passport');
@@ -77,7 +79,7 @@ export default function (app) {
     )
   );
 
-   import rateLimit from 'express-rate-limit';
+   
 
     const propertyFormImageDeleteLimiter = rateLimit({
         windowMs: 60 * 1000,
