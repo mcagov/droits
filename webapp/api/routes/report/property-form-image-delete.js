@@ -11,7 +11,7 @@ export default function (app) {
   app.post('/report/property-form-image-delete/:prop_id', propertyFormImageDeleteLimiter, function (req, res) {
     const id = req.params.prop_id;
     const image = req.session.data.property[id].image;
-
+  fs.unlink(`uploads/${image}`, (err) => {
     req.session.data.property[id].image = '';
     req.session.save();
     res.json();
