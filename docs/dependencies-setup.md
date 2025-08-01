@@ -5,7 +5,7 @@ This guide provides a simplified, step-by-step process for setting up your local
 
 ## Prerequisites
 
-* **macOS Operating System**
+* **This guide assumes a MacOS installation. Please refer to your system for specific steps.**
 * **Homebrew** installed
 * **Docker Desktop** installed and running
 
