@@ -25,11 +25,32 @@ unsure.
 
 | **dependency**                                                    | **version** |
 |-------------------------------------------------------------------|-------------|
-| [dotnet](https://learn.microsoft.com/en-us/dotnet/)               | 8.x         |
+| [python](https://www.python.org/)                                 | 3.10.17     |
+| [dotnet](https://learn.microsoft.com/en-us/dotnet/)               | 8.0.409     |
 | [nvm](https://github.com/nvm-sh/nvm)                              | 0.39.5      |
-| [node](https://github.com/nvm-sh/nvm)                             | 14.19.2     |
+| [node](https://github.com/nvm-sh/nvm)                             | 18.17.0     |
 | [terraform](https://www.terraform.io/)                            | 1.4.6       |
 | [Docker desktop](https://www.docker.com/products/docker-desktop/) | Latest      |
+
+To install the dependencies, follow [this guide](/docs/dependencies-setup.md)
+
+### Getting started
+
+To run the application, you'll need the following configuration files:
+
+```bash
+webapp/.env.json
+backoffice/src/appsettings.json
+```
+
+The contents for these files are stored in `1Password`. Please request access from the team if you do not already have it.
+Once you have these files in place, you can start the application by running `docker compose up`.
+
+### Troubleshooting
+
+- Instance fails to start: If you ran `docker compose up` before creating and populating the `.env.json` and `appsettings.json` files, this will cause the instance to fail. To resolve this, clean up the environment and run the command again.
+
+- Port 5000 is unavailable: If you encounter a port binding error, port `5000` is already in use. To solve this, run `HOST_PORT=5005 docker compose up` (or alternative port number)
 
 ## Infrastructure-as-code
 
