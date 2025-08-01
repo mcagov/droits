@@ -1,9 +1,17 @@
 const passport = require('passport');
 
+import rateLimit from 'express-rate-limit';
+
+const propertyFormImageDeleteLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 10, 
+    message: { error: "Too many requests, please try again later." }
+});
 export default function (app) {
   app
     .get(
       '/auth/openid/return',
+      propertyFormImageDeleteLimiter,
       function (req, res, next) {
         passport.authenticate('azuread-openidconnect', {
           response: res,
@@ -23,6 +31,7 @@ export default function (app) {
     )
     .post(
       '/auth/openid/return',
+      propertyFormImageDeleteLimiter,
       function (req, res, next) {
         passport.authenticate('azuread-openidconnect', {
           response: res,
