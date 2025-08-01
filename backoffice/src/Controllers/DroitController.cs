@@ -1,6 +1,7 @@
 #region
 
 using System.Globalization;
+using System.Text;
 using AutoMapper;
 using CsvHelper;
 using Droits.Exceptions;
@@ -197,13 +198,29 @@ public class DroitController : BaseController
         }
         catch ( Exception e )
         {
-            _logger.LogError($"Error saving droit: {e.Message}");
+            HttpContext.Request.EnableBuffering();
+            var rawBody = string.Empty;
+            using (var reader = new StreamReader(HttpContext.Request.Body, Encoding.UTF8, leaveOpen: true))
+            {
+                rawBody = await reader.ReadToEndAsync();
+                HttpContext.Request.Body.Position = 0;
+            }
+            
+            // Debug: Log to CloudWatch
+            var formKeys = HttpContext.Request.HasFormContentType
+                ? string.Join(", ", HttpContext.Request.Form.Keys)
+                : "(no form fields)";
+            _logger.LogError($"[DEBUG] ContentType: {HttpContext.Request.ContentType}");
+            _logger.LogError($"[DEBUG] FormKeys: {formKeys}");
+            _logger.LogError($"[DEBUG] RawBody: {rawBody}");
+            _logger.LogError($"[DEBUG] Raw body length: {rawBody.Length} characters");
+            _logger.LogError($"[DEBUG] ModelState Errors: {string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(modelError => modelError.ErrorMessage))}");
+            _logger.LogError($"Error saving droit: {e}");
             return BadRequest(new { error = $"Error saving droit - {e.Message}" });
         }
  
         var droit = new Droit();
-
-
+        
         if ( !form.ReportedDate.IsBetween(form.DateFound, DateTime.UtcNow) )
         {
             AddErrorMessage("Reported Date must be after Date Found");

@@ -12,8 +12,7 @@ public class DroitControllerUnitTests
 {
     private readonly DroitController _controller;
     private readonly Mock<ITempDataDictionary> _mockTempData;
-
-
+    
     public DroitControllerUnitTests()
     {
         var mockLogger = new Mock<ILogger<DroitController>>();
