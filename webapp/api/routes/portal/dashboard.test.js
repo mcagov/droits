@@ -60,3 +60,23 @@ describe('Rate limit exceeded', () => {
         expect(response.statusCode).toBe(429);
     });
 });
+
+import axios from 'axios';
+// HTTP client library for making HTTP requests (GET, POST, etc.) from Node.js
+describe('API call test', () => {
+    test('should mock GET /here and return expected data', async () => {
+        const baseUrl = 'http://mockapi.com';
+
+        // Mock GET /here to respond with { msg: 'there' }
+        nock(baseUrl)
+            .get('/here')
+            .reply(200, { msg: 'there' });
+
+        // Make actual axios call to the mocked URL
+        const response = await axios.get(`${baseUrl}/here`);
+
+        // Test that the mocked response returns what we expect
+        expect(response.status).toBe(200);
+        expect(response.data.msg).toBe('there');  
+    });
+});
