@@ -35,6 +35,11 @@ export default function (app) {
   app.post('/report/property-form-image/:prop_id', async (req, res, next) => {
     var rawPropertyID = req.params.prop_id;
 
+    const forbiddenKeys = ['__proto__', 'constructor', 'prototype'];
+    if (forbiddenKeys.includes(rawPropertyID)) {
+      return res.sendStatus(403);
+    }
+    
     if (!req.session.data.property[rawPropertyID]) {
       req.session.data.property[rawPropertyID] =
         req.body.property[rawPropertyID];

@@ -73,7 +73,12 @@ export default function (app) {
               uploadedFilename: req.file.filename,
               originalFilename: req.file.originalname,
             };
-
+            
+            const forbiddenKeys = ['__proto__', 'constructor', 'prototype'];
+            if (forbiddenKeys.includes(id)) {
+              return res.sendStatus(403);
+            }
+            
             req.session.data.property[id].image = req.file.filename;
             req.session.data.property[id].originalFilename = req.file.originalname;
             req.session.save();
