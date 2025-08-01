@@ -25,7 +25,7 @@ unsure.
 
 | **dependency**                                                    | **version** |
 |-------------------------------------------------------------------|-------------|
-| [python](https://www.python.org/)                                                        | 3.10.17     |
+| [python](https://www.python.org/)                                 | 3.10.17     |
 | [dotnet](https://learn.microsoft.com/en-us/dotnet/)               | 8.0.409     |
 | [nvm](https://github.com/nvm-sh/nvm)                              | 0.39.5      |
 | [node](https://github.com/nvm-sh/nvm)                             | 18.17.0     |
