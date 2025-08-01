@@ -1,10 +1,19 @@
-// Try to match a request to a template, for example a request for /test
+ // Try to match a request to a template, for example a request for /test
 // would look for /app/views/test.html
 // and /app/views/test/index.html
-
+ const path = require('path');
+ const fs = require('fs');
+ const ROOT_VIEWS = path.resolve(__dirname, 'views/pages');
 function renderPath(path, res, next) {
+  const resolvedPath = path.resolve(ROOT_VIEWS, viewPath);
+  if (!resolvedPath.startsWith(ROOT_VIEWS)) {
+    res.status(403).send("Forbidden");
+    return;
+  }
+  const relativeView = path.relative(path.resolve(__dirname, 'views'), resolvedPath);
+  
   // Try to render the path
-  res.render(path, function (error, html) {
+  res.render(relativeView, function (error, html) {
     if (!error) {
       // Success - send the response
       res.set({ 'Content-type': 'text/html; charset=utf-8' });
