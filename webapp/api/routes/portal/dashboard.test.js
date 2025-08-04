@@ -24,9 +24,7 @@ describe('Request received', () => {
             .reply(200, { success: true }); // <- fake a 200 OK response with a body
 
         const res = await request('http://localhost:3000').get('/portal/dashboard');
-
-        console.log(res.statusCode); // for debugging
-
+        
         expect(res.statusCode).toBe(200);
     });
     

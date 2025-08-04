@@ -81,7 +81,7 @@ export default function (app) {
 
    
 
-    const propertyFormImageDeleteLimiter = rateLimit({
+    const LoginLimiter = rateLimit({
         windowMs: 60 * 1000,
         max: 10, 
         message: { error: "Too many requests, please try again later." }
@@ -89,7 +89,7 @@ export default function (app) {
   
   app.get(
     '/login', 
-      propertyFormImageDeleteLimiter,
+      LoginLimiter,
       function (req, res, next) {
       passport.authenticate('azuread-openidconnect', {
         response: res, // required
