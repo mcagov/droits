@@ -12,9 +12,7 @@ beforeEach(() => {
 });
 describe('Request received', () => {
     it('should respond with a status code other than 400', async () => {
-        const res = await request('http://localhost:3000').get('/portal/dashboard'); 
-
-        console.log(res.statusCode); // for debugging
+        const res = await request('http://localhost:3000').get('/portal/dashboard');
 
         expect(res.statusCode).not.toBe(400);
     });
