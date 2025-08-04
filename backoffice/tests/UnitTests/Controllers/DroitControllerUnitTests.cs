@@ -2,6 +2,7 @@ using Droits.Controllers;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
 using Droits.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
@@ -20,6 +21,7 @@ public class DroitControllerUnitTests
         var mockWreckService = new Mock<IWreckService>();
         var mockSalvorService = new Mock<ISalvorService>();
         var mockUserService = new Mock<IUserService>();
+        var mockHttpContext = new DefaultHttpContext();
         _mockTempData = new Mock<ITempDataDictionary>();
         
         mockWreckService
@@ -42,6 +44,8 @@ public class DroitControllerUnitTests
             {
                 TempData = _mockTempData.Object
             };
+        
+        _controller.ControllerContext.HttpContext = mockHttpContext;
     }
     
     [Fact]
