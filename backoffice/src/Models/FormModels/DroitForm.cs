@@ -224,9 +224,9 @@ public class DroitForm : BaseEntityForm
     [DataType(DataType.MultilineText)]
     public string? LegacyRemarks { get; }
 
-    public List<SelectListItem> AllUsers { get; set; } = [];
-    public List<SelectListItem> AllWrecks { get; set; } = [];
-    public List<SelectListItem> AllSalvors { get; set; } = [];
+    public List<SelectListItem> AllUsers { get; set; } = new();
+    public List<SelectListItem> AllWrecks { get; set; } = new();
+    public List<SelectListItem> AllSalvors { get; set; } = new();
 
 
     public Droit ApplyChanges(Droit droit)
