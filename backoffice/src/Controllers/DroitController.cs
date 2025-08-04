@@ -198,6 +198,7 @@ public class DroitController : BaseController
         }
         catch ( Exception e )
         {
+            // Debugging: Log to CloudWatch
             HttpContext.Request.EnableBuffering();
             var rawBody = string.Empty;
             using (var reader = new StreamReader(HttpContext.Request.Body, Encoding.UTF8, leaveOpen: true))
@@ -206,7 +207,6 @@ public class DroitController : BaseController
                 HttpContext.Request.Body.Position = 0;
             }
             
-            // Debug: Log to CloudWatch
             var formKeys = HttpContext.Request.HasFormContentType
                 ? string.Join(", ", HttpContext.Request.Form.Keys)
                 : "(no form fields)";
