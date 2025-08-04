@@ -52,7 +52,7 @@ public class DroitControllerUnitTests
     public async Task Save_NullForm_ReturnsBadRequest()
     {
         // Given
-        DroitForm form = null;
+        DroitForm? form = null;
 
         // When
         var result = await _controller.Save(form);
