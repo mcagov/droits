@@ -42,15 +42,13 @@ export default function (app) {
   app.post(
     "/report/property-bulk",
     function (req, res) {
-      const path = require('path');
-      const fs = require('fs');
-      const ROOT_VIEWS = path.resolve(__dirname, 'views/pages');
-      const resolvedPath = path.resolve(ROOT_VIEWS, viewPath);
-      if (!resolvedPath.startsWith(ROOT_VIEWS)) {
+      const uploadDir = path.join(__dirname, "uploads");
+      const resolvedPath = path.resolve(req.file.path);
+      if (!resolvedPath.startsWith(uploadDir)) {
         res.status(403).send("Forbidden");
         return;
-      }
-      const relativeView = path.relative(path.resolve(__dirname, 'views'), resolvedPath);
+       } // write unit test for this ^^can we upload and second test if file name does not start with upload dir,  unnecessary third test can upload when it sis part of upload dir
+      
       upload(req, res, function (multerError) {
         if (multerError) {
           if (multerError.code === 'LIMIT_FILE_SIZE') {
