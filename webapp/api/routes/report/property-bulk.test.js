@@ -4,17 +4,17 @@ require('dotenv-json')();
 import app from '../../../server.js';
 import path from "path";
 
-
 describe('Uploaded file', () => {
         it('successfully uploads a file ', async () => {
             const uploadDir = path.join(__dirname, "uploads");
             const res = await request(app)
-                .post.post('/report/property-bulk')
+                .post('/report/property-bulk')
                 .attach('bulk-upload-file', path.join(__dirname, 'send-sample.js'));
 
-            expect(res.body.success).toBe(true);
+            expect(res.body.status).toBe(200);
         });
 });
+
 
 
 // const app = require('../../../server.js');
