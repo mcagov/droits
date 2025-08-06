@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import nunjucks from 'nunjucks';
 import path from 'path';
-import edt from 'express-debug';
+
 import {
   sessionData,
   addCheckedFunction,
@@ -132,9 +132,6 @@ if (config.SERVICE_UNAVAILABLE) {
 
   // Manage session data. Assigns default values to data
   app.use(sessionData);
-
-  // Logs req.session data
-  if (env === 'development') edt(app, { panels: ['session'] });
 
 
   app.get('/', function(req, res){
