@@ -42,13 +42,6 @@ export default function (app) {
   app.post(
     "/report/property-bulk",
     function (req, res) {
-      const uploadDir = path.join(__dirname, "uploads");
-      const resolvedPath = path.resolve(req.file.path);
-      if (!resolvedPath.startsWith(uploadDir)) {
-        res.status(403).send("Forbidden");
-        return;
-       } // write unit test for this ^^can we upload and second test if file name does not start with upload dir,  unnecessary third test can upload when it sis part of upload dir
-      
       upload(req, res, function (multerError) {
         if (multerError) {
           if (multerError.code === 'LIMIT_FILE_SIZE') {
