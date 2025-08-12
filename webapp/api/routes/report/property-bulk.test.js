@@ -41,7 +41,7 @@ describe('Uploaded file', () => {
         let uploadedFileName;
 
         try {
-            const res = await request(app)
+            await request(app)
                 .post('/report/property-bulk')
                 .attach('bulk-upload-file', invalidTestFilePath);
 
@@ -60,3 +60,4 @@ describe('Uploaded file', () => {
         }
     });
 });
+
