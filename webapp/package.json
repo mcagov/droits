@@ -12,7 +12,8 @@
     "dev": "cross-env NODE_ENV=development concurrently \"nodemon -r esm start.js\" \"npm run watch\"",
     "local": "cross-env NODE_ENV=production concurrently \"nodemon -r esm start.js\" \"npm run watch\"",
     "prod": "cross-env NODE_ENV=production concurrently \"node -r esm start.js\"",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "test:coverage": "jest --coverage --detectOpenHandles"
   },
   "repository": {
     "type": "git",
