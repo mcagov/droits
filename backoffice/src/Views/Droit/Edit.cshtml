@@ -50,7 +50,7 @@
     </li>
 </ul>
 
-<form class="form-horizontal js-droit-form" asp-action="Save" enctype="multipart/form-data" method="POST">
+<form id="droitMultiPartForm" class="form-horizontal js-droit-form" asp-action="Save" enctype="multipart/form-data" method="POST">
 @Html.HiddenFor(m => m.Id)
 
     <div class="tab-content mt-4" id="droitForm">
@@ -321,3 +321,29 @@
         </div>
     </div>
 </form>
+
+@section Scripts {
+    <script>
+        const form = document.getElementById('droitMultiPartForm');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+        
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = {};
+            
+            for (const [key, value] of formData) {
+                if (value === '' || value == null) continue;
+                data[key] = data[key]
+                    ? [].concat(data[key], value)
+                    : value;
+            }
+            
+            fetch("/Droit/Save", { 
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+        });
+</script>
+}
