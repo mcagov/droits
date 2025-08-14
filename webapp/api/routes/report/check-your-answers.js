@@ -7,9 +7,10 @@ import rateLimit from 'express-rate-limit';
 const { body, validationResult } = require('express-validator');
 var cloneDeep = require('lodash.clonedeep');
 
+const maxRequests = process.env.RATE_LIMIT_MAX || 10;
 const propertyFormImageDeleteLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 10, 
+  max: maxRequests,
   message: { error: "Too many requests, please try again later." }
 });
 export default function (app) {
