@@ -29,9 +29,6 @@ describe('Uploaded file', () => {
             }
         }
     });
-});
-
-describe('Uploaded file', () => {
     it('always uploads the file to the ./uploads folder', async () => {
         const invalidTestFilePath = path.join(__dirname, '../', 'invalid-upload.csv');
         const csvContent = 'Description,Quantity,Total value,Storage address line 1,Town,County,Postcode\nTest Item,1,£10,Test Address,Test Town,Test County,BB10 2AA';
@@ -60,4 +57,3 @@ describe('Uploaded file', () => {
         }
     });
 });
-
