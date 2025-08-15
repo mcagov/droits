@@ -1,7 +1,6 @@
 import fs from 'fs';
 import rateLimit from 'express-rate-limit';
 
-// Rate limiter: max 10 requests per minute per IP for this route
 const maxRequests = process.env.RATE_LIMIT_MAX || 10;
 const propertyFormImageDeleteLimiter = rateLimit({
   windowMs: 60 * 1000,
