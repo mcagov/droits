@@ -1,9 +1,19 @@
+
 const passport = require('passport');
 
+import rateLimit from 'express-rate-limit';
+
+const maxRequests = process.env.RATE_LIMIT_MAX || 10; 
+const loginLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: maxRequests, 
+    message: { error: "Too many requests, please try again later." }
+});
 export default function (app) {
   app
     .get(
       '/auth/openid/return',
+      loginLimiter,
       function (req, res, next) {
         passport.authenticate('azuread-openidconnect', {
           response: res,

@@ -1,3 +1,5 @@
+import rateLimit from 'express-rate-limit';
+
 require("dotenv-json")();
 
 const passport = require('passport');
@@ -77,9 +79,18 @@ export default function (app) {
     )
   );
 
+   
+
+    const LoginLimiter = rateLimit({
+        windowMs: 60 * 1000,
+        max: 10, 
+        message: { error: "Too many requests, please try again later." }
+    });
+  
   app.get(
-    '/login',
-    function (req, res, next) {
+    '/login', 
+      LoginLimiter,
+      function (req, res, next) {
       passport.authenticate('azuread-openidconnect', {
         response: res, // required
         failureRedirect: `${process.env.B2C_BASE_URL}/oauth2/v2.0/logout?p=B2C_1_login&post_logout_redirect_uri=${process.env.ENV_BASE_URL}/error`,
