@@ -51,6 +51,11 @@ export default function (app) {
           }
           res.json({ error: err });
         } else {
+          if (!req.file.path.startsWith("uploads")) {
+            res.statusCode = 403;
+            res.end();
+            return;
+          }
           const fileRows = [];
           csv.parseFile(req.file.path, {
             headers: true
