@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Droits.Converters;
-using Xunit;
 
 namespace Droits.Tests.Converters;
 
