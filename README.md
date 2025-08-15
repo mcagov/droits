@@ -9,10 +9,14 @@ The Droits reporting service enables:
 - Salvage owners to report their findings with the Maritime & CoastGuard Agency
 - Receivers of Wreck to manage these reports
 
-It comprises two applications
+It comprises two applications:
 
-1. A public facing frontend etc. in the `webapp/` directory
+1. A public facing frontend.
+   - Source code is in the `webapp/` directory.
+   - Application specific documentation is in the [README](./webapp/README.md).
 2. The backoffice API which handles the incoming registrations and is an admin application to handle the reports
+   - Source code is in the `backoffice/` directory.
+   - Application specific documentation is in the [README](./backoffice/README.md).
 
 ## Architecture
 
