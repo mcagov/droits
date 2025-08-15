@@ -1,8 +1,9 @@
+
 const passport = require('passport');
 
 import rateLimit from 'express-rate-limit';
 
-const maxRequests = process.env.RATE_LIMIT_MAX || 10;
+const maxRequests = process.env.RATE_LIMIT_MAX || 10; 
 const loginLimiter = rateLimit({
     windowMs: 60 * 1000,
     max: maxRequests, 
@@ -32,7 +33,6 @@ export default function (app) {
     )
     .post(
       '/auth/openid/return',
-      propertyFormImageDeleteLimiter,
       function (req, res, next) {
         passport.authenticate('azuread-openidconnect', {
           response: res,
