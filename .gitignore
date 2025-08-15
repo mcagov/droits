@@ -55,3 +55,7 @@ obj/*
 stryker.log
 StrykerOutput
 */reports/mutation
+
+
+# Test coverage
+*coverage*
