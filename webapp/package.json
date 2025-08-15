@@ -35,7 +35,6 @@
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.23.9",
     "accessible-autocomplete": "^2.0.3",
-    "adal-node": "^0.2.2",
     "autoprefixer": "^10.0.0",
     "axios": "^0.30.0",
     "babel-loader": "^8.1.0",
