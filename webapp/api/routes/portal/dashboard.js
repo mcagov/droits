@@ -12,7 +12,7 @@ import rateLimit from "express-rate-limit";
 require("dotenv-json")();
 
 const url = `${process.env.API_ENDPOINT}/api/salvor`
-
+const maxRequests = process.env.RATE_LIMIT_MAX || 10;
 const propertyFormImageDeleteLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: maxRequests,
