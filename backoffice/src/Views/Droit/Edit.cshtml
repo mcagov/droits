@@ -375,7 +375,6 @@
                 body: JSON.stringify(data)
             }).then(response => {
                 loadingOverlay.style.display = 'none';
-                return response.json();
             }).catch(
                 error => {
                     console.error('Error saving droit:', error);
