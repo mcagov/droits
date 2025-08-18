@@ -15,7 +15,7 @@ const url = `${process.env.API_ENDPOINT}/api/salvor`
 
 const propertyFormImageDeleteLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 10,
+  max: maxRequests,
   message: { error: "Too many requests, please try again later." }
 });
 export default function (app) {

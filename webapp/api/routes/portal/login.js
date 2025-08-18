@@ -80,10 +80,10 @@ export default function (app) {
   );
 
    
-
+const maxRequests = process.env.RATE_LIMIT_MAX || 10;
     const LoginLimiter = rateLimit({
         windowMs: 60 * 1000,
-        max: 10, 
+        max: maxRequests, 
         message: { error: "Too many requests, please try again later." }
     });
   
