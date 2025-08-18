@@ -1,7 +1,14 @@
 import fs from 'fs';
+import rateLimit from 'express-rate-limit';
 
+const maxRequests = process.env.RATE_LIMIT_MAX || 10;
+const propertyFormImageDeleteLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: maxRequests,
+  message: { error: "Too many requests, please try again later." }
+});
 export default function (app) {
-  app.post('/report/property-form-image-delete/:prop_id', function (req, res) {
+  app.post('/report/property-form-image-delete/:prop_id', propertyFormImageDeleteLimiter, function (req, res) {
     const id = req.params.prop_id;
     const image = req.session.data.property[id].image;
 
