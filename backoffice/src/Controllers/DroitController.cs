@@ -281,7 +281,7 @@ public class DroitController : BaseController
 
         AddSuccessMessage("Droit saved successfully");
 
-        return droit.Id == default ? RedirectToAction(nameof(Index)) : RedirectToAction(nameof(View),new {id = droit.Id});
+        return droit.Id == Guid.Empty ? Json(new { redirectUrl = Url.Action(nameof(Index)) }) : Json(new { redirectUrl = Url.Action(nameof(View), new { id = droit.Id }) });
     }
 
 
