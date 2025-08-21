@@ -373,8 +373,14 @@
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
-            }).then(response => {
-                loadingOverlay.style.display = 'none';
+            })
+            .then(response => {
+                return response.json()
+            })
+            .then(result => {
+                if (result.redirectUrl) {
+                    window.location.href = result.redirectUrl;
+                }
             }).catch(
                 error => {
                     console.error('Error saving droit:', error);
