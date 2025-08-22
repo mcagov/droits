@@ -8,7 +8,8 @@ jest.mock('./app/config', () => ({
     USE_HTTPS: 'false',
     COOKIE_TEXT:
         'GOV.UK uses cookies to make the site simpler. <a href="#">Find out more about cookies</a>',
-    SERVICE_UNAVAILABLE: true
+    SERVICE_UNAVAILABLE: true,
+    RATE_LIMIT_POINTS: 100, // to allow tests passing
 }));
     
 describe('When config.SERVICE_UNAVAILABLE is true', () => {
