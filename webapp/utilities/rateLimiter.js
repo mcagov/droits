@@ -1,8 +1,8 @@
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 
 
-const points = 10;
-const duration = 60;
+const points = 25;
+const duration = 1;
 
 const rateLimiter = new RateLimiterMemory({
   points: points,
@@ -17,7 +17,7 @@ const rateLimiter = new RateLimiterMemory({
  * @param {function} next - Express next middleware function.
  */
 const rateLimitMiddleware = (req, res, next) => {
-  rateLimiter.consume(req.ip)
+  rateLimiter.consume(req.ip, 1)
     .then(() => {
       next();
     })
