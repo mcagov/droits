@@ -12,6 +12,7 @@ import {
 } from './utilities';
 import routes from './api/routes';
 import config from './app/config.js';
+import rateLimitMiddleware from './utilities/rateLimiter.js';
 
 var connect_redis = require("connect-redis");
 
@@ -20,6 +21,9 @@ var cors = require('cors')
 require("dotenv-json")();
 const app = express();
 app.options('*', cors());
+
+// Rate Limiter applied to all routes
+app.use(rateLimitMiddleware);
 
 // Global vars
 app.locals.serviceName = config.SERVICE_NAME;
