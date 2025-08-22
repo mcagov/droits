@@ -48,21 +48,6 @@ public class DroitControllerUnitTests
         _controller.ControllerContext.HttpContext = mockHttpContext;
     }
     
-    //TODO: For SaveAsJSON endpoint
-    //
-    // [Fact]
-    // public async Task Save_NullForm_ReturnsBadRequest()
-    // {
-    //     // Given
-    //     DroitForm? form = null;
-    //
-    //     // When
-    //     var result = await _controller.SaveAsJSON(form);
-    //
-    //     // Then
-    //    Assert.IsType<BadRequestObjectResult>(result);
-    // }
-    
     [Fact]
     public async void Save_ModelStateInvalid_ReturnsEditViewWithForm()
     {
