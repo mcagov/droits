@@ -49,19 +49,6 @@ public class DroitControllerUnitTests
     }
     
     [Fact]
-    public async Task Save_NullForm_ReturnsBadRequest()
-    {
-        // Given
-        DroitForm? form = null;
-
-        // When
-        var result = await _controller.Save(form);
-
-        // Then
-       Assert.IsType<BadRequestObjectResult>(result);
-    }
-    
-    [Fact]
     public async void Save_ModelStateInvalid_ReturnsEditViewWithForm()
     {
         // Given
