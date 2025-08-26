@@ -143,10 +143,142 @@ public class DroitController : BaseController
             return RedirectToAction(nameof(Index));
         }
     }
+    
+   [HttpPost]
+   [RequestFormLimits(ValueCountLimit = 10240)]
+    public async Task<IActionResult> Save(DroitForm form)
+    {
+        if ( form.WreckId.HasValue || form.IsIsolatedFind )
+        {
+            ModelState.RemoveStartingWith("WreckForm");
+        }
+
+        if ( form.SalvorId.HasValue )
+        {
+            ModelState.RemoveStartingWith("SalvorForm");
+        }
+
+        var wmForms = form.WreckMaterialForms;
+        
+        wmForms
+            .Select((wmForm, i) => new { Form = wmForm, Index = i })
+            .ToList()
+            .ForEach(item =>
+                ModelState.RemoveStartingWith($"WreckMaterialForms[{item.Index}].StorageAddress"));
+
+        wmForms
+            .SelectMany((wmForm, i) => wmForm.ImageForms.Select((imgForm, j) => new { WmFormIndex = i, ImgForm = imgForm, ImgIndex = j }))
+            .Where(item => item.ImgForm.Id != default)
+            .ToList()
+            .ForEach(item =>
+                ModelState.RemoveStartingWith($"WreckMaterialForms[{item.WmFormIndex}].ImageForms[{item.ImgIndex}].ImageFile"));
+        
+        wmForms
+            .SelectMany((wmForm, i) => wmForm.DroitFileForms.Select((fileForm, j) => new { WmFormIndex = i, FileForm = fileForm, FileIndex = j }))
+            .ToList()
+            .ForEach(item =>
+                ModelState.RemoveStartingWith($"WreckMaterialForms[{item.WmFormIndex}].DroitFileForms"));
+        
+        if ( !ModelState.IsValid )
+        {
+            foreach (var error in ModelState.Where(kvp => kvp.Value?.ValidationState == ModelValidationState.Invalid)
+                         .SelectMany(kvp => kvp.Value?.Errors.Select(error => $"{kvp.Key} - {error.ErrorMessage}") ?? Array.Empty<string>()))
+            {
+                _logger.LogError($"Error saving droit: {error}");
+            }
+            
+            AddErrorMessage("Could not save Droit");
+            form = await PopulateDroitFormAsync(form);
+            return View(nameof(Edit), form);
+        }
+
+        var droit = new Droit();
+
+
+        if ( !form.ReportedDate.IsBetween(form.DateFound, DateTime.UtcNow) )
+        {
+            AddErrorMessage("Reported Date must be after Date Found");
+            form = await PopulateDroitFormAsync(form);
+            return View(nameof(Edit), form);
+        }
+
+        if ( form.ClosedDate != null && form.Status != DroitStatus.Closed )
+        {
+            AddErrorMessage("Status must be Closed to edit Date Closed");
+            form = await PopulateDroitFormAsync(form);
+            return View(nameof(Edit), form);
+        }
+        
+        if ( form.Id != default )
+        {
+            try
+            {
+                droit = await _service.GetDroitAsync(form.Id);
+            }
+            catch ( DroitNotFoundException e )
+            {
+                HandleError(_logger, "Droit not found.", e);
+                return View(nameof(Edit), form);
+            }
+        }
+
+        droit = form.ApplyChanges(droit);
+
+        if ( !droit.WreckId.HasValue && !form.IsIsolatedFind )
+        {
+            droit.WreckId = await _wreckService.SaveWreckFormAsync(form.WreckForm);
+        }
+
+        try
+        {
+            droit.SalvorId ??= await _salvorService.SaveSalvorFormAsync(form.SalvorForm);
+
+        }
+        catch ( DuplicateSalvorException e )
+        {
+            HandleError(_logger, e.Message, e);
+            form = await PopulateDroitFormAsync(form);
+            return View(nameof(Edit), form);
+        }
+
+        try
+        {
+            droit = await _service.SaveDroitAsync(droit);
+        }
+        catch ( DuplicateDroitReferenceException e )
+        {
+            HandleError(_logger, e.Message, e);
+            form = await PopulateDroitFormAsync(form);
+            return View(nameof(Edit), form);
+        }
+        catch ( Exception e )
+        {
+            HandleError(_logger, "Could not save Droit.", e);
+            form = await PopulateDroitFormAsync(form);
+            return View(nameof(Edit), form);
+        }
+
+
+        try
+        {
+            await _service.SaveWreckMaterialsAsync(droit.Id, form.WreckMaterialForms);
+        }
+        catch ( Exception e )
+        {
+            HandleError(_logger, "Could not save Wreck Material.", e);
+            form = await PopulateDroitFormAsync(form);
+            return View(nameof(Edit), form);
+        }
+        
+
+        AddSuccessMessage("Droit saved successfully");
+
+        return droit.Id == default ? RedirectToAction(nameof(Index)) : RedirectToAction(nameof(View),new {id = droit.Id});
+    }
 
 
     [HttpPost]
-    public async Task<IActionResult> Save([FromBody] DroitForm form)
+    public async Task<IActionResult> SaveAsJson([FromBody] DroitForm form)
     {
         try
         {
