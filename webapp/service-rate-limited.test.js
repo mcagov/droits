@@ -1,7 +1,7 @@
 import request from 'supertest';
-import app from '../server';
+import app from './server';
 
-jest.mock('../app/config.js', () => ({
+jest.mock('./app/config.js', () => ({
     SERVICE_NAME: 'Report Wreck Material',
     PORT: '3000',
     USE_HTTPS: 'false',
