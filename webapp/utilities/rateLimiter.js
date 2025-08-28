@@ -1,7 +1,7 @@
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import config from "../app/config";
 
-const POINTS = config.RATE_LIMIT_POINTS ? config.RATE_LIMIT_POINTS : 10;
+const POINTS = config.RATE_LIMIT_POINTS ? config.RATE_LIMIT_POINTS : 120;
 const DURATION = config.RATE_LIMIT_DURATION ? config.RATE_LIMIT_DURATION : 60;
 
 const rateLimiter = new RateLimiterMemory({
