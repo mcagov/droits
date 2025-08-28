@@ -16,5 +16,7 @@ module.exports = {
   COOKIE_TEXT:
     'GOV.UK uses cookies to make the site simpler. <a href="#">Find out more about cookies</a>',
 
-  SERVICE_UNAVAILABLE: false
+  SERVICE_UNAVAILABLE: false,
+  RATE_LIMIT_POINTS: 120,
+  RATE_LIMIT_DURATION: 60,
 };
