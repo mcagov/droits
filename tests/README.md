@@ -1,9 +1,13 @@
-Testing
-This directory contains system-level tests of the droits. 
+# Testing
 
-End-to-end testing
-Automated end-to-end tests use Cypress.
-To run end-to-end tests locally:
+This directory contains system-level tests for **droits**.
 
-$ docker compose up
-$ npm run test:e2e
+## End-to-End Testing
+
+Automated end-to-end tests are implemented using [Cypress](https://www.cypress.io/).  
+
+To run the tests locally, use the following commands:
+
+```bash
+docker compose up
+npm run test:e2e
