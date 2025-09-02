@@ -72,7 +72,7 @@
     "passport": "^0.5.3",
     "passport-azure-ad": "^4.3.5",
     "postcss": "^8.0.5",
-    "postcss-loader": "^4.0.2",
+    "postcss-loader": "^8.1.1",
     "postcss-preset-env": "^7.0.0",
     "precss": "^4.0.0",
     "prettier": "^2.2.1",
