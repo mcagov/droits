@@ -36,7 +36,7 @@
     "@babel/preset-env": "^7.23.9",
     "accessible-autocomplete": "^2.0.3",
     "autoprefixer": "^10.0.0",
-    "axios": "^0.30.0",
+    "axios": "^1.12.0",
     "babel-loader": "^8.1.0",
     "body-parser": "^1.19.0",
     "browser-sync": "^3.0.4",
