@@ -144,20 +144,20 @@ describe('I can start a claim', () => {
     it('lets me fill out the wreck item form and submit it', () => {
         cy.visit('/report/property-form/new')
 
-        cy.get('textarea[name="description"]').type('some seashells.')
+        cy.get('#property\\.i0\\.description').type('Small seashells')
 
-        cy.get('input[name="quantity"]').type('1')
+        cy.get('#property\\.i0\\.quantity').type('1')
 
-        cy.get('#known-value').check()
-        cy.get('input[name="value"]').type('100')
+       
+        cy.get('#value-known-2').check()
 
+        cy.get('#property\\.i0\\.value').type('100')
+
+        // Submit
         cy.get('.govuk-button').click()
 
+        // Confirm return to summary page
         cy.url().should('include', '/report/property-summary')
-
+        
     })
-
-
-
-
 })
