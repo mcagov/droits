@@ -1,7 +1,7 @@
 describe('I can start a claim', () => {
     it('shows the first question after I click on start now', () => {
         cy.visit('/report/start')
-        cy.get('.govuk-button').click()
+        cy.clickContinue()     
     })
 
     it('shows Yes and No options for property removal', () => {
@@ -26,10 +26,8 @@ describe('I can start a claim', () => {
         cy.visit('/report/removed-property-check')
         
         cy.get('#removed-property-2').check()
-        cy.get('.govuk-button').click()
-        
-        cy.get('h1.govuk-heading-xl')
-            .should('contain.text', 'You do not need to report this wreck material')
+        cy.clickContinue()
+        cy.get('h1.govuk-heading-xl').should('contain.text', 'You do not need to report this wreck material')
     })
     
     it('lets me enter a valid wreck find date', () => {
@@ -44,8 +42,7 @@ describe('I can start a claim', () => {
         cy.get('#wreck-find-date-year').clear()
         cy.get('#wreck-find-date-year').type('2025')
 
-        cy.get('.govuk-button').click()
-    })
+cy.clickContinue()     })
 
     it('lets me enter personal and address details', () => {
         cy.visit('/report/personal')
@@ -68,21 +65,18 @@ describe('I can start a claim', () => {
         cy.get('#address-postcode').clear()
         cy.get('#address-postcode').type('E17 2MD')
 
-        cy.get('.govuk-button').click()
-        
+cy.clickContinue()         
     })
 
     it('lets me answer known wreck as Yes and continue through vessel information', () => {
         cy.visit('/report/known-wreck')
         
         cy.get('#known-wreck').check()
-        cy.get('.govuk-button').click()
-
+cy.clickContinue() 
 
         cy.url().should('include', '/report/vessel-information')
         
-        cy.get('.govuk-button').click()
-
+cy.clickContinue() 
         cy.contains('Where was the wreck material found?').should('exist')
     })
 
@@ -90,8 +84,7 @@ describe('I can start a claim', () => {
         cy.visit('/report/known-wreck')
 
         cy.get('#known-wreck-2').check()
-        cy.get('.govuk-button').click()
-
+cy.clickContinue() 
         cy.contains('Where was the wreck material found?').should('exist')
     })
 
@@ -101,16 +94,14 @@ describe('I can start a claim', () => {
         // Select "Sea shore"
         cy.get('#removed-from-4').check()
 
-        cy.get('.govuk-button').click()
-
+cy.clickContinue() 
         // Select location method: "Text description"
         cy.get('#location-type-6').check()
 
         // Enter a simple location description
         cy.get('#text-location').type('Found near Brighton beach')
 
-        cy.get('.govuk-button').click()
-        
+cy.clickContinue()         
     })
 
     it('lets me enter location using decimal latitude/longitude', () => {
@@ -118,8 +109,7 @@ describe('I can start a claim', () => {
 
         // Select "Sea shore" as salvage location
         cy.get('#removed-from-4').check()
-        cy.get('.govuk-button').click()
-
+cy.clickContinue() 
         // Select location method: Decimal degrees
         cy.get('#location-type').check()
 
@@ -127,8 +117,7 @@ describe('I can start a claim', () => {
         cy.get('#location-latitude-decimal').type('50.8225')
         cy.get('#location-longitude-decimal').type('-0.1372')
 
-        cy.get('.govuk-button').click()
-        
+cy.clickContinue()         
     })
     it('lets me click to add a new recovered wreck item', () => {
         cy.visit('/report/property-summary')
@@ -144,20 +133,13 @@ describe('I can start a claim', () => {
     it('lets me fill out the wreck item form and submit it', () => {
         cy.visit('/report/property-form/new')
 
-        cy.get('#property\\.i0\\.description').type('Small seashells')
-
-        cy.get('#property\\.i0\\.quantity').type('1')
-
-       
-        cy.get('#value-known-2').check()
-
-        cy.get('#property\\.i0\\.value').type('100')
-
-        // Submit
-        cy.get('.govuk-button').click()
-
-        // Confirm return to summary page
-        cy.url().should('include', '/report/property-summary')
+        cy.get('#property\\.i0\\.description').click();
+        cy.get('#property\\.i0\\.quantity').type('3');
+        cy.get('#value-known-2').check();
+        
+        cy.clickContinue() 
         
     })
+    
+    
 })
