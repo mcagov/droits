@@ -130,17 +130,19 @@ cy.clickContinue()
         cy.contains('Describe the item').should('exist')
     })
 
-    it('lets me fill out the wreck item form and submit it', () => {
-        cy.visit('/report/property-form/new')
+    it('lets me fill the form and upload a photo', () => {
+        cy.visit('/report/property-form/new');
 
-        cy.get('#property\\.i0\\.description').click()
-        cy.get('#property\\.i0\\.description').type('Nice seashells');;
+        cy.get('#property\\.i0\\.description').click().type('Nice seashells');
         cy.get('#property\\.i0\\.quantity').type('3');
         cy.get('#value-known-2').check();
-        
-        cy.clickContinue() 
-        
-    })
-    
-    
+        cy.clickContinue()
+
+        cy.get('#property-image').click();
+        cy.get('input[type="file"]').selectFile('cypress/fixtures/test.jpg', { force: true });
+        cy.get('.photo-upload__button').click();
+
+        cy.get('.govuk-button--continue').click();
+    });
+
 })
