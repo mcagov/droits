@@ -143,6 +143,27 @@ cy.clickContinue()
         cy.get('.photo-upload__button').click();
 
         cy.get('.govuk-button--continue').click();
-    });
+    // })
+    //
+    // it('asks me where the wreck is stored', () => {
+        cy.visit('report/property-form-address/i0')
+        cy.get('#property-i0-storage-address').check();
+        cy.get('.govuk-button').click();
+        cy.get('.govuk-button--continue').click();
+    // })
+    //
+    // it('shows declaration page', () => {
+        cy.visit('report/property-form-address/i0')
+        cy.get('#propertyDeclaration').check();
+        cy.get('.govuk-button--continue').click();
+    // })
+    //
+    // it('asks if i wish to claim award and submits the claim', () => {
+        cy.visit('report/property-summary')
+        cy.get('#propertyDeclaration').check()
+        cy.get('.form > .govuk-button').click()
+        cy.get('.govuk-button--continue').click()
+        
+    })
 
 })
