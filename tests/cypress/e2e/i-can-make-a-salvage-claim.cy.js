@@ -133,7 +133,8 @@ cy.clickContinue()
     it('lets me fill out the wreck item form and submit it', () => {
         cy.visit('/report/property-form/new')
 
-        cy.get('#property\\.i0\\.description').click();
+        cy.get('#property\\.i0\\.description').click()
+        cy.get('#property\\.i0\\.description').type('Nice seashells');;
         cy.get('#property\\.i0\\.quantity').type('3');
         cy.get('#value-known-2').check();
         
