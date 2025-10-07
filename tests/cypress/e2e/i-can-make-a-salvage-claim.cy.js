@@ -99,7 +99,7 @@ cy.clickContinue()
         cy.get('#location-type-6').check()
 
         // Enter a simple location description
-        cy.get('#text-location').type('Found near Brighton beach')
+        cy.get('#text-location').type('Found near a beach')
 
 cy.clickContinue()         
     })
@@ -131,38 +131,33 @@ cy.clickContinue()
     })
 
     it('lets me fill the form and upload a photo', () => {
-        cy.visit('/report/property-form/new');
+        cy.visit('/report/property-form/new')
 
         cy.get('#property\\.i0\\.description').click().type('Nice seashells');
-        cy.get('#property\\.i0\\.quantity').type('3');
-        cy.get('#value-known-2').check();
+        cy.get('#property\\.i0\\.quantity').type('3')
+        cy.get('#value-known-2').check()
         cy.clickContinue()
 
-        cy.get('#property-image').click();
+        cy.get('#property-image').click()
         cy.get('input[type="file"]').selectFile('cypress/fixtures/test.jpg', { force: true });
-        cy.get('.photo-upload__button').click();
+        cy.get('.photo-upload__button').click()
 
-        cy.get('.govuk-button--continue').click();
-    // })
-    //
-    // it('asks me where the wreck is stored', () => {
+        cy.get('.govuk-button--continue').click()
+    
+    
+    //  where the wreck is stored
         cy.visit('report/property-form-address/i0')
-        cy.get('#property-i0-storage-address').check();
-        cy.get('.govuk-button').click();
-        cy.get('.govuk-button--continue').click();
-    // })
-    //
-    // it('shows declaration page', () => {
-        cy.visit('report/property-form-address/i0')
-        cy.get('#propertyDeclaration').check();
-        cy.get('.govuk-button--continue').click();
-    // })
-    //
-    // it('asks if i wish to claim award and submits the claim', () => {
-        cy.visit('report/property-summary')
+        cy.get('#property-i0-storage-address').check()
+        cy.clickContinue()
+        
+    
+    // shows declaration page and asks if i wish to claim award
         cy.get('#propertyDeclaration').check()
         cy.get('.form > .govuk-button').click()
-        cy.get('.govuk-button--continue').click()
+        
+        cy.visit('report/salvage-award')
+        cy.get('#claim-salvage-2').check()
+        cy.get('.govuk-button').click()
         
     })
 
