@@ -1,13 +1,10 @@
 using AutoMapper;
 using Droits.Data;
-using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
-using Droits.Models.FormModels;
 using Droits.Repositories;
 using Droits.Services;
 using Droits.Tests.Helpers;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Droits.Tests.IntegrationTests.Services

@@ -40,7 +40,7 @@
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <Exec Command="npx webpack --config webpack.config.js" />
+<!--        <Exec Command="npx webpack &#45;&#45;config webpack.config.js" />-->
     </Target>
 
 </Project>
