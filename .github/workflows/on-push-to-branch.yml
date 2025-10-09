@@ -39,4 +39,4 @@ jobs:
     with:
       working-directory: webapp
     secrets:
-      testing_webapp_env_file: ${{ secrets.testing_webapp_env_file }}
+      testing_webapp_env_file: ${{ secrets.TESTING_WEBAPP_ENV_FILE }}
