@@ -48,6 +48,9 @@ on:
       alert_email_address:
         description: Email that will receive alert alarms
         required: true
+      alert_pagerduty_integration_url:
+        description: The Integration URL to which CloudWatch alerts should be sent for PagerDuty
+        required: true
       webapp_env_file:
         description: The contents of the environment file
         required: true
