@@ -10,13 +10,13 @@ resource "aws_cloudwatch_metric_alarm" "httpcode_target_4xx_count" {
   threshold           = var.threshold
 
   alarm_description = "This alarm triggers when the ALB target group has a high number of 4XX server related errors. The suggested threshold detects when 50 or more 4XX errors occurs over a 10 minute period, trigger the alarm."
-  alarm_actions       = var.actions_alarm
-  ok_actions          = var.actions_ok
+  alarm_actions     = var.actions_alarm
+  ok_actions        = var.actions_ok
 
   dimensions = {
     "TargetGroup"  = var.target_group_id
     "LoadBalancer" = var.load_balancer_id
-    
+
   }
 }
 
