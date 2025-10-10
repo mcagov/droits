@@ -32,7 +32,7 @@ ssl_domains = [
 
 lb_ssl_policy = "ELBSecurityPolicy-FS-1-2-2019-08"
 
-enable_alerts                                      = true
+enable_alerts                                      = false
 percentage_cpu_utilization_high_threshold          = 90
 percentage_memory_utilization_high_threshold       = 90
 cpu_utilisation_duration_in_seconds_to_evaluate    = 300
