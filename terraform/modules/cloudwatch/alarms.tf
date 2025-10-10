@@ -15,8 +15,7 @@ module "aws-rds-alarms" {
 }
 
 module "backoffice-aws-alb-alarms" {
-  source                  = "lorenzoaiello/alb-alarms/aws"
-  version                 = "1.2.0"
+  source                  = "./pagerduty-alarms"
   load_balancer_id        = var.backoffice_alb_id
   prefix                  = "elb-${var.backoffice_load_balancer}"
   target_group_id         = var.backoffice_alb_target_group_id
@@ -27,15 +26,14 @@ module "backoffice-aws-alb-alarms" {
 }
 
 module "webapp-aws-alb-alarms" {
-  source                  = "lorenzoaiello/alb-alarms/aws"
-  version                 = "1.2.0"
+  source                  = "./pagerduty-alarms"
   load_balancer_id        = var.webapp_alb_id
   prefix                  = "elb-${var.webapp_load_balancer}"
-  target_group_id         = var.backoffice_alb_target_group_id
+  target_group_id         = var.webapp_alb_target_group_id
   response_time_threshold = var.lb_average_response_time_threshold
   evaluation_period       = var.lb_evaluation_periods
-  actions_alarm           = var.enable_alerts == true ? [var.webapp_lb_alerts_topic_arn] : []
-  actions_ok              = var.enable_alerts == true ? [var.webapp_lb_alerts_topic_arn] : []
+  actions_alarm           = [var.webapp_lb_alerts_topic_arn]
+  actions_ok              = [var.webapp_lb_alerts_topic_arn]
 }
 
 module "backoffice_ecs_service_alarms" {
