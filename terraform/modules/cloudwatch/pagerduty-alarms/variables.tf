@@ -38,12 +38,6 @@ variable "evaluation_period" {
   description = "The evaluation period over which to use when triggering alarms."
 }
 
-variable "datapoints_to_alarm" {
-  type        = string
-  default     = "10"
-  description = "The number of datapoints that must be breaching to trigger the alarm."
-}
-
 variable "statistic_period" {
   type        = string
   default     = "60"
