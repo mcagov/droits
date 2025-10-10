@@ -57,6 +57,9 @@ on:
       alerts_email:
         description: Email that will receive alarm alerts
         required: true
+      alert_pagerduty_integration_url:
+        description: The Integration URL to which CloudWatch alerts should be sent for PagerDuty
+        required: true
 
 jobs:
   terraform_lint:
@@ -117,5 +120,6 @@ jobs:
       db_username: ${{ secrets.db_username }}
       db_password: ${{ secrets.db_password }}
       alert_email_address: ${{ secrets.alerts_email }}
+      alert_pagerduty_integration_url: ${{ secrets.alert_pagerduty_integration_url }}
       webapp_env_file: ${{ secrets.webapp_env_file }}
       backoffice_env_file: ${{ secrets.backoffice_env_file }}
