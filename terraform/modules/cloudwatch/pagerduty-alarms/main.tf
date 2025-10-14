@@ -1,15 +1,15 @@
 resource "aws_cloudwatch_metric_alarm" "httpcode_target_4xx_count" {
   alarm_name          = "${terraform.workspace}-ALB-4XX-High-Error-Count"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = var.evaluation_period
-  datapoints_to_alarm = var.datapoints_to_alarm
+  evaluation_periods  = 10
+  datapoints_to_alarm = 10
   metric_name         = "HTTPCode_Target_4XX_Count"
   namespace           = "AWS/ApplicationELB"
   period              = var.statistic_period
   statistic           = "Sum"
   threshold           = var.threshold
 
-  alarm_description = "This alarm triggers when the ALB target group has a high number of 4XX server related errors. The suggested threshold detects when 50 or more 4XX errors occurs over a 10 minute period, trigger the alarm."
+  alarm_description = "This alarm triggers when the ALB target group has a high number of 4XX server related errors."
   alarm_actions     = var.actions_alarm
   ok_actions        = var.actions_ok
 
@@ -29,7 +29,7 @@ resource "aws_cloudwatch_metric_alarm" "httpcode_lb_4xx_count" {
   period              = var.statistic_period
   statistic           = "Sum"
   threshold           = "0"
-  alarm_description   = "Average API 5XX load balancer error code count is too high"
+  alarm_description   = "Average API 4XX load balancer error code count is too high"
   alarm_actions       = var.actions_alarm
   ok_actions          = var.actions_ok
 
@@ -41,8 +41,8 @@ resource "aws_cloudwatch_metric_alarm" "httpcode_lb_4xx_count" {
 resource "aws_cloudwatch_metric_alarm" "httpcode_target_5xx_count" {
   alarm_name          = "${var.prefix}alb-tg-${var.target_group_id}-high5XXCount"
   comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = var.evaluation_period
-  datapoints_to_alarm = var.datapoints_to_alarm
+  evaluation_periods  = 5
+  datapoints_to_alarm = 5
   metric_name         = "HTTPCode_Target_5XX_Count"
   namespace           = "AWS/ApplicationELB"
   period              = var.statistic_period
