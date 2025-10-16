@@ -2,7 +2,7 @@ services:
   backoffice:
     container_name: droits_backoffice
     build:
-      context: ./backoffice
+      context: ../backoffice
     image: droits-backoffice
     ports:
       - "${HOST_PORT:-5005}:5005"
@@ -19,7 +19,7 @@ services:
   webapp:
     container_name: droits_webapp
     build:
-      context: ./webapp
+      context: ../webapp
     image: droits-webapp
     environment:
       REDIS_HOST: 'redis'
