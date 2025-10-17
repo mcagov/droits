@@ -64,7 +64,7 @@ jobs:
           cd ..
         
           echo "Creating backoffice appsettings file..."
-          cd ../backoffice
+          cd backoffice
           echo -e "${APPSETTINGS_JSON}" > src/appsettings.json
           cd ..
           
