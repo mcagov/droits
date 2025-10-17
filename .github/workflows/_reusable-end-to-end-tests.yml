@@ -78,7 +78,7 @@ jobs:
           working-directory: tests
           spec: cypress/endToEnd/*
           browser: chrome
-          wait-on: "http://localhost:5005/healthz"
+          wait-on: "http://localhost:5000/healthz"
           
       - uses: actions/upload-artifact@v4
         if: failure()
