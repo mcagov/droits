@@ -38,18 +38,6 @@ services:
     depends_on:
       backoffice:
         condition: service_healthy
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:5000/healthz",
-        ]
-      interval: 10s
-      timeout: 10s
-      retries: 12
-    restart: on-failure
 
   database:
     image: postgres:14-alpine
