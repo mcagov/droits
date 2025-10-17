@@ -59,12 +59,17 @@ jobs:
         run: |
           export IMAGE_TAG=${{ inputs.image-tag }}
           echo "Creating webapp environment file..."
+          cd ../webapp
           echo "$WEBAPP_ENV_FILE" > .env.json
+          cd ..
         
           echo "Creating backoffice appsettings file..."
+          cd ../backoffice
           echo -e "${APPSETTINGS_JSON}" > src/appsettings.json
+          cd ..
           
           echo "Bringing up Docker containers..."
+          cd tests
           docker compose --verbose -f docker-compose.e2e.yml up --detach
 
       - name: Run Cypress end to end tests
