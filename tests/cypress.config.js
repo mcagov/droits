@@ -1,9 +1,9 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
-    // requestTimeout: 2000, 
-    // defaultCommandTimeout: 5000,
-    // retries: 3,
+    requestTimeout: 2000, 
+    defaultCommandTimeout: 5000,
+    retries: 3,
   e2e: {
     experimentalStudio: true,
     setupNodeEvents(on, config) {

@@ -13,7 +13,8 @@ services:
     volumes:
       - ~/.aspnet/https:/https:ro
     depends_on:
-      - database
+      database:
+        condition: service_started
     healthcheck:
       test:
         [
@@ -37,8 +38,8 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - backoffice
-      - redis
+      backoffice:
+        condition: service_healthy
     healthcheck:
       test:
         [
