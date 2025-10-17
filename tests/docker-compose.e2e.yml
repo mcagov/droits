@@ -6,7 +6,6 @@ services:
     image: droits-backoffice
     ports:
       - "5005:5005"
-      - "5001:5001"
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Password: "password"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
@@ -15,6 +14,18 @@ services:
       - ~/.aspnet/https:/https:ro
     depends_on:
       - database
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://localhost:5005/healthz",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+    restart: on-failure
 
   webapp:
     container_name: droits_webapp
@@ -28,6 +39,18 @@ services:
     depends_on:
       - backoffice
       - redis
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://localhost:5005/healthz",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+    restart: on-failure
 
   database:
     image: postgres:14-alpine
