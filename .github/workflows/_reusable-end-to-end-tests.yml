@@ -20,6 +20,13 @@ on:
       git-reference:
         type: string
         description: "(Optional) branch, tag or commit to test and deploy"
+    secrets:
+      testing_webapp_env_file:
+        description: The contents of the testing environment file
+        required: true
+      testing_backoffice_env_file:
+        description: The contents of the testing environment file
+        required: true
 
 defaults:
   run:
@@ -46,8 +53,22 @@ jobs:
           CYPRESS_INSTALL_BINARY: 0
           
       - name: Bring up published containers
+        env:
+          WEBAPP_ENV_FILE: ${{ secrets.testing_webapp_env_file }}
+          APPSETTINGS_JSON: ${{ secrets.testing_backoffice_env_file }}
         run: |
-          IMAGE_TAG=${{ inputs.image-tag }} \
+          export IMAGE_TAG=${{ inputs.image-tag }}
+          echo "Creating webapp environment file..."
+          cd webapp
+          echo "$WEBAPP_ENV_FILE" > .env.json
+          cd ..
+        
+          echo "Creating backoffice appsettings file..."
+          cd backoffice
+          echo -e "${APPSETTINGS_JSON}" > src/appsettings.json
+          cd ..
+          
+          echo "Bringing up Docker containers..."
           docker compose --verbose -f docker-compose.e2e.yml up --detach
 
       - name: Run Cypress end to end tests
@@ -56,6 +77,7 @@ jobs:
           working-directory: tests
           spec: cypress/endToEnd/*
           browser: chrome
+          wait-on: "http://localhost:5005/healthz"
 
       - uses: actions/upload-artifact@v4
         if: failure()

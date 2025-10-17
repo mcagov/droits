@@ -41,8 +41,8 @@ describe('I can start a claim', () => {
 
         cy.get('#wreck-find-date-year').clear()
         cy.get('#wreck-find-date-year').type('2025')
-
-cy.clickContinue()     })
+        cy.clickContinue()     
+    })
 
     it('lets me enter personal and address details', () => {
         cy.visit('/report/personal')
@@ -65,18 +65,18 @@ cy.clickContinue()     })
         cy.get('#address-postcode').clear()
         cy.get('#address-postcode').type('E17 2MD')
 
-cy.clickContinue()         
+        cy.clickContinue()         
     })
 
     it('lets me answer known wreck as Yes and continue through vessel information', () => {
         cy.visit('/report/known-wreck')
         
         cy.get('#known-wreck').check()
-cy.clickContinue() 
+        cy.clickContinue() 
 
         cy.url().should('include', '/report/vessel-information')
         
-cy.clickContinue() 
+        cy.clickContinue() 
         cy.contains('Where was the wreck material found?').should('exist')
     })
 
@@ -84,7 +84,7 @@ cy.clickContinue()
         cy.visit('/report/known-wreck')
 
         cy.get('#known-wreck-2').check()
-cy.clickContinue() 
+        cy.clickContinue() 
         cy.contains('Where was the wreck material found?').should('exist')
     })
 
@@ -94,14 +94,14 @@ cy.clickContinue()
         // Select "Sea shore"
         cy.get('#removed-from-4').check()
 
-cy.clickContinue() 
+        cy.clickContinue() 
         // Select location method: "Text description"
         cy.get('#location-type-6').check()
 
         // Enter a simple location description
         cy.get('#text-location').type('Found near a beach')
 
-cy.clickContinue()         
+        cy.clickContinue()         
     })
 
     it('lets me enter location using decimal latitude/longitude', () => {
@@ -109,7 +109,7 @@ cy.clickContinue()
 
         // Select "Sea shore" as salvage location
         cy.get('#removed-from-4').check()
-cy.clickContinue() 
+        cy.clickContinue() 
         // Select location method: Decimal degrees
         cy.get('#location-type').check()
 
@@ -117,7 +117,7 @@ cy.clickContinue()
         cy.get('#location-latitude-decimal').type('50.8225')
         cy.get('#location-longitude-decimal').type('-0.1372')
 
-cy.clickContinue()         
+        cy.clickContinue()         
     })
     it('lets me click to add a new recovered wreck item', () => {
         cy.visit('/report/property-summary')
@@ -129,36 +129,36 @@ cy.clickContinue()
         cy.url().should('include', '/report/property-form/new')
         cy.contains('Describe the item').should('exist')
     })
-
+    
     it('lets me fill the form and upload a photo', () => {
         cy.visit('/report/property-form/new')
 
-        cy.get('#property\\.i0\\.description').click().type('Nice seashells');
+        cy.get('#property\\.i0\\.description').click().type('Receiver of wreck');
         cy.get('#property\\.i0\\.quantity').type('3')
         cy.get('#value-known-2').check()
         cy.clickContinue()
 
         cy.get('#property-image').click()
-        cy.get('input[type="file"]').selectFile('cypress/fixtures/test.jpg', { force: true });
+        cy.get('input[type="file"]').selectFile('cypress/fixtures/test.jpeg', { force: true });
         cy.get('.photo-upload__button').click()
 
         cy.get('.govuk-button--continue').click()
-    
-    
+
+
     //  where the wreck is stored
         cy.visit('report/property-form-address/i0')
         cy.get('#property-i0-storage-address').check()
         cy.clickContinue()
-        
-    
-    // shows declaration page and asks if i wish to claim award
+
+
+    // shows declaration page and asks if I wish to claim award
         cy.get('#propertyDeclaration').check()
         cy.get('.form > .govuk-button').click()
-        
+
         cy.visit('report/salvage-award')
         cy.get('#claim-salvage-2').check()
         cy.get('.govuk-button').click()
-        
+
     })
 
 })

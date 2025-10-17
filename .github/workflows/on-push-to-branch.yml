@@ -51,3 +51,6 @@ jobs:
     with:
       image-tag: ${{ github.sha }}
       environment: ci-test
+    secrets:
+      testing_webapp_env_file: ${{ secrets.TESTING_WEBAPP_ENV_FILE }}
+      testing_backoffice_env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
