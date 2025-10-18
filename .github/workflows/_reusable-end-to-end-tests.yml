@@ -69,8 +69,6 @@ jobs:
           cd ..
       
       - name: Bring up Docker containers
-        with:
-          working-directory: tests
         run: |
           docker compose --verbose -f docker-compose.e2e.yml up --detach
             
