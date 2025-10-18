@@ -85,13 +85,14 @@ jobs:
         with:
           name: cypress-screenshots
           path: tests/cypress/screenshots/
-
-      - name: Stop containers
-        if: always()
-        run: docker compose --file "docker-compose.e2e.yml" down
-        
+          
       - uses: actions/download-artifact@v5
+        if: failure()
         with:
           name: ${{inputs.git-reference}}
       - name: Display structure of downloaded files
         run: ls -R
+
+      - name: Stop containers
+        if: always()
+        run: docker compose --file "docker-compose.e2e.yml" down
