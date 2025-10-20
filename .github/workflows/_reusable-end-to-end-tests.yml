@@ -66,6 +66,7 @@ jobs:
           echo "Creating backoffice appsettings file..."
           cd backoffice
           echo -e "${APPSETTINGS_JSON}" > src/appsettings.json
+          ls -R
           cd ..
       
       - name: Bring up Docker containers
