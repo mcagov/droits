@@ -57,18 +57,38 @@ jobs:
           WEBAPP_ENV_FILE: ${{ secrets.testing_webapp_env_file }}
           APPSETTINGS_JSON: ${{ secrets.testing_backoffice_env_file }}
         run: |
-          export IMAGE_TAG=${{ inputs.image-tag }}
-          echo "Creating webapp environment file..."
-          cd ../webapp
-          echo "$WEBAPP_ENV_FILE" > .env.json
-          cd ..
-
-          echo "Creating backoffice appsettings file..."
-          cd backoffice
-          echo -e "${APPSETTINGS_JSON}" > src/appsettings.json
-          ls -R
-          cd ..
-      
+          # --- Create Files ---
+          echo "Creating environment files..."
+          WEBAPP_FILE="${{ github.workspace }}/webapp/.env.json"
+          BACKOFFICE_FILE="${{ github.workspace }}/backoffice/src/appsettings.json"
+          
+          echo "${{ env.WEBAPP_ENV_FILE }}" > "$WEBAPP_FILE"
+          echo "${{ env.APPSETTINGS_JSON }}" > "$BACKOFFICE_FILE"
+          
+          # --- Verification ---
+          echo "Verifying file existence..."
+          if [ ! -s "$BACKOFFICE_FILE" ]; then
+            echo "❌ Error: appsettings.json is missing or empty."
+            exit 1
+          fi
+          echo "✅ Success: appsettings.json exists and is not empty."
+          
+          echo "Verifying file content..."
+          # Calculate checksum from the environment variable/secret
+          # The 'echo -n' is crucial to avoid adding a trailing newline
+          EXPECTED_SUM=$(echo -n "${{ env.APPSETTINGS_JSON }}" | sha256sum | awk '{print $1}')
+          
+          # Calculate checksum from the newly created file
+          FILE_SUM=$(sha256sum "$BACKOFFICE_FILE" | awk '{print $1}')
+          
+          # Compare the checksums
+          if [ "$EXPECTED_SUM" == "$FILE_SUM" ]; then
+            echo "✅ Success: appsettings.json content matches the secret."
+          else
+            echo "❌ Error: Content of appsettings.json does not match the secret!"
+            exit 1
+          fi
+          
       - name: Bring up Docker containers
         run: |
           docker compose --verbose -f docker-compose.e2e.yml up --detach
