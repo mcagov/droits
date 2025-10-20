@@ -65,17 +65,8 @@ jobs:
           echo "${{ env.WEBAPP_ENV_FILE }}" > "$WEBAPP_FILE"
           echo "${{ env.APPSETTINGS_JSON }}" > "$BACKOFFICE_FILE"
           
-          # --- Verification ---
-          echo "Verifying file existence..."
-          if [ ! -s "$BACKOFFICE_FILE" ]; then
-            echo "❌ Error: appsettings.json is missing or empty."
-            exit 1
-          fi
-          echo "✅ Success: appsettings.json exists and is not empty."
-          
           echo "Verifying file content..."
           # Calculate checksum from the environment variable/secret
-          # The 'echo -n' is crucial to avoid adding a trailing newline
           EXPECTED_SUM=$(echo -n "${{ env.APPSETTINGS_JSON }}" | sha256sum | awk '{print $1}')
           
           # Calculate checksum from the newly created file
