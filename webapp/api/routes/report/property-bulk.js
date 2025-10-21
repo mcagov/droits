@@ -64,7 +64,11 @@ export default function (app) {
             })
             .on("end", function () {
               // Remove temp file
-              fs.unlinkSync(req.file.path);
+            fs.unlink(req.file.path, (err) => {
+                if (err) {
+                    console.log("Error deleting file:", err);
+                }
+            });
               // Run validation checks
               validateCsvData(fileRows).then(() => {
                 if (err.text) {
