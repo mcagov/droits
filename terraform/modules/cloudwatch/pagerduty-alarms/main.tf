@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "httpcode_target_4xx_count" {
-  alarm_name          = "${var.prefix}alb-tg-${var.target_group_id}-high4XXCount"
+  alarm_name          = "${terraform.workspace}-ALB-4XX-High-Error-Count"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 10
   datapoints_to_alarm = 10
