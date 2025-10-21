@@ -54,6 +54,9 @@ export default function (app) {
             }
 
             res.json({ error: err });
+          } else if (!req.file) {
+              err.text = 'Image upload failed. No file provided.';
+              return res.status(400).json({ error: err });
           } else if (req.body.image === 'undefined') {
             err.text = 'Select an image';
             res.json({ error: err });
@@ -76,7 +79,12 @@ export default function (app) {
             
             const forbiddenKeys = ['__proto__', 'constructor', 'prototype'];
             if (forbiddenKeys.includes(id)) {
-              return res.sendStatus(403);
+                err.text = 'Image upload failed';
+                return res.status(403).json({ error: err });
+            }
+            
+            if (!req.session.data.property[id]) {
+                req.session.data.property[id] = {};
             }
             
             req.session.data.property[id].image = req.file.filename;
