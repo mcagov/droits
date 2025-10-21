@@ -32,8 +32,8 @@ module "webapp-aws-alb-alarms" {
   target_group_id         = var.webapp_alb_target_group_id
   response_time_threshold = var.lb_average_response_time_threshold
   evaluation_period       = var.lb_evaluation_periods
-  actions_alarm           = [var.webapp_lb_alerts_topic_arn]
-  actions_ok              = [var.webapp_lb_alerts_topic_arn]
+  actions_alarm           = var.enable_alerts == true ? [var.webapp_lb_alerts_topic_arn] : []
+  actions_ok              = var.enable_alerts == true ? [var.webapp_lb_alerts_topic_arn] : []
 }
 
 module "backoffice_ecs_service_alarms" {
