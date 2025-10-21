@@ -1,48 +1,59 @@
 services:
-  backoffice:
-    container_name: droits_backoffice
-    build:
-      context: ./backoffice
-    image: droits-backoffice
-    ports:
-      - "${HOST_PORT:-5005}:5005"
-      - "5001:5001"
-    environment:
-      ASPNETCORE_Kestrel__Certificates__Default__Password: "password"
-      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
-      DB_HOST: 'database'
-    volumes:
-      - ~/.aspnet/https:/https:ro
-    depends_on:
-      - database
+#  TODO: Need to setup appsettings.json for backoffice
+#  backoffice:
+#    build:
+#      context: ../backoffice
+#    image: droits-backoffice
+#    ports:
+#      - "5000:5000"
+#    environment:
+#      ASPNETCORE_Kestrel__Certificates__Default__Password: "password"
+#      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
+#      DB_HOST: 'database'
+#    volumes:
+#      - ~/.aspnet/https:/https:ro
+#    depends_on:
+#      database:
+#        condition: service_started
+#      redis:
+#        condition: service_started
+#    healthcheck:
+#      test:
+#        [
+#          "CMD",
+#          "curl",
+#          "-f",
+#          "http://localhost:5000/healthz",
+#        ]
+#      interval: 10s
+#      timeout: 10s
+#      retries: 12
+#    restart: on-failure
 
+#  database:
+#    image: postgres:14-alpine
+#    volumes:
+#      - ~/apps/droits_db/pgdata:/var/lib/postgresql/data
+#    environment:
+#      POSTGRES_DB: droits
+#      POSTGRES_USER: service
+#      POSTGRES_PASSWORD: password
+#    ports:
+#      - "5432:5432"
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+        
   webapp:
-    container_name: droits_webapp
     build:
-      context: ./webapp
+      context: ../webapp
     image: droits-webapp
     environment:
       REDIS_HOST: 'redis'
     ports:
       - "3000:3000"
     depends_on:
-      - backoffice
-      - redis
-
-  database:
-    image: postgres:14-alpine
-    container_name: droits_database
-    volumes:
-      - ~/apps/droits_db/pgdata:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: droits
-      POSTGRES_USER: service
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
-
-  redis:
-    image: redis:7
-    container_name: droits_redis
-    ports:
-      - "6379:6379"
+      redis:
+        condition: service_started

@@ -210,6 +210,10 @@ variable "alert_email_address" {
   type        = string
   description = "Email Address subscribed to alerts"
 }
+variable "alert_pagerduty_integration_url" {
+  type        = string
+  description = " The Integration URL to which CloudWatch alerts should be sent for PagerDuty"
+}
 variable "percentage_cpu_utilization_high_threshold" {
   type        = number
   description = "The % CPU utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."

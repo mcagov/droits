@@ -48,6 +48,9 @@ on:
       alert_email_address:
         description: Email that will receive alert alarms
         required: true
+      alert_pagerduty_integration_url:
+        description: The Integration URL to which CloudWatch alerts should be sent for PagerDuty
+        required: true
       webapp_env_file:
         description: The contents of the environment file
         required: true
@@ -93,6 +96,7 @@ jobs:
           TF_VAR_db_username: ${{ secrets.db_username }}
           TF_VAR_db_password: ${{ secrets.db_password }}
           TF_VAR_alert_email_address: ${{secrets.alert_email_address}}
+          TF_VAR_alert_pagerduty_integration_url: ${{ secrets.alert_pagerduty_integration_url }}
           TF_VAR_backoffice_environment_file: ${{ secrets.backoffice_env_file }}
           TF_VAR_webapp_environment_file: ${{ secrets.webapp_env_file }}
         run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ inputs.terraform_workspace }}.tfvars
