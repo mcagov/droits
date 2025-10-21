@@ -1,0 +1,81 @@
+name: "[reusable] E2E tests"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description:
+          The environment to which the application should be deployed.  Must be one of development/staging/production
+          and must match the terraform_workspace input.
+        type: string
+        required: true
+      image-tag:
+        description: The tag of the release to test
+        required: true
+        type: string
+      git-reference:
+        type: string
+        description: "(Optional) branch, tag or commit to test and deploy"
+    secrets:
+      testing_webapp_env_file:
+        description: The contents of the testing environment file
+        required: true
+      testing_backoffice_env_file:
+        description: The contents of the testing environment file
+        required: true
+
+defaults:
+  run:
+    working-directory: tests
+
+jobs:
+  end_to_end_tests:
+    name: End to end tests
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{inputs.git-reference}}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.17.0"
+
+      - name: Install npm dependencies
+        run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+          
+      - name: Setup webapp environment variables
+        env:
+          WEBAPP_ENV_FILE: ${{ secrets.testing_webapp_env_file }}
+        run: |
+          cd ../webapp
+          echo "$WEBAPP_ENV_FILE" > .env.json
+          
+      - name: Bring up Docker containers
+        run: |
+          docker compose --verbose -f docker-compose.e2e.yml up --detach
+            
+      - name: Run Cypress end to end tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: tests
+          browser: chrome
+#         wait-on: "http://localhost:5000/healthz"
+          
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: tests/cypress/screenshots/
+
+      - name: Stop containers
+        if: always()
+        run: docker compose --file "docker-compose.e2e.yml" down
