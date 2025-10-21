@@ -51,18 +51,13 @@ jobs:
         run: npm ci
         env:
           CYPRESS_INSTALL_BINARY: 0
-
-      - name: Setup environment variables
+          
+      - name: Setup webapp environment variables
         env:
           WEBAPP_ENV_FILE: ${{ secrets.testing_webapp_env_file }}
-          APPSETTINGS_JSON: ${{ secrets.testing_backoffice_env_file }}
         run: |
-          echo "Creating environment files..."
-          WEBAPP_FILE="${{ github.workspace }}/webapp/.env.json"
-          BACKOFFICE_FILE="${{ github.workspace }}/backoffice/src/appsettings.json"
-          
-          echo "${{ env.WEBAPP_ENV_FILE }}" > "$WEBAPP_FILE"
-          echo "${{ env.APPSETTINGS_JSON }}" > "$BACKOFFICE_FILE" 
+          cd ../webapp
+          echo "$WEBAPP_ENV_FILE" > .env.json
           
       - name: Bring up Docker containers
         run: |
@@ -72,7 +67,6 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           working-directory: tests
-          spec: cypress/e2e/*
           browser: chrome
 #         wait-on: "http://localhost:5000/healthz"
           
