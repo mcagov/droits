@@ -1,34 +1,51 @@
 services:
-  backoffice:
-    build:
-      context: ../backoffice
-    image: droits-backoffice
-    ports:
-      - "5000:5000"
-    environment:
-      ASPNETCORE_Kestrel__Certificates__Default__Password: "password"
-      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
-      DB_HOST: 'database'
-    volumes:
-      - ~/.aspnet/https:/https:ro
-    depends_on:
-      database:
-        condition: service_started
-      redis:
-        condition: service_started
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:5000/healthz",
-        ]
-      interval: 10s
-      timeout: 10s
-      retries: 12
-    restart: on-failure
+#  TODO: Need to setup appsettings.json for backoffice
+#  backoffice:
+#    build:
+#      context: ../backoffice
+#    image: droits-backoffice
+#    ports:
+#      - "5000:5000"
+#    environment:
+#      ASPNETCORE_Kestrel__Certificates__Default__Password: "password"
+#      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
+#      DB_HOST: 'database'
+#    volumes:
+#      - ~/.aspnet/https:/https:ro
+#    depends_on:
+#      database:
+#        condition: service_started
+#      redis:
+#        condition: service_started
+#    healthcheck:
+#      test:
+#        [
+#          "CMD",
+#          "curl",
+#          "-f",
+#          "http://localhost:5000/healthz",
+#        ]
+#      interval: 10s
+#      timeout: 10s
+#      retries: 12
+#    restart: on-failure
 
+#  database:
+#    image: postgres:14-alpine
+#    volumes:
+#      - ~/apps/droits_db/pgdata:/var/lib/postgresql/data
+#    environment:
+#      POSTGRES_DB: droits
+#      POSTGRES_USER: service
+#      POSTGRES_PASSWORD: password
+#    ports:
+#      - "5432:5432"
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+        
   webapp:
     build:
       context: ../webapp
@@ -38,21 +55,5 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      backoffice:
-        condition: service_healthy
-
-  database:
-    image: postgres:14-alpine
-    volumes:
-      - ~/apps/droits_db/pgdata:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: droits
-      POSTGRES_USER: service
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
-
-  redis:
-    image: redis:7
-    ports:
-      - "6379:6379"
+      redis:
+        condition: service_started

@@ -11,7 +11,6 @@ module.exports = defineConfig({
       
     },
     baseUrl: "http://127.0.0.1:3000", 
-      specPattern: "cypress/endToEnd/**/*.spec.js",
     supportFile: 'e2e.js',
   },
 });

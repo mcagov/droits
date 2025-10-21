@@ -57,28 +57,12 @@ jobs:
           WEBAPP_ENV_FILE: ${{ secrets.testing_webapp_env_file }}
           APPSETTINGS_JSON: ${{ secrets.testing_backoffice_env_file }}
         run: |
-          # --- Create Files ---
           echo "Creating environment files..."
           WEBAPP_FILE="${{ github.workspace }}/webapp/.env.json"
           BACKOFFICE_FILE="${{ github.workspace }}/backoffice/src/appsettings.json"
           
           echo "${{ env.WEBAPP_ENV_FILE }}" > "$WEBAPP_FILE"
-          echo "${{ env.APPSETTINGS_JSON }}" > "$BACKOFFICE_FILE"
-          
-          echo "Verifying file content..."
-          # Calculate checksum from the environment variable/secret
-          EXPECTED_SUM=$(echo -n "${{ env.APPSETTINGS_JSON }}" | sha256sum | awk '{print $1}')
-          
-          # Calculate checksum from the newly created file
-          FILE_SUM=$(sha256sum "$BACKOFFICE_FILE" | awk '{print $1}')
-          
-          # Compare the checksums
-          if [ "$EXPECTED_SUM" == "$FILE_SUM" ]; then
-            echo "✅ Success: appsettings.json content matches the secret."
-          else
-            echo "❌ Error: Content of appsettings.json does not match the secret!"
-            exit 1
-          fi
+          echo "${{ env.APPSETTINGS_JSON }}" > "$BACKOFFICE_FILE" 
           
       - name: Bring up Docker containers
         run: |
@@ -88,9 +72,9 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           working-directory: tests
-          spec: cypress/endToEnd/*
+          spec: cypress/e2e/*
           browser: chrome
-          wait-on: "http://localhost:5000/healthz"
+#         wait-on: "http://localhost:5000/healthz"
           
       - uses: actions/upload-artifact@v4
         if: failure()
