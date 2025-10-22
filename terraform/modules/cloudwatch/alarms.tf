@@ -89,6 +89,7 @@ module "webapp_ecs_service_alarms" {
   memory_utilization_high_threshold          = var.percentage_memory_utilization_high_threshold
   memory_utilization_high_evaluation_periods = var.memory_utilization_high_evaluation_periods
   memory_utilization_high_period             = var.memory_utilisation_duration_in_seconds_to_evaluate
+  memory_utilization_low_threshold           = var.memory_utilization_low_threshold
   memory_utilization_high_alarm_actions      = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
   memory_utilization_high_ok_actions         = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
 }
