@@ -48,6 +48,13 @@ module "backoffice_ecs_service_alarms" {
   cpu_utilization_high_threshold             = var.percentage_cpu_utilization_high_threshold
   cpu_utilization_high_alarm_actions         = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
   cpu_utilization_high_ok_actions            = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+  # Todo: We want to set up an AWS CloudWatch Alarm to be in alarm if the maximum ECS CPU usage does not exceed 20% during any of the the previous 7 days. ecs-cloudwatch-sns-alarms does not support setting the statistic to anything other than average. 
+  # Let's split this out to several aws_cloudwatch_metric_alarm
+  # cpu_utilization_low_statistic = var.cpu_utilization_low_statistic
+  # cpu_utilization_low_threshold = var.percentage_cpu_utilization_low_threshold
+  # cpu_utilization_low_evaluation_periods = var.cpu_utilization_low_evaluation_periods
+  # cpu_utilization_low_period = var.cpu_utilization_low_period
+  # Todo: We want to set up an AWS CloudWatch Alarm to be in alarm if the maximum ECS Memory usage does not exceed 10% during any of the the previous 7 days.
   memory_utilization_high_threshold          = var.percentage_memory_utilization_high_threshold
   memory_utilization_high_evaluation_periods = var.memory_utilization_high_evaluation_periods
   memory_utilization_high_period             = var.memory_utilisation_duration_in_seconds_to_evaluate
