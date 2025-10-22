@@ -137,5 +137,5 @@ variable "memory_utilization_low_threshold" {
   type        = number
   description = "The minimum percentage of Memory utilization average"
   # TODO: We would like separate values for this. 5 for the webapp and 3 for backoffice.
-  default     = 3
+  default = 3
 }
