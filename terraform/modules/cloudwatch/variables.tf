@@ -91,22 +91,22 @@ variable "cpu_utilization_high_evaluation_periods" {
 variable "cpu_utilization_low_statistic" {
   type        = string
   description = "Set the Statistic to check usage per period."
-  default = "Maximum"
+  default     = "Maximum"
 }
 variable "percentage_cpu_utilization_low_threshold" {
   type        = number
   description = "The % CPU utilisation limit which, when consistently under, will trigger an alarm."
-  default = 20
+  default     = 20
 }
 variable "cpu_utilization_low_evaluation_periods" {
   type        = number
   description = "Number of periods to evaluate for the alarm"
-  default = 604800 # 7 days
+  default     = 604800 # 7 days
 }
 variable "cpu_utilization_low_period" {
   type        = number
   description = "Duration in seconds to evaluate for the alarm"
-  default = 86400 # 1 day
+  default     = 86400 # 1 day
 }
 variable "percentage_memory_utilization_high_threshold" {
   type        = number

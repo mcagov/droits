@@ -39,15 +39,15 @@ module "webapp-aws-alb-alarms" {
 module "backoffice_ecs_service_alarms" {
   source = "cloudposse/ecs-cloudwatch-sns-alarms/aws"
   # Cloud Posse recommends pinning every module to a specific version
-  version                                    = "0.12.3"
-  namespace                                  = "ecs"
-  stage                                      = terraform.workspace
-  name                                       = "droits-${var.ecs_backoffice_service_name}"
-  cluster_name                               = var.ecs_cluster_name
-  service_name                               = var.ecs_backoffice_service_name
-  cpu_utilization_high_threshold             = var.percentage_cpu_utilization_high_threshold
-  cpu_utilization_high_alarm_actions         = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
-  cpu_utilization_high_ok_actions            = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+  version                            = "0.12.3"
+  namespace                          = "ecs"
+  stage                              = terraform.workspace
+  name                               = "droits-${var.ecs_backoffice_service_name}"
+  cluster_name                       = var.ecs_cluster_name
+  service_name                       = var.ecs_backoffice_service_name
+  cpu_utilization_high_threshold     = var.percentage_cpu_utilization_high_threshold
+  cpu_utilization_high_alarm_actions = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+  cpu_utilization_high_ok_actions    = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
   # Todo: We want to set up an AWS CloudWatch Alarm to be in alarm if the maximum ECS CPU usage does not exceed 20% during any of the the previous 7 days. ecs-cloudwatch-sns-alarms does not support setting the statistic to anything other than average. 
   # Let's split this out to several aws_cloudwatch_metric_alarm
   # cpu_utilization_low_statistic = var.cpu_utilization_low_statistic
@@ -62,6 +62,27 @@ module "backoffice_ecs_service_alarms" {
   memory_utilization_high_ok_actions         = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
 }
 
+# Todo: We want to set up an AWS CloudWatch Alarm to be in alarm if the maximum ECS CPU usage does not exceed 20% during any of the the previous 7 days. ecs-cloudwatch-sns-alarms does not support setting the statistic to anything other than average.
+resource "aws_cloudwatch_metric_alarm" "backoffice_ecs_service_low_cpu_utilisation" {
+  alarm_name          = "ecs-${terraform.workspace}-droits-${var.ecs_backoffice_service_name}-low-cpu-utilisation"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = var.cpu_utilization_low_evaluation_periods
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/ECS"
+  period              = var.cpu_utilization_low_period
+  statistic           = "Maximum"
+  threshold           = var.percentage_cpu_utilization_low_threshold
+  alarm_description   = "Low CPU Utilisation"
+  alarm_actions       = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+  ok_actions          = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+
+  dimensions = {
+    ClusterName = var.ecs_cluster_name
+    ServiceName = var.ecs_backoffice_service_name
+  }
+}
+
+// TODO: Needs review
 resource "aws_cloudwatch_metric_alarm" "backoffice_ecs_service_task_count_too_low" {
   alarm_name          = "ecs-${terraform.workspace}-droits-${var.ecs_backoffice_service_name}-low-task-count"
   comparison_operator = "LessThanThreshold"
