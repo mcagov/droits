@@ -19,7 +19,7 @@ jobs:
   plan-and-deploy:
     name: Plan and deploy
     runs-on: ubuntu-latest
-    environment: ${{ env.ENVIRONMENT }}
+    environment: $ENVIRONMENT
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,7 +36,7 @@ jobs:
           terraform_version: ">=1.5.0"
           
       - name: Terraform init
-        run: terraform init -backend-config=tfvars/${{ env.ENVIRONMENT }}-backend.tfvars
+        run: terraform init -backend-config=tfvars/$ENVIRONMENT-backend.tfvars
         
       - name: Terraform validate
         run: terraform validate
@@ -55,4 +55,4 @@ jobs:
           TF_VAR_alert_pagerduty_integration_url: ${{ secrets.alert_pagerduty_integration_url }}
           TF_VAR_backoffice_environment_file: ${{ secrets.backoffice_env_file }}
           TF_VAR_webapp_environment_file: ${{ secrets.webapp_env_file }}
-        run: terraform plan -input=false -var-file=tfvars/${{ env.ENVIRONMENT }}.tfvars
+        run: terraform plan -input=false -var-file=tfvars/$ENVIRONMENT.tfvars
