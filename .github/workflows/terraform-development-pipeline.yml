@@ -20,8 +20,6 @@ jobs:
     name: Plan and deploy
     runs-on: ubuntu-latest
     environment: ${{ env.ENVIRONMENT }}
-    env:
-      TF_WORKSPACE: ${{ env.ENVIRONMENT }}
     steps:
       - uses: actions/checkout@v4
         with:
