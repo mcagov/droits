@@ -6,6 +6,10 @@ permissions:
   id-token: write
   
 on:
+  # Todo: Remove branch trigger
+  push:
+    branches:
+      - adjust-alarms-parameter
   workflow_dispatch:
 
 defaults:
@@ -23,6 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # Todo: Don't hardcode branch
           ref: adjust-alarms-parameter
           
       - name: Configure AWS credentials
