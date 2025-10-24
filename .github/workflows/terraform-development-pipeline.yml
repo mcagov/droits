@@ -50,16 +50,16 @@ jobs:
         
       - name: Terraform plan
         env:
-          TF_VAR_ecr_repository_url: ${{ secrets.registry_url }}
-          TF_VAR_backoffice_ecr_repository_name: ${{ secrets.backoffice_repository_name }}
-          TF_VAR_webapp_ecr_repository_name: ${{ secrets.webapp_repository_name }}
+          TF_VAR_ecr_repository_url: ${{ secrets.ECR_REPOSITORY_URL }}
+          TF_VAR_backoffice_ecr_repository_name: ${{ secrets.BACKOFFICE_ECR_REPOSITORY_NAME }}
+          TF_VAR_webapp_ecr_repository_name: ${{ secrets.WEBAPP_ECR_REPOSITORY_NAME }}
           # Todo: Deal with hardcoded image tag
           TF_VAR_image_tag: 4f44945cad38927702a07e926733e4bd126c7f54
-          TF_VAR_aws_account_number: ${{ secrets.aws_account_number }}
-          TF_VAR_db_username: ${{ secrets.db_username }}
-          TF_VAR_db_password: ${{ secrets.db_password }}
-          TF_VAR_alert_email_address: ${{secrets.alert_email_address}}
-          TF_VAR_alert_pagerduty_integration_url: ${{ secrets.alert_pagerduty_integration_url }}
-          TF_VAR_backoffice_environment_file: ${{ secrets.backoffice_env_file }}
-          TF_VAR_webapp_environment_file: ${{ secrets.webapp_env_file }}
+          TF_VAR_aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
+          TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
+          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+          TF_VAR_alert_email_address: ${{secrets.ALERTS_EMAIL}}
+          TF_VAR_alert_pagerduty_integration_url: ${{ secrets.ALERT_PAGERDUTY_INTEGRATION_URL }}
+          TF_VAR_backoffice_environment_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
+          TF_VAR_webapp_environment_file: ${{ secrets.WEBAPP_ENV_FILE }}
         run: terraform plan -input=false -var-file=tfvars/$ENVIRONMENT.tfvars
