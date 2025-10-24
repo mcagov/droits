@@ -18,6 +18,7 @@ defaults:
     working-directory: terraform
 
 env:
+  # Todo: Consider using the branch name as the environment and workspace name. Would require us to create the workspace. May well be too much work at this stage.
   ENVIRONMENT: dev
   TF_WORKSPACE: dev
   
