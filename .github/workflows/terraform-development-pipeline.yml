@@ -7,6 +7,7 @@ permissions:
   
 on:
   # Todo: Remove branch trigger
+  # Todo: Had to add to environment protection rule. Need to think about this.
   push:
     branches:
       - adjust-alarms-parameters
@@ -18,6 +19,7 @@ defaults:
 
 env:
   ENVIRONMENT: dev
+  TF_WORKSPACE: dev
   
 jobs:
   plan-and-deploy:
