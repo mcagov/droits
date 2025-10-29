@@ -36,6 +36,7 @@ module "webapp-aws-alb-alarms" {
   actions_ok              = var.enable_alerts == true ? [var.webapp_lb_alerts_topic_arn] : []
 }
 
+# ECS alarms module could start here
 resource "aws_cloudwatch_metric_alarm" "backoffice_ecs_low_cpu_utilisation" {
   alarm_name          = "ecs-${terraform.workspace}-droits-${var.ecs_backoffice_service_name}-low-cpu-utilisation"
   comparison_operator = "LessThanThreshold"
@@ -130,6 +131,7 @@ resource "aws_cloudwatch_metric_alarm" "backoffice_ecs_low_task_count" {
     ServiceName = var.ecs_backoffice_service_name
   }
 }
+# ECS alarms module could end here
 
 module "webapp_ecs_service_alarms" {
   source                                     = "cloudposse/ecs-cloudwatch-sns-alarms/aws"
