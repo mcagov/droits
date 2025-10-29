@@ -76,100 +76,10 @@ variable "enable_alerts" {
   type        = bool
   description = "When enabled CloudWatch alarm events are sent to the Alerts SNS Topic"
 }
-
-# ECS Task Count
-# Todo: Can we just use the minimum task count from ECS as the threshold?
-variable "ecs_minimum_task_count" {
-  type        = number
-  description = "Minimum number of expected tasks to be running for the backoffice ECS service"
-  default     = 1
-}
-variable "ecs_task_count_low_evaluation_periods" {
-  type        = number
-  description = "Number of periods to evaluate for the alarm"
-  default     = 1
-}
-variable "ecs_task_count_low_period" {
-  type        = number
-  description = "Duration in seconds to evaluate for the alarm"
-  default     = 300
-}
-
-# ECS high CPU Utilisation
-variable "ecs_cpu_utilization_high_threshold_percentage" {
+variable "db_cpu_utilization_high_threshold_percentage" {
   type        = number
   description = "The % CPU utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
   default     = 90
-}
-variable "ecs_cpu_utilization_high_evaluation_periods" {
-  type        = number
-  description = "Number of periods to evaluate for the alarm"
-  default     = 1
-}
-variable "ecs_cpu_utilization_high_period" {
-  type        = number
-  description = "Duration in seconds to evaluate for the alarm"
-  default     = 300
-}
-
-# ECS low CPU Utilisation
-variable "ecs_cpu_utilization_low_threshold_percentage" {
-  type        = number
-  description = "The % CPU utilisation limit which, when consistently under, will trigger an alarm."
-  default     = 20
-}
-variable "ecs_cpu_utilization_low_evaluation_periods" {
-  type        = number
-  description = "Number of periods to evaluate for the alarm"
-  default     = 7 # 7 days
-}
-variable "ecs_cpu_utilization_low_period" {
-  type        = number
-  description = "Duration in seconds to evaluate for the alarm"
-  default     = 86400 # 1 day
-}
-
-# ECS high memory utilisation
-variable "ecs_memory_utilization_high_threshold_percentage" {
-  type        = number
-  description = "The % CPU utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
-  default     = 90
-}
-variable "ecs_memory_utilization_high_evaluation_periods" {
-  type        = number
-  description = "Number of periods to evaluate for the alarm"
-  default     = 1
-}
-variable "ecs_memory_utilization_high_period" {
-  type        = number
-  description = "Duration in seconds to evaluate for the alarm"
-  default     = 300
-}
-
-# ECS low memory utilisation
-variable "ecs_memory_utilization_low_threshold_percentage" {
-  type        = number
-  description = "The % CPU utilisation limit which, when consistently under, will trigger an alarm."
-  default     = 8
-}
-variable "ecs_memory_utilization_low_evaluation_periods" {
-  type        = number
-  description = "Number of periods to evaluate for the alarm"
-  default     = 7 # 7 days
-}
-variable "ecs_memory_utilization_low_period" {
-  type        = number
-  description = "Duration in seconds to evaluate for the alarm"
-  default     = 86400 # 1 day
-}
-
-variable "memory_utilisation_duration_in_seconds_to_evaluate" {
-  type        = number
-  description = "Duration in seconds to evaluate for the alarm"
-}
-variable "cpu_utilisation_duration_in_seconds_to_evaluate" {
-  type        = number
-  description = "Duration in seconds to evaluate for the alarm"
 }
 variable "db_cpu_credit_balance_too_low_threshold" {
   type        = string
@@ -198,11 +108,4 @@ variable "lb_average_response_time_threshold" {
 variable "lb_evaluation_periods" {
   type        = string
   description = "The number of periods to evaluate for the alarm"
-}
-
-variable "memory_utilization_low_threshold" {
-  type        = number
-  description = "The minimum percentage of Memory utilization average"
-  # TODO: We would like separate values for this. 5 for the webapp and 3 for backoffice.
-  default = 3
 }
