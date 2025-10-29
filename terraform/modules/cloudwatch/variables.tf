@@ -46,6 +46,16 @@ variable "backoffice_lb_alerts_topic_arn" {
   type        = string
   description = "The ARN of the backoffice_lb_alerts SNS topic"
 }
+variable "ecs_backoffice_memory_utilization_low_threshold_percentage" {
+  type        = number
+  description = "The % CPU utilisation limit which, when consistently under, will trigger an alarm."
+  default     = 6
+}
+variable "ecs_webapp_memory_utilization_low_threshold_percentage" {
+  type        = number
+  description = "The % CPU utilisation limit which, when consistently under, will trigger an alarm."
+  default     = 8
+}
 variable "webapp_load_balancer" {
   type = string
 }

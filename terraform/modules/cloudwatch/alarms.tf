@@ -35,18 +35,19 @@ module "webapp-aws-alb-alarms" {
   actions_alarm           = var.enable_alerts == true ? [var.webapp_lb_alerts_topic_arn] : []
   actions_ok              = var.enable_alerts == true ? [var.webapp_lb_alerts_topic_arn] : []
 }
-
 module "backoffice_ecs_service_alarms" {
-  source           = "./ecs-alarms"
-  alerts_topic_arn = var.ecs_backoffice_alerts_topic_arn
-  cluster_name     = var.ecs_cluster_name
-  enable_alerts    = var.enable_alerts
-  service_name     = var.ecs_backoffice_service_name
+  source                                      = "./ecs-alarms"
+  alerts_topic_arn                            = var.ecs_backoffice_alerts_topic_arn
+  cluster_name                                = var.ecs_cluster_name
+  enable_alerts                               = var.enable_alerts
+  memory_utilization_low_threshold_percentage = var.ecs_backoffice_memory_utilization_low_threshold_percentage
+  service_name                                = var.ecs_backoffice_service_name
 }
 module "webapp_ecs_service_alarms" {
-  source           = "./ecs-alarms"
-  alerts_topic_arn = var.ecs_webapp_alerts_topic_arn
-  cluster_name     = var.ecs_cluster_name
-  enable_alerts    = var.enable_alerts
-  service_name     = var.ecs_webapp_service_name
+  source                                      = "./ecs-alarms"
+  alerts_topic_arn                            = var.ecs_webapp_alerts_topic_arn
+  cluster_name                                = var.ecs_cluster_name
+  enable_alerts                               = var.enable_alerts
+  memory_utilization_low_threshold_percentage = var.ecs_webapp_memory_utilization_low_threshold_percentage
+  service_name                                = var.ecs_webapp_service_name
 }

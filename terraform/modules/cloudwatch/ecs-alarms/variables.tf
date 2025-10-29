@@ -86,7 +86,7 @@ variable "memory_utilization_high_period" {
 variable "memory_utilization_low_threshold_percentage" {
   type        = number
   description = "The % CPU utilisation limit which, when consistently under, will trigger an alarm."
-  default     = 8
+  default     = 10
 }
 variable "memory_utilization_low_evaluation_periods" {
   type        = number
