@@ -4,10 +4,6 @@ variable "ecs_cluster_name" {
 variable "ecs_backoffice_service_name" {
   type = string
 }
-variable "ecs_backofice_service_minimum_task_count" {
-  type        = number
-  description = "Minimum number of expected tasks to be running for the backoffice ECS service"
-}
 variable "ecs_backoffice_alerts_topic_arn" {
   type        = string
   description = "The ARN of the backoffice_alerts SNS topic"
@@ -80,68 +76,93 @@ variable "enable_alerts" {
   type        = bool
   description = "When enabled CloudWatch alarm events are sent to the Alerts SNS Topic"
 }
-variable "percentage_cpu_utilization_high_threshold" {
+
+# ECS Task Count
+# Todo: Can we just use the minimum task count from ECS as the threshold?
+variable "ecs_minimum_task_count" {
   type        = number
-  description = "The % CPU utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
-  default     = 90
+  description = "Minimum number of expected tasks to be running for the backoffice ECS service"
+  default     = 1
 }
-variable "cpu_utilization_high_evaluation_periods" {
+variable "ecs_task_count_low_evaluation_periods" {
   type        = number
   description = "Number of periods to evaluate for the alarm"
   default     = 1
 }
-variable "cpu_utilization_high_period" {
+variable "ecs_task_count_low_period" {
   type        = number
   description = "Duration in seconds to evaluate for the alarm"
   default     = 300
 }
-variable "percentage_cpu_utilization_low_threshold" {
+
+# ECS high CPU Utilisation
+variable "ecs_cpu_utilization_high_threshold_percentage" {
+  type        = number
+  description = "The % CPU utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
+  default     = 90
+}
+variable "ecs_cpu_utilization_high_evaluation_periods" {
+  type        = number
+  description = "Number of periods to evaluate for the alarm"
+  default     = 1
+}
+variable "ecs_cpu_utilization_high_period" {
+  type        = number
+  description = "Duration in seconds to evaluate for the alarm"
+  default     = 300
+}
+
+# ECS low CPU Utilisation
+variable "ecs_cpu_utilization_low_threshold_percentage" {
   type        = number
   description = "The % CPU utilisation limit which, when consistently under, will trigger an alarm."
   default     = 20
 }
-variable "cpu_utilization_low_evaluation_periods" {
+variable "ecs_cpu_utilization_low_evaluation_periods" {
   type        = number
   description = "Number of periods to evaluate for the alarm"
   default     = 7 # 7 days
 }
-variable "cpu_utilization_low_period" {
+variable "ecs_cpu_utilization_low_period" {
   type        = number
   description = "Duration in seconds to evaluate for the alarm"
   default     = 86400 # 1 day
 }
 
-
-variable "percentage_memory_utilization_high_threshold" {
+# ECS high memory utilisation
+variable "ecs_memory_utilization_high_threshold_percentage" {
   type        = number
   description = "The % CPU utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
   default     = 90
 }
-variable "memory_utilization_high_evaluation_periods" {
+variable "ecs_memory_utilization_high_evaluation_periods" {
   type        = number
   description = "Number of periods to evaluate for the alarm"
   default     = 1
 }
-variable "memory_utilization_high_period" {
+variable "ecs_memory_utilization_high_period" {
   type        = number
   description = "Duration in seconds to evaluate for the alarm"
   default     = 300
 }
-variable "percentage_memory_utilization_low_threshold" {
+
+# ECS low memory utilisation
+variable "ecs_memory_utilization_low_threshold_percentage" {
   type        = number
   description = "The % CPU utilisation limit which, when consistently under, will trigger an alarm."
   default     = 8
 }
-variable "memory_utilization_low_evaluation_periods" {
+variable "ecs_memory_utilization_low_evaluation_periods" {
   type        = number
   description = "Number of periods to evaluate for the alarm"
   default     = 7 # 7 days
 }
-variable "memory_utilization_low_period" {
+variable "ecs_memory_utilization_low_period" {
   type        = number
   description = "Duration in seconds to evaluate for the alarm"
   default     = 86400 # 1 day
 }
+
 variable "memory_utilisation_duration_in_seconds_to_evaluate" {
   type        = number
   description = "Duration in seconds to evaluate for the alarm"
