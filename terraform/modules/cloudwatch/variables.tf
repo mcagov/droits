@@ -83,15 +83,17 @@ variable "enable_alerts" {
 variable "percentage_cpu_utilization_high_threshold" {
   type        = number
   description = "The % CPU utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
+  default     = 90
 }
 variable "cpu_utilization_high_evaluation_periods" {
   type        = number
   description = "Number of periods to evaluate for the alarm"
+  default     = 1
 }
-variable "cpu_utilization_low_statistic" {
-  type        = string
-  description = "Set the Statistic to check usage per period."
-  default     = "Maximum"
+variable "cpu_utilization_high_period" {
+  type        = number
+  description = "Duration in seconds to evaluate for the alarm"
+  default     = 300
 }
 variable "percentage_cpu_utilization_low_threshold" {
   type        = number
@@ -108,13 +110,37 @@ variable "cpu_utilization_low_period" {
   description = "Duration in seconds to evaluate for the alarm"
   default     = 86400 # 1 day
 }
+
+
 variable "percentage_memory_utilization_high_threshold" {
   type        = number
-  description = "The % memory utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
+  description = "The % CPU utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
+  default     = 90
 }
 variable "memory_utilization_high_evaluation_periods" {
   type        = number
   description = "Number of periods to evaluate for the alarm"
+  default     = 1
+}
+variable "memory_utilization_high_period" {
+  type        = number
+  description = "Duration in seconds to evaluate for the alarm"
+  default     = 300
+}
+variable "percentage_memory_utilization_low_threshold" {
+  type        = number
+  description = "The % CPU utilisation limit which, when consistently under, will trigger an alarm."
+  default     = 8
+}
+variable "memory_utilization_low_evaluation_periods" {
+  type        = number
+  description = "Number of periods to evaluate for the alarm"
+  default     = 7 # 7 days
+}
+variable "memory_utilization_low_period" {
+  type        = number
+  description = "Duration in seconds to evaluate for the alarm"
+  default     = 86400 # 1 day
 }
 variable "memory_utilisation_duration_in_seconds_to_evaluate" {
   type        = number

@@ -36,32 +36,6 @@ module "webapp-aws-alb-alarms" {
   actions_ok              = var.enable_alerts == true ? [var.webapp_lb_alerts_topic_arn] : []
 }
 
-module "backoffice_ecs_service_alarms" {
-  source = "cloudposse/ecs-cloudwatch-sns-alarms/aws"
-  # Cloud Posse recommends pinning every module to a specific version
-  version                            = "0.12.3"
-  namespace                          = "ecs"
-  stage                              = terraform.workspace
-  name                               = "droits-${var.ecs_backoffice_service_name}"
-  cluster_name                       = var.ecs_cluster_name
-  service_name                       = var.ecs_backoffice_service_name
-  cpu_utilization_high_threshold     = var.percentage_cpu_utilization_high_threshold
-  cpu_utilization_high_alarm_actions = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
-  cpu_utilization_high_ok_actions    = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
-  # Todo: We want to set up an AWS CloudWatch Alarm to be in alarm if the maximum ECS CPU usage does not exceed 20% during any of the the previous 7 days. ecs-cloudwatch-sns-alarms does not support setting the statistic to anything other than average. 
-  # Let's split this out to several aws_cloudwatch_metric_alarm
-  # cpu_utilization_low_statistic = var.cpu_utilization_low_statistic
-  # cpu_utilization_low_threshold = var.percentage_cpu_utilization_low_threshold
-  # cpu_utilization_low_evaluation_periods = var.cpu_utilization_low_evaluation_periods
-  # cpu_utilization_low_period = var.cpu_utilization_low_period
-  # Todo: We want to set up an AWS CloudWatch Alarm to be in alarm if the maximum ECS Memory usage does not exceed 10% during any of the the previous 7 days.
-  memory_utilization_high_threshold          = var.percentage_memory_utilization_high_threshold
-  memory_utilization_high_evaluation_periods = var.memory_utilization_high_evaluation_periods
-  memory_utilization_high_period             = var.memory_utilisation_duration_in_seconds_to_evaluate
-  memory_utilization_high_alarm_actions      = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
-  memory_utilization_high_ok_actions         = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
-}
-
 # Todo: We want to set up an AWS CloudWatch Alarm to be in alarm if the maximum ECS CPU usage does not exceed 20% during any of the the previous 7 days. ecs-cloudwatch-sns-alarms does not support setting the statistic to anything other than average.
 resource "aws_cloudwatch_metric_alarm" "backoffice_ecs_service_low_cpu_utilisation" {
   alarm_name          = "ecs-${terraform.workspace}-droits-${var.ecs_backoffice_service_name}-low-cpu-utilisation"
@@ -73,6 +47,65 @@ resource "aws_cloudwatch_metric_alarm" "backoffice_ecs_service_low_cpu_utilisati
   statistic           = "Maximum"
   threshold           = var.percentage_cpu_utilization_low_threshold
   alarm_description   = "Low CPU Utilisation"
+  alarm_actions       = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+  ok_actions          = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+
+  dimensions = {
+    ClusterName = var.ecs_cluster_name
+    ServiceName = var.ecs_backoffice_service_name
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "backoffice_ecs_service_high_cpu_utilisation" {
+  alarm_name          = "ecs-${terraform.workspace}-droits-${var.ecs_backoffice_service_name}-high-cpu-utilisation"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = var.cpu_utilization_high_evaluation_periods
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/ECS"
+  period              = var.cpu_utilization_high_period
+  statistic           = "Maximum"
+  threshold           = var.percentage_cpu_utilization_high_threshold
+  alarm_description   = "High CPU Utilisation"
+  alarm_actions       = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+  ok_actions          = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+
+  dimensions = {
+    ClusterName = var.ecs_cluster_name
+    ServiceName = var.ecs_backoffice_service_name
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "backoffice_ecs_service_low_memory_utilisation" {
+  alarm_name          = "ecs-${terraform.workspace}-droits-${var.ecs_backoffice_service_name}-low-memory-utilisation"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = var.memory_utilization_low_evaluation_periods
+  metric_name         = "MemoryUtilization"
+  namespace           = "AWS/ECS"
+  period              = var.memory_utilization_low_period
+  statistic           = "Maximum"
+  threshold           = var.percentage_memory_utilization_low_threshold
+  alarm_description   = "Low Memory Utilisation"
+  alarm_actions       = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+  ok_actions          = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
+
+  dimensions = {
+    ClusterName = var.ecs_cluster_name
+    ServiceName = var.ecs_backoffice_service_name
+  }
+}
+
+
+
+resource "aws_cloudwatch_metric_alarm" "backoffice_ecs_service_high_memory_utilisation" {
+  alarm_name          = "ecs-${terraform.workspace}-droits-${var.ecs_backoffice_service_name}-high-memory-utilisation"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = var.memory_utilization_high_evaluation_periods
+  metric_name         = "MemoryUtilization"
+  namespace           = "AWS/ECS"
+  period              = var.memory_utilization_high_period
+  statistic           = "Maximum"
+  threshold           = var.percentage_memory_utilization_high_threshold
+  alarm_description   = "High Memory Utilisation"
   alarm_actions       = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
   ok_actions          = var.enable_alerts == true ? [var.ecs_backoffice_alerts_topic_arn] : []
 
