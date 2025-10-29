@@ -63,6 +63,10 @@ jobs:
           TF_VAR_alert_pagerduty_integration_url: ${{ secrets.ALERT_PAGERDUTY_INTEGRATION_URL }}
           TF_VAR_backoffice_environment_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
           TF_VAR_webapp_environment_file: ${{ secrets.WEBAPP_ENV_FILE }}
-        run: terraform plan -input=false -var-file=tfvars/$ENVIRONMENT.tfvars
+        run: terraform plan -input=false -var-file=tfvars/$ENVIRONMENT.tfvars -out=plan
+  
         
       # Todo: Add apply stage with approval gate as we don't want to apply all the time, often a plan will suffice, or the plan will be wrong so we won't apply it.
+      
+      - name: Terraform apply
+        run: terraform apply "plan"
