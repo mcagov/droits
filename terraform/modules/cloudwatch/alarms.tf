@@ -10,6 +10,7 @@ module "aws-rds-alarms" {
   memory_swap_usage_too_high_threshold            = var.db_memory_swap_usage_too_high_threshold
   maximum_used_transaction_ids_too_high_threshold = var.db_maximum_used_transaction_ids_too_high_threshold
   evaluation_period                               = var.db_evaluation_periods
+  create_anomaly_alarm                            = false
   actions_alarm                                   = var.enable_alerts == true ? [var.rds_db_alerts_topic_arn] : []
   actions_ok                                      = var.enable_alerts == true ? [var.rds_db_alerts_topic_arn] : []
 }
