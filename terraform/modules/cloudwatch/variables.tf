@@ -101,7 +101,7 @@ variable "percentage_cpu_utilization_low_threshold" {
 variable "cpu_utilization_low_evaluation_periods" {
   type        = number
   description = "Number of periods to evaluate for the alarm"
-  default     = 604800 # 7 days
+  default     = 604800 - 1 # 7 days
 }
 variable "cpu_utilization_low_period" {
   type        = number
