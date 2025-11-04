@@ -38,6 +38,9 @@ const err = {
   href: '#property-bulk-file-error'
 };
 
+// Define the upload root directory
+const UPLOADS_ROOT = path.resolve('./uploads');
+
 export default function (app) {
   app.post(
     "/report/property-bulk",
@@ -52,7 +55,13 @@ export default function (app) {
           res.json({ error: err });
         } else {
           const fileRows = [];
-          csv.parseFile(req.file.path, {
+          // Check file path is within uploads directory before processing
+          const absFilePath = path.resolve(req.file.path);
+          if (!absFilePath.startsWith(UPLOADS_ROOT + path.sep)) {
+            err.text = "File path is invalid or outside of uploads directory.";
+            return res.json({ error: err });
+          }
+          csv.parseFile(absFilePath, {
             headers: true
           })
             .on('error', (errorMsg) => {
@@ -64,7 +73,11 @@ export default function (app) {
             })
             .on("end", function () {
               // Remove temp file
-              fs.unlinkSync(req.file.path);
+              fs.unlink(absFilePath, (err) => {
+                if (err) {
+                  console.log("Error deleting file:", err);
+                }
+              });
               // Run validation checks
               validateCsvData(fileRows).then(() => {
                 if (err.text) {

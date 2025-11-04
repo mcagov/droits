@@ -36,7 +36,7 @@
     "@babel/preset-env": "^7.23.9",
     "accessible-autocomplete": "^2.0.3",
     "autoprefixer": "^10.0.0",
-    "axios": "^1.12.2",
+    "axios": "^0.30.2",
     "babel-loader": "^8.1.0",
     "body-parser": "^1.19.0",
     "browser-sync": "^3.0.4",
@@ -83,7 +83,7 @@
     "style-loader": "^1.2.1",
     "terser-webpack-plugin": "^4.2.1",
     "uuid": "^8.3.2",
-    "validator": "^13.5.2"
+    "validator": "^13.15.20"
   },
   "devDependencies": {
     "@stryker-mutator/core": "^8.7.1",

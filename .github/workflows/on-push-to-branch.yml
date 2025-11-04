@@ -40,3 +40,17 @@ jobs:
       working-directory: webapp
     secrets:
       testing_webapp_env_file: ${{ secrets.TESTING_WEBAPP_ENV_FILE }}
+      
+  end_to_end_tests:
+    name: End-to-end tests
+    needs:
+      - terraform_lint
+      - test-webapp
+      - test-backoffice
+    uses: ./.github/workflows/_reusable-end-to-end-tests.yml
+    with:
+      image-tag: ${{ github.sha }}
+      environment: ci-test
+    secrets:
+      testing_webapp_env_file: ${{ secrets.TESTING_WEBAPP_ENV_FILE }}
+      testing_backoffice_env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}

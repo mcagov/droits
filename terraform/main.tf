@@ -146,34 +146,39 @@ module "webapp-ecs" {
 }
 
 module "backoffice-sns" {
-  source              = "./modules/sns"
-  resource_name       = "backoffice"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
+  source                          = "./modules/sns"
+  resource_name                   = "backoffice"
+  alert_email_address             = var.alert_email_address
+  aws_account_number              = var.aws_account_number
+  alert_pagerduty_integration_url = var.alert_pagerduty_integration_url
 }
 module "backoffice-lb-sns" {
-  source              = "./modules/sns"
-  resource_name       = "backoffice-lb"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
+  source                          = "./modules/sns"
+  resource_name                   = "backoffice-lb"
+  alert_email_address             = var.alert_email_address
+  aws_account_number              = var.aws_account_number
+  alert_pagerduty_integration_url = var.alert_pagerduty_integration_url
 }
 module "webapp-sns" {
-  source              = "./modules/sns"
-  resource_name       = "webapp"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
+  source                          = "./modules/sns"
+  resource_name                   = "webapp"
+  alert_email_address             = var.alert_email_address
+  aws_account_number              = var.aws_account_number
+  alert_pagerduty_integration_url = var.alert_pagerduty_integration_url
 }
 module "webapp-lb-sns" {
-  source              = "./modules/sns"
-  resource_name       = "webapp-lb"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
+  source                          = "./modules/sns"
+  resource_name                   = "webapp-lb"
+  alert_email_address             = var.alert_email_address
+  aws_account_number              = var.aws_account_number
+  alert_pagerduty_integration_url = var.alert_pagerduty_integration_url
 }
 module "db-sns" {
-  source              = "./modules/sns"
-  resource_name       = "db"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
+  source                          = "./modules/sns"
+  resource_name                   = "db"
+  alert_email_address             = var.alert_email_address
+  aws_account_number              = var.aws_account_number
+  alert_pagerduty_integration_url = var.alert_pagerduty_integration_url
 }
 
 module "elasticache" {
