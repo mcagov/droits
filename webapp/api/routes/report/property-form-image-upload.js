@@ -53,13 +53,13 @@ export default function (app) {
               err.text = multerError;
             }
 
-            res.json({ error: err });
+            return res.json({ error: err });
           } else if (!req.file) {
               err.text = 'Image upload failed. No file provided.';
               return res.status(400).json({ error: err });
           } else if (req.body.image === 'undefined') {
             err.text = 'Select an image';
-            res.json({ error: err });
+            return res.json({ error: err });
           } else {
             /**
              * Quick test for logic to upload image to azure
@@ -90,7 +90,7 @@ export default function (app) {
             req.session.data.property[id].image = req.file.filename;
             req.session.data.property[id].originalFilename = req.file.originalname;
             req.session.save();
-            res.json(imageProps);
+            return res.json(imageProps);
           }
         });
       }
