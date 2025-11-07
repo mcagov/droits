@@ -2,19 +2,14 @@ import request from 'supertest';
 import app from '../../../server';
 import fs from "fs";
 
-
 describe('Property Image Upload Routes', () => {
-    let agent;
-    beforeEach(() => {
-        agent = request.agent(app);
-    })
-    afterAll(async () => {
-        try {
-            await fs.rm('./uploads', {recursive: true});
-        } catch (err) {
-            console.error('Error cleaning up test upload directory:', err);
+    afterAll(() => {
+        if (fs.existsSync('uploads')) {
+            fs.rmSync('uploads', {recursive: true, force: true});
         }
-    })
+    });
+    
+    const agent = request.agent(app);
     
     describe('POST /report/property-form-image-upload/:prop_id', () => {
         const propId = 'test-property-123';
