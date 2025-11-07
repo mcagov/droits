@@ -15,7 +15,6 @@ describe('POST /bulk-upload-file', () => {
     });
 
     afterAll(() => {
-        fs.unlinkSync(testFilePath);
         if (fs.existsSync(testFilePath)) {
             fs.unlinkSync(testFilePath);
         }

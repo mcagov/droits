@@ -52,7 +52,7 @@ export default function (app) {
           } else if (multerError) {
             err.text = multerError;
           }
-          res.json({ error: err });
+          return res.json({ error: err });
         } else {
           const fileRows = [];
           // Check file path is within uploads directory before processing
@@ -109,7 +109,7 @@ export default function (app) {
                     item['value-known'] = 'yes';
                   } else {
                     item['value-known'] = 'no';
-                  };
+                  }
 
                   if (obj['Storage address line 1'] && obj['Postcode']) {
                     item['storage-address'] = 'custom';
@@ -130,7 +130,7 @@ export default function (app) {
 
                 req.session.save();
 
-                res.json({ status: 200 });
+                return res.json({ status: 200 });
               });
             })
         }
@@ -139,7 +139,7 @@ export default function (app) {
   );
 
   const validateCsvData = (rows) =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       if (err.text) {
         err.text = null;
       }
@@ -148,7 +148,7 @@ export default function (app) {
         const postcodeRegex = /[A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}/gi;
         for (const col in currentRow) {
           // 'Total value' is not a mandatory form field so we can ignore it
-          if (col !== 'Total value' & currentRow[col] === '') {
+          if (col !== 'Total value' && currentRow[col] === '') {
             err.text = "The selected file contains some empty values. Please check that you have entered all of the required information for each item of wreck material.";
             resolve();
           }
