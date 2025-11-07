@@ -43,14 +43,14 @@ describe('When config.SERVICE_UNAVAILABLE is true', () => {
             }
         });
     
-        // it('should return Service Unavailable in the response body', async () => {
-        //     const res = await request(app).get(route);
-        //     try {
-        //         expect(res.text).toMatch(/Service Unavailable/gi);
-        //     } catch (err) {
-        //         throw new Error(`${err.matcherResult.message}\nRoute: ${route}`)
-        //     }
-        // });
+        it('should return Service Unavailable in the response body', async () => {
+            const res = await request(app).get(route);
+            try {
+                expect(res.text).toMatch(/Service Unavailable/gi);
+            } catch (err) {
+                throw new Error(`${err.matcherResult.message}\nRoute: ${route}`)
+            }
+        });
     
         it('should return the ROW contact email in the response body', async () => {
             const res = await request(app).get(route);

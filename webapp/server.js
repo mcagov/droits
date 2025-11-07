@@ -179,7 +179,6 @@ if (config.SERVICE_UNAVAILABLE) {
       res.status(404).render('404');
     } else {
       res.status(err.status || 500);
-      res.render('service-unavailable.html');
     }
   });
 }
