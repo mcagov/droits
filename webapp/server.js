@@ -67,7 +67,7 @@ if (config.SERVICE_UNAVAILABLE) {
   
   app.all('*', (req, res, next) => {
     console.log('Service Unavailable.');
-    res.status('503');
+    res.status(503);
     res.render('service-unavailable.html');
   });
 } else {
@@ -92,7 +92,7 @@ if (config.SERVICE_UNAVAILABLE) {
     {
       autoescape: false,
       express: app,
-      watch: env === 'development' ? true : false,
+      watch: env === 'development',
     }
   );
   addCheckedFunction(nunjucksAppEnv);
