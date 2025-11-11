@@ -52,25 +52,11 @@ export default function (app) {
             } else if (multerError) {
               err.text = multerError;
             }
-
-            res.json({ error: err });
-          } else if (!req.file) {
+            return res.status(400).json({ error: err });
+          } else if (!req.file || req.body.image === 'undefined' ) {
               err.text = 'Image upload failed. No file provided.';
               return res.status(400).json({ error: err });
-          } else if (req.body.image === 'undefined') {
-            err.text = 'Select an image';
-            res.json({ error: err });
           } else {
-            /**
-             * Quick test for logic to upload image to azure
-             * and delete temp image when complete
-             * This will be run on the check-your-answers page
-             */
-
-            // const data = fs.createReadStream(
-            //   `${path.resolve(__dirname + '/../../uploads/')}/${req.file.filename}`
-            // );
-            // azureUpload(data, req.file.filename);
             const id = req.params.prop_id;
             const imageProps = {
               uploadedFilename: req.file.filename,
@@ -90,7 +76,7 @@ export default function (app) {
             req.session.data.property[id].image = req.file.filename;
             req.session.data.property[id].originalFilename = req.file.originalname;
             req.session.save();
-            res.json(imageProps);
+            return res.json(imageProps);
           }
         });
       }
@@ -142,6 +128,9 @@ export default function (app) {
             // Images will upload at different speeds, so here we make sure the image
             // key in the wreck item object is stored correctly in session data
             for (const obj of imageUploads) {
+              if (!req.session.data.property[obj.id]) {
+                req.session.data.property[obj.id] = {};
+              }
               req.session.data.property[obj.id].image = obj.image;
               req.session.data.property[obj.id].originalFilename = obj.originalFilename;
             }
