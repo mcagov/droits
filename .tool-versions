@@ -1,3 +1,4 @@
 dotnet 8.0.409
 nodejs 18.17.0
 python 3.10.17 # Currently needs to stay on this version to maintain compatibility with Gyp
+terraform 1.5.7
