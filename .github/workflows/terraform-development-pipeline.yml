@@ -6,11 +6,11 @@ permissions:
   id-token: write
   
 on:
-  # Todo: Remove branch trigger
+  # Todo: Add branch trigger
   # Todo: Had to add to environment protection rule. Need to think about this.
   push:
     branches:
-      - adjust-alarms-parameters
+      - no_branch
   workflow_dispatch:
 
 defaults:
