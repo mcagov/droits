@@ -4,10 +4,6 @@ variable "ecs_cluster_name" {
 variable "ecs_backoffice_service_name" {
   type = string
 }
-variable "ecs_backofice_service_minimum_task_count" {
-  type        = number
-  description = "Minimum number of expected tasks to be running for the backoffice ECS service"
-}
 variable "ecs_backoffice_alerts_topic_arn" {
   type        = string
   description = "The ARN of the backoffice_alerts SNS topic"
@@ -50,6 +46,16 @@ variable "backoffice_lb_alerts_topic_arn" {
   type        = string
   description = "The ARN of the backoffice_lb_alerts SNS topic"
 }
+variable "ecs_backoffice_memory_utilization_low_threshold_percentage" {
+  type        = number
+  description = "The % CPU utilisation limit which, when consistently under, will trigger an alarm."
+  default     = 6
+}
+variable "ecs_webapp_memory_utilization_low_threshold_percentage" {
+  type        = number
+  description = "The % CPU utilisation limit which, when consistently under, will trigger an alarm."
+  default     = 8
+}
 variable "webapp_load_balancer" {
   type = string
 }
@@ -80,29 +86,10 @@ variable "enable_alerts" {
   type        = bool
   description = "When enabled CloudWatch alarm events are sent to the Alerts SNS Topic"
 }
-variable "percentage_cpu_utilization_high_threshold" {
+variable "db_cpu_utilization_high_threshold_percentage" {
   type        = number
   description = "The % CPU utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
-}
-variable "percentage_memory_utilization_high_threshold" {
-  type        = number
-  description = "The % memory utilisation limit which, when passed, will trigger an alarm. This will be higher for dev and lower for production."
-}
-variable "cpu_utilization_high_evaluation_periods" {
-  type        = number
-  description = "Number of periods to evaluate for the alarm"
-}
-variable "memory_utilization_high_evaluation_periods" {
-  type        = number
-  description = "Number of periods to evaluate for the alarm"
-}
-variable "memory_utilisation_duration_in_seconds_to_evaluate" {
-  type        = number
-  description = "Duration in seconds to evaluate for the alarm"
-}
-variable "cpu_utilisation_duration_in_seconds_to_evaluate" {
-  type        = number
-  description = "Duration in seconds to evaluate for the alarm"
+  default     = 90
 }
 variable "db_cpu_credit_balance_too_low_threshold" {
   type        = string

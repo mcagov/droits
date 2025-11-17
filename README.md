@@ -38,6 +38,17 @@ unsure.
 
 To install the dependencies, follow [this guide](/docs/dependencies-setup.md)
 
+### Pre-commit hooks
+
+Currently, they just run `terraform fmt` on files staged for commit. This should save you waiting for a pipeline to tell you it needs doing.
+
+Enable the pre-commit hooks by running...
+
+```shell
+npm install
+npm run prepare
+```
+
 ### Getting started
 
 To run the application, you'll need the following configuration files:
