@@ -75,7 +75,7 @@
     "postcss-loader": "^8.1.1",
     "postcss-preset-env": "^10.4.0",
     "precss": "^4.0.0",
-    "prettier": "^2.2.1",
+    "prettier": "^3.6.2",
     "rate-limiter-flexible": "^7.2.0",
     "redis": "^3.0.2",
     "sass": "^1.91.0",
