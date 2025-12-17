@@ -1,6 +1,6 @@
+node_modules
 
 ##Webapp
-*webapp/node_modules
 *webapp/dist/**/*
 *webapp/.DS_Store
 *webapp/config/keys_dev.js
@@ -15,7 +15,6 @@ backoffice/src/appsettings.*
 backoffice/src/wwwroot/dist/
 backoffice/src/wwwroot/scss/site.css.map
 backoffice/src/wwwroot/scss/site.css
-backoffice/src/node_modules
 
 backoffice/tests/bin/
 backoffice/tests/obj/
@@ -40,8 +39,6 @@ scripts/config/set_secrets.sh
 scripts/access-migration/data
 scripts/access-migration/results
 
-
-
 ##Github
 .github/.vscode/
 
@@ -59,6 +56,3 @@ StrykerOutput
 
 # Test coverage
 *coverage*
-
-# e2e test
-*tests/node_modules

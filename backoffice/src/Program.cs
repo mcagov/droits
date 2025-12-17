@@ -1,10 +1,6 @@
-
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Amazon.Runtime;
 using Amazon.S3;
 using Droits.Clients;
-using Droits.Converters;
 using Droits.Data;
 using Droits.Data.Mappers.Submission;
 using Droits.Data.Mappers.Imports;
@@ -53,13 +49,7 @@ builder.Services.AddControllersWithViews(options =>
 
         options.Filters.Add(new AuthorizeFilter(policy));
     })
-    .AddRazorRuntimeCompilation().AddMicrosoftIdentityUI().AddSessionStateTempDataProvider()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, allowIntegerValues: false));
-        options.JsonSerializerOptions.Converters.Add(new FlexibleBooleanConverter());
-        options.JsonSerializerOptions.Converters.Add(new FlexibleNullableBooleanConverter());
-    });
+    .AddRazorRuntimeCompilation().AddMicrosoftIdentityUI().AddSessionStateTempDataProvider();
     
 
 var awsOptions = builder.Configuration.GetAWSOptions();

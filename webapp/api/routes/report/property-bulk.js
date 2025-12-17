@@ -38,6 +38,9 @@ const err = {
   href: '#property-bulk-file-error'
 };
 
+// Define the upload root directory
+const UPLOADS_ROOT = path.resolve('./uploads');
+
 export default function (app) {
   app.post(
     "/report/property-bulk",
@@ -49,10 +52,16 @@ export default function (app) {
           } else if (multerError) {
             err.text = multerError;
           }
-          res.json({ error: err });
+          return res.json({ error: err });
         } else {
           const fileRows = [];
-          csv.parseFile(req.file.path, {
+          // Check file path is within uploads directory before processing
+          const absFilePath = path.resolve(req.file.path);
+          if (!absFilePath.startsWith(UPLOADS_ROOT + path.sep)) {
+            err.text = "File path is invalid or outside of uploads directory.";
+            return res.json({ error: err });
+          }
+          csv.parseFile(absFilePath, {
             headers: true
           })
             .on('error', (errorMsg) => {
@@ -64,7 +73,11 @@ export default function (app) {
             })
             .on("end", function () {
               // Remove temp file
-              fs.unlinkSync(req.file.path);
+              fs.unlink(absFilePath, (err) => {
+                if (err) {
+                  console.log("Error deleting file:", err);
+                }
+              });
               // Run validation checks
               validateCsvData(fileRows).then(() => {
                 if (err.text) {
@@ -96,7 +109,7 @@ export default function (app) {
                     item['value-known'] = 'yes';
                   } else {
                     item['value-known'] = 'no';
-                  };
+                  }
 
                   if (obj['Storage address line 1'] && obj['Postcode']) {
                     item['storage-address'] = 'custom';
@@ -117,7 +130,7 @@ export default function (app) {
 
                 req.session.save();
 
-                res.json({ status: 200 });
+                return res.json({ status: 200 });
               });
             })
         }
@@ -126,7 +139,7 @@ export default function (app) {
   );
 
   const validateCsvData = (rows) =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       if (err.text) {
         err.text = null;
       }
@@ -135,7 +148,7 @@ export default function (app) {
         const postcodeRegex = /[A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}/gi;
         for (const col in currentRow) {
           // 'Total value' is not a mandatory form field so we can ignore it
-          if (col !== 'Total value' & currentRow[col] === '') {
+          if (col !== 'Total value' && currentRow[col] === '') {
             err.text = "The selected file contains some empty values. Please check that you have entered all of the required information for each item of wreck material.";
             resolve();
           }

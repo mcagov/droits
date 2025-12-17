@@ -50,7 +50,7 @@
     </li>
 </ul>
 
-<form id="droitMultiPartForm" class="form-horizontal js-droit-form" asp-action="Save" enctype="multipart/form-data" method="POST">
+<form class="form-horizontal js-droit-form" asp-action="Save" enctype="multipart/form-data" method="POST">
 @Html.HiddenFor(m => m.Id)
 
 <div class="tab-content mt-4" id="droitForm">
@@ -320,78 +320,5 @@
         </div>
     </div>
 </div>
-
-<!-- Loading Overlay -->
-@* TODO: Behind a feature flag.*@
-@* <div id="loadingOverlay" style="display:none; *@
-@* position:fixed; top:0; left:0; width:100%; height:100%; *@
-@* background:rgba(0,0,0,0.5); z-index:9999; *@
-@* color:white; text-align:center; padding-top:20%;"> *@
-@*     <div class="spinner-border text-light" role="status"></div> *@
-@*     <div style="margin-top:15px;">Saving... please wait</div> *@
-@* </div> *@
 </form>
-
-@* TODO: Need to introduce saving as JSON + multipart/form-data behind a feature flag.*@
-@* @if (Model.IsSaveAsJsonEnabled) *@
-@*     { *@
-@*         @section Scripts { *@
-@*             <script> *@
-@*                 /** *@
-@*                  * Helper function to convert form to JSON. *@
-@*                  */ *@
-@*                 const formToJSON = (obj, path, value) => { *@
-@*                     let current = obj; *@
-@*                     const lastKey = path.pop(); *@
-@* *@
-@*                     path.forEach((key, i) => { *@
-@*                         const isArray = path[i + 1] === '' || !isNaN(parseInt(path[i + 1], 10)); *@
-@*                         current = current[key] = current[key] ?? (isArray ? [] : {}); *@
-@*                     }); *@
-@* *@
-@*                     if (lastKey === '') { *@
-@*                         if (!Array.isArray(current)) current = []; *@
-@*                         current.push(value); *@
-@*                     } else if (current[lastKey]) { *@
-@*                         current[lastKey] = [].concat(current[lastKey], value); *@
-@*                     } else { *@
-@*                         current[lastKey] = value; *@
-@*                     } *@
-@*                 }; *@
-@*                  *@
-@*                 document.getElementById('droitMultiPartForm').addEventListener('submit', function (e) { *@
-@*                     e.preventDefault(); *@
-@*                     const loadingOverlay = document.getElementById('loadingOverlay'); *@
-@*                     loadingOverlay.style.display = 'block'; *@
-@*                     const form = e.target; *@
-@*                     const formData = new FormData(form); *@
-@*                     const data = {}; *@
-@*                      *@
-@*                     for (const [key, value] of formData) { *@
-@*                         if (value === '' || value == null) continue; *@
-@*                         const path = key.replace(/\[/g, '.').replace(/]/g, '').split('.'); *@
-@*                         formToJSON(data, path, value); *@
-@*                     } *@
-@*                      *@
-@*                     fetch("/Droit/Save", {  *@
-@*                         method: "POST", *@
-@*                         headers: { "Content-Type": "application/json" }, *@
-@*                         body: JSON.stringify(data) *@
-@*                     }) *@
-@*                     .then(response => { *@
-@*                         return response.json() *@
-@*                     }) *@
-@*                     .then(result => { *@
-@*                         if (result.redirectUrl) { *@
-@*                             window.location.href = result.redirectUrl; *@
-@*                         } *@
-@*                     }).catch( *@
-@*                         error => { *@
-@*                             console.error('Error saving droit:', error); *@
-@*                         } *@
-@*                     ); *@
-@*                 }); *@
-@*         </script> *@
-@*     } *@
-@* } *@
 

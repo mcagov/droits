@@ -19,6 +19,6 @@ export default function (app) {
     
     req.session.data.property[id].image = '';
     req.session.save();
-    res.json();
+    return res.json();
   });
 }
