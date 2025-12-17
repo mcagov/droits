@@ -152,7 +152,7 @@ describe('Passport Authentication Middleware Tests', () => {
 
         middleware(req, res, next);
 
-        expect(req.user).toEqual({ id: 1, username: 'testuser' }); // Verify user object is set
+        expect(req.user).toEqual({ id: 1, username: 'testuser' });
         expect(next).toHaveBeenCalled();
         expect(res.status).not.toHaveBeenCalled();
     });
