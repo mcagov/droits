@@ -128,7 +128,7 @@ describe('Login Integration Tests', () => {
         
         const response = await request(app).get('/login');
         expect(response.status).toBe(302);
-        expect(response.text).toContain('https://testb2cmcga.b2clogin.com/TESTB2CMCGA.onmicrosoft.com/oauth2/v2.0/logout?p=B2C_1_login&post_logout_redirect_uri=http://localhost:3000/error');
+        expect(response.headers.location).toBe('https://testb2cmcga.b2clogin.com/TESTB2CMCGA.onmicrosoft.com/oauth2/v2.0/logout?p=B2C_1_login&post_logout_redirect_uri=http://localhost:3000/error');
     });
 });
 
