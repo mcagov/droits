@@ -4,10 +4,8 @@ import CustomParseFormat from "dayjs/plugin/customParseFormat";
 
 dayjs.extend(CustomParseFormat);
 import ensureAuthenticated from './ensureAuthenticated';
-import { assignReportStatus } from '../../../utilities';
 import {assignSalvorInfoReportStatus} from "../../../utilities/assignReportStatus";
-import res from "express/lib/response";
-import req from "express/lib/request";
+
 require("dotenv-json")();
 
 const url = `${process.env.API_ENDPOINT}/api/salvor`

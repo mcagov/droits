@@ -3,7 +3,7 @@ jest.mock('passport', () => ({
 
     authenticate: jest.fn((strategy, options) => (req, res, next) => {
         // Simulate a successful authentication for 'local' strategy
-        if (strategy === 'local') {
+        if (strategy === 'azuread-openidconnect') {
             req.user = { id: 1, username: 'testuser' }; // Simulate a user object
             return next();
         }

@@ -21,6 +21,7 @@ jobs:
       image_tag: ${{ github.sha }}
     secrets:
       alerts_email: ${{ secrets.ALERTS_EMAIL }}
+      alert_pagerduty_integration_url: ${{ secrets.ALERT_PAGERDUTY_INTEGRATION_URL }}
       aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
       aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
       backoffice_env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
