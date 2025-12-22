@@ -70,7 +70,7 @@ jobs:
           browser: chrome
 #         wait-on: "http://localhost:5000/healthz"
           
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: cypress-screenshots
