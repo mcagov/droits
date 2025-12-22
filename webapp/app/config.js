@@ -12,6 +12,9 @@ module.exports = {
   // Force HTTP to redirect to HTTPS on production
   USE_HTTPS: 'false',
 
+  // Feature Flag to use MSAL Node
+  USE_MSAL: false,
+
   // Cookie warning - update link to service's cookie page.
   COOKIE_TEXT:
     'GOV.UK uses cookies to make the site simpler. <a href="#">Find out more about cookies</a>',
