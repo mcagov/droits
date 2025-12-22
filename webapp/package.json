@@ -48,7 +48,7 @@
     "copy-webpack-plugin": "^6.1.0",
     "cors": "^2.8.5",
     "css-loader": "^4.3.0",
-    "dayjs": "^1.10.4",
+    "dayjs": "^1.11.19",
     "dotenv-json": "^1.0.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
