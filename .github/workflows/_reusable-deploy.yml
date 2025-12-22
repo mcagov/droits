@@ -70,7 +70,7 @@ jobs:
     env:
       TF_WORKSPACE: ${{ inputs.terraform_workspace }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ inputs.image_tag }}
       - name: Configure AWS credentials
