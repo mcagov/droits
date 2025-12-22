@@ -22,7 +22,7 @@ export default function (app) {
             })(req, res, next);
         },
         function (req, res) {
-            if (!req.session?.isAuthenticated || !req.session?.account) {
+            if (!req.session.isAuthenticated || !req.session.account) {
                 const logoutUrl = `${process.env.B2C_BASE_URL}/oauth2/v2.0/logout?p=B2C_1_login&post_logout_redirect_uri=${process.env.ENV_BASE_URL}/error`;
                 return res.redirect(logoutUrl);
             }
