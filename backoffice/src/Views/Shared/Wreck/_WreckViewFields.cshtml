@@ -1,4 +1,9 @@
+@using System.Net
 @model WreckView
+
+@{
+    Model.ConstructionDetails = WebUtility.HtmlDecode(Model.ConstructionDetails);
+}
 
 <div class="form-group row m-1">
     <div class="col-md-3">
