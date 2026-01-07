@@ -1,4 +1,9 @@
+@using System.Net
 @model WreckForm
+
+@{
+    Model.ConstructionDetails = WebUtility.HtmlDecode(Model.ConstructionDetails);
+}
 
 <div class="form-group">
     @Html.LabelFor(m => m.Name, new { @class = "col-form-label" })

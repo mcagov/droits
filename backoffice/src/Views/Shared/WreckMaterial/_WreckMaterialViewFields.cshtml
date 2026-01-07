@@ -1,4 +1,9 @@
+@using System.Net
 @model WreckMaterialView
+
+@{
+    Model.Description = WebUtility.HtmlDecode(Model.Description);
+}
 
 <div class="col mb-2">
     <div class="card">
@@ -22,8 +27,7 @@
                     @Html.DisplayFor(m => m.Description)
                 </div>
             </div>
-
-
+            
             <div class="form-group row mt-2">
                 <div class="col-md-4">
                     @Html.LabelFor(m => m.Quantity, new { @class = "font-weight-bold" })
