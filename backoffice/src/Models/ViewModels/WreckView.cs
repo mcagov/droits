@@ -59,7 +59,7 @@ public class WreckView : BaseEntityView
     public WreckType? WreckType { get; set; }
 
     [DisplayName("Construction Details")]
-    public string? ConstructionDetails { get; } = string.Empty;
+    public string? ConstructionDetails { get; set; } = string.Empty;
 
     [DisplayName("Year Constructed")]
     public int? YearConstructed { get; }
