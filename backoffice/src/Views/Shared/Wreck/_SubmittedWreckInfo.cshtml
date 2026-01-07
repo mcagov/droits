@@ -1,9 +1,10 @@
+@using System.Net
 @model string
 
 @{
     dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(@Model) ?? throw new InvalidOperationException();
 
-    string GetValueOrDefault(string value) => string.IsNullOrEmpty(value) ? "---" : value;
+    string GetValueOrDefault(string value) => string.IsNullOrEmpty(value) ? "---" : WebUtility.HtmlDecode(value);
 }
 <div class="mb-2">
     <p class="font-weight-bold">Information submitted by the Salvor:</p>

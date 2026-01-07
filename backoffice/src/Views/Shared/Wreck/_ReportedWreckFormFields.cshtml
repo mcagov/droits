@@ -1,7 +1,8 @@
+@using System.Net
 @model DroitForm
 
 @{
-    string GetValueOrDefault(string? value) => string.IsNullOrEmpty(value) ? "---" : value;
+    string GetValueOrDefault(string? value) => string.IsNullOrEmpty(value) ? "---" : WebUtility.HtmlDecode(value);
 }
 <h5>Reported Wreck</h5>
 

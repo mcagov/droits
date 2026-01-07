@@ -51,7 +51,7 @@ public class WreckMaterialView : BaseEntityView
     public AddressView StorageAddress { get; } = new();
 
     [DataType(DataType.MultilineText)]
-    public string? Description { get; } = string.Empty;
+    public string? Description { get; set; } = string.Empty;
     public int Quantity { get; } = 1;
     [Display(Name = "Salvor Valuation")]
     public double? SalvorValuation { get; } = 0;
