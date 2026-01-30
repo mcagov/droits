@@ -1,7 +1,7 @@
 // global styles for <a> and <p> tags
 $govuk-global-styles: true;
 
-@import '~govuk-frontend/govuk/all';
+@import '~govuk-frontend/dist/govuk/all';
 @import 'accessible-autocomplete';
 
 //Utilities
