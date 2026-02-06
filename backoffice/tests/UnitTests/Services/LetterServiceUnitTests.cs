@@ -31,11 +31,25 @@ namespace Droits.Tests.UnitTests.Services
                 _mockAccountService.Object);
         }
 
-        [Fact]
-        public async Task GetTemplateBodyAsync_NoDroit_ReturnsOriginalContent()
+        [Theory]
+        [InlineData(LetterType.ReportConfirmed)]
+        [InlineData(LetterType.LloydsOfLondonNotification)]
+        [InlineData(LetterType.ClosureOwnerNotFound)]
+        [InlineData(LetterType.ClosureOwnerWaivesRights)]
+        [InlineData(LetterType.ClosureDredgeFindOwnerNotFound)]
+        [InlineData(LetterType.ClosureDredgeFindOwnerWaivesRights)]
+        [InlineData(LetterType.ClosureWessexArchaeology)]
+        [InlineData(LetterType.ClosureCustom)]
+        [InlineData(LetterType.DredgeFindEod)]
+        [InlineData(LetterType.CustomLetter)]
+        [InlineData(LetterType.CustomEmail)]
+        [InlineData(LetterType.ClosureMuseumLetterOwnerFound)]
+        [InlineData(LetterType.ClosureMuseumLetterOwnerNotFound)]
+        [InlineData(LetterType.ClosureOwnerFoundMuseumDonationAgreed)]
+        [InlineData(LetterType.ClosureOwnerNotFoundMuseumDonationAgreed)]
+        public async Task GetTemplateBodyAsync_NoDroit_ReturnsOriginalContent(LetterType letterType)
         {
             // Given
-            const LetterType letterType = LetterType.ReportAcknowledged;
             var templatePath = Path.Combine(Environment.CurrentDirectory, "Views/LetterTemplates", $"{letterType.ToString()}.Body.txt");
             const string templateContent = "This is a test.";
             await File.WriteAllTextAsync(templatePath, templateContent);
@@ -47,11 +61,25 @@ namespace Droits.Tests.UnitTests.Services
             Assert.Equal(templateContent, result);
         }
 
-        [Fact]
-        public async Task GetTemplateSubjectAsync_WithDroit_ReturnsSubstitutedContent()
+        [Theory]
+        [InlineData(LetterType.ReportConfirmed)]
+        [InlineData(LetterType.LloydsOfLondonNotification)]
+        [InlineData(LetterType.ClosureOwnerNotFound)]
+        [InlineData(LetterType.ClosureOwnerWaivesRights)]
+        [InlineData(LetterType.ClosureDredgeFindOwnerNotFound)]
+        [InlineData(LetterType.ClosureDredgeFindOwnerWaivesRights)]
+        [InlineData(LetterType.ClosureWessexArchaeology)]
+        [InlineData(LetterType.ClosureCustom)]
+        [InlineData(LetterType.DredgeFindEod)]
+        [InlineData(LetterType.CustomLetter)]
+        [InlineData(LetterType.CustomEmail)]
+        [InlineData(LetterType.ClosureMuseumLetterOwnerFound)]
+        [InlineData(LetterType.ClosureMuseumLetterOwnerNotFound)]
+        [InlineData(LetterType.ClosureOwnerFoundMuseumDonationAgreed)]
+        [InlineData(LetterType.ClosureOwnerNotFoundMuseumDonationAgreed)]
+        public async Task GetTemplateSubjectAsync_WithDroit_ReturnsSubstitutedContent(LetterType letterType)
         {
             // Given
-            const LetterType letterType = LetterType.ReportConfirmed;
             var droit = new Droit();
             _mockDroitService.Setup(d => d.GetDroitAsync(It.IsAny<Guid>())).ReturnsAsync(droit);
             var templatePath = Path.Combine(Environment.CurrentDirectory, "Views/LetterTemplates", $"{letterType.ToString()}.Subject.txt");
@@ -64,6 +92,38 @@ namespace Droits.Tests.UnitTests.Services
             // Then
             Assert.Contains(droit.Reference, result);
             Assert.DoesNotContain("((reference))", result);
+        }
+        
+        [Fact]
+        public void Validate_TemplateType_Exists_For_Every_LetterType()
+        {
+            // Given
+            var expectedTypes = new[]
+            {
+                LetterType.ReportAcknowledged,
+                LetterType.ReportCompleteInformation,
+                LetterType.ReportConfirmed,
+                LetterType.LloydsOfLondonNotification,
+                LetterType.ClosureOwnerNotFound,
+                LetterType.ClosureOwnerWaivesRights,
+                LetterType.ClosureDredgeFindOwnerNotFound,
+                LetterType.ClosureDredgeFindOwnerWaivesRights,
+                LetterType.ClosureWessexArchaeology,
+                LetterType.ClosureCustom,
+                LetterType.DredgeFindEod,
+                LetterType.CustomLetter,
+                LetterType.CustomEmail,
+                LetterType.ClosureMuseumLetterOwnerFound,
+                LetterType.ClosureMuseumLetterOwnerNotFound,
+                LetterType.ClosureOwnerFoundMuseumDonationAgreed,
+                LetterType.ClosureOwnerNotFoundMuseumDonationAgreed
+            };
+            
+            // When
+            var actualLetterTypes = Enum.GetValues(typeof(LetterType)).Cast<LetterType>();
+
+            // Then
+            Assert.Equal(expectedTypes, actualLetterTypes);
         }
         
         
@@ -102,5 +162,6 @@ namespace Droits.Tests.UnitTests.Services
             _mockRepo.Verify(r => r.UpdateAsync(letter, true), Times.Once);
             Assert.NotNull(result);
         }
+        
     }
 }

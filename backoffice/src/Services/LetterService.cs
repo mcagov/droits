@@ -219,14 +219,14 @@ public class LetterService : ILetterService
             letter.QualityApprovedUserId = currentUserId;
         }
 
-        if ( letter.DroitId != default )
+        if ( letter.DroitId != Guid.Empty )
         {
             letter = await SubstituteLetterContentWithParamsAsync(letter);
         }
 
         try
         {
-            if ( form.Id == default )
+            if ( form.Id == Guid.Empty )
             {
                 letter = await _repo.AddAsync(letter);
             }
