@@ -3,6 +3,7 @@
 
 @{
     Model.ReportedWreckConstructionDetails = WebUtility.HtmlDecode(Model.ReportedWreckConstructionDetails);
+    Model.LocationDescription = WebUtility.HtmlDecode(Model.LocationDescription);
     string GetValueOrDefault(string? value) => string.IsNullOrEmpty(value) ? "---" : WebUtility.HtmlDecode(value);
 }
 <h5>Reported Wreck</h5>
