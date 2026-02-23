@@ -45,5 +45,17 @@ public enum LetterType
     CustomLetter,
     
     [Display(Name = "Custom Email")]
-    CustomEmail
+    CustomEmail,
+    
+    [Display(Name = "Closure Museum Letter Owner Found")]
+    ClosureMuseumLetterOwnerFound,
+    
+    [Display(Name = "Closure Museum Letter Owner Not Found")]
+    ClosureMuseumLetterOwnerNotFound,
+    
+    [Display(Name = "Closure Owner Found Museum Donation Agreed")]
+    ClosureOwnerFoundMuseumDonationAgreed,
+    
+    [Display(Name = "Closure Owner Not Found But Museum Donation")]
+    ClosureOwnerNotFoundButMuseumDonation
 }

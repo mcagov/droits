@@ -45,7 +45,7 @@ namespace Droits.Tests.IntegrationTests.Services
             // Given
             var sampleLetter = new Letter
             {
-                Id = default,
+                Id = Guid.Empty,
                 Subject = "Sample Subject",
                 Body = "Sample Body",
                 Recipient = "sample@example.com",
@@ -80,14 +80,55 @@ namespace Droits.Tests.IntegrationTests.Services
             // Then
             Assert.NotNull(result);
         }
-
-        [Fact]
-        public async Task GetTemplateBodyAsync_WithDroit_ReturnsSubstitutedContent()
+        
+        [Theory]
+        [InlineData(LetterType.ReportConfirmed)]
+        [InlineData(LetterType.LloydsOfLondonNotification)]
+        [InlineData(LetterType.ClosureOwnerNotFound)]
+        [InlineData(LetterType.ClosureOwnerWaivesRights)]
+        [InlineData(LetterType.ClosureDredgeFindOwnerNotFound)]
+        [InlineData(LetterType.ClosureDredgeFindOwnerWaivesRights)]
+        [InlineData(LetterType.ClosureWessexArchaeology)]
+        [InlineData(LetterType.ClosureCustom)]
+        [InlineData(LetterType.DredgeFindEod)]
+        [InlineData(LetterType.CustomLetter)]
+        [InlineData(LetterType.CustomEmail)]
+        [InlineData(LetterType.ClosureMuseumLetterOwnerFound)]
+        [InlineData(LetterType.ClosureMuseumLetterOwnerNotFound)]
+        [InlineData(LetterType.ClosureOwnerFoundMuseumDonationAgreed)]
+        [InlineData(LetterType.ClosureOwnerNotFoundButMuseumDonation)]
+        public void Validate_TemplateFile_Exists_For_Every_LetterType(LetterType letterType)
         {
             // Given
-            const LetterType letterType = LetterType.ReportConfirmed;
+            var subject = Path.Combine(_templatePath, $"{letterType.ToString()}.Subject.txt");
+            var body = Path.Combine(_templatePath, $"{letterType.ToString()}.Body.txt");
+
+            // Then
+            Assert.True(File.Exists(subject));
+            Assert.True(File.Exists(body));
+        }
+
+        [Theory]
+        [InlineData(LetterType.ReportConfirmed)]
+        [InlineData(LetterType.LloydsOfLondonNotification)]
+        [InlineData(LetterType.ClosureOwnerNotFound)]
+        [InlineData(LetterType.ClosureOwnerWaivesRights)]
+        [InlineData(LetterType.ClosureDredgeFindOwnerNotFound)]
+        [InlineData(LetterType.ClosureDredgeFindOwnerWaivesRights)]
+        [InlineData(LetterType.ClosureWessexArchaeology)]
+        [InlineData(LetterType.ClosureCustom)]
+        [InlineData(LetterType.DredgeFindEod)]
+        [InlineData(LetterType.CustomLetter)]
+        [InlineData(LetterType.CustomEmail)]
+        [InlineData(LetterType.ClosureMuseumLetterOwnerFound)]
+        [InlineData(LetterType.ClosureMuseumLetterOwnerNotFound)]
+        [InlineData(LetterType.ClosureOwnerFoundMuseumDonationAgreed)]
+        [InlineData(LetterType.ClosureOwnerNotFoundButMuseumDonation)]
+        public async Task GetTemplateBodyAsync_WithDroit_ReturnsSubstitutedContent(LetterType letterType)
+        {
+            // Given
             var droit = new Droit();
-            var templateContent = "Ref: ((reference))!";
+            const string templateContent = "Ref: ((reference))!";
             _templatePath = Path.Combine(_templatePath, $"{letterType.ToString()}.Body.txt");
             await File.WriteAllTextAsync(_templatePath, templateContent);
 
