@@ -96,14 +96,16 @@ namespace Droits.Tests.IntegrationTests.Services
         [InlineData(LetterType.ClosureMuseumLetterOwnerFound)]
         [InlineData(LetterType.ClosureMuseumLetterOwnerNotFound)]
         [InlineData(LetterType.ClosureOwnerFoundMuseumDonationAgreed)]
-        [InlineData(LetterType.ClosureOwnerNotFoundMuseumDonationAgreed)]
+        [InlineData(LetterType.ClosureOwnerNotFoundButMuseumDonation)]
         public void Validate_TemplateFile_Exists_For_Every_LetterType(LetterType letterType)
         {
             // Given
-            _templatePath = Path.Combine(_templatePath, $"{letterType.ToString()}.Body.txt");
+            var subject = Path.Combine(_templatePath, $"{letterType.ToString()}.Subject.txt");
+            var body = Path.Combine(_templatePath, $"{letterType.ToString()}.Body.txt");
 
             // Then
-            Assert.True(File.Exists(_templatePath));
+            Assert.True(File.Exists(subject));
+            Assert.True(File.Exists(body));
         }
 
         [Theory]
@@ -121,7 +123,7 @@ namespace Droits.Tests.IntegrationTests.Services
         [InlineData(LetterType.ClosureMuseumLetterOwnerFound)]
         [InlineData(LetterType.ClosureMuseumLetterOwnerNotFound)]
         [InlineData(LetterType.ClosureOwnerFoundMuseumDonationAgreed)]
-        [InlineData(LetterType.ClosureOwnerNotFoundMuseumDonationAgreed)]
+        [InlineData(LetterType.ClosureOwnerNotFoundButMuseumDonation)]
         public async Task GetTemplateBodyAsync_WithDroit_ReturnsSubstitutedContent(LetterType letterType)
         {
             // Given

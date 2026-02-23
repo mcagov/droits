@@ -46,7 +46,7 @@ namespace Droits.Tests.UnitTests.Services
         [InlineData(LetterType.ClosureMuseumLetterOwnerFound)]
         [InlineData(LetterType.ClosureMuseumLetterOwnerNotFound)]
         [InlineData(LetterType.ClosureOwnerFoundMuseumDonationAgreed)]
-        [InlineData(LetterType.ClosureOwnerNotFoundMuseumDonationAgreed)]
+        [InlineData(LetterType.ClosureOwnerNotFoundButMuseumDonation)]
         public async Task GetTemplateBodyAsync_NoDroit_ReturnsOriginalContent(LetterType letterType)
         {
             // Given
@@ -76,7 +76,7 @@ namespace Droits.Tests.UnitTests.Services
         [InlineData(LetterType.ClosureMuseumLetterOwnerFound)]
         [InlineData(LetterType.ClosureMuseumLetterOwnerNotFound)]
         [InlineData(LetterType.ClosureOwnerFoundMuseumDonationAgreed)]
-        [InlineData(LetterType.ClosureOwnerNotFoundMuseumDonationAgreed)]
+        [InlineData(LetterType.ClosureOwnerNotFoundButMuseumDonation)]
         public async Task GetTemplateSubjectAsync_WithDroit_ReturnsSubstitutedContent(LetterType letterType)
         {
             // Given
@@ -116,7 +116,7 @@ namespace Droits.Tests.UnitTests.Services
                 LetterType.ClosureMuseumLetterOwnerFound,
                 LetterType.ClosureMuseumLetterOwnerNotFound,
                 LetterType.ClosureOwnerFoundMuseumDonationAgreed,
-                LetterType.ClosureOwnerNotFoundMuseumDonationAgreed
+                LetterType.ClosureOwnerNotFoundButMuseumDonation
             };
             
             // When
