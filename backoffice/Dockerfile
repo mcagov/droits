@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 as base
+FROM mcr.microsoft.com/dotnet/sdk:9.0 as base
 ENV ASPNETCORE_URLS="http://+:5000"
 ENV NO_PROXY=169.254.169.254,169.254.170.2
 ENV AWS_REGION="eu-west-2"
@@ -8,7 +8,7 @@ EXPOSE 5000
 # Timezone setup
 RUN ln -snf /usr/share/zoneinfo/Europe/London /etc/localtime && echo "Europe/London" > /etc/timezone
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 
 WORKDIR /app
 
