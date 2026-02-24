@@ -3405,7 +3405,7 @@
   display: block;
   width: 100%;
   padding-top: 112px;
-  background-image: url(/assets/images/govuk-crest.svg);
+  background-image: url(/assets-2026-16-02/images/govuk-crest.svg);
   background-repeat: no-repeat;
   background-position: 50% 0;
   background-size: 125px 102px;
@@ -3415,8 +3415,8 @@
 @supports ((-webkit-mask-position: initial) or (mask-position: initial)) {
   .govuk-footer__copyright-logo:before {
     background: currentcolor;
-    -webkit-mask-image: url(/assets/images/govuk-crest.svg);
-    mask-image: url(/assets/images/govuk-crest.svg);
+    -webkit-mask-image: url(/assets-2026-16-02/images/govuk-crest.svg);
+    mask-image: url(/assets-2026-16-02/images/govuk-crest.svg);
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
     -webkit-mask-position: 50% 0;
