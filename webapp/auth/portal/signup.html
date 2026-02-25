@@ -19,13 +19,8 @@
     <link href="https://reportwreckmaterial.z33.web.core.windows.net/assets-2026-16-02/css/main.min.css" media="all" rel="stylesheet" type="text/css" data-preload="true"/>
     <link href="https://reportwreckmaterial.z33.web.core.windows.net/assets-2026-16-02/css/custom.css" media="all" rel="stylesheet" type="text/css" data-preload="true"/>
     <style>
-      html {
-        background-color: #f3f2f1;
-      }
-
       body {
         margin: 0;
-        background-color: #ffffff;
       }
     </style>
     <script>
@@ -38,29 +33,27 @@
           document.documentElement.classList.add("govuk-template--rebranded");
           document.body.classList.add("govuk-template__body");
 
-          const signUpSignInPageUrl = `${document.referrer}account/sign-up-or-sign-in`;
-          const backLink = document.getElementById("back-link");
-          backLink.href = signUpSignInPageUrl;
-
           const emailInput = document.getElementById("email");
           if (emailInput && !emailInput.hasAttribute("autocomplete")) {
             emailInput.setAttribute("autocomplete", "username");
           }
 
+          document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
+
           observer.disconnect();
         }
       });
-      observer.observe(document.body, { childList: true, subtree: true });
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+          observer.observe(document.body, { childList: true, subtree: true });
+        });
+      } else {
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
     </script>
   </head>
-  <body><script id="__bs_script__">//<![CDATA[
-  (function() {
-    const script = document.createElement('script');
-    script.src = '/browser-sync/browser-sync-client.js?v=2.26.14'.replace("HOST", location.hostname);
-    script.async = true;
-    document.body.appendChild(script);
-  })()
-//]]></script>
+  <body>
     <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
       <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
   <header class="govuk-header " role="banner" data-module="govuk-header">
