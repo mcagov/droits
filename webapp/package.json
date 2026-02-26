@@ -59,7 +59,7 @@
     "fast-csv": "^4.3.6",
     "file-loader": "^6.1.0",
     "glightbox": "^3.0.7",
-    "govuk-frontend": "^4.10.0",
+    "govuk-frontend": "^5.14.0",
     "helmet": "^4.4.1",
     "lodash.clonedeep": "^4.5.0",
     "lodash.inrange": "^3.3.6",
