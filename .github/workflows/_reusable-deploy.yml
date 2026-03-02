@@ -78,7 +78,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.aws_role_arn }}
           aws-region: eu-west-2
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: ">=1.5.0"
       - name: Terraform init
