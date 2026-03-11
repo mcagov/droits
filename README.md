@@ -42,6 +42,7 @@ Currently, they just run `terraform fmt` on files staged for commit. This should
 Enable the pre-commit hooks by running...
 
 ```shell
+# From the root directory...
 npm install
 npm run prepare
 ```
@@ -57,7 +58,7 @@ backoffice/src/appsettings.json
 
 The contents for these files are stored in `1Password` as:
 
-- TODO: What is the webapp one called in 1Password?
+- Droits Local - webapp/.env.json
 - Droits Local - backoffice/src/appsettings.json
 
 Please request access from the team if you do not already have it.
