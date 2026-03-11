@@ -58,7 +58,7 @@ backoffice/src/appsettings.json
 The contents for these files are stored in `1Password` as:
 
 - TODO: What is the webapp one called in 1Password?
-- Backoffice Local- appsettings.json
+- Droits Local - backoffice/src/appsettings.json
 
 Please request access from the team if you do not already have it.
 
