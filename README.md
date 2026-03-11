@@ -35,6 +35,8 @@ To install the dependencies, follow [this guide](/docs/dependencies-setup.md)
 
 ### Pre-commit hooks
 
+TODO: Move this into `make setup`
+
 Currently, they just run `terraform fmt` on files staged for commit. This should save you waiting for a pipeline to tell you it needs doing.
 
 Enable the pre-commit hooks by running...
@@ -52,6 +54,8 @@ To run the application, you'll need the following configuration files:
 webapp/.env.json
 backoffice/src/appsettings.json
 ```
+
+TODO: What are thee things called in 1Password?
 
 The contents for these files are stored in `1Password`. Please request access from the team if you do not already have it.
 Once you have these files in place, you can start the application by running `docker compose up`.
