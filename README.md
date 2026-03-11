@@ -55,9 +55,15 @@ webapp/.env.json
 backoffice/src/appsettings.json
 ```
 
-TODO: What are thee things called in 1Password?
+The contents for these files are stored in `1Password` as:
 
-The contents for these files are stored in `1Password`. Please request access from the team if you do not already have it.
+- TODO: What is the webapp one called in 1Password?
+- Backoffice Local- appsettings.json
+
+Please request access from the team if you do not already have it.
+
+TODO: Move to `make serve`
+
 Once you have these files in place, you can start the application by running `docker compose up`.
 
 ### Troubleshooting
