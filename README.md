@@ -27,14 +27,9 @@ unsure.
 
 ## Local development
 
-| **dependency**                                                    | **version** |
-|-------------------------------------------------------------------|-------------|
-| [python](https://www.python.org/)                                 | 3.10.17     |
-| [dotnet](https://learn.microsoft.com/en-us/dotnet/)               | 8.0.409     |
-| [nvm](https://github.com/nvm-sh/nvm)                              | 0.39.5      |
-| [node](https://github.com/nvm-sh/nvm)                             | 18.17.0     |
-| [terraform](https://www.terraform.io/)                            | 1.4.6       |
-| [Docker desktop](https://www.docker.com/products/docker-desktop/) | Latest      |
+Before you start...
+
+- Make sure you have the required versions of things installed. We recommend using [asdf](asdf-vm.com) to manage this. See the `.tool-versions` if you want to manage them some other way.
 
 To install the dependencies, follow [this guide](/docs/dependencies-setup.md)
 
