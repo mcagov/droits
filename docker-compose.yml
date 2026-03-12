@@ -5,14 +5,9 @@ services:
       context: ./backoffice
     image: droits-backoffice
     ports:
-      - "${HOST_PORT:-5005}:5005"
-      - "5001:5001"
+      - "${HOST_PORT:-5005}:5000"
     environment:
-      ASPNETCORE_Kestrel__Certificates__Default__Password: "password"
-      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
       DB_HOST: 'database'
-    volumes:
-      - ~/.aspnet/https:/https:ro
     depends_on:
       - database
 
