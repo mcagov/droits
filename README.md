@@ -27,24 +27,22 @@ unsure.
 
 ## Local development
 
-| **dependency**                                                    | **version** |
-|-------------------------------------------------------------------|-------------|
-| [python](https://www.python.org/)                                 | 3.10.17     |
-| [dotnet](https://learn.microsoft.com/en-us/dotnet/)               | 8.0.409     |
-| [nvm](https://github.com/nvm-sh/nvm)                              | 0.39.5      |
-| [node](https://github.com/nvm-sh/nvm)                             | 18.17.0     |
-| [terraform](https://www.terraform.io/)                            | 1.4.6       |
-| [Docker desktop](https://www.docker.com/products/docker-desktop/) | Latest      |
+Before you start...
+
+- Make sure you have the required versions of things installed. We recommend using [asdf](asdf-vm.com) to manage this. See the `.tool-versions` if you want to manage them some other way.
 
 To install the dependencies, follow [this guide](/docs/dependencies-setup.md)
 
 ### Pre-commit hooks
+
+TODO: Move this into `make setup`
 
 Currently, they just run `terraform fmt` on files staged for commit. This should save you waiting for a pipeline to tell you it needs doing.
 
 Enable the pre-commit hooks by running...
 
 ```shell
+# From the root directory...
 npm install
 npm run prepare
 ```
@@ -58,7 +56,15 @@ webapp/.env.json
 backoffice/src/appsettings.json
 ```
 
-The contents for these files are stored in `1Password`. Please request access from the team if you do not already have it.
+The contents for these files are stored in `1Password` as:
+
+- Droits Local - webapp/.env.json
+- Droits Local - backoffice/src/appsettings.json
+
+Please request access from the team if you do not already have it.
+
+TODO: Move to `make serve`
+
 Once you have these files in place, you can start the application by running `docker compose up`.
 
 ### Troubleshooting
