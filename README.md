@@ -155,7 +155,7 @@ After deploying:
         - Check it loads as expected
 - **Backoffice**
   - Check the healthcheck endpoint - It should say "Healthy"
-  - Log in
+  - Log in using your "...@mcga.onmicrosoft.com" account
     - Check you are on the "My Dashboard" page
     - Check it shows panels for "My Assigned Droits" and "QC Approved Letters"
     - Click the navigation "Dashboard" link to check it loads the "My Dashboard" page
