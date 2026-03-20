@@ -91,7 +91,7 @@ for the staging environment are ephemeral and not used anywhere else.
 
 ### Production environment
 
-A build and deployment to the production environment is triggered on a manual release set to "release". Docker images are tagged
+A build and deployment to the production environment is triggered on a manual release set to "latest release". Docker images are tagged
 with the hash of the triggering commit and published to AWS Elastic Container Registry. Images built and deployed to
 for the production environment are ephemeral and not used anywhere else.
 
