@@ -97,7 +97,7 @@ for the production environment are ephemeral and not used anywhere else.
 
 ### Smoke tests
 
-These are manual at the moment.
+These are manual at the moment. Writing them down is the first step on the journey towards automating them. There are also several differences between Dev/Staging and Production that will need resolving before we can automate them sensibly.
 
 After deploying:
 
