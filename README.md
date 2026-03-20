@@ -95,6 +95,46 @@ A build and deployment to the production environment is triggered on a manual re
 with the hash of the triggering commit and published to AWS Elastic Container Registry. Images built and deployed to
 for the production environment are ephemeral and not used anywhere else.
 
+### Smoke tests
+
+These are manual at the moment.
+
+After deploying:
+
+- Check the "Report Wreck Material" home page loads
+  - Click through to "Report Wreck Material"
+  - Check the three help links top right work
+  - Check the "required format" links triggers download of the CSV template
+  - Check the "contact the Receiver of Wreck" link works
+  - Click "Start now"
+    - Use the email `<firstname>.<lastname>+<YYYY-MM-DD>@<domain>.<tld>` which, for Gmail at least, will be sent to `<firstname>.<lastname>@<domain>.<tld>`
+    - Check you can make it all the way through to the point of submission (It will say "Accept and send" under the "Declaration by finder"
+    - **Dev & Staging Only**
+      - Click "Accept and send" to send the report
+      - On the confirmation page check that the "Print a copy of your report" button works
+      - Check that the "Check report status" button takes you to the "Check the status of wreck material you have reported" page that includes the "Sign in" button
+- Return to the home page
+  - Click the "Check the status of wreck material reported" link
+  - Check you are on the "Check the status of wreck material you have reported"
+    - Check the "submitting a report" link return you to the "Report Wreck Material" page
+    - Use the browser's back button to return to the "Check the status of wreck material you have reported"
+  - Click on the "create an account" link and check you are on the sign up page
+    - Note that this does not look the same for Production and the other environments
+    - **Dev & Staging Only**
+      - Create an account
+      - Use the email you used to report the wreck
+      - Once registered
+        - Check that you are on the "Your reports of wreck material" page
+        - Check that you can view your report
+        - Click "Back to reports"
+        - Click "Logout"
+      - Check you are on the "Check the status of wreck material you have reported" page
+        - Check you can sign in again
+        - Logout
+        - Check you can reset your password
+          - After resetting it should redirect to the "Check the status of wreck material you have reported" page
+          - Logout
+
 ## Secrets
 
 Secrets are set in the Repository and injected during deployment.
