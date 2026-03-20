@@ -178,6 +178,14 @@ After deploying:
   - Click on the navigation "Letters" link
     - Click on "View" for a Letter
       - Sanity check that all the tabs load OK
+  - Click on the navigation "Salvors" link
+    - Check you are on the "Salvors" page
+    - Click on "View" for a Salvors
+      - Sanity check that all the tabs load OK
+      - Click "View Salvors" to return to the "Salvors" page
+    - Click "Edit" for a Salvors
+      - Sanity check that all the tabs load OK in edit mode
+      - Click "Cancel" to return to the "Salvors" page
 
 ## Secrets
 
