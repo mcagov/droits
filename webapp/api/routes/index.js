@@ -19,6 +19,7 @@ import salvageAward from './report/salvage-award';
 import checkYourAnswers from './report/check-your-answers';
 import portalStart from './portal/start';
 import portalLogin from './portal/login';
+import portalMSALLogin from './portal/msal-node/login';
 import portalLogout from './portal/logout';
 import portalLoginRedirectUrl from './portal/loginRedirectUrl';
 import portalDashboard from './portal/dashboard';
@@ -28,6 +29,7 @@ import accountError from './portal/error';
 
 import sendSample from './report/send-sample';
 import health from './health';
+import config from '../../app/config';
 
 
 export default () => {
@@ -53,7 +55,13 @@ export default () => {
   checkYourAnswers(app);
 
   portalStart(app);
-  portalLogin(app);
+
+  if (config.USE_MSAL) {
+    portalMSALLogin(app);
+  } else {
+    portalLogin(app);
+  }
+ 
   portalLogout(app);
   portalLoginRedirectUrl(app);
   portalDashboard(app);
