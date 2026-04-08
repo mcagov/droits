@@ -27,45 +27,26 @@ unsure.
 
 ## Local development
 
-Before you start...
+- Make sure you have the required versions of things installed.
+   - Install [asdf](asdf-vm.com), or 'brew install asdf' which will automatically manage this.
+   - See the `.tool-versions` if you want to manage them some other way.
+- Add your local config files:
+  - `webapp/.env.json` (get the content s from the "Droits Local - webapp/.env.json" secret in 1Password)
+  - `backoffice/src/appsettings.json` (get the content s from the "Droits Local - backoffice/src/appsettings.json" secret in 1Password)
+- Install all the things, setup commit hooks etc.
+   - ```bash
+    # From the root of this repository
+    make setup
+    ```
+- Start up the applications in development mode, with backing services
+   - ```bash
+    # From the root of this repository
+    make serve
+    ```
+  
+At the time of writing, this will fire up the service using Docker Compose.
 
-- Make sure you have the required versions of things installed. We recommend using [asdf](asdf-vm.com) to manage this. See the `.tool-versions` if you want to manage them some other way.
-
-To install the dependencies, follow [this guide](/docs/dependencies-setup.md)
-
-### Pre-commit hooks
-
-TODO: Move this into `make setup`
-
-Currently, they just run `terraform fmt` on files staged for commit. This should save you waiting for a pipeline to tell you it needs doing.
-
-Enable the pre-commit hooks by running...
-
-```shell
-# From the root directory...
-npm install
-npm run prepare
-```
-
-### Getting started
-
-To run the application, you'll need the following configuration files:
-
-```bash
-webapp/.env.json
-backoffice/src/appsettings.json
-```
-
-The contents for these files are stored in `1Password` as:
-
-- Droits Local - webapp/.env.json
-- Droits Local - backoffice/src/appsettings.json
-
-Please request access from the team if you do not already have it.
-
-TODO: Move to `make serve`
-
-Once you have these files in place, you can start the application by running `docker compose up`.
+It would be nice to have Makefile commands to fire up the two applications outside of Docker for easier development work. For now though, look at [webapp README](./webapp/README.md) and [backoffice README](./backoffice/README.md).
 
 ### Troubleshooting
 

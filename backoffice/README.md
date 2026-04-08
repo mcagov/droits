@@ -56,7 +56,7 @@ Every mutation that survives is a line of code that we can change without it bei
 To run the mutation tests:
 
 ```shell
-# From the webapp directory...
+# From the backoffice directory...
 
 dotnet stryker
 ```
