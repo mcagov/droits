@@ -93,9 +93,101 @@ Please ensure that all staged releases follow semantic versioning: [semver](http
 
 ### Production environment
 
-A build and deployment to the production environment is triggered on a manual release set to "release". Docker images are tagged
+A build and deployment to the production environment is triggered on a manual release set to "latest release". Docker images are tagged
 with the hash of the triggering commit and published to AWS Elastic Container Registry. Images built and deployed to
 for the production environment are ephemeral and not used anywhere else.
+
+### Smoke tests
+
+These are manual at the moment. Writing them down is the first step on the journey towards automating them. There are also several differences between Dev/Staging and Production that will need resolving before we can automate them sensibly.
+
+After deploying:
+
+- **Web App**
+  - Check the healthcheck endpoint - It should say "OK"
+  - Check the "Report Wreck Material" home page loads
+    - Initial pages are currently quite different between Dev/Staging and Production
+      - Staging * Dev
+        - Check the three help links top right work
+        - Click through to "Report Wreck Material"
+        - Check the "required format" links triggers download of the CSV template
+        - Check the "contact the Receiver of Wreck" link works
+      - Production
+        - Check the three "Contents" links work
+        - Click through to "Report Wreck Material"
+    - Click "Start now"
+      - When asked, use the email `<firstname>.<lastname>+<YYYY-MM-DD>@<domain>.<tld>` which, for Gmail at least, will be sent to `<firstname>.<lastname>@<domain>.<tld>`
+      - Check you can make it all the way through to the point of submission (It will say "Accept and send" under the "Declaration by finder"
+      - **Dev & Staging Only**
+        - Click "Accept and send" to send the report
+        - On the confirmation page check that the "Print a copy of your report" button works
+        - Check that the "Check report status" button takes you to the "Check the status of wreck material you have reported" page that includes the "Sign in" button
+  - Return to the home page
+    - Staging * Dev
+      - Click the "Check the status of wreck material reported" link
+      - Check you are on the "Check the status of wreck material you have reported"
+        - Check the "submitting a report" link return you to the "Report Wreck Material" page
+        - Use the browser's back button to return to the "Check the status of wreck material you have reported"
+      - Click on the "create an account" link and check you are on the "Sign up" page
+        - **Dev & Staging Only** (keeping this because we want to get the environments aligned in future)
+          - Create an account
+          - Use the email you used to report the wreck
+          - Once registered
+            - Check that you are on the "Your reports of wreck material" page
+            - Check that you can view your report
+            - Click "Back to reports"
+            - Click "Logout"
+          - Check you are on the "Check the status of wreck material you have reported" page
+            - Check you can sign in again
+            - Logout
+            - Check you can reset your password
+              - After resetting it should redirect to the "Check the status of wreck material you have reported" page
+              - Logout
+    - Production
+      - Click the "After you've reported wreck material" link
+      - Click on the "Start now" link
+        - Check you are on the "Receiver of Wreck account sign up" page
+        - Check it loads as expected
+        - Use browser back button to return to the "After you've reported wreck material" page
+      - Click the "Sign in to your account" link
+        - Check you are on the "Receiver of Wreck account sign in" page
+        - Check it loads as expected
+        - Click the "Forgot your password?" link
+        - Check you are on the "Receiver of Wreck account password reset" page
+        - Check it loads as expected
+- **Backoffice**
+  - Check the healthcheck endpoint - It should say "Healthy"
+  - Log in using your "...@mcga.onmicrosoft.com" account
+    - Check you are on the "My Dashboard" page
+    - Check it shows panels for "My Assigned Droits" and "QC Approved Letters"
+    - Click the navigation "Dashboard" link to check it loads the "My Dashboard" page
+  - Click on the navigation "Droits" link
+    - Check you are on the "Droit Reports" page
+    - Click on "View" for a Droit
+      - Sanity check that all the tabs load OK
+      - Click "View Droits" to return to the "Droit Reports" page
+    - Click "Edit" for a Droit
+      - Sanity check that all the tabs load OK in edit mode
+      - Click "Cancel" to return to the "Droit Reports" page
+  - Click on the navigation "Wrecks" link
+    - Check you are on the "Wrecks" page
+    - Click on "View" for a Wreck
+      - Sanity check that all the tabs load OK
+      - Click "View Wrecks" to return to the "Wrecks" page
+    - Click "Edit" for a Wreck
+      - Sanity check that all the tabs load OK in edit mode
+      - Click "Cancel" to return to the "Wrecks" page
+  - Click on the navigation "Letters" link
+    - Click on "View" for a Letter
+      - Sanity check that all the tabs load OK
+  - Click on the navigation "Salvors" link
+    - Check you are on the "Salvors" page
+    - Click on "View" for a Salvors
+      - Sanity check that all the tabs load OK
+      - Click "View Salvors" to return to the "Salvors" page
+    - Click "Edit" for a Salvors
+      - Sanity check that all the tabs load OK in edit mode
+      - Click "Cancel" to return to the "Salvors" page
 
 ## Secrets
 
