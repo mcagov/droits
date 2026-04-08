@@ -43,6 +43,11 @@ unsure.
     dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p password
     ```
   - You will need to unlock your keyvault with your MacBook password
+- Build the container images:
+  - ```bash
+    # From the root of this repository
+    make build
+    ```
 - Start up the applications in development mode, with backing services
    - ```bash
     # From the root of this repository

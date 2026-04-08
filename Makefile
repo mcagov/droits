@@ -1,12 +1,3 @@
-###
-# Makefile for local development - Start developing Beacons with just one command
-#
-# $ make
-#
-###
-
-MAKEFLAGS += --jobs
-
 .PHONY: setup
 setup: setup-root setup-backoffice setup-webapp
 	asdf plugin add nodejs
@@ -49,14 +40,27 @@ developer-certificate:
 # Applications
 ##
 
-# We are using --jobs so that all jobs run in parallel
-# Without this flag, the first job hogs the terminal and the others don't run
-MAKEFLAGS += --jobs
+.PHONY: build
+build: build-backoffice build-webapp
+
+.PHONY: build-backoffice
+build-backoffice:
+	@echo "\n================================"
+	@echo "Build backoffice container image\n"
+	cd . && \
+		docker compose build backoffice
+
+.PHONY: build-webapp
+build-webapp:
+	@echo "\n============================"
+	@echo "Build webapp container image\n"
+	cd . && \
+		docker compose build webapp
 
 .PHONY: serve
 serve:
-	@echo "\n==================================================="
-	@echo "Installing root level dependencies and commit hooks\n"
+	@echo "\n==========================================="
+	@echo "Spinning up the service with Docker Compose\n"
 	cd . && \
 		docker compose up
 
