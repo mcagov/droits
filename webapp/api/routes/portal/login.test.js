@@ -5,7 +5,7 @@ const request = require('supertest');
 const passport = require('passport');
 
 
-describe('Login Unit Tests', () => {
+describe('Passport Unit Tests', () => {
 
     beforeEach(() => {
         users.length = 0;
@@ -105,7 +105,7 @@ describe('Login Unit Tests', () => {
     });
 });
 
-describe('Login Integration Tests', () => {
+describe('Login Unit Tests', () => {
 
     afterEach(() => {
         jest.clearAllMocks();
