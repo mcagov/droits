@@ -5,7 +5,7 @@
 #
 ###
 
-MAKEFLAGS += -j
+MAKEFLAGS += --jobs
 
 .PHONY: setup
 setup: setup-root setup-backoffice setup-webapp
@@ -38,6 +38,12 @@ setup-webapp:
 		asdf install && \
 		node --version && \
 		npm install
+
+.PHONY: developer-certificate
+developer-certificate:
+	@echo "\n==============================="
+	@echo "Creating developer certificate\n"
+	dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p password
 
 ##
 # Applications

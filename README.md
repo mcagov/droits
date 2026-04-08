@@ -38,6 +38,11 @@ unsure.
     # From the root of this repository
     make setup
     ```
+- Ensure you have created the development certificate:
+  - ```bash
+    dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p password
+    ```
+  - You will need to unlock your keyvault with your MacBook password
 - Start up the applications in development mode, with backing services
    - ```bash
     # From the root of this repository
