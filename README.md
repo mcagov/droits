@@ -27,39 +27,36 @@ unsure.
 
 ## Local development
 
-| **dependency**                                                    | **version** |
-|-------------------------------------------------------------------|-------------|
-| [python](https://www.python.org/)                                 | 3.10.17     |
-| [dotnet](https://learn.microsoft.com/en-us/dotnet/)               | 8.0.409     |
-| [nvm](https://github.com/nvm-sh/nvm)                              | 0.39.5      |
-| [node](https://github.com/nvm-sh/nvm)                             | 18.17.0     |
-| [terraform](https://www.terraform.io/)                            | 1.4.6       |
-| [Docker desktop](https://www.docker.com/products/docker-desktop/) | Latest      |
+- Make sure you have the required versions of things installed.
+   - Install [asdf](asdf-vm.com), or 'brew install asdf' which will automatically manage this.
+   - See the `.tool-versions` if you want to manage them some other way.
+- Add your local config files:
+  - `webapp/.env.json` (get the content s from the "Droits Local - webapp/.env.json" secret in 1Password)
+  - `backoffice/src/appsettings.json` (get the content s from the "Droits Local - backoffice/src/appsettings.json" secret in 1Password)
+- Install all the things, setup commit hooks etc.
+   - ```bash
+    # From the root of this repository
+    make setup
+    ```
+- Ensure you have created the development certificate:
+  - ```bash
+    dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p password
+    ```
+  - You will need to unlock your keyvault with your MacBook password
+- Build the container images:
+  - ```bash
+    # From the root of this repository
+    make build
+    ```
+- Start up the applications in development mode, with backing services
+   - ```bash
+    # From the root of this repository
+    make serve
+    ```
+  
+At the time of writing, this will fire up the service using Docker Compose.
 
-To install the dependencies, follow [this guide](/docs/dependencies-setup.md)
-
-### Pre-commit hooks
-
-Currently, they just run `terraform fmt` on files staged for commit. This should save you waiting for a pipeline to tell you it needs doing.
-
-Enable the pre-commit hooks by running...
-
-```shell
-npm install
-npm run prepare
-```
-
-### Getting started
-
-To run the application, you'll need the following configuration files:
-
-```bash
-webapp/.env.json
-backoffice/src/appsettings.json
-```
-
-The contents for these files are stored in `1Password`. Please request access from the team if you do not already have it.
-Once you have these files in place, you can start the application by running `docker compose up`.
+It would be nice to have Makefile commands to fire up the two applications outside of Docker for easier development work. For now though, look at [webapp README](./webapp/README.md) and [backoffice README](./backoffice/README.md).
 
 ### Troubleshooting
 
