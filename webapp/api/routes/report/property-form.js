@@ -73,7 +73,7 @@ export default function (app) {
         .exists()
         .escape()
         .isInt({ min:1 })
-        .withMessage('Enter a number')
+        .withMessage('Enter a number greater than 0')
         .not()
         .isEmpty()
         .withMessage(
