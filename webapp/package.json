@@ -38,7 +38,7 @@
     "autoprefixer": "^10.4.23",
     "axios": "^0.30.2",
     "babel-loader": "^8.1.0",
-    "body-parser": "^1.19.0",
+    "body-parser": "^2.2.0",
     "browser-sync": "^3.0.4",
     "browser-sync-webpack-plugin": "^2.4.0",
     "bunyan": "^1.8.15",
