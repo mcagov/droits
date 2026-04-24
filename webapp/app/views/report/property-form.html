@@ -55,6 +55,7 @@
           name: propertyNamePrefix + "[quantity]",
           value: data[propertyName][propertyID]["quantity"],
           classes: "govuk-input--width-3",
+	  attributes: { min: "1", type: "number" },
           errorMessage: errors["property." + propertyID + ".quantity"]
         }) }}
 

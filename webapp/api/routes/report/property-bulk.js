@@ -156,6 +156,10 @@ export default function (app) {
             err.text = "The selected file contains invalid postcode values. Please enter postcodes in the correct format, for example E1 6AN";
             resolve();
           }
+	  else if (col === 'Quantity' && parseInt(currentRow[col]) < 1){
+            err.text = "The selected file contains a quantity of 0 or less. Quantity must be at least 1 for each item.";
+		  resolve();
+	  }
         }
       }
       resolve();

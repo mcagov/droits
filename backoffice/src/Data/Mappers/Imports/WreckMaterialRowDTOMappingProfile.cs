@@ -14,7 +14,7 @@ namespace Droits.Data.Mappers.Imports
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.Quantity,
-                    opt => opt.MapFrom(src => src.Quantity != null ? int.Parse(src.Quantity) : 0))
+                    opt => opt.MapFrom(src => src.Quantity != null ? int.Parse(src.Quantity) : 1))
                 .ForMember(dest => dest.SalvorValuation,
                     opt => opt.MapFrom(src => src.SalvorValuation.AsDouble()))
                 .ForMember(dest => dest.ReceiverValuation,

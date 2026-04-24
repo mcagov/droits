@@ -72,8 +72,8 @@ export default function (app) {
       await body('property' + '[' + propertyID + '][quantity]')
         .exists()
         .escape()
-        .isNumeric()
-        .withMessage('Enter a number')
+        .isInt({ min:1 })
+        .withMessage('Enter a number greater than 0')
         .not()
         .isEmpty()
         .withMessage(
