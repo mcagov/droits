@@ -97,7 +97,7 @@ export default function (app) {
           if (sd['property'].hasOwnProperty(prop)) {
             const innerObj = sd['property'][prop];
             const uploadsPath = '../../../uploads/';
-            console.log(`Resolving wreck material file path for ${__dirname} ${uploadsPath} ${innerObj.image}`);
+            console.log(`Resolving wreck material file path for '${__dirname}' '${uploadsPath}' '${innerObj.image}'`);
             const filePath = path.resolve(
               __dirname,
               uploadsPath,
