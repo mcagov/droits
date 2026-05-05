@@ -49,10 +49,16 @@ unsure.
     make build
     ```
 - Start up the applications in development mode, with backing services
-   - ```bash
+  - ```bash
     # From the root of this repository
     make serve
     ```
+  - The application should be available at the following URLS:
+    - Webapp:
+      - User facing: http://localhost:3000
+    - Backoffice:
+      - User facing: http://localhost:5001
+      - Health check: http://localhost:5001/healthz
   
 At the time of writing, this will fire up the service using Docker Compose.
 

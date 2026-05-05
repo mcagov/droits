@@ -6,7 +6,8 @@ services:
     image: droits-backoffice
     ports:
       # Todo: Resolve the following issue when trying to submit a wreck report "droits_webapp      | [0] Issue submitting droit report: ECONNREFUSED - post - http://127.0.0.1:5001/Api/SubmitDroit"
-      - "5001:5001"
+      # Using port 5001 on the host to avoid a port conflict
+      - "5001:5000"
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Password: "password"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
