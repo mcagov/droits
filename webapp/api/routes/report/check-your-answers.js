@@ -121,6 +121,7 @@ export default function (app) {
             } catch (error) {
               console.error('Error reading file:', error);
               console.error('Full file read error object:', JSON.stringify(error));
+              // Todo: If it didn't manage to read the image file, the post to the API will fail. We need to decide how we want to handle this possibility
               data['wreck-materials'].push(innerObj);
             }
           }
