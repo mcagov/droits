@@ -194,8 +194,6 @@ else
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-
-
 // Seeding the database
 using (var scope = app.Services.CreateScope())
 {
@@ -203,7 +201,7 @@ using (var scope = app.Services.CreateScope())
 
     dbContext.Database.EnsureCreated();
 
-    var shouldSeedDatabase = builder.Environment.IsDevelopment() && false;
+    var shouldSeedDatabase = app.Environment.IsDevelopment();
 
     if (shouldSeedDatabase)
     {
