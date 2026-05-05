@@ -96,11 +96,14 @@ export default function (app) {
         for (const prop in sd['property']) {
           if (sd['property'].hasOwnProperty(prop)) {
             const innerObj = sd['property'][prop];
+            const uploadsPath = '../../../uploads/';
+            console.log(`Resolving wreck material file path for ${__dirname} ${uploadsPath} ${innerObj.image}`);
             const filePath = path.resolve(
               __dirname,
-              '../../../uploads/',
+              uploadsPath,
               innerObj.image
             );
+            console.log(`Wreck material file path is ${filePath}`);
 
             try {
               const imageData = await fs.promises.readFile(filePath, 'base64');
@@ -117,6 +120,7 @@ export default function (app) {
               data['wreck-materials'].push(innerObj);
             } catch (error) {
               console.error('Error reading file:', error);
+              console.error('Full file read error object:', JSON.stringify(error));
               data['wreck-materials'].push(innerObj);
             }
           }
