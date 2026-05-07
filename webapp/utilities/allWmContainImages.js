@@ -2,7 +2,7 @@ export const  allWmContainImages = (obj) => {
   let stack  = [];
 
   for (let key in obj) {
-    if ('image' in obj[key]) {
+    if(typeof obj[key].image == "string"){
       stack.push(true);
     } else {
       stack.push(false);
