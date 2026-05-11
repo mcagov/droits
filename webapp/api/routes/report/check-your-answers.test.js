@@ -132,3 +132,48 @@ describe('POST /report/confirmation — location formatting', () => {
     expect(data['location-description']).toBe('Near the rocks. extra details');
   });
 });
+
+describe('POST /report/confirmation — date formatting', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    axios.post.mockResolvedValue({
+      status: 200,
+      data: { reference: 'DRT/2024/001', droitId: 42 },
+    });
+    fs.promises.readFile.mockResolvedValue('fakebase64data');
+  });
+
+  const postWithFindDate = async (agent, { day, month, year }) => {
+    await uploadTestImage(agent);
+    await agent.post('/report/find-date-answer').type('form').send({
+      'wreck-find-date-day': day,
+      'wreck-find-date-month': month,
+      'wreck-find-date-year': year,
+    });
+    await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
+    return axios.post.mock.calls[0][1];
+  };
+
+  it('zero-pads single-digit month and day in wreck-find-date', async () => {
+    const agent = request.agent(app);
+    const data = await postWithFindDate(agent, { day: '5', month: '3', year: '2024' });
+    expect(data['wreck-find-date']).toBe('2024-03-05');
+  });
+
+  it('does not modify double-digit month and day in wreck-find-date', async () => {
+    const agent = request.agent(app);
+    const data = await postWithFindDate(agent, { day: '15', month: '11', year: '2024' });
+    expect(data['wreck-find-date']).toBe('2024-11-15');
+  });
+
+  it('assembles report-date as a YYYY-MM-DD string from session values', async () => {
+    const agent = request.agent(app);
+    // removed-property-check-answer resets the session then sets report-date to today,
+    // so image upload must follow it to survive the reset.
+    await agent.post('/report/removed-property-check-answer').send({ 'removed-property': 'yes' });
+    const data = await postWithFindDate(agent, { day: '5', month: '3', year: '2024' });
+    const now = new Date();
+    const expected = now.toISOString().slice(0, 10);
+    expect(data['report-date']).toBe(expected);
+  });
+});
