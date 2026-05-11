@@ -201,7 +201,7 @@ using (var scope = app.Services.CreateScope())
 
     dbContext.Database.EnsureCreated();
 
-    var shouldSeedDatabase = app.Environment.IsDevelopment();
+    var shouldSeedDatabase = Environment.GetEnvironmentVariable("SEED_DATABASE") == "true";
 
     if (shouldSeedDatabase)
     {
