@@ -1,13 +1,11 @@
 name: "Pull request checks"
 
 on:
-  push:
   pull_request:
     types:
       - opened
       - edited
       - synchronize
-  workflow_dispatch: 
 
 permissions:
   pull-requests: read
