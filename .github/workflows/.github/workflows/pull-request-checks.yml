@@ -1,6 +1,7 @@
 name: "Pull request checks"
 
 on:
+  push:
   pull_request:
     types:
       - opened
