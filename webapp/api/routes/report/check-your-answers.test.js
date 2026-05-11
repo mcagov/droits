@@ -133,6 +133,59 @@ describe('POST /report/confirmation — location formatting', () => {
   });
 });
 
+describe('POST /report/confirmation — image file reading', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    axios.post.mockResolvedValue({
+      status: 200,
+      data: { reference: 'DRT/2024/001', droitId: 42 },
+    });
+  });
+
+  it('reads the image file and replaces the filename with base64 data', async () => {
+    const agent = request.agent(app);
+    await uploadTestImage(agent);
+    fs.promises.readFile.mockResolvedValue('base64encodeddata');
+
+    await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
+
+    const wreckMaterial = axios.post.mock.calls[1][1];
+    expect(wreckMaterial.image).toEqual({ filename: 'test.jpg', data: 'base64encodeddata' });
+  });
+
+  it('coerces an empty value string to null', async () => {
+    const agent = request.agent(app);
+    await uploadTestImage(agent);
+    // Set the value field to an empty string via the property form route
+    await agent.post('/report/property-form-image/i0').type('form').send({
+      'property[i0][description]': 'Anchor',
+      'property[i0][quantity]': '1',
+      'property[i0][value]': '',
+      'value-known': 'no',
+    });
+    fs.promises.readFile.mockResolvedValue('base64encodeddata');
+
+    await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
+
+    const wreckMaterial = axios.post.mock.calls[1][1];
+    expect(wreckMaterial.value).toBeNull();
+  });
+
+  it('still submits the wreck material when the image file cannot be read', async () => {
+    const agent = request.agent(app);
+    await uploadTestImage(agent);
+    fs.promises.readFile.mockRejectedValue(new Error('ENOENT: file not found'));
+
+    await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
+
+    // SubmitWreckMaterial is still called even though readFile failed
+    const wreckMaterialCall = axios.post.mock.calls[1];
+    expect(wreckMaterialCall).toBeDefined();
+    // image is left as the original filename string, not replaced with an object
+    expect(typeof wreckMaterialCall[1].image).toBe('string');
+  });
+});
+
 describe('POST /report/confirmation — date formatting', () => {
   beforeEach(() => {
     jest.clearAllMocks();
