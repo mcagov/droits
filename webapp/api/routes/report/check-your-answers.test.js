@@ -3,6 +3,9 @@ import fs from 'fs';
 import axios from 'axios';
 import app from '../../../server';
 
+const apiEndpoint = 'http://api-endpoint';
+const base64Data = 'base64encodeddata';
+
 jest.mock('axios', () => ({ post: jest.fn() }));
 jest.mock('fs', () => {
   const actual = jest.requireActual('fs');
@@ -15,11 +18,25 @@ jest.mock('fs', () => {
   };
 });
 
-afterAll(() => {
+afterEach(() => {
+  jest.clearAllMocks();
   if (fs.existsSync('uploads')) {
     fs.rmSync('uploads', { recursive: true, force: true });
   }
 });
+
+const setupMocks = (droitReference, droitId, base64Data, apiEndpoint) => {
+  jest.clearAllMocks();
+  axios.post.mockResolvedValue({
+    status: 200,
+    data: {
+      reference: droitReference,
+      droitId
+    },
+  });
+  fs.promises.readFile.mockResolvedValue(base64Data);
+  process.env.API_ENDPOINT = apiEndpoint
+}
 
 // Uploads a test image so the session has a property item with a string image, which satisfies the allWmContainImages validation check.
 const uploadTestImage = async (agent) => {
@@ -79,13 +96,11 @@ describe('POST /report/confirmation — form validation', () => {
 });
 
 describe('POST /report/confirmation — location formatting', () => {
+  const droitReference = 'DRT/2024/001';
+  const droitId = 42;
+
   beforeEach(() => {
-    jest.clearAllMocks();
-    axios.post.mockResolvedValue({
-      status: 200,
-      data: { reference: 'DRT/2024/001', droitId: 42 },
-    });
-    fs.promises.readFile.mockResolvedValue('fakebase64data');
+    setupMocks(droitReference, droitId, base64Data, apiEndpoint);
   });
 
   const postWithLocation = async (textLocation, description) => {
@@ -134,12 +149,11 @@ describe('POST /report/confirmation — location formatting', () => {
 });
 
 describe('POST /report/confirmation — image file reading', () => {
+  const droitReference = 'DRT/2024/002';
+  const droitId = 43;
+
   beforeEach(() => {
-    jest.clearAllMocks();
-    axios.post.mockResolvedValue({
-      status: 200,
-      data: { reference: 'DRT/2024/001', droitId: 42 },
-    });
+    setupMocks(droitReference, droitId, base64Data, apiEndpoint);
   });
 
   it('reads the image file and replaces the filename with base64 data', async () => {
@@ -187,13 +201,11 @@ describe('POST /report/confirmation — image file reading', () => {
 });
 
 describe('POST /report/confirmation — date formatting', () => {
+  const droitReference = 'DRT/2024/003';
+  const droitId = 44;
+
   beforeEach(() => {
-    jest.clearAllMocks();
-    axios.post.mockResolvedValue({
-      status: 200,
-      data: { reference: 'DRT/2024/001', droitId: 42 },
-    });
-    fs.promises.readFile.mockResolvedValue('fakebase64data');
+    setupMocks(droitReference, droitId, base64Data, apiEndpoint);
   });
 
   const postWithFindDate = async (agent, { day, month, year }) => {
@@ -228,5 +240,110 @@ describe('POST /report/confirmation — date formatting', () => {
     const now = new Date();
     const expected = now.toISOString().slice(0, 10);
     expect(data['report-date']).toBe(expected);
+  });
+});
+
+describe('POST /report/confirmation — API submissions', () => {
+  const droitReference = 'DRT/2024/004';
+  const droitId = 45;
+  
+  beforeEach(() => {
+    setupMocks(droitReference, droitId, base64Data, apiEndpoint);
+  });
+
+  afterEach(() => {
+    jest.resetModules()
+  });
+
+  it('POSTs the droit to SubmitDroit, each wreck material to SubmitWreckMaterial, then the droitId to SendConfirmationEmail', async () => {
+    const agent = request.agent(app);
+    await uploadTestImage(agent);
+    await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
+
+    const urls = axios.post.mock.calls.map((c) => c[0]);
+    const apiBaseUrl = `${apiEndpoint}/Api`;
+    expect(urls[0]).toBe(`${apiBaseUrl}/SubmitDroit`);
+    expect(urls[1]).toBe(`${apiBaseUrl}/SubmitWreckMaterial`);
+    expect(urls[2]).toBe(`${apiBaseUrl}/SendConfirmationEmail`);
+    // SendConfirmationEmail receives the droitId from the SubmitDroit response
+    expect(axios.post.mock.calls[2][1]).toBe(droitId);
+  });
+
+  it('names the wreck material as "<reference>-01" and includes droitId and append flag', async () => {
+    const agent = request.agent(app);
+    await uploadTestImage(agent);
+    await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
+
+    const wreckMaterial = axios.post.mock.calls[1][1];
+    expect(wreckMaterial.name).toBe(`${droitReference}-01`);
+    expect(wreckMaterial['droit-id']).toBe(droitId);
+    expect(wreckMaterial['append-to-original-submission']).toBe(true);
+  });
+
+  it('sets append-to-original-submission to false when there are more than 5 wreck materials', async () => {
+    const agent = request.agent(app);
+    for (let i = 0; i < 6; i++) {
+      await agent
+        .post(`/report/property-form-image-upload/i${i}`)
+        .attach('image', Buffer.from('fake image data'), `test${i}.jpg`);
+    }
+
+    await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
+
+    // First SubmitWreckMaterial call (index 1) — all 6 should have the flag false
+    const wreckMaterialCalls = axios.post.mock.calls.filter((c) =>
+      c[0].includes('/Api/SubmitWreckMaterial')
+    );
+    expect(wreckMaterialCalls).toHaveLength(6);
+    wreckMaterialCalls.forEach((call) => {
+      expect(call[1]['append-to-original-submission']).toBe(false);
+    });
+  });
+
+  it('renders the confirmation page with the reference on success', async () => {
+    const agent = request.agent(app);
+    await uploadTestImage(agent);
+    const res = await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(droitReference);
+  });
+
+  it('redirects to /error when SubmitDroit returns a non-200 status', async () => {
+    axios.post.mockResolvedValueOnce({ status: 500, data: {} });
+
+    const agent = request.agent(app);
+    await uploadTestImage(agent);
+    const res = await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
+
+    expect(res.status).toBe(302);
+    expect(res.headers.location).toBe('/error');
+    // No follow-up calls to SubmitWreckMaterial or SendConfirmationEmail
+    expect(axios.post).toHaveBeenCalledTimes(1);
+  });
+
+  it('logs an error when SubmitDroit throws a network error', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    axios.post.mockRejectedValueOnce({
+      code: 'ENOTFOUND',
+      config: { method: 'post', url: 'http://backoffice:5000/Api/SubmitDroit' },
+    });
+
+    const agent = request.agent(app);
+    await uploadTestImage(agent);
+    // The route catches the network error and falls through without sending a response,
+    // so the request will hang — abort it with a short timeout.
+    await agent
+      .post('/report/confirmation')
+      .send({ 'property-declaration': 'on' })
+      .timeout(500)
+      .catch(() => {});
+
+    expect(axios.post).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Issue submitting droit report: ENOTFOUND')
+    );
+    errorSpy.mockRestore();
   });
 });
