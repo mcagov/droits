@@ -4,7 +4,7 @@ import axios from 'axios';
 import app from '../../../server';
 
 const apiEndpoint = 'http://api-endpoint';
-const base64Data = 'base64encodeddata';
+const expectedBase64ImageData = 'base64encodeddata';
 
 jest.mock('axios', () => ({ post: jest.fn() }));
 jest.mock('fs', () => {
@@ -25,16 +25,16 @@ afterEach(() => {
   }
 });
 
-const setupMocks = (droitReference, droitId, base64Data, apiEndpoint) => {
+const setup = (expectedDroitReference, expectedDroitId, expectedBase64ImageData, apiEndpoint) => {
   jest.clearAllMocks();
   axios.post.mockResolvedValue({
     status: 200,
     data: {
-      reference: droitReference,
-      droitId
+      reference: expectedDroitReference,
+      droitId: expectedDroitId
     },
   });
-  fs.promises.readFile.mockResolvedValue(base64Data);
+  fs.promises.readFile.mockResolvedValue(expectedBase64ImageData);
   process.env.API_ENDPOINT = apiEndpoint
 }
 
@@ -96,11 +96,11 @@ describe('POST /report/confirmation — form validation', () => {
 });
 
 describe('POST /report/confirmation — location formatting', () => {
-  const droitReference = 'DRT/2024/001';
-  const droitId = 42;
+  const expectedDroitReference = 'DRT/2024/001';
+  const expectedDroitId = 42;
 
   beforeEach(() => {
-    setupMocks(droitReference, droitId, base64Data, apiEndpoint);
+    setup(expectedDroitReference, expectedDroitId, expectedBase64ImageData, apiEndpoint);
   });
 
   const postWithLocation = async (textLocation, description) => {
@@ -149,11 +149,11 @@ describe('POST /report/confirmation — location formatting', () => {
 });
 
 describe('POST /report/confirmation — image file reading', () => {
-  const droitReference = 'DRT/2024/002';
-  const droitId = 43;
+  const expectedDroitReference = 'DRT/2024/002';
+  const expectedDroitId = 43;
 
   beforeEach(() => {
-    setupMocks(droitReference, droitId, base64Data, apiEndpoint);
+    setup(expectedDroitReference, expectedDroitId, expectedBase64ImageData, apiEndpoint);
   });
 
   it('reads the image file and replaces the filename with base64 data', async () => {
@@ -201,11 +201,11 @@ describe('POST /report/confirmation — image file reading', () => {
 });
 
 describe('POST /report/confirmation — date formatting', () => {
-  const droitReference = 'DRT/2024/003';
-  const droitId = 44;
+  const expectedDroitReference = 'DRT/2024/003';
+  const expectedDroitId = 44;
 
   beforeEach(() => {
-    setupMocks(droitReference, droitId, base64Data, apiEndpoint);
+    setup(expectedDroitReference, expectedDroitId, expectedBase64ImageData, apiEndpoint);
   });
 
   const postWithFindDate = async (agent, { day, month, year }) => {
@@ -244,11 +244,11 @@ describe('POST /report/confirmation — date formatting', () => {
 });
 
 describe('POST /report/confirmation — API submissions', () => {
-  const droitReference = 'DRT/2024/004';
-  const droitId = 45;
+  const expectedDroitReference = 'DRT/2024/004';
+  const expectedDroitId = 45;
   
   beforeEach(() => {
-    setupMocks(droitReference, droitId, base64Data, apiEndpoint);
+    setup(expectedDroitReference, expectedDroitId, expectedBase64ImageData, apiEndpoint);
   });
 
   afterEach(() => {
@@ -266,7 +266,7 @@ describe('POST /report/confirmation — API submissions', () => {
     expect(urls[1]).toBe(`${apiBaseUrl}/SubmitWreckMaterial`);
     expect(urls[2]).toBe(`${apiBaseUrl}/SendConfirmationEmail`);
     // SendConfirmationEmail receives the droitId from the SubmitDroit response
-    expect(axios.post.mock.calls[2][1]).toBe(droitId);
+    expect(axios.post.mock.calls[2][1]).toBe(expectedDroitId);
   });
 
   it('names the wreck material as "<reference>-01" and includes droitId and append flag', async () => {
@@ -275,8 +275,8 @@ describe('POST /report/confirmation — API submissions', () => {
     await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
 
     const wreckMaterial = axios.post.mock.calls[1][1];
-    expect(wreckMaterial.name).toBe(`${droitReference}-01`);
-    expect(wreckMaterial['droit-id']).toBe(droitId);
+    expect(wreckMaterial.name).toBe(`${expectedDroitReference}-01`);
+    expect(wreckMaterial['droit-id']).toBe(expectedDroitId);
     expect(wreckMaterial['append-to-original-submission']).toBe(true);
   });
 
@@ -306,7 +306,7 @@ describe('POST /report/confirmation — API submissions', () => {
     const res = await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(droitReference);
+    expect(res.text).toContain(expectedDroitReference);
   });
 
   it('redirects to /error when SubmitDroit returns a non-200 status', async () => {
