@@ -322,6 +322,23 @@ describe('POST /report/confirmation — API submissions', () => {
     expect(axios.post).toHaveBeenCalledTimes(1);
   });
 
+  it('clears the session data after a successful submission', async () => {
+    const agent = request.agent(app);
+    // Populate the session so GET /report/check-your-answers would normally proceed
+    await agent.post('/report/removed-property-check-answer').send({ 'removed-property': 'yes' });
+    await uploadTestImage(agent);
+
+    const beforeClear = await agent.get('/report/check-your-answers');
+    expect(beforeClear.status).not.toBe(302);
+
+    await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
+
+    // Session was cleared, so report-date is back to {} and the GET redirects again
+    const afterClear = await agent.get('/report/check-your-answers');
+    expect(afterClear.status).toBe(302);
+    expect(afterClear.headers.location).toBe('/report/start');
+  });
+
   it('logs an error when SubmitDroit throws a network error', async () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
