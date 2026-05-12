@@ -38,7 +38,6 @@ const setup = (expectedDroitReference, expectedDroitId, expectedBase64ImageData,
   process.env.API_ENDPOINT = apiEndpoint
 }
 
-// Uploads a test image so the session has a property item with a string image, which satisfies the allWmContainImages validation check.
 const uploadTestImage = async (agent) => {
   await agent
     .post('/report/property-form-image-upload/i0')
@@ -114,7 +113,6 @@ describe('POST /report/confirmation — location formatting', () => {
         'location-description': description || '',
       });
     } else {
-      // coords-decimal sets location-description without touching text-location
       await agent.post('/report/location-answer').type('form').send({
         'location-type': 'coords-decimal',
         'location-latitude-decimal': '50',
@@ -170,7 +168,6 @@ describe('POST /report/confirmation — image file reading', () => {
   it('coerces an empty value string to null', async () => {
     const agent = request.agent(app);
     await uploadTestImage(agent);
-    // Set the value field to an empty string via the property form route
     await agent.post('/report/property-form-image/i0').type('form').send({
       'property[i0][description]': 'Anchor',
       'property[i0][quantity]': '1',
@@ -233,8 +230,7 @@ describe('POST /report/confirmation — date formatting', () => {
 
   it('assembles report-date as a YYYY-MM-DD string from session values', async () => {
     const agent = request.agent(app);
-    // removed-property-check-answer resets the session then sets report-date to today,
-    // so image upload must follow it to survive the reset.
+    // removed-property-check-answer resets the session then sets report-date to today, so image upload must follow it to survive the reset.
     await agent.post('/report/removed-property-check-answer').send({ 'removed-property': 'yes' });
     const data = await postWithFindDate(agent, { day: '5', month: '3', year: '2024' });
     const now = new Date();
@@ -318,7 +314,6 @@ describe('POST /report/confirmation — API submissions', () => {
 
     expect(res.status).toBe(302);
     expect(res.headers.location).toBe('/error');
-    // No follow-up calls to SubmitWreckMaterial or SendConfirmationEmail
     expect(axios.post).toHaveBeenCalledTimes(1);
   });
 
@@ -328,12 +323,14 @@ describe('POST /report/confirmation — API submissions', () => {
     await agent.post('/report/removed-property-check-answer').send({ 'removed-property': 'yes' });
     await uploadTestImage(agent);
 
+    // Check the session exists. report-date is set so /report/check-your-answers should not redirect to the start page
     const beforeClear = await agent.get('/report/check-your-answers');
     expect(beforeClear.status).not.toBe(302);
 
+    // The session is cleared inside the POST /report/confirmation handler, which sets req.session.data = {} after a successful submission.
     await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
 
-    // Session was cleared, so report-date is back to {} and the GET redirects again
+    // Session was cleared, so report-date is {} and /report/check-your-answers should redirect to the start page
     const afterClear = await agent.get('/report/check-your-answers');
     expect(afterClear.status).toBe(302);
     expect(afterClear.headers.location).toBe('/report/start');
