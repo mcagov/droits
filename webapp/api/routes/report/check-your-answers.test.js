@@ -38,6 +38,22 @@ const setup = (expectedDroitReference, expectedDroitId, expectedBase64ImageData,
   process.env.API_ENDPOINT = apiEndpoint
 }
 
+const populateSession = async (agent) => {
+  await agent.post('/report/removed-property-check-answer').send({'removed-property': 'yes'});
+}
+
+const assertSessionExists = async (agent) => {
+  // Check the session exists. report-date is set so /report/check-your-answers should not redirect to the start page
+  const after = await agent.get('/report/check-your-answers');
+  expect(after.status).not.toBe(302);
+}
+const assertSessionCleared = async (agent) => {
+  // Session was cleared, so report-date is {} and /report/check-your-answers should redirect to the start page
+  const afterClear = await agent.get('/report/check-your-answers');
+  expect(afterClear.status).toBe(302);
+  expect(afterClear.headers.location).toBe('/report/start');
+}
+
 const uploadTestImage = async (agent) => {
   await agent
     .post('/report/property-form-image-upload/i0')
@@ -230,8 +246,8 @@ describe('POST /report/confirmation — date formatting', () => {
 
   it('assembles report-date as a YYYY-MM-DD string from session values', async () => {
     const agent = request.agent(app);
-    // removed-property-check-answer resets the session then sets report-date to today, so image upload must follow it to survive the reset.
-    await agent.post('/report/removed-property-check-answer').send({ 'removed-property': 'yes' });
+    // report-date in the session will be set to today
+    await populateSession(agent);
     const data = await postWithFindDate(agent, { day: '5', month: '3', year: '2024' });
     const now = new Date();
     const expected = now.toISOString().slice(0, 10);
@@ -319,21 +335,15 @@ describe('POST /report/confirmation — API submissions', () => {
 
   it('clears the session data after a successful submission', async () => {
     const agent = request.agent(app);
-    // Populate the session so GET /report/check-your-answers would normally proceed
-    await agent.post('/report/removed-property-check-answer').send({ 'removed-property': 'yes' });
+    await populateSession(agent);
     await uploadTestImage(agent);
 
-    // Check the session exists. report-date is set so /report/check-your-answers should not redirect to the start page
-    const beforeClear = await agent.get('/report/check-your-answers');
-    expect(beforeClear.status).not.toBe(302);
+    await assertSessionExists(agent);
+    await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
 
     // The session is cleared inside the POST /report/confirmation handler, which sets req.session.data = {} after a successful submission.
     await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
-
-    // Session was cleared, so report-date is {} and /report/check-your-answers should redirect to the start page
-    const afterClear = await agent.get('/report/check-your-answers');
-    expect(afterClear.status).toBe(302);
-    expect(afterClear.headers.location).toBe('/report/start');
+    await assertSessionCleared(agent);
   });
 
   it('logs an error when SubmitDroit throws a network error', async () => {
@@ -360,4 +370,70 @@ describe('POST /report/confirmation — API submissions', () => {
     );
     errorSpy.mockRestore();
   });
+
+  it('renders the confirmation page and displays an error when SubmitWreckMaterial returns a non-200 status', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    axios.post
+      .mockResolvedValueOnce({ status: 200, data: { reference: expectedDroitReference, droitId: expectedDroitId } })
+      .mockResolvedValueOnce({ status: 500, data: {} });
+
+    const agent = request.agent(app);
+    await uploadTestImage(agent);
+    const res = await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(expectedDroitReference);
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining(`Posting Wreck Material to API failed for droitId ${expectedDroitId}! - 500`)
+    );
+    errorSpy.mockRestore();
+  });
+
+  it('renders the confirmation page and displays an error when SubmitWreckMaterial throws', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    axios.post
+      .mockResolvedValueOnce({ status: 200, data: { reference: expectedDroitReference, droitId: expectedDroitId } })
+      .mockRejectedValueOnce({ status: 503 });
+
+    const agent = request.agent(app);
+    await uploadTestImage(agent);
+    const res = await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(expectedDroitReference);
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Error posting wreck material to API')
+    );
+    errorSpy.mockRestore();
+  });
+
+  it('does not clear the session when SendConfirmationEmail throws', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    axios.post
+      .mockResolvedValueOnce({ status: 200, data: { reference: expectedDroitReference, droitId: expectedDroitId } })
+      .mockResolvedValueOnce({ status: 200 })
+      .mockRejectedValueOnce({
+        code: 'ENOTFOUND',
+        config: { method: 'post', url: 'http://backoffice:5000/Api/SendConfirmationEmail' },
+      });
+
+    const agent = request.agent(app);
+    await populateSession(agent);
+    await uploadTestImage(agent);
+
+    // The handler falls into the outer catch without sending a response, so the request will hang — abort it
+    await agent
+      .post('/report/confirmation')
+      .send({ 'property-declaration': 'on' })
+      .timeout(500)
+      .catch(() => {});
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Issue submitting droit report: ENOTFOUND')
+    );
+    await assertSessionExists(agent);
+
+    errorSpy.mockRestore();
+  });
+
 });
