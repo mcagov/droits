@@ -20,8 +20,12 @@ jest.mock('fs', () => {
 
 afterEach(() => {
   jest.clearAllMocks();
+  // Remove contents but leave the uploads/ directory in place — a parallel worker
+  // (e.g. property-bulk.test.js) may be relying on the directory existing
   if (fs.existsSync('uploads')) {
-    fs.rmSync('uploads', { recursive: true, force: true });
+    for (const entry of fs.readdirSync('uploads')) {
+      fs.rmSync(`uploads/${entry}`, { recursive: true, force: true });
+    }
   }
 });
 
