@@ -20,13 +20,10 @@ jest.mock('fs', () => {
 
 afterEach(() => {
   jest.clearAllMocks();
-  // Remove contents but leave the uploads/ directory in place — a parallel worker
-  // (e.g. property-bulk.test.js) may be relying on the directory existing
-  if (fs.existsSync('uploads')) {
-    for (const entry of fs.readdirSync('uploads')) {
-      fs.rmSync(`uploads/${entry}`, { recursive: true, force: true });
-    }
-  }
+});
+
+afterAll(() => {
+  fs.rmSync('uploads', { recursive: true, force: true });
 });
 
 const setup = (expectedDroitReference, expectedDroitId, expectedBase64ImageData, apiEndpoint) => {
