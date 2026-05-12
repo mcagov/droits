@@ -196,6 +196,7 @@ describe('POST /report/confirmation — image file reading', () => {
   });
 
   it('still submits the wreck material when the image file cannot be read', async () => {
+    // Todo: This feels a bit wrong. Investigate and understand the expected behaviour
     const agent = request.agent(app);
     await uploadTestImage(agent);
     fs.promises.readFile.mockRejectedValue(new Error('ENOENT: file not found'));
