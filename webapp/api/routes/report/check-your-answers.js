@@ -23,8 +23,14 @@ export default function (app) {
         .isEmpty()
         .withMessage('Select to confirm you are happy with the declaration'),
       body('change-wm-link')
-          .custom((value, {req}) => {
-            return allWreckMaterialsHaveImages(req.session.data['property']);
+          .custom(async (value, {req}) => {
+            const wreckMaterialsHaveImages = await allWreckMaterialsHaveImages(
+              req.session.data['property'],
+            );
+            if (!wreckMaterialsHaveImages) {
+              throw new Error('An image is required for each wreck material');
+            }
+            return true;
           })
           .withMessage('An image is required for each wreck material')
     ],
@@ -117,7 +123,10 @@ export default function (app) {
               data['wreck-materials'].push(innerObj);
             } catch (error) {
               console.error('Error reading file:', error);
-              data['wreck-materials'].push(innerObj);
+              // Todo: If we get here, something went wrong, we probably need to redirect to report/check-your-answers
+              console.error('Going to throw the error for the time being');
+              throw(error);
+              // data['wreck-materials'].push(innerObj);
             }
           }
         }
