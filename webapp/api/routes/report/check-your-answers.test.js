@@ -22,10 +22,6 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-afterAll(() => {
-  fs.rmSync('uploads', { recursive: true, force: true });
-});
-
 const setup = (expectedDroitReference, expectedDroitId, expectedBase64ImageData, apiEndpoint) => {
   jest.clearAllMocks();
   axios.post.mockResolvedValue({
