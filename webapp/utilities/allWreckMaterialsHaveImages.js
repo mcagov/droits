@@ -1,4 +1,4 @@
-export const  allWmContainImages = (obj) => {
+export const  allWreckMaterialsHaveImages = (obj) => {
   for (let key in obj) {
     if(typeof obj[key].image != "string"){
       return false
