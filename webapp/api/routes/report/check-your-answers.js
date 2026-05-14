@@ -123,10 +123,7 @@ export default function (app) {
               data['wreck-materials'].push(innerObj);
             } catch (error) {
               console.error('Error reading file:', error);
-              // Todo: If we get here, something went wrong, we probably need to redirect to report/check-your-answers
-              console.error('Going to throw the error for the time being');
-              throw(error);
-              // data['wreck-materials'].push(innerObj);
+              return res.redirect('/report/check-your-answers');
             }
           }
         }

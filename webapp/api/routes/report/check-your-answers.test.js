@@ -195,19 +195,18 @@ describe('POST /report/confirmation — image file reading', () => {
     expect(wreckMaterial.value).toBeNull();
   });
 
-  it('still submits the wreck material when the image file cannot be read', async () => {
-    // Todo: This feels a bit wrong. Investigate and understand the expected behaviour
+  it('redirects to /report/check-your-answers when the image file cannot be read', async () => {
     const agent = request.agent(app);
     await uploadTestImage(agent);
     fs.promises.readFile.mockRejectedValue(new Error('ENOENT: file not found'));
 
-    await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
+    const res = await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
 
-    // SubmitWreckMaterial is still called even though readFile failed
+    expect(res.status).toBe(302);
+    expect(res.headers.location).toBe('/report/check-your-answers');
     const wreckMaterialCall = axios.post.mock.calls[1];
-    expect(wreckMaterialCall).toBeDefined();
-    // image is left as the original filename string, not replaced with an object
-    expect(typeof wreckMaterialCall[1].image).toBe('string');
+    // expect image to be undefined
+    expect(wreckMaterialCall).toBeUndefined();
   });
 });
 
