@@ -195,18 +195,16 @@ describe('POST /report/confirmation — image file reading', () => {
     expect(wreckMaterial.value).toBeNull();
   });
 
-  it('redirects to /report/check-your-answers when the image file cannot be read', async () => {
+  it('throws an error on check-your-answers when the image file cannot be read', async () => {
     const agent = request.agent(app);
     await uploadTestImage(agent);
     fs.promises.readFile.mockRejectedValue(new Error('ENOENT: file not found'));
 
     const res = await agent.post('/report/confirmation').send({ 'property-declaration': 'on' });
 
-    expect(res.status).toBe(302);
-    expect(res.headers.location).toBe('/report/check-your-answers');
-    const wreckMaterialCall = axios.post.mock.calls[1];
-    // expect image to be undefined
-    expect(wreckMaterialCall).toBeUndefined();
+    expect(res.status).toBe(200);
+    expect(res.text).toContain('Upload failed, please re-upload your image');
+    expect(axios.post.mock.calls[1]).toBeUndefined();
   });
 });
 

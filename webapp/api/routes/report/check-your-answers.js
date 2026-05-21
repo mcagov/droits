@@ -123,7 +123,12 @@ export default function (app) {
               data['wreck-materials'].push(innerObj);
             } catch (error) {
               console.error('Error reading file:', error);
-              return res.redirect('/report/check-your-answers');
+              const fileReadError = { id: 'change-wm-link', href: '#change-wm-link', text: 'Upload failed, please re-upload your image' };
+              return res.render('report/check-your-answers', {
+                errors: { 'change-wm-link': fileReadError },
+                errorSummary: [fileReadError],
+                values: req.body,
+              });
             }
           }
         }
