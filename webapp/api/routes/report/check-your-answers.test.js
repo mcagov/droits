@@ -204,7 +204,8 @@ describe('POST /report/confirmation — image file reading', () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain('Upload failed, please re-upload your image');
-    expect(axios.post.mock.calls[1]).toBeUndefined();
+    const wreckMaterialCall = axios.post.mock.calls[1];
+    expect(wreckMaterialCall).toBeUndefined();
   });
 });
 
