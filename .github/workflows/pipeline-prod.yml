@@ -9,6 +9,12 @@ on:
   release:
     types:
       - released
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Image tag to deploy (if you need this to rerun a previous release, get it from that pipeline run''s "Deploy > Set up job > Inputs > image_tag")'
+        required: true
+        type: string
 
 jobs:
   run_pipeline:
@@ -17,7 +23,7 @@ jobs:
     with:
       environment: production
       terraform_workspace: production
-      image_tag: ${{ github.sha }}
+      image_tag: ${{ inputs.image_tag || github.sha }}
     secrets:
       alerts_email: ${{ secrets.ALERTS_EMAIL }}
       alert_pagerduty_integration_url: ${{ secrets.ALERT_PAGERDUTY_INTEGRATION_URL }}
