@@ -89,7 +89,7 @@ A build and deployment to the staging environment is triggered on a manual relea
 with the hash of the triggering commit and published to AWS Elastic Container Registry. Images built and deployed to
 for the staging environment are ephemeral and not used anywhere else.
 
-Please ensure that all staged releases follow semantic versioning: [semver](https://semver.org/). 
+Please ensure that all releases follow semantic versioning: [semver](https://semver.org/). 
 
 ### Production environment
 
