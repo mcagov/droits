@@ -1,4 +1,4 @@
-name: Production pipeline
+name: Deploy Production
 
 permissions:
   contents: read

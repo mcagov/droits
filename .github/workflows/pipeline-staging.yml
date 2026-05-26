@@ -1,4 +1,4 @@
-name: Staging pipeline
+name: Deploy Staging
 
 permissions:
   contents: read
