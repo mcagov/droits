@@ -57,5 +57,8 @@ public enum LetterType
     ClosureOwnerFoundMuseumDonationAgreed,
     
     [Display(Name = "Closure Owner Not Found But Museum Donation")]
-    ClosureOwnerNotFoundButMuseumDonation
+    ClosureOwnerNotFoundButMuseumDonation,
+
+    [Display(Name = "Closure Outside 12nm Owner Not Found")]
+    ClosureOutside12nmOwnerNotFound 
 }
