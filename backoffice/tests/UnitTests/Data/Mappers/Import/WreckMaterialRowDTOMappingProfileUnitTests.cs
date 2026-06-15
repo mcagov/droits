@@ -145,4 +145,20 @@ public class WreckMaterialRowDtoMappingProfileUnitTests
         
 
     }
+	[Fact]
+	public void TestMappingWithNullQuantity_WMRowDtoToWreckMaterialForm_ReturnsOne()
+	{
+		// Assemble 
+		var rowDto = new WMRowDto()
+		{
+			Name = "Test",
+			Description = "This is a test",
+			Quantity = null
+		};
+		// Act
+		var wreckMaterialForm = _mapper.Map<WreckMaterialForm>(rowDto);
+
+		// Assert
+		Assert.Equal(1, wreckMaterialForm.Quantity);
+	}
 }

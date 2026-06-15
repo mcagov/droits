@@ -12,7 +12,7 @@ namespace Droits.Data.Mappers.Submission
             CreateMap<SubmittedWreckMaterialDto, WreckMaterial>()
                 .ForMember(dest => dest.DroitId, opt => opt.MapFrom(src => src.DroitId))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name != null ? src.Name.ValueOrEmpty() : string.Empty))
-                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity!= null? int.Parse(src.Quantity): 0))
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity!= null? int.Parse(src.Quantity): 1))
                 .ForMember(dest => dest.SalvorValuation, opt => opt.MapFrom(src => src.Value ?? 0.0d))
                 .ForMember(dest => dest.ValueKnown, opt => opt.MapFrom(src => src.ValueKnown.AsBoolean()))
                 .ForPath(dest => dest.StorageAddress.Line1, opt => opt.MapFrom(src => src.AddressDetails != null ? src.AddressDetails.AddressLine1.ValueOrEmpty() : string.Empty))
