@@ -1,7 +1,7 @@
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
-import {allWmContainImages, formatValidationErrors} from '../../../utilities';
+import {allWreckMaterialsHaveImages, formatValidationErrors} from '../../../utilities';
 
 const { body, validationResult } = require('express-validator');
 var cloneDeep = require('lodash.clonedeep');
@@ -23,8 +23,14 @@ export default function (app) {
         .isEmpty()
         .withMessage('Select to confirm you are happy with the declaration'),
       body('change-wm-link')
-          .custom((value, {req}) => {
-            return allWmContainImages(req.session.data['property']);
+          .custom(async (value, {req}) => {
+            const wreckMaterialsHaveImages = await allWreckMaterialsHaveImages(
+              req.session.data['property'],
+            );
+            if (!wreckMaterialsHaveImages) {
+              throw new Error('An image is required for each wreck material');
+            }
+            return true;
           })
           .withMessage('An image is required for each wreck material')
     ],
@@ -117,7 +123,12 @@ export default function (app) {
               data['wreck-materials'].push(innerObj);
             } catch (error) {
               console.error('Error reading file:', error);
-              data['wreck-materials'].push(innerObj);
+              const fileReadError = { id: 'change-wm-link', href: '#change-wm-link', text: 'Upload failed, please re-upload your image' };
+              return res.render('report/check-your-answers', {
+                errors: { 'change-wm-link': fileReadError },
+                errorSummary: [fileReadError],
+                values: req.body,
+              });
             }
           }
         }
