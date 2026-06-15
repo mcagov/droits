@@ -97,6 +97,7 @@ namespace Droits.Tests.IntegrationTests.Services
         [InlineData(LetterType.ClosureMuseumLetterOwnerNotFound)]
         [InlineData(LetterType.ClosureOwnerFoundMuseumDonationAgreed)]
         [InlineData(LetterType.ClosureOwnerNotFoundButMuseumDonation)]
+        [InlineData(LetterType.ClosureOutside12nmOwnerNotFound)]
         public void Validate_TemplateFile_Exists_For_Every_LetterType(LetterType letterType)
         {
             // Given
@@ -124,6 +125,7 @@ namespace Droits.Tests.IntegrationTests.Services
         [InlineData(LetterType.ClosureMuseumLetterOwnerNotFound)]
         [InlineData(LetterType.ClosureOwnerFoundMuseumDonationAgreed)]
         [InlineData(LetterType.ClosureOwnerNotFoundButMuseumDonation)]
+        [InlineData(LetterType.ClosureOutside12nmOwnerNotFound)]
         public async Task GetTemplateBodyAsync_WithDroit_ReturnsSubstitutedContent(LetterType letterType)
         {
             // Given
