@@ -72,7 +72,7 @@ public class WreckMaterialMappingProfileTests
             
         // Assert
         Assert.Equal(string.Empty, wreckMaterial.Name);
-        Assert.Equal(0, wreckMaterial.Quantity);
+        Assert.Equal(1, wreckMaterial.Quantity);
         Assert.Equal(0.0d, wreckMaterial.SalvorValuation);
         Assert.False(wreckMaterial.ValueKnown);
         Assert.Equal(string.Empty, wreckMaterial.StorageAddress.Line1);
