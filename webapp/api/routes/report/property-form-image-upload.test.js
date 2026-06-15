@@ -1,14 +1,7 @@
 import request from 'supertest';
 import app from '../../../server';
-import fs from "fs";
 
 describe('Property Image Upload Routes', () => {
-    afterAll(() => {
-        if (fs.existsSync('uploads')) {
-            fs.rmSync('uploads', {recursive: true, force: true});
-        }
-    });
-    
     const agent = request.agent(app);
     
     describe('POST /report/property-form-image-upload/:prop_id', () => {
