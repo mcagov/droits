@@ -1,4 +1,4 @@
-name: Development pipeline
+name: Deploy Development
 
 permissions:
   contents: read
