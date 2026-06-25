@@ -104,6 +104,7 @@ After deploying:
 
 - **Web App**
   - Check the healthcheck endpoint - It should say "OK"
+  - Go to the AWS environment, ECS, DROITS cluster, and confirm that the new task for "droits-cluster", "webapp" is running with a "healthy" state. [AWS Accounts](https://mcaconsole.awsapps.com/start/#/?tab=accounts).
   - Check the "Report Wreck Material" home page loads
     - Initial pages are currently quite different between Dev/Staging and Production
       - Staging * Dev
