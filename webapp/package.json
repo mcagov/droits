@@ -51,7 +51,7 @@
     "dayjs": "^1.11.19",
     "dotenv-json": "^1.0.0",
     "esm": "^3.2.25",
-    "express": "^4.17.1",
+    "express": "^4.22.1",
     "express-debug": "^1.1.1",
     "express-session": "^1.18.2",
     "express-session-redis": "^0.2.0",
