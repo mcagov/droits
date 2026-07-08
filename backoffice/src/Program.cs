@@ -147,7 +147,7 @@ builder.Services.AddGovUkFrontend();
 // Logging
 builder.Services.AddLogging(loggingBuilder =>
 {
-    loggingBuilder.AddConsole();
+    loggingBuilder.AddJsonConsole();
     loggingBuilder.SetMinimumLevel(LogLevel.Debug);
 
 });
