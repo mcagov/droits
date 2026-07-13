@@ -1,0 +1,34 @@
+name: "[reusable] Smoke tests"
+
+permissions:
+  contents: read
+
+on:
+  workflow_call:
+
+jobs:
+  smoke_tests:
+    name: Smoke tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22.17.0"
+
+      - name: Run Cypress smoke tests against production
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: tests
+          browser: chrome
+          spec: cypress/e2e/smoke/*.cy.js
+        env:
+          CYPRESS_BASE_URL: https://report-wreck-material.service.gov.uk
+
+      - uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: smoke-test-screenshots
+          path: tests/cypress/screenshots/
