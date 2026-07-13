@@ -2,9 +2,14 @@ name: "[reusable] Smoke tests"
 
 permissions:
   contents: read
+  id-token: write
 
 on:
   workflow_call:
+    secrets:
+      aws_role_arn:
+        description: Role used for waiting for ECS to deploy successfully.
+        required: true
 
 jobs:
   smoke_tests:
@@ -17,6 +22,15 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: "22.17.0"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.aws_role_arn }}
+          aws-region: eu-west-2
+
+      - name: Wait for ECS services to deploy
+        run: aws ecs wait services-stable --cluster droits-cluster --services webapp backoffice
 
       - name: Run Cypress smoke tests against production
         uses: cypress-io/github-action@v6

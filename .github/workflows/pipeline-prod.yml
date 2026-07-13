@@ -42,3 +42,5 @@ jobs:
     name: Run smoke tests
     needs: [run_pipeline]
     uses: ./.github/workflows/_reusable-smoke-tests.yml
+    secrets:
+      aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
