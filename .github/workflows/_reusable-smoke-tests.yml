@@ -50,6 +50,7 @@ jobs:
           spec: cypress/e2e/smoke/*.cy.js
         env:
           CYPRESS_BASE_URL: ${{ inputs.base_url }}
+          CYPRESS_ENVIRONMENT: ${{ inputs.environment }}
 
       - uses: actions/upload-artifact@v6
         if: failure()
