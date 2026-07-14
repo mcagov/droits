@@ -72,5 +72,11 @@ describe('Smoke test - report a wreck journey', () => {
 
     cy.contains('.govuk-panel__title', 'Report submitted', { timeout: 60000 }).should('be.visible')
     cy.get('.govuk-panel__body strong').invoke('text').should('not.be.empty')
+
+    cy.contains('.govuk-button', 'Print a copy of your report').should('be.visible')
+
+    cy.contains('.govuk-button', 'Check report status').click()
+    cy.url().should('include', '/portal/start')
+    cy.get('#signIn').should('be.visible')
   })
 })
