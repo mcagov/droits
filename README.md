@@ -103,29 +103,18 @@ These are manual at the moment. Writing them down is the first step on the journ
 After deploying:
 
 - **Web App**
-  - Check the healthcheck endpoint - It should say "OK"
   - Check the "Report Wreck Material" home page loads
     - Initial pages are currently quite different between Dev/Staging and Production
       - Staging * Dev
         - Check the three help links top right work
-        - Click through to "Report Wreck Material"
-        - Check the "required format" links triggers download of the CSV template
         - Check the "contact the Receiver of Wreck" link works
       - Production
         - Check the three "Contents" links work
         - Click through to "Report Wreck Material"
-    - Click "Start now"
-      - When asked, use the email `<firstname>.<lastname>+<YYYY-MM-DD>@<domain>.<tld>` which, for Gmail at least, will be sent to `<firstname>.<lastname>@<domain>.<tld>`
-      - Check you can make it all the way through to the point of submission (It will say "Accept and send" under the "Declaration by finder"
-      - **Dev & Staging Only**
-        - Click "Accept and send" to send the report
-        - On the confirmation page check that the "Print a copy of your report" button works
-        - Check that the "Check report status" button takes you to the "Check the status of wreck material you have reported" page that includes the "Sign in" button
   - Return to the home page
     - Staging * Dev
       - Click the "Check the status of wreck material reported" link
       - Check you are on the "Check the status of wreck material you have reported"
-        - Check the "submitting a report" link return you to the "Report Wreck Material" page
         - Use the browser's back button to return to the "Check the status of wreck material you have reported"
       - Click on the "create an account" link and check you are on the "Sign up" page
         - **Dev & Staging Only** (keeping this because we want to get the environments aligned in future)
