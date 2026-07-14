@@ -8,4 +8,13 @@ describe('Smoke test - portal start page', () => {
       .should('be.visible')
       .and('contain.text', 'Sign in')
   })
+
+  it('returns to the report start page via the "submitting a report" link', () => {
+    cy.visit('/portal/start')
+
+    cy.contains('a', 'submitting a report').click()
+
+    cy.url().should('include', '/report/start')
+    cy.contains('.govuk-button', 'Start now').should('be.visible')
+  })
 })
