@@ -64,7 +64,7 @@ Perform a manual test to ensure the CSS and HTML are rendering correctly.
 
 ## Updating assets
 
-- Create a new directory ensure it has a sensible name for example **assets-2026-16-02** and **portal-2026-16-02**.
+- Create a new directory ensure it has a sensible name for example **assets-2026-06-17** and **portal-2026-06-17**.
 - Once changes are tested and validated, clean up the old files in S3 after release.
 
 ## Troubleshooting
