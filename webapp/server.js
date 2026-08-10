@@ -86,7 +86,7 @@ if (config.SERVICE_UNAVAILABLE) {
   // Configure nunjucks environment
   const nunjucksAppEnv = nunjucks.configure(
     [
-      path.join(__dirname, './node_modules/govuk-frontend/'),
+      path.join(__dirname, './node_modules/govuk-frontend/dist'),
       path.join(__dirname, './app/views/'),
     ],
     {
@@ -109,7 +109,7 @@ if (config.SERVICE_UNAVAILABLE) {
   app.use(
     '/assets',
     express.static(
-      path.join(__dirname, './node_modules/govuk-frontend/govuk/assets')
+      path.join(__dirname, './node_modules/govuk-frontend/dist/govuk/assets')
     )
   );
 

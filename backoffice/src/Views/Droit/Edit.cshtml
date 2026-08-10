@@ -1,4 +1,5 @@
-﻿@model DroitForm
+﻿@using System.Net
+@model DroitForm
 @{
     ViewData["Title"] = Model.Id == default ? "New Droit" : $"Droit: {Model.Reference}";
     
@@ -14,6 +15,10 @@
 
 @{
     await Html.RenderPartialAsync("_MessageBanner");
+}
+
+@{
+    Model.LocationDescription = WebUtility.HtmlDecode(Model.LocationDescription);
 }
 
 <h4>@ViewData["Title"]</h4>

@@ -1,4 +1,8 @@
+@using System.Net
 @model DroitView
+@{
+    Model.LocationDescription = WebUtility.HtmlDecode(Model.LocationDescription);
+}
 
 <div class="col mb-2">
     <div class="card">

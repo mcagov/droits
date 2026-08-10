@@ -203,7 +203,7 @@ public class DroitView : BaseEntityView
     public RecoveredFrom? RecoveredFrom { get; }
 
     [DisplayName("Location Description")]
-    public string? LocationDescription { get; } = string.Empty;
+    public string? LocationDescription { get; set; } = string.Empty;
 
 
     // Salvage
