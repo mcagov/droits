@@ -1,23 +1,19 @@
-##### DROITS
+# DROITS
 
  DROITS is a web application that enables the Marine and Coastguard Agency to manage sea wreckage reported by members of the public. It has two groups of users:
 
 - members of the public who find items of wreckage. They use the main front end UI contained in this repo.
 - receivers of wreck. They use a Microsoft back office component to the system not contained in this repo.
 
-## Quick Start 🚀
+The application shows a form that members of the public fill out and submit in order to report wreckages.
 
- The application shows a form that members of the public fill out and submit in order to report wreckages.
-
-#### Installs dependencies
-
-# Ubiquitous Language
+## Ubiquitous Language
 
 - Wreck: a piece of sea wreckage washed up on land. In the code, this is referred to as 'property'
 - Droit: a report of a piece of sea wreckage submitted by the public using this app
 - Receivers of wreck: Marine and Coastguard Agency employees who receive the reports of wreckage submitted via this app and decide what to do with it
 
-# Tools and Technologies Used
+## Tools and Technologies Used
 
 - Node.js
 - Express.js
@@ -27,7 +23,7 @@
 - Microsoft Power Automate Flows
 - Microsoft Power Apps
 
-# Architecture
+## Architecture
 
  The system uses the following components:
 
@@ -37,7 +33,7 @@
   - it sends the public user's report of a piece of wreckage to Microsoft Power Automate Flows in a POST request.
 - This sets off a sequence of automated tasks in MS Power Automate Flow, which allows the receivers of wreck to examine the public user's report.
 
-# Infrastructure
+## Infrastructure
 
 - The system uses an Azure app service (web app) served by an app service plan in the report-wreck-material-prod-rg resource group in the MCA production tenant.
 - In UAT, the setup is the same, but the resources inhabit the Report-wreck-material-RG resource group in the same tenant.
@@ -45,32 +41,18 @@
 - In UAT, the environment is called Report-Wreck-Material-UAT and its equivalent cloud flow is also called Wreck-Report-Submission.
 - Both Power Automate Flow environments reside in the same MCA production tenant.
 
-# Known Issues
+## Known Issues
 
 - Inconsistent domain language (wreck /= property)
 - The name 'DROITS' has no direct significance relating to the application itself
 
-# How to run the app 🚀
+## Local development
 
-## Install prerequisites
+Follow [the instructions in the root README to get started](../README.md#local-development).
 
-We recommend using [asdf](https://asdf-vm.com/guide/getting-started.html) to install the required tools specified in [.tool-versions](../.tool-versions).
+### Running the webapp without using Docker Compose
 
-## Install dependencies
-
-```shell
-# From the webapp directory...
-
- npm install
-```
-
-## Create a `.env.json` file
-
-Populate it with the contents of the "Webapp .env.dev.json" in 1Password.
-
-## Run the app
-
-### Start the Express server
+#### Start the Express server
 
 ```shell
 # From the webapp directory...
@@ -78,7 +60,7 @@ Populate it with the contents of the "Webapp .env.dev.json" in 1Password.
  npm run start
 ```
 
-### Start both the Express server and frontend
+#### Start both the Express server and frontend
 
 ```shell
 # From the webapp directory...
@@ -86,7 +68,7 @@ Populate it with the contents of the "Webapp .env.dev.json" in 1Password.
  npm run dev
 ```
 
-### Build static assets for production
+#### Build static assets for production
 
 ```shell
 # From the webapp directory...
