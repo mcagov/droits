@@ -1,0 +1,59 @@
+name: "[reusable] Smoke tests"
+
+permissions:
+  contents: read
+  id-token: write
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: The environment to run against (development/staging/production)
+        required: true
+        type: string
+      base_url:
+        description: The webapp URL to test
+        required: true
+        type: string
+    secrets:
+      aws_role_arn:
+        description: Role used for waiting for ECS to deploy successfully.
+        required: true
+
+jobs:
+  smoke_tests:
+    name: Smoke tests
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22.17.0"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.aws_role_arn }}
+          aws-region: eu-west-2
+
+      - name: Wait for ECS services to deploy
+        run: aws ecs wait services-stable --cluster droits-cluster --services webapp backoffice
+
+      - name: Run Cypress smoke tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: tests
+          browser: chrome
+          spec: cypress/e2e/smoke/*.cy.js
+        env:
+          CYPRESS_BASE_URL: ${{ inputs.base_url }}
+          CYPRESS_ENVIRONMENT: ${{ inputs.environment }}
+
+      - uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: smoke-test-screenshots
+          path: tests/cypress/screenshots/

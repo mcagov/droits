@@ -37,3 +37,13 @@ jobs:
       testing_webapp_env_file: ${{ secrets.TESTING_WEBAPP_ENV_FILE }}
       webapp_env_file: ${{ secrets.WEBAPP_ENV_FILE }}
       webapp_repository_name: ${{ secrets.WEBAPP_ECR_REPOSITORY_NAME }}
+
+  smoke_tests:
+    name: Run smoke tests
+    needs: [run_pipeline]
+    uses: ./.github/workflows/_reusable-smoke-tests.yml
+    with:
+      environment: production
+      base_url: https://report-wreck-material.service.gov.uk
+    secrets:
+      aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
