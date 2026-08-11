@@ -259,3 +259,14 @@ module "route53" {
   domain_validation_options = module.acm.domain_validation_options
   ssl_certificate_arn       = module.acm.ssl_certificate_arn
 }
+
+# Test Parameter Store instance confirming it works before adding GitHub Secrets. 
+resource "aws_ssm_parameter" "test_secret" {
+  name  = "/droits/${terraform.workspace}/test-secret"
+  type  = "SecureString"
+  value = "placeholder"
+
+  tags = {
+    Environment = terraform.workspace
+  }
+}
