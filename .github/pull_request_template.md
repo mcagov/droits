@@ -4,4 +4,4 @@
 
 ## Checklist
 
-- [ ] Checked for breaking changes
+- [ ] Any code affected by breaking changes in dependency updates has been updated.
