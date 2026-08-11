@@ -157,6 +157,7 @@ After deploying:
         - Check it loads as expected
 - **Backoffice**
   - Check the healthcheck endpoint - It should say "Healthy"
+  - Go to the AWS environment, ECS, DROITS cluster, and confirm that the new task for "droits-cluster", "backoffice" is running with a "healthy" state. [AWS Accounts](https://mcaconsole.awsapps.com/start/#/?tab=accounts).
   - Log in using your "...@mcga.onmicrosoft.com" account
     - Check you are on the "My Dashboard" page
     - Check it shows panels for "My Assigned Droits" and "QC Approved Letters"
