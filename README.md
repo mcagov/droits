@@ -90,6 +90,8 @@ A build and deployment to the staging environment is triggered on a manual relea
 with the hash of the triggering commit and published to AWS Elastic Container Registry. Images built and deployed to
 for the staging environment are ephemeral and not used anywhere else.
 
+Please ensure that all releases follow semantic versioning: [semver](https://semver.org/). 
+
 ### Production environment
 
 A build and deployment to the production environment is triggered on a manual release set to "latest release". Docker images are tagged
@@ -104,6 +106,7 @@ After deploying:
 
 - **Web App**
   - Check the healthcheck endpoint - It should say "OK"
+  - Go to the AWS environment, ECS, DROITS cluster, and confirm that the new task for "droits-cluster", "webapp" is running with a "healthy" state. [AWS Accounts](https://mcaconsole.awsapps.com/start/#/?tab=accounts).
   - Check the "Report Wreck Material" home page loads
     - Initial pages are currently quite different between Dev/Staging and Production
       - Staging * Dev
@@ -156,6 +159,7 @@ After deploying:
         - Check it loads as expected
 - **Backoffice**
   - Check the healthcheck endpoint - It should say "Healthy"
+  - Go to the AWS environment, ECS, DROITS cluster, and confirm that the new task for "droits-cluster", "backoffice" is running with a "healthy" state. [AWS Accounts](https://mcaconsole.awsapps.com/start/#/?tab=accounts).
   - Log in using your "...@mcga.onmicrosoft.com" account
     - Check you are on the "My Dashboard" page
     - Check it shows panels for "My Assigned Droits" and "QC Approved Letters"
