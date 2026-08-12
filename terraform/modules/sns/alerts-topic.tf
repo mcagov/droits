@@ -67,5 +67,23 @@ data "aws_iam_policy_document" "alerts" {
     sid = "__default_statement_ID"
   }
 
+  statement {
+    sid    = "PublishEventsToTopic"
+    effect = "Allow"
+
+    actions = [
+      "SNS:Publish",
+    ]
+
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+
+    resources = [
+      aws_sns_topic.alerts.arn
+    ]
+  }
+
   depends_on = [aws_sns_topic.alerts]
 }
