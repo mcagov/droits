@@ -19,6 +19,15 @@ const connect_redis = require("connect-redis");
 const cors = require('cors');
 
 require("dotenv-json")();
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled promise rejection:', reason);
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception:', err);
+});
+
 const app = express();
 app.options('*', cors());
 
