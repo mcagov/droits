@@ -54,7 +54,7 @@
 
 ## Install prerequisites
 
-We recommend using [asdf](https://asdf-vm.com/guide/getting-started.html) to install the required tools specified in [.tool-versions](../.tool-versions).
+We recommend using [mise-en-place](https://mise.jdx.dev/) to install the required tools specified in [.tool-versions](../.tool-versions).
 
 ## Install dependencies
 
