@@ -48,6 +48,9 @@ on:
       alert_email_address:
         description: Email that will receive alert alarms
         required: true
+      alert_pagerduty_integration_url:
+        description: The Integration URL to which CloudWatch alerts should be sent for PagerDuty
+        required: true
       webapp_env_file:
         description: The contents of the environment file
         required: true
@@ -67,7 +70,7 @@ jobs:
     env:
       TF_WORKSPACE: ${{ inputs.terraform_workspace }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ inputs.image_tag }}
       - name: Configure AWS credentials
@@ -75,7 +78,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.aws_role_arn }}
           aws-region: eu-west-2
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: ">=1.5.0"
       - name: Terraform init
@@ -93,6 +96,7 @@ jobs:
           TF_VAR_db_username: ${{ secrets.db_username }}
           TF_VAR_db_password: ${{ secrets.db_password }}
           TF_VAR_alert_email_address: ${{secrets.alert_email_address}}
+          TF_VAR_alert_pagerduty_integration_url: ${{ secrets.alert_pagerduty_integration_url }}
           TF_VAR_backoffice_environment_file: ${{ secrets.backoffice_env_file }}
           TF_VAR_webapp_environment_file: ${{ secrets.webapp_env_file }}
         run: terraform apply -input=false -auto-approve -var-file=tfvars/${{ inputs.terraform_workspace }}.tfvars

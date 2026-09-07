@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import nunjucks from 'nunjucks';
 import path from 'path';
-import edt from 'express-debug';
+
 import {
   sessionData,
   addCheckedFunction,
@@ -12,14 +12,27 @@ import {
 } from './utilities';
 import routes from './api/routes';
 import config from './app/config.js';
+import rateLimitMiddleware from './utilities/rateLimiter.js';
 
-var connect_redis = require("connect-redis");
+const connect_redis = require("connect-redis");
 
-var cors = require('cors')
+const cors = require('cors');
 
 require("dotenv-json")();
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled promise rejection:', reason);
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception:', err);
+});
+
 const app = express();
 app.options('*', cors());
+
+// Rate Limiter applied to all routes
+app.use(rateLimitMiddleware);
 
 // Global vars
 app.locals.serviceName = config.SERVICE_NAME;
@@ -43,9 +56,9 @@ useHttps = useHttps.toLowerCase();
 
 // Production session data
 const session = require('express-session');
-var redis = require("redis");
-var redisStore = connect_redis(session);
-var redisClient = redis.createClient({
+const redis = require("redis");
+const redisStore = connect_redis(session);
+const redisClient = redis.createClient({
     host: process.env.REDIS_HOST,
     port: 6379,
 });
@@ -63,7 +76,7 @@ if (config.SERVICE_UNAVAILABLE) {
   
   app.all('*', (req, res, next) => {
     console.log('Service Unavailable.');
-    res.status('503');
+    res.status(503);
     res.render('service-unavailable.html');
   });
 } else {
@@ -82,13 +95,13 @@ if (config.SERVICE_UNAVAILABLE) {
   // Configure nunjucks environment
   const nunjucksAppEnv = nunjucks.configure(
     [
-      path.join(__dirname, './node_modules/govuk-frontend/'),
+      path.join(__dirname, './node_modules/govuk-frontend/dist'),
       path.join(__dirname, './app/views/'),
     ],
     {
       autoescape: false,
       express: app,
-      watch: env === 'development' ? true : false,
+      watch: env === 'development',
     }
   );
   addCheckedFunction(nunjucksAppEnv);
@@ -105,7 +118,7 @@ if (config.SERVICE_UNAVAILABLE) {
   app.use(
     '/assets',
     express.static(
-      path.join(__dirname, './node_modules/govuk-frontend/govuk/assets')
+      path.join(__dirname, './node_modules/govuk-frontend/dist/govuk/assets')
     )
   );
 
@@ -132,9 +145,6 @@ if (config.SERVICE_UNAVAILABLE) {
 
   // Manage session data. Assigns default values to data
   app.use(sessionData);
-
-  // Logs req.session data
-  if (env === 'development') edt(app, { panels: ['session'] });
 
 
   app.get('/', function(req, res){
@@ -165,18 +175,20 @@ if (config.SERVICE_UNAVAILABLE) {
 
   // Catch 404 and forward to error handler
   app.use(function (req, res, next) {
-    var err = new Error(`Page not found: ${req.path}`);
-    err.status = 404;
+      const err = new Error(`Page not found: ${req.path}`);
+      err.status = 404;
 
     next(err);
   });
 
   // Display error
   app.use(function (err, req, res, next) {
-    res.status(err.status || 500);
 
     if (err.message.indexOf('not found') > 0) {
       res.status(404).render('404');
+    } else {
+      res.status(err.status || 500);
+      res.render('service-unavailable.html');
     }
   });
 }

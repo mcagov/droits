@@ -35,6 +35,11 @@ export default function (app) {
   app.post('/report/property-form-image/:prop_id', async (req, res, next) => {
     var rawPropertyID = req.params.prop_id;
 
+    const forbiddenKeys = ['__proto__', 'constructor', 'prototype'];
+    if (forbiddenKeys.includes(rawPropertyID)) {
+      return res.sendStatus(403);
+    }
+    
     if (!req.session.data.property[rawPropertyID]) {
       req.session.data.property[rawPropertyID] =
         req.body.property[rawPropertyID];
@@ -67,8 +72,8 @@ export default function (app) {
       await body('property' + '[' + propertyID + '][quantity]')
         .exists()
         .escape()
-        .isNumeric()
-        .withMessage('Enter a number')
+        .isInt({ min:1 })
+        .withMessage('Enter a number greater than 0')
         .not()
         .isEmpty()
         .withMessage(

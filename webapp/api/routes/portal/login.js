@@ -1,40 +1,65 @@
 require("dotenv-json")();
 
 const passport = require('passport');
-var OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
-var bunyan = require('bunyan');
-var log = bunyan.createLogger({
-  name: 'Microsoft OIDC Example Web Application',
+const OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
+const bunyan = require('bunyan');
+const log = bunyan.createLogger({
+    name: 'Microsoft OIDC Example Web Application',
 });
-export default function (app) {
-  app.use(passport.initialize());
-  app.use(passport.session());
 
-  passport.serializeUser(function (user, done) {
-    done(null, user.oid);
-  });
+// array to hold logged-in users
+export const users = [];
 
-  passport.deserializeUser(function (oid, done) {
-    findByOid(oid, function (err, user) {
-      done(err, user);
-    });
-  });
-
-  // array to hold logged in users
-  var users = [];
-
-  var findByOid = function (oid, fn) {
-    for (var i = 0, len = users.length; i < len; i++) {
-      var user = users[i];
-      log.info('User logged in.');
-      if (user.oid === oid) {
-        return fn(null, user);
-      }
+export const findByOid = function (oid, fn) {
+    for (let i = 0, len = users.length; i < len; i++) {
+        const user = users[i];
+        if (user.oid === oid) {
+            log.info('User logged in.');
+            return fn(null, user);
+        }
     }
     return fn(null, null);
-  };
+};
 
-  passport.use(
+export const serializeUser = function (user, done) {
+    done(null, user.oid);
+};
+
+export const deserializeUser = function (oid, done) {
+    findByOid(oid, function (err, user) {
+        done(err, user);
+    });
+};
+
+export const verifyStrategy = function (iss, sub, profile, accessToken, refreshToken, params, done) {
+    if (!profile.oid) {
+        return done(new Error('No oid found'), null);
+    }
+
+    // Asynchronous verification
+    process.nextTick(function () {
+        findByOid(profile.oid, function (err, user) {
+            if (err) {
+                return done(err);
+            }
+            if (!user) {
+                // "Auto-registration"
+                users.push(profile);
+                return done(null, profile);
+            }
+            return done(null, user);
+        });
+    });
+};
+
+export default function (app) {
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+    passport.serializeUser(serializeUser);
+    passport.deserializeUser(deserializeUser);
+    
+    passport.use(
     new OIDCStrategy(
       {
         identityMetadata: process.env.B2C_BASE_URL + process.env.B2C_IDENTITY_METADATA,
@@ -53,27 +78,7 @@ export default function (app) {
         loggingLevel: 'info',
         loggingNoPII: true,
         scope: process.env.B2C_CLIENT_ID,
-      },
-      function (iss, sub, profile, accessToken, refreshToken, params, done) {
-        if (!profile.oid) {
-          return done(new Error('No oid found'), null);
-        }
-        // asynchronous verification
-        process.nextTick(function () {
-          findByOid(profile.oid, function (err, user) {
-            if (err) {
-              return done(err);
-            }
-            if (!user) {
-              // "Auto-registration"
-              users.push(profile);
-
-              return done(null, profile);
-            }
-            return done(null, user);
-          });
-        });
-      }
+      }, verifyStrategy
     )
   );
 

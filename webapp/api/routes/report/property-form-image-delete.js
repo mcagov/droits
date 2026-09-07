@@ -12,8 +12,13 @@ export default function (app) {
       }
     });
 
+    const forbiddenKeys = ['__proto__', 'constructor', 'prototype'];
+    if (forbiddenKeys.includes(id)) {
+      return res.sendStatus(403);
+    }
+    
     req.session.data.property[id].image = '';
     req.session.save();
-    res.json();
+    return res.json();
   });
 }

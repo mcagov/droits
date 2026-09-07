@@ -17,22 +17,21 @@ jobs:
       run:
         working-directory: terraform
     steps:
-      - uses: actions/checkout@v4
-      - uses: hashicorp/setup-terraform@v3
+      - uses: actions/checkout@v7
+      - uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: ">=1.5.0"
       - name: Terraform Lint
         run: terraform fmt --recursive --check
         
-  # Todo: Get this working once we have access to add the required secret
-  # test-backoffice:
-  #   name: Test backoffice
-  #   uses: ./.github/workflows/_reusable-backoffice-test.yml
-  #   with:
-  #     environment: development
-  #     dotnet-version: "8.0.x"
-  #   secrets:
-  #     env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
+  test-backoffice:
+     name: Test backoffice
+     uses: ./.github/workflows/_reusable-backoffice-test.yml
+     with:
+       environment: ci-test
+       dotnet-version: "8.0.x"
+     secrets:
+       env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}
 
   test-webapp:
     name: Test webapp
@@ -40,4 +39,18 @@ jobs:
     with:
       working-directory: webapp
     secrets:
-      testing_webapp_env_file: ${{ secrets.testing_webapp_env_file }}
+      testing_webapp_env_file: ${{ secrets.TESTING_WEBAPP_ENV_FILE }}
+      
+  end_to_end_tests:
+    name: End-to-end tests
+    needs:
+      - terraform_lint
+      - test-webapp
+      - test-backoffice
+    uses: ./.github/workflows/_reusable-end-to-end-tests.yml
+    with:
+      image-tag: ${{ github.sha }}
+      environment: ci-test
+    secrets:
+      testing_webapp_env_file: ${{ secrets.TESTING_WEBAPP_ENV_FILE }}
+      testing_backoffice_env_file: ${{ secrets.BACKOFFICE_ENV_FILE }}

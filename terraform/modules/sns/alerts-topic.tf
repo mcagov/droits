@@ -14,6 +14,13 @@ resource "aws_sns_topic_subscription" "alerts" {
   depends_on = [aws_sns_topic.alerts]
 }
 
+resource "aws_sns_topic_subscription" "sns_technical_alerts_pagerduty_subscription" {
+  topic_arn = aws_sns_topic.alerts.arn
+  protocol  = "https"
+  endpoint  = var.alert_pagerduty_integration_url
+}
+
+
 resource "aws_sns_topic_policy" "alerts" {
   arn    = aws_sns_topic.alerts.arn
   policy = data.aws_iam_policy_document.alerts.json

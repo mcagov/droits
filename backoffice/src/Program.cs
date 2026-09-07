@@ -1,4 +1,3 @@
-
 using Amazon.Runtime;
 using Amazon.S3;
 using Droits.Clients;
@@ -51,6 +50,7 @@ builder.Services.AddControllersWithViews(options =>
         options.Filters.Add(new AuthorizeFilter(policy));
     })
     .AddRazorRuntimeCompilation().AddMicrosoftIdentityUI().AddSessionStateTempDataProvider();
+    
 
 var awsOptions = builder.Configuration.GetAWSOptions();
 
@@ -147,7 +147,7 @@ builder.Services.AddGovUkFrontend();
 // Logging
 builder.Services.AddLogging(loggingBuilder =>
 {
-    loggingBuilder.AddConsole();
+    loggingBuilder.AddJsonConsole();
     loggingBuilder.SetMinimumLevel(LogLevel.Debug);
 
 });
@@ -194,8 +194,6 @@ else
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-
-
 // Seeding the database
 using (var scope = app.Services.CreateScope())
 {
@@ -203,7 +201,7 @@ using (var scope = app.Services.CreateScope())
 
     dbContext.Database.EnsureCreated();
 
-    var shouldSeedDatabase = builder.Environment.IsDevelopment() && false;
+    var shouldSeedDatabase = Environment.GetEnvironmentVariable("SEED_DATABASE") == "true";
 
     if (shouldSeedDatabase)
     {

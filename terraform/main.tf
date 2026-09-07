@@ -146,34 +146,39 @@ module "webapp-ecs" {
 }
 
 module "backoffice-sns" {
-  source              = "./modules/sns"
-  resource_name       = "backoffice"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
+  source                          = "./modules/sns"
+  resource_name                   = "backoffice"
+  alert_email_address             = var.alert_email_address
+  aws_account_number              = var.aws_account_number
+  alert_pagerduty_integration_url = var.alert_pagerduty_integration_url
 }
 module "backoffice-lb-sns" {
-  source              = "./modules/sns"
-  resource_name       = "backoffice-lb"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
+  source                          = "./modules/sns"
+  resource_name                   = "backoffice-lb"
+  alert_email_address             = var.alert_email_address
+  aws_account_number              = var.aws_account_number
+  alert_pagerduty_integration_url = var.alert_pagerduty_integration_url
 }
 module "webapp-sns" {
-  source              = "./modules/sns"
-  resource_name       = "webapp"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
+  source                          = "./modules/sns"
+  resource_name                   = "webapp"
+  alert_email_address             = var.alert_email_address
+  aws_account_number              = var.aws_account_number
+  alert_pagerduty_integration_url = var.alert_pagerduty_integration_url
 }
 module "webapp-lb-sns" {
-  source              = "./modules/sns"
-  resource_name       = "webapp-lb"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
+  source                          = "./modules/sns"
+  resource_name                   = "webapp-lb"
+  alert_email_address             = var.alert_email_address
+  aws_account_number              = var.aws_account_number
+  alert_pagerduty_integration_url = var.alert_pagerduty_integration_url
 }
 module "db-sns" {
-  source              = "./modules/sns"
-  resource_name       = "db"
-  alert_email_address = var.alert_email_address
-  aws_account_number  = var.aws_account_number
+  source                          = "./modules/sns"
+  resource_name                   = "db"
+  alert_email_address             = var.alert_email_address
+  aws_account_number              = var.aws_account_number
+  alert_pagerduty_integration_url = var.alert_pagerduty_integration_url
 }
 
 module "elasticache" {
@@ -216,19 +221,13 @@ module "cloudwatch" {
   db_instance_class                                  = var.db_instance_class
   db_low_disk_burst_balance_threshold                = var.db_low_disk_burst_balance_threshold
   enable_alerts                                      = var.enable_alerts
-  ecs_backofice_service_minimum_task_count           = var.api_backofice_service_minimum_task_count
   ecs_webapp_service_minimum_task_count              = var.webapp_service_minimum_task_count
-  percentage_cpu_utilization_high_threshold          = var.percentage_cpu_utilization_high_threshold
-  percentage_memory_utilization_high_threshold       = var.percentage_memory_utilization_high_threshold
-  cpu_utilisation_duration_in_seconds_to_evaluate    = var.cpu_utilisation_duration_in_seconds_to_evaluate
+  db_cpu_utilization_high_threshold_percentage       = var.percentage_cpu_utilization_high_threshold
   db_cpu_credit_balance_too_low_threshold            = var.db_cpu_credit_balance_too_low_threshold
-  memory_utilization_high_evaluation_periods         = var.memory_utilization_high_evaluation_periods
   lb_average_response_time_threshold                 = var.lb_average_response_time_threshold
-  cpu_utilization_high_evaluation_periods            = var.cpu_utilization_high_evaluation_periods
   db_memory_swap_usage_too_high_threshold            = var.db_memory_swap_usage_too_high_threshold
   db_maximum_used_transaction_ids_too_high_threshold = var.db_maximum_used_transaction_ids_too_high_threshold
   lb_evaluation_periods                              = var.lb_evaluation_periods
-  memory_utilisation_duration_in_seconds_to_evaluate = var.memory_utilisation_duration_in_seconds_to_evaluate
   db_memory_freeable_too_low_threshold               = var.db_memory_freeable_too_low_threshold
   db_evaluation_periods                              = var.db_evaluation_periods
 
