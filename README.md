@@ -31,6 +31,73 @@ unsure.
 | [terraform](https://www.terraform.io/)                            | 1.4.6       |
 | [Docker desktop](https://www.docker.com/products/docker-desktop/) | Latest      |
 
+# How to run the app 🚀
+
+## Install prerequisites
+
+We recommend using [mise-en-place](https://mise.jdx.dev/) to install the required tools specified in [.tool-versions](../.tool-versions).
+
+## Install dependencies
+
+```shell
+# From the webapp directory...
+
+ npm install
+```
+
+## Create a `.env.json` file
+
+Populate it with the contents of the "Webapp .env.dev.json" in 1Password.
+
+## Run the app
+
+### Start the Express server
+
+```shell
+# From the webapp directory...
+
+ npm run start
+```
+
+### Start both the Express server and frontend
+
+```shell
+# From the webapp directory...
+
+ npm run dev
+```
+
+## Testing
+
+### Run the unit tests
+
+```shell
+# From the webapp directory...
+
+npm run test
+```
+
+### Mutation testing
+
+We use [Stryker Mutator](https://stryker-mutator.io/docs/stryker-js/introduction/) as a tool to help us understand how much we can trust our unit tests.
+
+Every mutation that survives is a line of code that we can change without it being picked up by our unit tests.
+
+To run the mutation tests:
+
+```shell
+# From the webapp directory...
+
+stryker run
+```
+
+This will take a while, so you are not going to be running it after every commit.
+
+Once it completes, there should be an HTML report in `reports/mutation/mutation.html`.
+
+## Access the back office component
+
+- [Log in to Microsoft Power Automate Flow](https://unitedkingdom.flow.microsoft.com/manage/environments/93b4f1ed-cbc0-4b5a-b71c-8465c4d011b7/flows/shared)
 ## Infrastructure-as-code
 
 The [Terraform](./terraform) directory contains the Terraform code for managing the infrastructure for the Droits
