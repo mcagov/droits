@@ -13,7 +13,7 @@ export default function (app) {
       propertyID = rawPropertyID;
       propertyItem = property[propertyID];
     } else {
-      res.redirect('/report/property-summary');
+      return res.redirect('/report/property-summary');
     }
 
     res.render('report/property-form-address', {
@@ -34,11 +34,16 @@ export default function (app) {
           req.body.property[rawPropertyID];
       }
 
+        const forbiddenKeys = ['__proto__', 'constructor', 'prototype'];
+        if (forbiddenKeys.includes(rawPropertyID)) {
+            return res.sendStatus(403);
+        }
+        
       req.session.data.property[rawPropertyID]['address-details'] = {};
 
       var propertyID;
       var propertyItem;
-
+      
       property[rawPropertyID]['storage-address'] =
         req.body.property[rawPropertyID]['storage-address'];
 

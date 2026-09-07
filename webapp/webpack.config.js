@@ -2,7 +2,7 @@
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
@@ -18,7 +18,7 @@ module.exports = (env) => {
         maxAssetSize: 512000
     },
     entry: {
-      main: ['@babel/polyfill', './app/js/index.js'],
+      main: ['./app/js/index.js'],
     },
     output: {
       path: path.join(__dirname, 'dist'),
@@ -45,14 +45,10 @@ module.exports = (env) => {
         },
         {
           test: /\.(png|jpg|gif)$/i,
-          use: [
-            {
-              loader: 'url-loader',
-              options: {
-                limit: 8192,
-              },
-            },
-          ],
+          type: 'asset/resource',
+          generator: {
+            filename: 'assets/images/[name][ext]'
+          }
         },
       ],
     },
@@ -90,16 +86,9 @@ module.exports = (env) => {
       minimize: !devMode,
       minimizer: [
         new TerserPlugin({
-          sourceMap: true,
           parallel: true,
         }),
-        new OptimizeCSSAssetsPlugin({
-          cssProcessorOptions: {
-            map: {
-              inline: false,
-            },
-          },
-        }),
+        new CssMinimizerPlugin(),
       ],
     },
   };

@@ -1,4 +1,4 @@
-import getKeypath from 'keypather/get';
+import get from 'lodash/get';
 
 // Add Nunjucks function called 'checked' to populate radios and checkboxes
 export const addCheckedFunction = (env) => {
@@ -11,8 +11,9 @@ export const addCheckedFunction = (env) => {
     // checked("field-name")
     // checked("['field-name']")
     // checked("['parent']['field-name']")
-    name = !name.match(/[.[]/g) ? `['${name}']` : name;
-    var storedValue = getKeypath(this.ctx.data, name);
+    // Convert brackets to dots for lodash get
+    const path = name.match(/[.[]/g) ? name.replace(/\['/g, '.').replace(/'\]/g, '').replace(/^\./, '') : name;
+    var storedValue = get(this.ctx.data, path);
     // Check the requested data exists
     if (storedValue === undefined) {
       return '';

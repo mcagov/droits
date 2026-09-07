@@ -69,7 +69,7 @@ export default function (app) {
     if (property[rawPropertyID] !== undefined) {
       propertyItem = property[rawPropertyID];
     } else {
-      res.redirect('/report/property-summary');
+      return res.redirect('/report/property-summary');
     }
 
     res.render('report/property-delete', {
