@@ -28,81 +28,7 @@ unsure.
 ## Local development
 
 - Make sure you have the required versions of things installed.
-   - Install [asdf](asdf-vm.com), or 'brew install asdf' which will automatically manage this.
-   - See the `.tool-versions` if you want to manage them some other way.
-- Add your local config files:
-  - `webapp/.env.json` (get the content s from the "Droits Local - webapp/.env.json" secret in 1Password)
-  - `backoffice/src/appsettings.json` (get the content s from the "Droits Local - backoffice/src/appsettings.json" secret in 1Password)
-- Install all the things, setup commit hooks etc.
-   - ```bash
-    # From the root of this repository
-    make setup
-    ```
-- Ensure you have created the development certificate:
-  - ```bash
-    dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p password
-    ```
-  - You will need to unlock your keyvault with your MacBook password
-- Build the container images:
-  - ```bash
-    # From the root of this repository
-    make build
-    ```
-- Start up the applications in development mode, with backing services
-  - ```bash
-    # From the root of this repository
-    make serve
-    ```
-  - The application should be available at the following URLS:
-    - Webapp:
-      - User facing: http://localhost:3000
-    - Backoffice:
-      - User facing: http://localhost:5001
-      - Health check: http://localhost:5001/healthz
-  
-At the time of writing, this will fire up the service using Docker Compose.
-
-It would be nice to have Makefile commands to fire up the two applications outside of Docker for easier development work. For now though, look at [webapp README](./webapp/README.md) and [backoffice README](./backoffice/README.md).
-
-### Troubleshooting
-
-- Instance fails to start: If you ran `docker compose up` before creating and populating the `.env.json` and `appsettings.json` files, this will cause the instance to fail. To resolve this, clean up the environment and run the command again.
-
-# How to run the app 🚀
-
-## Install prerequisites
-
-We recommend using [mise-en-place](https://mise.jdx.dev/) to install the required tools specified in [.tool-versions](../.tool-versions).
-
-## Install dependencies
-
-```shell
-# From the webapp directory...
-
- npm install
-```
-
-## Create a `.env.json` file
-
-Populate it with the contents of the "Webapp .env.dev.json" in 1Password.
-
-## Run the app
-
-### Start the Express server
-
-```shell
-# From the webapp directory...
-
- npm run start
-```
-
-### Start both the Express server and frontend
-
-```shell
-# From the webapp directory...
-
- npm run dev
-```
+   - We recommend using [mise-en-place](https://mise.jdx.dev/) to install the required tools specified in [.tool-versions](../.tool-versions).```
 
 ## Testing
 
@@ -135,6 +61,7 @@ Once it completes, there should be an HTML report in `reports/mutation/mutation.
 ## Access the back office component
 
 - [Log in to Microsoft Power Automate Flow](https://unitedkingdom.flow.microsoft.com/manage/environments/93b4f1ed-cbc0-4b5a-b71c-8465c4d011b7/flows/shared)
+- 
 ## Infrastructure-as-code
 
 The [Terraform](./terraform) directory contains the Terraform code for managing the infrastructure for the Droits
