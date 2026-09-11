@@ -13,7 +13,7 @@ export default function (app) {
       propertyID = rawPropertyID;
       propertyItem = property[propertyID];
     } else {
-      res.redirect('/report/property-summary');
+      return res.redirect('/report/property-summary');
     }
 
     res.render('report/property-form-image', {

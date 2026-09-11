@@ -28,38 +28,40 @@ unsure.
 ## Local development
 
 - Make sure you have the required versions of things installed.
-   - Install [asdf](asdf-vm.com), or 'brew install asdf' which will automatically manage this.
+   - We recommend using [mise-en-place](https://mise.jdx.dev/) to install the required tools specified in [.tool-versions](../.tool-versions).```
    - See the `.tool-versions` if you want to manage them some other way.
 - Add your local config files:
   - `webapp/.env.json` (get the content s from the "Droits Local - webapp/.env.json" secret in 1Password)
   - `backoffice/src/appsettings.json` (get the content s from the "Droits Local - backoffice/src/appsettings.json" secret in 1Password)
 - Install all the things, setup commit hooks etc.
-   - ```bash
-    # From the root of this repository
-    make setup
-    ```
+
+```bash
+  # From the root of this repository
+  make setup
+ ```
 - Ensure you have created the development certificate:
-  - ```bash
-    dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p password
-    ```
+```bash
+  dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p password
+```
   - You will need to unlock your keyvault with your MacBook password
 - Build the container images:
-  - ```bash
+```bash
     # From the root of this repository
-    make build
-    ```
+  make build
+```
+
 - Start up the applications in development mode, with backing services
-  - ```bash
-    # From the root of this repository
-    make serve
-    ```
-  - The application should be available at the following URLS:
-    - Webapp:
-      - User facing: http://localhost:3000
-    - Backoffice:
-      - User facing: http://localhost:5001
-      - Health check: http://localhost:5001/healthz
-  
+```bash
+  # From the root of this repository
+  make serve
+ ```
+- The application should be available at the following URLS:
+  - Webapp:
+    - User facing: http://localhost:3000
+  - Backoffice:
+    - User facing: http://localhost:5001
+    - Health check: http://localhost:5001/healthz
+
 At the time of writing, this will fire up the service using Docker Compose.
 
 It would be nice to have Makefile commands to fire up the two applications outside of Docker for easier development work. For now though, look at [webapp README](./webapp/README.md) and [backoffice README](./backoffice/README.md).
@@ -67,6 +69,37 @@ It would be nice to have Makefile commands to fire up the two applications outsi
 ### Troubleshooting
 
 - Instance fails to start: If you ran `docker compose up` before creating and populating the `.env.json` and `appsettings.json` files, this will cause the instance to fail. To resolve this, clean up the environment and run the command again.
+## Testing
+
+### Run the unit tests
+
+```shell
+# From the webapp directory...
+
+npm run test
+```
+
+### Mutation testing
+
+We use [Stryker Mutator](https://stryker-mutator.io/docs/stryker-js/introduction/) as a tool to help us understand how much we can trust our unit tests.
+
+Every mutation that survives is a line of code that we can change without it being picked up by our unit tests.
+
+To run the mutation tests:
+
+```shell
+# From the webapp directory...
+
+stryker run
+```
+
+This will take a while, so you are not going to be running it after every commit.
+
+Once it completes, there should be an HTML report in `reports/mutation/mutation.html`.
+
+## Access the back office component
+
+- [Log in to Microsoft Power Automate Flow](https://unitedkingdom.flow.microsoft.com/manage/environments/93b4f1ed-cbc0-4b5a-b71c-8465c4d011b7/flows/shared)
 
 ## Infrastructure-as-code
 
@@ -90,6 +123,8 @@ A build and deployment to the staging environment is triggered on a manual relea
 with the hash of the triggering commit and published to AWS Elastic Container Registry. Images built and deployed to
 for the staging environment are ephemeral and not used anywhere else.
 
+Please ensure that all releases follow semantic versioning: [semver](https://semver.org/). 
+
 ### Production environment
 
 A build and deployment to the production environment is triggered on a manual release set to "latest release". Docker images are tagged
@@ -104,6 +139,7 @@ After deploying:
 
 - **Web App**
   - Check the healthcheck endpoint - It should say "OK"
+  - Go to the AWS environment, ECS, DROITS cluster, and confirm that the new task for "droits-cluster", "webapp" is running with a "healthy" state. [AWS Accounts](https://mcaconsole.awsapps.com/start/#/?tab=accounts).
   - Check the "Report Wreck Material" home page loads
     - Initial pages are currently quite different between Dev/Staging and Production
       - Staging * Dev
@@ -156,6 +192,7 @@ After deploying:
         - Check it loads as expected
 - **Backoffice**
   - Check the healthcheck endpoint - It should say "Healthy"
+  - Go to the AWS environment, ECS, DROITS cluster, and confirm that the new task for "droits-cluster", "backoffice" is running with a "healthy" state. [AWS Accounts](https://mcaconsole.awsapps.com/start/#/?tab=accounts).
   - Log in using your "...@mcga.onmicrosoft.com" account
     - Check you are on the "My Dashboard" page
     - Check it shows panels for "My Assigned Droits" and "QC Approved Letters"
