@@ -1,13 +1,12 @@
 .PHONY: setup
 setup: setup-root setup-backoffice setup-webapp
-	asdf plugin add nodejs
 
 .PHONY: setup-root
 setup-root:
 	@echo "\n==================================================="
 	@echo "Installing root level dependencies and commit hooks\n"
 	cd . && \
-		asdf install && \
+		mise install && \
 		node --version && \
 		npm install && \
 		npm run prepare
@@ -17,7 +16,7 @@ setup-backoffice:
 	@echo "\n=================================="
 	@echo "Installing backoffice dependencies\n"
 	cd ./backoffice/src && \
-		asdf install && \
+		mise install && \
 		node --version && \
 		npm install
 
@@ -26,7 +25,7 @@ setup-webapp:
 	@echo "\n=============================="
 	@echo "Installing webapp dependencies\n"
 	cd ./webapp && \
-		asdf install && \
+		mise install && \
 		node --version && \
 		npm install
 
