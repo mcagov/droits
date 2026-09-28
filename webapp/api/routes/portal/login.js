@@ -3,6 +3,8 @@ require("dotenv-json")();
 const passport = require('passport');
 const OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
 const bunyan = require('bunyan');
+import { isLocalAuth, isLocalAuthRequested, localAuthCredentials } from '../../../utilities/localAuth';
+import localSignIn from './local-sign-in';
 const log = bunyan.createLogger({
     name: 'Microsoft OIDC Example Web Application',
 });
@@ -58,7 +60,18 @@ export default function (app) {
 
     passport.serializeUser(serializeUser);
     passport.deserializeUser(deserializeUser);
-    
+
+    if (isLocalAuth()) {
+      const { email } = localAuthCredentials();
+      console.warn(`DROITS_LOCAL_AUTH is on: the portal signs in as ${email} without Azure AD B2C`);
+      localSignIn(app, users);
+      return;
+    }
+
+    if (isLocalAuthRequested()) {
+      console.warn('DROITS_LOCAL_AUTH is ignored outside local development, so Azure AD B2C sign in is used');
+    }
+
     passport.use(
     new OIDCStrategy(
       {

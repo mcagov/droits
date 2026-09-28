@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% from "govuk/components/input/macro.njk" import govukInput %}
+
+{% block pageTitle %}
+  {{ errorPrefix(errorSummary) }}
+  Sign in for local development - {{ serviceName }} - GOV.UK
+{% endblock %}
+
+{% block beforeContent %}
+  {% include "includes/phase-banner.html" %}
+  <a class="govuk-back-link" href="/portal/start">Back</a>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {% if errorSummary.length > 0 %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorSummary
+        }) }}
+      {% endif %}
+
+      <h1 class="govuk-heading-l">Sign in for local development</h1>
+
+      <p class="govuk-body">Azure AD B2C is switched off because DROITS_LOCAL_AUTH is on.</p>
+
+      <form action="/login" method="post" novalidate>
+        {{ govukInput({
+          label: { text: "Email address" },
+          id: "email",
+          name: "email",
+          type: "email",
+          autocomplete: "email",
+          spellcheck: false,
+          value: values.email,
+          errorMessage: errors.email
+        }) }}
+
+        {{ govukInput({
+          label: { text: "Password" },
+          id: "password",
+          name: "password",
+          type: "password",
+          autocomplete: "current-password"
+        }) }}
+
+        <button class="govuk-button" data-module="govuk-button">Sign in</button>
+      </form>
+
+    </div>
+  </div>
+{% endblock %}
