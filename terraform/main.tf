@@ -181,6 +181,26 @@ module "db-sns" {
   alert_pagerduty_integration_url = var.alert_pagerduty_integration_url
 }
 
+module "backoffice-restart-alerts" {
+  source           = "./modules/ecs-restart-alerts"
+  count            = var.enable_restart_alerts ? 1 : 0
+  service_name     = "backoffice"
+  cluster_arn      = module.droits-ecs-cluster.ecs_cluster_arn
+  alerts_topic_arn = module.backoffice-sns.alerts-topic-arn
+
+  depends_on = [module.droits-ecs-cluster, module.backoffice-sns]
+}
+
+module "webapp-restart-alerts" {
+  source           = "./modules/ecs-restart-alerts"
+  count            = var.enable_restart_alerts ? 1 : 0
+  service_name     = "webapp"
+  cluster_arn      = module.droits-ecs-cluster.ecs_cluster_arn
+  alerts_topic_arn = module.webapp-sns.alerts-topic-arn
+
+  depends_on = [module.droits-ecs-cluster, module.webapp-sns]
+}
+
 module "elasticache" {
   source           = "./modules/elasticache"
   vpc_id           = module.vpc.vpc_id
