@@ -6,11 +6,13 @@ using Droits.Data.Mappers.Submission;
 using Droits.Data.Mappers.Imports;
 using Droits.Data.Mappers.Portal;
 using Droits.Data.Mappers.Powerapps;
+using Droits.Local;
 using Droits.Middleware;
 using Droits.ModelBinders;
 using Droits.Repositories;
 using Droits.Services;
 using GovUk.Frontend.AspNetCore;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -29,12 +31,30 @@ var builder = WebApplication.CreateBuilder(args);
 // HttpContext Access
 builder.Services.AddHttpContextAccessor();
 
+var localAuthRequested = LocalAuth.IsRequested(builder.Configuration);
+var useLocalAuth = LocalAuth.IsEnabled(builder.Configuration, builder.Environment);
+var authenticationScheme = useLocalAuth ? LocalAuth.Scheme : OpenIdConnectDefaults.AuthenticationScheme;
+
+if ( useLocalAuth )
+{
+    LocalServices.AddFallbackConfiguration(builder.Configuration);
+}
+
 // Authentication and Authorization
-builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(options =>
-    {
-        builder.Configuration.Bind("AzureAd", options);
-    });
+if ( useLocalAuth )
+{
+    builder.Services.AddAuthentication(LocalAuth.Scheme)
+        .AddScheme<AuthenticationSchemeOptions, LocalAuthenticationHandler>(LocalAuth.Scheme, null)
+        .AddCookie();
+}
+else
+{
+    builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+        .AddMicrosoftIdentityWebApp(options =>
+        {
+            builder.Configuration.Bind("AzureAd", options);
+        });
+}
 
 builder.Services.AddControllersWithViews(options =>
     {
@@ -52,15 +72,22 @@ builder.Services.AddControllersWithViews(options =>
     .AddRazorRuntimeCompilation().AddMicrosoftIdentityUI().AddSessionStateTempDataProvider();
     
 
-var awsOptions = builder.Configuration.GetAWSOptions();
-
-if ( !builder.Environment.IsDevelopment() )
+if ( useLocalAuth )
 {
-    awsOptions.Credentials = new ECSTaskCredentials();
+    builder.Services.AddSingleton(LocalServices.CreateS3Client(builder.Configuration));
 }
+else
+{
+    var awsOptions = builder.Configuration.GetAWSOptions();
 
-builder.Services.AddDefaultAWSOptions(awsOptions);
-builder.Services.AddAWSService<IAmazonS3>();
+    if ( !builder.Environment.IsDevelopment() )
+    {
+        awsOptions.Credentials = new ECSTaskCredentials();
+    }
+
+    builder.Services.AddDefaultAWSOptions(awsOptions);
+    builder.Services.AddAWSService<IAmazonS3>();
+}
 
 builder.Services.AddRazorPages();
 
@@ -184,6 +211,15 @@ builder.Services.Configure<KestrelServerOptions>(options =>
 
 var app = builder.Build();
 
+if ( useLocalAuth )
+{
+    app.Logger.LogWarning("{Flag} is on: signing in everyone as {Email} without Azure AD", LocalAuth.Flag, LocalAuth.Email(app.Configuration));
+}
+else if ( localAuthRequested )
+{
+    app.Logger.LogWarning("{Flag} is ignored outside local development, so Azure AD sign in is used", LocalAuth.Flag);
+}
+
 // Error handling
 if (app.Environment.IsDevelopment())
 {
@@ -206,6 +242,11 @@ using (var scope = app.Services.CreateScope())
     if (shouldSeedDatabase)
     {
         DatabaseSeeder.SeedData(dbContext);
+
+        if ( useLocalAuth )
+        {
+            LocalServices.SeedSalvor(dbContext, LocalAuth.Email(app.Configuration));
+        }
     }
 }
 
@@ -220,7 +261,7 @@ app.MapHealthChecks("/healthz").AllowAnonymous();
 
 app.UseRouting();
 app.UseAuthentication();
-app.UseMiddleware<TokenValidationMiddleware>();
+app.UseMiddleware<TokenValidationMiddleware>(authenticationScheme);
 app.UseAuthorization();
 
 // Routing

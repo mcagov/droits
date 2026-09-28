@@ -66,6 +66,35 @@ At the time of writing, this will fire up the service using Docker Compose.
 
 It would be nice to have Makefile commands to fire up the two applications outside of Docker for easier development work. For now though, look at [webapp README](./webapp/README.md) and [backoffice README](./backoffice/README.md).
 
+### Local development without Azure
+
+If you don't have the 1Password config files above, or want to work offline, you can run everything with a single
+local user instead, with hot reload for both applications.
+
+To run it all in a Linux VM, with Homebrew as the only thing you install on your Mac, run `./scripts/dev.sh`. It
+creates the VM, installs everything inside it and serves the app on the usual ports; run `./scripts/dev.sh help` for
+the list of commands. `node_modules` and the .NET build output are kept inside the VM, so install on your Mac too if
+you want your editor to resolve imports. Changes you save on your Mac reload in the VM within a second or so. Editors
+that save by writing a new file and renaming it over the old one, such as JetBrains IDEs with "safe write" turned on or
+vim, are not picked up; turn that off, or run `DROITS_WATCH_POLLING=true ./scripts/dev.sh`. To run natively instead:
+
+1. Copy `.env.example` as `.env` and set `DROITS_LOCAL_AUTH=true`.
+2. `make setup`, then `make serve`. This starts Postgres, Redis and LocalStack in Docker, then runs the backoffice with
+   `dotnet watch` and the webapp with `npm run dev`.
+
+Either way:
+
+- Webapp: http://localhost:3000. Reporting needs no sign in; the portal signs in with `dev@droits.local` / `password`.
+- Backoffice: http://localhost:5001, signed in automatically as `dev@droits.local`.
+- Images are stored in LocalStack S3 at http://localhost:4566, in the `droits-local` bucket.
+- The settings come from `local-auth.env`. Put any overrides, such as `LOCAL_AUTH_EMAIL` or `LOCAL_AUTH_PASSWORD`, in
+  `.env`.
+- GovNotify uses your `GovNotify:ApiKey` from `backoffice/src/appsettings.json` if you have one. Without it, emails are
+  not sent and the error is logged.
+
+This is for local development only. Both applications ignore `DROITS_LOCAL_AUTH` and use Azure unless they run in
+development mode outside ECS, so the dev, staging and production environments always use Azure AD and Azure AD B2C.
+
 ### Troubleshooting
 
 - Instance fails to start: If you ran `docker compose up` before creating and populating the `.env.json` and `appsettings.json` files, this will cause the instance to fail. To resolve this, clean up the environment and run the command again.

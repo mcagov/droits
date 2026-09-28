@@ -54,3 +54,15 @@ services:
     container_name: droits_redis
     ports:
       - "6379:6379"
+
+  localstack:
+    image: localstack/localstack:4.14.0
+    container_name: droits_localstack
+    profiles: ["local-auth"]
+    environment:
+      SERVICES: s3
+      BUCKET_NAME: ${AWS__S3Config__BucketName:-droits-local}
+    ports:
+      - "4566:4566"
+    volumes:
+      - ./localstack/init-s3.sh:/etc/localstack/init/ready.d/init-s3.sh:ro
