@@ -1,4 +1,5 @@
 using AutoMapper;
+using Droits.Data;
 using Droits.Exceptions;
 using Droits.Helpers;
 using Droits.Models.DTOs;
@@ -6,9 +7,12 @@ using Droits.Models.DTOs.Exports;
 using Droits.Models.Entities;
 using Droits.Models.Enums;
 using Droits.Models.FormModels;
+using Droits.Models.ViewModels;
 using Droits.Models.FormModels.SearchFormModels;
+using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Droits.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Droits.Tests.UnitTests.Services
@@ -28,6 +32,103 @@ namespace Droits.Tests.UnitTests.Services
             _service = new DroitService(mockLogger.Object, _mockRepo.Object, mockWreckMaterialService.Object, mockCurrentUserService.Object, mockMapper.Object);
         }
 
+        [Fact]
+        public async Task GetWreckDroitsListViewAsync_ReturnsOnlyWreckDroitsAndTotalCount()
+        {
+            var testData = CreateWreckDroitsContext();
+            await using var dbContext = testData.DbContext;
+            var service = CreateDroitService(dbContext);
+
+            var result = await service.GetWreckDroitsListViewAsync(testData.WreckId, new SearchOptions
+            {
+                PageSize = 10
+            });
+
+            var references = result.Items.Cast<DroitView>().Select(d => d.Reference).ToList();
+
+            Assert.Equal(3, result.TotalCount);
+            Assert.Equal(3, references.Count);
+            Assert.DoesNotContain("OTHER-001", references);
+        }
+
+
+        [Fact]
+        public async Task GetWreckDroitsListViewAsync_ReturnsRequestedPagesInReportedDateOrder()
+        {
+            var testData = CreateWreckDroitsContext();
+            await using var dbContext = testData.DbContext;
+            var service = CreateDroitService(dbContext);
+
+            var firstPage = await service.GetWreckDroitsListViewAsync(testData.WreckId, new SearchOptions
+            {
+                PageNumber = 1,
+                PageSize = 2
+            });
+            var secondPage = await service.GetWreckDroitsListViewAsync(testData.WreckId, new SearchOptions
+            {
+                PageNumber = 2,
+                PageSize = 2
+            });
+
+            Assert.Equal(1, firstPage.PageNumber);
+            Assert.Equal(new[] { "D-003", "D-002" }, firstPage.Items.Cast<DroitView>().Select(d => d.Reference));
+            Assert.Equal(2, secondPage.PageNumber);
+            Assert.Equal(new[] { "D-001" }, secondPage.Items.Cast<DroitView>().Select(d => d.Reference));
+        }
+
+
+        private static (DroitsContext DbContext, Guid WreckId) CreateWreckDroitsContext()
+        {
+            var wreckId = Guid.NewGuid();
+            var dbContext = new DroitsContext(new DbContextOptionsBuilder<DroitsContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options);
+
+            dbContext.Droits.AddRange(
+                new Droit
+                {
+                    Id = Guid.NewGuid(),
+                    Reference = "D-003",
+                    WreckId = wreckId,
+                    ReportedDate = new DateTime(2026, 3, 3)
+                },
+                new Droit
+                {
+                    Id = Guid.NewGuid(),
+                    Reference = "D-002",
+                    WreckId = wreckId,
+                    ReportedDate = new DateTime(2026, 3, 2)
+                },
+                new Droit
+                {
+                    Id = Guid.NewGuid(),
+                    Reference = "D-001",
+                    WreckId = wreckId,
+                    ReportedDate = new DateTime(2026, 3, 1)
+                },
+                new Droit
+                {
+                    Id = Guid.NewGuid(),
+                    Reference = "OTHER-001",
+                    WreckId = Guid.NewGuid(),
+                    ReportedDate = new DateTime(2026, 3, 4)
+                });
+            dbContext.SaveChanges();
+
+            return (dbContext, wreckId);
+        }
+
+
+        private static DroitService CreateDroitService(DroitsContext dbContext)
+        {
+            var accountService = new Mock<IAccountService>();
+            return new DroitService(
+                Mock.Of<ILogger<DroitService>>(),
+                new DroitRepository(dbContext, accountService.Object),
+                Mock.Of<IWreckMaterialService>(),
+                accountService.Object,
+                Mock.Of<IMapper>());
+        }
 
 
         [Fact]

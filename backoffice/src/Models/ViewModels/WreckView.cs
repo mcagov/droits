@@ -104,7 +104,7 @@ public class WreckView : BaseEntityView
     [DataType(DataType.MultilineText)]
     public string? AdditionalInformation { get; } = string.Empty;
 
-    public DroitListView Droits { get; } = new();
+    public DroitListView Droits { get; set; } = new();
     public NoteListView Notes { get; } = new();
 
 }
