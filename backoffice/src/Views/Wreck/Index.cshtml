@@ -34,8 +34,13 @@
         <tr>
             <th scope="col">Verified Wreck Name</th>
             <th scope="col">Attributes</th>
+            <th role="button" scope="col">
+                <a class="sort-link" data-sort-col="DroitsCount">Droits</a>
+            </th>
             <th scope="col">Owner</th>
-            <th scope="col">Created</th>
+            <th role="button" scope="col">
+                <a class="sort-link" data-sort-col="Created">Created</a>
+            </th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
@@ -65,6 +70,7 @@
                         <span class="badge rounded-pill bg-primary">Protected</span>
                     }
                 </td>
+                <td class="p-3">@wreck.DroitsCount</td>
                 <td class="p-3"> @wreck.OwnerName</td>
                 <td class="p-3">@wreck.Created.ToString("dd/MM/yyyy")</td>
                 <td class="p-3">

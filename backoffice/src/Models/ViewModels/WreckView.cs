@@ -44,6 +44,7 @@ public class WreckView : BaseEntityView
         if ( includeAssociations )
         {
             Droits = new DroitListView(wreck.Droits.Select(d => new DroitView(d)).ToList());
+            DroitsCount = wreck.Droits.Count;
         }
     }
 
@@ -105,6 +106,7 @@ public class WreckView : BaseEntityView
     public string? AdditionalInformation { get; } = string.Empty;
 
     public DroitListView Droits { get; set; } = new();
+    public int DroitsCount { get; }
     public NoteListView Notes { get; } = new();
 
 }

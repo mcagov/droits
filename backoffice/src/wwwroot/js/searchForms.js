@@ -11,6 +11,10 @@ function initializeSearchForm(formClass, toggleButtonClass) {
     searchFormButton.forEach((button) => {button.addEventListener('click', function () {
         const searchForm = document.querySelector(formClass);
         searchForm.classList.toggle('d-none');
+        const searchOpenField = searchForm.querySelector('.js-search-open-field');
+        if (searchOpenField) {
+            searchOpenField.value = !searchForm.classList.contains('d-none');
+        }
     })});
     
     const sortButtons = document.querySelectorAll(".sort-link");
