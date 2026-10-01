@@ -29,6 +29,7 @@ public interface IDroitService
 {
     Task<DroitListView> GetDroitsListViewAsync(SearchOptions searchOptions);
     Task<DroitListView> GetWreckDroitsListViewAsync(Guid wreckId, SearchOptions searchOptions);
+    Task<DroitListView> GetSalvorDroitsListViewAsync(Guid salvorId, SearchOptions searchOptions);
     Task<List<Droit>> GetDroitsAsync();
     Task<Droit> GetDroitByPowerappsIdAsync(string powerappsId);
     Task<List<Droit>> GetDroitsWithAssociationsAsync();
@@ -139,6 +140,24 @@ public class DroitService : IDroitService
         var orderColumnExpression = ServiceHelper.GetOrderColumnExpression(searchOptions);
         var query = _repo.GetOrderedDroitsWithAssociations(orderColumnExpression, searchOptions.OrderDescending)
             .Where(d => d.WreckId == wreckId);
+
+        var pagedDroits = await ServiceHelper.GetPagedResult(query.Select(d => new DroitView(d)), searchOptions);
+
+        return new DroitListView(pagedDroits.Items)
+        {
+            PageNumber = pagedDroits.PageNumber,
+            PageSize = pagedDroits.PageSize,
+            IncludeAssociations = true,
+            TotalCount = pagedDroits.TotalCount
+        };
+    }
+
+
+    public async Task<DroitListView> GetSalvorDroitsListViewAsync(Guid salvorId, SearchOptions searchOptions)
+    {
+        var orderColumnExpression = ServiceHelper.GetOrderColumnExpression(searchOptions);
+        var query = _repo.GetOrderedDroitsWithAssociations(orderColumnExpression, searchOptions.OrderDescending)
+            .Where(d => d.SalvorId == salvorId);
 
         var pagedDroits = await ServiceHelper.GetPagedResult(query.Select(d => new DroitView(d)), searchOptions);
 

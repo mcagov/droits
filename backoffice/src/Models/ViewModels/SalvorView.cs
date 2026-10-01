@@ -43,7 +43,7 @@ public class SalvorView : BaseEntityView
     public string? MobileNumber { get; } = string.Empty;
 
     public AddressView Address { get; } = new();
-    public DroitListView Droits { get; } = new();
+    public DroitListView Droits { get; set; } = new();
     public NoteListView Notes { get; } = new();
 
 }

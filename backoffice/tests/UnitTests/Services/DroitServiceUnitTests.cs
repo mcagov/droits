@@ -132,6 +132,97 @@ namespace Droits.Tests.UnitTests.Services
 
 
         [Fact]
+        public async Task GetSalvorDroitsListViewAsync_ReturnsOnlySalvorDroitsAndTotalCount()
+        {
+            var testData = CreateSalvorDroitsContext();
+            await using var dbContext = testData.DbContext;
+            var service = CreateDroitService(dbContext);
+
+            var result = await service.GetSalvorDroitsListViewAsync(testData.SalvorId, new SearchOptions
+            {
+                PageSize = 10
+            });
+            var references = result.Items.Cast<DroitView>().Select(d => d.Reference).ToList();
+
+            Assert.Equal(3, result.TotalCount);
+            Assert.Equal(3, references.Count);
+            Assert.DoesNotContain("OTHER-001", references);
+        }
+
+
+        [Fact]
+        public async Task GetSalvorDroitsListViewAsync_ReturnsRequestedPagesInReportedDateOrder()
+        {
+            var testData = CreateSalvorDroitsContext();
+            await using var dbContext = testData.DbContext;
+            var service = CreateDroitService(dbContext);
+
+            var firstPage = await service.GetSalvorDroitsListViewAsync(testData.SalvorId, new SearchOptions
+            {
+                PageNumber = 1,
+                PageSize = 2
+            });
+            var secondPage = await service.GetSalvorDroitsListViewAsync(testData.SalvorId, new SearchOptions
+            {
+                PageNumber = 2,
+                PageSize = 2
+            });
+
+            Assert.Equal(3, firstPage.TotalCount);
+            Assert.Equal(1, firstPage.PageNumber);
+            Assert.Equal(new[] { "S-003", "S-002" }, firstPage.Items.Cast<DroitView>().Select(d => d.Reference));
+            Assert.Equal(2, secondPage.PageNumber);
+            Assert.Equal(new[] { "S-001" }, secondPage.Items.Cast<DroitView>().Select(d => d.Reference));
+        }
+
+
+        private static (DroitsContext DbContext, Guid SalvorId) CreateSalvorDroitsContext()
+        {
+            var salvorId = Guid.NewGuid();
+            var otherSalvorId = Guid.NewGuid();
+            var dbContext = new DroitsContext(new DbContextOptionsBuilder<DroitsContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options);
+
+            dbContext.Salvors.AddRange(
+                new Salvor { Id = salvorId, Name = "Test Salvor", Email = "test@example.com" },
+                new Salvor { Id = otherSalvorId, Name = "Other Salvor", Email = "other@example.com" });
+            dbContext.Droits.AddRange(
+                new Droit
+                {
+                    Id = Guid.NewGuid(),
+                    Reference = "S-003",
+                    SalvorId = salvorId,
+                    ReportedDate = new DateTime(2026, 3, 3)
+                },
+                new Droit
+                {
+                    Id = Guid.NewGuid(),
+                    Reference = "S-002",
+                    SalvorId = salvorId,
+                    ReportedDate = new DateTime(2026, 3, 2)
+                },
+                new Droit
+                {
+                    Id = Guid.NewGuid(),
+                    Reference = "S-001",
+                    SalvorId = salvorId,
+                    ReportedDate = new DateTime(2026, 3, 1)
+                },
+                new Droit
+                {
+                    Id = Guid.NewGuid(),
+                    Reference = "OTHER-001",
+                    SalvorId = otherSalvorId,
+                    ReportedDate = new DateTime(2026, 3, 4)
+                });
+            dbContext.SaveChanges();
+
+            return (dbContext, salvorId);
+        }
+
+
+        [Fact]
         public async Task GetDroitAsync_ExistingId_ReturnsDroit()
         {
             // Given
