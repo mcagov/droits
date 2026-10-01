@@ -17,12 +17,14 @@ public class SalvorController : BaseController
 {
     private readonly ILogger<SalvorController> _logger;
     private readonly ISalvorService _service;
+    private readonly IDroitService _droitService;
 
 
-    public SalvorController(ILogger<SalvorController> logger, ISalvorService service)
+    public SalvorController(ILogger<SalvorController> logger, ISalvorService service, IDroitService droitService)
     {
         _logger = logger;
         _service = service;
+        _droitService = droitService;
     }
 
 
@@ -35,7 +37,7 @@ public class SalvorController : BaseController
 
 
     [HttpGet]
-    public async Task<IActionResult> View(Guid id)
+    public async Task<IActionResult> View(Guid id, SearchOptions searchOptions, string? selectedTab)
     {
         Salvor salvor;
         try
@@ -48,7 +50,15 @@ public class SalvorController : BaseController
             return RedirectToAction(nameof(Index));
         }
 
-        var model = new SalvorView(salvor, true);
+        if (!string.IsNullOrEmpty(selectedTab))
+        {
+            ViewBag.SelectedTab = selectedTab;
+        }
+
+        var model = new SalvorView(salvor)
+        {
+            Droits = await _droitService.GetSalvorDroitsListViewAsync(id, searchOptions)
+        };
         return View(model);
     }
 
@@ -166,8 +176,7 @@ public class SalvorController : BaseController
         form.IncludeAssociations = true;
                     
         var model = await _service.AdvancedSearchAsync(form);
-        
-        model.SearchOpen = model.PageNumber == 1;
+        model.SearchOpen = form.SearchOpen;
 
         return View(nameof(Index), model);
         

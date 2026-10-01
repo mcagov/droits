@@ -1,9 +1,14 @@
 using AutoMapper;
+using Droits.Data;
 using Droits.Exceptions;
 using Droits.Models.Entities;
 using Droits.Models.FormModels;
+using Droits.Models.FormModels.SearchFormModels;
+using Droits.Models.ViewModels;
+using Droits.Models.ViewModels.ListViews;
 using Droits.Repositories;
 using Droits.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Droits.Tests.UnitTests.Services
 {
@@ -18,6 +23,149 @@ namespace Droits.Tests.UnitTests.Services
             _mockRepo = new Mock<ISalvorRepository>();
             _mockMapper = new Mock<IMapper>();
             _service = new SalvorService(_mockRepo.Object, _mockMapper.Object);
+        }
+
+
+        [Fact]
+        public async Task GetSalvorListViewAsync_ReturnsDroitsCountForEachSalvor()
+        {
+            await using var dbContext = CreateSalvorContext();
+            var service = CreateSalvorService(dbContext);
+
+            var result = await service.GetSalvorListViewAsync(new SearchOptions
+            {
+                IncludeAssociations = true,
+                PageSize = 10
+            });
+
+            var countsByName = result.Items.Cast<SalvorView>().ToDictionary(salvor => salvor.Name, salvor => salvor.DroitsCount);
+
+            Assert.Equal(3, countsByName["Salvor with three droits"]);
+            Assert.Equal(2, countsByName["Salvor with two droits"]);
+            Assert.Equal(0, countsByName["Salvor without droits"]);
+        }
+
+
+        [Fact]
+        public async Task AdvancedSearchAsync_SortsByDroitsCountDescendingAndPaginates()
+        {
+            await using var dbContext = CreateSalvorContext();
+            var service = CreateSalvorService(dbContext);
+
+            var firstPage = await service.AdvancedSearchAsync(new SalvorSearchForm
+            {
+                OrderColumn = nameof(SalvorView.DroitsCount),
+                OrderDescending = true,
+                PageSize = 2
+            });
+            var secondPage = await service.AdvancedSearchAsync(new SalvorSearchForm
+            {
+                OrderColumn = nameof(SalvorView.DroitsCount),
+                OrderDescending = true,
+                PageNumber = 2,
+                PageSize = 2
+            });
+
+            Assert.Equal(3, firstPage.TotalCount);
+            Assert.Equal(new[] { 3, 2 }, firstPage.Items.Cast<SalvorView>().Select(salvor => salvor.DroitsCount));
+            Assert.Equal(2, secondPage.PageNumber);
+            Assert.Equal(new[] { 0 }, secondPage.Items.Cast<SalvorView>().Select(salvor => salvor.DroitsCount));
+        }
+
+
+        [Fact]
+        public async Task AdvancedSearchAsync_SortsByDroitsCountAscending()
+        {
+            await using var dbContext = CreateSalvorContext();
+            var service = CreateSalvorService(dbContext);
+
+            var result = await service.AdvancedSearchAsync(new SalvorSearchForm
+            {
+                OrderColumn = nameof(SalvorView.DroitsCount),
+                OrderDescending = false,
+                PageSize = 10
+            });
+
+            Assert.Equal(new[] { 0, 2, 3 }, result.Items.Cast<SalvorView>().Select(salvor => salvor.DroitsCount));
+        }
+
+
+        [Fact]
+        public async Task AdvancedSearchAsync_SortsByNameAscending()
+        {
+            await using var dbContext = CreateSalvorContext();
+            var service = CreateSalvorService(dbContext);
+
+            var result = await service.AdvancedSearchAsync(new SalvorSearchForm
+            {
+                OrderColumn = nameof(SalvorView.Name),
+                OrderDescending = false,
+                PageSize = 10
+            });
+
+            Assert.Equal(
+                new[] { "Salvor with three droits", "Salvor with two droits", "Salvor without droits" },
+                result.Items.Cast<SalvorView>().Select(salvor => salvor.Name));
+        }
+
+
+        [Fact]
+        public async Task AdvancedSearchAsync_SortsByNameDescending()
+        {
+            await using var dbContext = CreateSalvorContext();
+            var service = CreateSalvorService(dbContext);
+
+            var result = await service.AdvancedSearchAsync(new SalvorSearchForm
+            {
+                OrderColumn = nameof(SalvorView.Name),
+                OrderDescending = true,
+                PageSize = 10
+            });
+
+            Assert.Equal(
+                new[] { "Salvor without droits", "Salvor with two droits", "Salvor with three droits" },
+                result.Items.Cast<SalvorView>().Select(salvor => salvor.Name));
+        }
+
+
+        private static DroitsContext CreateSalvorContext()
+        {
+            var dbContext = new DroitsContext(new DbContextOptionsBuilder<DroitsContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options);
+            var salvors = new[]
+            {
+                new Salvor { Id = Guid.NewGuid(), Name = "Salvor with three droits", Email = "three@example.test" },
+                new Salvor { Id = Guid.NewGuid(), Name = "Salvor with two droits", Email = "two@example.test" },
+                new Salvor { Id = Guid.NewGuid(), Name = "Salvor without droits", Email = "none@example.test" }
+            };
+
+            dbContext.Salvors.AddRange(salvors);
+            dbContext.Droits.AddRange(
+                CreateDroits(salvors[0], 3)
+                    .Concat(CreateDroits(salvors[1], 2)));
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+
+        private static IEnumerable<Droit> CreateDroits(Salvor salvor, int count)
+        {
+            return Enumerable.Range(1, count).Select(index => new Droit
+            {
+                Id = Guid.NewGuid(),
+                Reference = $"{salvor.Name}-{index}",
+                SalvorId = salvor.Id
+            });
+        }
+
+
+        private static SalvorService CreateSalvorService(DroitsContext dbContext)
+        {
+            return new SalvorService(
+                new SalvorRepository(dbContext, Mock.Of<IAccountService>()),
+                Mock.Of<IMapper>());
         }
 
         [Fact]

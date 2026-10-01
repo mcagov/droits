@@ -8,7 +8,7 @@ public class WreckSearchForm : SearchForm
     public WreckSearchForm()
     {
         WreckExportForm = new WreckExportForm();
-
+        OrderColumn = "Created";
     }
     [DisplayName("Verified Wreck Name")]
     public string? WreckName { get; set; } = string.Empty;

@@ -17,12 +17,14 @@ public class WreckController : BaseController
 {
     private readonly ILogger<WreckController> _logger;
     private readonly IWreckService _service;
+    private readonly IDroitService _droitService;
 
 
-    public WreckController(ILogger<WreckController> logger, IWreckService service)
+    public WreckController(ILogger<WreckController> logger, IWreckService service, IDroitService droitService)
     {
         _logger = logger;
         _service = service;
+        _droitService = droitService;
     }
 
 
@@ -35,7 +37,7 @@ public class WreckController : BaseController
 
 
     [HttpGet]
-    public async Task<IActionResult> View(Guid id)
+    public async Task<IActionResult> View(Guid id, SearchOptions searchOptions, string? selectedTab)
     {
         Wreck wreck;
         try
@@ -48,7 +50,15 @@ public class WreckController : BaseController
             return RedirectToAction(nameof(Index));
         }
 
-        var model = new WreckView(wreck, true);
+        if (!string.IsNullOrEmpty(selectedTab))
+        {
+            ViewBag.SelectedTab = selectedTab;
+        }
+
+        var model = new WreckView(wreck)
+        {
+            Droits = await _droitService.GetWreckDroitsListViewAsync(id, searchOptions)
+        };
         return View(model);
     }
 
@@ -165,8 +175,7 @@ public class WreckController : BaseController
         form.IncludeAssociations = true;
         
         var model = await _service.AdvancedSearchAsync(form);
-        
-        model.SearchOpen = model.PageNumber == 1;
+        model.SearchOpen = form.SearchOpen;
 
         return View(nameof(Index), model);
     }

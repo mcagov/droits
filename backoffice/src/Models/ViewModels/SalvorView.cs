@@ -28,6 +28,7 @@ public class SalvorView : BaseEntityView
         if ( includeAssociations )
         {
             Droits = new DroitListView(salvor.Droits.Select(d => new DroitView(d)).ToList());
+            DroitsCount = salvor.Droits.Count;
         }
     }
 
@@ -43,7 +44,8 @@ public class SalvorView : BaseEntityView
     public string? MobileNumber { get; } = string.Empty;
 
     public AddressView Address { get; } = new();
-    public DroitListView Droits { get; } = new();
+    public DroitListView Droits { get; set; } = new();
+    public int DroitsCount { get; }
     public NoteListView Notes { get; } = new();
 
 }

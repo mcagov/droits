@@ -46,7 +46,6 @@ public class WreckRepository : BaseEntityRepository<Wreck>, IWreckRepository
     public async Task<Wreck> GetWreckAsync(Guid id)
     {
         var wreck = await Context.Wrecks
-            .Include(w => w.Droits)
             .Include(w => w.LastModifiedByUser)
             .Include(d => d.Notes).ThenInclude(n => n.LastModifiedByUser)
             .FirstOrDefaultAsync(w => w.Id == id);

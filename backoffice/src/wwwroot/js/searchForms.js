@@ -11,6 +11,10 @@ function initializeSearchForm(formClass, toggleButtonClass) {
     searchFormButton.forEach((button) => {button.addEventListener('click', function () {
         const searchForm = document.querySelector(formClass);
         searchForm.classList.toggle('d-none');
+        const searchOpenField = searchForm.querySelector('.js-search-open-field');
+        if (searchOpenField) {
+            searchOpenField.value = !searchForm.classList.contains('d-none');
+        }
     })});
     
     const sortButtons = document.querySelectorAll(".sort-link");
@@ -45,27 +49,6 @@ function initializeSearchForm(formClass, toggleButtonClass) {
         })
     }
 
-    const paginationButtons = document.querySelectorAll(".js-page-link");
-    paginationButtons.forEach((button) => {
-        button.addEventListener('click', function (ev) {
-            ev.preventDefault();
-            
-            const paginationContainer = button.closest(".pagination-container");
-            
-            let inputSelector = ".js-page-number-field";
-            
-            if(paginationContainer) {
-                inputSelector = paginationContainer.getAttribute("data-pagination-input-selector") || ".js-page-number-field";
-            }
-
-            const pageNumberField = document.querySelector(inputSelector);
-            
-            pageNumberField.value = button.getAttribute("data-page-number");
-
-            pageNumberField.closest("form").submit();
-        });
-    });
-
     document.querySelectorAll('.toggleExportFields').forEach(function(button) {
         button.addEventListener("click", function(e) {
             e.preventDefault();
@@ -94,6 +77,26 @@ function initializeSearchForm(formClass, toggleButtonClass) {
     }
 }
 
+function initializePagination() {
+    const paginationButtons = document.querySelectorAll(".js-page-link");
+    paginationButtons.forEach((button) => {
+        button.addEventListener('click', function (ev) {
+            ev.preventDefault();
+
+            const paginationContainer = button.closest(".pagination-container");
+            let inputSelector = ".js-page-number-field";
+
+            if (paginationContainer) {
+                inputSelector = paginationContainer.getAttribute("data-pagination-input-selector") || ".js-page-number-field";
+            }
+
+            const pageNumberField = document.querySelector(inputSelector);
+            pageNumberField.value = button.getAttribute("data-page-number");
+            pageNumberField.closest("form").submit();
+        });
+    });
+}
+
 function initializeChoices(selector, placeholder, searchEnabled = true, itemSelectText = 'Select') {
     new Choices(selector, {
         removeItems: true,
@@ -107,6 +110,7 @@ function initializeChoices(selector, placeholder, searchEnabled = true, itemSele
 }
 
 export function initializeSearchForms() {
+    initializePagination();
     initializeSearchForm('.js-droit-search', '.js-toggle-droit-search');
     initializeSearchForm('.js-salvor-search', '.js-toggle-salvor-search');
     initializeSearchForm('.js-wreck-search', '.js-toggle-wreck-search');
