@@ -32,8 +32,13 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">Name</th>
+            <th role="button" scope="col">
+                <a class="sort-link" data-sort-col="Name">Name</a>
+            </th>
             <th scope="col">Email</th>
+            <th role="button" scope="col">
+                <a class="sort-link" data-sort-col="DroitsCount">Droits</a>
+            </th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
@@ -45,6 +50,7 @@
                     <a asp-action="View" asp-route-id="@salvor.Id">@salvor.Name</a>
                 </td>
                 <td class="p-3">@salvor.Email</td>
+                <td class="p-3">@salvor.DroitsCount</td>
                 <td class="p-3">
                     <div class="btn-group">
                         <a asp-action="Edit" asp-route-id="@salvor.Id" class="btn btn-primary">Edit</a>

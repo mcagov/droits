@@ -176,8 +176,7 @@ public class SalvorController : BaseController
         form.IncludeAssociations = true;
                     
         var model = await _service.AdvancedSearchAsync(form);
-        
-        model.SearchOpen = model.PageNumber == 1;
+        model.SearchOpen = form.SearchOpen;
 
         return View(nameof(Index), model);
         
