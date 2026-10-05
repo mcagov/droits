@@ -6,6 +6,8 @@ include local-auth.env
 export $(shell sed -n 's/^\([A-Za-z_][A-Za-z0-9_]*\)=.*/\1/p' local-auth.env $(wildcard .env))
 endif
 
+export BUILDAH_FORMAT := docker
+
 .PHONY: setup
 setup: setup-root setup-backoffice setup-webapp
 
@@ -55,14 +57,14 @@ build-backoffice:
 	@echo "\n================================"
 	@echo "Build backoffice container image\n"
 	cd . && \
-		docker compose build backoffice
+		podman compose build backoffice
 
 .PHONY: build-webapp
 build-webapp:
 	@echo "\n============================"
 	@echo "Build webapp container image\n"
 	cd . && \
-		docker compose build webapp
+		podman compose build webapp
 
 ifeq ($(DROITS_LOCAL_AUTH),true)
 .PHONY: serve
@@ -72,16 +74,17 @@ else
 .PHONY: serve
 serve:
 	@echo "\n==========================================="
-	@echo "Spinning up the service with Docker Compose\n"
+	@echo "Spinning up the service with Podman Compose\n"
 	cd . && \
-		docker compose up
+		podman compose up
 endif
 
 .PHONY: serve-backing-services
 serve-backing-services:
 	@echo "\n=============================================="
-	@echo "Starting Postgres, Redis and LocalStack in Docker\n"
-	docker compose --profile local-auth up --detach --wait database redis localstack
+	@echo "Starting Postgres, Redis and LocalStack in Podman\n"
+	podman compose --profile local-auth up --detach database redis localstack
+	podman wait --condition=healthy droits_database droits_localstack > /dev/null
 
 .PHONY: serve-backoffice
 serve-backoffice:
@@ -103,4 +106,4 @@ serve-webapp:
 ##
 .PHONY: clean
 clean:
-	docker compose --profile local-auth down
+	podman compose --profile local-auth down

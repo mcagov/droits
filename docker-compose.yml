@@ -34,10 +34,10 @@ services:
       - redis
 
   database:
-    image: postgres:14-alpine
+    image: docker.io/library/postgres:14-alpine
     container_name: droits_database
     volumes:
-      - ~/apps/droits_db/pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: droits
       POSTGRES_USER: service
@@ -50,13 +50,13 @@ services:
       retries: 5
 
   redis:
-    image: redis:7
+    image: docker.io/library/redis:7
     container_name: droits_redis
     ports:
       - "6379:6379"
 
   localstack:
-    image: localstack/localstack:4.14.0
+    image: docker.io/localstack/localstack:4.14.0
     container_name: droits_localstack
     profiles: ["local-auth"]
     environment:
@@ -66,3 +66,6 @@ services:
       - "4566:4566"
     volumes:
       - ./localstack/init-s3.sh:/etc/localstack/init/ready.d/init-s3.sh:ro
+
+volumes:
+  pgdata:
