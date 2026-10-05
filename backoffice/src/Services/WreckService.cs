@@ -48,6 +48,7 @@ public class WreckService : IWreckService
         var query = searchOptions.IncludeAssociations
             ? _repo.GetWrecksWithAssociations()
             : _repo.GetWrecks();
+        query = OrderWrecks(query, searchOptions);
         var pagedItems = await ServiceHelper.GetPagedResult(
             query.Select(w => new WreckView(w, searchOptions.IncludeAssociations)), searchOptions);
 
@@ -109,7 +110,7 @@ public class WreckService : IWreckService
     
     public async Task<WreckListView> AdvancedSearchAsync(WreckSearchForm form)
     {
-        var query = QueryFromForm(form)
+        var query = OrderWrecks(QueryFromForm(form), form)
             .Select(w => new WreckView(w, true));
         
         var pagedResults =
@@ -130,6 +131,26 @@ public class WreckService : IWreckService
         var query = _repo.GetWrecksWithAssociations();
 
         return WreckQueryBuilder.BuildQuery(form, query);
+    }
+
+
+    private static IQueryable<Wreck> OrderWrecks(IQueryable<Wreck> query, SearchOptions searchOptions)
+    {
+        if (searchOptions.OrderColumn == nameof(WreckView.DroitsCount))
+        {
+            return searchOptions.OrderDescending
+                ? query.OrderByDescending(w => w.Droits.Count).ThenByDescending(w => w.Created)
+                : query.OrderBy(w => w.Droits.Count).ThenByDescending(w => w.Created);
+        }
+
+        if (searchOptions.OrderColumn == nameof(WreckView.Created))
+        {
+            return searchOptions.OrderDescending
+                ? query.OrderByDescending(w => w.Created).ThenByDescending(w => w.Id)
+                : query.OrderBy(w => w.Created).ThenBy(w => w.Id);
+        }
+
+        return query;
     }
 
 
