@@ -35,6 +35,13 @@ public class AccountController : BaseController
         searchOptions.FilterByAssignedUser = true;
         searchOptions.ExcludeClosedDroits = true;
 
+        if (searchOptions.ApplyFilters)
+        {
+            searchOptions.DroitsPageNumber = 1;
+            searchOptions.ApplyFilters = false;
+            searchOptions.SearchOpen = true;
+        }
+
         searchOptions.PageNumber = searchOptions.DroitsPageNumber;
         var droits = await _droitService.GetDroitsListViewAsync(searchOptions);
         

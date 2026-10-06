@@ -6,7 +6,7 @@ function initializeSearchForm(formClass, toggleButtonClass) {
 
     if (searchFormElements.length === 0) return;
 
-    const searchFormButton = document.querySelectorAll(toggleButtonClass);
+    const searchFormButton = toggleButtonClass ? document.querySelectorAll(toggleButtonClass) : [];
 
     searchFormButton.forEach((button) => {button.addEventListener('click', function () {
         const searchForm = document.querySelector(formClass);
@@ -73,6 +73,17 @@ function initializeSearchForm(formClass, toggleButtonClass) {
         case '.js-letter-search':
             initializeChoices('.js-search-letter-status', 'Select Status');
             initializeChoices('.js-search-letter-type', 'Select Type');
+            break;
+        case '.js-dashboard-search':
+            const dashboardSearchOpenField = document.querySelector('.js-search-open-field');
+            const dashboardSearchCard = document.querySelector(formClass);
+            dashboardSearchCard.addEventListener('shown.bs.collapse', () => {
+                dashboardSearchOpenField.value = true;
+            });
+            dashboardSearchCard.addEventListener('hidden.bs.collapse', () => {
+                dashboardSearchOpenField.value = false;
+            });
+            initializeChoices('.js-search-dashboard-status', 'Select Status');
             break;
     }
 }

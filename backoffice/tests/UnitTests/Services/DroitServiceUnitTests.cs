@@ -33,6 +33,68 @@ namespace Droits.Tests.UnitTests.Services
         }
 
         [Fact]
+        public async Task GetDroitsListViewAsync_AppliesDashboardSearchFilters()
+        {
+            var testData = CreateDashboardSearchContext();
+            await using var dbContext = testData.DbContext;
+            var service = CreateDroitService(dbContext, testData.CurrentUserId);
+
+            var filterCases = new (DashboardSearchForm Form, string[] ExpectedReferences)[]
+            {
+                (
+                    new DashboardSearchForm { SalvorName = "Alice" },
+                    ["D-ALPHA"]
+                ),
+                (
+                    new DashboardSearchForm { WreckName = "North Star" },
+                    ["D-ALPHA"]
+                ),
+                (
+                    new DashboardSearchForm { ReportedWreckName = "Old Wreck" },
+                    ["D-ALPHA"]
+                ),
+                (
+                    new DashboardSearchForm
+                    {
+                        ReportedDateFrom = new DateTime(2026, 4, 15),
+                        ReportedDateTo = new DateTime(2026, 4, 25)
+                    },
+                    ["D-BETA"]
+                ),
+                (
+                    new DashboardSearchForm { StatusList = [DroitStatus.Research] },
+                    ["D-BETA"]
+                ),
+                (
+                    new DashboardSearchForm
+                    {
+                        SalvorName = "Alice",
+                        WreckName = "North Star",
+                        ReportedWreckName = "Old Wreck",
+                        ReportedDateFrom = new DateTime(2026, 4, 1),
+                        ReportedDateTo = new DateTime(2026, 4, 15),
+                        StatusList = [DroitStatus.Received]
+                    },
+                    ["D-ALPHA"]
+                )
+            };
+
+            foreach (var (form, expectedReferences) in filterCases)
+            {
+                form.IncludeAssociations = true;
+                form.FilterByAssignedUser = true;
+                form.ExcludeClosedDroits = true;
+                form.PageSize = 10;
+
+                var result = await service.GetDroitsListViewAsync(form);
+
+                Assert.Equal(expectedReferences,
+                    result.Items.Cast<DroitView>().Select(droit => droit.Reference));
+            }
+        }
+
+
+        [Fact]
         public async Task GetWreckDroitsListViewAsync_ReturnsOnlyWreckDroitsAndTotalCount()
         {
             var testData = CreateWreckDroitsContext();
@@ -128,6 +190,78 @@ namespace Droits.Tests.UnitTests.Services
                 Mock.Of<IWreckMaterialService>(),
                 accountService.Object,
                 Mock.Of<IMapper>());
+        }
+
+        private static DroitService CreateDroitService(DroitsContext dbContext, Guid currentUserId)
+        {
+            var accountService = new Mock<IAccountService>();
+            accountService.Setup(service => service.GetCurrentUserId()).Returns(currentUserId);
+            return new DroitService(
+                Mock.Of<ILogger<DroitService>>(),
+                new DroitRepository(dbContext, accountService.Object),
+                Mock.Of<IWreckMaterialService>(),
+                accountService.Object,
+                Mock.Of<IMapper>());
+        }
+
+
+        private static (DroitsContext DbContext, Guid CurrentUserId) CreateDashboardSearchContext()
+        {
+            var currentUserId = Guid.NewGuid();
+            var otherUserId = Guid.NewGuid();
+            var dbContext = new DroitsContext(new DbContextOptionsBuilder<DroitsContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options);
+            var currentUser = new ApplicationUser { Id = currentUserId, Name = "Current User" };
+            var otherUser = new ApplicationUser { Id = otherUserId, Name = "Other User" };
+
+            dbContext.Users.AddRange(currentUser, otherUser);
+            dbContext.Droits.AddRange(
+                new Droit
+                {
+                    Id = Guid.NewGuid(),
+                    Reference = "D-ALPHA",
+                    AssignedToUserId = currentUserId,
+                    AssignedToUser = currentUser,
+                    Status = DroitStatus.Received,
+                    ReportedDate = new DateTime(2026, 4, 10),
+                    Salvor = new Salvor { Name = "Alice" },
+                    Wreck = new Wreck { Name = "North Star" },
+                    ReportedWreckName = "Old Wreck"
+                },
+                new Droit
+                {
+                    Id = Guid.NewGuid(),
+                    Reference = "D-BETA",
+                    AssignedToUserId = currentUserId,
+                    AssignedToUser = currentUser,
+                    Status = DroitStatus.Research,
+                    ReportedDate = new DateTime(2026, 4, 20)
+                },
+                new Droit
+                {
+                    Id = Guid.NewGuid(),
+                    Reference = "D-CLOSED",
+                    AssignedToUserId = currentUserId,
+                    AssignedToUser = currentUser,
+                    Status = DroitStatus.Closed,
+                    ReportedDate = new DateTime(2026, 4, 20),
+                    Salvor = new Salvor { Name = "Alice" },
+                    Wreck = new Wreck { Name = "North Star" },
+                    ReportedWreckName = "Old Wreck"
+                },
+                new Droit
+                {
+                    Id = Guid.NewGuid(),
+                    Reference = "D-OTHER-USER",
+                    AssignedToUserId = otherUserId,
+                    AssignedToUser = otherUser,
+                    Status = DroitStatus.Research,
+                    ReportedDate = new DateTime(2026, 4, 20)
+                });
+            dbContext.SaveChanges();
+
+            return (dbContext, currentUserId);
         }
 
 
