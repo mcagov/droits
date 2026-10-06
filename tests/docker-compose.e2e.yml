@@ -31,7 +31,7 @@ services:
 #    restart: on-failure
 
 #  database:
-#    image: postgres:14-alpine
+#    image: docker.io/library/postgres:14-alpine
 #    volumes:
 #      - ~/apps/droits_db/pgdata:/var/lib/postgresql/data
 #    environment:
@@ -42,7 +42,7 @@ services:
 #      - "5432:5432"
 
   redis:
-    image: redis:7
+    image: docker.io/library/redis:7
     ports:
       - "6379:6379"
         
