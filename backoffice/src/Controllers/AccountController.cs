@@ -35,16 +35,16 @@ public class AccountController : BaseController
         searchOptions.FilterByAssignedUser = true;
         searchOptions.ExcludeClosedDroits = true;
 
-        searchOptions.OrderColumn = searchOptions.OrderColumn;
-        searchOptions.OrderDescending = searchOptions.OrderDescending;
-        
         searchOptions.PageNumber = searchOptions.DroitsPageNumber;
         var droits = await _droitService.GetDroitsListViewAsync(searchOptions);
         
         searchOptions.PageNumber = searchOptions.LettersPageNumber;
         var letters = await _letterService.GetApprovedUnsentLettersListViewForCurrentUserAsync(searchOptions);
         
-        return View(new DashboardView(droits,letters));
+        return View(new DashboardView(droits, letters)
+        {
+            DashboardSearchForm = model.DashboardSearchForm
+        });
     }
     
     public IActionResult MetricsDashboard()
