@@ -92,7 +92,7 @@ export TF_VAR_alert_email_address=[value]
 export TF_VAR_image_tag=[value]
 ```
 
-- The actual sensitive values you will use in place of [value] can be found in the 'Dev env Terraform variables script' entry in the mca-droits 1Password vault
+- The actual sensitive values you will use in place of [value] can be found in the '/terraform/env-variables' entry in the mca-droits AWS parameter store for its respective environment 
 - Run ``terraform init``
 - List the current workspaces available
   ``terraform workspace list``

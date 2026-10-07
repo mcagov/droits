@@ -69,7 +69,7 @@ require_lima() {
 }
 
 create_vm() {
-  say "Creating the '$VM_NAME' VM (this downloads Ubuntu and Docker, so the first run takes a while)"
+  say "Creating the '$VM_NAME' VM (this downloads Ubuntu and Podman, so the first run takes a while)"
   limactl start \
     --name="$VM_NAME" \
     --mount-only "$REPO_ROOT:w" \
@@ -89,6 +89,13 @@ start_vm() {
     say "Starting the '$VM_NAME' VM"
     limactl start "$VM_NAME"
   fi
+
+  require_podman_vm
+}
+
+require_podman_vm() {
+  limactl shell "$VM_NAME" -- bash -lc "command -v podman" >/dev/null 2>&1 ||
+    die "The '$VM_NAME' VM was created before Droits moved from Docker to Podman. Run ./scripts/dev.sh rebuild to replace it (this deletes the local database)."
 }
 
 mount_vm_local_dirs() {
@@ -215,7 +222,7 @@ rebuild)
 status)
   require_lima
   limactl list "$VM_NAME" || true
-  vm_running && in_vm "docker compose --profile local-auth ps" || true
+  vm_running && in_vm "podman compose --profile local-auth ps" || true
   ;;
 *)
   usage

@@ -30,9 +30,12 @@ unsure.
 - Make sure you have the required versions of things installed.
    - We recommend using [mise-en-place](https://mise.jdx.dev/) to install the required tools specified in [.tool-versions](../.tool-versions).```
    - See the `.tool-versions` if you want to manage them some other way.
+   - Install [Podman](https://podman.io/docs/installation) and podman-compose with `brew install podman podman-compose`,
+     then create its VM with `podman machine init --memory 4096 && podman machine start`. You don't need this if you
+     use `./scripts/dev.sh`, which runs Podman inside its own VM.
 - Add your local config files:
-  - `webapp/.env.json` (get the content s from the "Droits Local - webapp/.env.json" secret in 1Password)
-  - `backoffice/src/appsettings.json` (get the content s from the "Droits Local - backoffice/src/appsettings.json" secret in 1Password)
+  - `webapp/.env.json` (get the contents from the "/webapp/env-json" secret in AWS Parameter Store)
+  - `backoffice/src/appsettings.json` (get the content s from the "/backoffice/appsettings-json" secret in AWS)
 - Install all the things, setup commit hooks etc.
 
 ```bash
@@ -62,13 +65,13 @@ unsure.
     - User facing: http://localhost:5001
     - Health check: http://localhost:5001/healthz
 
-At the time of writing, this will fire up the service using Docker Compose.
+At the time of writing, this will fire up the service using Podman Compose.
 
-It would be nice to have Makefile commands to fire up the two applications outside of Docker for easier development work. For now though, look at [webapp README](./webapp/README.md) and [backoffice README](./backoffice/README.md).
+It would be nice to have Makefile commands to fire up the two applications outside of containers for easier development work. For now though, look at [webapp README](./webapp/README.md) and [backoffice README](./backoffice/README.md).
 
 ### Local development without Azure
 
-If you don't have the 1Password config files above, or want to work offline, you can run everything with a single
+If you don't have the AWS config files above, or want to work offline, you can run everything with a single
 local user instead, with hot reload for both applications.
 
 To run it all in a Linux VM, with Homebrew as the only thing you install on your Mac, run `./scripts/dev.sh`. It
@@ -79,7 +82,7 @@ that save by writing a new file and renaming it over the old one, such as JetBra
 vim, are not picked up; turn that off, or run `DROITS_WATCH_POLLING=true ./scripts/dev.sh`. To run natively instead:
 
 1. Copy `.env.example` as `.env` and set `DROITS_LOCAL_AUTH=true`.
-2. `make setup`, then `make serve`. This starts Postgres, Redis and LocalStack in Docker, then runs the backoffice with
+2. `make setup`, then `make serve`. This starts Postgres, Redis and LocalStack in Podman, then runs the backoffice with
    `dotnet watch` and the webapp with `npm run dev`.
 
 Either way:
@@ -97,7 +100,7 @@ development mode outside ECS, so the dev, staging and production environments al
 
 ### Troubleshooting
 
-- Instance fails to start: If you ran `docker compose up` before creating and populating the `.env.json` and `appsettings.json` files, this will cause the instance to fail. To resolve this, clean up the environment and run the command again.
+- Instance fails to start: If you ran `podman compose up` before creating and populating the `.env.json` and `appsettings.json` files, this will cause the instance to fail. To resolve this, clean up the environment and run the command again.
 ## Testing
 
 ### Run the unit tests
