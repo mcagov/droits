@@ -34,7 +34,7 @@ unsure.
      then create its VM with `podman machine init --memory 4096 && podman machine start`. You don't need this if you
      use `./scripts/dev.sh`, which runs Podman inside its own VM.
 - Add your local config files:
-  - `webapp/.env.json` (get the contents from the "/webapp/env-json" secret in AWS)
+  - `webapp/.env.json` (get the contents from the "/webapp/env-json" secret in AWS Parameter Store)
   - `backoffice/src/appsettings.json` (get the content s from the "/backoffice/appsettings-json" secret in AWS)
 - Install all the things, setup commit hooks etc.
 
