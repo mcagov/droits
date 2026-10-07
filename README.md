@@ -34,8 +34,8 @@ unsure.
      then create its VM with `podman machine init --memory 4096 && podman machine start`. You don't need this if you
      use `./scripts/dev.sh`, which runs Podman inside its own VM.
 - Add your local config files:
-  - `webapp/.env.json` (get the content s from the "Droits Local - webapp/.env.json" secret in 1Password)
-  - `backoffice/src/appsettings.json` (get the content s from the "Droits Local - backoffice/src/appsettings.json" secret in 1Password)
+  - `webapp/.env.json` (get the contents from the "/webapp/env-json" secret in AWS)
+  - `backoffice/src/appsettings.json` (get the content s from the "/backoffice/appsettings-json" secret in AWS)
 - Install all the things, setup commit hooks etc.
 
 ```bash
@@ -71,7 +71,7 @@ It would be nice to have Makefile commands to fire up the two applications outsi
 
 ### Local development without Azure
 
-If you don't have the 1Password config files above, or want to work offline, you can run everything with a single
+If you don't have the AWS config files above, or want to work offline, you can run everything with a single
 local user instead, with hot reload for both applications.
 
 To run it all in a Linux VM, with Homebrew as the only thing you install on your Mac, run `./scripts/dev.sh`. It
