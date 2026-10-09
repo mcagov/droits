@@ -58,3 +58,4 @@ StrykerOutput
 *coverage*
 
 /tests/cypress.env.json
+/.env

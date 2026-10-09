@@ -12,6 +12,9 @@
 <form class="form-horizontal" asp-action="Search" enctype="multipart/form-data" method="POST">
     <div class="d-none">
         @Html.EditorFor(s => s.PageNumber, new { htmlAttributes = new { @class = "js-page-number-field"} })
+        @Html.EditorFor(s => s.OrderColumn, new { htmlAttributes = new { @class = "js-order-column-field"} })
+        @Html.EditorFor(s => s.OrderDescending, new { htmlAttributes = new { @class = "js-order-descending-field"} })
+        @Html.HiddenFor(s => s.SearchOpen, new { @class = "js-search-open-field" })
     </div>
         
     <div class="tab-content mt-4" id="salvorForm">

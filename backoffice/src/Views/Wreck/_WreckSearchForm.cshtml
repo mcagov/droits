@@ -13,6 +13,9 @@
     
     <div class="d-none">
         @Html.EditorFor(w => w.PageNumber, new { htmlAttributes = new { @class = "js-page-number-field"} })
+        @Html.EditorFor(w => w.OrderColumn, new { htmlAttributes = new { @class = "js-order-column-field"} })
+        @Html.EditorFor(w => w.OrderDescending, new { htmlAttributes = new { @class = "js-order-descending-field"} })
+        @Html.HiddenFor(w => w.SearchOpen, new { @class = "js-search-open-field" })
     </div>
     
     <div class="tab-content mt-4" id="wreckForm">

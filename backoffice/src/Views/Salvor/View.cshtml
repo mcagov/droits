@@ -1,6 +1,13 @@
 @model SalvorView
 @{
     ViewData["Title"] = Model.Name == "" ? "Salvor View" : Model.Name;
+    var tabs = new[] { "salvor", "droits", "notes" };
+    var requestedTab = (string?)ViewBag.SelectedTab;
+    if (string.IsNullOrEmpty(requestedTab) || !tabs.Contains(requestedTab.Trim().ToLower()))
+    {
+        requestedTab = "salvor";
+    }
+    var selectedTab = requestedTab.Trim().ToLower();
 }
 
 @{
@@ -15,26 +22,35 @@
 
 <ul class="nav nav-tabs" id="salvorTabs" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="salvor-tab" data-bs-toggle="tab" data-bs-target="#salvor-content" type="button" role="tab" aria-controls="salvor-content" aria-selected="true">Salvor</button>
+        <button class="nav-link @(selectedTab.Equals("salvor") ? "active" : "")" id="salvor-tab" data-bs-toggle="tab" data-bs-target="#salvor-content" type="button" role="tab" aria-controls="salvor-content" aria-selected="@(selectedTab.Equals("salvor") ? "true" : "false")">Salvor</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="droits-tab" data-bs-toggle="tab" data-bs-target="#droits-content" type="button" role="tab" aria-controls="droits-content" aria-selected="false">Droits</button>
+        <button class="nav-link @(selectedTab.Equals("droits") ? "active" : "")" id="droits-tab" data-bs-toggle="tab" data-bs-target="#droits-content" type="button" role="tab" aria-controls="droits-content" aria-selected="@(selectedTab.Equals("droits") ? "true" : "false")">Droits</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes-content" type="button" role="tab" aria-controls="notes-content" aria-selected="false">Notes</button>
+        <button class="nav-link @(selectedTab.Equals("notes") ? "active" : "")" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes-content" type="button" role="tab" aria-controls="notes-content" aria-selected="@(selectedTab.Equals("notes") ? "true" : "false")">Notes</button>
     </li>
 </ul>
 
 <div class="tab-content mt-3" id="salvorView">
-    <div class="tab-pane fade show active" id="salvor-content" role="tabpanel" aria-labelledby="salvor-tab">
+    <div class="tab-pane fade @(selectedTab.Equals("salvor") ? "show active" : "")" id="salvor-content" role="tabpanel" aria-labelledby="salvor-tab">
         <partial name="Salvor/_SalvorViewFields"/>
     </div>
 
-    <div class="tab-pane fade" id="droits-content" role="tabpanel" aria-labelledby="droits-tab">
+    <div class="tab-pane fade @(selectedTab.Equals("droits") ? "show active" : "")" id="droits-content" role="tabpanel" aria-labelledby="droits-tab">
+        <form asp-action="View" asp-route-id="@Model.Id" method="get" class="d-none">
+            <input type="hidden" name="PageNumber" value="@Model.Droits.PageNumber" class="js-page-number-field" />
+            <input type="hidden" name="selectedTab" value="droits" />
+        </form>
         <partial name="Droit/_DroitListTable" model="@Model.Droits"/>
+        <div class="row mt-4">
+            <div class="col">
+                @await Html.PartialAsync("_PaginationPartial", Model.Droits)
+            </div>
+        </div>
     </div>
 
-    <div class="tab-pane fade" id="notes-content" role="tabpanel" aria-labelledby="notes-tab">
+    <div class="tab-pane fade @(selectedTab.Equals("notes") ? "show active" : "")" id="notes-content" role="tabpanel" aria-labelledby="notes-tab">
         <div class="row justify-content-end">
             <div class="col-6 col-lg-4 text-end">
                 <a type="button" class="btn btn-primary" asp-controller="Note" asp-action="Add" asp-route-SalvorId="@Model.Id" asp-route-ObjectReference="@Model.Name">Add Note</a>

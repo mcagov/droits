@@ -28,45 +28,110 @@ unsure.
 ## Local development
 
 - Make sure you have the required versions of things installed.
-   - Install [asdf](asdf-vm.com), or 'brew install asdf' which will automatically manage this.
+   - We recommend using [mise-en-place](https://mise.jdx.dev/) to install the required tools specified in [.tool-versions](../.tool-versions).```
    - See the `.tool-versions` if you want to manage them some other way.
+   - Install [Podman](https://podman.io/docs/installation) and podman-compose with `brew install podman podman-compose`,
+     then create its VM with `podman machine init --memory 4096 && podman machine start`. You don't need this if you
+     use `./scripts/dev.sh`, which runs Podman inside its own VM.
 - Add your local config files:
-  - `webapp/.env.json` (get the content s from the "Droits Local - webapp/.env.json" secret in 1Password)
-  - `backoffice/src/appsettings.json` (get the content s from the "Droits Local - backoffice/src/appsettings.json" secret in 1Password)
+  - `webapp/.env.json` (get the contents from the "/webapp/env-json" secret in AWS Parameter Store)
+  - `backoffice/src/appsettings.json` (get the content s from the "/backoffice/appsettings-json" secret in AWS)
 - Install all the things, setup commit hooks etc.
-   - ```bash
-    # From the root of this repository
-    make setup
-    ```
+
+```bash
+  # From the root of this repository
+  make setup
+ ```
 - Ensure you have created the development certificate:
-  - ```bash
-    dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p password
-    ```
+```bash
+  dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p password
+```
   - You will need to unlock your keyvault with your MacBook password
 - Build the container images:
-  - ```bash
+```bash
     # From the root of this repository
-    make build
-    ```
-- Start up the applications in development mode, with backing services
-  - ```bash
-    # From the root of this repository
-    make serve
-    ```
-  - The application should be available at the following URLS:
-    - Webapp:
-      - User facing: http://localhost:3000
-    - Backoffice:
-      - User facing: http://localhost:5001
-      - Health check: http://localhost:5001/healthz
-  
-At the time of writing, this will fire up the service using Docker Compose.
+  make build
+```
 
-It would be nice to have Makefile commands to fire up the two applications outside of Docker for easier development work. For now though, look at [webapp README](./webapp/README.md) and [backoffice README](./backoffice/README.md).
+- Start up the applications in development mode, with backing services
+```bash
+  # From the root of this repository
+  make serve
+ ```
+- The application should be available at the following URLS:
+  - Webapp:
+    - User facing: http://localhost:3000
+  - Backoffice:
+    - User facing: http://localhost:5001
+    - Health check: http://localhost:5001/healthz
+
+At the time of writing, this will fire up the service using Podman Compose.
+
+It would be nice to have Makefile commands to fire up the two applications outside of containers for easier development work. For now though, look at [webapp README](./webapp/README.md) and [backoffice README](./backoffice/README.md).
+
+### Local development without Azure
+
+If you don't have the AWS config files above, or want to work offline, you can run everything with a single
+local user instead, with hot reload for both applications.
+
+To run it all in a Linux VM, with Homebrew as the only thing you install on your Mac, run `./scripts/dev.sh`. It
+creates the VM, installs everything inside it and serves the app on the usual ports; run `./scripts/dev.sh help` for
+the list of commands. `node_modules` and the .NET build output are kept inside the VM, so install on your Mac too if
+you want your editor to resolve imports. Changes you save on your Mac reload in the VM within a second or so. Editors
+that save by writing a new file and renaming it over the old one, such as JetBrains IDEs with "safe write" turned on or
+vim, are not picked up; turn that off, or run `DROITS_WATCH_POLLING=true ./scripts/dev.sh`. To run natively instead:
+
+1. Copy `.env.example` as `.env` and set `DROITS_LOCAL_AUTH=true`.
+2. `make setup`, then `make serve`. This starts Postgres, Redis and LocalStack in Podman, then runs the backoffice with
+   `dotnet watch` and the webapp with `npm run dev`.
+
+Either way:
+
+- Webapp: http://localhost:3000. Reporting needs no sign in; the portal signs in with `dev@droits.local` / `password`.
+- Backoffice: http://localhost:5001, signed in automatically as `dev@droits.local`.
+- Images are stored in LocalStack S3 at http://localhost:4566, in the `droits-local` bucket.
+- The settings come from `local-auth.env`. Put any overrides, such as `LOCAL_AUTH_EMAIL` or `LOCAL_AUTH_PASSWORD`, in
+  `.env`.
+- GovNotify uses your `GovNotify:ApiKey` from `backoffice/src/appsettings.json` if you have one. Without it, emails are
+  not sent and the error is logged.
+
+This is for local development only. Both applications ignore `DROITS_LOCAL_AUTH` and use Azure unless they run in
+development mode outside ECS, so the dev, staging and production environments always use Azure AD and Azure AD B2C.
 
 ### Troubleshooting
 
-- Instance fails to start: If you ran `docker compose up` before creating and populating the `.env.json` and `appsettings.json` files, this will cause the instance to fail. To resolve this, clean up the environment and run the command again.
+- Instance fails to start: If you ran `podman compose up` before creating and populating the `.env.json` and `appsettings.json` files, this will cause the instance to fail. To resolve this, clean up the environment and run the command again.
+## Testing
+
+### Run the unit tests
+
+```shell
+# From the webapp directory...
+
+npm run test
+```
+
+### Mutation testing
+
+We use [Stryker Mutator](https://stryker-mutator.io/docs/stryker-js/introduction/) as a tool to help us understand how much we can trust our unit tests.
+
+Every mutation that survives is a line of code that we can change without it being picked up by our unit tests.
+
+To run the mutation tests:
+
+```shell
+# From the webapp directory...
+
+stryker run
+```
+
+This will take a while, so you are not going to be running it after every commit.
+
+Once it completes, there should be an HTML report in `reports/mutation/mutation.html`.
+
+## Access the back office component
+
+- [Log in to Microsoft Power Automate Flow](https://unitedkingdom.flow.microsoft.com/manage/environments/93b4f1ed-cbc0-4b5a-b71c-8465c4d011b7/flows/shared)
 
 ## Infrastructure-as-code
 
@@ -90,6 +155,8 @@ A build and deployment to the staging environment is triggered on a manual relea
 with the hash of the triggering commit and published to AWS Elastic Container Registry. Images built and deployed to
 for the staging environment are ephemeral and not used anywhere else.
 
+Please ensure that all releases follow semantic versioning: [semver](https://semver.org/). 
+
 ### Production environment
 
 A build and deployment to the production environment is triggered on a manual release set to "latest release". Docker images are tagged
@@ -103,6 +170,7 @@ These are manual at the moment. Writing them down is the first step on the journ
 After deploying:
 
 - **Web App**
+  - Go to the AWS environment, ECS, DROITS cluster, and confirm that the new task for "droits-cluster", "webapp" is running with a "healthy" state. [AWS Accounts](https://mcaconsole.awsapps.com/start/#/?tab=accounts).
   - Check the "Report Wreck Material" home page loads
     - Initial pages are currently quite different between Dev/Staging and Production
       - Staging * Dev
@@ -145,6 +213,7 @@ After deploying:
         - Check it loads as expected
 - **Backoffice**
   - Check the healthcheck endpoint - It should say "Healthy"
+  - Go to the AWS environment, ECS, DROITS cluster, and confirm that the new task for "droits-cluster", "backoffice" is running with a "healthy" state. [AWS Accounts](https://mcaconsole.awsapps.com/start/#/?tab=accounts).
   - Log in using your "...@mcga.onmicrosoft.com" account
     - Check you are on the "My Dashboard" page
     - Check it shows panels for "My Assigned Droits" and "QC Approved Letters"

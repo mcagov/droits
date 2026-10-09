@@ -50,7 +50,7 @@ The application shows a form that members of the public fill out and submit in o
 
 Follow [the instructions in the root README to get started](../README.md#local-development).
 
-### Running the webapp without using Docker Compose
+### Running the webapp without using Podman Compose
 
 #### Start the Express server
 

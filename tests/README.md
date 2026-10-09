@@ -9,7 +9,7 @@ Automated end-to-end tests are implemented using [Cypress](https://www.cypress.i
 To run the tests locally, use the following commands:
 
 ```bash
-docker compose up
+podman compose up
 npm run test:e2e
 ```
 

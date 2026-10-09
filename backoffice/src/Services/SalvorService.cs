@@ -58,6 +58,7 @@ public class SalvorService : ISalvorService
         var query = searchOptions.IncludeAssociations
             ? _repo.GetSalvorsWithAssociations()
             : _repo.GetSalvors();
+        query = OrderSalvors(query, searchOptions);
         var pagedItems = await ServiceHelper.GetPagedResult(
             query.Select(s => new SalvorView(s, searchOptions.IncludeAssociations)), searchOptions);
 
@@ -138,7 +139,7 @@ public class SalvorService : ISalvorService
 
     public async Task<SalvorListView> AdvancedSearchAsync(SalvorSearchForm form)
     {
-        var query = QueryFromForm(form)
+        var query = OrderSalvors(QueryFromForm(form), form)
             .Select(s => new SalvorView(s, true));
         
         var pagedSalvors =
@@ -187,6 +188,26 @@ public class SalvorService : ISalvorService
         var query = _repo.GetSalvorsWithAssociations();
 
         return SalvorQueryBuilder.BuildQuery(form,query);
+    }
+
+
+    private static IQueryable<Salvor> OrderSalvors(IQueryable<Salvor> query, SearchOptions searchOptions)
+    {
+        if (searchOptions.OrderColumn == nameof(SalvorView.DroitsCount))
+        {
+            return searchOptions.OrderDescending
+                ? query.OrderByDescending(s => s.Droits.Count).ThenByDescending(s => s.Created)
+                : query.OrderBy(s => s.Droits.Count).ThenByDescending(s => s.Created);
+        }
+
+        if (searchOptions.OrderColumn == nameof(SalvorView.Name))
+        {
+            return searchOptions.OrderDescending
+                ? query.OrderByDescending(s => s.Name).ThenByDescending(s => s.Id)
+                : query.OrderBy(s => s.Name).ThenBy(s => s.Id);
+        }
+
+        return query;
     }
 
 

@@ -21,7 +21,7 @@ Before running the migration script, ensure the following:
     - The script utilizes `jq` for JSON processing. Make sure `jq` is installed on your system.
 
 5. **Secrets Configuration**:
-    - Create a `set_secrets.sh` script in the `config/` directory and populate it with necessary secrets like `POWERAPPS_CLIENT_ID`, `POWERAPPS_CLIENT_SECRET`, and `DOTNET_API_KEY`. Retrieve these secrets from 1Password.
+    - Create a `set_secrets.sh` script in the `config/` directory and populate it with necessary secrets like `POWERAPPS_CLIENT_ID`, `POWERAPPS_CLIENT_SECRET`, and `DOTNET_API_KEY`. Retrieve these secrets from AWS.
 
 ## Usage
 
@@ -29,7 +29,7 @@ To execute the migration script, follow these steps:
 
 1. **Set up Secrets**:
     - Create the `set_secrets.sh` script in the `config/` directory and populate it with necessary secrets.
-    - Pull down the `set_secrets.sh` script from your secure vault (1Password) to ensure sensitive information remains protected.
+    - Pull down the `set_secrets.sh` script from your secure vault (AWS) to ensure sensitive information remains protected.
 
 2. **Configure Entities**:
     - Edit the `config.json` file to specify the entities you want to migrate along with their endpoints in both environments.
