@@ -19,53 +19,119 @@
             <h3 class="display-6 text-center">@ViewData["Title"]</h3>
         </div>
     </div>
-    <form class="form-horizontal mt-2" asp-action="Index" enctype="multipart/form-data" method="POST">
-
-        <div class="js-dashboard-search d-none">
+    <form class="form-horizontal mt-2" asp-action="Index" method="POST">
+        <div class="d-none">
             @Html.EditorFor(f => f.DashboardSearchForm.DroitsPageNumber, new { htmlAttributes = new { @class = "js-droit-page-number-field"} })
             @Html.EditorFor(f => f.DashboardSearchForm.LettersPageNumber, new { htmlAttributes = new { @class = "js-letter-page-number-field"} })
             @Html.EditorFor(f => f.DashboardSearchForm.OrderDescending, new { htmlAttributes = new { @class = "js-order-descending-field"} })
             @Html.EditorFor(f => f.DashboardSearchForm.OrderColumn, new { htmlAttributes = new { @class = "js-order-column-field"} })
         </div>
-    </form>
-   
-    
-    <div class="card">
-        <div class="card-header">
-            <h4 class="mb-0">My Assigned Droits</h4>
-        </div>
-        <div class="card-body">
-            @if (Model.Droits.TotalCount > 0)
-            {
-                <partial name="Account/_AccountDroitListTable" model="@Model.Droits"/>
-                <div class="mt-4 pagination-container" data-pagination-input-selector=".js-droit-page-number-field">
-                    @await Html.PartialAsync("_PaginationPartial", Model.Droits)
-                </div>
-            }
-            else
-            {
-                <h5 class="text-center">No Assigned Droits</h5>
-            }
-        </div>
-    </div>
-    
-    <div class="card mt-4">
-        <div class="card-header">
-            <h4 class="mb-0">QC Approved Letters</h4>
-        </div>
-        <div class="card-body">
-             @if (Model.Letters.TotalCount > 0)
-             {
-                 <partial name="_LetterListTable" model="@Model.Letters"/>
-                 <div class="mt-4 pagination-container" data-pagination-input-selector=".js-letter-page-number-field">
-                     @await Html.PartialAsync("_PaginationPartial", Model.Letters)
-                 </div>
-             }
-             else
-             {
-                 <h5 class="text-center">No Letters To Send</h5>
-             }
-        </div>
-    </div>
 
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <button type="button"
+                        class="btn btn-primary"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#dashboard-search-card"
+                        aria-expanded="@(Model.DashboardSearchForm.SearchOpen ? "true" : "false")"
+                        aria-controls="dashboard-search-card">
+                    Search <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="dashboard-search-card" class="js-dashboard-search collapse @(Model.DashboardSearchForm.SearchOpen ? "show" : "")">
+            @Html.HiddenFor(f => f.DashboardSearchForm.SearchOpen, new { @class = "js-search-open-field" })
+            <div class="card mt-2">
+                <div class="card-header">
+                    <h4 class="mb-0">Search Assigned Droits</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-floating mb-3">
+                                @Html.EditorFor(m => m.DashboardSearchForm.SalvorName, new { htmlAttributes = new { @class = "form-control", @placeholder = "" } })
+                                @Html.LabelFor(m => m.DashboardSearchForm.SalvorName, "Salvor")
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating mb-3">
+                                @Html.EditorFor(m => m.DashboardSearchForm.WreckName, new { htmlAttributes = new { @class = "form-control", @placeholder = "" } })
+                                @Html.LabelFor(m => m.DashboardSearchForm.WreckName, "Verified Wreck")
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating mb-3">
+                                @Html.EditorFor(m => m.DashboardSearchForm.ReportedWreckName, new { htmlAttributes = new { @class = "form-control", @placeholder = "" } })
+                                @Html.LabelFor(m => m.DashboardSearchForm.ReportedWreckName, "Reported Wreck")
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        @Html.EditorFor(m => m.DashboardSearchForm.ReportedDateFrom, new { htmlAttributes = new { @type = "date", @class = "form-control", @placeholder = "" } })
+                                        @Html.LabelFor(m => m.DashboardSearchForm.ReportedDateFrom, "Reported from")
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-floating mb-3">
+                                        @Html.EditorFor(m => m.DashboardSearchForm.ReportedDateTo, new { htmlAttributes = new { @type = "date", @class = "form-control", @placeholder = "" } })
+                                        @Html.LabelFor(m => m.DashboardSearchForm.ReportedDateTo, "Reported to")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating mb-3 status-select">
+                                @Html.ListBoxFor(
+                                    m => m.DashboardSearchForm.StatusList,
+                                    Html.GetEnumSelectList<DroitStatus>(),
+                                    new { @class = "form-control js-search-dashboard-status", @placeholder = "" })
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" name="DashboardSearchForm.ApplyFilters" value="true" type="submit">Search</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4 class="mb-0">My Assigned Droits</h4>
+            </div>
+            <div class="card-body">
+                @if (Model.Droits.TotalCount > 0)
+                {
+                    <partial name="Account/_AccountDroitListTable" model="@Model.Droits"/>
+                    <div class="mt-4 pagination-container" data-pagination-input-selector=".js-droit-page-number-field">
+                        @await Html.PartialAsync("_PaginationPartial", Model.Droits)
+                    </div>
+                }
+                else
+                {
+                    <h5 class="text-center">No Assigned Droits</h5>
+                }
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4 class="mb-0">QC Approved Letters</h4>
+            </div>
+            <div class="card-body">
+                @if (Model.Letters.TotalCount > 0)
+                {
+                    <partial name="_LetterListTable" model="@Model.Letters"/>
+                    <div class="mt-4 pagination-container" data-pagination-input-selector=".js-letter-page-number-field">
+                        @await Html.PartialAsync("_PaginationPartial", Model.Letters)
+                    </div>
+                }
+                else
+                {
+                    <h5 class="text-center">No Letters To Send</h5>
+                }
+            </div>
+        </div>
+    </form>
 </div>

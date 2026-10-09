@@ -43,6 +43,13 @@ public static class ServiceHelper
         // Define a mapping between column name and expression
         var columnMap = new Dictionary<string, Expression<Func<Droit, object>>>()
         {
+            { "Reference", d => d.Reference },
+            { "Salvor", d => d.Salvor!.Name },
+            { "VerifiedWreck", d => d.Wreck!.Name },
+            { "ReportedWreck", d => d.ReportedWreckName! },
+            { "TriageNumber", d => d.TriageNumber! },
+            { "Items", d => d.WreckMaterials.Count },
+            { "RoW", d => d.AssignedToUser!.Name },
             { "ReportedDate", d => d.ReportedDate },
             { "Status", d => d.Status }
         };
