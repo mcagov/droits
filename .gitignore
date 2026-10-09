@@ -56,3 +56,5 @@ StrykerOutput
 
 # Test coverage
 *coverage*
+
+/tests/cypress.env.json
