@@ -335,7 +335,7 @@ namespace Droits.Tests.UnitTests.Services
         {
             // Given
             var emptySearchform = new DroitSearchForm();
-            _mockRepo.Setup(r => r.GetDroitsWithAssociations())
+            _mockRepo.Setup(r => r.GetDroitsForExport())
                 .Returns(new List<Droit>().AsQueryable);
 
             // When & Assert
@@ -353,7 +353,7 @@ namespace Droits.Tests.UnitTests.Services
                 new() {Id = Guid.NewGuid(), Reference = "Ref2"},
             }.AsQueryable();
 
-            _mockRepo.Setup(r => r.GetDroitsWithAssociations()).Returns(droitsQueryable);
+            _mockRepo.Setup(r => r.GetDroitsForExport()).Returns(droitsQueryable);
             
             // When
             var data = await _service.ExportAsync(droitSearchForm);
@@ -373,7 +373,7 @@ namespace Droits.Tests.UnitTests.Services
                 new() {Id = Guid.NewGuid(), Reference = "Ref2"},
             }.AsQueryable();
 
-            _mockRepo.Setup(r => r.GetDroitsWithAssociations()).Returns(droitsQueryable);
+            _mockRepo.Setup(r => r.GetDroitsForExport()).Returns(droitsQueryable);
             
             // When
             var data = await _service.ExportAsync(droitSearchForm);

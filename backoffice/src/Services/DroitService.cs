@@ -314,7 +314,7 @@ public class DroitService : IDroitService
 
     public async Task<byte[]> ExportAsync(DroitSearchForm form)
     {
-        var query = QueryFromForm(form);
+        var query = DroitQueryBuilder.BuildQuery(form, _repo.GetDroitsForExport());
 
         var droits = SearchDroits(query);
 

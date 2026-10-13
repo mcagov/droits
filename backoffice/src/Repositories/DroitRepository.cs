@@ -18,6 +18,7 @@ public interface IDroitRepository
 {
     IQueryable<Droit> GetDroits();
     IQueryable<Droit> GetDroitsWithAssociations();
+    IQueryable<Droit> GetDroitsForExport();
     IQueryable<Droit> GetOrderedDroitsWithAssociations(Expression<Func<Droit, object>> orderColumnExpression, bool orderDescending);
     Task<Droit> GetDroitWithAssociationsAsync(Guid id);
     Task<Droit> GetDroitAsync(Guid id);
@@ -56,6 +57,17 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
             .Include(d => d.Wreck).AsNoTracking()
             .Include(d => d.Salvor).AsNoTracking()
             .Include(d => d.WreckMaterials.OrderBy(wm => wm.Created)).AsNoTracking();
+    }
+
+    public IQueryable<Droit> GetDroitsForExport()
+    {
+        return Context.Droits.OrderByDescending(d => d.ReportedDate).ThenByDescending(d => d.Id)
+            .Include(d => d.AssignedToUser)
+            .Include(d => d.Wreck)
+            .Include(d => d.Salvor)
+            .Include(d => d.WreckMaterials.OrderBy(wm => wm.Created))
+            .AsSplitQuery()
+            .AsNoTracking();
     }
     
     public IQueryable<Droit> GetOrderedDroitsWithAssociations(Expression<Func<Droit, object>> orderColumnExpression, bool orderDescending)
