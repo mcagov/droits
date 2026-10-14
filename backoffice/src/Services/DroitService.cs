@@ -2,6 +2,7 @@
 #region
 
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using AutoMapper;
 using Droits.Data.Mappers.CsvMappers;
 using Droits.Exceptions;
@@ -45,7 +46,8 @@ public interface IDroitService
     Task<List<DroitExportDto>> SearchDroitsAsync(string query);
     Task<DroitListView> AdvancedSearchDroitsAsync(DroitSearchForm form);
     Task<Droit> CreateDroitAsync(SubmittedReportDto report, Salvor salvor);
-    Task<byte[]> ExportAsync(DroitSearchForm form);
+    Task<bool> HasDroitsToExportAsync(DroitSearchForm form);
+    Task ExportAsync(DroitSearchForm form, Stream output, CancellationToken cancellationToken = default);
     Task<Droit> GetDroitByReferenceAsync(string reference);
     Task UploadWmCsvForm(List<WMRowDto> wreckMaterials, Guid droitId);
 
@@ -307,36 +309,27 @@ public class DroitService : IDroitService
     }
 
 
-    private List<Droit> SearchDroits(IQueryable<Droit> query)
+    public async Task<bool> HasDroitsToExportAsync(DroitSearchForm form)
     {
-        return query.ToList();
+        return await DroitQueryBuilder.BuildQuery(form, _repo.GetDroitsForExport()).AnyAsync();
     }
 
-    public async Task<byte[]> ExportAsync(DroitSearchForm form)
+    public async Task ExportAsync(DroitSearchForm form, Stream output, CancellationToken cancellationToken = default)
     {
-        var query = QueryFromForm(form);
+        var query = DroitQueryBuilder.BuildQuery(form, _repo.GetDroitsForExport());
+        var droits = _repo.StreamDroitsForExport(query);
 
-        var droits = SearchDroits(query);
+        await ExportHelper.WriteRecordsAsync(ToExportDtos(droits, cancellationToken),
+            new DroitsCsvMap(form.DroitExportForm), output, cancellationToken);
+    }
 
-         
-        if (droits.IsNullOrEmpty())
+    private static async IAsyncEnumerable<DroitExportDto> ToExportDtos(IAsyncEnumerable<Droit> droits,
+        [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        await foreach ( var droit in droits.WithCancellation(cancellationToken) )
         {
-            throw new Exception("No Droits to export");
+            yield return new DroitExportDto(droit);
         }
-        
-        
-        
-        try
-        {
-            var droitsData = droits.Select(d => new DroitExportDto(d)).ToList();
-            return await ExportHelper.ExportRecordsAsync(droitsData, new DroitsCsvMap(form.DroitExportForm));
-        }
-        catch ( Exception e )
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-
     }
 
     public async Task<Droit> GetDroitByReferenceAsync(string reference)

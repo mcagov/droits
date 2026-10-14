@@ -16,6 +16,7 @@ using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Net.Http.Headers;
 
 #endregion
 
@@ -471,14 +472,32 @@ public class DroitController : BaseController
         if ( form.SubmitAction != "Search" ){
             switch ( form.SubmitAction )
             {
-                case "Export" : 
+                case "Export" :
                     try
                     {
-                        var csvExport = await _service.ExportAsync(form); 
-                        return File(csvExport, "text/csv", $"droit-export-{DateTime.UtcNow.ToShortDateString()}.csv");
+                        if ( !await _service.HasDroitsToExportAsync(form) )
+                        {
+                            throw new Exception("No Droits to export");
+                        }
+
+                        var contentDisposition = new ContentDispositionHeaderValue("attachment");
+                        contentDisposition.SetHttpFileName($"droit-export-{DateTime.UtcNow.ToShortDateString()}.csv");
+                        Response.ContentType = "text/csv";
+                        Response.Headers.ContentDisposition = contentDisposition.ToString();
+
+                        await _service.ExportAsync(form, Response.Body, HttpContext.RequestAborted);
+                        return new EmptyResult();
                     }
                     catch ( Exception e )
                     {
+                        if ( Response.HasStarted )
+                        {
+                            _logger.LogError(e, "Droit export failed after the response had started");
+                            HttpContext.Abort();
+                            return new EmptyResult();
+                        }
+
+                        Response.Clear();
                         HandleError(_logger, "No Droits to export", e);
                         return RedirectToAction("Index");
                     }
