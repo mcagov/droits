@@ -464,58 +464,116 @@ namespace Droits.Tests.UnitTests.Services
             await Assert.ThrowsAsync<DroitNotFoundException>(() => _service.UpdateDroitStatusAsync(nonExistingDroitId, DroitStatus.Research));
         }
         
-        [Fact]
-        public async Task ExportDroitsAsync_EmptyList_ThrowsException()
+        private static DroitsContext CreateExportDroitsContext(params Droit[] droits)
         {
-            // Given
-            var emptySearchform = new DroitSearchForm();
-            _mockRepo.Setup(r => r.GetDroitsWithAssociations())
-                .Returns(new List<Droit>().AsQueryable);
+            var dbContext = new DroitsContext(new DbContextOptionsBuilder<DroitsContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options);
 
-            // When & Assert
-            await Assert.ThrowsAsync<Exception>(() => _service.ExportAsync(emptySearchform));
+            dbContext.Droits.AddRange(droits);
+            dbContext.SaveChanges();
+
+            return dbContext;
         }
-        
+
+
+        private static async Task<string> ExportToStringAsync(DroitService service, DroitSearchForm form)
+        {
+            using var output = new MemoryStream();
+            await service.ExportAsync(form, output);
+            return System.Text.Encoding.UTF8.GetString(output.ToArray());
+        }
+
+
         [Fact]
-        public async Task ExportDroitsAsync_ListOfDroits_ReturnsData()
+        public async Task HasDroitsToExportAsync_NoDroits_ReturnsFalse()
         {
             // Given
-            var droitSearchForm = new DroitSearchForm();
-            var droitsQueryable = new List<Droit>()
-            {
-                new() {Id = Guid.NewGuid(), Reference = "Ref1"},
-                new() {Id = Guid.NewGuid(), Reference = "Ref2"},
-            }.AsQueryable();
+            await using var dbContext = CreateExportDroitsContext();
+            var service = CreateDroitService(dbContext);
 
-            _mockRepo.Setup(r => r.GetDroitsWithAssociations()).Returns(droitsQueryable);
-            
             // When
-            var data = await _service.ExportAsync(droitSearchForm);
-            
+            var hasDroits = await service.HasDroitsToExportAsync(new DroitSearchForm());
+
             // Assert
-            Assert.NotEmpty(data);
+            Assert.False(hasDroits);
         }
-        
+
+        [Fact]
+        public async Task HasDroitsToExportAsync_ListOfDroits_ReturnsTrue()
+        {
+            // Given
+            await using var dbContext = CreateExportDroitsContext(
+                new Droit { Id = Guid.NewGuid(), Reference = "Ref1" });
+            var service = CreateDroitService(dbContext);
+
+            // When
+            var hasDroits = await service.HasDroitsToExportAsync(new DroitSearchForm());
+
+            // Assert
+            Assert.True(hasDroits);
+        }
+
         [Fact]
         public async Task ExportDroitsAsync_ListOfDroits_ReturnsCorrectData()
         {
             // Given
-            var droitSearchForm = new DroitSearchForm();
-            var droitsQueryable = new List<Droit>()
-            {
-                new() {Id = Guid.NewGuid(), Reference = "Ref1"},
-                new() {Id = Guid.NewGuid(), Reference = "Ref2"},
-            }.AsQueryable();
+            await using var dbContext = CreateExportDroitsContext(
+                new Droit { Id = Guid.NewGuid(), Reference = "Ref1" },
+                new Droit { Id = Guid.NewGuid(), Reference = "Ref2" });
+            var service = CreateDroitService(dbContext);
 
-            _mockRepo.Setup(r => r.GetDroitsWithAssociations()).Returns(droitsQueryable);
-            
             // When
-            var data = await _service.ExportAsync(droitSearchForm);
-            
+            var data = await ExportToStringAsync(service, new DroitSearchForm());
+
             // Assert
-            Assert.Contains("Ref1", System.Text.Encoding.UTF8.GetString(data));
-            Assert.Contains("Ref2", System.Text.Encoding.UTF8.GetString(data));
-            Assert.DoesNotContain("magna carta", System.Text.Encoding.UTF8.GetString(data));
+            Assert.Contains("Ref1", data);
+            Assert.Contains("Ref2", data);
+            Assert.DoesNotContain("magna carta", data);
+        }
+
+        [Fact]
+        public async Task ExportDroitsAsync_DroitWithAssociations_ExportsAssociatedNames()
+        {
+            // Given
+            await using var dbContext = CreateExportDroitsContext(
+                new Droit
+                {
+                    Id = Guid.NewGuid(),
+                    Reference = "Ref1",
+                    Wreck = new Wreck { Id = Guid.NewGuid(), Name = "HMS Example" },
+                    Salvor = new Salvor { Id = Guid.NewGuid(), Name = "Jane Salvor", Email = "jane@example.com" },
+                    WreckMaterials = new List<WreckMaterial>
+                    {
+                        new() { Id = Guid.NewGuid(), Name = "Bell", Outcome = WreckMaterialOutcome.ReturnedToOwner }
+                    }
+                });
+            var service = CreateDroitService(dbContext);
+
+            // When
+            var data = await ExportToStringAsync(service, new DroitSearchForm());
+
+            // Assert
+            Assert.Contains("HMS Example", data);
+            Assert.Contains("Jane Salvor", data);
+        }
+
+        [Fact]
+        public async Task ExportDroitsAsync_SearchFilter_ExportsOnlyMatchingDroits()
+        {
+            // Given
+            await using var dbContext = CreateExportDroitsContext(
+                new Droit { Id = Guid.NewGuid(), Reference = "Ref1", ReportedDate = new DateTime(2026, 1, 1) },
+                new Droit { Id = Guid.NewGuid(), Reference = "Ref2", ReportedDate = new DateTime(2026, 6, 1) });
+            var service = CreateDroitService(dbContext);
+            var form = new DroitSearchForm { ReportedDateFrom = new DateTime(2026, 5, 1) };
+
+            // When
+            var data = await ExportToStringAsync(service, form);
+
+            // Assert
+            Assert.Contains("Ref2", data);
+            Assert.DoesNotContain("Ref1", data);
         }
         
     }

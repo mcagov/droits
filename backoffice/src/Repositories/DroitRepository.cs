@@ -18,6 +18,8 @@ public interface IDroitRepository
 {
     IQueryable<Droit> GetDroits();
     IQueryable<Droit> GetDroitsWithAssociations();
+    IQueryable<Droit> GetDroitsForExport();
+    IAsyncEnumerable<Droit> StreamDroitsForExport(IQueryable<Droit> query);
     IQueryable<Droit> GetOrderedDroitsWithAssociations(Expression<Func<Droit, object>> orderColumnExpression, bool orderDescending);
     Task<Droit> GetDroitWithAssociationsAsync(Guid id);
     Task<Droit> GetDroitAsync(Guid id);
@@ -56,6 +58,75 @@ public class DroitRepository : BaseEntityRepository<Droit>, IDroitRepository
             .Include(d => d.Wreck).AsNoTracking()
             .Include(d => d.Salvor).AsNoTracking()
             .Include(d => d.WreckMaterials.OrderBy(wm => wm.Created)).AsNoTracking();
+    }
+
+    public IQueryable<Droit> GetDroitsForExport()
+    {
+        return Context.Droits.AsNoTracking();
+    }
+
+    public IAsyncEnumerable<Droit> StreamDroitsForExport(IQueryable<Droit> query)
+    {
+        return query.OrderByDescending(d => d.ReportedDate).ThenByDescending(d => d.Id)
+            .Select(d => new Droit
+            {
+                Id = d.Id,
+                Reference = d.Reference,
+                Created = d.Created,
+                LastModified = d.LastModified,
+                Status = d.Status,
+                TriageNumber = d.TriageNumber,
+                ReportedDate = d.ReportedDate,
+                DateFound = d.DateFound,
+                ClosedDate = d.ClosedDate,
+                IsHazardousFind = d.IsHazardousFind,
+                IsDredge = d.IsDredge,
+                ReportedWreckName = d.ReportedWreckName,
+                ReportedWreckYearSunk = d.ReportedWreckYearSunk,
+                ReportedWreckYearConstructed = d.ReportedWreckYearConstructed,
+                ReportedWreckConstructionDetails = d.ReportedWreckConstructionDetails,
+                Latitude = d.Latitude,
+                Longitude = d.Longitude,
+                InUkWaters = d.InUkWaters,
+                LocationRadius = d.LocationRadius,
+                Depth = d.Depth,
+                RecoveredFrom = d.RecoveredFrom,
+                LocationDescription = d.LocationDescription,
+                SalvageAwardClaimed = d.SalvageAwardClaimed,
+                ServicesDescription = d.ServicesDescription,
+                ServicesDuration = d.ServicesDuration,
+                ServicesEstimatedCost = d.ServicesEstimatedCost,
+                MmoLicenceRequired = d.MmoLicenceRequired,
+                MmoLicenceProvided = d.MmoLicenceProvided,
+                SalvageClaimAwarded = d.SalvageClaimAwarded,
+                District = d.District,
+                LegacyFileReference = d.LegacyFileReference,
+                GoodsDischargedBy = d.GoodsDischargedBy,
+                DateDelivered = d.DateDelivered,
+                Agent = d.Agent,
+                RecoveredFromLegacy = d.RecoveredFromLegacy,
+                LegacyRemarks = d.LegacyRemarks,
+                ImportedFromLegacy = d.ImportedFromLegacy,
+                Wreck = d.Wreck == null ? null : new Wreck
+                {
+                    Name = d.Wreck.Name,
+                    OwnerName = d.Wreck.OwnerName,
+                    OwnerEmail = d.Wreck.OwnerEmail
+                },
+                Salvor = d.Salvor == null ? null : new Salvor { Name = d.Salvor.Name },
+                AssignedToUser = d.AssignedToUser == null ? null : new ApplicationUser { Name = d.AssignedToUser.Name },
+                WreckMaterials = d.WreckMaterials.OrderBy(wm => wm.Created)
+                    .Select(wm => new WreckMaterial
+                    {
+                        Name = wm.Name,
+                        Description = wm.Description,
+                        Quantity = wm.Quantity,
+                        SalvorValuation = wm.SalvorValuation,
+                        Outcome = wm.Outcome,
+                        WreckMaterialOwner = wm.WreckMaterialOwner
+                    }).ToList()
+            })
+            .AsAsyncEnumerable();
     }
     
     public IQueryable<Droit> GetOrderedDroitsWithAssociations(Expression<Func<Droit, object>> orderColumnExpression, bool orderDescending)
