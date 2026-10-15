@@ -110,6 +110,11 @@ public class DroitService : IDroitService
             searchOptions.IncludeAssociations
             ? _repo.GetOrderedDroitsWithAssociations(orderColumnExpression, searchOptions.OrderDescending)
             : _repo.GetDroits();
+
+        if (searchOptions is DroitSearchForm droitSearchForm)
+        {
+            query = DroitQueryBuilder.BuildQuery(droitSearchForm, query);
+        }
         
         if ( searchOptions.FilterByAssignedUser )
         {
