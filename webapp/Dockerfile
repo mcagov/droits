@@ -1,10 +1,10 @@
-FROM docker.io/library/node:18 AS build
+FROM docker.io/library/node:25 AS build
 
 WORKDIR /srv
 ADD . .
 RUN rm -rf node_modules && npm install --cache /tmp/empty-cache
 
-FROM docker.io/library/node:18-slim
+FROM docker.io/library/node:25-slim
 
 WORKDIR /srv
 COPY --from=build /srv .
