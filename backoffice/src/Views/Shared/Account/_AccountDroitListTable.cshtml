@@ -7,24 +7,38 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">Reference</th>
+            <th role="button" scope="col">
+                <a class="sort-link" data-sort-col="Reference">Reference</a>
+            </th>
 
             @if (Model.IncludeAssociations)
             {
-                <th scope="col">Salvor</th>
+                <th role="button" scope="col">
+                    <a class="sort-link" data-sort-col="Salvor">Salvor</a>
+                </th>
                 @if (Model.AnyVerifiedWrecks)
                 {
-                    <th scope="col" class="text-nowrap">Verified Wreck</th>
+                    <th role="button" scope="col" class="text-nowrap">
+                        <a class="sort-link" data-sort-col="VerifiedWreck">Verified Wreck</a>
+                    </th>
 
                 }
             }
-            <th scope="col" class="text-nowrap">Reported Wreck</th>
-            <th scope="col">Triage</th>
+            <th role="button" scope="col" class="text-nowrap">
+                <a class="sort-link" data-sort-col="ReportedWreck">Reported Wreck</a>
+            </th>
+            <th role="button" scope="col">
+                <a class="sort-link" data-sort-col="TriageNumber">Triage</a>
+            </th>
             @if (Model.IncludeAssociations)
             {
-                <th scope="col">Items</th>
+                <th role="button" scope="col">
+                    <a class="sort-link" data-sort-col="Items">Items</a>
+                </th>
             }
-            <th scope="col">RoW</th>
+            <th role="button" scope="col">
+                <a class="sort-link" data-sort-col="RoW">RoW</a>
+            </th>
             <th role="button" scope="col">
                 <a class="sort-link" data-sort-col="Status">Status</a>
             </th>

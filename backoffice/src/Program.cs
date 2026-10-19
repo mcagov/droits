@@ -236,6 +236,7 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<DroitsContext>();
 
     dbContext.Database.EnsureCreated();
+    DatabaseFunctions.EnsureCreated(dbContext);
 
     var shouldSeedDatabase = Environment.GetEnvironmentVariable("SEED_DATABASE") == "true";
 
