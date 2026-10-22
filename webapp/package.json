@@ -2,16 +2,16 @@
   "name": "@mca/droits",
   "version": "1.0.0",
   "engines": {
-    "node": "18"
+    "node": ">=24 <25"
   },
   "description": "Maritime and Coastguard Agency - Receiver of Wreck web application for reporting wreck material recovered from the sea and shores of the UK",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node -r esm start.js",
+    "start": "cross-env NODE_ENV=production node -r @babel/register start.js",
     "watch": "webpack --watch",
     "build": "webpack --env production",
-    "dev": "cross-env NODE_ENV=development concurrently \"nodemon -r esm start.js\" \"npm run watch\"",
-    "local": "cross-env NODE_ENV=production concurrently \"nodemon -r esm start.js\" \"npm run watch\"",
-    "prod": "cross-env NODE_ENV=production concurrently \"node -r esm start.js\"",
+    "dev": "cross-env NODE_ENV=development concurrently \"nodemon -r @babel/register start.js\" \"npm run watch\"",
+    "local": "cross-env NODE_ENV=production concurrently \"nodemon -r @babel/register start.js\" \"npm run watch\"",
+    "prod": "cross-env NODE_ENV=production concurrently \"node -r @babel/register start.js\"",
     "test": "jest --detectOpenHandles",
     "test:coverage": "jest --coverage --detectOpenHandles"
   },
@@ -26,7 +26,6 @@
   },
   "homepage": "https://github.com/mcagov/droits#readme",
   "dependencies": {
-    "@azure/msal-node": "^1.0.1",
     "@babel/cli": "^7.23.9",
     "@babel/core": "^7.29.6",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
@@ -34,6 +33,7 @@
     "@babel/plugin-transform-runtime": "^7.12.17",
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.28.5",
+    "@babel/register": "^7.29.7",
     "accessible-autocomplete": "^2.0.3",
     "autoprefixer": "^10.4.23",
     "axios": "^0.33.0",
@@ -50,7 +50,6 @@
     "css-loader": "^7.1.4",
     "dayjs": "^1.11.19",
     "dotenv-json": "^1.0.0",
-    "esm": "^3.2.25",
     "express": "^4.22.1",
     "express-debug": "^1.1.1",
     "express-session": "^1.18.2",
