@@ -2,7 +2,7 @@
   &__container {
     display: block;
     position: relative;
-    background-color: govuk-colour('light-grey');
+    background-color: govuk-colour('black', $variant: 'tint-95');
 
     &--hide {
       display: none;
@@ -16,7 +16,7 @@
       margin-bottom: 1em;
     }
     .govuk-file-upload {
-      background-color: lighten(govuk-colour('light-grey'), 2);
+      background-color: lighten(govuk-colour('black', $variant: 'tint-95'), 2);
       border: 1px dashed $govuk-border-colour;
       padding: 1em;
       width: calc(100% - 35px);
@@ -39,7 +39,7 @@
   left: 0;
   bottom: 0;
   z-index: 1;
-  background-color: lighten(govuk-colour('light-grey'), 2);
+  background-color: lighten(govuk-colour('black', $variant: 'tint-95'), 2);
 
   &--visible {
     display: flex;
