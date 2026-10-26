@@ -81,7 +81,7 @@ Use this if you need real Azure sign in. Install the tools and Podman as in the 
 
 - Add your local config files:
   - `webapp/.env.json` (get the contents from the "/webapp/env-json" secret in AWS Parameter Store)
-  - `backoffice/src/appsettings.json` (get the contents from the "/backoffice/appsettings-json" secret in AWS)
+  - `backoffice/src/appsettings.json` (get the contents from the "/backoffice/appsettings-json" secret in AWS Parameter Store)
 - Install all the things, setup commit hooks etc.
 ```bash
   # From the root of this repository
