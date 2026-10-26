@@ -65,6 +65,12 @@ variable "enable_alerts" {
   default     = false
 }
 
+variable "enable_restart_alerts" {
+  type        = bool
+  description = "When enabled ECS container restart events are sent to the Alerts SNS Topic"
+  default     = false
+}
+
 variable "root_domain_name" {
   type        = string
   description = "The root domain name for DROITS"
