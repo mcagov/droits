@@ -87,10 +87,6 @@ Use this if you need real Azure sign in. Install the tools and Podman as in the 
   # From the root of this repository
   make setup
 ```
-- Create the development certificate. You will need to unlock your keychain with your MacBook password.
-```bash
-  dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p password
-```
 - Build the container images:
 ```bash
   # From the root of this repository
