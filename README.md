@@ -28,11 +28,15 @@ unsure.
 ## Local development
 
 - Make sure you have the required versions of things installed.
-   - We recommend using [mise-en-place](https://mise.jdx.dev/) to install the required tools specified in [.tool-versions](../.tool-versions).```
+   - We recommend using [mise-en-place](https://mise.jdx.dev/) to install the required tools specified in [.tool-versions](../.tool-versions).
    - See the `.tool-versions` if you want to manage them some other way.
    - Install [Podman](https://podman.io/docs/installation) and podman-compose with `brew install podman podman-compose`,
-     then create its VM with `podman machine init --memory 4096 && podman machine start`. You don't need this if you
+     then create its VM with `podman machine init --memory 4096 && podman machine start`. 
+   - TODO: CALL THIS OUT AS BEST FOR STANDALONE LOCAL RUNNING You don't need this if you
      use `./scripts/dev.sh`, which runs Podman inside its own VM.
+   - TODO: Add a --help command to dev.sh?
+   - TODO: Mention Lima version signing into back office automatically
+   - TODO: Mention the dev@ droits local dev login
 - Add your local config files:
   - `webapp/.env.json` (get the contents from the "/webapp/env-json" secret in AWS Parameter Store)
   - `backoffice/src/appsettings.json` (get the content s from the "/backoffice/appsettings-json" secret in AWS)
