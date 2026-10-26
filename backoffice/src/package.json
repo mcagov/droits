@@ -22,7 +22,7 @@
     "handlebars": "^4.7.10",
     "imports-loader": "^4.0.1",
     "mini-css-extract-plugin": "^2.7.6",
-    "moment": "^2.30.1",
+    "moment": "^2.31.0",
     "postcss": "^8.5.26",
     "postcss-loader": "^7.3.3",
     "postcss-preset-env": "^8.5.1",
