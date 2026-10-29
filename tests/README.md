@@ -21,8 +21,8 @@ The signed-in tests only run in development (for now) and need a test account. T
 
 ```json
 {
-  "TEST_USER_EMAIL": "",
-  "TEST_USER_PASSWORD": ""
+  "SMOKE_TESTS_EMAIL": "",
+  "SMOKE_TESTS_PASSWORD": ""
 }
 ```
 
@@ -32,4 +32,4 @@ Then run:
 CYPRESS_BASE_URL=https://dev.report-wreck-material.service.gov.uk CYPRESS_ENVIRONMENT=development npx cypress open --e2e --browser electron
 ```
 
-In GitHub, the account is stored as `TEST_USER_EMAIL` and `TEST_USER_PASSWORD` secrets on the `development` environment.
+In GitHub, the account is stored as `SMOKE_TESTS_EMAIL` and `SMOKE_TESTS_PASSWORD` secrets on the `development` environment.

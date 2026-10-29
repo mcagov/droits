@@ -51,6 +51,8 @@ jobs:
         env:
           CYPRESS_BASE_URL: ${{ inputs.base_url }}
           CYPRESS_ENVIRONMENT: ${{ inputs.environment }}
+          CYPRESS_SMOKE_TESTS_EMAIL: ${{ secrets.SMOKE_TESTS_EMAIL }}
+          CYPRESS_SMOKE_TESTS_PASSWORD: ${{ secrets.SMOKE_TESTS_PASSWORD }}
 
       - uses: actions/upload-artifact@v6
         if: failure()
