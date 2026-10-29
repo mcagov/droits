@@ -19,6 +19,12 @@ on:
       aws_role_arn:
         description: Role used for waiting for ECS to deploy successfully.
         required: true
+      smoke_tests_email:
+        description: Email of the test account used by the signed-in smoke tests.
+        required: false
+      smoke_tests_password:
+        description: Password of the test account used by the signed-in smoke tests.
+        required: false
 
 jobs:
   smoke_tests:
@@ -51,8 +57,8 @@ jobs:
         env:
           CYPRESS_BASE_URL: ${{ inputs.base_url }}
           CYPRESS_ENVIRONMENT: ${{ inputs.environment }}
-          CYPRESS_SMOKE_TESTS_EMAIL: ${{ secrets.SMOKE_TESTS_EMAIL }}
-          CYPRESS_SMOKE_TESTS_PASSWORD: ${{ secrets.SMOKE_TESTS_PASSWORD }}
+          CYPRESS_SMOKE_TESTS_EMAIL: ${{ secrets.smoke_tests_email }}
+          CYPRESS_SMOKE_TESTS_PASSWORD: ${{ secrets.smoke_tests_password }}
 
       - uses: actions/upload-artifact@v6
         if: failure()

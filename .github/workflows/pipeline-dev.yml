@@ -42,3 +42,5 @@ jobs:
       base_url: https://dev.report-wreck-material.service.gov.uk
     secrets:
       aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
+      smoke_tests_email: ${{ secrets.SMOKE_TESTS_EMAIL }}
+      smoke_tests_password: ${{ secrets.SMOKE_TESTS_PASSWORD }}
