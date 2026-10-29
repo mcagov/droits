@@ -38,7 +38,7 @@
   }
 
   &__icon {
-    border: 2px solid govuk-colour("mid-grey");
+    border: 2px solid govuk-colour("black", $variant: "tint-80");
     border-radius: 3px;
   }
 

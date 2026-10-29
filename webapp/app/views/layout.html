@@ -1,6 +1,6 @@
 {#- We can't mount GOV.UK Frontend's assets at root as it's done automatically by the extensions framework. -#}
 {%- set assetPath = '/assets' -%}
-{% set govukRebrand = true %}
+{% set serviceUrl = "/" %}
 
 {% extends "govuk/template.njk" %}
 
@@ -42,24 +42,22 @@
    Maritime and Coastguard Agency - {{ serviceName }} – GOV.UK
 {% endblock %}
 
-{% block header %}
+{% block bodyStart %}
   {% include "includes/cookie-banner.html" %}
-  {# Set serviceName in config.js. #}
+{% endblock %}
+
+{% block govukHeader %}
   {{ govukHeader({
     homepageUrl: "/",
-    serviceName: serviceName,
-    serviceUrl: "/",
     containerClasses: "govuk-width-container",
-    attributes: {"id" : "page-header"},
-    useTudorCrown: true,
-    rebrand: true
+    attributes: {"id" : "page-header"}
   }) }}
 {% endblock %}
 
 {% set mainClasses = mainClasses | default("govuk-main-wrapper--auto-spacing") %}
 
 {% if useAutoStoreData %}
-  {% block footer %}
+  {% block govukFooter %}
     {{ govukFooter({
       meta: {
         items: [
@@ -76,8 +74,7 @@
             text: "Privacy statement"
           }
         ]
-      },
-    rebrand: true
+      }
     }) }}
   {% endblock %}
 {% endif %}

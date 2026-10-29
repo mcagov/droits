@@ -36,6 +36,7 @@ Runs Droits in a Lima VM, with local authentication and no Azure credentials.
   ./scripts/dev.sh down     Stop the VM
   ./scripts/dev.sh rebuild  Delete the VM and build it again from scratch
   ./scripts/dev.sh status   Show the VM and its containers
+  ./scripts/dev.sh help     Show this help
 EOF
 }
 
@@ -223,6 +224,9 @@ status)
   require_lima
   limactl list "$VM_NAME" || true
   vm_running && in_vm "podman compose --profile local-auth ps" || true
+  ;;
+help | -h | --help)
+  usage
   ;;
 *)
   usage

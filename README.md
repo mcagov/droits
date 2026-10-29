@@ -27,80 +27,90 @@ unsure.
 
 ## Local development
 
-- Make sure you have the required versions of things installed.
-   - We recommend using [mise-en-place](https://mise.jdx.dev/) to install the required tools specified in [.tool-versions](../.tool-versions).```
-   - See the `.tool-versions` if you want to manage them some other way.
-   - Install [Podman](https://podman.io/docs/installation) and podman-compose with `brew install podman podman-compose`,
-     then create its VM with `podman machine init --memory 4096 && podman machine start`. You don't need this if you
-     use `./scripts/dev.sh`, which runs Podman inside its own VM.
-- Add your local config files:
-  - `webapp/.env.json` (get the contents from the "/webapp/env-json" secret in AWS Parameter Store)
-  - `backoffice/src/appsettings.json` (get the content s from the "/backoffice/appsettings-json" secret in AWS)
-- Install all the things, setup commit hooks etc.
+The quickest way to run Droits locally is `./scripts/dev.sh`. The only thing you need on your Mac is
+[Homebrew](https://brew.sh). You don't need Azure, AWS config files or Podman.
 
 ```bash
-  # From the root of this repository
-  make setup
- ```
-- Ensure you have created the development certificate:
-```bash
-  dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p password
-```
-  - You will need to unlock your keyvault with your MacBook password
-- Build the container images:
-```bash
-    # From the root of this repository
-  make build
+# From the root of this repository
+./scripts/dev.sh
 ```
 
-- Start up the applications in development mode, with backing services
-```bash
-  # From the root of this repository
-  make serve
- ```
-- The application should be available at the following URLS:
-  - Webapp:
-    - User facing: http://localhost:3000
-  - Backoffice:
-    - User facing: http://localhost:5001
-    - Health check: http://localhost:5001/healthz
+The first run installs [Lima](https://lima-vm.io/), creates a Linux VM, installs everything inside it and serves the
+app. This takes a while. Later runs start in a minute or so. Run `./scripts/dev.sh help` for the other commands.
 
-At the time of writing, this will fire up the service using Podman Compose.
+Once it is up:
 
-It would be nice to have Makefile commands to fire up the two applications outside of containers for easier development work. For now though, look at [webapp README](./webapp/README.md) and [backoffice README](./backoffice/README.md).
-
-### Local development without Azure
-
-If you don't have the AWS config files above, or want to work offline, you can run everything with a single
-local user instead, with hot reload for both applications.
-
-To run it all in a Linux VM, with Homebrew as the only thing you install on your Mac, run `./scripts/dev.sh`. It
-creates the VM, installs everything inside it and serves the app on the usual ports; run `./scripts/dev.sh help` for
-the list of commands. `node_modules` and the .NET build output are kept inside the VM, so install on your Mac too if
-you want your editor to resolve imports. Changes you save on your Mac reload in the VM within a second or so. Editors
-that save by writing a new file and renaming it over the old one, such as JetBrains IDEs with "safe write" turned on or
-vim, are not picked up; turn that off, or run `DROITS_WATCH_POLLING=true ./scripts/dev.sh`. To run natively instead:
-
-1. Copy `.env.example` as `.env` and set `DROITS_LOCAL_AUTH=true`.
-2. `make setup`, then `make serve`. This starts Postgres, Redis and LocalStack in Podman, then runs the backoffice with
-   `dotnet watch` and the webapp with `npm run dev`.
-
-Either way:
-
-- Webapp: http://localhost:3000. Reporting needs no sign in; the portal signs in with `dev@droits.local` / `password`.
-- Backoffice: http://localhost:5001, signed in automatically as `dev@droits.local`.
+- Webapp: http://localhost:3000. Reporting needs no sign in. The portal signs in with `dev@droits.local` /
+  `password`.
+- Backoffice: http://localhost:5001. You are signed in automatically as `dev@droits.local`.
 - Images are stored in LocalStack S3 at http://localhost:4566, in the `droits-local` bucket.
+
+Things to know:
+
+- Changes you save on your Mac reload in the VM within a second or so. Editors that save by writing a new file and
+  renaming it over the old one, such as JetBrains IDEs with "safe write" turned on or vim, are not picked up. Turn
+  that off, or run `DROITS_WATCH_POLLING=true ./scripts/dev.sh`.
+- `node_modules` and the .NET build output are kept inside the VM. Install on your Mac too if you want your editor to
+  resolve imports.
 - The settings come from `local-auth.env`. Put any overrides, such as `LOCAL_AUTH_EMAIL` or `LOCAL_AUTH_PASSWORD`, in
   `.env`.
 - GovNotify uses your `GovNotify:ApiKey` from `backoffice/src/appsettings.json` if you have one. Without it, emails are
   not sent and the error is logged.
 
-This is for local development only. Both applications ignore `DROITS_LOCAL_AUTH` and use Azure unless they run in
-development mode outside ECS, so the dev, staging and production environments always use Azure AD and Azure AD B2C.
+Local authentication is for local development only. Both applications ignore `DROITS_LOCAL_AUTH` and use Azure unless
+they run in development mode outside ECS, so the dev, staging and production environments always use Azure AD and
+Azure AD B2C.
+
+### Running without the VM
+
+You can also run everything on your Mac with local authentication.
+
+1. Install the tools in [.tool-versions](./.tool-versions). We recommend [mise-en-place](https://mise.jdx.dev/).
+2. Install [Podman](https://podman.io/docs/installation) and podman-compose with
+   `brew install podman podman-compose`, then create its VM with
+   `podman machine init --memory 4096 && podman machine start`.
+3. Copy `.env.example` as `.env` and set `DROITS_LOCAL_AUTH=true`.
+4. Run `make setup`, then `make serve`. This starts Postgres, Redis and LocalStack in Podman, then runs the backoffice
+   with `dotnet watch` and the webapp with `npm run dev`.
+
+The URLs and sign in details are the same as above.
+
+### Running with Azure
+
+Use this if you need real Azure sign in. Install the tools and Podman as in the steps above, then:
+
+- Add your local config files:
+  - `webapp/.env.json` (get the contents from the "/webapp/env-json" secret in AWS Parameter Store)
+  - `backoffice/src/appsettings.json` (get the contents from the "/backoffice/appsettings-json" secret in AWS Parameter Store)
+- Install all the things, setup commit hooks etc.
+```bash
+  # From the root of this repository
+  make setup
+```
+- Build the container images:
+```bash
+  # From the root of this repository
+  make build
+```
+- Start up the applications in development mode, with backing services:
+```bash
+  # From the root of this repository
+  make serve
+```
+- The application should be available at the following URLs:
+  - Webapp: http://localhost:3000
+  - Backoffice: http://localhost:5001
+  - Backoffice health check: http://localhost:5001/healthz
+
+For running the two applications outside of containers, see the [webapp README](./webapp/README.md) and
+[backoffice README](./backoffice/README.md).
 
 ### Troubleshooting
 
-- Instance fails to start: If you ran `podman compose up` before creating and populating the `.env.json` and `appsettings.json` files, this will cause the instance to fail. To resolve this, clean up the environment and run the command again.
+- Instance fails to start: If you ran `podman compose up` before creating and populating the `.env.json` and
+  `appsettings.json` files, this will cause the instance to fail. To resolve this, clean up the environment and run the
+  command again.
+
 ## Testing
 
 ### Run the unit tests
