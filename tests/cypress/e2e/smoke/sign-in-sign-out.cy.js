@@ -1,7 +1,7 @@
 describe('Smoke test - sign in and sign out', { retries: 0 }, () => {
   const email = Cypress.env('SMOKE_TESTS_EMAIL')
   const password = Cypress.env('SMOKE_TESTS_PASSWORD')
-  const canSignIn = Cypress.env('ENVIRONMENT') === 'development' && email && password
+  const canSignIn = email && password
 
   it('signs in from the check report status page, then signs out', function () {
     if (!canSignIn) {

@@ -17,7 +17,7 @@ npm run test:e2e
 
 Smoke tests live in `cypress/e2e/smoke` and run against a deployed environment after each deployment.
 
-The signed-in tests only run in development (for now) and need a test account. To run them locally, add the account to `cypress.env.json` (git ignored):
+The signed-in tests need a test account. The sign in and sign out test runs in any environment that has the account set up, and the view report test only runs in development. To run them locally, add the account to `cypress.env.json` (git ignored):
 
 ```json
 {
@@ -32,4 +32,4 @@ Then run:
 CYPRESS_BASE_URL=https://dev.report-wreck-material.service.gov.uk CYPRESS_ENVIRONMENT=development npx cypress open --e2e --browser electron
 ```
 
-In GitHub, the account is stored as `SMOKE_TESTS_EMAIL` and `SMOKE_TESTS_PASSWORD` secrets on the `development` environment.
+In GitHub, the account is stored as `SMOKE_TESTS_EMAIL` and `SMOKE_TESTS_PASSWORD` secrets on each environment (`development`, `staging`, `production`). The account must exist in the Azure B2C tenant that environment uses.
