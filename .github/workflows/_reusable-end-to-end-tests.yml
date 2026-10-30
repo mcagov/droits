@@ -68,6 +68,7 @@ jobs:
         with:
           working-directory: tests
           browser: chrome
+          spec: cypress/e2e/*.cy.js
 #         wait-on: "http://localhost:5000/healthz"
           
       - uses: actions/upload-artifact@v7
