@@ -4,6 +4,15 @@ resource "aws_alb_target_group" "target-group" {
   protocol    = var.protocol
   target_type = "ip"
   vpc_id      = var.vpc_id
+
+  health_check {
+    path                = var.health_check_path
+    healthy_threshold   = 2
+    unhealthy_threshold = 3
+    interval            = 30
+    timeout             = 5
+    matcher             = "200"
+  }
 }
 
 resource "aws_alb" "alb" {

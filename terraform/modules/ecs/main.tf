@@ -23,6 +23,7 @@ resource "aws_ecs_task_definition" "task-definition" {
       command : [
         "CMD-SHELL", "curl -f ${var.health_check_url} || exit 1"
       ],
+      startPeriod : 60,
     },
     logConfiguration : {
       logDriver : "awslogs",
