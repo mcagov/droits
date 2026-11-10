@@ -37,6 +37,11 @@ variable "lb_ssl_policy" {
   description = "Load Balancer ssl policy"
 }
 
+variable "health_check_path" {
+  type        = string
+  description = "Path used by the ALB target group health check"
+}
+
 variable "ssl_certificate_arn" {
   type        = string
   description = "Load Balancer ssl certificate arn"

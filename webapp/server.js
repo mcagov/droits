@@ -11,6 +11,7 @@ import {
   forceHttps
 } from './utilities';
 import routes from './api/routes';
+import health from './api/routes/health';
 import config from './app/config.js';
 import rateLimitMiddleware from './utilities/rateLimiter.js';
 
@@ -30,6 +31,8 @@ process.on('uncaughtException', (err) => {
 
 const app = express();
 app.options('*', cors());
+
+health(app);
 
 // Rate Limiter applied to all routes
 app.use(rateLimitMiddleware);

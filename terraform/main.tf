@@ -67,11 +67,12 @@ module "backoffice-alb" {
   lb_ssl_policy       = var.lb_ssl_policy
   ssl_certificate_arn = module.acm.ssl_certificate_arn
 
-  port             = var.backoffice_port
-  protocol         = "HTTP"
-  security_groups  = [module.security-groups.backoffice-lb-security-group-id]
-  lb_log_bucket    = module.backoffice-logs-s3.alb-log-bucket
-  application_name = "backoffice"
+  port              = var.backoffice_port
+  protocol          = "HTTP"
+  security_groups   = [module.security-groups.backoffice-lb-security-group-id]
+  lb_log_bucket     = module.backoffice-logs-s3.alb-log-bucket
+  application_name  = "backoffice"
+  health_check_path = "/healthz"
 
   depends_on = [module.vpc, module.security-groups, module.backoffice-logs-s3]
 }
@@ -86,12 +87,12 @@ module "webapp-alb" {
   lb_ssl_policy       = var.lb_ssl_policy
   ssl_certificate_arn = module.acm.ssl_certificate_arn
 
-
-  port             = var.webapp_port
-  protocol         = "HTTP"
-  security_groups  = [module.security-groups.webapp-lb-security-group-id]
-  lb_log_bucket    = module.webapp-logs-s3.alb-log-bucket
-  application_name = "webapp"
+  port              = var.webapp_port
+  protocol          = "HTTP"
+  security_groups   = [module.security-groups.webapp-lb-security-group-id]
+  lb_log_bucket     = module.webapp-logs-s3.alb-log-bucket
+  application_name  = "webapp"
+  health_check_path = "/health"
 
   depends_on = [module.vpc, module.security-groups, module.webapp-logs-s3]
 }
