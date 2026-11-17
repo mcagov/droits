@@ -206,10 +206,6 @@ namespace Droits.Models.DTOs.Exports
             Name = wreckMaterial.Name;
             Quantity = wreckMaterial.Quantity.ToString();
             Description = wreckMaterial.Description;
-            Value = wreckMaterial.SalvorValuation.ToString();
-            Outcome = wreckMaterial.Outcome.ToString();
-            Owner = wreckMaterial.WreckMaterialOwner;
-
         }
 
 
@@ -221,17 +217,11 @@ namespace Droits.Models.DTOs.Exports
         public string? Name { get; set; }
         public string? Description { get; set; }
         public string? Quantity { get; set; }
-        public string? Value { get; set; }
-        public string? Owner { get; set; }
-        public string? Outcome { get; set; }
 
 
         public override string ToString()=> $"Name: {Name}\n" +
                                             $"Description: {Description}\n" +
-                                            $"Quantity: {Quantity}\n" +
-                                            $"Value: {Value}\n" +
-                                            $"Owner: {Owner}\n" +
-                                            $"Outcome: {Outcome}";
+                                            $"Quantity: {Quantity}";
         
     }
 }
