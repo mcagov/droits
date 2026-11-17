@@ -64,19 +64,13 @@ public class ExportHelperTests
             {
                 Description = "foo",
                 Name = "bar",
-                Owner = "baz",
-                Outcome = "woo",
                 Quantity = "1",
-                Value = "350"
             }}},
             new() { Id = new Guid(), Reference = "Ref4" , WreckMaterials = new List<WreckMaterialDto>() {new ()
             {
                 Description = "foo",
                 Name = "bar",
-                Owner = "baz",
-                Outcome = "woo",
                 Quantity = "1",
-                Value = "350"
             }}},
         };
         
