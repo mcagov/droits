@@ -14,6 +14,8 @@ public interface ISalvorRepository
 {
     IQueryable<Salvor> GetSalvors();
     IQueryable<Salvor> GetSalvorsWithAssociations();
+    IQueryable<Salvor> GetSalvorsForExport();
+    IAsyncEnumerable<Salvor> StreamSalvorsForExport(IQueryable<Salvor> query);
     Task<Salvor> GetSalvorAsync(Guid id);
     Task<Salvor> AddAsync(Salvor salvor, bool updateLastModified = true);
     Task<Salvor> UpdateAsync(Salvor salvor, bool updateLastModified = true);
@@ -44,6 +46,31 @@ public class SalvorRepository : BaseEntityRepository<Salvor>, ISalvorRepository
             .Include(s => s.Droits)
             .OrderByDescending(l => l.Created)
             .AsNoTracking();
+    }
+
+
+    public IQueryable<Salvor> GetSalvorsForExport()
+    {
+        return Context.Salvors.AsNoTracking();
+    }
+
+
+    public IAsyncEnumerable<Salvor> StreamSalvorsForExport(IQueryable<Salvor> query)
+    {
+        return query.OrderByDescending(s => s.Created).ThenByDescending(s => s.Id)
+            .Select(s => new Salvor
+            {
+                Id = s.Id,
+                Created = s.Created,
+                LastModified = s.LastModified,
+                Name = s.Name,
+                Email = s.Email,
+                TelephoneNumber = s.TelephoneNumber,
+                MobileNumber = s.MobileNumber,
+                Address = s.Address,
+                Droits = s.Droits.Select(d => new Droit { Reference = d.Reference }).ToList()
+            })
+            .AsAsyncEnumerable();
     }
 
 

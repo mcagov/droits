@@ -1,6 +1,7 @@
 
 #region
 
+using System.Runtime.CompilerServices;
 using AutoMapper;
 using CsvHelper.Configuration;
 using Droits.Data.Mappers.CsvMappers;
@@ -32,7 +33,8 @@ public interface ISalvorService
     Task<Guid> SaveSalvorFormAsync(SalvorForm form);
     Task<SalvorListView> AdvancedSearchAsync(SalvorSearchForm form);
     Task<Salvor> GetOrCreateAsync(Salvor salvor);
-    Task<byte[]> ExportAsync(SalvorSearchForm form);
+    Task<bool> HasSalvorsToExportAsync(SalvorSearchForm form);
+    Task ExportAsync(SalvorSearchForm form, Stream output, CancellationToken cancellationToken = default);
     Task<Salvor> GetSalvorByEmailAsync(string salvorEmail);
     Task<Salvor> GetSalvorByPowerappsIdAsync(string powerappsId);
     Task<Salvor?> GetSalvorByNameAndAddressAsync(Salvor salvor);
@@ -211,38 +213,27 @@ public class SalvorService : ISalvorService
     }
 
 
-    private List<Salvor> SearchSalvors(IQueryable<Salvor> query)
+    public async Task<bool> HasSalvorsToExportAsync(SalvorSearchForm form)
     {
-        return query.ToList();
+        return await SalvorQueryBuilder.BuildQuery(form, _repo.GetSalvorsForExport()).AnyAsync();
     }
-    
-    
-    public async Task<byte[]> ExportAsync(SalvorSearchForm form)
+
+    public async Task ExportAsync(SalvorSearchForm form, Stream output, CancellationToken cancellationToken = default)
     {
-        
-        var query = QueryFromForm(form);
+        var query = SalvorQueryBuilder.BuildQuery(form, _repo.GetSalvorsForExport());
+        var salvors = _repo.StreamSalvorsForExport(query);
 
-        var salvors = SearchSalvors(query);
-        
-       
-        
-        if (salvors.IsNullOrEmpty())
-        {
-            throw new Exception("No Salvors to export");
-        }
+        await ExportHelper.WriteRecordsAsync(ToExportDtos(salvors, cancellationToken),
+            new SalvorsCsvMap(form.SalvorExportForm), output, cancellationToken);
+    }
 
-        try
+    private static async IAsyncEnumerable<SalvorExportDto> ToExportDtos(IAsyncEnumerable<Salvor> salvors,
+        [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        await foreach ( var salvor in salvors.WithCancellation(cancellationToken) )
         {
-            var salvorsData = salvors.Select(s => new SalvorExportDto(s)).ToList();
-            return await ExportHelper.ExportRecordsAsync(salvorsData, new SalvorsCsvMap(form.SalvorExportForm));
+            yield return new SalvorExportDto(salvor);
         }
-        catch ( Exception e )
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-
-       
     }
     
     public async Task<Salvor> GetSalvorByPowerappsIdAsync(string powerappsId) =>
