@@ -61,9 +61,7 @@ export default function (app) {
         .escape()
         .not()
         .isEmpty()
-        .withMessage('Enter a real postcode')
-        .isPostalCode(['GB'])
-        .withMessage('Please enter a valid postcode'),
+        .withMessage('Enter a real postcode'),
     ],
     function (req, res) {
       const errors = formatValidationErrors(validationResult(req));
