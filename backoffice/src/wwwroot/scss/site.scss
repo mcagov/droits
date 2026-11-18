@@ -129,3 +129,33 @@ div.form-sections {
 .status-ReadyForQc {@extend .bg-dark;}
 .status-QcApproved {@extend .bg-success;}
 .status-Closed {@extend .bg-danger;}
+
+@media print {
+  .navbar,
+  .js-droit-view-tabs,
+  .js-print-controls,
+  .js-edit-droit-button,
+  .js-view-droits-button,
+  .js-status-form {
+    display: none !important;
+  }
+
+  .tab-pane {
+    display: block !important;
+    opacity: 1 !important;
+  }
+
+  .tab-content > .tab-pane + .tab-pane {
+    border-top: 1px solid #dee2e6;
+    padding-top: 1rem;
+    margin-top: 1rem;
+  }
+
+  #notes {
+    display: none !important;
+  }
+
+  .print-include-notes #notes {
+    display: block !important;
+  }
+}
