@@ -9,6 +9,7 @@ import {initializeSearchForms} from './searchForms';
 import {initializeFile} from "./droitFile";
 import {initializeTinyMce} from "./tinyMCE";
 import {initializeMetricsDashboard} from "./metricsDashboard";
+import {initializePrint} from "./print";
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -33,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeSearchForms();
     initializeFile();
     initializeTinyMce();
+    initializePrint();
 });
 
 function initializeComponents(selector, initializer) {

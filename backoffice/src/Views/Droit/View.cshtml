@@ -21,7 +21,7 @@
         <h4>@ViewData["Title"]</h4>
     </div>
     <div class="col-6 col-lg-4 float-end">
-        <form asp-action="UpdateDroitStatus" method="POST">
+        <form asp-action="UpdateDroitStatus" method="POST" class="js-status-form">
             <div class="row">
                 @Html.HiddenFor(m => m.Id)
                 <div class="col d-flex btn-group">
@@ -226,7 +226,7 @@
                         @if (Model.Wreck.Latitude != null   && Model.Wreck.Longitude != null)
                         {
                             <div class="row mt-3">
-                                <iframe src="https://maps.google.com/maps?q=@Model.Wreck?.Latitude,@Model.Wreck?.Longitude&amp;output=embed"></iframe>
+                                <iframe class="d-print-none" src="https://maps.google.com/maps?q=@Model.Wreck?.Latitude,@Model.Wreck?.Longitude&amp;output=embed"></iframe>
                             </div>
                         }
                         <div class="col d-flex flex-row mt-4 justify-content-end">
@@ -478,10 +478,17 @@
 }
 
 
-<div class="col d-flex flex-row mt-4 justify-content-end">
+<div class="col d-flex flex-row mt-4 justify-content-end align-items-center gap-3">
+        <div class="d-flex align-items-center gap-2 js-print-controls">
+            <div class="form-check mb-0">
+                <input class="form-check-input" type="checkbox" id="include-notes-checkbox">
+                <label class="form-check-label" for="include-notes-checkbox">Include notes</label>
+            </div>
+            <button type="button" class="btn btn-secondary js-print-btn">Print report</button>
+        </div>
         <div class="align-self-end">
             <a type="button" class="js-edit-droit-button btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id" asp-route-selectedTab="droit">Edit</a>
-            <a type="button" class="btn btn-primary" asp-action="Index">View Droits</a>
+            <a type="button" class="btn btn-primary js-view-droits-button" asp-action="Index">View Droits</a>
         </div>
     </div>
 </div>
