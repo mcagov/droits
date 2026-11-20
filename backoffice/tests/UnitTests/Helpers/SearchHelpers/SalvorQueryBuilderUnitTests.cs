@@ -99,8 +99,58 @@ public class SalvorQueryBuilderUnitTests
         var result = SalvorQueryBuilder.BuildQuery(form, salvors, false);
 
         // Assert
-        Assert.Equal(2, result.Count()); 
+        Assert.Equal(2, result.Count());
         Assert.True(result.All(s => s.Email.ToLower().Contains("test")));
     }
-    
+
+    [Fact]
+    public void BuildQuery_WithPartialTelephoneNumber_ReturnsMatchingSalvors()
+    {
+        var form = new SalvorSearchForm { TelephoneNumber = "0771" };
+        var salvors = new List<Salvor>
+        {
+            new() { Id = Guid.NewGuid(), TelephoneNumber = "07711 234567" },
+            new() { Id = Guid.NewGuid(), TelephoneNumber = "07711 999000" },
+            new() { Id = Guid.NewGuid(), TelephoneNumber = "01234 567890" }
+        }.AsQueryable();
+
+        var result = SalvorQueryBuilder.BuildQuery(form, salvors, false);
+
+        Assert.Equal(2, result.Count());
+        Assert.True(result.All(s => s.TelephoneNumber.Contains("0771")));
+    }
+
+    [Fact]
+    public void BuildQuery_WithSpecificTelephoneNumber_ReturnsOnlyMatchingSalvor()
+    {
+        var form = new SalvorSearchForm { TelephoneNumber = "07711 234567" };
+        var salvors = new List<Salvor>
+        {
+            new() { Id = Guid.NewGuid(), TelephoneNumber = "07711 234567" },
+            new() { Id = Guid.NewGuid(), TelephoneNumber = "07711 999000" },
+            new() { Id = Guid.NewGuid(), TelephoneNumber = "01234 567890" }
+        }.AsQueryable();
+
+        var result = SalvorQueryBuilder.BuildQuery(form, salvors, false);
+
+        var single = Assert.Single(result);
+        Assert.Equal("07711 234567", single.TelephoneNumber);
+    }
+
+    [Fact]
+    public void BuildQuery_WithNullOrEmptyTelephoneNumber_ReturnsOriginalQuery()
+    {
+        var form = new SalvorSearchForm { TelephoneNumber = null };
+        var salvors = new List<Salvor>
+        {
+            new() { Id = Guid.NewGuid(), TelephoneNumber = "07711 234567" },
+            new() { Id = Guid.NewGuid(), TelephoneNumber = "01234 567890" }
+        }.AsQueryable();
+
+        var result = SalvorQueryBuilder.BuildQuery(form, salvors, false);
+
+        Assert.Equal(salvors.Count(), result.Count());
+        Assert.Equal(salvors.ToList(), result.ToList());
+    }
+
 }

@@ -27,8 +27,13 @@
             </div>
             
             <div class="form-floating mb-3">
-                @Html.EditorFor(s => s.Email, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })    
+                @Html.EditorFor(s => s.Email, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })
                 @Html.LabelFor(s => s.Email)
+            </div>
+
+            <div class="form-floating mb-3">
+                @Html.EditorFor(s => s.TelephoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder=""} })
+                @Html.LabelFor(s => s.TelephoneNumber)
             </div>
         </div>
     

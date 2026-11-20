@@ -27,7 +27,15 @@ public class SalvorQueryBuilder
                  s.Email.ToLower().Contains(form.Email.ToLower())
              );
         }
-        
+
+        if ( !string.IsNullOrEmpty(form.TelephoneNumber) )
+        {
+            query = query.Where(s =>
+                !string.IsNullOrEmpty(s.TelephoneNumber) &&
+                s.TelephoneNumber.Contains(form.TelephoneNumber)
+            );
+        }
+
         return query;
     }
 }

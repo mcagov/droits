@@ -247,5 +247,120 @@ namespace Droits.Tests.UnitTests.Services
             _mockRepo.Verify(r => r.UpdateAsync(It.IsAny<Salvor>(),It.IsAny<bool>()), Times.Never);
         }
 
+
+        private static DroitsContext CreateExportSalvorsContext(params Salvor[] salvors)
+        {
+            var dbContext = new DroitsContext(new DbContextOptionsBuilder<DroitsContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options);
+
+            dbContext.Salvors.AddRange(salvors);
+            dbContext.SaveChanges();
+
+            return dbContext;
+        }
+
+
+        private static async Task<string> ExportToStringAsync(SalvorService service, SalvorSearchForm form)
+        {
+            using var output = new MemoryStream();
+            await service.ExportAsync(form, output);
+            return System.Text.Encoding.UTF8.GetString(output.ToArray());
+        }
+
+
+        [Fact]
+        public async Task HasSalvorsToExportAsync_NoSalvors_ReturnsFalse()
+        {
+            // Given
+            await using var dbContext = CreateExportSalvorsContext();
+            var service = CreateSalvorService(dbContext);
+
+            // When
+            var hasSalvors = await service.HasSalvorsToExportAsync(new SalvorSearchForm());
+
+            // Assert
+            Assert.False(hasSalvors);
+        }
+
+
+        [Fact]
+        public async Task HasSalvorsToExportAsync_ListOfSalvors_ReturnsTrue()
+        {
+            // Given
+            await using var dbContext = CreateExportSalvorsContext(
+                new Salvor { Id = Guid.NewGuid(), Name = "Test Salvor", Email = "test@example.com" });
+            var service = CreateSalvorService(dbContext);
+
+            // When
+            var hasSalvors = await service.HasSalvorsToExportAsync(new SalvorSearchForm());
+
+            // Assert
+            Assert.True(hasSalvors);
+        }
+
+
+        [Fact]
+        public async Task ExportSalvorsAsync_ListOfSalvors_ReturnsCorrectData()
+        {
+            // Given
+            await using var dbContext = CreateExportSalvorsContext(
+                new Salvor { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com" },
+                new Salvor { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com" });
+            var service = CreateSalvorService(dbContext);
+
+            // When
+            var data = await ExportToStringAsync(service, new SalvorSearchForm());
+
+            // Assert
+            Assert.Contains("Alice", data);
+            Assert.Contains("Bob", data);
+        }
+
+
+        [Fact]
+        public async Task ExportSalvorsAsync_SalvorWithDroits_ExportsDroitReferences()
+        {
+            // Given
+            await using var dbContext = CreateExportSalvorsContext(
+                new Salvor
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Jane Salvor",
+                    Email = "jane@example.com",
+                    Droits = new List<Droit>
+                    {
+                        new() { Id = Guid.NewGuid(), Reference = "DR-001" }
+                    }
+                });
+            var service = CreateSalvorService(dbContext);
+
+            // When
+            var data = await ExportToStringAsync(service, new SalvorSearchForm());
+
+            // Assert
+            Assert.Contains("Jane Salvor", data);
+            Assert.Contains("DR-001", data);
+        }
+
+
+        [Fact]
+        public async Task ExportSalvorsAsync_SearchFilter_ExportsOnlyMatchingSalvors()
+        {
+            // Given
+            await using var dbContext = CreateExportSalvorsContext(
+                new Salvor { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com" },
+                new Salvor { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com" });
+            var service = CreateSalvorService(dbContext);
+            var form = new SalvorSearchForm { Email = "alice@example.com" };
+
+            // When
+            var data = await ExportToStringAsync(service, form);
+
+            // Assert
+            Assert.Contains("alice@example.com", data);
+            Assert.DoesNotContain("bob@example.com", data);
+        }
+
     }
 }
