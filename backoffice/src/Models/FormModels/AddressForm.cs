@@ -2,7 +2,6 @@
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Droits.Helpers;
 using Droits.Models.Entities;
 
 #endregion
@@ -41,8 +40,6 @@ public class AddressForm
     public string? County { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Postcode is required")]
-    [RegularExpression(Constants.PostcodeRegex,
-        ErrorMessage = "Invalid postcode")]
     public string? Postcode { get; set; } = string.Empty;
 
 
