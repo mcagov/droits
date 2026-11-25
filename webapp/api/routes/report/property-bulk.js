@@ -145,15 +145,10 @@ export default function (app) {
       }
       for (let i = 0; i < rows.length; i++) {
         const currentRow = rows[i];
-        const postcodeRegex = /[A-Z]{1,2}[0-9][0-9A-Z]?\s?[0-9][A-Z]{2}/gi;
         for (const col in currentRow) {
           // 'Total value' is not a mandatory form field so we can ignore it
           if (col !== 'Total value' && currentRow[col] === '') {
             err.text = "The selected file contains some empty values. Please check that you have entered all of the required information for each item of wreck material.";
-            resolve();
-          }
-          else if (col === 'Postcode' && currentRow[col].match(postcodeRegex) === null) {
-            err.text = "The selected file contains invalid postcode values. Please enter postcodes in the correct format, for example E1 6AN";
             resolve();
           }
 	  else if (col === 'Quantity' && parseInt(currentRow[col]) < 1){

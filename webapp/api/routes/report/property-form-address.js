@@ -92,8 +92,6 @@ export default function (app) {
           .not()
           .isEmpty()
           .withMessage('Enter a real postcode')
-          .isPostalCode(['GB'])
-          .withMessage('Please enter a valid postcode')
           .run(req);
       }
 
