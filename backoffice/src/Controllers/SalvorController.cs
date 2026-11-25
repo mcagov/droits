@@ -8,6 +8,7 @@ using Droits.Models.ViewModels;
 using Droits.Models.ViewModels.ListViews;
 using Droits.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 
 #endregion
 
@@ -155,14 +156,32 @@ public class SalvorController : BaseController
         {
             switch ( form.SubmitAction )
             {
-                case "Export" : 
+                case "Export":
                     try
                     {
-                        var csvExport = await _service.ExportAsync(form); 
-                        return File(csvExport, "text/csv", $"salvor-export-{DateTime.UtcNow.ToShortDateString()}.csv");
+                        if ( !await _service.HasSalvorsToExportAsync(form) )
+                        {
+                            throw new Exception("No Salvors to export");
+                        }
+
+                        var contentDisposition = new ContentDispositionHeaderValue("attachment");
+                        contentDisposition.SetHttpFileName($"salvor-export-{DateTime.UtcNow.ToShortDateString()}.csv");
+                        Response.ContentType = "text/csv";
+                        Response.Headers.ContentDisposition = contentDisposition.ToString();
+
+                        await _service.ExportAsync(form, Response.Body, HttpContext.RequestAborted);
+                        return new EmptyResult();
                     }
                     catch ( Exception e )
                     {
+                        if ( Response.HasStarted )
+                        {
+                            _logger.LogError(e, "Salvor export failed after the response had started");
+                            HttpContext.Abort();
+                            return new EmptyResult();
+                        }
+
+                        Response.Clear();
                         HandleError(_logger, "No Salvors to export", e);
                         return RedirectToAction("Index");
                     }
@@ -170,7 +189,7 @@ public class SalvorController : BaseController
                 default:
                     return RedirectToAction(form.SubmitAction, form);
             }
-            
+
         }
         
         form.IncludeAssociations = true;
