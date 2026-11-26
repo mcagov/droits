@@ -151,11 +151,13 @@ div.form-sections {
     margin-top: 1rem;
   }
 
-  #notes {
+  #notes,
+  .js-wreck-notes {
     display: none !important;
   }
 
-  .print-include-notes #notes {
+  .print-include-notes #notes,
+  .print-include-notes .js-wreck-notes {
     display: block !important;
   }
 }
