@@ -234,7 +234,7 @@
                         </div>
                     </div>
                     
-                    <div class="row">
+                    <div class="row js-wreck-notes">
                         <h5>Wreck Notes</h5>
                         <partial name="_NoteListTable" model="@Model.Wreck?.Notes" />
                     </div>
@@ -265,7 +265,7 @@
             </div>
         </div>
         
-        <div class="row">
+        <div class="row d-print-none">
             <h5>Salvor Notes</h5>
             <partial name="_NoteListTable" model="@Model.Salvor.Notes" />
         </div>
