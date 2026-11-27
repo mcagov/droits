@@ -24,15 +24,18 @@
                 <td class="p-3">@Html.DisplayFor(m => note.Type)</td>
                 <td class="p-3">@note.LastModified.ToString("dd/MM/yyyy")</td>
                 <td class="p-3">@Html.DisplayFor(m => note.LastModifiedBy)</td>
-                <td class="p-3">
+                <td class="p-3 d-print-none">
                     <div class="btn-group">
-                        <a asp-controller="Note" asp-action="View" asp-route-id="@note.Id" asp-route-objectReference="@Model.ObjectReference" class="btn btn-primary">View</a> 
+                        <a asp-controller="Note" asp-action="View" asp-route-id="@note.Id" asp-route-objectReference="@Model.ObjectReference" class="btn btn-primary">View</a>
                         @if (Model.Editable)
                         {
                             <a asp-controller="Note" asp-action="Edit" asp-route-id="@note.Id" asp-route-objectReference="@Model.ObjectReference" class="btn btn-primary">Edit</a>
                         }
                     </div>
                 </td>
+            </tr>
+            <tr class="d-none d-print-table-row">
+                <td colspan="4" class="p-3">@note.Text</td>
             </tr>
         }
         </tbody>
